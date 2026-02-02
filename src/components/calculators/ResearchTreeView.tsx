@@ -614,7 +614,7 @@ export default function ResearchTreeView({
                       max={maxAvailable}
                       value={selectedLevel}
                       disabled={!unlocked}
-                      onChange={(e) => onLevelChange(tech.id, parseInt((e.target as HTMLInputElement).value))}
+                      onChange={(e) => onLevelChange(tech.id, parseInt((e.target as HTMLInputElement).value, 10))}
                       style={{
                         width: '100%',
                         height: '8px',

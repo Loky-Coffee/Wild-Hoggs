@@ -4,6 +4,7 @@ import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 import RewardCodes from '../../components/RewardCodes';
 import WeeklyRoses from '../../components/WeeklyRoses';
 import { ACTIVE_LUCKY_NUMBER } from '../../config/bonus';
+import { parse } from 'node-html-parser';
 
 export function getStaticPaths() {
   return [
@@ -35,29 +36,17 @@ try {
 
   const html = await response.text();
 
-  // Find all wp-block-list sections
-  const listMatches = html.matchAll(/<ul class="wp-block-list">(.*?)<\/ul>/gs);
+  // Parse HTML safely with node-html-parser
+  const root = parse(html);
+  const lists = root.querySelectorAll('ul.wp-block-list');
 
-  for (const listMatch of listMatches) {
-    const listContent = listMatch[1];
-
+  for (const list of lists) {
     // Extract all <li> items
-    const liMatches = listContent.matchAll(/<li>(.*?)<\/li>/gs);
+    const items = list.querySelectorAll('li');
 
-    for (const liMatch of liMatches) {
-      let content = liMatch[1];
-
-      // Remove HTML tags
-      content = content.replace(/<[^>]+>/g, '');
-
-      // Decode HTML entities
-      content = content.replace(/&nbsp;/g, ' ')
-                       .replace(/&amp;/g, '&')
-                       .replace(/&lt;/g, '<')
-                       .replace(/&gt;/g, '>')
-                       .replace(/&#8211;/g, '–')
-                       .replace(/&#8220;/g, '"')
-                       .replace(/&#8221;/g, '"');
+    for (const item of items) {
+      // Get text content (automatically handles HTML entities)
+      const content = item.text.trim();
 
       // Parse code line: "CODE – description"
       const codeMatch = content.match(/^([A-Z0-9]+)\s*[–\-]\s*(.+)$/);

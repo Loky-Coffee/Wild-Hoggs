@@ -14,7 +14,7 @@ export default function EventCountdown({ event, lang }: EventCountdownProps) {
       const now = new Date();
       const eventDateTime = new Date(event.date);
       const [hours, minutes] = event.time.split(':');
-      eventDateTime.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+      eventDateTime.setHours(parseInt(hours, 10), parseInt(minutes, 10), 0, 0);
 
       const difference = eventDateTime.getTime() - now.getTime();
 

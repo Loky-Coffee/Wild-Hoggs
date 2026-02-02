@@ -26,7 +26,7 @@ const currentPath = Astro.url.pathname;
       </a>
     </div>
 
-    <button class="nav-toggle" aria-label="Toggle navigation">
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
       <span></span>
       <span></span>
       <span></span>
@@ -253,7 +253,8 @@ const currentPath = Astro.url.pathname;
     const navLinks = document.querySelector('.nav-links');
 
     toggle?.addEventListener('click', () => {
-      navLinks?.classList.toggle('open');
+      const isOpen = navLinks?.classList.toggle('open');
+      toggle?.setAttribute('aria-expanded', String(isOpen));
     });
   });
 </script>

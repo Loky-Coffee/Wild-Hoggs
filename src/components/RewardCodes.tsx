@@ -81,6 +81,7 @@ export default function RewardCodes({ lang, codes: initialCodes }: RewardCodesPr
                 <button
                   className="copy-btn"
                   onClick={() => copyToClipboard(item.code)}
+                  aria-label={`${t('copy')} ${item.code}`}
                 >
                   {copiedCode === item.code ? '✓ ' + t('copied') : t('copy')}
                 </button>

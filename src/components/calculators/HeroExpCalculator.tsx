@@ -88,7 +88,7 @@ export default function HeroExpCalculator({ lang }: HeroExpCalculatorProps) {
               min="1"
               max={maxLevel - 1}
               value={currentLevel}
-              onChange={(e) => setCurrentLevel(parseInt((e.target as HTMLInputElement).value) || 1)}
+              onChange={(e) => setCurrentLevel(parseInt((e.target as HTMLInputElement).value, 10) || 1)}
             />
           </div>
 
@@ -100,7 +100,7 @@ export default function HeroExpCalculator({ lang }: HeroExpCalculatorProps) {
               min={currentLevel + 1}
               max={maxLevel}
               value={targetLevel}
-              onChange={(e) => setTargetLevel(parseInt((e.target as HTMLInputElement).value) || currentLevel + 1)}
+              onChange={(e) => setTargetLevel(parseInt((e.target as HTMLInputElement).value, 10) || currentLevel + 1)}
             />
           </div>
 

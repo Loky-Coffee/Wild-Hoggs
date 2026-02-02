@@ -190,7 +190,7 @@ export default function ResearchCalculator({ lang }: ResearchCalculatorProps) {
                           min="0"
                           max={tech.maxLevel}
                           value={selectedLevel}
-                          onChange={(e) => setTechnologyLevel(tech.id, parseInt((e.target as HTMLInputElement).value))}
+                          onChange={(e) => setTechnologyLevel(tech.id, parseInt((e.target as HTMLInputElement).value, 10))}
                           style={{
                             flex: 1,
                             height: '6px',
