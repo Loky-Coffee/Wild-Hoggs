@@ -1,4 +1,5 @@
 ---
+import { ViewTransitions } from 'astro:transitions';
 import { getLangFromUrl } from '../i18n/utils';
 import '../styles/design-tokens.css';
 
@@ -73,6 +74,22 @@ const websiteSchema = {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+
+    <!-- Critical CSS: Prevent white flash during page navigation -->
+    <style>
+      html {
+        background: #1a1a1a;
+      }
+      body {
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d1b00 100%);
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+      }
+    </style>
+
+    <!-- View Transitions for smooth page navigation -->
+    <ViewTransitions />
 
     <link rel="canonical" href={canonicalURL} />
     <link rel="alternate" hreflang="de" href={deURL} />

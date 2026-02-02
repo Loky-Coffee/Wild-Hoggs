@@ -21,8 +21,8 @@ const t = useTranslations(lang);
 const allRoses = [
   {
     luckyNumber: 1,
-    name: 'Lucky Rose #1',
-    buff: '+20% Construction Speed',
+    name: lang === 'de' ? 'Glücksrose #1' : 'Lucky Rose #1',
+    buff: lang === 'de' ? '+20% Baugeschwindigkeit' : '+20% Construction Speed',
     duration: '2h',
     description: lang === 'de'
       ? 'Erhöht Baugeschwindigkeit um 20% für 2 Stunden'
@@ -30,8 +30,8 @@ const allRoses = [
   },
   {
     luckyNumber: 2,
-    name: 'Lucky Rose #2',
-    buff: '+15% Troop Load',
+    name: lang === 'de' ? 'Glücksrose #2' : 'Lucky Rose #2',
+    buff: lang === 'de' ? '+15% Truppentransport' : '+15% Troop Load',
     duration: '24h',
     description: lang === 'de'
       ? 'Erhöht Truppentransportkapazität um 15% für 24 Stunden'
@@ -39,8 +39,8 @@ const allRoses = [
   },
   {
     luckyNumber: 3,
-    name: 'Lucky Rose #3',
-    buff: '+30% Gathering Speed',
+    name: lang === 'de' ? 'Glücksrose #3' : 'Lucky Rose #3',
+    buff: lang === 'de' ? '+30% Sammelgeschwindigkeit' : '+30% Gathering Speed',
     duration: '24h',
     description: lang === 'de'
       ? 'Erhöht Sammelgeschwindigkeit um 30% für 24 Stunden'
@@ -48,8 +48,8 @@ const allRoses = [
   },
   {
     luckyNumber: 4,
-    name: 'Lucky Rose #4',
-    buff: 'Allied Assist +120s',
+    name: lang === 'de' ? 'Glücksrose #4' : 'Lucky Rose #4',
+    buff: lang === 'de' ? 'Allianz-Hilfe +120s' : 'Allied Assist +120s',
     duration: '24h',
     description: lang === 'de'
       ? 'Allianz-Hilfe-Dauer +120 Sekunden für 24 Stunden'
@@ -57,8 +57,8 @@ const allRoses = [
   },
   {
     luckyNumber: 5,
-    name: 'Lucky Rose #5',
-    buff: '+20% Research Speed',
+    name: lang === 'de' ? 'Glücksrose #5' : 'Lucky Rose #5',
+    buff: lang === 'de' ? '+20% Forschungsgeschwindigkeit' : '+20% Research Speed',
     duration: '2h',
     description: lang === 'de'
       ? 'Erhöht Forschungsgeschwindigkeit um 20% für 2 Stunden'
@@ -66,17 +66,17 @@ const allRoses = [
   },
   {
     luckyNumber: 6,
-    name: 'Lucky Rose #6',
-    buff: 'Allied Assist +120s',
+    name: lang === 'de' ? 'Glücksrose #6' : 'Lucky Rose #6',
+    buff: lang === 'de' ? 'Allianz-Hilfe +120s' : 'Allied Assist +120s',
     duration: '24h',
     description: lang === 'de'
-      ? 'Allianz-Hilfe-Dauer +120 Sekunden für 24 Stunden (Double Help Time)'
+      ? 'Allianz-Hilfe-Dauer +120 Sekunden für 24 Stunden (Doppelte Hilfe-Zeit)'
       : 'Alliance help duration +120 seconds for 24 hours (Double Help Time)',
   },
   {
     luckyNumber: 7,
-    name: 'Lucky Rose #7',
-    buff: '+10% Troop ATK',
+    name: lang === 'de' ? 'Glücksrose #7' : 'Lucky Rose #7',
+    buff: lang === 'de' ? '+10% Truppen-Angriff' : '+10% Troop ATK',
     duration: '2h',
     description: lang === 'de'
       ? 'Erhöht Truppenangriff um 10% für 2 Stunden'
@@ -84,8 +84,8 @@ const allRoses = [
   },
   {
     luckyNumber: 8,
-    name: 'Lucky Rose #8',
-    buff: '+20% Construction Speed',
+    name: lang === 'de' ? 'Glücksrose #8' : 'Lucky Rose #8',
+    buff: lang === 'de' ? '+20% Baugeschwindigkeit' : '+20% Construction Speed',
     duration: '2h',
     description: lang === 'de'
       ? 'Erhöht Baugeschwindigkeit um 20% für 2 Stunden'
@@ -93,8 +93,8 @@ const allRoses = [
   },
   {
     luckyNumber: 9,
-    name: 'Lucky Rose #9',
-    buff: '+20% Research Speed',
+    name: lang === 'de' ? 'Glücksrose #9' : 'Lucky Rose #9',
+    buff: lang === 'de' ? '+20% Forschungsgeschwindigkeit' : '+20% Research Speed',
     duration: '2h',
     description: lang === 'de'
       ? 'Erhöht Forschungsgeschwindigkeit um 20% für 2 Stunden'
@@ -102,8 +102,8 @@ const allRoses = [
   },
   {
     luckyNumber: 10,
-    name: 'Lucky Rose #10 (Gold)',
-    buff: '+10% Troop ATK',
+    name: lang === 'de' ? 'Glücksrose #10 (Gold)' : 'Lucky Rose #10 (Gold)',
+    buff: lang === 'de' ? '+10% Truppen-Angriff' : '+10% Troop ATK',
     duration: '2h',
     description: lang === 'de'
       ? 'Erhöht Truppenangriff um 10% für 2 Stunden'
