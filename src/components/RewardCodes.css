@@ -1,0 +1,154 @@
+.reward-codes-container {
+  width: 100%;
+}
+
+.reward-codes-loading {
+  text-align: center;
+  padding: 3rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto 1rem;
+  border: 3px solid rgba(255, 165, 0, 0.2);
+  border-top-color: #ffa500;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.codes-section {
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  color: #ffa500;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.expired-title {
+  color: rgba(255, 165, 0, 0.5);
+}
+
+.codes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.code-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 165, 0, 0.3);
+  border-radius: 8px;
+  padding: 1rem;
+  transition: all 0.3s ease;
+}
+
+.code-card.active {
+  border-color: rgba(39, 174, 96, 0.5);
+  background: rgba(39, 174, 96, 0.05);
+}
+
+.code-card.active:hover {
+  border-color: rgba(39, 174, 96, 0.7);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+}
+
+.code-card.expired {
+  opacity: 0.6;
+  border-color: rgba(255, 165, 0, 0.2);
+}
+
+.code-card.expired:hover {
+  opacity: 0.8;
+}
+
+.code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.code-text {
+  font-family: 'Courier New', monospace;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffa500;
+  letter-spacing: 0.05em;
+}
+
+.code-card.active .code-text {
+  color: #52be80;
+}
+
+.copy-btn {
+  background: rgba(255, 165, 0, 0.2);
+  color: #ffa500;
+  border: 1px solid rgba(255, 165, 0, 0.4);
+  border-radius: 4px;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.code-card.active .copy-btn {
+  background: rgba(39, 174, 96, 0.2);
+  color: #52be80;
+  border-color: rgba(39, 174, 96, 0.4);
+}
+
+.copy-btn:hover {
+  background: rgba(255, 165, 0, 0.3);
+  border-color: rgba(255, 165, 0, 0.6);
+  transform: scale(1.05);
+}
+
+.code-card.active .copy-btn:hover {
+  background: rgba(39, 174, 96, 0.3);
+  border-color: rgba(39, 174, 96, 0.6);
+}
+
+.code-description {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.valid-until {
+  font-size: 0.8rem;
+  color: rgba(255, 165, 0, 0.6);
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .codes-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .code-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .copy-btn {
+    width: 100%;
+  }
+}

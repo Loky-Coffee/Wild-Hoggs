@@ -9,6 +9,9 @@ interface BuildingCost {
   steel: number;
   zinc: number;
   time: number;
+  requiredBuildings?: string;
+  heroLevelCap?: number;
+  power?: number;
 }
 
 interface Building {
@@ -45,13 +48,17 @@ export default function BuildingCalculator({ lang }: BuildingCalculatorProps) {
         wood: 'Holz',
         food: 'Nahrung',
         steel: 'Stahl',
-        zinc: 'Zink',
+        zinc: 'Zents',
         perLevel: 'Pro Level',
         reset: 'Zurücksetzen',
         days: 'Tage',
         hours: 'Stunden',
         minutes: 'Minuten',
         seconds: 'Sekunden',
+        requiredBuildings: 'Erforderliche Gebäude',
+        heroLevelCap: 'Hero Level Cap',
+        totalPower: 'Gesamte Power',
+        powerGain: 'Power Gewinn',
       },
       en: {
         title: 'Building Calculator',
@@ -64,13 +71,17 @@ export default function BuildingCalculator({ lang }: BuildingCalculatorProps) {
         wood: 'Wood',
         food: 'Food',
         steel: 'Steel',
-        zinc: 'Zinc',
+        zinc: 'Zents',
         perLevel: 'Per Level',
         reset: 'Reset',
         days: 'days',
         hours: 'hours',
         minutes: 'minutes',
         seconds: 'seconds',
+        requiredBuildings: 'Required Buildings',
+        heroLevelCap: 'Hero Level Cap',
+        totalPower: 'Total Power',
+        powerGain: 'Power Gain',
       },
     };
     return translations[lang][key] || key;
@@ -92,6 +103,7 @@ export default function BuildingCalculator({ lang }: BuildingCalculatorProps) {
     let totalSteel = 0;
     let totalZinc = 0;
     let totalTime = 0;
+    let totalPower = 0;
     const breakdown: BuildingCost[] = [];
 
     for (let level = currentLevel; level < targetLevel; level++) {
@@ -102,9 +114,13 @@ export default function BuildingCalculator({ lang }: BuildingCalculatorProps) {
         totalSteel += cost.steel;
         totalZinc += cost.zinc;
         totalTime += cost.time;
+        if (cost.power) totalPower += cost.power;
         breakdown.push(cost);
       }
     }
+
+    // Get target level data for required buildings and hero cap
+    const targetLevelData = selectedBuildingData.costs[targetLevel - 1];
 
     return {
       totalWood,
@@ -112,7 +128,10 @@ export default function BuildingCalculator({ lang }: BuildingCalculatorProps) {
       totalSteel,
       totalZinc,
       totalTime,
+      totalPower,
       breakdown,
+      targetRequiredBuildings: targetLevelData?.requiredBuildings,
+      targetHeroLevelCap: targetLevelData?.heroLevelCap,
     };
   }, [selectedBuilding, currentLevel, targetLevel, selectedBuildingData, maxLevel]);
 
@@ -196,28 +215,52 @@ export default function BuildingCalculator({ lang }: BuildingCalculatorProps) {
           <h3>{t('results')}</h3>
 
           <div className="resource-grid">
-            <div className="resource-card">
-              <div className="resource-label">{t('wood')}</div>
-              <div className="resource-value">{formatNumber(calculatedResults.totalWood)}</div>
-            </div>
-            <div className="resource-card">
-              <div className="resource-label">{t('food')}</div>
-              <div className="resource-value">{formatNumber(calculatedResults.totalFood)}</div>
-            </div>
-            <div className="resource-card">
-              <div className="resource-label">{t('steel')}</div>
-              <div className="resource-value">{formatNumber(calculatedResults.totalSteel)}</div>
-            </div>
-            <div className="resource-card">
-              <div className="resource-label">{t('zinc')}</div>
-              <div className="resource-value">{formatNumber(calculatedResults.totalZinc)}</div>
-            </div>
+            {calculatedResults.totalWood > 0 && (
+              <div className="resource-card">
+                <div className="resource-label">{t('wood')}</div>
+                <div className="resource-value">{formatNumber(calculatedResults.totalWood)}</div>
+              </div>
+            )}
+            {calculatedResults.totalFood > 0 && (
+              <div className="resource-card">
+                <div className="resource-label">{t('food')}</div>
+                <div className="resource-value">{formatNumber(calculatedResults.totalFood)}</div>
+              </div>
+            )}
+            {calculatedResults.totalSteel > 0 && (
+              <div className="resource-card">
+                <div className="resource-label">{t('steel')}</div>
+                <div className="resource-value">{formatNumber(calculatedResults.totalSteel)}</div>
+              </div>
+            )}
+            {calculatedResults.totalZinc > 0 && (
+              <div className="resource-card">
+                <div className="resource-label">{t('zinc')}</div>
+                <div className="resource-value">{formatNumber(calculatedResults.totalZinc)}</div>
+              </div>
+            )}
           </div>
 
-          <div className="result-card highlight">
-            <div className="result-label">{t('totalTime')}</div>
-            <div className="result-value">{formatTime(calculatedResults.totalTime)}</div>
-          </div>
+          {calculatedResults.totalPower > 0 && (
+            <div className="result-card highlight">
+              <div className="result-label">{t('powerGain')}</div>
+              <div className="result-value">{formatNumber(calculatedResults.totalPower)}</div>
+            </div>
+          )}
+
+          {calculatedResults.targetHeroLevelCap && (
+            <div className="result-card">
+              <div className="result-label">{t('heroLevelCap')}</div>
+              <div className="result-value">{calculatedResults.targetHeroLevelCap}</div>
+            </div>
+          )}
+
+          {calculatedResults.targetRequiredBuildings && calculatedResults.targetRequiredBuildings !== 'None' && (
+            <div className="result-card">
+              <div className="result-label">{t('requiredBuildings')}</div>
+              <div className="result-value" style={{ fontSize: '0.9rem' }}>{calculatedResults.targetRequiredBuildings}</div>
+            </div>
+          )}
 
           <div className="breakdown">
             <h4>{t('perLevel')}</h4>
@@ -226,15 +269,29 @@ export default function BuildingCalculator({ lang }: BuildingCalculatorProps) {
                 <div key={index} className="breakdown-item">
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
                     <span className="breakdown-level">Level {item.level}</span>
-                    <span style={{ fontSize: '0.85rem', color: 'rgba(255, 255, 255, 0.5)' }}>
-                      {formatTime(item.time)}
-                    </span>
+                    {item.power && (
+                      <span style={{ fontSize: '0.85rem', color: '#ffa500' }}>
+                        ⭐ +{formatNumber(item.power)} Power
+                      </span>
+                    )}
+                    {item.heroLevelCap && (
+                      <span style={{ fontSize: '0.85rem', color: 'rgba(255, 255, 255, 0.5)' }}>
+                        Hero Cap: {item.heroLevelCap}
+                      </span>
+                    )}
                   </div>
-                  <div style={{ display: 'flex', gap: '1rem', fontSize: '0.9rem' }}>
-                    {item.wood > 0 && <span>🪵 {formatNumber(item.wood)}</span>}
-                    {item.food > 0 && <span>🌾 {formatNumber(item.food)}</span>}
-                    {item.steel > 0 && <span>⚙️ {formatNumber(item.steel)}</span>}
-                    {item.zinc > 0 && <span>⚡ {formatNumber(item.zinc)}</span>}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', alignItems: 'flex-end' }}>
+                    <div style={{ display: 'flex', gap: '1rem', fontSize: '0.9rem' }}>
+                      {item.wood > 0 && <span>🪵 {formatNumber(item.wood)}</span>}
+                      {item.food > 0 && <span>🌾 {formatNumber(item.food)}</span>}
+                      {item.steel > 0 && <span>⚙️ {formatNumber(item.steel)}</span>}
+                      {item.zinc > 0 && <span>⚡ {formatNumber(item.zinc)}</span>}
+                    </div>
+                    {item.requiredBuildings && item.requiredBuildings !== 'None' && (
+                      <span style={{ fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.4)', textAlign: 'right' }}>
+                        {item.requiredBuildings}
+                      </span>
+                    )}
                   </div>
                 </div>
               ))}

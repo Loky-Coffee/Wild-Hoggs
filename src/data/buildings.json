@@ -5,58 +5,43 @@
       "de": "Hauptquartier",
       "en": "Headquarters"
     },
-    "maxLevel": 30,
+    "maxLevel": 35,
     "costs": [
-      { "level": 1, "wood": 0, "food": 0, "steel": 0, "zinc": 0, "time": 0 },
-      { "level": 2, "wood": 500, "food": 500, "steel": 0, "zinc": 0, "time": 60 },
-      { "level": 3, "wood": 1000, "food": 1000, "steel": 500, "zinc": 0, "time": 180 },
-      { "level": 4, "wood": 2000, "food": 2000, "steel": 1000, "zinc": 0, "time": 360 },
-      { "level": 5, "wood": 4000, "food": 4000, "steel": 2000, "zinc": 500, "time": 720 },
-      { "level": 6, "wood": 8000, "food": 8000, "steel": 4000, "zinc": 1000, "time": 1440 },
-      { "level": 7, "wood": 16000, "food": 16000, "steel": 8000, "zinc": 2000, "time": 2880 },
-      { "level": 8, "wood": 32000, "food": 32000, "steel": 16000, "zinc": 4000, "time": 5760 },
-      { "level": 9, "wood": 64000, "food": 64000, "steel": 32000, "zinc": 8000, "time": 11520 },
-      { "level": 10, "wood": 128000, "food": 128000, "steel": 64000, "zinc": 16000, "time": 23040 }
-    ]
-  },
-  {
-    "id": "barracks",
-    "name": {
-      "de": "Kaserne",
-      "en": "Barracks"
-    },
-    "maxLevel": 30,
-    "costs": [
-      { "level": 1, "wood": 0, "food": 0, "steel": 0, "zinc": 0, "time": 0 },
-      { "level": 2, "wood": 400, "food": 400, "steel": 0, "zinc": 0, "time": 45 },
-      { "level": 3, "wood": 800, "food": 800, "steel": 400, "zinc": 0, "time": 120 },
-      { "level": 4, "wood": 1600, "food": 1600, "steel": 800, "zinc": 0, "time": 240 },
-      { "level": 5, "wood": 3200, "food": 3200, "steel": 1600, "zinc": 400, "time": 480 },
-      { "level": 6, "wood": 6400, "food": 6400, "steel": 3200, "zinc": 800, "time": 960 },
-      { "level": 7, "wood": 12800, "food": 12800, "steel": 6400, "zinc": 1600, "time": 1920 },
-      { "level": 8, "wood": 25600, "food": 25600, "steel": 12800, "zinc": 3200, "time": 3840 },
-      { "level": 9, "wood": 51200, "food": 51200, "steel": 25600, "zinc": 6400, "time": 7680 },
-      { "level": 10, "wood": 102400, "food": 102400, "steel": 51200, "zinc": 12800, "time": 15360 }
-    ]
-  },
-  {
-    "id": "hospital",
-    "name": {
-      "de": "Krankenhaus",
-      "en": "Hospital"
-    },
-    "maxLevel": 30,
-    "costs": [
-      { "level": 1, "wood": 0, "food": 0, "steel": 0, "zinc": 0, "time": 0 },
-      { "level": 2, "wood": 450, "food": 450, "steel": 0, "zinc": 0, "time": 50 },
-      { "level": 3, "wood": 900, "food": 900, "steel": 450, "zinc": 0, "time": 150 },
-      { "level": 4, "wood": 1800, "food": 1800, "steel": 900, "zinc": 0, "time": 300 },
-      { "level": 5, "wood": 3600, "food": 3600, "steel": 1800, "zinc": 450, "time": 600 },
-      { "level": 6, "wood": 7200, "food": 7200, "steel": 3600, "zinc": 900, "time": 1200 },
-      { "level": 7, "wood": 14400, "food": 14400, "steel": 7200, "zinc": 1800, "time": 2400 },
-      { "level": 8, "wood": 28800, "food": 28800, "steel": 14400, "zinc": 3600, "time": 4800 },
-      { "level": 9, "wood": 57600, "food": 57600, "steel": 28800, "zinc": 7200, "time": 9600 },
-      { "level": 10, "wood": 115200, "food": 115200, "steel": 57600, "zinc": 14400, "time": 19200 }
+      { "level": 1, "wood": 12000, "food": 0, "steel": 0, "zinc": 0, "time": 0, "requiredBuildings": "None", "heroLevelCap": 5, "power": 144 },
+      { "level": 2, "wood": 0, "food": 10300, "steel": 0, "zinc": 0, "time": 0, "requiredBuildings": "None", "heroLevelCap": 10, "power": 1467 },
+      { "level": 3, "wood": 0, "food": 15500, "steel": 0, "zinc": 0, "time": 0, "requiredBuildings": "None", "heroLevelCap": 15, "power": 3088 },
+      { "level": 4, "wood": 0, "food": 23300, "steel": 0, "zinc": 0, "time": 0, "requiredBuildings": "City Walls Lvl 3", "heroLevelCap": 20, "power": 5073 },
+      { "level": 5, "wood": 0, "food": 46600, "steel": 0, "zinc": 0, "time": 0, "requiredBuildings": "Radar Lvl 1, Assaulter Camp Lvl 4", "heroLevelCap": 25, "power": 7881 },
+      { "level": 6, "wood": 139900, "food": 139900, "steel": 0, "zinc": 27400, "time": 0, "requiredBuildings": "Military Center Lvl 5", "heroLevelCap": 30, "power": 15299 },
+      { "level": 7, "wood": 279900, "food": 279900, "steel": 0, "zinc": 54800, "time": 0, "requiredBuildings": "Alliance Center Lvl 6, Training Ground Lvl 6", "heroLevelCap": 35, "power": 25789 },
+      { "level": 8, "wood": 447900, "food": 447900, "steel": 0, "zinc": 87800, "time": 0, "requiredBuildings": "Laboratory Lvl 1, Assaulter Camp Lvl 7", "heroLevelCap": 40, "power": 39060 },
+      { "level": 9, "wood": 716600, "food": 716600, "steel": 0, "zinc": 140000, "time": 0, "requiredBuildings": "Laboratory Lvl 8, Emergency Hospital Lvl 8", "heroLevelCap": 45, "power": 55842 },
+      { "level": 10, "wood": 859900, "food": 859900, "steel": 0, "zinc": 168000, "time": 0, "requiredBuildings": "Laboratory Lvl 9, Shooter Camp Lvl 9", "heroLevelCap": 50, "power": 74226 },
+      { "level": 11, "wood": 2100000, "food": 2100000, "steel": 0, "zinc": 421000, "time": 0, "requiredBuildings": "Laboratory Lvl 10, Rider Camp Lvl 10", "heroLevelCap": 55, "power": 103299 },
+      { "level": 12, "wood": 3600000, "food": 3600000, "steel": 0, "zinc": 716000, "time": 0, "requiredBuildings": "Laboratory Lvl 11, City Walls Lvl 11", "heroLevelCap": 60, "power": 141207 },
+      { "level": 13, "wood": 4000000, "food": 4000000, "steel": 0, "zinc": 788000, "time": 0, "requiredBuildings": "Laboratory Lvl 12, Alliance Center Lvl 12", "heroLevelCap": 65, "power": 180967 },
+      { "level": 14, "wood": 5600000, "food": 5600000, "steel": 0, "zinc": 1100000, "time": 0, "requiredBuildings": "Laboratory Lvl 13, Assaulter Camp Lvl 13", "heroLevelCap": 70, "power": 228002 },
+      { "level": 15, "wood": 7800000, "food": 7800000, "steel": 0, "zinc": 1500000, "time": 0, "requiredBuildings": "Laboratory Lvl 14, Shooter Camp Lvl 14", "heroLevelCap": 75, "power": 283654 },
+      { "level": 16, "wood": 14000000, "food": 14000000, "steel": 0, "zinc": 0, "time": 0, "requiredBuildings": "Laboratory Lvl 15, Rider Camp Lvl 15", "heroLevelCap": 80, "power": 357920 },
+      { "level": 17, "wood": 0, "food": 0, "steel": 0, "zinc": 0, "time": 0, "requiredBuildings": "Laboratory Lvl 16, City Walls Lvl 16", "heroLevelCap": 85, "power": 442588 },
+      { "level": 18, "wood": 31900000, "food": 31900000, "steel": 0, "zinc": 6200000, "time": 0, "requiredBuildings": "Laboratory Lvl 17, Alliance Center Lvl 17", "heroLevelCap": 90, "power": 554597 },
+      { "level": 19, "wood": 38200000, "food": 38200000, "steel": 0, "zinc": 7500000, "time": 0, "requiredBuildings": "Laboratory Lvl 18, Assaulter Camp Lvl 18", "heroLevelCap": 95, "power": 677297 },
+      { "level": 20, "wood": 68900000, "food": 68900000, "steel": 0, "zinc": 13500000, "time": 0, "requiredBuildings": "Laboratory Lvl 19, Shooter Camp Lvl 19", "heroLevelCap": 100, "power": 841916 },
+      { "level": 21, "wood": 96400000, "food": 96400000, "steel": 0, "zinc": 18900000, "time": 0, "requiredBuildings": "Laboratory Lvl 20, Rider Camp Lvl 20", "heroLevelCap": 105, "power": 1036696 },
+      { "level": 22, "wood": 125400000, "food": 125400000, "steel": 0, "zinc": 24600000, "time": 0, "requiredBuildings": "Laboratory Lvl 21, City Walls Lvl 21", "heroLevelCap": 110, "power": 1258799 },
+      { "level": 23, "wood": 156800000, "food": 156800000, "steel": 0, "zinc": 30700000, "time": 0, "requiredBuildings": "Laboratory Lvl 22, Alliance Center Lvl 22", "heroLevelCap": 115, "power": 1507089 },
+      { "level": 24, "wood": 196000000, "food": 196000000, "steel": 0, "zinc": 38400000, "time": 0, "requiredBuildings": "Laboratory Lvl 23, Assaulter Camp Lvl 23", "heroLevelCap": 120, "power": 1784698 },
+      { "level": 25, "wood": 333200000, "food": 333200000, "steel": 0, "zinc": 65300000, "time": 0, "requiredBuildings": "Laboratory Lvl 24, Shooter Camp Lvl 24", "heroLevelCap": 125, "power": 2146664 },
+      { "level": 26, "wood": 466500000, "food": 466500000, "steel": 0, "zinc": 91400000, "time": 0, "requiredBuildings": "Laboratory Lvl 25, Rider Camp Lvl 25", "heroLevelCap": 130, "power": 2574942 },
+      { "level": 27, "wood": 606400000, "food": 606400000, "steel": 0, "zinc": 119000000, "time": 0, "requiredBuildings": "Laboratory Lvl 26, City Walls Lvl 26", "heroLevelCap": 135, "power": 3063306 },
+      { "level": 28, "wood": 806500000, "food": 806500000, "steel": 0, "zinc": 157700000, "time": 0, "requiredBuildings": "Laboratory Lvl 27, Alliance Center Lvl 27", "heroLevelCap": 140, "power": 3641000 },
+      { "level": 29, "wood": 1100000000, "food": 1100000000, "steel": 0, "zinc": 221300000, "time": 0, "requiredBuildings": "Laboratory Lvl 28, Assaulter Camp Lvl 28", "heroLevelCap": 145, "power": 4324660 },
+      { "level": 30, "wood": 1400000000, "food": 1400000000, "steel": 0, "zinc": 277100000, "time": 0, "requiredBuildings": "Laboratory Lvl 29, Shooter Camp Lvl 29", "heroLevelCap": 150, "power": 5133543 },
+      { "level": 31, "wood": 1600000000, "food": 1600000000, "steel": 0, "zinc": 510000000, "time": 0, "requiredBuildings": "Laboratory Lvl 30, Rider Camp Lvl 30", "heroLevelCap": 155, "power": 5888819 },
+      { "level": 32, "wood": 1700000000, "food": 1700000000, "steel": 0, "zinc": 560000000, "time": 0, "requiredBuildings": "Walls Lvl 31", "heroLevelCap": 160, "power": 6716270 },
+      { "level": 33, "wood": 1900000000, "food": 1900000000, "steel": 0, "zinc": 620000000, "time": 0, "requiredBuildings": "Alliance Center Lvl 32", "heroLevelCap": 165, "power": 7622701 },
+      { "level": 34, "wood": 2000000000, "food": 2000000000, "steel": 0, "zinc": 650000000, "time": 0, "requiredBuildings": "Assaulter Camp Lvl 33", "heroLevelCap": 170, "power": 8594753 },
+      { "level": 35, "wood": 2100000000, "food": 2100000000, "steel": 0, "zinc": 680000000, "time": 0, "requiredBuildings": "Shooter Camp Lvl 34", "heroLevelCap": 175, "power": 9637256 }
     ]
   }
 ]

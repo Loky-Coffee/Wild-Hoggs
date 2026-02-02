@@ -28,11 +28,11 @@ const t = useTranslations(lang);
       <span class="available">{lang === 'de' ? 'Verfügbar →' : 'Available →'}</span>
     </a>
 
-    <div class="tool-card disabled">
+    <a href={`/${lang}/tools/building`} class="tool-card">
       <h2>{t('tools.building.title')}</h2>
       <p>{t('tools.building.description')}</p>
-      <span class="coming-soon">{lang === 'de' ? 'Demnächst verfügbar' : 'Coming Soon'}</span>
-    </div>
+      <span class="available">{lang === 'de' ? 'Verfügbar →' : 'Available →'}</span>
+    </a>
 
     <a href={`/${lang}/tools/research`} class="tool-card">
       <h2>{t('tools.research.title')}</h2>

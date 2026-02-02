@@ -1,0 +1,226 @@
+.roses-container {
+  width: 100%;
+}
+
+.roses-empty {
+  text-align: center;
+  padding: 3rem;
+  color: rgba(255, 255, 255, 0.5);
+  background: rgba(128, 128, 128, 0.1);
+  border: 1px solid rgba(128, 128, 128, 0.2);
+  border-radius: 8px;
+}
+
+.roses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.rose-card {
+  background: linear-gradient(135deg, rgba(255, 20, 147, 0.05) 0%, rgba(255, 105, 180, 0.05) 100%);
+  border: 2px solid rgba(255, 105, 180, 0.3);
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.rose-card.active {
+  background: linear-gradient(135deg, rgba(255, 20, 147, 0.15) 0%, rgba(255, 105, 180, 0.15) 100%);
+  border-color: rgba(255, 105, 180, 0.6);
+  box-shadow: 0 8px 20px rgba(255, 105, 180, 0.4);
+}
+
+.rose-card.inactive {
+  opacity: 0.4;
+  background: rgba(128, 128, 128, 0.05);
+  border-color: rgba(128, 128, 128, 0.2);
+}
+
+.rose-card.active::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 105, 180, 0.2) 0%, transparent 70%);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.rose-card.active:hover {
+  border-color: rgba(255, 105, 180, 0.8);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(255, 105, 180, 0.5);
+}
+
+.rose-card.inactive:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.rose-icon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.rose-card.active .rose-icon {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-10px) scale(1.1);
+  }
+}
+
+.active-badge {
+  background: linear-gradient(135deg, #52be80 0%, #27ae60 100%);
+  color: white;
+  padding: 0.3rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 2px 8px rgba(39, 174, 96, 0.4);
+}
+
+.inactive-badge {
+  background: rgba(128, 128, 128, 0.3);
+  color: rgba(255, 255, 255, 0.5);
+  padding: 0.3rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  display: inline-block;
+}
+
+.rose-name {
+  color: #ff69b4;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.rose-card.inactive .rose-name {
+  color: rgba(255, 105, 180, 0.4);
+}
+
+.rose-buff {
+  background: rgba(255, 105, 180, 0.2);
+  color: #ff1493;
+  padding: 0.4rem 0.8rem;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  display: inline-block;
+  border: 1px solid rgba(255, 105, 180, 0.4);
+}
+
+.rose-card.inactive .rose-buff {
+  background: rgba(128, 128, 128, 0.1);
+  color: rgba(255, 255, 255, 0.3);
+  border-color: rgba(128, 128, 128, 0.2);
+}
+
+.rose-duration {
+  color: rgba(255, 105, 180, 0.7);
+  font-size: 0.75rem;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.rose-card.inactive .rose-duration {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.rose-description {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.85rem;
+  line-height: 1.4;
+  margin-bottom: 0.75rem;
+}
+
+.rose-card.inactive .rose-description {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.rose-countdown {
+  background: rgba(39, 174, 96, 0.1);
+  border: 1px solid rgba(39, 174, 96, 0.3);
+  border-radius: 6px;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.countdown-label {
+  color: #52be80;
+  font-size: 0.7rem;
+  font-weight: 600;
+  margin-bottom: 0.15rem;
+}
+
+.countdown-timer {
+  color: #27ae60;
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+}
+
+@media (max-width: 768px) {
+  .roses-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  .rose-card {
+    padding: 0.75rem;
+  }
+
+  .rose-icon {
+    font-size: 1.75rem;
+  }
+
+  .rose-name {
+    font-size: 0.9rem;
+  }
+
+  .rose-buff {
+    font-size: 0.85rem;
+    padding: 0.3rem 0.6rem;
+  }
+
+  .rose-description {
+    font-size: 0.75rem;
+  }
+
+  .countdown-timer {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .roses-grid {
+    grid-template-columns: 1fr;
+  }
+}

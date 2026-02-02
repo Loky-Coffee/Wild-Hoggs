@@ -1,0 +1,289 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import { useTranslations } from '../i18n/utils';
+import RewardCodes from '../components/RewardCodes';
+import WeeklyRoses from '../components/WeeklyRoses';
+import { ACTIVE_LUCKY_NUMBER } from '../config/bonus';
+
+const t = useTranslations('de');
+
+// Fetch codes from levelgeeks.org at build time
+const response = await fetch('https://levelgeeks.org/last-z-survival-shooter-codes/');
+const html = await response.text();
+
+// Extract codes from wp-block-list class
+const codes = [];
+
+// Find all wp-block-list sections
+const listMatches = html.matchAll(/<ul class="wp-block-list">(.*?)<\/ul>/gs);
+
+for (const listMatch of listMatches) {
+  const listContent = listMatch[1];
+
+  // Extract all <li> items
+  const liMatches = listContent.matchAll(/<li>(.*?)<\/li>/gs);
+
+  for (const liMatch of liMatches) {
+    let content = liMatch[1];
+
+    // Remove HTML tags
+    content = content.replace(/<[^>]+>/g, '');
+
+    // Decode HTML entities
+    content = content.replace(/&nbsp;/g, ' ')
+                     .replace(/&amp;/g, '&')
+                     .replace(/&lt;/g, '<')
+                     .replace(/&gt;/g, '>')
+                     .replace(/&#8211;/g, '–')
+                     .replace(/&#8220;/g, '"')
+                     .replace(/&#8221;/g, '"');
+
+    // Parse code line: "CODE – description"
+    const codeMatch = content.match(/^([A-Z0-9]+)\s*[–\-]\s*(.+)$/);
+
+    if (codeMatch) {
+      const code = codeMatch[1].trim();
+      const description = codeMatch[2].trim();
+
+      // Check if it mentions expiry/validity
+      const validMatch = description.match(/Valid\s+(?:until|till)\s+([^)]+)/i);
+      const isExpired = description.toLowerCase().includes('expired');
+
+      codes.push({
+        code: code,
+        description: description,
+        validUntil: validMatch ? validMatch[1].trim() : null,
+        isActive: !isExpired
+      });
+    }
+  }
+}
+
+// Alle 10 Lucky Rose Buffs
+// Die aktive Rose wird in src/config/bonus.ts eingestellt
+const allRoses = [
+  {
+    luckyNumber: 1,
+    name: 'Lucky Rose #1',
+    buff: '+20% Construction Speed',
+    duration: '2h',
+    description: 'Erhöht Baugeschwindigkeit um 20% für 2 Stunden',
+  },
+  {
+    luckyNumber: 2,
+    name: 'Lucky Rose #2',
+    buff: '+15% Troop Load',
+    duration: '24h',
+    description: 'Erhöht Truppentransportkapazität um 15% für 24 Stunden',
+  },
+  {
+    luckyNumber: 3,
+    name: 'Lucky Rose #3',
+    buff: '+30% Gathering Speed',
+    duration: '24h',
+    description: 'Erhöht Sammelgeschwindigkeit um 30% für 24 Stunden',
+  },
+  {
+    luckyNumber: 4,
+    name: 'Lucky Rose #4',
+    buff: 'Allied Assist +120s',
+    duration: '24h',
+    description: 'Allianz-Hilfe-Dauer +120 Sekunden für 24 Stunden',
+  },
+  {
+    luckyNumber: 5,
+    name: 'Lucky Rose #5',
+    buff: '+20% Research Speed',
+    duration: '2h',
+    description: 'Erhöht Forschungsgeschwindigkeit um 20% für 2 Stunden',
+  },
+  {
+    luckyNumber: 6,
+    name: 'Lucky Rose #6',
+    buff: 'Allied Assist +120s',
+    duration: '24h',
+    description: 'Allianz-Hilfe-Dauer +120 Sekunden für 24 Stunden (Double Help Time)',
+  },
+  {
+    luckyNumber: 7,
+    name: 'Lucky Rose #7',
+    buff: '+10% Troop ATK',
+    duration: '2h',
+    description: 'Erhöht Truppenangriff um 10% für 2 Stunden',
+  },
+  {
+    luckyNumber: 8,
+    name: 'Lucky Rose #8',
+    buff: '+20% Construction Speed',
+    duration: '2h',
+    description: 'Erhöht Baugeschwindigkeit um 20% für 2 Stunden',
+  },
+  {
+    luckyNumber: 9,
+    name: 'Lucky Rose #9',
+    buff: '+20% Research Speed',
+    duration: '2h',
+    description: 'Erhöht Forschungsgeschwindigkeit um 20% für 2 Stunden',
+  },
+  {
+    luckyNumber: 10,
+    name: 'Lucky Rose #10 (Gold)',
+    buff: '+10% Troop ATK',
+    duration: '2h',
+    description: 'Erhöht Truppenangriff um 10% für 2 Stunden',
+  },
+];
+
+// Markiere die aktive Rose
+const roses = allRoses.map(rose => ({
+  ...rose,
+  isActive: rose.luckyNumber === ACTIVE_LUCKY_NUMBER
+}));
+// ============================================
+---
+
+<PageLayout title={`${t('bonus.title')} - Wild Hoggs`} description={t('bonus.codes.description')}>
+  <div class="page-header">
+    <h1>{t('bonus.title')}</h1>
+    <p class="subtitle">{t('bonus.codes.description')}</p>
+  </div>
+
+  <div class="bonus-container">
+    <!-- Reward Codes Section -->
+    <section class="bonus-section">
+      <div class="section-header">
+        <h2>🎁 {t('bonus.codes.title')}</h2>
+      </div>
+
+      <div class="howto-card">
+        <h3>{t('bonus.codes.howto')}</h3>
+        <p>{t('bonus.codes.howto.text')}</p>
+        <a href="https://store.last-z.com" target="_blank" rel="noopener noreferrer" class="redemption-link">
+          store.last-z.com →
+        </a>
+      </div>
+
+      <RewardCodes lang="de" codes={codes} client:load />
+    </section>
+
+    <!-- Weekly Roses Section -->
+    <section class="bonus-section">
+      <div class="section-header">
+        <h2>🌹 {t('bonus.roses.title')}</h2>
+      </div>
+
+      <WeeklyRoses lang="de" roses={roses} client:load />
+    </section>
+  </div>
+</PageLayout>
+
+<style>
+  .page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    color: #ffa500;
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .bonus-container {
+    max-width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    padding: 0 2rem;
+  }
+
+  .bonus-section {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 165, 0, 0.2);
+    border-radius: 12px;
+    padding: 2rem;
+  }
+
+  .section-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .section-header h2 {
+    color: #ffa500;
+    font-size: 2rem;
+    margin: 0;
+  }
+
+  .howto-card {
+    background: rgba(255, 165, 0, 0.05);
+    border: 1px solid rgba(255, 165, 0, 0.2);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .howto-card h3 {
+    color: #ffa500;
+    font-size: 1.2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .howto-card p {
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .redemption-link {
+    display: inline-block;
+    color: #52be80;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    background: rgba(39, 174, 96, 0.1);
+    border: 1px solid rgba(39, 174, 96, 0.3);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+  }
+
+  .redemption-link:hover {
+    background: rgba(39, 174, 96, 0.2);
+    border-color: rgba(39, 174, 96, 0.5);
+    transform: translateX(4px);
+  }
+
+  .coming-soon-card {
+    background: rgba(128, 128, 128, 0.1);
+    border: 1px solid rgba(128, 128, 128, 0.2);
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .coming-soon-card p {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1.1rem;
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 2rem;
+    }
+
+    .section-header h2 {
+      font-size: 1.5rem;
+    }
+
+    .bonus-section {
+      padding: 1.5rem;
+    }
+  }
+</style>
+</PageLayout>
