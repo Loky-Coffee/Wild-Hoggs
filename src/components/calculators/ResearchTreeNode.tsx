@@ -1,0 +1,187 @@
+import { memo } from 'preact/compat';
+import type { Technology } from '../../schemas/research';
+
+interface ResearchTreeNodeProps {
+  tech: Technology;
+  x: number;
+  y: number;
+  selectedLevel: number;
+  maxAvailable: number;
+  unlocked: boolean;
+  formatNumber: (num: number) => string;
+  onLevelChange: (techId: string, level: number) => void;
+  onUnlockClick: (tech: Technology) => void;
+  lang: 'de' | 'en';
+}
+
+const NODE_WIDTH = 220;
+const NODE_HEIGHT = 180;
+
+function ResearchTreeNode({
+  tech,
+  x,
+  y,
+  selectedLevel,
+  maxAvailable,
+  unlocked,
+  formatNumber,
+  onLevelChange,
+  onUnlockClick,
+  lang
+}: ResearchTreeNodeProps) {
+  const totalBadges = tech.badgeCosts.slice(0, selectedLevel).reduce((sum, cost) => sum + cost, 0);
+  const maxBadges = tech.badgeCosts.reduce((a, b) => a + b, 0);
+  const isActive = selectedLevel > 0;
+
+  const levelText = lang === 'de' ? 'Level' : 'Level';
+
+  return (
+    <g transform={`translate(${x}, ${y})`}>
+      {!unlocked && (
+        <title>{lang === 'de' ? 'Klicken um alle Prerequisites freizuschalten' : 'Click to unlock all prerequisites'}</title>
+      )}
+
+      {/* Node background */}
+      <rect
+        x={-NODE_WIDTH / 2}
+        y={-NODE_HEIGHT / 2}
+        width={NODE_WIDTH}
+        height={NODE_HEIGHT}
+        rx={8}
+        fill={isActive ? 'rgba(255, 165, 0, 0.15)' : 'rgba(255, 255, 255, 0.05)'}
+        stroke={isActive ? '#ffa500' : unlocked ? 'rgba(255, 165, 0, 0.3)' : 'rgba(255, 255, 255, 0.1)'}
+        strokeWidth={2}
+        opacity={unlocked ? 1 : 0.5}
+      />
+
+      {/* Unlock button in top-right corner */}
+      {!unlocked && (
+        <g
+          onClick={() => onUnlockClick(tech)}
+          style={{ cursor: 'pointer' }}
+        >
+          <rect
+            x={NODE_WIDTH / 2 - 45}
+            y={-NODE_HEIGHT / 2 + 5}
+            width={40}
+            height={35}
+            rx={6}
+            fill="rgba(255, 165, 0, 0.2)"
+            stroke="rgba(255, 165, 0, 0.5)"
+            strokeWidth={1}
+          />
+          <text
+            x={NODE_WIDTH / 2 - 25}
+            y={-NODE_HEIGHT / 2 + 20}
+            textAnchor="middle"
+            fontSize="16"
+          >
+            🔒
+          </text>
+          <text
+            x={NODE_WIDTH / 2 - 25}
+            y={-NODE_HEIGHT / 2 + 33}
+            textAnchor="middle"
+            fontSize="7"
+            fill="rgba(255, 165, 0, 0.9)"
+            fontWeight="600"
+          >
+            {lang === 'de' ? 'Unlock' : 'Unlock'}
+          </text>
+        </g>
+      )}
+
+      {/* Technology icon */}
+      {tech.icon && (
+        <image
+          href={tech.icon}
+          x={-25}
+          y={-NODE_HEIGHT / 2 + 15}
+          width={50}
+          height={50}
+          opacity={unlocked ? 1 : 0.3}
+        />
+      )}
+
+      {/* Technology name */}
+      <text
+        x={0}
+        y={-NODE_HEIGHT / 2 + 80}
+        textAnchor="middle"
+        fontSize="13"
+        fill={unlocked ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.4)'}
+        fontWeight="600"
+      >
+        {tech.name[lang].length > 20
+          ? tech.name[lang].substring(0, 18) + '...'
+          : tech.name[lang]}
+      </text>
+
+      {/* Level display */}
+      <text
+        x={0}
+        y={-NODE_HEIGHT / 2 + 100}
+        textAnchor="middle"
+        fontSize="12"
+        fill={isActive ? '#ffa500' : 'rgba(255, 255, 255, 0.6)'}
+        fontWeight="600"
+      >
+        {levelText}: {selectedLevel} / {tech.maxLevel}
+      </text>
+
+      {/* Slider embedded in node */}
+      <foreignObject
+        x={-NODE_WIDTH / 2 + 15}
+        y={-NODE_HEIGHT / 2 + 110}
+        width={NODE_WIDTH - 30}
+        height={40}
+      >
+        <div style={{ width: '100%', height: '100%' }}>
+          <input
+            type="range"
+            min="0"
+            max={maxAvailable}
+            value={selectedLevel}
+            disabled={!unlocked}
+            onChange={(e) => onLevelChange(tech.id, parseInt((e.target as HTMLInputElement).value, 10))}
+            style={{
+              width: '100%',
+              height: '8px',
+              cursor: unlocked ? 'pointer' : 'not-allowed',
+              opacity: unlocked ? 1 : 0.3,
+              accentColor: '#ffa500'
+            }}
+          />
+        </div>
+      </foreignObject>
+
+      {/* Badge cost */}
+      <text
+        x={0}
+        y={NODE_HEIGHT / 2 - 15}
+        textAnchor="middle"
+        fontSize="11"
+        fill={isActive ? '#ffa500' : 'rgba(255, 255, 255, 0.5)'}
+        fontWeight="600"
+      >
+        {isActive
+          ? `${formatNumber(totalBadges)} 🎖️`
+          : `Max: ${formatNumber(maxBadges)} 🎖️`
+        }
+      </text>
+    </g>
+  );
+}
+
+// Memoize to prevent unnecessary re-renders
+export default memo(ResearchTreeNode, (prevProps, nextProps) => {
+  return (
+    prevProps.tech.id === nextProps.tech.id &&
+    prevProps.selectedLevel === nextProps.selectedLevel &&
+    prevProps.maxAvailable === nextProps.maxAvailable &&
+    prevProps.unlocked === nextProps.unlocked &&
+    prevProps.x === nextProps.x &&
+    prevProps.y === nextProps.y &&
+    prevProps.lang === nextProps.lang
+  );
+});

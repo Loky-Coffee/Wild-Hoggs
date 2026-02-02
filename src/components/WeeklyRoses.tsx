@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'preact/hooks';
+import { useState } from 'preact/hooks';
 import { useTranslation } from '../hooks/useTranslation';
+import { useGlobalTimer } from '../hooks/useGlobalTimer';
 import './WeeklyRoses.css';
 
 interface Rose {
@@ -37,34 +38,27 @@ export default function WeeklyRoses({ lang, roses }: WeeklyRosesProps) {
   });
 
   // Calculate time until next Sunday 23:59:59 in Apocalypse Time (UTC-2)
-  useEffect(() => {
-    const updateCountdown = () => {
-      // Get current time in UTC-2 (Apocalypse Time)
-      const now = new Date();
-      const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000);
-      const apocalypseTime = new Date(utcTime + (-2 * 3600000)); // UTC-2
+  useGlobalTimer(() => {
+    // Get current time in UTC-2 (Apocalypse Time)
+    const now = new Date();
+    const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000);
+    const apocalypseTime = new Date(utcTime + (-2 * 3600000)); // UTC-2
 
-      // Calculate next Sunday 23:59:59 in Apocalypse Time
-      const nextSunday = new Date(apocalypseTime);
-      const daysUntilSunday = 7 - apocalypseTime.getDay();
-      nextSunday.setDate(apocalypseTime.getDate() + (daysUntilSunday === 0 ? 7 : daysUntilSunday));
-      nextSunday.setHours(23, 59, 59, 999);
+    // Calculate next Sunday 23:59:59 in Apocalypse Time
+    const nextSunday = new Date(apocalypseTime);
+    const daysUntilSunday = 7 - apocalypseTime.getDay();
+    nextSunday.setDate(apocalypseTime.getDate() + (daysUntilSunday === 0 ? 7 : daysUntilSunday));
+    nextSunday.setHours(23, 59, 59, 999);
 
-      const diff = nextSunday.getTime() - apocalypseTime.getTime();
+    const diff = nextSunday.getTime() - apocalypseTime.getTime();
 
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-      setTimeLeft(`${days}d ${hours}h ${minutes}m ${seconds}s`);
-    };
-
-    updateCountdown();
-    const interval = setInterval(updateCountdown, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
+    setTimeLeft(`${days}d ${hours}h ${minutes}m ${seconds}s`);
+  });
 
   if (roses.length === 0) {
     return (
