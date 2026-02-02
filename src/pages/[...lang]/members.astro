@@ -19,7 +19,7 @@ const t = useTranslations(lang);
   <div class="page-header">
     <h1>{t('members.title')}</h1>
     <p class="subtitle">
-      {lang === 'de' ? `${members.length} Mitglieder` : `${members.length} Members`}
+      {t('members.count').replace('{count}', members.length.toString())}
     </p>
   </div>
 

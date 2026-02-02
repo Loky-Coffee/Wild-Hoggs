@@ -49,7 +49,7 @@ const categories = [
 <PageLayout title={`${t('tools.research.title')} - Wild Hoggs`} description={t('tools.research.description')}>
   <div class="page-header">
     <h1>{t('tools.research.title')}</h1>
-    <p class="subtitle">{lang === 'de' ? 'Last-Z Forschungs-Kategorien' : 'Last-Z Research Categories'}</p>
+    <p class="subtitle">{t('research.subtitle')}</p>
   </div>
 
   <div class="categories-grid">
@@ -77,13 +77,13 @@ const categories = [
             </div>
             <div class="stat">
               <span class="stat-value">{category.nodeCount}</span>
-              <span class="stat-label">{lang === 'de' ? 'Technologien' : 'Technologies'}</span>
+              <span class="stat-label">{t('research.technologies')}</span>
             </div>
           </div>
           {isEnabled ? (
-            <span class="available">{lang === 'de' ? 'Verfügbar →' : 'Available →'}</span>
+            <span class="available">{t('research.available')}</span>
           ) : (
-            <span class="coming-soon">{lang === 'de' ? 'Demnächst verfügbar' : 'Coming Soon'}</span>
+            <span class="coming-soon">{t('research.comingSoon')}</span>
           )}
         </CardTag>
       );

@@ -17,7 +17,7 @@ const t = useTranslations(lang);
   <div class="page-header">
     <h1>{t('tools.title')}</h1>
     <p class="subtitle">
-      {lang === 'de' ? 'Hilfreiche Rechner für Last-Z' : 'Helpful calculators for Last-Z'}
+      {t('tools.subtitle')}
     </p>
   </div>
 
@@ -25,19 +25,19 @@ const t = useTranslations(lang);
     <a href={`/${lang}/tools/hero-exp`} class="tool-card">
       <h2>{t('tools.hero.title')}</h2>
       <p>{t('tools.hero.description')}</p>
-      <span class="available">{lang === 'de' ? 'Verfügbar →' : 'Available →'}</span>
+      <span class="available">{t('tools.available')}</span>
     </a>
 
     <a href={`/${lang}/tools/building`} class="tool-card">
       <h2>{t('tools.building.title')}</h2>
       <p>{t('tools.building.description')}</p>
-      <span class="available">{lang === 'de' ? 'Verfügbar →' : 'Available →'}</span>
+      <span class="available">{t('tools.available')}</span>
     </a>
 
     <a href={`/${lang}/tools/research`} class="tool-card">
       <h2>{t('tools.research.title')}</h2>
       <p>{t('tools.research.description')}</p>
-      <span class="available">{lang === 'de' ? 'Verfügbar →' : 'Available →'}</span>
+      <span class="available">{t('tools.available')}</span>
     </a>
   </div>
 </PageLayout>

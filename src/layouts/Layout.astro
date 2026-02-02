@@ -1,5 +1,6 @@
 ---
 import { getLangFromUrl } from '../i18n/utils';
+import '../styles/design-tokens.css';
 
 interface Props {
   title: string;
@@ -49,8 +50,8 @@ const enURL = lang === 'en'
 
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d1b00 100%);
-    color: #ffffff;
+    background: linear-gradient(135deg, var(--color-bg-gradient-start) 0%, var(--color-bg-gradient-end) 100%);
+    color: var(--color-text);
     min-height: 100vh;
   }
 </style>
