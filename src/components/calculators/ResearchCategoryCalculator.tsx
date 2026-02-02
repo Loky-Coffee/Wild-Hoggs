@@ -2,16 +2,6 @@ import { useState, useMemo } from 'preact/hooks';
 import ResearchTreeView from './ResearchTreeView';
 import './Calculator.css';
 
-// Import all research category data
-import allianceRecognition from '../../data/research/alliance-recognition.json';
-import unitSpecialTraining from '../../data/research/unit-special-training.json';
-import fullyArmedAlliance from '../../data/research/fully-armed-alliance.json';
-import field from '../../data/research/field.json';
-import heroTraining from '../../data/research/hero-training.json';
-import militaryStrategies from '../../data/research/military-strategies.json';
-import peaceShield from '../../data/research/peace-shield.json';
-import siegeToSeize from '../../data/research/siege-to-seize.json';
-
 interface Prerequisite {
   id: string;
   requiredLevel?: number;
@@ -42,28 +32,14 @@ interface ResearchTree {
 }
 
 interface ResearchCategoryCalculatorProps {
-  categoryId: string;
+  categoryData: ResearchTree;
   lang: 'de' | 'en';
 }
 
-// Map category IDs to imported data
-const researchDataMap: Record<string, ResearchTree> = {
-  alliance_recognition: allianceRecognition as ResearchTree,
-  unit_special_training: unitSpecialTraining as ResearchTree,
-  fully_armed_alliance: fullyArmedAlliance as ResearchTree,
-  field: field as ResearchTree,
-  hero_training: heroTraining as ResearchTree,
-  military_strategies: militaryStrategies as ResearchTree,
-  peace_shield: peaceShield as ResearchTree,
-  siege_to_seize: siegeToSeize as ResearchTree,
-};
-
-export default function ResearchCategoryCalculator({ categoryId, lang }: ResearchCategoryCalculatorProps) {
+export default function ResearchCategoryCalculator({ categoryData, lang }: ResearchCategoryCalculatorProps) {
   const [selectedTechnologies, setSelectedTechnologies] = useState<Map<string, number>>(new Map());
 
-  const category = useMemo(() => {
-    return researchDataMap[categoryId];
-  }, [categoryId]);
+  const category = categoryData;
 
   const t = (key: string) => {
     const translations: Record<string, Record<string, string>> = {

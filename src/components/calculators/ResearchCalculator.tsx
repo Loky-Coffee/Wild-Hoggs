@@ -90,28 +90,38 @@ export default function ResearchCalculator({ lang }: ResearchCalculatorProps) {
     setSelectedTechnologies(newSelected);
   };
 
+  // Create O(1) lookup map for technologies
+  const techLookup = useMemo(() => {
+    const map = new Map<string, { tree: ResearchTree; tech: Technology }>();
+    researchTrees.forEach(tree => {
+      tree.technologies.forEach(tech => {
+        map.set(tech.id, { tree, tech });
+      });
+    });
+    return map;
+  }, [researchTrees]);
+
   const calculatedResults = useMemo(() => {
     let totalBadges = 0;
     let selectedCount = 0;
 
     selectedTechnologies.forEach((level, techId) => {
-      researchTrees.forEach((tree) => {
-        const tech = tree.technologies.find((t) => t.id === techId);
-        if (tech && level > 0) {
-          // Sum badges from level 1 to selected level
-          for (let i = 0; i < level && i < tech.badges.length; i++) {
-            totalBadges += tech.badges[i];
-          }
-          selectedCount++;
+      const techInfo = techLookup.get(techId);
+      if (techInfo && level > 0) {
+        const { tech } = techInfo;
+        // Sum badges from level 1 to selected level
+        for (let i = 0; i < level && i < tech.badges.length; i++) {
+          totalBadges += tech.badges[i];
         }
-      });
+        selectedCount++;
+      }
     });
 
     return {
       totalBadges,
       selectedCount,
     };
-  }, [selectedTechnologies]);
+  }, [selectedTechnologies, techLookup]);
 
   const handleReset = () => {
     setSelectedTechnologies(new Map());
