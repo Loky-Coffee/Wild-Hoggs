@@ -41,23 +41,57 @@ export async function onRequest(context) {
     // Parse HTML für Reward Codes (Regex-basiert für Edge Runtime)
     const codes = [];
 
+    // Blacklist: Bekannte False-Positives ausschließen
+    const blacklist = new Set([
+      'VISIT', 'CONFIRM', 'TITLE', 'PUBLISHER', 'GENRE', 'PLATFORM',
+      'RELEASED', 'DEVELOPER', 'ESRB', 'CONTENT', 'RATING', 'PLATFORMS',
+      'NINTENDO', 'PLAYSTATION', 'XBOX', 'STEAM'
+    ]);
+
+    // Helper: Prüft ob Code ein valider Last-Z Reward Code ist
+    const isValidRewardCode = (code) => {
+      // Zu kurz oder zu lang
+      if (code.length < 4 || code.length > 20) return false;
+
+      // Blacklist-Check
+      if (blacklist.has(code.toUpperCase())) return false;
+
+      // Muss mindestens 1 Zahl enthalten
+      if (!/\d/.test(code)) return false;
+
+      // Valide Patterns:
+      // 1. Beginnt mit "LZ" (offizielles Last-Z Prefix)
+      if (code.startsWith('LZ')) return true;
+
+      // 2. Enthält Event-Keywords
+      const eventKeywords = ['CHRISTMAS', 'XMAS', 'DISCORD', 'HAPPY', 'COMMING', 'BYEBYE', 'NEWYEAR'];
+      if (eventKeywords.some(kw => code.includes(kw))) return true;
+
+      // 3. Jahr-Codes (z.B. "2026ISCOMMING", "BYEBYE2025")
+      if (/20\d{2}/.test(code) && code.length >= 8) return true;
+
+      // Alles andere ablehnen (vermeidet Produktnummern wie PMP, TAB, etc.)
+      return false;
+    };
+
     // Pattern 1: Codes in <code>, <strong>, <b> Tags
-    const tagPattern = /<(?:code|strong|b)[^>]*>([A-Z0-9]{4,15})<\/(?:code|strong|b)>/gi;
+    const tagPattern = /<(?:code|strong|b)[^>]*>([A-Z0-9]{4,20})<\/(?:code|strong|b)>/gi;
     let match;
     while ((match = tagPattern.exec(html)) !== null) {
-      codes.push({
-        code: match[1],
-        timestamp: Date.now()
-      });
+      const code = match[1];
+      if (isValidRewardCode(code)) {
+        codes.push({
+          code: code,
+          timestamp: Date.now()
+        });
+      }
     }
 
-    // Pattern 2: Standalone Codes (GROSSBUCHSTABEN + ZAHLEN)
-    // Suche nach Wörtern die wie Codes aussehen
-    const wordPattern = /\b([A-Z]{3,}[A-Z0-9]{1,12})\b/g;
+    // Pattern 2: Standalone Codes (nur Last-Z spezifische Patterns)
+    const wordPattern = /\b([A-Z]{2}[A-Z0-9]{2,18})\b/g;
     while ((match = wordPattern.exec(html)) !== null) {
       const potentialCode = match[1];
-      // Filtere nur valide Code-Muster (mindestens 1 Zahl)
-      if (/\d/.test(potentialCode) && potentialCode.length >= 4 && potentialCode.length <= 15) {
+      if (isValidRewardCode(potentialCode)) {
         codes.push({
           code: potentialCode,
           timestamp: Date.now()
