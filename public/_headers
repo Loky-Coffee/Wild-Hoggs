@@ -1,0 +1,29 @@
+# ============================================
+# WILD HOGGS - SECURITY & CACHING HEADERS
+# Cloudflare Pages Configuration
+# ============================================
+
+# Global Security Headers
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: accelerometer=(), camera=(), geolocation=(), microphone=(), payment=(), usb=()
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://levelgeeks.org; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+
+# Static Assets - Cache 1 Jahr (immutable)
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Images - Cache 30 Tage
+/images/*
+  Cache-Control: public, max-age=2592000
+
+# HTML Pages - Cache 1 Stunde mit Revalidation
+/*.html
+  Cache-Control: public, max-age=3600, must-revalidate
+
+# Root HTML - Cache 1 Stunde
+/
+  Cache-Control: public, max-age=3600, must-revalidate

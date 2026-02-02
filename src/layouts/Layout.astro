@@ -10,9 +10,14 @@ const { title, description = 'Wild Hoggs - Last-Z Guild' } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const alternateURL = lang === 'de'
-  ? new URL(`/en${Astro.url.pathname}`, Astro.site)
+
+// Construct alternate language URLs
+const deURL = lang === 'de'
+  ? canonicalURL
   : new URL(Astro.url.pathname.replace('/en', ''), Astro.site);
+const enURL = lang === 'en'
+  ? canonicalURL
+  : new URL(`/en${Astro.url.pathname}`, Astro.site);
 ---
 
 <!doctype html>
@@ -26,9 +31,9 @@ const alternateURL = lang === 'de'
     <title>{title}</title>
 
     <link rel="canonical" href={canonicalURL} />
-    <link rel="alternate" hreflang="de" href={lang === 'de' ? canonicalURL : alternateURL} />
-    <link rel="alternate" hreflang="en" href={lang === 'en' ? canonicalURL : alternateURL} />
-    <link rel="alternate" hreflang="x-default" href={lang === 'de' ? canonicalURL : alternateURL} />
+    <link rel="alternate" hreflang="de" href={deURL} />
+    <link rel="alternate" hreflang="en" href={enURL} />
+    <link rel="alternate" hreflang="x-default" href={enURL} />
   </head>
   <body>
     <slot />

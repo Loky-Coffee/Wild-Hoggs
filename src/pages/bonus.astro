@@ -7,56 +7,74 @@ import { ACTIVE_LUCKY_NUMBER } from '../config/bonus';
 
 const t = useTranslations('de');
 
-// Fetch codes from levelgeeks.org at build time
-const response = await fetch('https://levelgeeks.org/last-z-survival-shooter-codes/');
-const html = await response.text();
+// Fetch codes from levelgeeks.org at build time with error handling
+let codes = [];
 
-// Extract codes from wp-block-list class
-const codes = [];
+try {
+  // Set timeout to prevent hanging builds
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 5000);
 
-// Find all wp-block-list sections
-const listMatches = html.matchAll(/<ul class="wp-block-list">(.*?)<\/ul>/gs);
+  const response = await fetch('https://levelgeeks.org/last-z-survival-shooter-codes/', {
+    signal: controller.signal
+  });
 
-for (const listMatch of listMatches) {
-  const listContent = listMatch[1];
+  clearTimeout(timeoutId);
 
-  // Extract all <li> items
-  const liMatches = listContent.matchAll(/<li>(.*?)<\/li>/gs);
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+  }
 
-  for (const liMatch of liMatches) {
-    let content = liMatch[1];
+  const html = await response.text();
 
-    // Remove HTML tags
-    content = content.replace(/<[^>]+>/g, '');
+  // Find all wp-block-list sections
+  const listMatches = html.matchAll(/<ul class="wp-block-list">(.*?)<\/ul>/gs);
 
-    // Decode HTML entities
-    content = content.replace(/&nbsp;/g, ' ')
-                     .replace(/&amp;/g, '&')
-                     .replace(/&lt;/g, '<')
-                     .replace(/&gt;/g, '>')
-                     .replace(/&#8211;/g, '–')
-                     .replace(/&#8220;/g, '"')
-                     .replace(/&#8221;/g, '"');
+  for (const listMatch of listMatches) {
+    const listContent = listMatch[1];
 
-    // Parse code line: "CODE – description"
-    const codeMatch = content.match(/^([A-Z0-9]+)\s*[–\-]\s*(.+)$/);
+    // Extract all <li> items
+    const liMatches = listContent.matchAll(/<li>(.*?)<\/li>/gs);
 
-    if (codeMatch) {
-      const code = codeMatch[1].trim();
-      const description = codeMatch[2].trim();
+    for (const liMatch of liMatches) {
+      let content = liMatch[1];
 
-      // Check if it mentions expiry/validity
-      const validMatch = description.match(/Valid\s+(?:until|till)\s+([^)]+)/i);
-      const isExpired = description.toLowerCase().includes('expired');
+      // Remove HTML tags
+      content = content.replace(/<[^>]+>/g, '');
 
-      codes.push({
-        code: code,
-        description: description,
-        validUntil: validMatch ? validMatch[1].trim() : null,
-        isActive: !isExpired
-      });
+      // Decode HTML entities
+      content = content.replace(/&nbsp;/g, ' ')
+                       .replace(/&amp;/g, '&')
+                       .replace(/&lt;/g, '<')
+                       .replace(/&gt;/g, '>')
+                       .replace(/&#8211;/g, '–')
+                       .replace(/&#8220;/g, '"')
+                       .replace(/&#8221;/g, '"');
+
+      // Parse code line: "CODE – description"
+      const codeMatch = content.match(/^([A-Z0-9]+)\s*[–\-]\s*(.+)$/);
+
+      if (codeMatch) {
+        const code = codeMatch[1].trim();
+        const description = codeMatch[2].trim();
+
+        // Check if it mentions expiry/validity
+        const validMatch = description.match(/Valid\s+(?:until|till)\s+([^)]+)/i);
+        const isExpired = description.toLowerCase().includes('expired');
+
+        codes.push({
+          code: code,
+          description: description,
+          validUntil: validMatch ? validMatch[1].trim() : null,
+          isActive: !isExpired
+        });
+      }
     }
   }
+} catch (error) {
+  console.error('[BUILD ERROR] Failed to fetch reward codes from levelgeeks.org:', error);
+  console.error('Build will continue with empty codes array. Check external website availability.');
+  // codes bleibt leeres Array als Fallback
 }
 
 // Alle 10 Lucky Rose Buffs

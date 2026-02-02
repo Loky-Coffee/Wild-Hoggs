@@ -1,0 +1,8 @@
+# Wild Hoggs - Last-Z Guild Website
+# Allow all search engines
+
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://wild-hoggs.com/sitemap-index.xml
