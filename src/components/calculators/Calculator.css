@@ -308,6 +308,11 @@
   margin: 0;
 }
 
+/* Hide toggle button on desktop (must be BEFORE @media) */
+.info-box-toggle {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .calculator-container {
     padding: 1.5rem;
@@ -351,5 +356,41 @@
 
   .resource-grid {
     grid-template-columns: 1fr;
+  }
+
+  /* Info Box Collapsible on Mobile */
+  .info-box-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0.75rem;
+    background: rgba(255, 165, 0, 0.1);
+    border: 1px solid rgba(255, 165, 0, 0.3);
+    border-radius: 6px;
+    color: #ffa500;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 1rem;
+  }
+
+  .info-box-toggle:hover {
+    background: rgba(255, 165, 0, 0.15);
+    border-color: rgba(255, 165, 0, 0.5);
+  }
+
+  .info-box.collapsed .info-box-content {
+    display: none;
+  }
+
+  .info-box.collapsed {
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .info-box.collapsed .info-box-toggle {
+    margin-bottom: 0;
   }
 }

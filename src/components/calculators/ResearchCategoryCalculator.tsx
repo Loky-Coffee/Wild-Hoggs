@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'preact/hooks';
+import { useState, useMemo, useEffect, useRef } from 'preact/hooks';
 import type { Technology, ResearchTree } from '../../schemas/research';
 import ResearchTreeView from './ResearchTreeView';
 import { useTranslation } from '../../hooks/useTranslation';
@@ -108,14 +108,62 @@ export default function ResearchCategoryCalculator({ categoryData, lang }: Resea
   }
 
   const [layoutDirection, setLayoutDirection] = useState<'horizontal' | 'vertical'>('horizontal');
+  const [isInfoBoxCollapsed, setIsInfoBoxCollapsed] = useState(false);
+  const treeContainerRef = useRef<HTMLDivElement>(null);
 
   const remainingBadges = category.totalBadges - calculatedResults.totalBadges;
+
+  // Auto-collapse info box when user interacts with tree (mobile only)
+  useEffect(() => {
+    const treeContainer = treeContainerRef.current;
+    if (!treeContainer) return;
+
+    const handleTreeInteraction = () => {
+      // Only auto-collapse on mobile screens
+      if (window.innerWidth <= 768 && !isInfoBoxCollapsed) {
+        setIsInfoBoxCollapsed(true);
+      }
+    };
+
+    // Listen for touch/click on tree
+    treeContainer.addEventListener('touchstart', handleTreeInteraction, { passive: true });
+    treeContainer.addEventListener('mousedown', handleTreeInteraction);
+
+    return () => {
+      treeContainer.removeEventListener('touchstart', handleTreeInteraction);
+      treeContainer.removeEventListener('mousedown', handleTreeInteraction);
+    };
+  }, [isInfoBoxCollapsed]);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: '1rem' }}>
       {/* Header with all controls and info */}
-      <div className="info-box" style={{ flexShrink: 0 }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '2rem', flexWrap: 'wrap' }}>
+      <div className={`info-box ${isInfoBoxCollapsed ? 'collapsed' : ''}`} style={{ flexShrink: 0 }}>
+        {/* Mobile Toggle Button */}
+        <button
+          className="info-box-toggle"
+          onClick={() => setIsInfoBoxCollapsed(!isInfoBoxCollapsed)}
+          aria-label={isInfoBoxCollapsed ? (lang === 'de' ? 'Info erweitern' : 'Expand info') : (lang === 'de' ? 'Info minimieren' : 'Collapse info')}
+        >
+          {isInfoBoxCollapsed ? '▼' : '▲'}
+          {isInfoBoxCollapsed && (
+            <span style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
+              {formatNumber(calculatedResults.totalBadges, lang)} / {formatNumber(category.totalBadges, lang)} 🎖️
+            </span>
+          )}
+        </button>
+
+        {/* Main Info Content */}
+        <div
+          className="info-box-content"
+          style={{
+            display: isInfoBoxCollapsed ? 'none' : 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            gap: '2rem',
+            flexWrap: 'wrap'
+          }}
+        >
           {/* Left: Category Info */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             {category.image && (
@@ -173,7 +221,7 @@ export default function ResearchCategoryCalculator({ categoryData, lang }: Resea
       </div>
 
       {/* Tree taking remaining space */}
-      <div style={{ flex: 1, minHeight: 0 }}>
+      <div ref={treeContainerRef} style={{ flex: 1, minHeight: 0 }}>
         <ResearchTreeView
           technologies={category.technologies}
           selectedLevels={selectedTechnologies}
