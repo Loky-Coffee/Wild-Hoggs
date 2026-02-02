@@ -41,61 +41,49 @@ export async function onRequest(context) {
     // Parse HTML für Reward Codes (Regex-basiert für Edge Runtime)
     const codes = [];
 
-    // Blacklist: Bekannte False-Positives ausschließen
-    const blacklist = new Set([
-      'VISIT', 'CONFIRM', 'TITLE', 'PUBLISHER', 'GENRE', 'PLATFORM',
-      'RELEASED', 'DEVELOPER', 'ESRB', 'CONTENT', 'RATING', 'PLATFORMS',
-      'NINTENDO', 'PLAYSTATION', 'XBOX', 'STEAM'
-    ]);
+    // Strategie: Finde den Bereich zwischen "Working" Heading und "Expired" Heading
+    // Format auf der Seite: <li><strong>CODE</strong> – Description</li>
 
-    // Helper: Prüft ob Code ein valider Last-Z Reward Code ist
-    const isValidRewardCode = (code) => {
-      // Zu kurz oder zu lang
-      if (code.length < 4 || code.length > 20) return false;
+    // 1. Extrahiere den "Working Codes" Bereich
+    const workingSectionPattern = /<h[23][^>]*>.*?Working.*?Last.*?Z.*?Codes.*?<\/h[23]>([\s\S]*?)(?=<h[23][^>]*>.*?Expired|$)/i;
+    const workingMatch = html.match(workingSectionPattern);
 
-      // Blacklist-Check
-      if (blacklist.has(code.toUpperCase())) return false;
+    if (workingMatch) {
+      const workingSection = workingMatch[1];
 
-      // Muss mindestens 1 Zahl enthalten
-      if (!/\d/.test(code)) return false;
+      // 2. Finde alle <strong> Tags in diesem Bereich (Codes sind immer in <strong>)
+      const strongPattern = /<strong[^>]*>([A-Z0-9]{4,30})<\/strong>/gi;
+      let match;
 
-      // Valide Patterns:
-      // 1. Beginnt mit "LZ" (offizielles Last-Z Prefix)
-      if (code.startsWith('LZ')) return true;
+      while ((match = strongPattern.exec(workingSection)) !== null) {
+        const code = match[1];
 
-      // 2. Enthält Event-Keywords
-      const eventKeywords = ['CHRISTMAS', 'XMAS', 'DISCORD', 'HAPPY', 'COMMING', 'BYEBYE', 'NEWYEAR'];
-      if (eventKeywords.some(kw => code.includes(kw))) return true;
-
-      // 3. Jahr-Codes (z.B. "2026ISCOMMING", "BYEBYE2025")
-      if (/20\d{2}/.test(code) && code.length >= 8) return true;
-
-      // Alles andere ablehnen (vermeidet Produktnummern wie PMP, TAB, etc.)
-      return false;
-    };
-
-    // Pattern 1: Codes in <code>, <strong>, <b> Tags
-    const tagPattern = /<(?:code|strong|b)[^>]*>([A-Z0-9]{4,20})<\/(?:code|strong|b)>/gi;
-    let match;
-    while ((match = tagPattern.exec(html)) !== null) {
-      const code = match[1];
-      if (isValidRewardCode(code)) {
-        codes.push({
-          code: code,
-          timestamp: Date.now()
-        });
+        // Grundlegende Validierung
+        if (code.length >= 4 && code.length <= 30) {
+          codes.push({
+            code: code,
+            timestamp: Date.now()
+          });
+        }
       }
     }
 
-    // Pattern 2: Standalone Codes (nur Last-Z spezifische Patterns)
-    const wordPattern = /\b([A-Z]{2}[A-Z0-9]{2,18})\b/g;
-    while ((match = wordPattern.exec(html)) !== null) {
-      const potentialCode = match[1];
-      if (isValidRewardCode(potentialCode)) {
-        codes.push({
-          code: potentialCode,
-          timestamp: Date.now()
-        });
+    // Fallback: Falls der strukturierte Ansatz nichts findet,
+    // suche nach bekannten Code-Patterns (nur LZ-Prefix und Event-Keywords)
+    if (codes.length === 0) {
+      console.log('[Reward Codes API] Fallback: Searching for LZ-prefix codes');
+
+      const fallbackPattern = /<(?:strong|code|b)[^>]*>(LZ[A-Z0-9]{2,20}|[A-Z]*(?:WELCOM|HAPPY|COMMING|BYEBYE|XMAS|CHRISTMAS|DISCORD)[A-Z0-9]*)<\/(?:strong|code|b)>/gi;
+      let match;
+
+      while ((match = fallbackPattern.exec(html)) !== null) {
+        const code = match[1];
+        if (code.length >= 4 && code.length <= 30) {
+          codes.push({
+            code: code,
+            timestamp: Date.now()
+          });
+        }
       }
     }
 
