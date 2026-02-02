@@ -9,11 +9,14 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^12.6.12",
     "astro": "^5.17.1"
   },
   "description": "Wild Hoggs - Last-Z Gilde Website",
-  "keywords": ["last-z", "guild", "gaming"],
+  "keywords": [
+    "last-z",
+    "guild",
+    "gaming"
+  ],
   "author": "Ediva",
   "license": "MIT",
   "devDependencies": {
