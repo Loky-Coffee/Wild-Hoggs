@@ -12,7 +12,7 @@ export const BuildingCostSchema = z.object({
   power: z.number().nonnegative().int().optional(),
 });
 
-export const BuildingSchema = z.object({
+export const SingleBuildingSchema = z.object({
   id: z.string(),
   name: z.object({
     de: z.string(),
@@ -22,5 +22,7 @@ export const BuildingSchema = z.object({
   costs: z.array(BuildingCostSchema),
 });
 
+export const BuildingSchema = z.array(SingleBuildingSchema);
+
 export type BuildingCost = z.infer<typeof BuildingCostSchema>;
-export type Building = z.infer<typeof BuildingSchema>;
+export type Building = z.infer<typeof SingleBuildingSchema>;

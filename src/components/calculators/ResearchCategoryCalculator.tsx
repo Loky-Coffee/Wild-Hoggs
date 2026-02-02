@@ -1,35 +1,7 @@
 import { useState, useMemo } from 'preact/hooks';
+import type { Technology, ResearchTree } from '../../schemas/research';
 import ResearchTreeView from './ResearchTreeView';
 import './Calculator.css';
-
-interface Prerequisite {
-  id: string;
-  requiredLevel?: number;
-}
-
-interface Technology {
-  id: string;
-  name: {
-    de: string;
-    en: string;
-  };
-  maxLevel: number;
-  badgeCosts: number[];
-  icon?: string;
-  prerequisites?: (string | Prerequisite)[];
-}
-
-interface ResearchTree {
-  id: string;
-  name: {
-    de: string;
-    en: string;
-  };
-  totalBadges: number;
-  nodeCount: number;
-  image?: string;
-  technologies: Technology[];
-}
 
 interface ResearchCategoryCalculatorProps {
   categoryData: ResearchTree;

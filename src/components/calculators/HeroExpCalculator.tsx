@@ -6,7 +6,8 @@ interface HeroExpCalculatorProps {
   lang: 'de' | 'en';
 }
 
-const heroExpTable = validatedHeroExpTable.map(entry => entry.exp);
+// Hero exp table is already an array of exp values (index = level)
+const heroExpTable = validatedHeroExpTable;
 
 export default function HeroExpCalculator({ lang }: HeroExpCalculatorProps) {
   const [currentLevel, setCurrentLevel] = useState<number>(1);

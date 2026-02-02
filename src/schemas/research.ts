@@ -15,10 +15,10 @@ export const TechnologySchema = z.object({
     en: z.string(),
   }),
   maxLevel: z.number().positive().int(),
-  badgeCosts: z.array(z.number().nonnegative().int()).optional(),
+  badgeCosts: z.array(z.number().nonnegative().int()),
   badges: z.array(z.number().nonnegative().int()).optional(),
   icon: z.string().optional(),
-  prerequisites: z.array(PrerequisiteSchema).optional(),
+  prerequisites: z.array(PrerequisiteSchema),
 });
 
 export const ResearchTreeSchema = z.object({

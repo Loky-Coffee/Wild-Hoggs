@@ -1,18 +1,6 @@
 import { useState, useMemo } from 'preact/hooks';
-
-interface Prerequisite {
-  id: string;
-  requiredLevel?: number;
-}
-
-interface Technology {
-  id: string;
-  name: { de: string; en: string };
-  maxLevel: number;
-  badgeCosts: number[];
-  icon?: string;
-  prerequisites: (string | Prerequisite)[];
-}
+import type { VNode } from 'preact';
+import type { Technology, Prerequisite } from '../../schemas/research';
 
 interface TreeNodePosition {
   x: number;
@@ -240,7 +228,7 @@ export default function ResearchTreeView({
           >
           {/* Connection lines with branching */}
           {(() => {
-            const connections: JSX.Element[] = [];
+            const connections: VNode[] = [];
             const processedConnections = new Set<string>();
 
             // Handle branching: multiple prerequisites → one dependent
@@ -607,7 +595,7 @@ export default function ResearchTreeView({
                   width={NODE_WIDTH - 30}
                   height={40}
                 >
-                  <div xmlns="http://www.w3.org/1999/xhtml" style={{ width: '100%', height: '100%' }}>
+                  <div style={{ width: '100%', height: '100%' }}>
                     <input
                       type="range"
                       min="0"

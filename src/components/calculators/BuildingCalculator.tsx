@@ -28,7 +28,7 @@ interface BuildingCalculatorProps {
   lang: 'de' | 'en';
 }
 
-const buildings = buildingsData as Building[];
+const buildings = buildingsData;
 
 export default function BuildingCalculator({ lang }: BuildingCalculatorProps) {
   const [selectedBuilding, setSelectedBuilding] = useState<string>(buildings[0].id);
