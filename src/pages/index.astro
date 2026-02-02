@@ -1,0 +1,140 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Wild Hoggs - Last-Z Gilde">
+  <main>
+    <div class="container">
+      <div class="hero">
+        <h1>🐗 Wild Hoggs</h1>
+        <p class="subtitle">Last-Z Gilde</p>
+      </div>
+
+      <section class="info">
+        <div class="card">
+          <h2>Willkommen bei den Wild Hoggs!</h2>
+          <p>Wir sind eine aktive Last-Z Gilde, die zusammenhält und gemeinsam stärker wird.</p>
+        </div>
+
+        <div class="card">
+          <h3>Gilde Information</h3>
+          <ul>
+            <li><strong>Name:</strong> Wild Hoggs</li>
+            <li><strong>Spiel:</strong> Last-Z</li>
+            <li><strong>Status:</strong> Aktiv</li>
+          </ul>
+        </div>
+
+        <div class="card contact">
+          <h3>Kontakt</h3>
+          <p>Bei Fragen wende dich an unsere R4 Ediva im Spiel.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  main {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  .container {
+    max-width: 1200px;
+    width: 100%;
+  }
+
+  .hero {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .hero h1 {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #ff6b35 0%, #ffa500 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    font-size: 1.5rem;
+    color: #ffa500;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+  }
+
+  .info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 165, 0, 0.2);
+    border-radius: 12px;
+    padding: 2rem;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(255, 165, 0, 0.2);
+  }
+
+  .card h2 {
+    color: #ffa500;
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+  }
+
+  .card h3 {
+    color: #ffa500;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+  }
+
+  .card p {
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .card ul {
+    list-style: none;
+  }
+
+  .card li {
+    padding: 0.5rem 0;
+    color: rgba(255, 255, 255, 0.8);
+    border-bottom: 1px solid rgba(255, 165, 0, 0.1);
+  }
+
+  .card li:last-child {
+    border-bottom: none;
+  }
+
+  .card strong {
+    color: #ffa500;
+  }
+
+  @media (max-width: 768px) {
+    .hero h1 {
+      font-size: 2.5rem;
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+    }
+
+    .info {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

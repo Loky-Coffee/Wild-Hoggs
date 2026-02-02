@@ -1,0 +1,23 @@
+{
+  "name": "wild-hoggs",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "^12.6.12",
+    "astro": "^5.17.1"
+  },
+  "description": "Wild Hoggs - Last-Z Gilde Website",
+  "keywords": ["last-z", "guild", "gaming"],
+  "author": "Ediva",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^25.2.0",
+    "typescript": "^5.9.3"
+  }
+}
