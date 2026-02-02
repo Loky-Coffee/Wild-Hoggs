@@ -2,6 +2,7 @@
 import PageLayout from '../../../../layouts/PageLayout.astro';
 import { getLangFromUrl, useTranslations } from '../../../../i18n/utils';
 import ResearchCategoryCalculator from '../../../../components/calculators/ResearchCategoryCalculator';
+import type { ResearchTree } from '../../../../schemas/research';
 
 // Import validated research category data
 import {
@@ -16,7 +17,7 @@ import {
 } from '../../../../data/validated/research';
 
 export function getStaticPaths() {
-  const paths: any[] = [];
+  const paths: { params: { lang: string; categoryId: string } }[] = [];
   const categoryIds = [
     'alliance_recognition',
     'unit_special_training',
@@ -38,7 +39,7 @@ export function getStaticPaths() {
 }
 
 // Map category data by ID
-const researchDataMap: Record<string, any> = {
+const researchDataMap: Record<string, ResearchTree> = {
   alliance_recognition: allianceRecognition,
   unit_special_training: unitSpecialTraining,
   fully_armed_alliance: fullyArmedAlliance,

@@ -23,5 +23,30 @@ export default defineConfig({
         }
       }
     })
-  ]
+  ],
+  build: {
+    inlineStylesheets: 'auto',
+  },
+  vite: {
+    build: {
+      cssCodeSplit: true,
+      minify: 'esbuild',
+      rollupOptions: {
+        output: {
+          manualChunks: (id) => {
+            // Separate vendor chunks for better caching
+            if (id.includes('node_modules')) {
+              if (id.includes('preact')) {
+                return 'vendor-preact';
+              }
+              return 'vendor';
+            }
+          }
+        }
+      }
+    },
+    esbuild: {
+      drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : []
+    }
+  }
 });

@@ -5,12 +5,22 @@ import '../styles/design-tokens.css';
 interface Props {
   title: string;
   description?: string;
+  image?: string;
+  imageAlt?: string;
+  robots?: string;
 }
 
-const { title, description = 'Wild Hoggs - Last-Z Guild' } = Astro.props;
+const {
+  title,
+  description = 'Wild Hoggs - Last-Z Guild',
+  image = '/og-image.png',
+  imageAlt = 'Wild Hoggs Guild Logo',
+  robots = 'index, follow'
+} = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const ogImageURL = new URL(image, Astro.site);
 
 // Construct alternate language URLs
 const deURL = lang === 'de'
@@ -19,6 +29,36 @@ const deURL = lang === 'de'
 const enURL = lang === 'en'
   ? canonicalURL
   : new URL(`/en${Astro.url.pathname}`, Astro.site);
+
+// JSON-LD structured data - Organization
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Wild Hoggs',
+  description: description,
+  url: canonicalURL.toString(),
+  logo: new URL('/favicon.svg', Astro.site).toString(),
+  sameAs: [
+    // Add social media links here if available
+  ]
+};
+
+// JSON-LD structured data - WebSite with SearchAction
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Wild Hoggs',
+  url: Astro.site,
+  inLanguage: [lang === 'de' ? 'de-DE' : 'en-US'],
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: {
+      '@type': 'EntryPoint',
+      urlTemplate: `${Astro.site}/${lang}/tools?q={search_term_string}`
+    },
+    'query-input': 'required name=search_term_string'
+  }
+};
 ---
 
 <!doctype html>
@@ -26,7 +66,10 @@ const enURL = lang === 'en'
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content={robots} />
+    <meta name="theme-color" content="#ffa500" />
+    <meta name="author" content="Wild Hoggs Guild" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
@@ -35,6 +78,31 @@ const enURL = lang === 'en'
     <link rel="alternate" hreflang="de" href={deURL} />
     <link rel="alternate" hreflang="en" href={enURL} />
     <link rel="alternate" hreflang="x-default" href={enURL} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageURL} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={imageAlt} />
+    <meta property="og:locale" content={lang === 'de' ? 'de_DE' : 'en_US'} />
+    <meta property="og:locale:alternate" content={lang === 'de' ? 'en_US' : 'de_DE'} />
+    <meta property="og:site_name" content="Wild Hoggs" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalURL} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={ogImageURL} />
+    <meta property="twitter:image:alt" content={imageAlt} />
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+    <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
   </head>
   <body>
     <slot />

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'preact/hooks';
+import { useState } from 'preact/hooks';
 import './RewardCodes.css';
 
 interface RewardCode {
@@ -13,10 +13,8 @@ interface RewardCodesProps {
   codes: RewardCode[];
 }
 
-export default function RewardCodes({ lang, codes: initialCodes }: RewardCodesProps) {
-  const [codes, setCodes] = useState<RewardCode[]>(initialCodes);
+export default function RewardCodes({ lang, codes }: RewardCodesProps) {
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
 
   const t = (key: string) => {
     const translations: Record<string, Record<string, string>> = {
@@ -26,7 +24,6 @@ export default function RewardCodes({ lang, codes: initialCodes }: RewardCodesPr
         active: 'Aktive Codes',
         expired: 'Abgelaufen',
         validUntil: 'Gültig bis',
-        loading: 'Lädt Codes...',
       },
       en: {
         copy: 'Copy',
@@ -34,16 +31,10 @@ export default function RewardCodes({ lang, codes: initialCodes }: RewardCodesPr
         active: 'Active Codes',
         expired: 'Expired',
         validUntil: 'Valid until',
-        loading: 'Loading codes...',
       },
     };
     return translations[lang][key] || key;
   };
-
-  useEffect(() => {
-    // Codes come from props (fetched at build time)
-    setCodes(initialCodes);
-  }, [initialCodes]);
 
   const copyToClipboard = async (code: string) => {
     try {
@@ -57,15 +48,6 @@ export default function RewardCodes({ lang, codes: initialCodes }: RewardCodesPr
 
   const activeCodes = codes.filter((c) => c.isActive);
   const expiredCodes = codes.filter((c) => !c.isActive);
-
-  if (loading) {
-    return (
-      <div className="reward-codes-loading">
-        <div className="loading-spinner"></div>
-        <p>{t('loading')}</p>
-      </div>
-    );
-  }
 
   return (
     <div className="reward-codes-container">
