@@ -4,6 +4,7 @@ import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 import RewardCodes from '../../components/RewardCodes';
 import WeeklyRoses from '../../components/WeeklyRoses';
 import { ACTIVE_LUCKY_NUMBER } from '../../config/bonus';
+import '../../styles/shared-layouts.css';
 
 export function getStaticPaths() {
   return [
@@ -154,22 +155,6 @@ const roses = allRoses.map(rose => ({
 </PageLayout>
 
 <style>
-  .page-header {
-    text-align: center;
-    margin-bottom: 3rem;
-  }
-
-  h1 {
-    font-size: 2.5rem;
-    color: #ffa500;
-    margin-bottom: 0.5rem;
-  }
-
-  .subtitle {
-    font-size: 1.2rem;
-    color: rgba(255, 255, 255, 0.7);
-  }
-
   .bonus-container {
     max-width: 100%;
     margin: 0 auto;
