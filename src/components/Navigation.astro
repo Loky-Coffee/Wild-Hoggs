@@ -11,6 +11,7 @@ const routes = [
   { key: 'nav.events', path: lang === 'de' ? '/de/events' : '/en/events' },
   { key: 'nav.heroes', path: lang === 'de' ? '/de/heroes' : '/en/heroes' },
   { key: 'nav.guides', path: lang === 'de' ? '/de/guides' : '/en/guides' },
+  { key: 'nav.about', path: lang === 'de' ? '/de/about' : '/en/about' },
 ] as const;
 
 const currentPath = Astro.url.pathname;
