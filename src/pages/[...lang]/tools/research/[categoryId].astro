@@ -3,15 +3,17 @@ import PageLayout from '../../../../layouts/PageLayout.astro';
 import { getLangFromUrl, useTranslations } from '../../../../i18n/utils';
 import ResearchCategoryCalculator from '../../../../components/calculators/ResearchCategoryCalculator';
 
-// Import all research category data
-import allianceRecognition from '../../../../data/research/alliance-recognition.json';
-import unitSpecialTraining from '../../../../data/research/unit-special-training.json';
-import fullyArmedAlliance from '../../../../data/research/fully-armed-alliance.json';
-import field from '../../../../data/research/field.json';
-import heroTraining from '../../../../data/research/hero-training.json';
-import militaryStrategies from '../../../../data/research/military-strategies.json';
-import peaceShield from '../../../../data/research/peace-shield.json';
-import siegeToSeize from '../../../../data/research/siege-to-seize.json';
+// Import validated research category data
+import {
+  allianceRecognition,
+  unitSpecialTraining,
+  fullyArmedAlliance,
+  field,
+  heroTraining,
+  militaryStrategies,
+  peaceShield,
+  siegeToSeize,
+} from '../../../../data/validated/research';
 
 export function getStaticPaths() {
   const paths: any[] = [];

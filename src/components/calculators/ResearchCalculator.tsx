@@ -1,6 +1,10 @@
 import { useState, useMemo } from 'preact/hooks';
-import researchData from '../../data/lastz-research.json';
+import researchDataRaw from '../../data/lastz-research.json';
+import { ResearchTreeSchema } from '../../schemas/research';
 import './Calculator.css';
+
+// Validate research data at import time
+const researchData = researchDataRaw.map(tree => ResearchTreeSchema.parse(tree));
 
 interface Technology {
   id: string;

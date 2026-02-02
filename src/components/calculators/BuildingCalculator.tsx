@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'preact/hooks';
-import buildingsData from '../../data/buildings.json';
+import { validatedBuildings as buildingsData } from '../../data/validated/buildings';
 import './Calculator.css';
 
 interface BuildingCost {

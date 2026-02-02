@@ -1,6 +1,7 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
 import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+import PageHeader from '../../components/PageHeader.astro';
 import { members } from '../../data/members';
 import MembersList from '../../components/MembersList';
 
@@ -16,32 +17,15 @@ const t = useTranslations(lang);
 ---
 
 <PageLayout title={`${t('members.title')} - Wild Hoggs`} description="Wild Hoggs Guild Members Roster">
-  <div class="page-header">
-    <h1>{t('members.title')}</h1>
-    <p class="subtitle">
-      {t('members.count').replace('{count}', members.length.toString())}
-    </p>
-  </div>
+  <PageHeader
+    title={t('members.title')}
+    subtitle={t('members.count').replace('{count}', members.length.toString())}
+  />
 
   <MembersList members={members} lang={lang} client:load />
 </PageLayout>
 
 <style>
-  .page-header {
-    text-align: center;
-    margin-bottom: 2rem;
-  }
-
-  h1 {
-    font-size: 2.5rem;
-    color: #ffa500;
-    margin-bottom: 0.5rem;
-  }
-
-  .subtitle {
-    font-size: 1.2rem;
-    color: rgba(255, 255, 255, 0.7);
-  }
 
   :global(.sort-controls) {
     display: flex;

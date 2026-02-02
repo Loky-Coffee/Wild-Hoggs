@@ -1,12 +1,12 @@
 import { useState, useMemo } from 'preact/hooks';
-import expTable from '../../data/hero-exp-table.json';
+import { validatedHeroExpTable } from '../../data/validated/hero-exp';
 import './Calculator.css';
 
 interface HeroExpCalculatorProps {
   lang: 'de' | 'en';
 }
 
-const heroExpTable = expTable as number[];
+const heroExpTable = validatedHeroExpTable.map(entry => entry.exp);
 
 export default function HeroExpCalculator({ lang }: HeroExpCalculatorProps) {
   const [currentLevel, setCurrentLevel] = useState<number>(1);
