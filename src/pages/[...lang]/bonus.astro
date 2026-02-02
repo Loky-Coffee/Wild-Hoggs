@@ -4,7 +4,6 @@ import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 import RewardCodes from '../../components/RewardCodes';
 import WeeklyRoses from '../../components/WeeklyRoses';
 import { ACTIVE_LUCKY_NUMBER } from '../../config/bonus';
-import { parse } from 'node-html-parser';
 
 export function getStaticPaths() {
   return [
@@ -15,64 +14,6 @@ export function getStaticPaths() {
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
-
-// Fetch codes from levelgeeks.org at build time with error handling
-let codes = [];
-
-try {
-  // Set timeout to prevent hanging builds
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 5000);
-
-  const response = await fetch('https://levelgeeks.org/last-z-survival-shooter-codes/', {
-    signal: controller.signal
-  });
-
-  clearTimeout(timeoutId);
-
-  if (!response.ok) {
-    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-  }
-
-  const html = await response.text();
-
-  // Parse HTML safely with node-html-parser
-  const root = parse(html);
-  const lists = root.querySelectorAll('ul.wp-block-list');
-
-  for (const list of lists) {
-    // Extract all <li> items
-    const items = list.querySelectorAll('li');
-
-    for (const item of items) {
-      // Get text content (automatically handles HTML entities)
-      const content = item.text.trim();
-
-      // Parse code line: "CODE – description"
-      const codeMatch = content.match(/^([A-Z0-9]+)\s*[–\-]\s*(.+)$/);
-
-      if (codeMatch) {
-        const code = codeMatch[1].trim();
-        const description = codeMatch[2].trim();
-
-        // Check if it mentions expiry/validity
-        const validMatch = description.match(/Valid\s+(?:until|till)\s+([^)]+)/i);
-        const isExpired = description.toLowerCase().includes('expired');
-
-        codes.push({
-          code: code,
-          description: description,
-          validUntil: validMatch ? validMatch[1].trim() : null,
-          isActive: !isExpired
-        });
-      }
-    }
-  }
-} catch (error) {
-  console.error('[BUILD ERROR] Failed to fetch reward codes from levelgeeks.org:', error);
-  console.error('Build will continue with empty codes array. Check external website availability.');
-  // codes bleibt leeres Array als Fallback
-}
 
 // Alle 10 Lucky Rose Buffs
 // Die aktive Rose wird in src/config/bonus.ts eingestellt
@@ -198,7 +139,7 @@ const roses = allRoses.map(rose => ({
         </a>
       </div>
 
-      <RewardCodes lang={lang} codes={codes} client:load />
+      <RewardCodes lang={lang} client:load />
     </section>
 
     <!-- Weekly Roses Section -->

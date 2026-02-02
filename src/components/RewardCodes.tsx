@@ -1,20 +1,63 @@
-import { useState } from 'preact/hooks';
+import { useState, useEffect } from 'preact/hooks';
 import './RewardCodes.css';
 
 interface RewardCode {
   code: string;
-  description: string;
+  description?: string;
   validUntil?: string;
-  isActive: boolean;
+  isActive?: boolean;
+  timestamp?: number;
 }
 
 interface RewardCodesProps {
   lang: 'de' | 'en';
-  codes: RewardCode[];
+  codes?: RewardCode[]; // Optional, wird von API geladen
 }
 
-export default function RewardCodes({ lang, codes }: RewardCodesProps) {
+export default function RewardCodes({ lang, codes: initialCodes = [] }: RewardCodesProps) {
+  const [codes, setCodes] = useState<RewardCode[]>(initialCodes);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
+
+  // Load codes from Cloudflare Pages Function API
+  useEffect(() => {
+    const loadCodes = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const response = await fetch('/api/reward-codes');
+
+        if (!response.ok) {
+          throw new Error(`API Error: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        // Transform API response to RewardCode format
+        const apiCodes = data.codes.map((item: any) => ({
+          code: item.code,
+          description: item.description || (lang === 'de' ? 'Belohnung einlösen' : 'Redeem reward'),
+          isActive: true,
+          timestamp: item.timestamp
+        }));
+
+        setCodes(apiCodes.length > 0 ? apiCodes : initialCodes);
+      } catch (err) {
+        console.error('[RewardCodes] Failed to load from API:', err);
+        setError(err instanceof Error ? err.message : 'Failed to load codes');
+        // Fallback to initial codes
+        if (initialCodes.length > 0) {
+          setCodes(initialCodes);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadCodes();
+  }, [lang]);
 
   const t = (key: string) => {
     const translations: Record<string, Record<string, string>> = {
@@ -46,11 +89,33 @@ export default function RewardCodes({ lang, codes }: RewardCodesProps) {
     }
   };
 
-  const activeCodes = codes.filter((c) => c.isActive);
-  const expiredCodes = codes.filter((c) => !c.isActive);
+  const activeCodes = codes.filter((c) => c.isActive !== false);
+  const expiredCodes = codes.filter((c) => c.isActive === false);
 
   return (
     <div className="reward-codes-container">
+      {loading && (
+        <div className="loading-state">
+          <div className="spinner"></div>
+          <p>{lang === 'de' ? 'Lade Reward Codes...' : 'Loading reward codes...'}</p>
+        </div>
+      )}
+
+      {error && !loading && codes.length === 0 && (
+        <div className="error-state">
+          <p>⚠️ {lang === 'de' ? 'Codes konnten nicht geladen werden' : 'Failed to load codes'}</p>
+          <p className="error-detail">{error}</p>
+        </div>
+      )}
+
+      {!loading && codes.length === 0 && !error && (
+        <div className="empty-state">
+          <p>📭 {lang === 'de' ? 'Keine Codes verfügbar' : 'No codes available'}</p>
+        </div>
+      )}
+
+      {!loading && codes.length > 0 && (
+        <>
       <div className="codes-section">
         <h3 className="section-title">
           🎁 {t('active')} ({activeCodes.length})
@@ -95,6 +160,8 @@ export default function RewardCodes({ lang, codes }: RewardCodesProps) {
             ))}
           </div>
         </div>
+      )}
+      </>
       )}
     </div>
   );
