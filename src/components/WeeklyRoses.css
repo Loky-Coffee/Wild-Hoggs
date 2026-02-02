@@ -139,7 +139,7 @@
 
 .rose-card.inactive .rose-buff {
   background: rgba(128, 128, 128, 0.1);
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.6);
   border-color: rgba(128, 128, 128, 0.2);
 }
 
@@ -151,7 +151,7 @@
 }
 
 .rose-card.inactive .rose-duration {
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .rose-description {
@@ -162,7 +162,7 @@
 }
 
 .rose-card.inactive .rose-description {
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.65);
 }
 
 .rose-countdown {
