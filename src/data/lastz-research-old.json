@@ -1,0 +1,178 @@
+[
+  {
+    "id": "unit_special_training",
+    "name": {
+      "de": "Spezielle Einheiten-Ausbildung",
+      "en": "Unit Special Training"
+    },
+    "totalBadges": 1488100,
+    "nodeCount": 22,
+    "technologies": [
+      { "id": "fire_up", "name": { "de": "Feuer frei", "en": "Fire Up" }, "maxLevel": 10, "badges": [700, 950, 1100, 1300, 1500, 1900, 2400, 3000, 3800, 4700] },
+      { "id": "armor_upgrade", "name": { "de": "Rüstungs-Upgrade", "en": "Armor Upgrade" }, "maxLevel": 10, "badges": [800, 1050, 1200, 1400, 1600, 2000, 2500, 3100, 3900, 4800] },
+      { "id": "fast_production", "name": { "de": "Schnellproduktion", "en": "Fast Production" }, "maxLevel": 10, "badges": [900, 1200, 1400, 1600, 1800, 2300, 2900, 3600, 4600, 5900] },
+      { "id": "mobility_enhancement", "name": { "de": "Mobilitäts-Verbesserung", "en": "Mobility Enhancement" }, "maxLevel": 8, "badges": [1800, 2200, 2600, 3300, 4100, 5100, 6400, 7900] },
+      { "id": "melee_combat", "name": { "de": "Nahkampf", "en": "Melee Combat" }, "maxLevel": 10, "badges": [1000, 1300, 1500, 1800, 2100, 2600, 3300, 4100, 5200, 6500] },
+      { "id": "weapon_upgrading", "name": { "de": "Waffen-Upgrade", "en": "Weapon Upgrading" }, "maxLevel": 10, "badges": [1100, 1400, 1600, 1900, 2200, 2800, 3500, 4400, 5500, 6900] },
+      { "id": "stronger_armor", "name": { "de": "Stärkere Rüstung", "en": "Stronger Armor" }, "maxLevel": 10, "badges": [1200, 1500, 1700, 2000, 2400, 3000, 3700, 4700, 5900, 7400] },
+      { "id": "shield_upgrade", "name": { "de": "Schild-Upgrade", "en": "Shield Upgrade" }, "maxLevel": 10, "badges": [1300, 1600, 1900, 2200, 2600, 3300, 4100, 5200, 6500, 8200] },
+      { "id": "camo_coating", "name": { "de": "Tarn-Beschichtung", "en": "Camo Coating" }, "maxLevel": 10, "badges": [1400, 1700, 2000, 2400, 2800, 3500, 4400, 5500, 6900, 8700] },
+      { "id": "propulsion", "name": { "de": "Antrieb", "en": "Propulsion" }, "maxLevel": 9, "badges": [1400, 1700, 2000, 2900, 3600, 4500, 5600, 7100, 8600] },
+      { "id": "fast_production_2", "name": { "de": "Schnellproduktion II", "en": "Fast Production 2" }, "maxLevel": 8, "badges": [2100, 2600, 3200, 4000, 5000, 6300, 7900, 12700] },
+      { "id": "armor_upgrade_2", "name": { "de": "Rüstungs-Upgrade II", "en": "Armor Upgrade 2" }, "maxLevel": 10, "badges": [2200, 2800, 3300, 3900, 4600, 5800, 7200, 9100, 11400, 14300] },
+      { "id": "demolition_crew", "name": { "de": "Abriss-Trupp", "en": "Demolition Crew" }, "maxLevel": 5, "badges": [3700, 4700, 5900, 7400, 8000] },
+      { "id": "mobility_enhancement_2", "name": { "de": "Mobilitäts-Verbesserung II", "en": "Mobility Enhancement 2" }, "maxLevel": 15, "badges": [2800, 3500, 4300, 5400, 6700, 8400, 10500, 13200, 16500, 17900, 19500, 21200, 23000, 24900, 26900] },
+      { "id": "recharge_shield", "name": { "de": "Schild aufladen", "en": "Recharge Shield" }, "maxLevel": 20, "badges": [2300, 2900, 3600, 4400, 5500, 6800, 8400, 10500, 13100, 16400, 17200, 18700, 19900, 21000, 22800, 23900, 25900, 28000, 28700, 31000] }
+    ]
+  },
+  {
+    "id": "fully_armed_alliance",
+    "name": {
+      "de": "Voll bewaffnete Allianz",
+      "en": "Fully Armed Alliance"
+    },
+    "totalBadges": 470820,
+    "nodeCount": 18,
+    "technologies": [
+      { "id": "mechanical_repair", "name": { "de": "Mechanische Reparatur", "en": "Mechanical Repair" }, "maxLevel": 8, "badges": [270, 350, 440, 550, 690, 860, 1000, 1200] },
+      { "id": "piercing_shot", "name": { "de": "Durchschlagender Schuss", "en": "Piercing Shot" }, "maxLevel": 4, "badges": [340, 430, 540, 570] },
+      { "id": "tough_shield", "name": { "de": "Robuster Schild", "en": "Tough Shield" }, "maxLevel": 4, "badges": [380, 480, 600, 750] },
+      { "id": "bazooka", "name": { "de": "Bazooka", "en": "Bazooka" }, "maxLevel": 3, "badges": [490, 620, 810] },
+      { "id": "hold_fast", "name": { "de": "Standhaft bleiben", "en": "Hold Fast" }, "maxLevel": 4, "badges": [520, 660, 830, 1040] },
+      { "id": "circuitous_tactics", "name": { "de": "Umgehende Taktiken", "en": "Circuitous Tactics" }, "maxLevel": 5, "badges": [580, 730, 920, 1160, 1450] },
+      { "id": "alloy_composite", "name": { "de": "Legierungs-Verbund", "en": "Alloy Composite" }, "maxLevel": 4, "badges": [640, 810, 1020, 1280] },
+      { "id": "peace_breaker", "name": { "de": "Friedensbrecher", "en": "Peace Breaker" }, "maxLevel": 4, "badges": [650, 820, 1630, 3200] },
+      { "id": "annihilation", "name": { "de": "Vernichtung", "en": "Annihilation" }, "maxLevel": 3, "badges": [800, 4200, 8500] },
+      { "id": "riders_attack_training", "name": { "de": "Reiter Angriffs-Training", "en": "Riders Attack Training" }, "maxLevel": 10, "badges": [900, 1140, 1440, 1810, 2280, 2870, 3610, 4550, 5730, 7210] },
+      { "id": "riders_defense_training", "name": { "de": "Reiter Verteidigungs-Training", "en": "Riders Defense Training" }, "maxLevel": 10, "badges": [950, 1200, 1510, 1900, 2390, 3010, 3790, 4770, 6010, 7570] },
+      { "id": "assaulters_attack_training", "name": { "de": "Sturmtruppen Angriffs-Training", "en": "Assaulters Attack Training" }, "maxLevel": 10, "badges": [1000, 1260, 1590, 2000, 2520, 3170, 3990, 5030, 6330, 7970] },
+      { "id": "assaulters_defense_training", "name": { "de": "Sturmtruppen Verteidigungs-Training", "en": "Assaulters Defense Training" }, "maxLevel": 10, "badges": [1050, 1320, 1660, 2090, 2630, 3310, 4170, 5250, 6610, 8320] },
+      { "id": "shooters_attack_training", "name": { "de": "Schützen Angriffs-Training", "en": "Shooters Attack Training" }, "maxLevel": 10, "badges": [1100, 1390, 1750, 2200, 2770, 3490, 4390, 5530, 6960, 8770] },
+      { "id": "shooters_defense_training", "name": { "de": "Schützen Verteidigungs-Training", "en": "Shooters Defense Training" }, "maxLevel": 10, "badges": [1150, 1450, 1830, 2300, 2900, 3650, 4590, 5780, 7280, 9170] },
+      { "id": "mechanical_repair_2", "name": { "de": "Mechanische Reparatur II", "en": "Mechanical Repair 2" }, "maxLevel": 2, "badges": [5700, 7000] },
+      { "id": "repair_kit", "name": { "de": "Reparatur-Kit", "en": "Repair Kit" }, "maxLevel": 2, "badges": [6200, 7600] },
+      { "id": "move_out", "name": { "de": "Ausrücken", "en": "Move Out" }, "maxLevel": 7, "badges": [3500, 4400, 5500, 6900, 8700, 10900, 16400] }
+    ]
+  },
+  {
+    "id": "field",
+    "name": {
+      "de": "Feld",
+      "en": "Field"
+    },
+    "totalBadges": 594430,
+    "nodeCount": 14,
+    "technologies": [
+      { "id": "field_training", "name": { "de": "Feld-Training", "en": "Field Training" }, "maxLevel": 5, "badges": [450, 570, 720, 900, 940] },
+      { "id": "field_camo_coating", "name": { "de": "Feld-Tarn-Beschichtung", "en": "Camo Coating" }, "maxLevel": 5, "badges": [500, 630, 790, 1000, 1250] },
+      { "id": "field_mobility_enhancement", "name": { "de": "Feld-Mobilitäts-Verbesserung", "en": "Mobility Enhancement" }, "maxLevel": 4, "badges": [560, 710, 1400, 2700] },
+      { "id": "field_melee_combat", "name": { "de": "Feld-Nahkampf", "en": "Melee Combat" }, "maxLevel": 5, "badges": [620, 780, 980, 1230, 1550] },
+      { "id": "field_weapon_upgrading", "name": { "de": "Feld-Waffen-Upgrade", "en": "Weapon Upgrading" }, "maxLevel": 5, "badges": [680, 860, 1080, 1360, 1710] },
+      { "id": "target_training", "name": { "de": "Ziel-Training", "en": "Target Training" }, "maxLevel": 5, "badges": [750, 950, 970, 1230, 1540] },
+      { "id": "arms_assembly", "name": { "de": "Waffen-Montage", "en": "Arms Assembly" }, "maxLevel": 5, "badges": [820, 1040, 1300, 1640, 2060] },
+      { "id": "quick_assembly", "name": { "de": "Schnell-Montage", "en": "Quick Assembly" }, "maxLevel": 5, "badges": [900, 1140, 1430, 1800, 2260] },
+      { "id": "field_stronger_armor", "name": { "de": "Feld-Stärkere Rüstung", "en": "Stronger Armor" }, "maxLevel": 3, "badges": [3400, 5100, 6700] },
+      { "id": "field_shield_upgrade", "name": { "de": "Feld-Schild-Upgrade", "en": "Shield Upgrade" }, "maxLevel": 5, "badges": [1100, 1390, 1750, 2200, 2770] },
+      { "id": "tactical_cover", "name": { "de": "Taktische Deckung", "en": "Tactical Cover" }, "maxLevel": 5, "badges": [1200, 1520, 1910, 2400, 3020] },
+      { "id": "field_training_2", "name": { "de": "Feld-Training II", "en": "Field Training 2" }, "maxLevel": 9, "badges": [3100, 3900, 4900, 6200, 7800, 9800, 12300, 15500, 20300] },
+      { "id": "field_camo_coating_2", "name": { "de": "Feld-Tarn-Beschichtung II", "en": "Camo Coating 2" }, "maxLevel": 9, "badges": [3300, 4200, 5300, 6600, 8300, 10500, 13200, 16600, 20900] },
+      { "id": "field_recharge_shield", "name": { "de": "Feld-Schild aufladen", "en": "Recharge Shield" }, "maxLevel": 6, "badges": [6300, 7900, 10000, 12600, 15800, 22400] }
+    ]
+  },
+  {
+    "id": "alliance_recognition",
+    "name": {
+      "de": "Allianz-Anerkennung",
+      "en": "Alliance Recognition"
+    },
+    "totalBadges": 356770,
+    "nodeCount": 19,
+    "technologies": [
+      { "id": "collect_wood", "name": { "de": "Holz sammeln", "en": "Collect Wood" }, "maxLevel": 8, "badges": [180, 230, 290, 360, 450, 570, 710, 890] },
+      { "id": "zent_gatherer", "name": { "de": "Zent-Sammler", "en": "Zent Gatherer" }, "maxLevel": 8, "badges": [200, 250, 320, 400, 500, 630, 790, 990] },
+      { "id": "premium_rewards", "name": { "de": "Premium-Belohnungen", "en": "Premium Rewards" }, "maxLevel": 1, "badges": [1500] },
+      { "id": "event_expert", "name": { "de": "Event-Experte", "en": "Event Expert" }, "maxLevel": 8, "badges": [160, 200, 250, 320, 400, 500, 630, 710] },
+      { "id": "augmented_engine", "name": { "de": "Verbesserter Motor", "en": "Augmented Engine" }, "maxLevel": 4, "badges": [420, 530, 670, 740] },
+      { "id": "transport_capacity_up", "name": { "de": "Transport-Kapazität erhöhen", "en": "Transport Capacity Up" }, "maxLevel": 10, "badges": [480, 610, 770, 970, 1220, 1540, 1940, 2440, 3070, 3870] },
+      { "id": "production_line_expansion", "name": { "de": "Produktionslinie erweitern", "en": "Production Line Expansion" }, "maxLevel": 8, "badges": [530, 670, 840, 1060, 1330, 1680, 2110, 2660] },
+      { "id": "super_rewards", "name": { "de": "Super-Belohnungen", "en": "Super Rewards" }, "maxLevel": 1, "badges": [5000] },
+      { "id": "gathering_incentive", "name": { "de": "Sammel-Anreiz", "en": "Gathering Incentive" }, "maxLevel": 10, "badges": [600, 760, 960, 1210, 1520, 1920, 2420, 3050, 3840, 4840] },
+      { "id": "modified_vehicle", "name": { "de": "Modifiziertes Fahrzeug", "en": "Modified Vehicle" }, "maxLevel": 8, "badges": [660, 840, 1060, 1330, 1680, 2110, 2660, 3350] },
+      { "id": "development_incentive", "name": { "de": "Entwicklungs-Anreiz", "en": "Development Incentive" }, "maxLevel": 6, "badges": [730, 920, 1160, 1460, 1840, 2320] },
+      { "id": "equipment_incentive", "name": { "de": "Ausrüstungs-Anreiz", "en": "Equipment Incentive" }, "maxLevel": 4, "badges": [800, 1010, 1270, 1600] },
+      { "id": "creeps_incentive", "name": { "de": "Creeps-Anreiz", "en": "Creeps Incentive" }, "maxLevel": 2, "badges": [2100, 2650] },
+      { "id": "training_incentive", "name": { "de": "Trainings-Anreiz", "en": "Training Incentive" }, "maxLevel": 6, "badges": [1000, 1260, 1590, 2000, 2520, 3170] },
+      { "id": "recruiting_incentive", "name": { "de": "Rekrutierungs-Anreiz", "en": "Recruiting Incentive" }, "maxLevel": 4, "badges": [1100, 1390, 1750, 2200] },
+      { "id": "killing_incentive", "name": { "de": "Kampf-Anreiz", "en": "Killing Incentive" }, "maxLevel": 2, "badges": [2500, 3150] },
+      { "id": "event_king", "name": { "de": "Event-König", "en": "Event King" }, "maxLevel": 8, "badges": [4000, 5100, 6400, 8100, 10200, 12800, 16100, 18700] },
+      { "id": "one_more", "name": { "de": "Noch einer!", "en": "One More!" }, "maxLevel": 1, "badges": [20500] }
+    ]
+  },
+  {
+    "id": "hero_training",
+    "name": {
+      "de": "Helden-Training",
+      "en": "Hero Training"
+    },
+    "totalBadges": 37270,
+    "nodeCount": 13,
+    "technologies": [
+      { "id": "attack_special_training", "name": { "de": "Angriffs-Spezial-Training", "en": "Attack Special Training" }, "maxLevel": 5, "badges": [150, 190, 240, 300, 380] },
+      { "id": "strength_training", "name": { "de": "Kraft-Training", "en": "Strength Training" }, "maxLevel": 5, "badges": [170, 210, 270, 340, 430] },
+      { "id": "rose_bloom", "name": { "de": "Rosen-Blüte", "en": "Rose Bloom" }, "maxLevel": 5, "badges": [190, 240, 300, 380, 480] },
+      { "id": "morning_star", "name": { "de": "Morgenstern", "en": "Morning Star" }, "maxLevel": 5, "badges": [210, 270, 340, 430, 540] },
+      { "id": "light_of_order", "name": { "de": "Licht der Ordnung", "en": "Light of Order" }, "maxLevel": 5, "badges": [230, 290, 370, 470, 590] },
+      { "id": "resource_gathering", "name": { "de": "Ressourcen sammeln", "en": "Resource Gathering" }, "maxLevel": 2, "badges": [250, 320] },
+      { "id": "rose_barrier", "name": { "de": "Rosen-Barriere", "en": "Rose Barrier" }, "maxLevel": 5, "badges": [270, 340, 430, 540, 680] },
+      { "id": "dawns_light", "name": { "de": "Licht der Dämmerung", "en": "Dawn's Light" }, "maxLevel": 5, "badges": [290, 370, 470, 590, 740] },
+      { "id": "shield_of_order", "name": { "de": "Schild der Ordnung", "en": "Shield of Order" }, "maxLevel": 5, "badges": [310, 390, 490, 620, 780] },
+      { "id": "cockpit", "name": { "de": "Cockpit", "en": "Cockpit" }, "maxLevel": 1, "badges": [1000] },
+      { "id": "attack_spec_2", "name": { "de": "Angriffs-Spezial II", "en": "Attack Spec 2" }, "maxLevel": 2, "badges": [280, 350] },
+      { "id": "strength_train_2", "name": { "de": "Kraft-Training II", "en": "Strength Train 2" }, "maxLevel": 2, "badges": [300, 380] }
+    ]
+  },
+  {
+    "id": "military_strategies",
+    "name": {
+      "de": "Militär-Strategien",
+      "en": "Military Strategies"
+    },
+    "totalBadges": 79816,
+    "nodeCount": 18,
+    "technologies": [
+      { "id": "strategy_combat_policy", "name": { "de": "Kampf-Politik", "en": "Combat Policy" }, "maxLevel": 5, "badges": [400, 510, 640, 810, 1020] },
+      { "id": "strategy_weapon_assembly", "name": { "de": "Waffen-Montage", "en": "Weapon Assembly" }, "maxLevel": 5, "badges": [450, 570, 720, 910, 1140] },
+      { "id": "strategy_armor_upgrade", "name": { "de": "Rüstungs-Upgrade", "en": "Armor Upgrade" }, "maxLevel": 5, "badges": [500, 630, 800, 1010, 1270] },
+      { "id": "strategy_tactical_training", "name": { "de": "Taktisches Training", "en": "Tactical Training" }, "maxLevel": 5, "badges": [550, 700, 880, 1110, 1400] }
+    ]
+  },
+  {
+    "id": "peace_shield",
+    "name": {
+      "de": "Friedens-Schild",
+      "en": "Peace Shield"
+    },
+    "totalBadges": 267613,
+    "nodeCount": 16,
+    "technologies": [
+      { "id": "auto_repair", "name": { "de": "Auto-Reparatur", "en": "Auto Repair" }, "maxLevel": 8, "badges": [330, 420, 530, 670, 840, 1060, 1330, 1680] },
+      { "id": "peace_combat_policy", "name": { "de": "Friedens-Kampf-Politik", "en": "Combat Policy" }, "maxLevel": 5, "badges": [370, 470, 590, 740, 930] },
+      { "id": "interceptions", "name": { "de": "Abfangmanöver", "en": "Interceptions" }, "maxLevel": 10, "badges": [410, 520, 660, 830, 1050, 1320, 1660, 2090, 2630, 3310] }
+    ]
+  },
+  {
+    "id": "siege_to_seize",
+    "name": {
+      "de": "Belagern um zu erobern",
+      "en": "Siege to Seize"
+    },
+    "totalBadges": 256775,
+    "nodeCount": 18,
+    "technologies": [
+      { "id": "demolition_crew_2", "name": { "de": "Abriss-Trupp II", "en": "Demolition Crew 2" }, "maxLevel": 5, "badges": [870, 1100, 1390, 1750, 2200] },
+      { "id": "joint_operation", "name": { "de": "Gemeinsame Operation", "en": "Joint Operation" }, "maxLevel": 10, "badges": [960, 1220, 1540, 1940, 2440, 3070, 3870, 4870, 6140, 7730] },
+      { "id": "mobile_defense", "name": { "de": "Mobile Verteidigung", "en": "Mobile Defense" }, "maxLevel": 8, "badges": [1060, 1340, 1690, 2130, 2680, 3380, 4250, 5360] },
+      { "id": "load_module", "name": { "de": "Lade-Modul", "en": "Load Module" }, "maxLevel": 6, "badges": [1170, 1480, 1870, 2350, 2960, 3730] }
+    ]
+  }
+]

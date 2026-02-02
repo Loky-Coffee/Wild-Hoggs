@@ -1,0 +1,180 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+import { members } from '../../data/members';
+import MembersList from '../../components/MembersList';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'en' } },
+    { params: { lang: 'de' } },
+  ];
+}
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<PageLayout title={`${t('members.title')} - Wild Hoggs`} description="Wild Hoggs Guild Members Roster">
+  <div class="page-header">
+    <h1>{t('members.title')}</h1>
+    <p class="subtitle">
+      {lang === 'de' ? `${members.length} Mitglieder` : `${members.length} Members`}
+    </p>
+  </div>
+
+  <MembersList members={members} lang={lang} client:load />
+</PageLayout>
+
+<style>
+  .page-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    color: #ffa500;
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  :global(.sort-controls) {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    justify-content: center;
+  }
+
+  :global(.sort-controls label) {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+  }
+
+  :global(.sort-controls select) {
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 165, 0, 0.3);
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  :global(.sort-controls select:hover) {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 165, 0, 0.5);
+  }
+
+  :global(.sort-controls select:focus) {
+    outline: none;
+    border-color: #ffa500;
+    box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.1);
+  }
+
+  :global(.sort-controls select option) {
+    background: #1a1a1a;
+    color: #ffffff;
+  }
+
+  :global(.members-grid) {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+  }
+
+  :global(.member-card) {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 165, 0, 0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  :global(.member-card:hover) {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(255, 165, 0, 0.2);
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 165, 0, 0.4);
+  }
+
+  :global(.member-gender) {
+    font-size: 2.5rem;
+    line-height: 1;
+  }
+
+  :global(.member-name) {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff;
+    text-align: center;
+    word-break: break-word;
+    min-height: 2.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  :global(.member-level) {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 165, 0, 0.1);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 165, 0, 0.3);
+  }
+
+  :global(.level-label) {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  :global(.level-value) {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #ffa500;
+  }
+
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 2rem;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+    }
+
+    :global(.members-grid) {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 1rem;
+    }
+
+    :global(.member-card) {
+      padding: 1.25rem 1rem;
+    }
+
+    :global(.member-gender) {
+      font-size: 2rem;
+    }
+
+    :global(.member-name) {
+      font-size: 0.9rem;
+    }
+  }
+</style>

@@ -1,0 +1,412 @@
+{
+  "id": "military_strategies",
+  "name": {
+    "en": "Military Strategies",
+    "de": "Militärische Strategien"
+  },
+  "totalBadges": 79816,
+  "nodeCount": 18,
+  "image": "/images/research/military-strategies.png",
+  "technologies": [
+    {
+      "id": "fire-up",
+      "name": {
+        "en": "Fire Up",
+        "de": "Feuerbereitschaft"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        77,
+        92,
+        110,
+        130,
+        150,
+        190,
+        240,
+        300,
+        380,
+        460
+      ],
+      "icon": "/images/research/military-strategies/fire-up.webp",
+      "prerequisites": []
+    },
+    {
+      "id": "armor-upgrade",
+      "name": {
+        "en": "Armor Upgrade",
+        "de": "Panzerverbesserung"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        77,
+        92,
+        110,
+        130,
+        150,
+        190,
+        240,
+        300,
+        380,
+        460
+      ],
+      "icon": "/images/research/military-strategies/armor-upgrade.webp",
+      "prerequisites": []
+    },
+    {
+      "id": "joint-operation",
+      "name": {
+        "en": "Joint Operation",
+        "de": "Gemeinsamer Einsatz"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        77,
+        92,
+        110,
+        130,
+        150,
+        190,
+        240,
+        300,
+        380,
+        460
+      ],
+      "icon": "/images/research/military-strategies/joint-operation.webp",
+      "prerequisites": [
+        "fire-up"
+      ]
+    },
+    {
+      "id": "mobile-defense",
+      "name": {
+        "en": "Mobile Defense",
+        "de": "Mobile Verteidigung"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        77,
+        92,
+        110,
+        130,
+        150,
+        190,
+        240,
+        300,
+        380,
+        460
+      ],
+      "icon": "/images/research/military-strategies/mobile-defense.webp",
+      "prerequisites": [
+        "armor-upgrade"
+      ]
+    },
+    {
+      "id": "combat-policy",
+      "name": {
+        "en": "Combat Policy",
+        "de": "Kampfrichtlinie"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        100,
+        140,
+        170,
+        210,
+        260,
+        320,
+        400,
+        500,
+        610,
+        750
+      ],
+      "icon": "/images/research/military-strategies/combat-policy.webp",
+      "prerequisites": [
+        "joint-operation"
+      ]
+    },
+    {
+      "id": "interceptions",
+      "name": {
+        "en": "Interceptions",
+        "de": "Abfangmaßnahmen"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        100,
+        140,
+        170,
+        210,
+        260,
+        320,
+        400,
+        500,
+        610,
+        750
+      ],
+      "icon": "/images/research/military-strategies/interceptions.webp",
+      "prerequisites": [
+        "mobile-defense"
+      ]
+    },
+    {
+      "id": "demolition-crew",
+      "name": {
+        "en": "Demolition Crew",
+        "de": "Sprengkommando"
+      },
+      "maxLevel": 1,
+      "badgeCosts": [
+        570
+      ],
+      "icon": "/images/research/military-strategies/demolition-crew.webp",
+      "prerequisites": [
+        "combat-policy",
+        "interceptions"
+      ]
+    },
+    {
+      "id": "quick-assembly",
+      "name": {
+        "en": "Quick Assembly",
+        "de": "Schnellmontage"
+      },
+      "maxLevel": 5,
+      "badgeCosts": [
+        250,
+        340,
+        520,
+        820,
+        1300
+      ],
+      "icon": "/images/research/military-strategies/quick-assembly.webp",
+      "prerequisites": [
+        "demolition-crew"
+      ]
+    },
+    {
+      "id": "arms-assembly",
+      "name": {
+        "en": "Arms Assembly",
+        "de": "Waffenmontage"
+      },
+      "maxLevel": 5,
+      "badgeCosts": [
+        250,
+        340,
+        520,
+        820,
+        1300
+      ],
+      "icon": "/images/research/military-strategies/arms-assembly.webp",
+      "prerequisites": [
+        "demolition-crew"
+      ]
+    },
+    {
+      "id": "target-training",
+      "name": {
+        "en": "Target Training",
+        "de": "Zieltraining"
+      },
+      "maxLevel": 5,
+      "badgeCosts": [
+        250,
+        340,
+        520,
+        820,
+        1300
+      ],
+      "icon": "/images/research/military-strategies/target-training.webp",
+      "prerequisites": [
+        "demolition-crew"
+      ]
+    },
+    {
+      "id": "recharge-shield",
+      "name": {
+        "en": "Recharge Shield",
+        "de": "Schild-Aufladung"
+      },
+      "maxLevel": 3,
+      "badgeCosts": [
+        82,
+        41,
+        123
+      ],
+      "icon": "/images/research/military-strategies/recharge-shield.webp",
+      "prerequisites": [
+        "quick-assembly",
+        "arms-assembly",
+        "target-training"
+      ]
+    },
+    {
+      "id": "fire-up-2",
+      "name": {
+        "en": "Fire Up",
+        "de": "Feuerbereitschaft"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        310,
+        430,
+        510,
+        640,
+        790,
+        1000,
+        1250,
+        1500,
+        1880,
+        2360
+      ],
+      "icon": "/images/research/military-strategies/fire-up.webp",
+      "prerequisites": [
+        "recharge-shield"
+      ]
+    },
+    {
+      "id": "armor-upgrade-2",
+      "name": {
+        "en": "Armor Upgrade",
+        "de": "Panzerverbesserung"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        310,
+        430,
+        510,
+        640,
+        790,
+        1000,
+        1250,
+        1500,
+        1880,
+        2360
+      ],
+      "icon": "/images/research/military-strategies/armor-upgrade.webp",
+      "prerequisites": [
+        "recharge-shield"
+      ]
+    },
+    {
+      "id": "field-training",
+      "name": {
+        "en": "Field Training",
+        "de": "Feldtraining"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        310,
+        430,
+        510,
+        640,
+        790,
+        1000,
+        1250,
+        1500,
+        1880,
+        2360
+      ],
+      "icon": "/images/research/military-strategies/field-training.webp",
+      "prerequisites": [
+        "fire-up-2"
+      ]
+    },
+    {
+      "id": "camo-coating",
+      "name": {
+        "en": "Camo Coating",
+        "de": "Tarnbeschichtung"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        310,
+        430,
+        510,
+        640,
+        790,
+        1000,
+        1250,
+        1500,
+        1880,
+        2360
+      ],
+      "icon": "/images/research/military-strategies/camo-coating.webp",
+      "prerequisites": [
+        "armor-upgrade-2"
+      ]
+    },
+    {
+      "id": "alloy-plate",
+      "name": {
+        "en": "Alloy Plate",
+        "de": "Legierungsplatte"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        890,
+        1100,
+        1390,
+        1700,
+        2140,
+        2700,
+        3400,
+        4200,
+        5100,
+        6200
+      ],
+      "icon": "/images/research/military-strategies/alloy-plate.webp",
+      "prerequisites": [
+        "field-training"
+      ]
+    },
+    {
+      "id": "enhanced-armor",
+      "name": {
+        "en": "Enhanced Armor",
+        "de": "Verbesserte Panzerung"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        890,
+        1100,
+        1390,
+        1700,
+        2140,
+        2700,
+        3400,
+        4200,
+        5100,
+        6200
+      ],
+      "icon": "/images/research/military-strategies/enhanced-armor.webp",
+      "prerequisites": [
+        "field-training"
+      ]
+    },
+    {
+      "id": "aerocraft-material",
+      "name": {
+        "en": "Aerocraft Material",
+        "de": "Flugzeugmaterial"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        890,
+        1100,
+        1390,
+        1700,
+        2140,
+        2700,
+        3400,
+        4200,
+        5100,
+        6200
+      ],
+      "icon": "/images/research/military-strategies/aerocraft-material.webp",
+      "prerequisites": [
+        "camo-coating"
+      ]
+    }
+  ]
+}

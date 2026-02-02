@@ -1,0 +1,541 @@
+{
+  "id": "unit_special_training",
+  "name": {
+    "en": "Unit Special Training",
+    "de": "Spezialtraining der Einheiten"
+  },
+  "totalBadges": 1488100,
+  "nodeCount": 22,
+  "image": "/images/research/unit-special-training.png",
+  "technologies": [
+    {
+      "id": "fire-up",
+      "name": {
+        "en": "Fire Up",
+        "de": "Feuer frei"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        700,
+        950,
+        1100,
+        1300,
+        1500,
+        1900,
+        2400,
+        3000,
+        3800,
+        4700
+      ],
+      "icon": "/images/research/unit-special-training/fire-up.webp",
+      "prerequisites": []
+    },
+    {
+      "id": "armor-upgrade",
+      "name": {
+        "en": "Armor Upgrade",
+        "de": "Panzerverbesserung"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        700,
+        950,
+        1100,
+        1300,
+        1500,
+        1900,
+        2400,
+        3000,
+        3800,
+        4700
+      ],
+      "icon": "/images/research/unit-special-training/armor-upgrade.webp",
+      "prerequisites": []
+    },
+    {
+      "id": "fast-production",
+      "name": {
+        "en": "Fast Production",
+        "de": "Schnellproduktion"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        900,
+        1600,
+        1100,
+        1300,
+        1500,
+        1900,
+        2400,
+        3000,
+        5900,
+        4700
+      ],
+      "icon": "/images/research/unit-special-training/fast-production.webp",
+      "prerequisites": [
+        "fire-up",
+        "armor-upgrade"
+      ]
+    },
+    {
+      "id": "mobility-enhancement",
+      "name": {
+        "en": "Mobility Enhancement",
+        "de": "Mobilitätsverbesserung"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        1800,
+        2200,
+        2600,
+        3300,
+        4100,
+        5100,
+        6400,
+        7900,
+        9900,
+        12200
+      ],
+      "icon": "/images/research/unit-special-training/mobility-enhancement.webp",
+      "prerequisites": [
+        "fast-production"
+      ]
+    },
+    {
+      "id": "melee-combat",
+      "name": {
+        "en": "Melee Combat",
+        "de": "Nahkampf"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        1800,
+        2200,
+        2600,
+        3300,
+        4100,
+        5100,
+        6400,
+        7900,
+        9900,
+        12200
+      ],
+      "icon": "/images/research/unit-special-training/melee-combat.webp",
+      "prerequisites": [
+        "fast-production"
+      ]
+    },
+    {
+      "id": "weapon-upgrading",
+      "name": {
+        "en": "Weapon Upgrading",
+        "de": "Waffenverbesserung"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        1800,
+        2200,
+        2600,
+        3300,
+        4100,
+        5100,
+        6400,
+        7900,
+        9900,
+        12200
+      ],
+      "icon": "/images/research/unit-special-training/weapon-upgrading.webp",
+      "prerequisites": [
+        "fast-production"
+      ]
+    },
+    {
+      "id": "stronger-armor",
+      "name": {
+        "en": "Stronger Armor",
+        "de": "Stärkere Panzerung"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        1800,
+        2200,
+        2600,
+        3300,
+        4100,
+        5100,
+        6400,
+        7900,
+        9900,
+        12200
+      ],
+      "icon": "/images/research/unit-special-training/stronger-armor.webp",
+      "prerequisites": [
+        "mobility-enhancement"
+      ]
+    },
+    {
+      "id": "shield-upgrade",
+      "name": {
+        "en": "Shield Upgrade",
+        "de": "Schild-Upgrade"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        1800,
+        2200,
+        2600,
+        3300,
+        4100,
+        5100,
+        6400,
+        7900,
+        9900,
+        12200
+      ],
+      "icon": "/images/research/unit-special-training/shield-upgrade.webp",
+      "prerequisites": [
+        "melee-combat"
+      ]
+    },
+    {
+      "id": "camo-coating",
+      "name": {
+        "en": "Camo Coating",
+        "de": "Tarnbeschichtung"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        1800,
+        2200,
+        2600,
+        3300,
+        4100,
+        5100,
+        6400,
+        7900,
+        9900,
+        12200
+      ],
+      "icon": "/images/research/unit-special-training/camo-coating.webp",
+      "prerequisites": [
+        "weapon-upgrading"
+      ]
+    },
+    {
+      "id": "propulsion",
+      "name": {
+        "en": "Propulsion",
+        "de": "Antrieb"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        1400,
+        1700,
+        2000,
+        2900,
+        3600,
+        4500,
+        5600,
+        7100,
+        8600,
+        10600
+      ],
+      "icon": "/images/research/unit-special-training/propulsion.webp",
+      "prerequisites": [
+        "stronger-armor",
+        "shield-upgrade",
+        "camo-coating"
+      ]
+    },
+    {
+      "id": "demolition-crew",
+      "name": {
+        "en": "Demolition Crew",
+        "de": "Sprengkommando"
+      },
+      "maxLevel": 5,
+      "badgeCosts": [
+        3700,
+        5300,
+        8000,
+        12000,
+        18000
+      ],
+      "icon": "/images/research/unit-special-training/demolition-crew.webp",
+      "prerequisites": [
+        "propulsion"
+      ]
+    },
+    {
+      "id": "recharge-shield",
+      "name": {
+        "en": "Recharge Shield",
+        "de": "Schild aufladen"
+      },
+      "maxLevel": 20,
+      "badgeCosts": [
+        2300,
+        4400,
+        6100,
+        7200,
+        8400,
+        9500,
+        10900,
+        12400,
+        14300,
+        16600,
+        17200,
+        19900,
+        21000,
+        23900,
+        28700,
+        32900,
+        37600,
+        43000,
+        49100,
+        56100
+      ],
+      "icon": "/images/research/unit-special-training/recharge-shield.webp",
+      "prerequisites": [
+        "demolition-crew"
+      ]
+    },
+    {
+      "id": "fire-up-2",
+      "name": {
+        "en": "Fire Up",
+        "de": "Feuer frei"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        3500,
+        4800,
+        5500,
+        6500,
+        7500,
+        9500,
+        12000,
+        15000,
+        19000,
+        23500
+      ],
+      "icon": "/images/research/unit-special-training/fire-up.webp",
+      "prerequisites": [
+        "recharge-shield"
+      ]
+    },
+    {
+      "id": "armor-upgrade-2",
+      "name": {
+        "en": "Armor Upgrade",
+        "de": "Panzerverbesserung"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        3500,
+        4800,
+        5500,
+        6500,
+        7500,
+        9500,
+        12000,
+        15000,
+        19000,
+        23500
+      ],
+      "icon": "/images/research/unit-special-training/armor-upgrade.webp",
+      "prerequisites": [
+        "recharge-shield"
+      ]
+    },
+    {
+      "id": "mobility-enhancement-2",
+      "name": {
+        "en": "Mobility Enhancement",
+        "de": "Mobilitätsverbesserung"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        9000,
+        11000,
+        13000,
+        16500,
+        20500,
+        25500,
+        32000,
+        39500,
+        49500,
+        61000
+      ],
+      "icon": "/images/research/unit-special-training/mobility-enhancement.webp",
+      "prerequisites": [
+        "fire-up-2"
+      ]
+    },
+    {
+      "id": "melee-combat-2",
+      "name": {
+        "en": "Melee Combat",
+        "de": "Nahkampf"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        9000,
+        11000,
+        13000,
+        16500,
+        20500,
+        25500,
+        32000,
+        39500,
+        49500,
+        61000
+      ],
+      "icon": "/images/research/unit-special-training/melee-combat.webp",
+      "prerequisites": [
+        "fire-up-2"
+      ]
+    },
+    {
+      "id": "weapon-upgrading-2",
+      "name": {
+        "en": "Weapon Upgrading",
+        "de": "Waffenverbesserung"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        9000,
+        11000,
+        13000,
+        16500,
+        20500,
+        25500,
+        32000,
+        39500,
+        49500,
+        61000
+      ],
+      "icon": "/images/research/unit-special-training/weapon-upgrading.webp",
+      "prerequisites": [
+        "armor-upgrade-2"
+      ]
+    },
+    {
+      "id": "stronger-armor-2",
+      "name": {
+        "en": "Stronger Armor",
+        "de": "Stärkere Panzerung"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        9000,
+        11000,
+        13000,
+        16500,
+        20500,
+        25500,
+        32000,
+        39500,
+        49500,
+        61000
+      ],
+      "icon": "/images/research/unit-special-training/stronger-armor.webp",
+      "prerequisites": [
+        "mobility-enhancement-2"
+      ]
+    },
+    {
+      "id": "shield-upgrade-2",
+      "name": {
+        "en": "Shield Upgrade",
+        "de": "Schild-Upgrade"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        9000,
+        11000,
+        13000,
+        16500,
+        20500,
+        25500,
+        32000,
+        39500,
+        49500,
+        61000
+      ],
+      "icon": "/images/research/unit-special-training/shield-upgrade.webp",
+      "prerequisites": [
+        "melee-combat-2"
+      ]
+    },
+    {
+      "id": "camo-coating-2",
+      "name": {
+        "en": "Camo Coating",
+        "de": "Tarnbeschichtung"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        9000,
+        11000,
+        13000,
+        16500,
+        20500,
+        25500,
+        32000,
+        39500,
+        49500,
+        61000
+      ],
+      "icon": "/images/research/unit-special-training/camo-coating.webp",
+      "prerequisites": [
+        "weapon-upgrading-2"
+      ]
+    },
+    {
+      "id": "propulsion-2",
+      "name": {
+        "en": "Propulsion",
+        "de": "Antrieb"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        7000,
+        8500,
+        10000,
+        14500,
+        18000,
+        22500,
+        28000,
+        35500,
+        43000,
+        53000
+      ],
+      "icon": "/images/research/unit-special-training/propulsion.webp",
+      "prerequisites": [
+        "stronger-armor-2",
+        "shield-upgrade-2",
+        "camo-coating-2"
+      ]
+    },
+    {
+      "id": "demolition-crew-2",
+      "name": {
+        "en": "Demolition Crew",
+        "de": "Sprengkommando"
+      },
+      "maxLevel": 5,
+      "badgeCosts": [
+        18500,
+        26500,
+        40000,
+        60000,
+        90000
+      ],
+      "icon": "/images/research/unit-special-training/demolition-crew.webp",
+      "prerequisites": [
+        "propulsion-2"
+      ]
+    }
+  ]
+}

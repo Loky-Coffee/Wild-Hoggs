@@ -1,0 +1,403 @@
+{
+  "id": "peace_shield",
+  "name": {
+    "en": "Peace Shield",
+    "de": "Friedensschild"
+  },
+  "totalBadges": 267613,
+  "nodeCount": 16,
+  "image": "/images/research/peace-shield.png",
+  "technologies": [
+    {
+      "id": "auto-repair",
+      "name": {
+        "en": "Auto Repair",
+        "de": "Automatische Reparatur"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        83,
+        100,
+        120,
+        140,
+        170,
+        260,
+        320,
+        410,
+        500,
+        610
+      ],
+      "icon": "/images/research/peace-shield/auto-repair.webp",
+      "prerequisites": []
+    },
+    {
+      "id": "combat-policy",
+      "name": {
+        "en": "Combat Policy",
+        "de": "Kampfrichtlinie"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        130,
+        150,
+        180,
+        210,
+        250,
+        310,
+        390,
+        490,
+        610,
+        750
+      ],
+      "icon": "/images/research/peace-shield/combat-policy.webp",
+      "prerequisites": []
+    },
+    {
+      "id": "interceptions",
+      "name": {
+        "en": "Interceptions",
+        "de": "Abfangen"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        130,
+        150,
+        180,
+        210,
+        250,
+        310,
+        390,
+        490,
+        610,
+        750
+      ],
+      "icon": "/images/research/peace-shield/interceptions.webp",
+      "prerequisites": []
+    },
+    {
+      "id": "mobility-enhancement",
+      "name": {
+        "en": "Mobility Enhancement",
+        "de": "Mobilitätsverstärkung"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        200,
+        230,
+        330,
+        420,
+        510,
+        650,
+        810,
+        1000,
+        1200,
+        1500
+      ],
+      "icon": "/images/research/peace-shield/mobility-enhancement.webp",
+      "prerequisites": [
+        "combat-policy"
+      ]
+    },
+    {
+      "id": "melee-combat",
+      "name": {
+        "en": "Melee Combat",
+        "de": "Nahkampf"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        200,
+        230,
+        330,
+        420,
+        510,
+        650,
+        810,
+        1000,
+        1200,
+        1500
+      ],
+      "icon": "/images/research/peace-shield/melee-combat.webp",
+      "prerequisites": [
+        "combat-policy",
+        "interceptions"
+      ]
+    },
+    {
+      "id": "weapon-upgrading",
+      "name": {
+        "en": "Weapon Upgrading",
+        "de": "Waffenverbesserung"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        200,
+        230,
+        330,
+        420,
+        510,
+        650,
+        810,
+        1000,
+        1200,
+        1500
+      ],
+      "icon": "/images/research/peace-shield/weapon-upgrading.webp",
+      "prerequisites": [
+        "interceptions"
+      ]
+    },
+    {
+      "id": "quick-assembly",
+      "name": {
+        "en": "Quick Assembly",
+        "de": "Schnellmontage"
+      },
+      "maxLevel": 5,
+      "badgeCosts": [
+        450,
+        670,
+        950,
+        1300,
+        1800
+      ],
+      "icon": "/images/research/peace-shield/quick-assembly.webp",
+      "prerequisites": [
+        "mobility-enhancement"
+      ]
+    },
+    {
+      "id": "arms-assembly",
+      "name": {
+        "en": "Arms Assembly",
+        "de": "Waffenmontage"
+      },
+      "maxLevel": 5,
+      "badgeCosts": [
+        450,
+        670,
+        950,
+        1300,
+        1800
+      ],
+      "icon": "/images/research/peace-shield/arms-assembly.webp",
+      "prerequisites": [
+        "melee-combat"
+      ]
+    },
+    {
+      "id": "target-training",
+      "name": {
+        "en": "Target Training",
+        "de": "Zieltraining"
+      },
+      "maxLevel": 5,
+      "badgeCosts": [
+        450,
+        670,
+        950,
+        1300,
+        1800
+      ],
+      "icon": "/images/research/peace-shield/target-training.webp",
+      "prerequisites": [
+        "weapon-upgrading"
+      ]
+    },
+    {
+      "id": "urgent-rescue",
+      "name": {
+        "en": "Urgent Rescue",
+        "de": "Notrettung"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        400,
+        470,
+        560,
+        660,
+        830,
+        1200,
+        1600,
+        1900,
+        2400,
+        3000
+      ],
+      "icon": "/images/research/peace-shield/urgent-rescue.webp",
+      "prerequisites": [
+        "quick-assembly",
+        "arms-assembly",
+        "target-training"
+      ]
+    },
+    {
+      "id": "stronger-armor",
+      "name": {
+        "en": "Stronger Armor",
+        "de": "Stärkere Rüstung"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        580,
+        710,
+        950,
+        1200,
+        1500,
+        1900,
+        2400,
+        3000,
+        3700,
+        4600
+      ],
+      "icon": "/images/research/peace-shield/stronger-armor.webp",
+      "prerequisites": [
+        "urgent-rescue"
+      ]
+    },
+    {
+      "id": "shield-upgrade",
+      "name": {
+        "en": "Shield Upgrade",
+        "de": "Schild-Upgrade"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        580,
+        710,
+        950,
+        1200,
+        1500,
+        1900,
+        2400,
+        3000,
+        3700,
+        4600
+      ],
+      "icon": "/images/research/peace-shield/shield-upgrade.webp",
+      "prerequisites": [
+        "urgent-rescue"
+      ]
+    },
+    {
+      "id": "tactical-cover",
+      "name": {
+        "en": "Tactical Cover",
+        "de": "Taktische Deckung"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        580,
+        710,
+        950,
+        1200,
+        1500,
+        1900,
+        2400,
+        3000,
+        3700,
+        4600
+      ],
+      "icon": "/images/research/peace-shield/tactical-cover.webp",
+      "prerequisites": [
+        "urgent-rescue"
+      ]
+    },
+    {
+      "id": "combat-policy-2",
+      "name": {
+        "en": "Combat Policy",
+        "de": "Kampfrichtlinie"
+      },
+      "maxLevel": 20,
+      "badgeCosts": [
+        600,
+        720,
+        840,
+        960,
+        1140,
+        1300,
+        1800,
+        2200,
+        2600,
+        3000,
+        3400,
+        3900,
+        4500,
+        5200,
+        5400,
+        6200,
+        6600,
+        7500,
+        9000,
+        10000
+      ],
+      "icon": "/images/research/peace-shield/combat-policy.webp",
+      "prerequisites": [
+        "stronger-armor",
+        "shield-upgrade",
+        "tactical-cover"
+      ]
+    },
+    {
+      "id": "interceptions-2",
+      "name": {
+        "en": "Interceptions",
+        "de": "Abfangen"
+      },
+      "maxLevel": 20,
+      "badgeCosts": [
+        600,
+        720,
+        840,
+        960,
+        1140,
+        1300,
+        1800,
+        2200,
+        2600,
+        3000,
+        3400,
+        3900,
+        4500,
+        5200,
+        5400,
+        6200,
+        6600,
+        7500,
+        9000,
+        10000
+      ],
+      "icon": "/images/research/peace-shield/interceptions.webp",
+      "prerequisites": [
+        "stronger-armor",
+        "shield-upgrade",
+        "tactical-cover"
+      ]
+    },
+    {
+      "id": "recharge-shield",
+      "name": {
+        "en": "Recharge Shield",
+        "de": "Schild Aufladen"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        2000,
+        2900,
+        3520,
+        4150,
+        5100,
+        6400,
+        8000,
+        10100,
+        12400,
+        15000
+      ],
+      "icon": "/images/research/peace-shield/recharge-shield.webp",
+      "prerequisites": [
+        "combat-policy-2",
+        "interceptions-2"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,165 @@
+---
+import type { Event } from '../data/events';
+
+interface Props {
+  event: Event;
+  lang: 'de' | 'en';
+}
+
+const { event, lang } = Astro.props;
+
+const typeColors = {
+  Rally: '#3498db',
+  War: '#e74c3c',
+  'General Trial': '#9b59b6',
+  'Marshal Guard': '#f39c12',
+  Custom: '#95a5a6',
+};
+
+const statusColors = {
+  upcoming: '#52be80',
+  ongoing: '#f39c12',
+  completed: '#95a5a6',
+};
+
+const formatDate = (date: Date) => {
+  return date.toLocaleDateString(lang === 'de' ? 'de-DE' : 'en-US', {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+};
+
+const statusText = {
+  de: {
+    upcoming: 'Geplant',
+    ongoing: 'Läuft',
+    completed: 'Beendet',
+  },
+  en: {
+    upcoming: 'Upcoming',
+    ongoing: 'Ongoing',
+    completed: 'Completed',
+  },
+};
+---
+
+<div class="event-card" data-status={event.status}>
+  <div class="event-header">
+    <span class="event-type" style={`background: ${typeColors[event.type]}`}>
+      {event.type}
+    </span>
+    <span class="event-status" style={`color: ${statusColors[event.status]}`}>
+      {statusText[lang][event.status]}
+    </span>
+  </div>
+
+  <h3 class="event-title">{event.title}</h3>
+  <p class="event-description">{event.description}</p>
+
+  <div class="event-details">
+    <div class="event-detail">
+      <span class="detail-icon">📅</span>
+      <span>{formatDate(event.date)}</span>
+    </div>
+    <div class="event-detail">
+      <span class="detail-icon">🕐</span>
+      <span>{event.time}</span>
+    </div>
+    {event.participants && (
+      <div class="event-detail">
+        <span class="detail-icon">👥</span>
+        <span>{event.participants} {lang === 'de' ? 'Teilnehmer' : 'participants'}</span>
+      </div>
+    )}
+  </div>
+</div>
+
+<style>
+  .event-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 165, 0, 0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+  }
+
+  .event-card:hover {
+    border-color: rgba(255, 165, 0, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(255, 165, 0, 0.2);
+  }
+
+  .event-card[data-status='completed'] {
+    opacity: 0.6;
+  }
+
+  .event-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .event-type {
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .event-status {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .event-title {
+    color: #ffa500;
+    margin-bottom: 0.75rem;
+    font-size: 1.3rem;
+  }
+
+  .event-description {
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+  }
+
+  .event-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 165, 0, 0.1);
+  }
+
+  .event-detail {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+  }
+
+  .detail-icon {
+    font-size: 1.1rem;
+  }
+
+  @media (max-width: 768px) {
+    .event-card {
+      padding: 1.25rem;
+    }
+
+    .event-title {
+      font-size: 1.1rem;
+    }
+
+    .event-details {
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+  }
+</style>

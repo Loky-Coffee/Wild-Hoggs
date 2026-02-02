@@ -1,0 +1,33 @@
+---
+import Layout from './Layout.astro';
+import Navigation from '../components/Navigation.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<Layout title={title} description={description}>
+  <Navigation />
+  <main class="page-content">
+    <slot />
+  </main>
+</Layout>
+
+<style>
+  .page-content {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 2rem;
+    min-height: calc(100vh - 80px);
+  }
+
+  @media (max-width: 768px) {
+    .page-content {
+      padding: 1rem;
+    }
+  }
+</style>

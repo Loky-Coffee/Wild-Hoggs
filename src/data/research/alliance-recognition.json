@@ -1,0 +1,520 @@
+{
+  "id": "alliance_recognition",
+  "name": {
+    "en": "Alliance Recognition",
+    "de": "Allianz-Anerkennung"
+  },
+  "totalBadges": 356770,
+  "nodeCount": 19,
+  "image": "/images/research/alliance-recognition.png",
+  "technologies": [
+    {
+      "id": "collect-wood",
+      "name": {
+        "en": "Collect Wood",
+        "de": "Holz sammeln"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        150,
+        180,
+        210,
+        250,
+        300,
+        370,
+        460,
+        580,
+        730,
+        890
+      ],
+      "icon": "/images/research/alliance-recognition/collect-wood.webp",
+      "prerequisites": []
+    },
+    {
+      "id": "zent-gatherer",
+      "name": {
+        "en": "Zent Gatherer",
+        "de": "Zent-Sammler"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        150,
+        180,
+        210,
+        250,
+        300,
+        370,
+        460,
+        580,
+        730,
+        890
+      ],
+      "icon": "/images/research/alliance-recognition/zent-gatherer.webp",
+      "prerequisites": []
+    },
+    {
+      "id": "premium-rewards",
+      "name": {
+        "en": "Premium Rewards",
+        "de": "Premium-Belohnungen"
+      },
+      "maxLevel": 1,
+      "badgeCosts": [
+        1200
+      ],
+      "icon": "/images/research/alliance-recognition/premium-rewards.webp",
+      "prerequisites": [
+        {
+          "id": "collect-wood",
+          "requiredLevel": 10
+        },
+        {
+          "id": "zent-gatherer",
+          "requiredLevel": 10
+        }
+      ]
+    },
+    {
+      "id": "event-expert",
+      "name": {
+        "en": "Event Expert",
+        "de": "Event-Experte"
+      },
+      "maxLevel": 20,
+      "badgeCosts": [
+        160,
+        190,
+        230,
+        260,
+        310,
+        370,
+        430,
+        520,
+        610,
+        710,
+        800,
+        920,
+        1000,
+        1200,
+        1400,
+        1400,
+        1600,
+        1700,
+        2000,
+        2400
+      ],
+      "icon": "/images/research/alliance-recognition/event-expert.webp",
+      "prerequisites": [
+        {
+          "id": "premium-rewards",
+          "requiredLevel": 1
+        }
+      ]
+    },
+    {
+      "id": "augmented-engine",
+      "name": {
+        "en": "Augmented Engine",
+        "de": "Verbesserter Motor"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        300,
+        360,
+        420,
+        500,
+        590,
+        740,
+        920,
+        1100,
+        1400,
+        1700
+      ],
+      "icon": "/images/research/alliance-recognition/augmented-engine.webp",
+      "prerequisites": [
+        {
+          "id": "event-expert",
+          "requiredLevel": 1
+        }
+      ]
+    },
+    {
+      "id": "transport-capacity-up",
+      "name": {
+        "en": "Transport Capacity Up",
+        "de": "Transportkapazität erhöhen"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        300,
+        360,
+        420,
+        500,
+        590,
+        740,
+        920,
+        1100,
+        1400,
+        1700
+      ],
+      "icon": "/images/research/alliance-recognition/transport-capacity-up.webp",
+      "prerequisites": [
+        {
+          "id": "event-expert",
+          "requiredLevel": 1
+        }
+      ]
+    },
+    {
+      "id": "production-line-expansion",
+      "name": {
+        "en": "Production Line Expansion",
+        "de": "Produktionslinie erweitern"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        300,
+        360,
+        420,
+        500,
+        590,
+        740,
+        920,
+        1100,
+        1400,
+        1700
+      ],
+      "icon": "/images/research/alliance-recognition/production-line-expansion.webp",
+      "prerequisites": [
+        {
+          "id": "augmented-engine",
+          "requiredLevel": 1
+        }
+      ]
+    },
+    {
+      "id": "fast-production",
+      "name": {
+        "en": "Fast Production",
+        "de": "Schnellproduktion"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        300,
+        360,
+        420,
+        500,
+        590,
+        740,
+        920,
+        1100,
+        1400,
+        1700
+      ],
+      "icon": "/images/research/alliance-recognition/fast-production.webp",
+      "prerequisites": [
+        {
+          "id": "transport-capacity-up",
+          "requiredLevel": 1
+        }
+      ]
+    },
+    {
+      "id": "super-rewards",
+      "name": {
+        "en": "Super Rewards",
+        "de": "Super-Belohnungen"
+      },
+      "maxLevel": 1,
+      "badgeCosts": [
+        4100
+      ],
+      "icon": "/images/research/alliance-recognition/super-rewards.webp",
+      "prerequisites": [
+        {
+          "id": "production-line-expansion",
+          "requiredLevel": 10
+        },
+        {
+          "id": "fast-production",
+          "requiredLevel": 10
+        }
+      ]
+    },
+    {
+      "id": "incentive-gathering",
+      "name": {
+        "en": "Incentive - Gathering",
+        "de": "Anreiz - Sammeln"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        520,
+        620,
+        730,
+        880,
+        1000,
+        1300,
+        1600,
+        2000,
+        2500,
+        3100
+      ],
+      "icon": "/images/research/alliance-recognition/incentive-gathering.webp",
+      "prerequisites": [
+        {
+          "id": "super-rewards",
+          "requiredLevel": 1
+        }
+      ]
+    },
+    {
+      "id": "incentive-modified-vehicle",
+      "name": {
+        "en": "Incentive - Modified Vehicle",
+        "de": "Anreiz - Modifiziertes Fahrzeug"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        520,
+        620,
+        730,
+        880,
+        1000,
+        1300,
+        1600,
+        2000,
+        2500,
+        3100
+      ],
+      "icon": "/images/research/alliance-recognition/incentive-modified-vehicle.webp",
+      "prerequisites": [
+        {
+          "id": "super-rewards",
+          "requiredLevel": 1
+        }
+      ]
+    },
+    {
+      "id": "incentive-development",
+      "name": {
+        "en": "Incentive - Development",
+        "de": "Anreiz - Entwicklung"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        520,
+        620,
+        730,
+        880,
+        1000,
+        1300,
+        1600,
+        2000,
+        2500,
+        3100
+      ],
+      "icon": "/images/research/alliance-recognition/incentive-development.webp",
+      "prerequisites": [
+        {
+          "id": "incentive-gathering",
+          "requiredLevel": 1
+        }
+      ]
+    },
+    {
+      "id": "incentive-equipment",
+      "name": {
+        "en": "Incentive - Equipment",
+        "de": "Anreiz - Ausrüstung"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        520,
+        620,
+        730,
+        880,
+        1000,
+        1300,
+        1600,
+        2000,
+        2500,
+        3100
+      ],
+      "icon": "/images/research/alliance-recognition/incentive-equipment.webp",
+      "prerequisites": [
+        {
+          "id": "incentive-modified-vehicle",
+          "requiredLevel": 1
+        }
+      ]
+    },
+    {
+      "id": "incentive-creeps",
+      "name": {
+        "en": "Incentive - Creeps",
+        "de": "Anreiz - Creeps"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        520,
+        620,
+        730,
+        880,
+        1000,
+        1300,
+        1600,
+        2000,
+        2500,
+        3100
+      ],
+      "icon": "/images/research/alliance-recognition/incentive-creeps.webp",
+      "prerequisites": [
+        {
+          "id": "incentive-development",
+          "requiredLevel": 1
+        }
+      ]
+    },
+    {
+      "id": "incentive-training",
+      "name": {
+        "en": "Incentive - Training",
+        "de": "Anreiz - Training"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        520,
+        620,
+        730,
+        880,
+        1000,
+        1300,
+        1600,
+        2000,
+        2500,
+        3100
+      ],
+      "icon": "/images/research/alliance-recognition/incentive-training.webp",
+      "prerequisites": [
+        {
+          "id": "incentive-equipment",
+          "requiredLevel": 1
+        }
+      ]
+    },
+    {
+      "id": "incentive-recruiting",
+      "name": {
+        "en": "Incentive - Recruiting",
+        "de": "Anreiz - Rekrutierung"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        820,
+        980,
+        1100,
+        1300,
+        1600,
+        2000,
+        2500,
+        3100,
+        3900,
+        4800
+      ],
+      "icon": "/images/research/alliance-recognition/incentive-recruiting.webp",
+      "prerequisites": [
+        {
+          "id": "incentive-creeps",
+          "requiredLevel": 1
+        }
+      ]
+    },
+    {
+      "id": "incentive-killing",
+      "name": {
+        "en": "Incentive - Killing",
+        "de": "Anreiz - Töten"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        820,
+        980,
+        1100,
+        1300,
+        1600,
+        2000,
+        2500,
+        3100,
+        3900,
+        4800
+      ],
+      "icon": "/images/research/alliance-recognition/incentive-killing.webp",
+      "prerequisites": [
+        {
+          "id": "incentive-training",
+          "requiredLevel": 1
+        }
+      ]
+    },
+    {
+      "id": "event-king",
+      "name": {
+        "en": "Event King",
+        "de": "Event-König"
+      },
+      "maxLevel": 20,
+      "badgeCosts": [
+        1200,
+        1500,
+        1700,
+        2000,
+        2300,
+        2800,
+        3300,
+        4000,
+        4700,
+        5500,
+        6200,
+        7100,
+        8100,
+        9300,
+        10800,
+        11200,
+        13000,
+        13700,
+        15600,
+        18700
+      ],
+      "icon": "/images/research/alliance-recognition/event-king.webp",
+      "prerequisites": [
+        {
+          "id": "incentive-recruiting",
+          "requiredLevel": 10
+        },
+        {
+          "id": "incentive-killing",
+          "requiredLevel": 10
+        }
+      ]
+    },
+    {
+      "id": "one-more",
+      "name": {
+        "en": "One More!",
+        "de": "Noch einer!"
+      },
+      "maxLevel": 1,
+      "badgeCosts": [
+        20500
+      ],
+      "icon": "/images/research/alliance-recognition/one-more.webp",
+      "prerequisites": [
+        {
+          "id": "event-king",
+          "requiredLevel": 20
+        }
+      ]
+    }
+  ]
+}

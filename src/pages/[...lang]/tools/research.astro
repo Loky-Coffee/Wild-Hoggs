@@ -1,0 +1,226 @@
+---
+import PageLayout from '../../../layouts/PageLayout.astro';
+import { getLangFromUrl, useTranslations } from '../../../i18n/utils';
+
+// Import all research category data
+import allianceRecognition from '../../../data/research/alliance-recognition.json';
+import unitSpecialTraining from '../../../data/research/unit-special-training.json';
+import fullyArmedAlliance from '../../../data/research/fully-armed-alliance.json';
+import field from '../../../data/research/field.json';
+import heroTraining from '../../../data/research/hero-training.json';
+import militaryStrategies from '../../../data/research/military-strategies.json';
+import peaceShield from '../../../data/research/peace-shield.json';
+import siegeToSeize from '../../../data/research/siege-to-seize.json';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'en' } },
+    { params: { lang: 'de' } },
+  ];
+}
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+// Map category data by ID
+const researchDataMap: Record<string, any> = {
+  alliance_recognition: allianceRecognition,
+  unit_special_training: unitSpecialTraining,
+  fully_armed_alliance: fullyArmedAlliance,
+  field: field,
+  hero_training: heroTraining,
+  military_strategies: militaryStrategies,
+  peace_shield: peaceShield,
+  siege_to_seize: siegeToSeize,
+};
+
+const categories = [
+  { id: 'unit_special_training', icon: '🎖️' },
+  { id: 'fully_armed_alliance', icon: '⚔️' },
+  { id: 'field', icon: '🏕️' },
+  { id: 'alliance_recognition', icon: '🏆' },
+  { id: 'military_strategies', icon: '📋' },
+  { id: 'peace_shield', icon: '🛡️' },
+  { id: 'siege_to_seize', icon: '🏰' },
+  { id: 'hero_training', icon: '💪' },
+];
+---
+
+<PageLayout title={`${t('tools.research.title')} - Wild Hoggs`} description={t('tools.research.description')}>
+  <div class="page-header">
+    <h1>{t('tools.research.title')}</h1>
+    <p class="subtitle">{lang === 'de' ? 'Last-Z Forschungs-Kategorien' : 'Last-Z Research Categories'}</p>
+  </div>
+
+  <div class="categories-grid">
+    {categories.map(({ id, icon }) => {
+      const category = researchDataMap[id];
+      if (!category) return null;
+
+      const isEnabled = id === 'alliance_recognition';
+      const CardTag = isEnabled ? 'a' : 'div';
+
+      return (
+        <CardTag href={isEnabled ? `/${lang}/tools/research/${id}` : undefined} class={`category-card ${!isEnabled ? 'disabled' : ''}`}>
+          <div class="category-icon-wrapper">
+            {category.image ? (
+              <img src={category.image} alt={category.name[lang]} class="category-image" />
+            ) : (
+              <div class="category-icon">{icon}</div>
+            )}
+          </div>
+          <h2>{category.name[lang]}</h2>
+          <div class="category-stats">
+            <div class="stat">
+              <span class="stat-value">{category.totalBadges.toLocaleString(lang === 'de' ? 'de-DE' : 'en-US')}</span>
+              <span class="stat-label">🎖️ Badges</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">{category.nodeCount}</span>
+              <span class="stat-label">{lang === 'de' ? 'Technologien' : 'Technologies'}</span>
+            </div>
+          </div>
+          {isEnabled ? (
+            <span class="available">{lang === 'de' ? 'Verfügbar →' : 'Available →'}</span>
+          ) : (
+            <span class="coming-soon">{lang === 'de' ? 'Demnächst verfügbar' : 'Coming Soon'}</span>
+          )}
+        </CardTag>
+      );
+    })}
+  </div>
+</PageLayout>
+
+<style>
+  .page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    color: #ffa500;
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+
+  .category-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 165, 0, 0.2);
+    border-radius: 12px;
+    padding: 2rem;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.3s ease;
+  }
+
+  .category-card:hover {
+    border-color: rgba(255, 165, 0, 0.5);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(255, 165, 0, 0.2);
+  }
+
+  .category-card.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .category-card.disabled:hover {
+    border-color: rgba(255, 165, 0, 0.2);
+    transform: none;
+    box-shadow: none;
+  }
+
+  .category-icon-wrapper {
+    margin-bottom: 1rem;
+  }
+
+  .category-icon {
+    font-size: 3rem;
+  }
+
+  .category-image {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+  }
+
+  .category-card h2 {
+    color: #ffa500;
+    margin-bottom: 1.5rem;
+    font-size: 1.3rem;
+    text-align: center;
+  }
+
+  .category-stats {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .stat-value {
+    color: #ffa500;
+    font-size: 1.2rem;
+    font-weight: 700;
+  }
+
+  .stat-label {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.85rem;
+  }
+
+  .available {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: rgba(39, 174, 96, 0.2);
+    color: #52be80;
+    border: 1px solid rgba(39, 174, 96, 0.3);
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .coming-soon {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: rgba(128, 128, 128, 0.2);
+    color: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(128, 128, 128, 0.3);
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  @media (max-width: 1024px) {
+    .categories-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .categories-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

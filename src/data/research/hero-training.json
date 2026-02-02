@@ -1,0 +1,264 @@
+{
+  "id": "hero_training",
+  "name": {
+    "en": "Hero Training",
+    "de": "Helden-Training"
+  },
+  "totalBadges": 37270,
+  "nodeCount": 13,
+  "image": "/images/research/hero-training.png",
+  "technologies": [
+    {
+      "id": "atk-spec-1",
+      "name": {
+        "en": "Attack Special Training",
+        "de": "Angriffs-Spezialtraining"
+      },
+      "maxLevel": 5,
+      "badgeCosts": [
+        30,
+        30,
+        30,
+        30,
+        30
+      ],
+      "icon": "/images/research/hero-training/atk-spec.webp",
+      "prerequisites": []
+    },
+    {
+      "id": "str-train-1",
+      "name": {
+        "en": "Strength Training",
+        "de": "Krafttraining"
+      },
+      "maxLevel": 5,
+      "badgeCosts": [
+        30,
+        30,
+        30,
+        30,
+        30
+      ],
+      "icon": "/images/research/hero-training/str-train.webp",
+      "prerequisites": []
+    },
+    {
+      "id": "rose-bloom",
+      "name": {
+        "en": "Rose Bloom",
+        "de": "Rosenblüte"
+      },
+      "maxLevel": 5,
+      "badgeCosts": [
+        50,
+        51,
+        52,
+        53,
+        54
+      ],
+      "icon": "/images/research/hero-training/rose-bloom.webp",
+      "prerequisites": [
+        "atk-spec-1",
+        "str-train-1"
+      ]
+    },
+    {
+      "id": "morning-star",
+      "name": {
+        "en": "Morning Star",
+        "de": "Morgenstern"
+      },
+      "maxLevel": 5,
+      "badgeCosts": [
+        50,
+        51,
+        52,
+        53,
+        54
+      ],
+      "icon": "/images/research/hero-training/morning-star.webp",
+      "prerequisites": [
+        "atk-spec-1",
+        "str-train-1"
+      ]
+    },
+    {
+      "id": "light-of-order",
+      "name": {
+        "en": "Light of Order",
+        "de": "Licht der Ordnung"
+      },
+      "maxLevel": 5,
+      "badgeCosts": [
+        50,
+        51,
+        52,
+        53,
+        54
+      ],
+      "icon": "/images/research/hero-training/light-of-order.webp",
+      "prerequisites": [
+        "atk-spec-1",
+        "str-train-1"
+      ]
+    },
+    {
+      "id": "resource-gathering-1",
+      "name": {
+        "en": "Resource Gathering",
+        "de": "Ressourcensammlung"
+      },
+      "maxLevel": 3,
+      "badgeCosts": [
+        340,
+        570,
+        1000
+      ],
+      "icon": "/images/research/hero-training/resource-gathering.webp",
+      "prerequisites": [
+        "rose-bloom",
+        "morning-star",
+        "light-of-order"
+      ]
+    },
+    {
+      "id": "rose-barrier",
+      "name": {
+        "en": "Rose Barrier",
+        "de": "Rosenbarriere"
+      },
+      "maxLevel": 5,
+      "badgeCosts": [
+        290,
+        370,
+        520,
+        770,
+        1200
+      ],
+      "icon": "/images/research/hero-training/rose-barrier.webp",
+      "prerequisites": [
+        "resource-gathering-1"
+      ]
+    },
+    {
+      "id": "dawns-light",
+      "name": {
+        "en": "Dawn's Light",
+        "de": "Licht der Dämmerung"
+      },
+      "maxLevel": 5,
+      "badgeCosts": [
+        290,
+        370,
+        520,
+        770,
+        1200
+      ],
+      "icon": "/images/research/hero-training/dawns-light.webp",
+      "prerequisites": [
+        "resource-gathering-1"
+      ]
+    },
+    {
+      "id": "shield-of-order",
+      "name": {
+        "en": "Shield of Order",
+        "de": "Schild der Ordnung"
+      },
+      "maxLevel": 5,
+      "badgeCosts": [
+        290,
+        370,
+        520,
+        770,
+        1200
+      ],
+      "icon": "/images/research/hero-training/shield-of-order.webp",
+      "prerequisites": [
+        "resource-gathering-1"
+      ]
+    },
+    {
+      "id": "cockpit",
+      "name": {
+        "en": "Cockpit",
+        "de": "Cockpit"
+      },
+      "maxLevel": 1,
+      "badgeCosts": [
+        2200
+      ],
+      "icon": "/images/research/hero-training/cockpit.webp",
+      "prerequisites": [
+        "rose-barrier",
+        "dawns-light",
+        "shield-of-order"
+      ]
+    },
+    {
+      "id": "resource-gathering-2",
+      "name": {
+        "en": "Resource Gathering",
+        "de": "Ressourcensammlung"
+      },
+      "maxLevel": 3,
+      "badgeCosts": [
+        500,
+        850,
+        1500
+      ],
+      "icon": "/images/research/hero-training/resource-gathering.webp",
+      "prerequisites": [
+        "cockpit"
+      ]
+    },
+    {
+      "id": "atk-spec-2",
+      "name": {
+        "en": "Attack Special Training",
+        "de": "Angriffs-Spezialtraining"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        280,
+        330,
+        390,
+        470,
+        550,
+        690,
+        1300,
+        1600,
+        1860,
+        2160
+      ],
+      "icon": "/images/research/hero-training/atk-spec.webp",
+      "prerequisites": [
+        "resource-gathering-2"
+      ]
+    },
+    {
+      "id": "str-train-2",
+      "name": {
+        "en": "Strength Training",
+        "de": "Krafttraining"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        280,
+        330,
+        390,
+        470,
+        550,
+        690,
+        1300,
+        1600,
+        1860,
+        2160
+      ],
+      "icon": "/images/research/hero-training/str-train.webp",
+      "prerequisites": [
+        "resource-gathering-2"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,427 @@
+{
+  "id": "siege_to_seize",
+  "name": {
+    "en": "Siege to Seize",
+    "de": "Belagerung zum Erobern"
+  },
+  "totalBadges": 256775,
+  "nodeCount": 18,
+  "image": "/images/research/siege-to-seize.png",
+  "technologies": [
+    {
+      "id": "demolition-crew",
+      "name": {
+        "en": "Demolition Crew",
+        "de": "Sprengkommando"
+      },
+      "maxLevel": 5,
+      "badgeCosts": [
+        81,
+        110,
+        150,
+        220,
+        350
+      ],
+      "icon": "/images/research/siege-to-seize/demolition-crew.webp",
+      "prerequisites": []
+    },
+    {
+      "id": "joint-operation",
+      "name": {
+        "en": "Joint Operation",
+        "de": "Gemeinsamer Einsatz"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        97,
+        120,
+        140,
+        160,
+        190,
+        240,
+        300,
+        380,
+        470,
+        580
+      ],
+      "icon": "/images/research/siege-to-seize/joint-operation.webp",
+      "prerequisites": [
+        "demolition-crew"
+      ]
+    },
+    {
+      "id": "mobile-defense",
+      "name": {
+        "en": "Mobile Defense",
+        "de": "Mobile Verteidigung"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        97,
+        120,
+        140,
+        160,
+        190,
+        240,
+        300,
+        380,
+        470,
+        580
+      ],
+      "icon": "/images/research/siege-to-seize/mobile-defense.webp",
+      "prerequisites": [
+        "demolition-crew"
+      ]
+    },
+    {
+      "id": "mobility-enhancement",
+      "name": {
+        "en": "Mobility Enhancement",
+        "de": "Mobilitätsverbesserung"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        230,
+        270,
+        320,
+        400,
+        500,
+        630,
+        790,
+        960,
+        1200,
+        1500
+      ],
+      "icon": "/images/research/siege-to-seize/mobility-enhancement.webp",
+      "prerequisites": [
+        "joint-operation"
+      ]
+    },
+    {
+      "id": "melee-combat",
+      "name": {
+        "en": "Melee Combat",
+        "de": "Nahkampf"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        230,
+        270,
+        320,
+        400,
+        500,
+        630,
+        790,
+        960,
+        1200,
+        1500
+      ],
+      "icon": "/images/research/siege-to-seize/melee-combat.webp",
+      "prerequisites": [
+        "joint-operation"
+      ]
+    },
+    {
+      "id": "weapon-upgrading",
+      "name": {
+        "en": "Weapon Upgrading",
+        "de": "Waffenverbesserung"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        230,
+        270,
+        320,
+        400,
+        500,
+        630,
+        790,
+        960,
+        1200,
+        1500
+      ],
+      "icon": "/images/research/siege-to-seize/weapon-upgrading.webp",
+      "prerequisites": [
+        "mobile-defense"
+      ]
+    },
+    {
+      "id": "load-module",
+      "name": {
+        "en": "Load Module",
+        "de": "Lademodul"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        450,
+        560,
+        700,
+        880,
+        1100,
+        1300,
+        1600,
+        2000,
+        2500,
+        3100
+      ],
+      "icon": "/images/research/siege-to-seize/load-module.webp",
+      "prerequisites": [
+        "mobility-enhancement",
+        "weapon-upgrading"
+      ]
+    },
+    {
+      "id": "propulsion",
+      "name": {
+        "en": "Propulsion",
+        "de": "Antrieb"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        450,
+        560,
+        700,
+        880,
+        1100,
+        1300,
+        1600,
+        2000,
+        2500,
+        3100
+      ],
+      "icon": "/images/research/siege-to-seize/propulsion.webp",
+      "prerequisites": [
+        "mobility-enhancement",
+        "weapon-upgrading"
+      ]
+    },
+    {
+      "id": "quick-assembly",
+      "name": {
+        "en": "Quick Assembly",
+        "de": "Schnellmontage"
+      },
+      "maxLevel": 5,
+      "badgeCosts": [
+        520,
+        720,
+        1070,
+        1720,
+        2700
+      ],
+      "icon": "/images/research/siege-to-seize/quick-assembly.webp",
+      "prerequisites": [
+        "load-module"
+      ]
+    },
+    {
+      "id": "arms-assembly",
+      "name": {
+        "en": "Arms Assembly",
+        "de": "Waffenmontage"
+      },
+      "maxLevel": 5,
+      "badgeCosts": [
+        520,
+        720,
+        1070,
+        1720,
+        2700
+      ],
+      "icon": "/images/research/siege-to-seize/arms-assembly.webp",
+      "prerequisites": [
+        "load-module"
+      ]
+    },
+    {
+      "id": "target-training",
+      "name": {
+        "en": "Target Training",
+        "de": "Zieltraining"
+      },
+      "maxLevel": 5,
+      "badgeCosts": [
+        520,
+        720,
+        1070,
+        1720,
+        2700
+      ],
+      "icon": "/images/research/siege-to-seize/target-training.webp",
+      "prerequisites": [
+        "propulsion"
+      ]
+    },
+    {
+      "id": "stronger-armor",
+      "name": {
+        "en": "Stronger Armor",
+        "de": "Stärkere Panzerung"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        690,
+        810,
+        980,
+        1160,
+        1700,
+        2200,
+        3400,
+        4200,
+        5300,
+        6600
+      ],
+      "icon": "/images/research/siege-to-seize/stronger-armor.webp",
+      "prerequisites": [
+        "quick-assembly",
+        "arms-assembly",
+        "target-training"
+      ]
+    },
+    {
+      "id": "shield-upgrade",
+      "name": {
+        "en": "Shield Upgrade",
+        "de": "Schild-Upgrade"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        690,
+        810,
+        980,
+        1160,
+        1700,
+        2200,
+        3400,
+        4200,
+        5300,
+        6600
+      ],
+      "icon": "/images/research/siege-to-seize/shield-upgrade.webp",
+      "prerequisites": [
+        "quick-assembly",
+        "arms-assembly",
+        "target-training"
+      ]
+    },
+    {
+      "id": "tactical-cover",
+      "name": {
+        "en": "Tactical Cover",
+        "de": "Taktische Deckung"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        690,
+        810,
+        980,
+        1160,
+        1700,
+        2200,
+        3400,
+        4200,
+        5300,
+        6600
+      ],
+      "icon": "/images/research/siege-to-seize/tactical-cover.webp",
+      "prerequisites": [
+        "quick-assembly",
+        "arms-assembly",
+        "target-training"
+      ]
+    },
+    {
+      "id": "recharge-shield",
+      "name": {
+        "en": "Recharge Shield",
+        "de": "Schild aufladen"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        770,
+        920,
+        1080,
+        1310,
+        1540,
+        3000,
+        3700,
+        4600,
+        5800,
+        7200
+      ],
+      "icon": "/images/research/siege-to-seize/recharge-shield.webp",
+      "prerequisites": [
+        "stronger-armor",
+        "shield-upgrade",
+        "tactical-cover"
+      ]
+    },
+    {
+      "id": "demolition-crew-2",
+      "name": {
+        "en": "Demolition Crew",
+        "de": "Sprengkommando"
+      },
+      "maxLevel": 5,
+      "badgeCosts": [
+        405,
+        550,
+        750,
+        1100,
+        1750
+      ],
+      "icon": "/images/research/siege-to-seize/demolition-crew.webp",
+      "prerequisites": [
+        "recharge-shield"
+      ]
+    },
+    {
+      "id": "joint-operation-2",
+      "name": {
+        "en": "Joint Operation",
+        "de": "Gemeinsamer Einsatz"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        485,
+        600,
+        700,
+        800,
+        950,
+        1200,
+        1500,
+        1900,
+        2350,
+        2900
+      ],
+      "icon": "/images/research/siege-to-seize/joint-operation.webp",
+      "prerequisites": [
+        "demolition-crew-2"
+      ]
+    },
+    {
+      "id": "mobile-defense-2",
+      "name": {
+        "en": "Mobile Defense",
+        "de": "Mobile Verteidigung"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        485,
+        600,
+        700,
+        800,
+        950,
+        1200,
+        1500,
+        1900,
+        2350,
+        2900
+      ],
+      "icon": "/images/research/siege-to-seize/mobile-defense.webp",
+      "prerequisites": [
+        "demolition-crew-2"
+      ]
+    }
+  ]
+}

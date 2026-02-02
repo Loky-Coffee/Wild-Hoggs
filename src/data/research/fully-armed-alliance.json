@@ -1,0 +1,466 @@
+{
+  "id": "fully_armed_alliance",
+  "name": {
+    "en": "Fully Armed Alliance",
+    "de": "Vollbewaffnete Allianz"
+  },
+  "totalBadges": 470820,
+  "nodeCount": 18,
+  "image": "/images/research/fully-armed-alliance.png",
+  "technologies": [
+    {
+      "id": "mechanical-repair",
+      "name": {
+        "en": "Mechanical Repair",
+        "de": "Mechanische Reparatur"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        270,
+        320,
+        380,
+        460,
+        540,
+        680,
+        840,
+        1000,
+        1300,
+        1600
+      ],
+      "icon": "/images/research/fully-armed-alliance/mechanical-repair.webp",
+      "prerequisites": []
+    },
+    {
+      "id": "piercing-shot",
+      "name": {
+        "en": "Piercing Shot",
+        "de": "Durchdringender Schuss"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        340,
+        410,
+        470,
+        570,
+        2000,
+        2500,
+        3100,
+        3900,
+        4800,
+        6000
+      ],
+      "icon": "/images/research/fully-armed-alliance/piercing-shot.webp",
+      "prerequisites": [
+        "mechanical-repair"
+      ]
+    },
+    {
+      "id": "tough-shield",
+      "name": {
+        "en": "Tough Shield",
+        "de": "Robuster Schild"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        340,
+        410,
+        470,
+        570,
+        2000,
+        2500,
+        3100,
+        3900,
+        4800,
+        6000
+      ],
+      "icon": "/images/research/fully-armed-alliance/tough-shield.webp",
+      "prerequisites": [
+        "mechanical-repair"
+      ]
+    },
+    {
+      "id": "bazooka",
+      "name": {
+        "en": "Bazooka",
+        "de": "Panzerfaust"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        490,
+        690,
+        810,
+        1200,
+        1500,
+        1900,
+        2400,
+        3000,
+        3700,
+        4600
+      ],
+      "icon": "/images/research/fully-armed-alliance/bazooka.webp",
+      "prerequisites": [
+        "piercing-shot"
+      ]
+    },
+    {
+      "id": "hold-fast",
+      "name": {
+        "en": "Hold Fast",
+        "de": "Durchhalten"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        490,
+        690,
+        810,
+        1200,
+        1500,
+        1900,
+        2400,
+        3000,
+        3700,
+        4600
+      ],
+      "icon": "/images/research/fully-armed-alliance/hold-fast.webp",
+      "prerequisites": [
+        "tough-shield"
+      ]
+    },
+    {
+      "id": "circuitous-tactics",
+      "name": {
+        "en": "Circuitous Tactics",
+        "de": "Umwege-Taktiken"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        490,
+        690,
+        810,
+        1200,
+        1500,
+        1900,
+        2400,
+        3000,
+        3700,
+        4600
+      ],
+      "icon": "/images/research/fully-armed-alliance/circuitous-tactics.webp",
+      "prerequisites": [
+        "bazooka"
+      ]
+    },
+    {
+      "id": "alloy-composite",
+      "name": {
+        "en": "Alloy Composite",
+        "de": "Legierungsverbund"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        490,
+        690,
+        810,
+        1200,
+        1500,
+        1900,
+        2400,
+        3000,
+        3700,
+        4600
+      ],
+      "icon": "/images/research/fully-armed-alliance/alloy-composite.webp",
+      "prerequisites": [
+        "hold-fast"
+      ]
+    },
+    {
+      "id": "peace-breaker",
+      "name": {
+        "en": "Peace Breaker",
+        "de": "Friedensbrecher"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        650,
+        760,
+        920,
+        2100,
+        2600,
+        3200,
+        4000,
+        5000,
+        6200,
+        7700
+      ],
+      "icon": "/images/research/fully-armed-alliance/peace-breaker.webp",
+      "prerequisites": [
+        "circuitous-tactics",
+        "alloy-composite"
+      ]
+    },
+    {
+      "id": "annihilation",
+      "name": {
+        "en": "Annihilation",
+        "de": "Vernichtung"
+      },
+      "maxLevel": 20,
+      "badgeCosts": [
+        800,
+        910,
+        1800,
+        2500,
+        2800,
+        3700,
+        5100,
+        5900,
+        8500,
+        10500,
+        12200,
+        14100,
+        16400,
+        19000,
+        22000,
+        25500,
+        29500,
+        34200,
+        39500,
+        45700
+      ],
+      "icon": "/images/research/fully-armed-alliance/annihilation.webp",
+      "prerequisites": [
+        "peace-breaker"
+      ]
+    },
+    {
+      "id": "riders-attack-training",
+      "name": {
+        "en": "Rider's Attack Training",
+        "de": "Reiter-Angriffstraining"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        950,
+        1100,
+        2300,
+        2900,
+        3600,
+        4600,
+        5600,
+        7000,
+        8700,
+        10700
+      ],
+      "icon": "/images/research/fully-armed-alliance/riders-attack-training.webp",
+      "prerequisites": [
+        "annihilation"
+      ]
+    },
+    {
+      "id": "assaulters-attack-training",
+      "name": {
+        "en": "Assaulter's Attack Training",
+        "de": "Angreifer-Angriffstraining"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        950,
+        1100,
+        2300,
+        2900,
+        3600,
+        4600,
+        5600,
+        7000,
+        8700,
+        10700
+      ],
+      "icon": "/images/research/fully-armed-alliance/assaulters-attack-training.webp",
+      "prerequisites": [
+        "annihilation"
+      ]
+    },
+    {
+      "id": "shooters-attack-training",
+      "name": {
+        "en": "Shooter's Attack Training",
+        "de": "Schützen-Angriffstraining"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        950,
+        1100,
+        2300,
+        2900,
+        3600,
+        4600,
+        5600,
+        7000,
+        8700,
+        10700
+      ],
+      "icon": "/images/research/fully-armed-alliance/shooters-attack-training.webp",
+      "prerequisites": [
+        "annihilation"
+      ]
+    },
+    {
+      "id": "riders-defense-training",
+      "name": {
+        "en": "Rider's Defense Training",
+        "de": "Reiter-Verteidigungstraining"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        950,
+        1100,
+        2300,
+        2900,
+        3600,
+        4600,
+        5600,
+        7000,
+        8700,
+        10700
+      ],
+      "icon": "/images/research/fully-armed-alliance/riders-defense-training.webp",
+      "prerequisites": [
+        "riders-attack-training"
+      ]
+    },
+    {
+      "id": "assaulters-defense-training",
+      "name": {
+        "en": "Assaulter's Defense Training",
+        "de": "Angreifer-Verteidigungstraining"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        950,
+        1100,
+        2300,
+        2900,
+        3600,
+        4600,
+        5600,
+        7000,
+        8700,
+        10700
+      ],
+      "icon": "/images/research/fully-armed-alliance/assaulters-defense-training.webp",
+      "prerequisites": [
+        "assaulters-attack-training"
+      ]
+    },
+    {
+      "id": "shooters-defense-training",
+      "name": {
+        "en": "Shooter's Defense Training",
+        "de": "Schützen-Verteidigungstraining"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        950,
+        1100,
+        2300,
+        2900,
+        3600,
+        4600,
+        5600,
+        7000,
+        8700,
+        10700
+      ],
+      "icon": "/images/research/fully-armed-alliance/shooters-defense-training.webp",
+      "prerequisites": [
+        "shooters-attack-training"
+      ]
+    },
+    {
+      "id": "mechanical-repair-2",
+      "name": {
+        "en": "Mechanical Repair",
+        "de": "Mechanische Reparatur"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        1400,
+        5700,
+        7000,
+        8800,
+        10800,
+        13500,
+        16700,
+        20900,
+        25800,
+        32000
+      ],
+      "icon": "/images/research/fully-armed-alliance/mechanical-repair.webp",
+      "prerequisites": [
+        "riders-defense-training",
+        "assaulters-defense-training"
+      ]
+    },
+    {
+      "id": "repair-kit",
+      "name": {
+        "en": "Repair Kit",
+        "de": "Reparatur-Set"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        1400,
+        5700,
+        7000,
+        8800,
+        10800,
+        13500,
+        16700,
+        20900,
+        25800,
+        32000
+      ],
+      "icon": "/images/research/fully-armed-alliance/repair-kit.webp",
+      "prerequisites": [
+        "assaulters-defense-training",
+        "shooters-defense-training"
+      ]
+    },
+    {
+      "id": "move-out",
+      "name": {
+        "en": "Move Out",
+        "de": "Rücken aus"
+      },
+      "maxLevel": 20,
+      "badgeCosts": [
+        1700,
+        3500,
+        4100,
+        4800,
+        5500,
+        6200,
+        7100,
+        8200,
+        9500,
+        9800,
+        11400,
+        12000,
+        13700,
+        16400,
+        18800,
+        21600,
+        24800,
+        28400,
+        32600,
+        37300
+      ],
+      "icon": "/images/research/fully-armed-alliance/move-out.webp",
+      "prerequisites": [
+        "mechanical-repair-2",
+        "repair-kit"
+      ]
+    }
+  ]
+}

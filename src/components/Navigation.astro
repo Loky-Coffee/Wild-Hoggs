@@ -1,0 +1,257 @@
+---
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const routes = [
+  { key: 'nav.home', path: lang === 'de' ? '/de' : '/en' },
+  { key: 'nav.members', path: lang === 'de' ? '/de/members' : '/en/members' },
+  { key: 'nav.tools', path: lang === 'de' ? '/de/tools' : '/en/tools' },
+  { key: 'nav.events', path: lang === 'de' ? '/de/events' : '/en/events' },
+  { key: 'nav.heroes', path: lang === 'de' ? '/de/heroes' : '/en/heroes' },
+  { key: 'nav.guides', path: lang === 'de' ? '/de/guides' : '/en/guides' },
+] as const;
+
+const currentPath = Astro.url.pathname;
+---
+
+<nav class="navigation">
+  <div class="nav-container">
+    <div class="nav-brand">
+      <a href={lang === 'de' ? '/de' : '/en'}>
+        <span class="brand-text">Wild Hoggs</span>
+      </a>
+    </div>
+
+    <button class="nav-toggle" aria-label="Toggle navigation">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <ul class="nav-links">
+      {routes.map(({ key, path }) => (
+        <li>
+          <a
+            href={path}
+            class:list={['nav-link', { active: currentPath === path }]}
+          >
+            {t(key)}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <div class="lang-switcher">
+      <a
+        href={lang === 'de'
+          ? Astro.url.pathname.replace(/^\/de/, '/en')
+          : Astro.url.pathname === '/'
+            ? '/de'
+            : Astro.url.pathname.replace(/^\/en/, '/de')
+        }
+        class="lang-link"
+        aria-label={lang === 'de' ? 'Switch to English' : 'Zu Deutsch wechseln'}
+      >
+        {lang === 'de' ? 'EN' : 'DE'}
+      </a>
+    </div>
+  </div>
+</nav>
+
+<style>
+  .navigation {
+    background: rgba(26, 26, 26, 0.9);
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid rgba(255, 165, 0, 0.3);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+
+  .nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  .nav-brand a {
+    text-decoration: none;
+    color: #ffa500;
+    font-size: 1.5rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    transition: color 0.3s ease;
+  }
+
+  .nav-brand a:hover {
+    color: #ff8c00;
+  }
+
+  .nav-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+  }
+
+  .nav-toggle span {
+    width: 25px;
+    height: 3px;
+    background: #ffa500;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+
+  .nav-links {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+    flex: 1;
+    justify-content: center;
+  }
+
+  .nav-link {
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: #ffa500;
+    transition: width 0.3s ease;
+  }
+
+  .nav-link:hover::after,
+  .nav-link.active::after {
+    width: 80%;
+  }
+
+  .nav-link:hover {
+    color: #ffa500;
+  }
+
+  .nav-link.active {
+    color: #ffa500;
+  }
+
+  .lang-switcher {
+    display: flex;
+    align-items: center;
+  }
+
+  .lang-link {
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border: 2px solid #ffa500;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+  }
+
+  .lang-link:hover {
+    background: #ffa500;
+    color: #1a1a1a;
+  }
+
+  @media (max-width: 768px) {
+    .navigation {
+      position: relative;
+    }
+
+    .nav-container {
+      padding: 1rem;
+      flex-wrap: nowrap;
+      position: relative;
+    }
+
+    .nav-toggle {
+      display: flex;
+      margin-left: auto;
+    }
+
+    .nav-brand {
+      flex: 1;
+    }
+
+    .lang-switcher {
+      margin-left: 1rem;
+    }
+
+    .nav-links {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      width: 100%;
+      flex-direction: column;
+      gap: 0;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-in-out;
+      background: rgba(26, 26, 26, 0.98);
+      margin: 0;
+      padding: 0;
+      border-top: 2px solid rgba(255, 165, 0, 0.3);
+    }
+
+    .nav-links.open {
+      max-height: 600px;
+      overflow-y: auto;
+    }
+
+    .nav-links li {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-link {
+      display: block;
+      width: 100%;
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid rgba(255, 165, 0, 0.2);
+      text-align: left;
+      box-sizing: border-box;
+    }
+
+    .nav-link::after {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const toggle = document.querySelector('.nav-toggle');
+    const navLinks = document.querySelector('.nav-links');
+
+    toggle?.addEventListener('click', () => {
+      navLinks?.classList.toggle('open');
+    });
+  });
+</script>

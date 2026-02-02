@@ -1,0 +1,353 @@
+{
+  "id": "field",
+  "name": {
+    "en": "Field",
+    "de": "Feld"
+  },
+  "totalBadges": 594430,
+  "nodeCount": 14,
+  "image": "/images/research/field.png",
+  "technologies": [
+    {
+      "id": "field-training",
+      "name": {
+        "en": "Field Training",
+        "de": "Feldtraining"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        380,
+        450,
+        520,
+        640,
+        750,
+        940,
+        1100,
+        1400,
+        1800,
+        2200
+      ],
+      "icon": "/images/research/field/field-training.webp",
+      "prerequisites": []
+    },
+    {
+      "id": "camo-coating",
+      "name": {
+        "en": "Camo Coating",
+        "de": "Tarnanstrich"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        380,
+        450,
+        520,
+        640,
+        750,
+        940,
+        1100,
+        1400,
+        1800,
+        2200
+      ],
+      "icon": "/images/research/field/camo-coating.webp",
+      "prerequisites": []
+    },
+    {
+      "id": "mobility-enhancement",
+      "name": {
+        "en": "Mobility Enhancement",
+        "de": "Mobilitätsverbesserung"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        560,
+        670,
+        790,
+        950,
+        1700,
+        2100,
+        2700,
+        3300,
+        4400,
+        5500
+      ],
+      "icon": "/images/research/field/mobility-enhancement.webp",
+      "prerequisites": [
+        "field-training"
+      ]
+    },
+    {
+      "id": "melee-combat",
+      "name": {
+        "en": "Melee Combat",
+        "de": "Nahkampf"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        560,
+        670,
+        790,
+        950,
+        1700,
+        2100,
+        2700,
+        3300,
+        4400,
+        5500
+      ],
+      "icon": "/images/research/field/melee-combat.webp",
+      "prerequisites": [
+        "field-training",
+        "camo-coating"
+      ]
+    },
+    {
+      "id": "weapon-upgrading",
+      "name": {
+        "en": "Weapon Upgrading",
+        "de": "Waffenverbesserung"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        560,
+        670,
+        790,
+        950,
+        1700,
+        2100,
+        2700,
+        3300,
+        4400,
+        5500
+      ],
+      "icon": "/images/research/field/weapon-upgrading.webp",
+      "prerequisites": [
+        "camo-coating"
+      ]
+    },
+    {
+      "id": "target-training",
+      "name": {
+        "en": "Target Training",
+        "de": "Zieltraining"
+      },
+      "maxLevel": 5,
+      "badgeCosts": [
+        970,
+        1300,
+        2000,
+        3200,
+        4500
+      ],
+      "icon": "/images/research/field/target-training.webp",
+      "prerequisites": [
+        "mobility-enhancement"
+      ]
+    },
+    {
+      "id": "arms-assembly",
+      "name": {
+        "en": "Arms Assembly",
+        "de": "Waffenzusammenbau"
+      },
+      "maxLevel": 5,
+      "badgeCosts": [
+        970,
+        1300,
+        2000,
+        3200,
+        4500
+      ],
+      "icon": "/images/research/field/arms-assembly.webp",
+      "prerequisites": [
+        "melee-combat"
+      ]
+    },
+    {
+      "id": "quick-assembly",
+      "name": {
+        "en": "Quick Assembly",
+        "de": "Schnellzusammenbau"
+      },
+      "maxLevel": 5,
+      "badgeCosts": [
+        970,
+        1300,
+        2000,
+        3200,
+        4500
+      ],
+      "icon": "/images/research/field/quick-assembly.webp",
+      "prerequisites": [
+        "weapon-upgrading"
+      ]
+    },
+    {
+      "id": "stronger-armor",
+      "name": {
+        "en": "Stronger Armor",
+        "de": "Stärkere Rüstung"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        1500,
+        1900,
+        2800,
+        3400,
+        4300,
+        5500,
+        6700,
+        8300,
+        9800,
+        11400
+      ],
+      "icon": "/images/research/field/stronger-armor.webp",
+      "prerequisites": [
+        "target-training"
+      ]
+    },
+    {
+      "id": "shield-upgrade",
+      "name": {
+        "en": "Shield Upgrade",
+        "de": "Schild-Upgrade"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        1500,
+        1900,
+        2800,
+        3400,
+        4300,
+        5500,
+        6700,
+        8300,
+        9800,
+        11400
+      ],
+      "icon": "/images/research/field/shield-upgrade.webp",
+      "prerequisites": [
+        "arms-assembly"
+      ]
+    },
+    {
+      "id": "tactical-cover",
+      "name": {
+        "en": "Tactical Cover",
+        "de": "Taktische Deckung"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        1500,
+        1900,
+        2800,
+        3400,
+        4300,
+        5500,
+        6700,
+        8300,
+        9800,
+        11400
+      ],
+      "icon": "/images/research/field/tactical-cover.webp",
+      "prerequisites": [
+        "quick-assembly"
+      ]
+    },
+    {
+      "id": "field-training-2",
+      "name": {
+        "en": "Field Training",
+        "de": "Feldtraining"
+      },
+      "maxLevel": 20,
+      "badgeCosts": [
+        1600,
+        2500,
+        3100,
+        3600,
+        5100,
+        5900,
+        7700,
+        8800,
+        10100,
+        11700,
+        12100,
+        14000,
+        14900,
+        16900,
+        20300,
+        23200,
+        26500,
+        30100,
+        34500,
+        39200
+      ],
+      "icon": "/images/research/field/field-training.webp",
+      "prerequisites": [
+        "stronger-armor",
+        "shield-upgrade"
+      ]
+    },
+    {
+      "id": "camo-coating-2",
+      "name": {
+        "en": "Camo Coating",
+        "de": "Tarnanstrich"
+      },
+      "maxLevel": 20,
+      "badgeCosts": [
+        1600,
+        2500,
+        3100,
+        3600,
+        5100,
+        5900,
+        7700,
+        8800,
+        10100,
+        11700,
+        12100,
+        14000,
+        14900,
+        16900,
+        20300,
+        23200,
+        26500,
+        30100,
+        34500,
+        39200
+      ],
+      "icon": "/images/research/field/camo-coating.webp",
+      "prerequisites": [
+        "shield-upgrade",
+        "tactical-cover"
+      ]
+    },
+    {
+      "id": "recharge-shield",
+      "name": {
+        "en": "Recharge Shield",
+        "de": "Schild-Aufladung"
+      },
+      "maxLevel": 10,
+      "badgeCosts": [
+        3700,
+        4400,
+        5200,
+        6300,
+        7400,
+        8500,
+        11600,
+        14500,
+        18300,
+        22400
+      ],
+      "icon": "/images/research/field/recharge-shield.webp",
+      "prerequisites": [
+        "field-training-2",
+        "camo-coating-2"
+      ]
+    }
+  ]
+}

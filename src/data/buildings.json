@@ -1,0 +1,62 @@
+[
+  {
+    "id": "headquarters",
+    "name": {
+      "de": "Hauptquartier",
+      "en": "Headquarters"
+    },
+    "maxLevel": 30,
+    "costs": [
+      { "level": 1, "wood": 0, "food": 0, "steel": 0, "zinc": 0, "time": 0 },
+      { "level": 2, "wood": 500, "food": 500, "steel": 0, "zinc": 0, "time": 60 },
+      { "level": 3, "wood": 1000, "food": 1000, "steel": 500, "zinc": 0, "time": 180 },
+      { "level": 4, "wood": 2000, "food": 2000, "steel": 1000, "zinc": 0, "time": 360 },
+      { "level": 5, "wood": 4000, "food": 4000, "steel": 2000, "zinc": 500, "time": 720 },
+      { "level": 6, "wood": 8000, "food": 8000, "steel": 4000, "zinc": 1000, "time": 1440 },
+      { "level": 7, "wood": 16000, "food": 16000, "steel": 8000, "zinc": 2000, "time": 2880 },
+      { "level": 8, "wood": 32000, "food": 32000, "steel": 16000, "zinc": 4000, "time": 5760 },
+      { "level": 9, "wood": 64000, "food": 64000, "steel": 32000, "zinc": 8000, "time": 11520 },
+      { "level": 10, "wood": 128000, "food": 128000, "steel": 64000, "zinc": 16000, "time": 23040 }
+    ]
+  },
+  {
+    "id": "barracks",
+    "name": {
+      "de": "Kaserne",
+      "en": "Barracks"
+    },
+    "maxLevel": 30,
+    "costs": [
+      { "level": 1, "wood": 0, "food": 0, "steel": 0, "zinc": 0, "time": 0 },
+      { "level": 2, "wood": 400, "food": 400, "steel": 0, "zinc": 0, "time": 45 },
+      { "level": 3, "wood": 800, "food": 800, "steel": 400, "zinc": 0, "time": 120 },
+      { "level": 4, "wood": 1600, "food": 1600, "steel": 800, "zinc": 0, "time": 240 },
+      { "level": 5, "wood": 3200, "food": 3200, "steel": 1600, "zinc": 400, "time": 480 },
+      { "level": 6, "wood": 6400, "food": 6400, "steel": 3200, "zinc": 800, "time": 960 },
+      { "level": 7, "wood": 12800, "food": 12800, "steel": 6400, "zinc": 1600, "time": 1920 },
+      { "level": 8, "wood": 25600, "food": 25600, "steel": 12800, "zinc": 3200, "time": 3840 },
+      { "level": 9, "wood": 51200, "food": 51200, "steel": 25600, "zinc": 6400, "time": 7680 },
+      { "level": 10, "wood": 102400, "food": 102400, "steel": 51200, "zinc": 12800, "time": 15360 }
+    ]
+  },
+  {
+    "id": "hospital",
+    "name": {
+      "de": "Krankenhaus",
+      "en": "Hospital"
+    },
+    "maxLevel": 30,
+    "costs": [
+      { "level": 1, "wood": 0, "food": 0, "steel": 0, "zinc": 0, "time": 0 },
+      { "level": 2, "wood": 450, "food": 450, "steel": 0, "zinc": 0, "time": 50 },
+      { "level": 3, "wood": 900, "food": 900, "steel": 450, "zinc": 0, "time": 150 },
+      { "level": 4, "wood": 1800, "food": 1800, "steel": 900, "zinc": 0, "time": 300 },
+      { "level": 5, "wood": 3600, "food": 3600, "steel": 1800, "zinc": 450, "time": 600 },
+      { "level": 6, "wood": 7200, "food": 7200, "steel": 3600, "zinc": 900, "time": 1200 },
+      { "level": 7, "wood": 14400, "food": 14400, "steel": 7200, "zinc": 1800, "time": 2400 },
+      { "level": 8, "wood": 28800, "food": 28800, "steel": 14400, "zinc": 3600, "time": 4800 },
+      { "level": 9, "wood": 57600, "food": 57600, "steel": 28800, "zinc": 7200, "time": 9600 },
+      { "level": 10, "wood": 115200, "food": 115200, "steel": 57600, "zinc": 14400, "time": 19200 }
+    ]
+  }
+]

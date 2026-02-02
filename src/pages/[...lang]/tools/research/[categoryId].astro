@@ -1,0 +1,114 @@
+---
+import PageLayout from '../../../../layouts/PageLayout.astro';
+import { getLangFromUrl, useTranslations } from '../../../../i18n/utils';
+import ResearchCategoryCalculator from '../../../../components/calculators/ResearchCategoryCalculator';
+
+// Import all research category data
+import allianceRecognition from '../../../../data/research/alliance-recognition.json';
+import unitSpecialTraining from '../../../../data/research/unit-special-training.json';
+import fullyArmedAlliance from '../../../../data/research/fully-armed-alliance.json';
+import field from '../../../../data/research/field.json';
+import heroTraining from '../../../../data/research/hero-training.json';
+import militaryStrategies from '../../../../data/research/military-strategies.json';
+import peaceShield from '../../../../data/research/peace-shield.json';
+import siegeToSeize from '../../../../data/research/siege-to-seize.json';
+
+export function getStaticPaths() {
+  const paths: any[] = [];
+  const categoryIds = [
+    'alliance_recognition',
+    'unit_special_training',
+    'fully_armed_alliance',
+    'field',
+    'hero_training',
+    'military_strategies',
+    'peace_shield',
+    'siege_to_seize'
+  ];
+  ['en', 'de'].forEach(lang => {
+    categoryIds.forEach(categoryId => {
+      paths.push({
+        params: { lang, categoryId },
+      });
+    });
+  });
+  return paths;
+}
+
+// Map category data by ID
+const researchDataMap: Record<string, any> = {
+  alliance_recognition: allianceRecognition,
+  unit_special_training: unitSpecialTraining,
+  fully_armed_alliance: fullyArmedAlliance,
+  field: field,
+  hero_training: heroTraining,
+  military_strategies: militaryStrategies,
+  peace_shield: peaceShield,
+  siege_to_seize: siegeToSeize,
+};
+
+const { categoryId } = Astro.params;
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const category = researchDataMap[categoryId];
+
+if (!category) {
+  return Astro.redirect(`/${lang}/tools/research`);
+}
+---
+
+<PageLayout title={`${category.name[lang]} - Wild Hoggs`} description={`Calculate badge costs for ${category.name[lang]}`}>
+  <div style="display: flex; flex-direction: column; height: calc(100vh - 120px); gap: 1rem;">
+    <div style="flex-shrink: 0;">
+      <a href={`/${lang}/tools/research`} class="back-link">
+        ← {lang === 'de' ? 'Zurück zur Übersicht' : 'Back to Overview'}
+      </a>
+    </div>
+
+    <div style="flex: 1; min-height: 0;">
+      <ResearchCategoryCalculator categoryId={categoryId} lang={lang} client:load />
+    </div>
+  </div>
+</PageLayout>
+
+<style>
+  .page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    color: #ffa500;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+  }
+
+  .back-link:hover {
+    color: #ff8c00;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    color: #ffa500;
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 2rem;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+    }
+  }
+</style>

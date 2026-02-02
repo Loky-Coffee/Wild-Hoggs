@@ -1,0 +1,58 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'en' } },
+    { params: { lang: 'de' } },
+  ];
+}
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<PageLayout title={`${t('heroes.title')} - Wild Hoggs`} description="Hero database with tier rankings">
+  <div class="page-header">
+    <h1>{t('heroes.title')}</h1>
+    <p class="subtitle">
+      {lang === 'de' ? 'Alle Helden mit Tier-Rankings' : 'All heroes with tier rankings'}
+    </p>
+  </div>
+
+  <div class="content-placeholder">
+    <p>
+      {lang === 'de'
+        ? 'Helden-Datenbank wird in Phase 5 implementiert...'
+        : 'Hero database will be implemented in Phase 5...'}
+    </p>
+  </div>
+</PageLayout>
+
+<style>
+  .page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    color: #ffa500;
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .content-placeholder {
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px dashed rgba(255, 165, 0, 0.3);
+    border-radius: 8px;
+    padding: 3rem;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+  }
+</style>
