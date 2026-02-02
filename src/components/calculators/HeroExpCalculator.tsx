@@ -1,5 +1,7 @@
 import { useState, useMemo } from 'preact/hooks';
 import { validatedHeroExpTable } from '../../data/validated/hero-exp';
+import { useTranslation } from '../../hooks/useTranslation';
+import { formatNumber } from '../../utils/formatters';
 import './Calculator.css';
 
 interface HeroExpCalculatorProps {
@@ -13,33 +15,30 @@ export default function HeroExpCalculator({ lang }: HeroExpCalculatorProps) {
   const [currentLevel, setCurrentLevel] = useState<number>(1);
   const [targetLevel, setTargetLevel] = useState<number>(10);
 
-  const t = (key: string) => {
-    const translations: Record<string, Record<string, string>> = {
-      de: {
-        title: 'Hero EXP Rechner',
-        currentLevel: 'Aktuelles Level',
-        targetLevel: 'Ziel Level',
-        calculate: 'Berechnen',
-        results: 'Ergebnisse',
-        totalExp: 'Benötigte EXP',
-        expPerLevel: 'EXP pro Level',
-        levelProgress: 'Level-Fortschritt',
-        reset: 'Zurücksetzen',
-      },
-      en: {
-        title: 'Hero EXP Calculator',
-        currentLevel: 'Current Level',
-        targetLevel: 'Target Level',
-        calculate: 'Calculate',
-        results: 'Results',
-        totalExp: 'Required EXP',
-        expPerLevel: 'EXP per Level',
-        levelProgress: 'Level Progress',
-        reset: 'Reset',
-      },
-    };
-    return translations[lang][key] || key;
-  };
+  const t = useTranslation(lang, {
+    de: {
+      title: 'Hero EXP Rechner',
+      currentLevel: 'Aktuelles Level',
+      targetLevel: 'Ziel Level',
+      calculate: 'Berechnen',
+      results: 'Ergebnisse',
+      totalExp: 'Benötigte EXP',
+      expPerLevel: 'EXP pro Level',
+      levelProgress: 'Level-Fortschritt',
+      reset: 'Zurücksetzen',
+    },
+    en: {
+      title: 'Hero EXP Calculator',
+      currentLevel: 'Current Level',
+      targetLevel: 'Target Level',
+      calculate: 'Calculate',
+      results: 'Results',
+      totalExp: 'Required EXP',
+      expPerLevel: 'EXP per Level',
+      levelProgress: 'Level Progress',
+      reset: 'Reset',
+    },
+  });
 
   const maxLevel = 175; // Last-Z max hero level
 
@@ -63,10 +62,6 @@ export default function HeroExpCalculator({ lang }: HeroExpCalculatorProps) {
   const handleReset = () => {
     setCurrentLevel(1);
     setTargetLevel(10);
-  };
-
-  const formatNumber = (num: number) => {
-    return num.toLocaleString(lang === 'de' ? 'de-DE' : 'en-US');
   };
 
   return (
@@ -115,7 +110,7 @@ export default function HeroExpCalculator({ lang }: HeroExpCalculatorProps) {
         <div className="calculator-results">
           <div className="result-card highlight">
             <div className="result-label">{t('totalExp')}</div>
-            <div className="result-value">{formatNumber(calculatedResults.totalExp)}</div>
+            <div className="result-value">{formatNumber(calculatedResults.totalExp, lang)}</div>
           </div>
 
           <div className="breakdown">
@@ -124,7 +119,7 @@ export default function HeroExpCalculator({ lang }: HeroExpCalculatorProps) {
               {calculatedResults.breakdown.map((item, index) => (
                 <div key={index} className="breakdown-item">
                   <span className="breakdown-level">Level {item.level}</span>
-                  <span className="breakdown-exp">{formatNumber(item.exp)} EXP</span>
+                  <span className="breakdown-exp">{formatNumber(item.exp, lang)} EXP</span>
                 </div>
               ))}
             </div>

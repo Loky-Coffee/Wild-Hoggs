@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'preact/hooks';
+import { useTranslation } from '../hooks/useTranslation';
 import './RewardCodes.css';
 
 interface RewardCode {
@@ -59,25 +60,22 @@ export default function RewardCodes({ lang, codes: initialCodes = [] }: RewardCo
     loadCodes();
   }, [lang]);
 
-  const t = (key: string) => {
-    const translations: Record<string, Record<string, string>> = {
-      de: {
-        copy: 'Kopieren',
-        copied: 'Kopiert!',
-        active: 'Aktive Codes',
-        expired: 'Abgelaufen',
-        validUntil: 'Gültig bis',
-      },
-      en: {
-        copy: 'Copy',
-        copied: 'Copied!',
-        active: 'Active Codes',
-        expired: 'Expired',
-        validUntil: 'Valid until',
-      },
-    };
-    return translations[lang][key] || key;
-  };
+  const t = useTranslation(lang, {
+    de: {
+      copy: 'Kopieren',
+      copied: 'Kopiert!',
+      active: 'Aktive Codes',
+      expired: 'Abgelaufen',
+      validUntil: 'Gültig bis',
+    },
+    en: {
+      copy: 'Copy',
+      copied: 'Copied!',
+      active: 'Active Codes',
+      expired: 'Expired',
+      validUntil: 'Valid until',
+    },
+  });
 
   const copyToClipboard = async (code: string) => {
     try {

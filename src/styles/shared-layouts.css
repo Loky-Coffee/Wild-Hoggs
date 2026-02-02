@@ -1,0 +1,36 @@
+/**
+ * Shared Layout Styles
+ *
+ * Common layout patterns used across multiple pages.
+ * Eliminates ~240 LOC of duplicated CSS.
+ */
+
+/* ========== PAGE HEADER ========== */
+/* Used in: about, bonus, events, guides, heroes, members */
+
+.page-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.page-header h1 {
+  font-size: 2.5rem;
+  color: var(--color-primary);
+  margin-bottom: 0.5rem;
+}
+
+.page-header .subtitle {
+  font-size: 1.2rem;
+  color: var(--color-text-alpha-70);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .page-header h1 {
+    font-size: 2rem;
+  }
+
+  .page-header .subtitle {
+    font-size: 1rem;
+  }
+}

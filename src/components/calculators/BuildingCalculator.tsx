@@ -1,5 +1,7 @@
 import { useState, useMemo } from 'preact/hooks';
 import { validatedBuildings as buildingsData } from '../../data/validated/buildings';
+import { useTranslation } from '../../hooks/useTranslation';
+import { formatNumber } from '../../utils/formatters';
 import './Calculator.css';
 
 interface BuildingCost {
@@ -35,57 +37,54 @@ export default function BuildingCalculator({ lang }: BuildingCalculatorProps) {
   const [currentLevel, setCurrentLevel] = useState<number>(1);
   const [targetLevel, setTargetLevel] = useState<number>(5);
 
-  const t = (key: string) => {
-    const translations: Record<string, Record<string, string>> = {
-      de: {
-        title: 'Gebäude Rechner',
-        selectBuilding: 'Gebäude auswählen',
-        currentLevel: 'Aktuelles Level',
-        targetLevel: 'Ziel Level',
-        results: 'Ergebnisse',
-        totalResources: 'Gesamte Ressourcen',
-        totalTime: 'Gesamte Bauzeit',
-        wood: 'Holz',
-        food: 'Nahrung',
-        steel: 'Stahl',
-        zinc: 'Zents',
-        perLevel: 'Pro Level',
-        reset: 'Zurücksetzen',
-        days: 'Tage',
-        hours: 'Stunden',
-        minutes: 'Minuten',
-        seconds: 'Sekunden',
-        requiredBuildings: 'Erforderliche Gebäude',
-        heroLevelCap: 'Hero Level Cap',
-        totalPower: 'Gesamte Power',
-        powerGain: 'Power Gewinn',
-      },
-      en: {
-        title: 'Building Calculator',
-        selectBuilding: 'Select Building',
-        currentLevel: 'Current Level',
-        targetLevel: 'Target Level',
-        results: 'Results',
-        totalResources: 'Total Resources',
-        totalTime: 'Total Build Time',
-        wood: 'Wood',
-        food: 'Food',
-        steel: 'Steel',
-        zinc: 'Zents',
-        perLevel: 'Per Level',
-        reset: 'Reset',
-        days: 'days',
-        hours: 'hours',
-        minutes: 'minutes',
-        seconds: 'seconds',
-        requiredBuildings: 'Required Buildings',
-        heroLevelCap: 'Hero Level Cap',
-        totalPower: 'Total Power',
-        powerGain: 'Power Gain',
-      },
-    };
-    return translations[lang][key] || key;
-  };
+  const t = useTranslation(lang, {
+    de: {
+      title: 'Gebäude Rechner',
+      selectBuilding: 'Gebäude auswählen',
+      currentLevel: 'Aktuelles Level',
+      targetLevel: 'Ziel Level',
+      results: 'Ergebnisse',
+      totalResources: 'Gesamte Ressourcen',
+      totalTime: 'Gesamte Bauzeit',
+      wood: 'Holz',
+      food: 'Nahrung',
+      steel: 'Stahl',
+      zinc: 'Zents',
+      perLevel: 'Pro Level',
+      reset: 'Zurücksetzen',
+      days: 'Tage',
+      hours: 'Stunden',
+      minutes: 'Minuten',
+      seconds: 'Sekunden',
+      requiredBuildings: 'Erforderliche Gebäude',
+      heroLevelCap: 'Hero Level Cap',
+      totalPower: 'Gesamte Power',
+      powerGain: 'Power Gewinn',
+    },
+    en: {
+      title: 'Building Calculator',
+      selectBuilding: 'Select Building',
+      currentLevel: 'Current Level',
+      targetLevel: 'Target Level',
+      results: 'Results',
+      totalResources: 'Total Resources',
+      totalTime: 'Total Build Time',
+      wood: 'Wood',
+      food: 'Food',
+      steel: 'Steel',
+      zinc: 'Zents',
+      perLevel: 'Per Level',
+      reset: 'Reset',
+      days: 'days',
+      hours: 'hours',
+      minutes: 'minutes',
+      seconds: 'seconds',
+      requiredBuildings: 'Required Buildings',
+      heroLevelCap: 'Hero Level Cap',
+      totalPower: 'Total Power',
+      powerGain: 'Power Gain',
+    },
+  });
 
   const selectedBuildingData = useMemo(() => {
     return buildings.find((b) => b.id === selectedBuilding) || buildings[0];
@@ -134,10 +133,6 @@ export default function BuildingCalculator({ lang }: BuildingCalculatorProps) {
       targetHeroLevelCap: targetLevelData?.heroLevelCap,
     };
   }, [selectedBuilding, currentLevel, targetLevel, selectedBuildingData, maxLevel]);
-
-  const formatNumber = (num: number) => {
-    return num.toLocaleString(lang === 'de' ? 'de-DE' : 'en-US');
-  };
 
   const formatTime = (seconds: number) => {
     const days = Math.floor(seconds / 86400);
@@ -218,25 +213,25 @@ export default function BuildingCalculator({ lang }: BuildingCalculatorProps) {
             {calculatedResults.totalWood > 0 && (
               <div className="resource-card">
                 <div className="resource-label">{t('wood')}</div>
-                <div className="resource-value">{formatNumber(calculatedResults.totalWood)}</div>
+                <div className="resource-value">{formatNumber(calculatedResults.totalWood, lang)}</div>
               </div>
             )}
             {calculatedResults.totalFood > 0 && (
               <div className="resource-card">
                 <div className="resource-label">{t('food')}</div>
-                <div className="resource-value">{formatNumber(calculatedResults.totalFood)}</div>
+                <div className="resource-value">{formatNumber(calculatedResults.totalFood, lang)}</div>
               </div>
             )}
             {calculatedResults.totalSteel > 0 && (
               <div className="resource-card">
                 <div className="resource-label">{t('steel')}</div>
-                <div className="resource-value">{formatNumber(calculatedResults.totalSteel)}</div>
+                <div className="resource-value">{formatNumber(calculatedResults.totalSteel, lang)}</div>
               </div>
             )}
             {calculatedResults.totalZinc > 0 && (
               <div className="resource-card">
                 <div className="resource-label">{t('zinc')}</div>
-                <div className="resource-value">{formatNumber(calculatedResults.totalZinc)}</div>
+                <div className="resource-value">{formatNumber(calculatedResults.totalZinc, lang)}</div>
               </div>
             )}
           </div>
@@ -244,7 +239,7 @@ export default function BuildingCalculator({ lang }: BuildingCalculatorProps) {
           {calculatedResults.totalPower > 0 && (
             <div className="result-card highlight">
               <div className="result-label">{t('powerGain')}</div>
-              <div className="result-value">{formatNumber(calculatedResults.totalPower)}</div>
+              <div className="result-value">{formatNumber(calculatedResults.totalPower, lang)}</div>
             </div>
           )}
 
@@ -271,7 +266,7 @@ export default function BuildingCalculator({ lang }: BuildingCalculatorProps) {
                     <span className="breakdown-level">Level {item.level}</span>
                     {item.power && (
                       <span style={{ fontSize: '0.85rem', color: '#ffa500' }}>
-                        ⭐ +{formatNumber(item.power)} Power
+                        ⭐ +{formatNumber(item.power, lang)} Power
                       </span>
                     )}
                     {item.heroLevelCap && (
@@ -282,10 +277,10 @@ export default function BuildingCalculator({ lang }: BuildingCalculatorProps) {
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', alignItems: 'flex-end' }}>
                     <div style={{ display: 'flex', gap: '1rem', fontSize: '0.9rem' }}>
-                      {item.wood > 0 && <span>🪵 {formatNumber(item.wood)}</span>}
-                      {item.food > 0 && <span>🌾 {formatNumber(item.food)}</span>}
-                      {item.steel > 0 && <span>⚙️ {formatNumber(item.steel)}</span>}
-                      {item.zinc > 0 && <span>⚡ {formatNumber(item.zinc)}</span>}
+                      {item.wood > 0 && <span>🪵 {formatNumber(item.wood, lang)}</span>}
+                      {item.food > 0 && <span>🌾 {formatNumber(item.food, lang)}</span>}
+                      {item.steel > 0 && <span>⚙️ {formatNumber(item.steel, lang)}</span>}
+                      {item.zinc > 0 && <span>⚡ {formatNumber(item.zinc, lang)}</span>}
                     </div>
                     {item.requiredBuildings && item.requiredBuildings !== 'None' && (
                       <span style={{ fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.4)', textAlign: 'right' }}>

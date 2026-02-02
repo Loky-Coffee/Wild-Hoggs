@@ -1,6 +1,8 @@
 import { useState, useMemo } from 'preact/hooks';
 import type { Technology, ResearchTree } from '../../schemas/research';
 import ResearchTreeView from './ResearchTreeView';
+import { useTranslation } from '../../hooks/useTranslation';
+import { formatNumber } from '../../utils/formatters';
 import './Calculator.css';
 
 interface ResearchCategoryCalculatorProps {
@@ -13,33 +15,30 @@ export default function ResearchCategoryCalculator({ categoryData, lang }: Resea
 
   const category = categoryData;
 
-  const t = (key: string) => {
-    const translations: Record<string, Record<string, string>> = {
-      de: {
-        results: 'Ergebnisse',
-        totalBadges: 'Gesamt Badges',
-        selectedCount: 'Ausgewählte Technologien',
-        reset: 'Alle zurücksetzen',
-        selectAll: 'Alle auf Maximum',
-        level: 'Level',
-        max: 'Max',
-        total: 'gesamt',
-        nodes: 'Technologien',
-      },
-      en: {
-        results: 'Results',
-        totalBadges: 'Total Badges',
-        selectedCount: 'Selected Technologies',
-        reset: 'Reset All',
-        selectAll: 'Select All to Max',
-        level: 'Level',
-        max: 'Max',
-        total: 'total',
-        nodes: 'nodes',
-      },
-    };
-    return translations[lang][key] || key;
-  };
+  const t = useTranslation(lang, {
+    de: {
+      results: 'Ergebnisse',
+      totalBadges: 'Gesamt Badges',
+      selectedCount: 'Ausgewählte Technologien',
+      reset: 'Alle zurücksetzen',
+      selectAll: 'Alle auf Maximum',
+      level: 'Level',
+      max: 'Max',
+      total: 'gesamt',
+      nodes: 'Technologien',
+    },
+    en: {
+      results: 'Results',
+      totalBadges: 'Total Badges',
+      selectedCount: 'Selected Technologies',
+      reset: 'Reset All',
+      selectAll: 'Select All to Max',
+      level: 'Level',
+      max: 'Max',
+      total: 'total',
+      nodes: 'nodes',
+    },
+  });
 
   const setTechnologyLevel = (techId: string, level: number) => {
     const newSelected = new Map(selectedTechnologies);
@@ -98,10 +97,6 @@ export default function ResearchCategoryCalculator({ categoryData, lang }: Resea
     };
   }, [selectedTechnologies, category]);
 
-  const formatNumber = (num: number) => {
-    return num.toLocaleString(lang === 'de' ? 'de-DE' : 'en-US');
-  };
-
   if (!category) {
     return (
       <div className="calculator-container">
@@ -133,7 +128,7 @@ export default function ResearchCategoryCalculator({ categoryData, lang }: Resea
             <div>
               <h3 style={{ margin: '0 0 0.5rem 0', color: '#ffa500' }}>{category.name[lang]}</h3>
               <p style={{ margin: 0, fontSize: '0.9rem', opacity: 0.8 }}>
-                {category.nodeCount} {t('nodes')} · {formatNumber(category.totalBadges)} 🎖️ {t('total')}
+                {category.nodeCount} {t('nodes')} · {formatNumber(category.totalBadges, lang)} 🎖️ {t('total')}
               </p>
             </div>
           </div>
@@ -145,7 +140,7 @@ export default function ResearchCategoryCalculator({ categoryData, lang }: Resea
                 {lang === 'de' ? 'Benutzt' : 'Used'}
               </div>
               <div style={{ fontSize: '1.2rem', fontWeight: 700, color: calculatedResults.totalBadges > 0 ? '#ffa500' : 'rgba(255,255,255,0.5)' }}>
-                {formatNumber(calculatedResults.totalBadges)} 🎖️
+                {formatNumber(calculatedResults.totalBadges, lang)} 🎖️
               </div>
             </div>
             <div>
@@ -153,7 +148,7 @@ export default function ResearchCategoryCalculator({ categoryData, lang }: Resea
                 {lang === 'de' ? 'Verbleibend' : 'Remaining'}
               </div>
               <div style={{ fontSize: '1.2rem', fontWeight: 700, color: remainingBadges > 0 ? 'rgba(255,255,255,0.7)' : '#52be80' }}>
-                {formatNumber(remainingBadges)} 🎖️
+                {formatNumber(remainingBadges, lang)} 🎖️
               </div>
             </div>
           </div>

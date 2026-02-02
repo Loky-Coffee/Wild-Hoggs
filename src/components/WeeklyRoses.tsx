@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'preact/hooks';
+import { useTranslation } from '../hooks/useTranslation';
 import './WeeklyRoses.css';
 
 interface Rose {
@@ -18,25 +19,22 @@ interface WeeklyRosesProps {
 export default function WeeklyRoses({ lang, roses }: WeeklyRosesProps) {
   const [timeLeft, setTimeLeft] = useState('');
 
-  const t = (key: string) => {
-    const translations: Record<string, Record<string, string>> = {
-      de: {
-        activeThisWeek: 'Aktiv diese Woche',
-        inactive: 'Inaktiv',
-        endsIn: 'Endet in',
-        duration: 'Dauer',
-        noRoses: 'Keine Rosen verfügbar',
-      },
-      en: {
-        activeThisWeek: 'Active this week',
-        inactive: 'Inactive',
-        endsIn: 'Ends in',
-        duration: 'Duration',
-        noRoses: 'No roses available',
-      },
-    };
-    return translations[lang][key] || key;
-  };
+  const t = useTranslation(lang, {
+    de: {
+      activeThisWeek: 'Aktiv diese Woche',
+      inactive: 'Inaktiv',
+      endsIn: 'Endet in',
+      duration: 'Dauer',
+      noRoses: 'Keine Rosen verfügbar',
+    },
+    en: {
+      activeThisWeek: 'Active this week',
+      inactive: 'Inactive',
+      endsIn: 'Ends in',
+      duration: 'Duration',
+      noRoses: 'No roses available',
+    },
+  });
 
   // Calculate time until next Sunday 23:59:59 in Apocalypse Time (UTC-2)
   useEffect(() => {
