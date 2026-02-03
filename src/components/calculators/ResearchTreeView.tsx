@@ -1,4 +1,4 @@
-import { useMemo, useCallback, useEffect } from 'preact/hooks';
+import { useMemo, useCallback, useState, useEffect, useRef } from 'preact/hooks';
 import type { Technology } from '../../schemas/research';
 import { formatNumber as sharedFormatNumber } from '../../utils/formatters';
 import { useTranslation } from '../../hooks/useTranslation';
@@ -66,30 +66,7 @@ export default function ResearchTreeView({
   };
 
   // Calculate positions for all nodes
-  // Auto-correct levels that exceed maxAvailable to prevent data loss
-  // This ensures consistency between displayed slider value and actual state
-  useEffect(() => {
-    const corrections = new Map<string, number>();
-
-    technologies.forEach(tech => {
-      const currentLevel = selectedLevels.get(tech.id) || 0;
-      if (currentLevel > 0) {
-        const maxAvailable = getMaxAvailableLevel(tech);
-        if (currentLevel > maxAvailable) {
-          corrections.set(tech.id, maxAvailable);
-        }
-      }
-    });
-
-    if (corrections.size > 0) {
-      // Merge corrections into selectedLevels
-      const newLevels = new Map(selectedLevels);
-      corrections.forEach((level, techId) => {
-        newLevels.set(techId, level);
-      });
-      onBatchLevelChange(newLevels);
-    }
-  }, [selectedLevels, technologies]);
+  // NO auto-correction - rely on slider clamping and maxAvailable to prevent invalid states
 
   const nodePositions = useMemo((): Map<string, TreeNodePosition> => {
     const positions = new Map<string, TreeNodePosition>();
@@ -190,6 +167,78 @@ export default function ResearchTreeView({
   // Use shared formatNumber utility
   const formatNumber = useCallback((num: number) => sharedFormatNumber(num, lang), [lang]);
 
+  // Detect if we're on desktop (PC) or mobile
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth > 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Set initial state
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  // Drag-to-scroll functionality for mouse
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    let isDown = false;
+    let startX = 0;
+    let startY = 0;
+    let scrollLeft = 0;
+    let scrollTop = 0;
+
+    const handleMouseDown = (e: MouseEvent) => {
+      isDown = true;
+      container.style.cursor = 'grabbing';
+      startX = e.pageX - container.offsetLeft;
+      startY = e.pageY - container.offsetTop;
+      scrollLeft = container.scrollLeft;
+      scrollTop = container.scrollTop;
+    };
+
+    const handleMouseLeave = () => {
+      isDown = false;
+      container.style.cursor = 'grab';
+    };
+
+    const handleMouseUp = () => {
+      isDown = false;
+      container.style.cursor = 'grab';
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - container.offsetLeft;
+      const y = e.pageY - container.offsetTop;
+      const walkX = (x - startX) * 1.5; // Scroll speed multiplier
+      const walkY = (y - startY) * 1.5;
+      container.scrollLeft = scrollLeft - walkX;
+      container.scrollTop = scrollTop - walkY;
+    };
+
+    container.addEventListener('mousedown', handleMouseDown);
+    container.addEventListener('mouseleave', handleMouseLeave);
+    container.addEventListener('mouseup', handleMouseUp);
+    container.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      container.removeEventListener('mousedown', handleMouseDown);
+      container.removeEventListener('mouseleave', handleMouseLeave);
+      container.removeEventListener('mouseup', handleMouseUp);
+      container.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+
   const svgDimensions = useMemo(() => {
     let minX = 0, minY = 0, maxX = 0, maxY = 0;
 
@@ -231,20 +280,23 @@ export default function ResearchTreeView({
   // Render tree with connections and nodes using extracted components
   return (
     <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <div style={{
-        width: '100%',
-        height: '100%',
-        overflow: 'auto',
-        background: 'rgba(0, 0, 0, 0.2)',
-        borderRadius: '12px',
-        padding: '1rem',
-        WebkitOverflowScrolling: 'touch' as 'touch',
-        touchAction: 'pan-x pan-y',
-        cursor: 'grab',
-        display: 'flex',
-        justifyContent: 'flex-start',
-        alignItems: 'flex-start'
-      }}>
+      <div
+        ref={scrollContainerRef}
+        style={{
+          width: '100%',
+          height: '100%',
+          overflow: 'auto',
+          background: 'rgba(0, 0, 0, 0.2)',
+          borderRadius: '12px',
+          padding: '1rem',
+          WebkitOverflowScrolling: 'touch' as 'touch',
+          touchAction: 'pan-x pan-y',
+          cursor: 'grab',
+          display: 'flex',
+          justifyContent: isDesktop && layoutDirection === 'vertical' ? 'center' : 'flex-start',
+          alignItems: 'flex-start'
+        }}
+      >
         <div style={{
           minWidth: 'min-content',
           minHeight: 'min-content'

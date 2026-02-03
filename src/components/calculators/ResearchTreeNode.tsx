@@ -62,9 +62,10 @@ function ResearchTreeNode({
 
   const levelText = lang === 'de' ? 'Level' : 'Level';
 
-  // Clamp selectedLevel to maxAvailable to prevent browser from auto-adjusting
-  // when other sliders are moved and trigger a re-render
-  const clampedLevel = Math.min(selectedLevel, maxAvailable);
+  // Important: Do not clamp the slider value here.
+  // Using a clamped value causes the browser to auto-adjust ("snap down")
+  // when maxAvailable changes due to other node interactions.
+  // We instead clamp on user change only to preserve the displayed state.
 
   return (
     <g transform={`translate(${x}, ${y})`}>
@@ -169,10 +170,16 @@ function ResearchTreeNode({
           <input
             type="range"
             min="0"
-            max={maxAvailable}
-            value={clampedLevel}
+            // Set max to the absolute max of the tech, not the dynamic cap,
+            // to avoid browser auto-clamping the slider value on re-render.
+            max={tech.maxLevel}
+            value={selectedLevel}
             disabled={!unlocked}
-            onChange={(e) => onLevelChange(tech.id, parseInt((e.target as HTMLInputElement).value, 10))}
+            onChange={(e) => {
+              const raw = parseInt((e.target as HTMLInputElement).value, 10);
+              const clamped = Math.min(raw, maxAvailable);
+              onLevelChange(tech.id, clamped);
+            }}
             style={{
               width: '100%',
               height: '8px',
@@ -184,20 +191,31 @@ function ResearchTreeNode({
         </div>
       </foreignObject>
 
-      {/* Badge cost */}
+      {/* Badge cost - Current / Total */}
       <text
         x={0}
-        y={NODE_HEIGHT / 2 - 15}
+        y={NODE_HEIGHT / 2 - 25}
         textAnchor="middle"
-        fontSize="11"
+        fontSize="10"
         fill={isActive ? '#ffa500' : 'rgba(255, 255, 255, 0.5)'}
         fontWeight="600"
       >
-        {isActive
-          ? `${formatNumber(totalBadges)} 🎖️`
-          : `Max: ${formatNumber(maxBadges)} 🎖️`
-        }
+        {formatNumber(totalBadges)} / {formatNumber(maxBadges)} 🎖️
       </text>
+
+      {/* Next level cost (only show if not at max level) */}
+      {selectedLevel < tech.maxLevel && (
+        <text
+          x={0}
+          y={NODE_HEIGHT / 2 - 10}
+          textAnchor="middle"
+          fontSize="9"
+          fill={unlocked ? 'rgba(255, 165, 0, 0.7)' : 'rgba(255, 255, 255, 0.4)'}
+          fontWeight="500"
+        >
+          {lang === 'de' ? 'Nächste' : 'Next'}: {formatNumber(tech.badgeCosts[selectedLevel])} 🎖️
+        </text>
+      )}
     </g>
   );
 }
