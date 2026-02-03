@@ -125,7 +125,7 @@ export default function ResearchTreeView({
       return reqLevel < (prereqTech?.maxLevel || 1);
     });
 
-    // If ANY prerequisite is progressive, cap at minimum current level of progressives
+    // If ANY prerequisite is progressive, cap at maximum current level of progressives
     // BUT: If a progressive prerequisite is at max level, don't limit based on it
     if (progressiveDeps.length > 0) {
       const progressiveLevels = progressiveDeps.map(prereq => {
@@ -142,14 +142,14 @@ export default function ResearchTreeView({
         return prereqCurrentLevel;
       });
 
-      const minProgressiveLevel = Math.min(...progressiveLevels);
+      const maxProgressiveLevel = Math.max(...progressiveLevels);
 
-      // If all progressive prerequisites are at max (minProgressiveLevel is Infinity), no limit
-      if (minProgressiveLevel === Infinity) {
+      // If all progressive prerequisites are at max (maxProgressiveLevel is Infinity), no limit
+      if (maxProgressiveLevel === Infinity) {
         return tech.maxLevel;
       }
 
-      return Math.min(tech.maxLevel, minProgressiveLevel);
+      return Math.min(tech.maxLevel, maxProgressiveLevel);
     }
 
     // All prerequisites are hard: once unlocked, tech can level independently

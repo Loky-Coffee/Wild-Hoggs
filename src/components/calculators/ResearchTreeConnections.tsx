@@ -65,16 +65,26 @@ function ResearchTreeConnections({
         startY = prereqPos.y + NODE_HEIGHT / 2 + svgDimensions.offsetY;
       }
 
-      // Zeichne direkte Linie vom Parent zum Child
+      // Zeichne orthogonale Verbindung (rechtwinklig) vom Parent zum Child
+      let pathData: string;
+
+      if (layoutDirection === 'horizontal') {
+        // Horizontal: Parent rechts -> Kind links
+        const midX = (startX + endX) / 2;
+        pathData = `M ${startX} ${startY} L ${midX} ${startY} L ${midX} ${endY} L ${endX} ${endY}`;
+      } else {
+        // Vertical: Parent unten -> Kind oben
+        const midY = (startY + endY) / 2;
+        pathData = `M ${startX} ${startY} L ${startX} ${midY} L ${endX} ${midY} L ${endX} ${endY}`;
+      }
+
       connections.push(
-        <line
+        <path
           key={`${prereqId}-${tech.id}`}
-          x1={startX}
-          y1={startY}
-          x2={endX}
-          y2={endY}
+          d={pathData}
           stroke="#00bcd4"
           strokeWidth={2}
+          fill="none"
         />
       );
     });

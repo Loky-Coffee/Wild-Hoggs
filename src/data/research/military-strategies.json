@@ -381,7 +381,8 @@
       ],
       "icon": "military-strategies/enhanced-armor",
       "prerequisites": [
-        "field-training"
+        "field-training",
+        "camo-coating"
       ]
     },
     {
