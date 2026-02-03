@@ -207,13 +207,13 @@ export default function ResearchTreeView({
         background: 'rgba(0, 0, 0, 0.2)',
         borderRadius: '12px',
         padding: '1rem',
-        WebkitOverflowScrolling: 'touch',
+        WebkitOverflowScrolling: 'touch' as 'touch',
         touchAction: 'pan-x pan-y',
         cursor: 'grab',
         display: 'flex',
         justifyContent: 'flex-start',
         alignItems: 'flex-start'
-      } as any}>
+      }}>
         <div style={{
           minWidth: 'min-content',
           minHeight: 'min-content'
