@@ -27,7 +27,7 @@
         3800,
         4700
       ],
-      "icon": "/images/research/unit-special-training/fire-up.webp",
+      "icon": "unit-special-training/fire-up",
       "prerequisites": []
     },
     {
@@ -49,7 +49,7 @@
         3800,
         4700
       ],
-      "icon": "/images/research/unit-special-training/armor-upgrade.webp",
+      "icon": "unit-special-training/armor-upgrade",
       "prerequisites": []
     },
     {
@@ -71,7 +71,7 @@
         5900,
         4700
       ],
-      "icon": "/images/research/unit-special-training/fast-production.webp",
+      "icon": "unit-special-training/fast-production",
       "prerequisites": [
         "fire-up",
         "armor-upgrade"
@@ -96,7 +96,7 @@
         9900,
         12200
       ],
-      "icon": "/images/research/unit-special-training/mobility-enhancement.webp",
+      "icon": "unit-special-training/mobility-enhancement",
       "prerequisites": [
         "fast-production"
       ]
@@ -120,7 +120,7 @@
         9900,
         12200
       ],
-      "icon": "/images/research/unit-special-training/melee-combat.webp",
+      "icon": "unit-special-training/melee-combat",
       "prerequisites": [
         "fast-production"
       ]
@@ -144,7 +144,7 @@
         9900,
         12200
       ],
-      "icon": "/images/research/unit-special-training/weapon-upgrading.webp",
+      "icon": "unit-special-training/weapon-upgrading",
       "prerequisites": [
         "fast-production"
       ]
@@ -168,7 +168,7 @@
         9900,
         12200
       ],
-      "icon": "/images/research/unit-special-training/stronger-armor.webp",
+      "icon": "unit-special-training/stronger-armor",
       "prerequisites": [
         "mobility-enhancement"
       ]
@@ -192,7 +192,7 @@
         9900,
         12200
       ],
-      "icon": "/images/research/unit-special-training/shield-upgrade.webp",
+      "icon": "unit-special-training/shield-upgrade",
       "prerequisites": [
         "melee-combat"
       ]
@@ -216,7 +216,7 @@
         9900,
         12200
       ],
-      "icon": "/images/research/unit-special-training/camo-coating.webp",
+      "icon": "unit-special-training/camo-coating",
       "prerequisites": [
         "weapon-upgrading"
       ]
@@ -240,7 +240,7 @@
         8600,
         10600
       ],
-      "icon": "/images/research/unit-special-training/propulsion.webp",
+      "icon": "unit-special-training/propulsion",
       "prerequisites": [
         "stronger-armor",
         "shield-upgrade",
@@ -261,7 +261,7 @@
         12000,
         18000
       ],
-      "icon": "/images/research/unit-special-training/demolition-crew.webp",
+      "icon": "unit-special-training/demolition-crew",
       "prerequisites": [
         "propulsion"
       ]
@@ -295,7 +295,7 @@
         49100,
         56100
       ],
-      "icon": "/images/research/unit-special-training/recharge-shield.webp",
+      "icon": "unit-special-training/recharge-shield",
       "prerequisites": [
         "demolition-crew"
       ]
@@ -319,7 +319,7 @@
         19000,
         23500
       ],
-      "icon": "/images/research/unit-special-training/fire-up.webp",
+      "icon": "unit-special-training/fire-up",
       "prerequisites": [
         "recharge-shield"
       ]
@@ -343,7 +343,7 @@
         19000,
         23500
       ],
-      "icon": "/images/research/unit-special-training/armor-upgrade.webp",
+      "icon": "unit-special-training/armor-upgrade",
       "prerequisites": [
         "recharge-shield"
       ]
@@ -367,7 +367,7 @@
         49500,
         61000
       ],
-      "icon": "/images/research/unit-special-training/mobility-enhancement.webp",
+      "icon": "unit-special-training/mobility-enhancement",
       "prerequisites": [
         "fire-up-2"
       ]
@@ -391,7 +391,7 @@
         49500,
         61000
       ],
-      "icon": "/images/research/unit-special-training/melee-combat.webp",
+      "icon": "unit-special-training/melee-combat",
       "prerequisites": [
         "fire-up-2"
       ]
@@ -415,7 +415,7 @@
         49500,
         61000
       ],
-      "icon": "/images/research/unit-special-training/weapon-upgrading.webp",
+      "icon": "unit-special-training/weapon-upgrading",
       "prerequisites": [
         "armor-upgrade-2"
       ]
@@ -439,7 +439,7 @@
         49500,
         61000
       ],
-      "icon": "/images/research/unit-special-training/stronger-armor.webp",
+      "icon": "unit-special-training/stronger-armor",
       "prerequisites": [
         "mobility-enhancement-2"
       ]
@@ -463,7 +463,7 @@
         49500,
         61000
       ],
-      "icon": "/images/research/unit-special-training/shield-upgrade.webp",
+      "icon": "unit-special-training/shield-upgrade",
       "prerequisites": [
         "melee-combat-2"
       ]
@@ -487,7 +487,7 @@
         49500,
         61000
       ],
-      "icon": "/images/research/unit-special-training/camo-coating.webp",
+      "icon": "unit-special-training/camo-coating",
       "prerequisites": [
         "weapon-upgrading-2"
       ]
@@ -511,7 +511,7 @@
         43000,
         53000
       ],
-      "icon": "/images/research/unit-special-training/propulsion.webp",
+      "icon": "unit-special-training/propulsion",
       "prerequisites": [
         "stronger-armor-2",
         "shield-upgrade-2",
@@ -532,7 +532,7 @@
         60000,
         90000
       ],
-      "icon": "/images/research/unit-special-training/demolition-crew.webp",
+      "icon": "unit-special-training/demolition-crew",
       "prerequisites": [
         "propulsion-2"
       ]

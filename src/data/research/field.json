@@ -27,7 +27,7 @@
         1800,
         2200
       ],
-      "icon": "/images/research/field/field-training.webp",
+      "icon": "field/field-training",
       "prerequisites": []
     },
     {
@@ -49,7 +49,7 @@
         1800,
         2200
       ],
-      "icon": "/images/research/field/camo-coating.webp",
+      "icon": "field/camo-coating",
       "prerequisites": []
     },
     {
@@ -71,7 +71,7 @@
         4400,
         5500
       ],
-      "icon": "/images/research/field/mobility-enhancement.webp",
+      "icon": "field/mobility-enhancement",
       "prerequisites": [
         "field-training"
       ]
@@ -95,7 +95,7 @@
         4400,
         5500
       ],
-      "icon": "/images/research/field/melee-combat.webp",
+      "icon": "field/melee-combat",
       "prerequisites": [
         "field-training",
         "camo-coating"
@@ -120,7 +120,7 @@
         4400,
         5500
       ],
-      "icon": "/images/research/field/weapon-upgrading.webp",
+      "icon": "field/weapon-upgrading",
       "prerequisites": [
         "camo-coating"
       ]
@@ -139,7 +139,7 @@
         3200,
         4500
       ],
-      "icon": "/images/research/field/target-training.webp",
+      "icon": "field/target-training",
       "prerequisites": [
         "mobility-enhancement"
       ]
@@ -158,7 +158,7 @@
         3200,
         4500
       ],
-      "icon": "/images/research/field/arms-assembly.webp",
+      "icon": "field/arms-assembly",
       "prerequisites": [
         "melee-combat"
       ]
@@ -177,7 +177,7 @@
         3200,
         4500
       ],
-      "icon": "/images/research/field/quick-assembly.webp",
+      "icon": "field/quick-assembly",
       "prerequisites": [
         "weapon-upgrading"
       ]
@@ -201,7 +201,7 @@
         9800,
         11400
       ],
-      "icon": "/images/research/field/stronger-armor.webp",
+      "icon": "field/stronger-armor",
       "prerequisites": [
         "target-training"
       ]
@@ -225,7 +225,7 @@
         9800,
         11400
       ],
-      "icon": "/images/research/field/shield-upgrade.webp",
+      "icon": "field/shield-upgrade",
       "prerequisites": [
         "arms-assembly"
       ]
@@ -249,7 +249,7 @@
         9800,
         11400
       ],
-      "icon": "/images/research/field/tactical-cover.webp",
+      "icon": "field/tactical-cover",
       "prerequisites": [
         "quick-assembly"
       ]
@@ -283,7 +283,7 @@
         34500,
         39200
       ],
-      "icon": "/images/research/field/field-training.webp",
+      "icon": "field/field-training",
       "prerequisites": [
         "stronger-armor",
         "shield-upgrade"
@@ -318,7 +318,7 @@
         34500,
         39200
       ],
-      "icon": "/images/research/field/camo-coating.webp",
+      "icon": "field/camo-coating",
       "prerequisites": [
         "shield-upgrade",
         "tactical-cover"
@@ -343,7 +343,7 @@
         18300,
         22400
       ],
-      "icon": "/images/research/field/recharge-shield.webp",
+      "icon": "field/recharge-shield",
       "prerequisites": [
         "field-training-2",
         "camo-coating-2"

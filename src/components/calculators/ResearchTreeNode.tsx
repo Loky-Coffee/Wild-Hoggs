@@ -1,5 +1,6 @@
 import { memo } from 'preact/compat';
 import type { Technology } from '../../schemas/research';
+import { getResearchImage } from '../../utils/researchImages';
 
 interface ResearchTreeNodeProps {
   tech: Technology;
@@ -17,6 +18,9 @@ interface ResearchTreeNodeProps {
 const NODE_WIDTH = 220;
 const NODE_HEIGHT = 180;
 
+// Fallback placeholder for missing images (inline SVG data URI)
+const FALLBACK_ICON = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23333" width="100" height="100"/%3E%3Ctext x="50" y="50" text-anchor="middle" dy=".3em" fill="%23999" font-size="40"%3E%3F%3C/text%3E%3C/svg%3E';
+
 function ResearchTreeNode({
   tech,
   x,
@@ -32,6 +36,19 @@ function ResearchTreeNode({
   const totalBadges = tech.badgeCosts.slice(0, selectedLevel).reduce((sum, cost) => sum + cost, 0);
   const maxBadges = tech.badgeCosts.reduce((a, b) => a + b, 0);
   const isActive = selectedLevel > 0;
+
+  // Get optimized image or use fallback
+  let iconHref = FALLBACK_ICON;
+  if (tech.icon) {
+    // tech.icon is now "category/tech-id" format
+    const [category, techId] = tech.icon.split('/');
+    if (category && techId) {
+      const image = getResearchImage(category, techId);
+      if (image) {
+        iconHref = image.src; // Vite-optimized image path
+      }
+    }
+  }
 
   const levelText = lang === 'de' ? 'Level' : 'Level';
 
@@ -91,17 +108,15 @@ function ResearchTreeNode({
         </g>
       )}
 
-      {/* Technology icon */}
-      {tech.icon && (
-        <image
-          href={tech.icon}
-          x={-25}
-          y={-NODE_HEIGHT / 2 + 15}
-          width={50}
-          height={50}
-          opacity={unlocked ? 1 : 0.3}
-        />
-      )}
+      {/* Technology icon - NOW WITH OPTIMIZED IMAGE */}
+      <image
+        href={iconHref}
+        x={-25}
+        y={-NODE_HEIGHT / 2 + 15}
+        width={50}
+        height={50}
+        opacity={unlocked ? 1 : 0.3}
+      />
 
       {/* Technology name */}
       <text

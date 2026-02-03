@@ -27,7 +27,7 @@
         730,
         890
       ],
-      "icon": "/images/research/alliance-recognition/collect-wood.webp",
+      "icon": "alliance-recognition/collect-wood",
       "prerequisites": []
     },
     {
@@ -49,7 +49,7 @@
         730,
         890
       ],
-      "icon": "/images/research/alliance-recognition/zent-gatherer.webp",
+      "icon": "alliance-recognition/zent-gatherer",
       "prerequisites": []
     },
     {
@@ -62,7 +62,7 @@
       "badgeCosts": [
         1200
       ],
-      "icon": "/images/research/alliance-recognition/premium-rewards.webp",
+      "icon": "alliance-recognition/premium-rewards",
       "prerequisites": [
         {
           "id": "collect-wood",
@@ -103,7 +103,7 @@
         2000,
         2400
       ],
-      "icon": "/images/research/alliance-recognition/event-expert.webp",
+      "icon": "alliance-recognition/event-expert",
       "prerequisites": [
         {
           "id": "premium-rewards",
@@ -130,7 +130,7 @@
         1400,
         1700
       ],
-      "icon": "/images/research/alliance-recognition/augmented-engine.webp",
+      "icon": "alliance-recognition/augmented-engine",
       "prerequisites": [
         {
           "id": "event-expert",
@@ -157,7 +157,7 @@
         1400,
         1700
       ],
-      "icon": "/images/research/alliance-recognition/transport-capacity-up.webp",
+      "icon": "alliance-recognition/transport-capacity-up",
       "prerequisites": [
         {
           "id": "event-expert",
@@ -184,7 +184,7 @@
         1400,
         1700
       ],
-      "icon": "/images/research/alliance-recognition/production-line-expansion.webp",
+      "icon": "alliance-recognition/production-line-expansion",
       "prerequisites": [
         {
           "id": "augmented-engine",
@@ -211,7 +211,7 @@
         1400,
         1700
       ],
-      "icon": "/images/research/alliance-recognition/fast-production.webp",
+      "icon": "alliance-recognition/fast-production",
       "prerequisites": [
         {
           "id": "transport-capacity-up",
@@ -229,7 +229,7 @@
       "badgeCosts": [
         4100
       ],
-      "icon": "/images/research/alliance-recognition/super-rewards.webp",
+      "icon": "alliance-recognition/super-rewards",
       "prerequisites": [
         {
           "id": "production-line-expansion",
@@ -260,7 +260,7 @@
         2500,
         3100
       ],
-      "icon": "/images/research/alliance-recognition/incentive-gathering.webp",
+      "icon": "alliance-recognition/incentive-gathering",
       "prerequisites": [
         {
           "id": "super-rewards",
@@ -287,7 +287,7 @@
         2500,
         3100
       ],
-      "icon": "/images/research/alliance-recognition/incentive-modified-vehicle.webp",
+      "icon": "alliance-recognition/incentive-modified-vehicle",
       "prerequisites": [
         {
           "id": "super-rewards",
@@ -314,7 +314,7 @@
         2500,
         3100
       ],
-      "icon": "/images/research/alliance-recognition/incentive-development.webp",
+      "icon": "alliance-recognition/incentive-development",
       "prerequisites": [
         {
           "id": "incentive-gathering",
@@ -341,7 +341,7 @@
         2500,
         3100
       ],
-      "icon": "/images/research/alliance-recognition/incentive-equipment.webp",
+      "icon": "alliance-recognition/incentive-equipment",
       "prerequisites": [
         {
           "id": "incentive-modified-vehicle",
@@ -368,7 +368,7 @@
         2500,
         3100
       ],
-      "icon": "/images/research/alliance-recognition/incentive-creeps.webp",
+      "icon": "alliance-recognition/incentive-creeps",
       "prerequisites": [
         {
           "id": "incentive-development",
@@ -395,7 +395,7 @@
         2500,
         3100
       ],
-      "icon": "/images/research/alliance-recognition/incentive-training.webp",
+      "icon": "alliance-recognition/incentive-training",
       "prerequisites": [
         {
           "id": "incentive-equipment",
@@ -422,7 +422,7 @@
         3900,
         4800
       ],
-      "icon": "/images/research/alliance-recognition/incentive-recruiting.webp",
+      "icon": "alliance-recognition/incentive-recruiting",
       "prerequisites": [
         {
           "id": "incentive-creeps",
@@ -449,7 +449,7 @@
         3900,
         4800
       ],
-      "icon": "/images/research/alliance-recognition/incentive-killing.webp",
+      "icon": "alliance-recognition/incentive-killing",
       "prerequisites": [
         {
           "id": "incentive-training",
@@ -486,7 +486,7 @@
         15600,
         18700
       ],
-      "icon": "/images/research/alliance-recognition/event-king.webp",
+      "icon": "alliance-recognition/event-king",
       "prerequisites": [
         {
           "id": "incentive-recruiting",
@@ -508,7 +508,7 @@
       "badgeCosts": [
         20500
       ],
-      "icon": "/images/research/alliance-recognition/one-more.webp",
+      "icon": "alliance-recognition/one-more",
       "prerequisites": [
         {
           "id": "event-king",

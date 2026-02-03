@@ -27,7 +27,7 @@
         500,
         610
       ],
-      "icon": "/images/research/peace-shield/auto-repair.webp",
+      "icon": "peace-shield/auto-repair",
       "prerequisites": []
     },
     {
@@ -49,7 +49,7 @@
         610,
         750
       ],
-      "icon": "/images/research/peace-shield/combat-policy.webp",
+      "icon": "peace-shield/combat-policy",
       "prerequisites": []
     },
     {
@@ -71,7 +71,7 @@
         610,
         750
       ],
-      "icon": "/images/research/peace-shield/interceptions.webp",
+      "icon": "peace-shield/interceptions",
       "prerequisites": []
     },
     {
@@ -93,7 +93,7 @@
         1200,
         1500
       ],
-      "icon": "/images/research/peace-shield/mobility-enhancement.webp",
+      "icon": "peace-shield/mobility-enhancement",
       "prerequisites": [
         "combat-policy"
       ]
@@ -117,7 +117,7 @@
         1200,
         1500
       ],
-      "icon": "/images/research/peace-shield/melee-combat.webp",
+      "icon": "peace-shield/melee-combat",
       "prerequisites": [
         "combat-policy",
         "interceptions"
@@ -142,7 +142,7 @@
         1200,
         1500
       ],
-      "icon": "/images/research/peace-shield/weapon-upgrading.webp",
+      "icon": "peace-shield/weapon-upgrading",
       "prerequisites": [
         "interceptions"
       ]
@@ -161,7 +161,7 @@
         1300,
         1800
       ],
-      "icon": "/images/research/peace-shield/quick-assembly.webp",
+      "icon": "peace-shield/quick-assembly",
       "prerequisites": [
         "mobility-enhancement"
       ]
@@ -180,7 +180,7 @@
         1300,
         1800
       ],
-      "icon": "/images/research/peace-shield/arms-assembly.webp",
+      "icon": "peace-shield/arms-assembly",
       "prerequisites": [
         "melee-combat"
       ]
@@ -199,7 +199,7 @@
         1300,
         1800
       ],
-      "icon": "/images/research/peace-shield/target-training.webp",
+      "icon": "peace-shield/target-training",
       "prerequisites": [
         "weapon-upgrading"
       ]
@@ -223,7 +223,7 @@
         2400,
         3000
       ],
-      "icon": "/images/research/peace-shield/urgent-rescue.webp",
+      "icon": "peace-shield/urgent-rescue",
       "prerequisites": [
         "quick-assembly",
         "arms-assembly",
@@ -249,7 +249,7 @@
         3700,
         4600
       ],
-      "icon": "/images/research/peace-shield/stronger-armor.webp",
+      "icon": "peace-shield/stronger-armor",
       "prerequisites": [
         "urgent-rescue"
       ]
@@ -273,7 +273,7 @@
         3700,
         4600
       ],
-      "icon": "/images/research/peace-shield/shield-upgrade.webp",
+      "icon": "peace-shield/shield-upgrade",
       "prerequisites": [
         "urgent-rescue"
       ]
@@ -297,7 +297,7 @@
         3700,
         4600
       ],
-      "icon": "/images/research/peace-shield/tactical-cover.webp",
+      "icon": "peace-shield/tactical-cover",
       "prerequisites": [
         "urgent-rescue"
       ]
@@ -331,7 +331,7 @@
         9000,
         10000
       ],
-      "icon": "/images/research/peace-shield/combat-policy.webp",
+      "icon": "peace-shield/combat-policy",
       "prerequisites": [
         "stronger-armor",
         "shield-upgrade",
@@ -367,7 +367,7 @@
         9000,
         10000
       ],
-      "icon": "/images/research/peace-shield/interceptions.webp",
+      "icon": "peace-shield/interceptions",
       "prerequisites": [
         "stronger-armor",
         "shield-upgrade",
@@ -393,7 +393,7 @@
         12400,
         15000
       ],
-      "icon": "/images/research/peace-shield/recharge-shield.webp",
+      "icon": "peace-shield/recharge-shield",
       "prerequisites": [
         "combat-policy-2",
         "interceptions-2"

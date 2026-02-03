@@ -27,7 +27,7 @@
         380,
         460
       ],
-      "icon": "/images/research/military-strategies/fire-up.webp",
+      "icon": "military-strategies/fire-up",
       "prerequisites": []
     },
     {
@@ -49,7 +49,7 @@
         380,
         460
       ],
-      "icon": "/images/research/military-strategies/armor-upgrade.webp",
+      "icon": "military-strategies/armor-upgrade",
       "prerequisites": []
     },
     {
@@ -71,7 +71,7 @@
         380,
         460
       ],
-      "icon": "/images/research/military-strategies/joint-operation.webp",
+      "icon": "military-strategies/joint-operation",
       "prerequisites": [
         "fire-up"
       ]
@@ -95,7 +95,7 @@
         380,
         460
       ],
-      "icon": "/images/research/military-strategies/mobile-defense.webp",
+      "icon": "military-strategies/mobile-defense",
       "prerequisites": [
         "armor-upgrade"
       ]
@@ -119,7 +119,7 @@
         610,
         750
       ],
-      "icon": "/images/research/military-strategies/combat-policy.webp",
+      "icon": "military-strategies/combat-policy",
       "prerequisites": [
         "joint-operation"
       ]
@@ -143,7 +143,7 @@
         610,
         750
       ],
-      "icon": "/images/research/military-strategies/interceptions.webp",
+      "icon": "military-strategies/interceptions",
       "prerequisites": [
         "mobile-defense"
       ]
@@ -158,7 +158,7 @@
       "badgeCosts": [
         570
       ],
-      "icon": "/images/research/military-strategies/demolition-crew.webp",
+      "icon": "military-strategies/demolition-crew",
       "prerequisites": [
         "combat-policy",
         "interceptions"
@@ -178,7 +178,7 @@
         820,
         1300
       ],
-      "icon": "/images/research/military-strategies/quick-assembly.webp",
+      "icon": "military-strategies/quick-assembly",
       "prerequisites": [
         "demolition-crew"
       ]
@@ -197,7 +197,7 @@
         820,
         1300
       ],
-      "icon": "/images/research/military-strategies/arms-assembly.webp",
+      "icon": "military-strategies/arms-assembly",
       "prerequisites": [
         "demolition-crew"
       ]
@@ -216,7 +216,7 @@
         820,
         1300
       ],
-      "icon": "/images/research/military-strategies/target-training.webp",
+      "icon": "military-strategies/target-training",
       "prerequisites": [
         "demolition-crew"
       ]
@@ -233,7 +233,7 @@
         41,
         123
       ],
-      "icon": "/images/research/military-strategies/recharge-shield.webp",
+      "icon": "military-strategies/recharge-shield",
       "prerequisites": [
         "quick-assembly",
         "arms-assembly",
@@ -259,7 +259,7 @@
         1880,
         2360
       ],
-      "icon": "/images/research/military-strategies/fire-up.webp",
+      "icon": "military-strategies/fire-up",
       "prerequisites": [
         "recharge-shield"
       ]
@@ -283,7 +283,7 @@
         1880,
         2360
       ],
-      "icon": "/images/research/military-strategies/armor-upgrade.webp",
+      "icon": "military-strategies/armor-upgrade",
       "prerequisites": [
         "recharge-shield"
       ]
@@ -307,7 +307,7 @@
         1880,
         2360
       ],
-      "icon": "/images/research/military-strategies/field-training.webp",
+      "icon": "military-strategies/field-training",
       "prerequisites": [
         "fire-up-2"
       ]
@@ -331,7 +331,7 @@
         1880,
         2360
       ],
-      "icon": "/images/research/military-strategies/camo-coating.webp",
+      "icon": "military-strategies/camo-coating",
       "prerequisites": [
         "armor-upgrade-2"
       ]
@@ -355,7 +355,7 @@
         5100,
         6200
       ],
-      "icon": "/images/research/military-strategies/alloy-plate.webp",
+      "icon": "military-strategies/alloy-plate",
       "prerequisites": [
         "field-training"
       ]
@@ -379,7 +379,7 @@
         5100,
         6200
       ],
-      "icon": "/images/research/military-strategies/enhanced-armor.webp",
+      "icon": "military-strategies/enhanced-armor",
       "prerequisites": [
         "field-training"
       ]
@@ -403,7 +403,7 @@
         5100,
         6200
       ],
-      "icon": "/images/research/military-strategies/aerocraft-material.webp",
+      "icon": "military-strategies/aerocraft-material",
       "prerequisites": [
         "camo-coating"
       ]

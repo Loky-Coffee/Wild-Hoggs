@@ -27,7 +27,7 @@
         1300,
         1600
       ],
-      "icon": "/images/research/fully-armed-alliance/mechanical-repair.webp",
+      "icon": "fully-armed-alliance/mechanical-repair",
       "prerequisites": []
     },
     {
@@ -49,7 +49,7 @@
         4800,
         6000
       ],
-      "icon": "/images/research/fully-armed-alliance/piercing-shot.webp",
+      "icon": "fully-armed-alliance/piercing-shot",
       "prerequisites": [
         "mechanical-repair"
       ]
@@ -73,7 +73,7 @@
         4800,
         6000
       ],
-      "icon": "/images/research/fully-armed-alliance/tough-shield.webp",
+      "icon": "fully-armed-alliance/tough-shield",
       "prerequisites": [
         "mechanical-repair"
       ]
@@ -97,7 +97,7 @@
         3700,
         4600
       ],
-      "icon": "/images/research/fully-armed-alliance/bazooka.webp",
+      "icon": "fully-armed-alliance/bazooka",
       "prerequisites": [
         "piercing-shot"
       ]
@@ -121,7 +121,7 @@
         3700,
         4600
       ],
-      "icon": "/images/research/fully-armed-alliance/hold-fast.webp",
+      "icon": "fully-armed-alliance/hold-fast",
       "prerequisites": [
         "tough-shield"
       ]
@@ -145,7 +145,7 @@
         3700,
         4600
       ],
-      "icon": "/images/research/fully-armed-alliance/circuitous-tactics.webp",
+      "icon": "fully-armed-alliance/circuitous-tactics",
       "prerequisites": [
         "bazooka"
       ]
@@ -169,7 +169,7 @@
         3700,
         4600
       ],
-      "icon": "/images/research/fully-armed-alliance/alloy-composite.webp",
+      "icon": "fully-armed-alliance/alloy-composite",
       "prerequisites": [
         "hold-fast"
       ]
@@ -193,7 +193,7 @@
         6200,
         7700
       ],
-      "icon": "/images/research/fully-armed-alliance/peace-breaker.webp",
+      "icon": "fully-armed-alliance/peace-breaker",
       "prerequisites": [
         "circuitous-tactics",
         "alloy-composite"
@@ -228,7 +228,7 @@
         39500,
         45700
       ],
-      "icon": "/images/research/fully-armed-alliance/annihilation.webp",
+      "icon": "fully-armed-alliance/annihilation",
       "prerequisites": [
         "peace-breaker"
       ]
@@ -252,7 +252,7 @@
         8700,
         10700
       ],
-      "icon": "/images/research/fully-armed-alliance/riders-attack-training.webp",
+      "icon": "fully-armed-alliance/riders-attack-training",
       "prerequisites": [
         "annihilation"
       ]
@@ -276,7 +276,7 @@
         8700,
         10700
       ],
-      "icon": "/images/research/fully-armed-alliance/assaulters-attack-training.webp",
+      "icon": "fully-armed-alliance/assaulters-attack-training",
       "prerequisites": [
         "annihilation"
       ]
@@ -300,7 +300,7 @@
         8700,
         10700
       ],
-      "icon": "/images/research/fully-armed-alliance/shooters-attack-training.webp",
+      "icon": "fully-armed-alliance/shooters-attack-training",
       "prerequisites": [
         "annihilation"
       ]
@@ -324,7 +324,7 @@
         8700,
         10700
       ],
-      "icon": "/images/research/fully-armed-alliance/riders-defense-training.webp",
+      "icon": "fully-armed-alliance/riders-defense-training",
       "prerequisites": [
         "riders-attack-training"
       ]
@@ -348,7 +348,7 @@
         8700,
         10700
       ],
-      "icon": "/images/research/fully-armed-alliance/assaulters-defense-training.webp",
+      "icon": "fully-armed-alliance/assaulters-defense-training",
       "prerequisites": [
         "assaulters-attack-training"
       ]
@@ -372,7 +372,7 @@
         8700,
         10700
       ],
-      "icon": "/images/research/fully-armed-alliance/shooters-defense-training.webp",
+      "icon": "fully-armed-alliance/shooters-defense-training",
       "prerequisites": [
         "shooters-attack-training"
       ]
@@ -396,7 +396,7 @@
         25800,
         32000
       ],
-      "icon": "/images/research/fully-armed-alliance/mechanical-repair.webp",
+      "icon": "fully-armed-alliance/mechanical-repair",
       "prerequisites": [
         "riders-defense-training",
         "assaulters-defense-training"
@@ -421,7 +421,7 @@
         25800,
         32000
       ],
-      "icon": "/images/research/fully-armed-alliance/repair-kit.webp",
+      "icon": "fully-armed-alliance/repair-kit",
       "prerequisites": [
         "assaulters-defense-training",
         "shooters-defense-training"
@@ -456,7 +456,7 @@
         32600,
         37300
       ],
-      "icon": "/images/research/fully-armed-alliance/move-out.webp",
+      "icon": "fully-armed-alliance/move-out",
       "prerequisites": [
         "mechanical-repair-2",
         "repair-kit"
