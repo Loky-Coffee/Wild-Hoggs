@@ -1,4 +1,4 @@
-import { useMemo, useCallback } from 'preact/hooks';
+import { useMemo, useCallback, useEffect } from 'preact/hooks';
 import type { Technology } from '../../schemas/research';
 import { formatNumber as sharedFormatNumber } from '../../utils/formatters';
 import { useTranslation } from '../../hooks/useTranslation';
@@ -66,6 +66,31 @@ export default function ResearchTreeView({
   };
 
   // Calculate positions for all nodes
+  // Auto-correct levels that exceed maxAvailable to prevent data loss
+  // This ensures consistency between displayed slider value and actual state
+  useEffect(() => {
+    const corrections = new Map<string, number>();
+
+    technologies.forEach(tech => {
+      const currentLevel = selectedLevels.get(tech.id) || 0;
+      if (currentLevel > 0) {
+        const maxAvailable = getMaxAvailableLevel(tech);
+        if (currentLevel > maxAvailable) {
+          corrections.set(tech.id, maxAvailable);
+        }
+      }
+    });
+
+    if (corrections.size > 0) {
+      // Merge corrections into selectedLevels
+      const newLevels = new Map(selectedLevels);
+      corrections.forEach((level, techId) => {
+        newLevels.set(techId, level);
+      });
+      onBatchLevelChange(newLevels);
+    }
+  }, [selectedLevels, technologies]);
+
   const nodePositions = useMemo((): Map<string, TreeNodePosition> => {
     const positions = new Map<string, TreeNodePosition>();
     const tiers = calculateTiers();
