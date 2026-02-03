@@ -26,3 +26,12 @@ pnpm-debug.log*
 
 # Local Netlify folder
 .netlify
+
+# Auto-generated Astro files
+.astro/
+
+# Claude Code CLI settings
+.claude/
+
+# Cloudflare Wrangler build state
+.wrangler/
