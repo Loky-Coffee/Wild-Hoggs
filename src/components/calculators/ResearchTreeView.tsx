@@ -1,4 +1,4 @@
-import { useMemo, useCallback } from 'preact/hooks';
+import { useMemo, useCallback, useEffect } from 'preact/hooks';
 import type { Technology } from '../../schemas/research';
 import { formatNumber as sharedFormatNumber } from '../../utils/formatters';
 import { useTranslation } from '../../hooks/useTranslation';
@@ -66,6 +66,30 @@ export default function ResearchTreeView({
   };
 
   // Calculate positions for all nodes
+  // Auto-adjust levels that exceed maxAvailable due to prerequisite changes
+  useEffect(() => {
+    const adjustments = new Map<string, number>();
+
+    technologies.forEach(tech => {
+      const currentLevel = selectedLevels.get(tech.id) || 0;
+      if (currentLevel > 0) {
+        const maxAvailable = getMaxAvailableLevel(tech);
+        if (currentLevel > maxAvailable) {
+          adjustments.set(tech.id, maxAvailable);
+        }
+      }
+    });
+
+    if (adjustments.size > 0) {
+      // Merge adjustments with current levels
+      const newLevels = new Map(selectedLevels);
+      adjustments.forEach((level, techId) => {
+        newLevels.set(techId, level);
+      });
+      onBatchLevelChange(newLevels);
+    }
+  }, [selectedLevels]);
+
   const nodePositions = useMemo((): Map<string, TreeNodePosition> => {
     const positions = new Map<string, TreeNodePosition>();
     const tiers = calculateTiers();
@@ -239,7 +263,11 @@ export default function ResearchTreeView({
 
               const unlocked = isUnlocked(tech);
               const maxAvailable = getMaxAvailableLevel(tech);
-              const selectedLevel = selectedLevels.get(tech.id) || 0;
+              const currentLevel = selectedLevels.get(tech.id) || 0;
+
+              // CRITICAL FIX: Clamp selectedLevel to maxAvailable
+              // This prevents the slider from auto-adjusting when maxAvailable changes
+              const selectedLevel = Math.min(currentLevel, maxAvailable);
 
               return (
                 <ResearchTreeNode
