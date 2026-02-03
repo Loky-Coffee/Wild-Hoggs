@@ -228,6 +228,9 @@ export default function ResearchTreeView({
         return;
       }
 
+      // Prevent text selection while dragging
+      e.preventDefault();
+
       isDown = true;
       container.style.cursor = 'grabbing';
       startX = e.pageX - container.offsetLeft;
@@ -315,6 +318,7 @@ export default function ResearchTreeView({
       style={{
         width: '100%',
         height: '100%',
+        boxSizing: 'border-box',
         overflow: 'auto',
         background: 'rgba(0, 0, 0, 0.2)',
         borderRadius: '12px',
@@ -324,7 +328,9 @@ export default function ResearchTreeView({
         cursor: 'grab',
         display: 'flex',
         justifyContent: isDesktop && layoutDirection === 'vertical' ? 'center' : 'flex-start',
-        alignItems: 'flex-start'
+        alignItems: 'flex-start',
+        userSelect: 'none',
+        WebkitUserSelect: 'none'
       }}
     >
         <div style={{

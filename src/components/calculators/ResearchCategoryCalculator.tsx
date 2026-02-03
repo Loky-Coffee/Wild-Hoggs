@@ -162,7 +162,7 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
   }, [isInfoBoxCollapsed]);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: '1rem' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: '1rem', minHeight: 0 }}>
       {/* Header with all controls and info */}
       <div className={`info-box ${isInfoBoxCollapsed ? 'collapsed' : ''}`} style={{ flexShrink: 0 }}>
         {/* Mobile Toggle Button */}

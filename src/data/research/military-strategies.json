@@ -160,8 +160,8 @@
       ],
       "icon": "military-strategies/demolition-crew",
       "prerequisites": [
-        "combat-policy",
-        "interceptions"
+        { "id": "combat-policy", "requiredLevel": 10 },
+        { "id": "interceptions", "requiredLevel": 10 }
       ]
     },
     {
@@ -235,9 +235,9 @@
       ],
       "icon": "military-strategies/recharge-shield",
       "prerequisites": [
-        "quick-assembly",
-        "arms-assembly",
-        "target-training"
+        { "id": "quick-assembly", "requiredLevel": 5 },
+        { "id": "arms-assembly", "requiredLevel": 5 },
+        { "id": "target-training", "requiredLevel": 5 }
       ]
     },
     {

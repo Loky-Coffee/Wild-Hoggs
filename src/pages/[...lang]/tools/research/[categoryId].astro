@@ -144,18 +144,26 @@ if (!category) {
   .calculator-wrapper {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    flex: 1;
+    min-height: 0;
     padding: 1rem;
     gap: 0;
   }
 
   .back-link {
     display: inline-block;
+    flex-shrink: 0;
     margin-bottom: 1rem;
     color: #ffa500;
     text-decoration: none;
     font-size: 0.95rem;
     transition: color 0.3s ease;
+  }
+
+  /* Make ResearchCategoryCalculator take remaining space */
+  .calculator-wrapper > :global(*:last-child) {
+    flex: 1;
+    min-height: 0;
   }
 
   .back-link:hover {
