@@ -211,7 +211,7 @@ export default function ResearchTreeView({
         touchAction: 'pan-x pan-y',
         cursor: 'grab',
         display: 'flex',
-        justifyContent: layoutDirection === 'vertical' ? 'center' : 'flex-start',
+        justifyContent: 'flex-start',
         alignItems: 'flex-start'
       } as any}>
         <div style={{

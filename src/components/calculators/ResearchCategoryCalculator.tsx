@@ -107,11 +107,30 @@ export default function ResearchCategoryCalculator({ categoryData, lang }: Resea
     );
   }
 
-  const [layoutDirection, setLayoutDirection] = useState<'horizontal' | 'vertical'>('horizontal');
+  const [layoutDirection, setLayoutDirection] = useState<'horizontal' | 'vertical'>('vertical');
   const [isInfoBoxCollapsed, setIsInfoBoxCollapsed] = useState(false);
   const treeContainerRef = useRef<HTMLDivElement>(null);
 
   const remainingBadges = category.totalBadges - calculatedResults.totalBadges;
+
+  // Set layout based on screen size
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 768) {
+        setLayoutDirection('vertical');  // Mobile: top to bottom
+      } else {
+        setLayoutDirection('horizontal'); // Desktop: left to right
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    // Set initial state
+    handleResize();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   // Auto-collapse info box when user interacts with tree (mobile only)
   useEffect(() => {
@@ -205,7 +224,7 @@ export default function ResearchCategoryCalculator({ categoryData, lang }: Resea
           <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center' }}>
             <button
               onClick={() => setLayoutDirection(layoutDirection === 'horizontal' ? 'vertical' : 'horizontal')}
-              className="btn-secondary"
+              className="btn-secondary layout-toggle-btn"
               style={{ padding: '0.6rem 1rem', fontSize: '0.9rem' }}
             >
               {layoutDirection === 'horizontal' ? '⇅' : '⇄'} {lang === 'de' ? 'Layout' : 'Layout'}

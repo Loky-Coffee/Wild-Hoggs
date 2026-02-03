@@ -393,4 +393,9 @@
   .info-box.collapsed .info-box-toggle {
     margin-bottom: 0;
   }
+
+  /* Hide layout toggle button on mobile (only vertical layout) */
+  .layout-toggle-btn {
+    display: none !important;
+  }
 }
