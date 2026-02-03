@@ -42,25 +42,31 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
   });
 
   const setTechnologyLevel = (techId: string, level: number) => {
-    const newSelected = new Map(selectedTechnologies);
-    if (level === 0) {
-      newSelected.delete(techId);
-    } else {
-      newSelected.set(techId, level);
-    }
-    setSelectedTechnologies(newSelected);
-  };
-
-  const setMultipleTechnologyLevels = (updates: Map<string, number>) => {
-    const newSelected = new Map(selectedTechnologies);
-    updates.forEach((level, techId) => {
+    // Use functional update to avoid race conditions when multiple sliders change quickly
+    setSelectedTechnologies((prev) => {
+      const newSelected = new Map(prev);
       if (level === 0) {
         newSelected.delete(techId);
       } else {
         newSelected.set(techId, level);
       }
+      return newSelected;
     });
-    setSelectedTechnologies(newSelected);
+  };
+
+  const setMultipleTechnologyLevels = (updates: Map<string, number>) => {
+    // Use functional update to merge updates safely
+    setSelectedTechnologies((prev) => {
+      const newSelected = new Map(prev);
+      updates.forEach((level, techId) => {
+        if (level === 0) {
+          newSelected.delete(techId);
+        } else {
+          newSelected.set(techId, level);
+        }
+      });
+      return newSelected;
+    });
   };
 
   const selectAllToMax = () => {

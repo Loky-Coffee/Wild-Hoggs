@@ -125,12 +125,30 @@ export default function ResearchTreeView({
       return reqLevel < (prereqTech?.maxLevel || 1);
     });
 
-    // If ANY prerequisite is progressive, cap at minimum current level of progressives only
+    // If ANY prerequisite is progressive, cap at minimum current level of progressives
+    // BUT: If a progressive prerequisite is at max level, don't limit based on it
     if (progressiveDeps.length > 0) {
-      const minProgressiveLevel = Math.min(...progressiveDeps.map(prereq => {
+      const progressiveLevels = progressiveDeps.map(prereq => {
         const prereqId = typeof prereq === 'string' ? prereq : prereq.id;
-        return selectedLevels.get(prereqId) || 0;
-      }));
+        const prereqTech = technologies.find(t => t.id === prereqId);
+        const prereqCurrentLevel = selectedLevels.get(prereqId) || 0;
+        const prereqMaxLevel = prereqTech?.maxLevel || 1;
+
+        // If prerequisite is at max level, it doesn't limit us (return Infinity)
+        if (prereqCurrentLevel >= prereqMaxLevel) {
+          return Infinity;
+        }
+
+        return prereqCurrentLevel;
+      });
+
+      const minProgressiveLevel = Math.min(...progressiveLevels);
+
+      // If all progressive prerequisites are at max (minProgressiveLevel is Infinity), no limit
+      if (minProgressiveLevel === Infinity) {
+        return tech.maxLevel;
+      }
+
       return Math.min(tech.maxLevel, minProgressiveLevel);
     }
 
@@ -197,6 +215,19 @@ export default function ResearchTreeView({
     let scrollTop = 0;
 
     const handleMouseDown = (e: MouseEvent) => {
+      // Ignore if clicking on interactive elements (sliders, buttons, links)
+      const target = e.target as HTMLElement;
+      if (
+        target.tagName === 'INPUT' ||
+        target.tagName === 'BUTTON' ||
+        target.tagName === 'A' ||
+        target.closest('input') ||
+        target.closest('button') ||
+        target.closest('a')
+      ) {
+        return;
+      }
+
       isDown = true;
       container.style.cursor = 'grabbing';
       startX = e.pageX - container.offsetLeft;
@@ -279,24 +310,23 @@ export default function ResearchTreeView({
 
   // Render tree with connections and nodes using extracted components
   return (
-    <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <div
-        ref={scrollContainerRef}
-        style={{
-          width: '100%',
-          height: '100%',
-          overflow: 'auto',
-          background: 'rgba(0, 0, 0, 0.2)',
-          borderRadius: '12px',
-          padding: '1rem',
-          WebkitOverflowScrolling: 'touch' as 'touch',
-          touchAction: 'pan-x pan-y',
-          cursor: 'grab',
-          display: 'flex',
-          justifyContent: isDesktop && layoutDirection === 'vertical' ? 'center' : 'flex-start',
-          alignItems: 'flex-start'
-        }}
-      >
+    <div
+      ref={scrollContainerRef}
+      style={{
+        width: '100%',
+        height: '100%',
+        overflow: 'auto',
+        background: 'rgba(0, 0, 0, 0.2)',
+        borderRadius: '12px',
+        padding: '1rem',
+        WebkitOverflowScrolling: 'touch' as 'touch',
+        touchAction: 'pan-x pan-y',
+        cursor: 'grab',
+        display: 'flex',
+        justifyContent: isDesktop && layoutDirection === 'vertical' ? 'center' : 'flex-start',
+        alignItems: 'flex-start'
+      }}
+    >
         <div style={{
           minWidth: 'min-content',
           minHeight: 'min-content'
@@ -342,7 +372,6 @@ export default function ResearchTreeView({
             })}
           </svg>
         </div>
-      </div>
     </div>
   );
 }

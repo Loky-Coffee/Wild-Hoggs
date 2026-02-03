@@ -5,6 +5,9 @@ import ResearchCategoryCalculator from '../../../../components/calculators/Resea
 import type { ResearchTree } from '../../../../schemas/research';
 import { Image } from 'astro:assets';
 
+// Mark this page as special for CSS scoping
+const pageClass = 'page-research-calculator';
+
 // Import validated research category data
 import {
   allianceRecognition,
@@ -87,25 +90,65 @@ if (!category) {
 ---
 
 <PageLayout title={`${category.name[lang]} - Wild Hoggs`} description={`Calculate badge costs for ${category.name[lang]}`}>
-  <div style="display: flex; flex-direction: column; height: calc(100vh - 120px); gap: 1rem;">
-    <div style="flex-shrink: 0;">
-      <a href={`/${lang}/tools/research`} class="back-link">
-        {t('research.backToOverview')}
-      </a>
-    </div>
+  <div class="calculator-wrapper">
+    <a href={`/${lang}/tools/research`} class="back-link">
+      {t('research.backToOverview')}
+    </a>
 
-    <div style="flex: 1; min-height: 0;">
-      <ResearchCategoryCalculator
-        categoryData={category}
-        categoryImageSrc={categoryImage.src}
-        lang={lang}
-        client:load
-      />
-    </div>
+    <ResearchCategoryCalculator
+      categoryData={category}
+      categoryImageSrc={categoryImage.src}
+      lang={lang}
+      client:load
+    />
   </div>
 </PageLayout>
 
+<script define:vars={{ pageClass }}>
+  // Add class to body for scoped CSS overrides
+  document.body.classList.add(pageClass);
+
+  // Cleanup on navigation away
+  document.addEventListener('astro:before-swap', () => {
+    document.body.classList.remove(pageClass);
+  });
+
+  // Additional cleanup on page load
+  document.addEventListener('astro:page-load', () => {
+    if (!window.location.pathname.includes('/tools/research/')) {
+      document.body.classList.remove(pageClass);
+    }
+  });
+</script>
+
+<style is:global>
+  /* Override page-content only when body has this specific class */
+  body.page-research-calculator .page-content {
+    overflow: hidden !important;
+    padding: 0 !important;
+    margin-top: 80px;
+    height: calc(100vh - 80px);
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media (max-width: 768px) {
+    body.page-research-calculator .page-content {
+      margin-top: 70px;
+      height: calc(100vh - 70px);
+    }
+  }
+</style>
+
 <style>
+  .calculator-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 1rem;
+    gap: 0;
+  }
+
   .back-link {
     display: inline-block;
     margin-bottom: 1rem;

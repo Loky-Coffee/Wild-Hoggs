@@ -116,9 +116,9 @@
       ],
       "icon": "hero-training/resource-gathering",
       "prerequisites": [
-        "rose-bloom",
-        "morning-star",
-        "light-of-order"
+        { "id": "rose-bloom", "requiredLevel": 5 },
+        { "id": "morning-star", "requiredLevel": 5 },
+        { "id": "light-of-order", "requiredLevel": 5 }
       ]
     },
     {
@@ -190,9 +190,9 @@
       ],
       "icon": "hero-training/cockpit",
       "prerequisites": [
-        "rose-barrier",
-        "dawns-light",
-        "shield-of-order"
+        { "id": "rose-barrier", "requiredLevel": 5 },
+        { "id": "dawns-light", "requiredLevel": 5 },
+        { "id": "shield-of-order", "requiredLevel": 5 }
       ]
     },
     {

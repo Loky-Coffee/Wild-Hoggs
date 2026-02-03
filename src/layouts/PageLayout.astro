@@ -41,18 +41,22 @@ const { title, description } = Astro.props;
   .page-content {
     max-width: 100%;
     margin: 0 auto;
-    padding: 2rem;
+    padding: 1rem;
     margin-top: 80px; /* Platz für fixierten Header */
     min-height: calc(100vh - 80px);
+    height: calc(100vh - 80px);
     overflow-y: auto; /* Content scrollt, nicht Body */
-    max-height: calc(100vh - 80px); /* Maximale Höhe = Viewport minus Header */
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling auf iOS */
   }
 
   @media (max-width: 768px) {
     .page-content {
       padding: 1rem;
+      padding-bottom: 3rem; /* Extra Platz am Ende */
       margin-top: 70px; /* Kleinerer Header auf Mobile */
-      max-height: calc(100vh - 70px);
+      height: calc(100dvh - 70px); /* dvh berücksichtigt Browser-UI */
+      min-height: auto;
     }
   }
 </style>

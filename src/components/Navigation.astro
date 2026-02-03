@@ -185,7 +185,12 @@ const currentPath = Astro.url.pathname;
 
   @media (max-width: 768px) {
     .navigation {
-      position: relative;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      z-index: 1000;
     }
 
     .nav-container {
@@ -251,13 +256,34 @@ const currentPath = Astro.url.pathname;
 </style>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
+  function setupNavToggle() {
     const toggle = document.querySelector('.nav-toggle');
     const navLinks = document.querySelector('.nav-links');
 
-    toggle?.addEventListener('click', () => {
-      const isOpen = navLinks?.classList.toggle('open');
-      toggle?.setAttribute('aria-expanded', String(isOpen));
-    });
-  });
+    if (!toggle || !navLinks) return;
+
+    // Remove old listener if exists (prevent duplicates)
+    const oldHandler = (toggle as any).__clickHandler;
+    if (oldHandler) {
+      toggle.removeEventListener('click', oldHandler);
+    }
+
+    // Create new click handler
+    const clickHandler = () => {
+      const isOpen = navLinks.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', String(isOpen));
+    };
+
+    // Store handler reference for cleanup
+    (toggle as any).__clickHandler = clickHandler;
+
+    // Add new listener
+    toggle.addEventListener('click', clickHandler);
+  }
+
+  // Run on initial page load
+  document.addEventListener('DOMContentLoaded', setupNavToggle);
+
+  // Run on every View Transition navigation
+  document.addEventListener('astro:page-load', setupNavToggle);
 </script>
