@@ -170,15 +170,12 @@ function ResearchTreeNode({
           <input
             type="range"
             min="0"
-            // Set max to the absolute max of the tech, not the dynamic cap,
-            // to avoid browser auto-clamping the slider value on re-render.
-            max={tech.maxLevel}
-            value={selectedLevel}
+            max={maxAvailable}
+            value={Math.min(selectedLevel, maxAvailable)}
             disabled={!unlocked}
             onChange={(e) => {
-              const raw = parseInt((e.target as HTMLInputElement).value, 10);
-              const clamped = Math.min(raw, maxAvailable);
-              onLevelChange(tech.id, clamped);
+              const newValue = parseInt((e.target as HTMLInputElement).value, 10);
+              onLevelChange(tech.id, newValue);
             }}
             style={{
               width: '100%',

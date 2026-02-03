@@ -81,7 +81,7 @@ const categories = [
       const category = researchDataMap[id];
       if (!category) return null;
 
-      const isEnabled = id === 'alliance_recognition';
+      const isEnabled = ['alliance_recognition', 'hero_training'].includes(id);
       const CardTag = isEnabled ? 'a' : 'div';
 
       return (
