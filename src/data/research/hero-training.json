@@ -4,7 +4,7 @@
     "en": "Hero Training",
     "de": "Helden-Training"
   },
-  "totalBadges": 37270,
+  "totalBadges": 39590,
   "nodeCount": 13,
   "image": "/images/research/hero-training.png",
   "technologies": [
@@ -16,11 +16,11 @@
       },
       "maxLevel": 5,
       "badgeCosts": [
-        30,
-        30,
-        30,
-        30,
-        30
+        120,
+        150,
+        210,
+        310,
+        490
       ],
       "icon": "hero-training/attack-special-training",
       "prerequisites": []
@@ -33,11 +33,11 @@
       },
       "maxLevel": 5,
       "badgeCosts": [
-        30,
-        30,
-        30,
-        30,
-        30
+        120,
+        150,
+        210,
+        310,
+        490
       ],
       "icon": "hero-training/strength-training",
       "prerequisites": []
@@ -50,11 +50,11 @@
       },
       "maxLevel": 5,
       "badgeCosts": [
-        50,
-        51,
-        52,
-        53,
-        54
+        170,
+        220,
+        310,
+        460,
+        740
       ],
       "icon": "hero-training/rose-bloom",
       "prerequisites": [
@@ -70,11 +70,11 @@
       },
       "maxLevel": 5,
       "badgeCosts": [
-        50,
-        51,
-        52,
-        53,
-        54
+        170,
+        220,
+        310,
+        460,
+        740
       ],
       "icon": "hero-training/morning-star",
       "prerequisites": [
@@ -90,11 +90,11 @@
       },
       "maxLevel": 5,
       "badgeCosts": [
-        50,
-        51,
-        52,
-        53,
-        54
+        170,
+        220,
+        310,
+        460,
+        740
       ],
       "icon": "hero-training/light-of-order",
       "prerequisites": [
@@ -226,10 +226,10 @@
         470,
         550,
         690,
+        850,
+        1000,
         1300,
-        1600,
-        1860,
-        2160
+        1600
       ],
       "icon": "hero-training/attack-special-training",
       "prerequisites": [
@@ -250,10 +250,10 @@
         470,
         550,
         690,
+        850,
+        1000,
         1300,
-        1600,
-        1860,
-        2160
+        1600
       ],
       "icon": "hero-training/strength-training",
       "prerequisites": [

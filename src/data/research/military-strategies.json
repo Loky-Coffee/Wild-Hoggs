@@ -2,7 +2,7 @@
   "id": "military_strategies",
   "name": {
     "en": "Military Strategies",
-    "de": "Militärische Strategien"
+    "de": "Militärische Theorie"
   },
   "totalBadges": 79816,
   "nodeCount": 18,
@@ -12,7 +12,7 @@
       "id": "fire-up",
       "name": {
         "en": "Fire Up",
-        "de": "Feuerbereitschaft"
+        "de": "Verbesserung der Kraft"
       },
       "maxLevel": 10,
       "badgeCosts": [
@@ -34,7 +34,7 @@
       "id": "armor-upgrade",
       "name": {
         "en": "Armor Upgrade",
-        "de": "Panzerverbesserung"
+        "de": "Verstärkte Rüstung"
       },
       "maxLevel": 10,
       "badgeCosts": [
@@ -80,7 +80,7 @@
       "id": "mobile-defense",
       "name": {
         "en": "Mobile Defense",
-        "de": "Mobile Verteidigung"
+        "de": "Mobilität Verteidigung"
       },
       "maxLevel": 10,
       "badgeCosts": [
@@ -104,11 +104,12 @@
       "id": "combat-policy",
       "name": {
         "en": "Combat Policy",
-        "de": "Kampfrichtlinie"
+        "de": "Kampfstrategie"
       },
       "maxLevel": 10,
       "badgeCosts": [
         100,
+        120,
         140,
         170,
         210,
@@ -116,8 +117,7 @@
         320,
         400,
         500,
-        610,
-        750
+        610
       ],
       "icon": "military-strategies/combat-policy",
       "prerequisites": [
@@ -128,11 +128,12 @@
       "id": "interceptions",
       "name": {
         "en": "Interceptions",
-        "de": "Abfangmaßnahmen"
+        "de": "Abfangtechnik"
       },
       "maxLevel": 10,
       "badgeCosts": [
         100,
+        120,
         140,
         170,
         210,
@@ -140,8 +141,7 @@
         320,
         400,
         500,
-        610,
-        750
+        610
       ],
       "icon": "military-strategies/interceptions",
       "prerequisites": [
@@ -152,7 +152,7 @@
       "id": "demolition-crew",
       "name": {
         "en": "Demolition Crew",
-        "de": "Sprengkommando"
+        "de": "Abriss-Team"
       },
       "maxLevel": 1,
       "badgeCosts": [
@@ -172,11 +172,11 @@
       },
       "maxLevel": 5,
       "badgeCosts": [
+        190,
         250,
         340,
         520,
-        820,
-        1300
+        820
       ],
       "icon": "military-strategies/quick-assembly",
       "prerequisites": [
@@ -187,15 +187,15 @@
       "id": "arms-assembly",
       "name": {
         "en": "Arms Assembly",
-        "de": "Waffenmontage"
+        "de": "Zusammenbau der Waffen"
       },
       "maxLevel": 5,
       "badgeCosts": [
+        190,
         250,
         340,
         520,
-        820,
-        1300
+        820
       ],
       "icon": "military-strategies/arms-assembly",
       "prerequisites": [
@@ -206,15 +206,15 @@
       "id": "target-training",
       "name": {
         "en": "Target Training",
-        "de": "Zieltraining"
+        "de": "Schiesstraining"
       },
       "maxLevel": 5,
       "badgeCosts": [
+        190,
         250,
         340,
         520,
-        820,
-        1300
+        820
       ],
       "icon": "military-strategies/target-training",
       "prerequisites": [
@@ -229,9 +229,9 @@
       },
       "maxLevel": 3,
       "badgeCosts": [
-        82,
-        41,
-        123
+        170,
+        300,
+        520
       ],
       "icon": "military-strategies/recharge-shield",
       "prerequisites": [
@@ -244,20 +244,20 @@
       "id": "fire-up-2",
       "name": {
         "en": "Fire Up",
-        "de": "Feuerbereitschaft"
+        "de": "Verbesserung der Kraft"
       },
       "maxLevel": 10,
       "badgeCosts": [
+        260,
         310,
+        360,
         430,
         510,
         640,
         790,
         1000,
         1250,
-        1500,
-        1880,
-        2360
+        1500
       ],
       "icon": "military-strategies/fire-up",
       "prerequisites": [
@@ -268,20 +268,20 @@
       "id": "armor-upgrade-2",
       "name": {
         "en": "Armor Upgrade",
-        "de": "Panzerverbesserung"
+        "de": "Verstärkte Rüstung"
       },
       "maxLevel": 10,
       "badgeCosts": [
+        260,
         310,
+        360,
         430,
         510,
         640,
         790,
         1000,
         1250,
-        1500,
-        1880,
-        2360
+        1500
       ],
       "icon": "military-strategies/armor-upgrade",
       "prerequisites": [
@@ -296,16 +296,16 @@
       },
       "maxLevel": 10,
       "badgeCosts": [
+        260,
         310,
+        360,
         430,
         510,
         640,
         790,
         1000,
         1250,
-        1500,
-        1880,
-        2360
+        1500
       ],
       "icon": "military-strategies/field-training",
       "prerequisites": [
@@ -316,20 +316,20 @@
       "id": "camo-coating",
       "name": {
         "en": "Camo Coating",
-        "de": "Tarnbeschichtung"
+        "de": "Tarnfarbe"
       },
       "maxLevel": 10,
       "badgeCosts": [
+        260,
         310,
+        360,
         430,
         510,
         640,
         790,
         1000,
         1250,
-        1500,
-        1880,
-        2360
+        1500
       ],
       "icon": "military-strategies/camo-coating",
       "prerequisites": [
@@ -344,16 +344,16 @@
       },
       "maxLevel": 10,
       "badgeCosts": [
+        360,
+        430,
+        500,
+        610,
+        720,
         890,
         1100,
         1390,
         1700,
-        2140,
-        2700,
-        3400,
-        4200,
-        5100,
-        6200
+        2140
       ],
       "icon": "military-strategies/alloy-plate",
       "prerequisites": [
@@ -364,20 +364,20 @@
       "id": "enhanced-armor",
       "name": {
         "en": "Enhanced Armor",
-        "de": "Verbesserte Panzerung"
+        "de": "Verstärkte Rüstung"
       },
       "maxLevel": 10,
       "badgeCosts": [
+        360,
+        430,
+        500,
+        610,
+        720,
         890,
         1100,
         1390,
         1700,
-        2140,
-        2700,
-        3400,
-        4200,
-        5100,
-        6200
+        2140
       ],
       "icon": "military-strategies/enhanced-armor",
       "prerequisites": [
@@ -389,20 +389,20 @@
       "id": "aerocraft-material",
       "name": {
         "en": "Aerocraft Material",
-        "de": "Flugzeugmaterial"
+        "de": "Flugmaterial"
       },
       "maxLevel": 10,
       "badgeCosts": [
+        360,
+        430,
+        500,
+        610,
+        720,
         890,
         1100,
         1390,
         1700,
-        2140,
-        2700,
-        3400,
-        4200,
-        5100,
-        6200
+        2140
       ],
       "icon": "military-strategies/aerocraft-material",
       "prerequisites": [

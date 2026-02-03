@@ -105,18 +105,24 @@ if (!category) {
 </PageLayout>
 
 <script define:vars={{ pageClass }}>
-  // Add class to body for scoped CSS overrides
-  document.body.classList.add(pageClass);
+  function applyPageClass() {
+    document.body.classList.add(pageClass);
+  }
 
-  // Cleanup on navigation away
-  document.addEventListener('astro:before-swap', () => {
+  function removePageClass() {
     document.body.classList.remove(pageClass);
-  });
+  }
 
-  // Additional cleanup on page load
-  document.addEventListener('astro:page-load', () => {
-    if (!window.location.pathname.includes('/tools/research/')) {
-      document.body.classList.remove(pageClass);
+  // Apply immediately on initial load
+  applyPageClass();
+
+  // Cleanup BEFORE swap to prevent flickering
+  document.addEventListener('astro:before-swap', removePageClass);
+
+  // Re-apply AFTER swap completes
+  document.addEventListener('astro:after-swap', () => {
+    if (window.location.pathname.includes('/tools/research/')) {
+      applyPageClass();
     }
   });
 </script>
@@ -125,17 +131,20 @@ if (!category) {
   /* Override page-content only when body has this specific class */
   body.page-research-calculator .page-content {
     overflow: hidden !important;
+    overflow-y: hidden !important;
+    overflow-x: hidden !important;
     padding: 0 !important;
     margin-top: 80px;
     height: calc(100vh - 80px);
     display: flex;
     flex-direction: column;
+    box-sizing: border-box;
   }
 
   @media (max-width: 768px) {
     body.page-research-calculator .page-content {
       margin-top: 70px;
-      height: calc(100vh - 70px);
+      height: calc(100dvh - 70px);
     }
   }
 </style>
