@@ -18,8 +18,11 @@ interface ResearchTreeNodeProps {
 const NODE_WIDTH = 220;
 const NODE_HEIGHT = 180;
 
-// Fallback placeholder for missing images (inline SVG data URI)
-const FALLBACK_ICON = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23333" width="100" height="100"/%3E%3Ctext x="50" y="50" text-anchor="middle" dy=".3em" fill="%23999" font-size="40"%3E%3F%3C/text%3E%3C/svg%3E';
+// Function to generate fallback SVG with first letter of tech name
+function generateFallbackSvg(letter: string): string {
+  const encodedLetter = encodeURIComponent(letter.toUpperCase());
+  return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%23333' width='100' height='100'/%3E%3Ctext x='50' y='50' text-anchor='middle' dy='.3em' fill='%23ffa500' font-size='50' font-weight='bold'%3E${encodedLetter}%3C/text%3E%3C/svg%3E`;
+}
 
 function ResearchTreeNode({
   tech,
@@ -37,8 +40,8 @@ function ResearchTreeNode({
   const maxBadges = tech.badgeCosts.reduce((a, b) => a + b, 0);
   const isActive = selectedLevel > 0;
 
-  // Get optimized image or use fallback
-  let iconHref = FALLBACK_ICON;
+  // Get optimized image or use fallback with first letter
+  let iconHref: string;
   if (tech.icon) {
     // tech.icon is now "category/tech-id" format
     const [category, techId] = tech.icon.split('/');
@@ -46,11 +49,22 @@ function ResearchTreeNode({
       const image = getResearchImage(category, techId);
       if (image) {
         iconHref = image.src; // Vite-optimized image path
+      } else {
+        // Fallback: First letter of technology name
+        iconHref = generateFallbackSvg(tech.name[lang].charAt(0));
       }
+    } else {
+      iconHref = generateFallbackSvg(tech.name[lang].charAt(0));
     }
+  } else {
+    iconHref = generateFallbackSvg(tech.name[lang].charAt(0));
   }
 
   const levelText = lang === 'de' ? 'Level' : 'Level';
+
+  // Clamp selectedLevel to maxAvailable to prevent browser from auto-adjusting
+  // when other sliders are moved and trigger a re-render
+  const clampedLevel = Math.min(selectedLevel, maxAvailable);
 
   return (
     <g transform={`translate(${x}, ${y})`}>
@@ -156,7 +170,7 @@ function ResearchTreeNode({
             type="range"
             min="0"
             max={maxAvailable}
-            value={selectedLevel}
+            value={clampedLevel}
             disabled={!unlocked}
             onChange={(e) => onLevelChange(tech.id, parseInt((e.target as HTMLInputElement).value, 10))}
             style={{
