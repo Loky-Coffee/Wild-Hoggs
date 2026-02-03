@@ -133,25 +133,31 @@ export default function ResearchTreeView({
   const getMaxAvailableLevel = (tech: Technology): number => {
     if (tech.prerequisites.length === 0) return tech.maxLevel;
 
-    // Check if any prerequisite has a low requiredLevel (progressive leveling)
-    const hasProgressivePrereq = tech.prerequisites.some(prereq => {
-      if (typeof prereq === 'string') return true; // String prerequisites default to progressive
-      const prereqTech = technologies.find(t => t.id === prereq.id);
-      const reqLevel = prereq.requiredLevel || 1;
-      // If requiredLevel is less than the prerequisite's maxLevel, it's progressive
+    // First check if tech is unlocked at all
+    if (!isUnlocked(tech)) return 0;
+
+    // Categorize prerequisites as HARD or PROGRESSIVE
+    // Hard: requiredLevel === prerequisite's maxLevel (must be fully met to unlock)
+    // Progressive: requiredLevel < prerequisite's maxLevel (can level incrementally)
+    const progressiveDeps = tech.prerequisites.filter(prereq => {
+      const prereqTech = technologies.find(t =>
+        t.id === (typeof prereq === 'string' ? prereq : prereq.id)
+      );
+      const reqLevel = typeof prereq === 'string' ? 1 : (prereq.requiredLevel || 1);
+      // Progressive: requiredLevel < prerequisite's maxLevel
       return reqLevel < (prereqTech?.maxLevel || 1);
     });
 
-    if (hasProgressivePrereq) {
-      // Progressive: level capped by minimum current level of prerequisites
-      const minPrereqLevel = Math.min(...tech.prerequisites.map(prereq => {
+    // If ANY prerequisite is progressive, cap at minimum current level of progressives only
+    if (progressiveDeps.length > 0) {
+      const minProgressiveLevel = Math.min(...progressiveDeps.map(prereq => {
         const prereqId = typeof prereq === 'string' ? prereq : prereq.id;
         return selectedLevels.get(prereqId) || 0;
       }));
-      return Math.min(tech.maxLevel, minPrereqLevel);
+      return Math.min(tech.maxLevel, minProgressiveLevel);
     }
 
-    // All prerequisites require maxLevel: independent leveling once unlocked
+    // All prerequisites are hard: once unlocked, tech can level independently
     return tech.maxLevel;
   };
 
