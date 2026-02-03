@@ -3,6 +3,7 @@ import PageLayout from '../../../../layouts/PageLayout.astro';
 import { getLangFromUrl, useTranslations } from '../../../../i18n/utils';
 import ResearchCategoryCalculator from '../../../../components/calculators/ResearchCategoryCalculator';
 import type { ResearchTree } from '../../../../schemas/research';
+import { Image } from 'astro:assets';
 
 // Import validated research category data
 import {
@@ -16,6 +17,16 @@ import {
   siegeToSeize,
 } from '../../../../data/validated/research';
 import '../../../../styles/shared-layouts.css';
+
+// Import category images
+import allianceRecognitionImg from '../../../../assets/images/research/alliance-recognition.png';
+import unitSpecialTrainingImg from '../../../../assets/images/research/unit-special-training.png';
+import fullyArmedAllianceImg from '../../../../assets/images/research/fully-armed-alliance.png';
+import fieldImg from '../../../../assets/images/research/field.png';
+import heroTrainingImg from '../../../../assets/images/research/hero-training.png';
+import militaryStrategiesImg from '../../../../assets/images/research/military-strategies.png';
+import peaceShieldImg from '../../../../assets/images/research/peace-shield.png';
+import siegeToSeizeImg from '../../../../assets/images/research/siege-to-seize.png';
 
 export function getStaticPaths() {
   const paths: { params: { lang: string; categoryId: string } }[] = [];
@@ -51,11 +62,24 @@ const researchDataMap: Record<string, ResearchTree> = {
   siege_to_seize: siegeToSeize,
 };
 
+// Map category images by ID
+const imageMap: Record<string, any> = {
+  alliance_recognition: allianceRecognitionImg,
+  unit_special_training: unitSpecialTrainingImg,
+  fully_armed_alliance: fullyArmedAllianceImg,
+  field: fieldImg,
+  hero_training: heroTrainingImg,
+  military_strategies: militaryStrategiesImg,
+  peace_shield: peaceShieldImg,
+  siege_to_seize: siegeToSeizeImg,
+};
+
 const { categoryId } = Astro.params;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
 const category = researchDataMap[categoryId];
+const categoryImage = imageMap[categoryId];
 
 if (!category) {
   return Astro.redirect(`/${lang}/tools/research`);
@@ -71,7 +95,12 @@ if (!category) {
     </div>
 
     <div style="flex: 1; min-height: 0;">
-      <ResearchCategoryCalculator categoryData={category} lang={lang} client:load />
+      <ResearchCategoryCalculator
+        categoryData={category}
+        categoryImageSrc={categoryImage.src}
+        lang={lang}
+        client:load
+      />
     </div>
   </div>
 </PageLayout>

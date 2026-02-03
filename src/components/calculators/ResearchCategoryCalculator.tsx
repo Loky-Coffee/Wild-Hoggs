@@ -7,10 +7,11 @@ import './Calculator.css';
 
 interface ResearchCategoryCalculatorProps {
   categoryData: ResearchTree;
+  categoryImageSrc?: string;
   lang: 'de' | 'en';
 }
 
-export default function ResearchCategoryCalculator({ categoryData, lang }: ResearchCategoryCalculatorProps) {
+export default function ResearchCategoryCalculator({ categoryData, categoryImageSrc, lang }: ResearchCategoryCalculatorProps) {
   const [selectedTechnologies, setSelectedTechnologies] = useState<Map<string, number>>(new Map());
 
   const category = categoryData;
@@ -185,9 +186,9 @@ export default function ResearchCategoryCalculator({ categoryData, lang }: Resea
         >
           {/* Left: Category Info */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            {category.image && (
+            {categoryImageSrc && (
               <img
-                src={category.image}
+                src={categoryImageSrc}
                 alt={category.name[lang]}
                 style={{ width: '60px', height: '60px', objectFit: 'contain' }}
               />
