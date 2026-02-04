@@ -41,8 +41,7 @@ export default function ResearchTreeView({
 
     const calculateTier = (techId: string): number => {
       if (tiersMap.has(techId)) {
-        const tier = tiersMap.get(techId);
-        return tier !== undefined ? tier : 0;
+        return tiersMap.get(techId) ?? 0;
       }
       if (visited.has(techId)) return 0;
 

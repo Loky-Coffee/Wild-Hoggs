@@ -6,9 +6,34 @@ import { formatNumber } from '../../utils/formatters';
 import './Calculator.css';
 
 interface ResearchCategoryCalculatorProps {
-  categoryData: ResearchTree;
-  categoryImageSrc?: string;
-  lang: 'de' | 'en';
+  readonly categoryData: ResearchTree;
+  readonly categoryImageSrc?: string;
+  readonly lang: 'de' | 'en';
+}
+
+function calculateTotalBadges(
+  selectedTechnologies: Map<string, number>,
+  category: ResearchTree | null
+): { totalBadges: number; selectedCount: number } {
+  let totalBadges = 0;
+  let selectedCount = 0;
+
+  if (!category) return { totalBadges: 0, selectedCount: 0 };
+
+  selectedTechnologies.forEach((level, techId) => {
+    const tech = category.technologies.find((t) => t.id === techId);
+    if (tech && level > 0) {
+      for (let i = 0; i < level && i < tech.badgeCosts.length; i++) {
+        totalBadges += tech.badgeCosts[i];
+      }
+      selectedCount++;
+    }
+  });
+
+  return {
+    totalBadges,
+    selectedCount,
+  };
 }
 
 export default function ResearchCategoryCalculator({ categoryData, categoryImageSrc, lang }: ResearchCategoryCalculatorProps) {
@@ -82,27 +107,17 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
     setSelectedTechnologies(new Map());
   };
 
-  const calculatedResults = useMemo(() => {
-    let totalBadges = 0;
-    let selectedCount = 0;
+  const getInfoBoxAriaLabel = (isCollapsed: boolean): string => {
+    if (isCollapsed) {
+      return lang === 'de' ? 'Info erweitern' : 'Expand info';
+    }
+    return lang === 'de' ? 'Info minimieren' : 'Collapse info';
+  };
 
-    if (!category) return { totalBadges: 0, selectedCount: 0 };
-
-    selectedTechnologies.forEach((level, techId) => {
-      const tech = category.technologies.find((t) => t.id === techId);
-      if (tech && level > 0) {
-        for (let i = 0; i < level && i < tech.badgeCosts.length; i++) {
-          totalBadges += tech.badgeCosts[i];
-        }
-        selectedCount++;
-      }
-    });
-
-    return {
-      totalBadges,
-      selectedCount,
-    };
-  }, [selectedTechnologies, category]);
+  const calculatedResults = useMemo(
+    () => calculateTotalBadges(selectedTechnologies, category),
+    [selectedTechnologies, category]
+  );
 
   if (!category) {
     return (
@@ -156,7 +171,7 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
         <button
           className="info-box-toggle"
           onClick={() => setIsInfoBoxCollapsed(!isInfoBoxCollapsed)}
-          aria-label={isInfoBoxCollapsed ? (lang === 'de' ? 'Info erweitern' : 'Expand info') : (lang === 'de' ? 'Info minimieren' : 'Collapse info')}
+          aria-label={getInfoBoxAriaLabel(isInfoBoxCollapsed)}
         >
           {isInfoBoxCollapsed ? '▼' : '▲'}
           {isInfoBoxCollapsed && (
@@ -221,7 +236,7 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
               className="btn-secondary layout-toggle-btn"
               style={{ padding: '0.6rem 1rem', fontSize: '0.9rem' }}
             >
-              {layoutDirection === 'horizontal' ? '⇅' : '⇄'} {lang === 'de' ? 'Layout' : 'Layout'}
+              {layoutDirection === 'horizontal' ? '⇅' : '⇄'} Layout
             </button>
             <button onClick={selectAllToMax} className="btn-secondary" style={{ padding: '0.6rem 1rem', fontSize: '0.9rem' }}>
               {t('selectAll')}

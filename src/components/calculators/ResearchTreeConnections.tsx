@@ -9,16 +9,16 @@ interface TreeNodePosition {
 }
 
 interface ResearchTreeConnectionsProps {
-  technologies: Technology[];
-  nodePositions: Map<string, TreeNodePosition>;
-  selectedLevels: Map<string, number>;
-  svgDimensions: {
+  readonly technologies: Technology[];
+  readonly nodePositions: Map<string, TreeNodePosition>;
+  readonly selectedLevels: Map<string, number>;
+  readonly svgDimensions: {
     width: number;
     height: number;
     offsetX: number;
     offsetY: number;
   };
-  layoutDirection: 'horizontal' | 'vertical';
+  readonly layoutDirection: 'horizontal' | 'vertical';
 }
 
 const NODE_WIDTH = 220;

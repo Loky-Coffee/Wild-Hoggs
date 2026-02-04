@@ -27,7 +27,7 @@ interface Building {
 }
 
 interface BuildingCalculatorProps {
-  lang: 'de' | 'en';
+  readonly lang: 'de' | 'en';
 }
 
 const buildings = buildingsData;
@@ -134,21 +134,6 @@ export default function BuildingCalculator({ lang }: BuildingCalculatorProps) {
     };
   }, [selectedBuilding, currentLevel, targetLevel, selectedBuildingData, maxLevel]);
 
-  const formatTime = (seconds: number) => {
-    const days = Math.floor(seconds / 86400);
-    const hours = Math.floor((seconds % 86400) / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const secs = seconds % 60;
-
-    const parts = [];
-    if (days > 0) parts.push(`${days}${lang === 'de' ? 'd' : 'd'}`);
-    if (hours > 0) parts.push(`${hours}${lang === 'de' ? 'h' : 'h'}`);
-    if (minutes > 0) parts.push(`${minutes}${lang === 'de' ? 'm' : 'm'}`);
-    if (secs > 0) parts.push(`${secs}${lang === 'de' ? 's' : 's'}`);
-
-    return parts.join(' ') || '0s';
-  };
-
   const handleReset = () => {
     setCurrentLevel(1);
     setTargetLevel(5);
@@ -181,7 +166,7 @@ export default function BuildingCalculator({ lang }: BuildingCalculatorProps) {
               min="1"
               max={maxLevel - 1}
               value={currentLevel}
-              onChange={(e) => setCurrentLevel(parseInt((e.target as HTMLInputElement).value, 10) || 1)}
+              onChange={(e) => setCurrentLevel(Number.parseInt((e.target as HTMLInputElement).value, 10) || 1)}
             />
           </div>
 
@@ -193,7 +178,7 @@ export default function BuildingCalculator({ lang }: BuildingCalculatorProps) {
               min={currentLevel + 1}
               max={maxLevel}
               value={targetLevel}
-              onChange={(e) => setTargetLevel(parseInt((e.target as HTMLInputElement).value, 10) || currentLevel + 1)}
+              onChange={(e) => setTargetLevel(Number.parseInt((e.target as HTMLInputElement).value, 10) || currentLevel + 1)}
             />
           </div>
         </div>
@@ -260,8 +245,8 @@ export default function BuildingCalculator({ lang }: BuildingCalculatorProps) {
           <div className="breakdown">
             <h4>{t('perLevel')}</h4>
             <div className="breakdown-list">
-              {calculatedResults.breakdown.map((item, index) => (
-                <div key={index} className="breakdown-item">
+              {calculatedResults.breakdown.map((item) => (
+                <div key={item.level} className="breakdown-item">
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
                     <span className="breakdown-level">Level {item.level}</span>
                     {item.power && (

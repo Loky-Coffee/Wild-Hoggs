@@ -48,7 +48,7 @@
 .form-group select,
 .form-group input {
   padding: 0.75rem 1rem;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(0, 0, 0, 0.4);
   border: 1px solid rgba(255, 165, 0, 0.3);
   border-radius: 6px;
   color: #ffffff;
@@ -70,6 +70,7 @@
 
 .form-group input[type='number'] {
   -moz-appearance: textfield;
+  appearance: textfield;
 }
 
 .form-group input[type='number']::-webkit-outer-spin-button,
@@ -97,7 +98,7 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #ff6b35 0%, #ffa500 100%);
+  background: linear-gradient(135deg, #b8421a 0%, #cc6600 100%);
   color: #ffffff;
   box-shadow: 0 4px 12px rgba(255, 165, 0, 0.3);
 }
@@ -108,8 +109,8 @@
 }
 
 .btn-secondary {
-  background: rgba(255, 255, 255, 0.05);
-  color: #ffa500;
+  background: rgba(0, 0, 0, 0.4);
+  color: #ffb733;
   border: 1px solid rgba(255, 165, 0, 0.3);
 }
 
@@ -227,10 +228,10 @@
 
 .calculator-error {
   padding: 1.5rem;
-  background: rgba(231, 76, 60, 0.1);
+  background: rgba(139, 0, 0, 0.5);
   border: 1px solid rgba(231, 76, 60, 0.3);
   border-radius: 8px;
-  color: #ec7063;
+  color: #ffcccc;
   text-align: center;
 }
 
@@ -365,10 +366,10 @@
     justify-content: center;
     width: 100%;
     padding: 0.75rem;
-    background: rgba(255, 165, 0, 0.1);
+    background: #8b5a00;
     border: 1px solid rgba(255, 165, 0, 0.3);
     border-radius: 6px;
-    color: #ffa500;
+    color: #ffffff;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;

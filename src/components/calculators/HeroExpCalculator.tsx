@@ -5,7 +5,7 @@ import { formatNumber } from '../../utils/formatters';
 import './Calculator.css';
 
 interface HeroExpCalculatorProps {
-  lang: 'de' | 'en';
+  readonly lang: 'de' | 'en';
 }
 
 // Hero exp table is already an array of exp values (index = level)
@@ -84,7 +84,7 @@ export default function HeroExpCalculator({ lang }: HeroExpCalculatorProps) {
               min="1"
               max={maxLevel - 1}
               value={currentLevel}
-              onChange={(e) => setCurrentLevel(parseInt((e.target as HTMLInputElement).value, 10) || 1)}
+              onChange={(e) => setCurrentLevel(Number.parseInt((e.target as HTMLInputElement).value, 10) || 1)}
             />
           </div>
 
@@ -96,7 +96,7 @@ export default function HeroExpCalculator({ lang }: HeroExpCalculatorProps) {
               min={currentLevel + 1}
               max={maxLevel}
               value={targetLevel}
-              onChange={(e) => setTargetLevel(parseInt((e.target as HTMLInputElement).value, 10) || currentLevel + 1)}
+              onChange={(e) => setTargetLevel(Number.parseInt((e.target as HTMLInputElement).value, 10) || currentLevel + 1)}
             />
           </div>
 
@@ -116,8 +116,8 @@ export default function HeroExpCalculator({ lang }: HeroExpCalculatorProps) {
           <div className="breakdown">
             <h4>{t('expPerLevel')}</h4>
             <div className="breakdown-list">
-              {calculatedResults.breakdown.map((item, index) => (
-                <div key={index} className="breakdown-item">
+              {calculatedResults.breakdown.map((item) => (
+                <div key={item.level} className="breakdown-item">
                   <span className="breakdown-level">Level {item.level}</span>
                   <span className="breakdown-exp">{formatNumber(item.exp, lang)} EXP</span>
                 </div>
