@@ -1,5 +1,6 @@
 import { useMemo } from 'preact/hooks';
 import type { ResearchTree } from '../schemas/research';
+import { useTranslations } from '../i18n/utils';
 
 interface CategoryNode {
   id: string;
@@ -28,6 +29,8 @@ const HORIZONTAL_SPACING = 300;
 const VERTICAL_SPACING = 200;
 
 export default function ResearchCategoryTree({ categories, lang }: ResearchCategoryTreeProps) {
+  const t = useTranslations(lang);
+
   // Calculate positions based on dependencies
   const nodePositions = useMemo(() => {
     const positions = new Map<string, { x: number; y: number; depth: number }>();
@@ -214,7 +217,7 @@ export default function ResearchCategoryTree({ categories, lang }: ResearchCateg
                   fontSize="10"
                   fill={cat.totalBadges > 0 ? '#ffa500' : 'rgba(255, 255, 255, 0.5)'}
                 >
-                  {cat.totalBadges > 0 ? `${cat.totalBadges.toLocaleString(lang === 'de' ? 'de-DE' : 'en-US')} 🎖️` : 'Coming Soon'}
+                  {cat.totalBadges > 0 ? `${cat.totalBadges.toLocaleString(lang === 'de' ? 'de-DE' : 'en-US')} 🎖️` : t('research.comingSoon')}
                 </text>
 
                 {/* Requirements indicator */}

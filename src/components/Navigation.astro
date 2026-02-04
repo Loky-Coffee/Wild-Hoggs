@@ -54,7 +54,7 @@ const currentPath = Astro.url.pathname;
             : Astro.url.pathname.replace(/^\/en/, '/de')
         }
         class="lang-link"
-        aria-label={lang === 'de' ? 'Switch to English' : 'Zu Deutsch wechseln'}
+        aria-label={lang === 'de' ? t('nav.switchToEnglish') : t('nav.switchToGerman')}
       >
         {lang === 'de' ? 'EN' : 'DE'}
       </a>

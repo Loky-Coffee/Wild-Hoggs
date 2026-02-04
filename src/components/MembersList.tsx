@@ -1,5 +1,6 @@
 import { useState } from 'preact/hooks';
 import type { Member } from '../data/members';
+import { useTranslations } from '../i18n/utils';
 
 interface Props {
   members: Member[];
@@ -9,6 +10,7 @@ interface Props {
 type SortOption = 'name' | 'gender' | 'level-high' | 'level-low';
 
 export default function MembersList({ members, lang }: Props) {
+  const t = useTranslations(lang);
   const [sortBy, setSortBy] = useState<SortOption>('name');
 
   const sortedMembers = [...members].sort((a, b) => {
@@ -29,28 +31,19 @@ export default function MembersList({ members, lang }: Props) {
     }
   });
 
-  const t = {
-    sortBy: lang === 'de' ? 'Sortieren nach' : 'Sort by',
-    name: lang === 'de' ? 'Name' : 'Name',
-    gender: lang === 'de' ? 'Geschlecht' : 'Gender',
-    levelHigh: lang === 'de' ? 'Level (hoch-niedrig)' : 'Level (high-low)',
-    levelLow: lang === 'de' ? 'Level (niedrig-hoch)' : 'Level (low-high)',
-    level: lang === 'de' ? 'Level' : 'Level',
-  };
-
   return (
     <div>
       <div className="sort-controls">
-        <label htmlFor="sort-select">{t.sortBy}:</label>
+        <label htmlFor="sort-select">{t('members.sortBy')}:</label>
         <select
           id="sort-select"
           value={sortBy}
           onChange={(e) => setSortBy((e.target as HTMLSelectElement).value as SortOption)}
         >
-          <option value="name">{t.name}</option>
-          <option value="gender">{t.gender}</option>
-          <option value="level-high">{t.levelHigh}</option>
-          <option value="level-low">{t.levelLow}</option>
+          <option value="name">{t('members.sortName')}</option>
+          <option value="gender">{t('members.sortGender')}</option>
+          <option value="level-high">{t('members.sortLevelHigh')}</option>
+          <option value="level-low">{t('members.sortLevelLow')}</option>
         </select>
       </div>
 
@@ -60,7 +53,7 @@ export default function MembersList({ members, lang }: Props) {
             <div className="member-gender">{member.gender}</div>
             <div className="member-name">{member.name}</div>
             <div className="member-level">
-              <span className="level-label">{t.level}</span>
+              <span className="level-label">{t('members.sortLevel')}</span>
               <span className="level-value">{member.level}</span>
             </div>
           </div>
