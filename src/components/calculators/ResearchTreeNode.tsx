@@ -93,6 +93,7 @@ function ResearchTreeNode({
           onClick={() => onUnlockClick(tech)}
           style={{ cursor: 'pointer' }}
           data-node-element="true"
+          data-clickable="true"
         >
           <rect
             x={NODE_WIDTH / 2 - 45}
@@ -167,35 +168,68 @@ function ResearchTreeNode({
         {levelText}: {selectedLevel} / {tech.maxLevel}
       </text>
 
-      {/* Slider embedded in node */}
-      <foreignObject
-        x={-NODE_WIDTH / 2 + 15}
-        y={-NODE_HEIGHT / 2 + 110}
-        width={NODE_WIDTH - 30}
-        height={40}
-        style={{ touchAction: 'none' } as any}
-      >
-        <div style={{ width: '100%', height: '100%', touchAction: 'none' }}>
-          <input
-            type="range"
-            min="0"
-            max={maxAvailable}
-            value={Math.min(selectedLevel, maxAvailable)}
-            disabled={!unlocked}
-            onChange={(e) => {
-              const newValue = parseInt((e.target as HTMLInputElement).value, 10);
-              onLevelChange(tech.id, newValue);
-            }}
-            style={{
-              width: '100%',
-              height: '8px',
-              cursor: unlocked ? 'pointer' : 'not-allowed',
-              opacity: unlocked ? 1 : 0.3,
-              accentColor: '#ffa500'
-            }}
+      {/* Slider - Conditional rendering based on unlock status */}
+      {unlocked ? (
+        // Interactive HTML slider for unlocked nodes
+        <foreignObject
+          x={-NODE_WIDTH / 2 + 15}
+          y={-NODE_HEIGHT / 2 + 110}
+          width={NODE_WIDTH - 30}
+          height={40}
+          style={{ touchAction: 'none' } as any}
+        >
+          <div style={{ width: '100%', height: '100%', touchAction: 'none' }}>
+            <input
+              type="range"
+              min="0"
+              max={maxAvailable}
+              value={Math.min(selectedLevel, maxAvailable)}
+              onChange={(e) => {
+                const newValue = parseInt((e.target as HTMLInputElement).value, 10);
+                onLevelChange(tech.id, newValue);
+              }}
+              style={{
+                width: '100%',
+                height: '8px',
+                cursor: 'pointer',
+                accentColor: '#ffa500'
+              }}
+            />
+          </div>
+        </foreignObject>
+      ) : (
+        // Pure SVG slider visualization for locked nodes (fixes iOS bug)
+        <g data-node-element="true">
+          {/* Slider track */}
+          <rect
+            x={-NODE_WIDTH / 2 + 15}
+            y={-NODE_HEIGHT / 2 + 120}
+            width={NODE_WIDTH - 30}
+            height={8}
+            rx={4}
+            fill="rgba(255, 255, 255, 0.15)"
+            stroke="rgba(255, 255, 255, 0.2)"
+            strokeWidth={1}
+            opacity={0.3}
+            data-node-element="true"
           />
-        </div>
-      </foreignObject>
+          {/* Slider thumb - positioned based on current level */}
+          {tech.maxLevel > 0 && (
+            <rect
+              x={-NODE_WIDTH / 2 + 15 + (selectedLevel / tech.maxLevel) * (NODE_WIDTH - 30) - 6}
+              y={-NODE_HEIGHT / 2 + 116}
+              width={12}
+              height={16}
+              rx={3}
+              fill="rgba(255, 165, 0, 0.4)"
+              stroke="rgba(255, 165, 0, 0.5)"
+              strokeWidth={1}
+              opacity={0.3}
+              data-node-element="true"
+            />
+          )}
+        </g>
+      )}
 
       {/* Badge cost - Current / Total */}
       <text

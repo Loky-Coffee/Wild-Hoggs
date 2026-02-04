@@ -231,6 +231,11 @@ export default function ResearchTreeView({
         return true;
       }
 
+      // Allow clicks on clickable elements (like unlock button)
+      if (element.closest('[data-clickable="true"]')) {
+        return true;
+      }
+
       // Block scrolling on nodes (marked with data-node-element)
       if (element.closest('[data-node-element="true"]')) {
         return false;
