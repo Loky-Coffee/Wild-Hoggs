@@ -5,16 +5,16 @@ import { getResearchImage } from '../../utils/researchImages';
 import RangeTouch from 'rangetouch';
 
 interface ResearchTreeNodeProps {
-  tech: Technology;
-  x: number;
-  y: number;
-  selectedLevel: number;
-  maxAvailable: number;
-  unlocked: boolean;
-  formatNumber: (num: number) => string;
-  onLevelChange: (techId: string, level: number) => void;
-  onUnlockClick: (tech: Technology) => void;
-  lang: 'de' | 'en';
+  readonly tech: Technology;
+  readonly x: number;
+  readonly y: number;
+  readonly selectedLevel: number;
+  readonly maxAvailable: number;
+  readonly unlocked: boolean;
+  readonly formatNumber: (num: number) => string;
+  readonly onLevelChange: (techId: string, level: number) => void;
+  readonly onUnlockClick: (tech: Technology) => void;
+  readonly lang: 'de' | 'en';
 }
 
 const NODE_WIDTH = 220;
@@ -24,6 +24,27 @@ const NODE_HEIGHT = 180;
 function generateFallbackSvg(letter: string): string {
   const encodedLetter = encodeURIComponent(letter.toUpperCase());
   return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%23333' width='100' height='100'/%3E%3Ctext x='50' y='50' text-anchor='middle' dy='.3em' fill='%23ffa500' font-size='50' font-weight='bold'%3E${encodedLetter}%3C/text%3E%3C/svg%3E`;
+}
+
+// Helper function to get technology icon href
+function getTechIconHref(tech: Technology, lang: 'de' | 'en'): string {
+  if (!tech.icon) {
+    return generateFallbackSvg(tech.name[lang].charAt(0));
+  }
+
+  const [category, techId] = tech.icon.split('/');
+  if (!category || !techId) {
+    return generateFallbackSvg(tech.name[lang].charAt(0));
+  }
+
+  const image = getResearchImage(category, techId);
+  return image ? image.src : generateFallbackSvg(tech.name[lang].charAt(0));
+}
+
+// Helper function to determine node stroke color
+function getNodeStrokeColor(isActive: boolean, unlocked: boolean): string {
+  if (isActive) return '#ffa500';
+  return unlocked ? 'rgba(255, 165, 0, 0.3)' : 'rgba(255, 255, 255, 0.1)';
 }
 
 function ResearchTreeNode({
@@ -44,7 +65,7 @@ function ResearchTreeNode({
 
   // RangeTouch for iOS touch support
   const rangeInputRef = useRef<HTMLInputElement>(null);
-  const rangeTouchInstanceRef = useRef<any>(null);
+  const rangeTouchInstanceRef = useRef<RangeTouch | null>(null);
 
   useEffect(() => {
     if (rangeInputRef.current && unlocked) {
@@ -62,27 +83,8 @@ function ResearchTreeNode({
     };
   }, [unlocked]);
 
-  // Get optimized image or use fallback with first letter
-  let iconHref: string;
-  if (tech.icon) {
-    // tech.icon is now "category/tech-id" format
-    const [category, techId] = tech.icon.split('/');
-    if (category && techId) {
-      const image = getResearchImage(category, techId);
-      if (image) {
-        iconHref = image.src; // Vite-optimized image path
-      } else {
-        // Fallback: First letter of technology name
-        iconHref = generateFallbackSvg(tech.name[lang].charAt(0));
-      }
-    } else {
-      iconHref = generateFallbackSvg(tech.name[lang].charAt(0));
-    }
-  } else {
-    iconHref = generateFallbackSvg(tech.name[lang].charAt(0));
-  }
-
-  const levelText = lang === 'de' ? 'Level' : 'Level';
+  const iconHref = getTechIconHref(tech, lang);
+  const nodeStrokeColor = getNodeStrokeColor(isActive, unlocked);
 
   // Important: Do not clamp the slider value here.
   // Using a clamped value causes the browser to auto-adjust ("snap down")
@@ -102,8 +104,8 @@ function ResearchTreeNode({
         width={NODE_WIDTH}
         height={NODE_HEIGHT}
         rx={8}
-        fill={isActive ? 'rgba(255, 165, 0, 0.15)' : 'rgba(255, 255, 255, 0.05)'}
-        stroke={isActive ? '#ffa500' : unlocked ? 'rgba(255, 165, 0, 0.3)' : 'rgba(255, 255, 255, 0.1)'}
+        fill={isActive ? '#3d2a00' : '#1e1e1e'}
+        stroke={nodeStrokeColor}
         strokeWidth={2}
         opacity={unlocked ? 1 : 0.5}
         data-node-element="true"
@@ -146,7 +148,7 @@ function ResearchTreeNode({
             fontWeight="600"
             data-node-element="true"
           >
-            {lang === 'de' ? 'Unlock' : 'Unlock'}
+            Unlock
           </text>
         </g>
       )}
@@ -187,7 +189,7 @@ function ResearchTreeNode({
         fontWeight="600"
         data-node-element="true"
       >
-        {levelText}: {selectedLevel} / {tech.maxLevel}
+        Level: {selectedLevel} / {tech.maxLevel}
       </text>
 
       {/* Slider - Conditional rendering based on unlock status */}
@@ -207,7 +209,7 @@ function ResearchTreeNode({
               max={maxAvailable}
               value={Math.min(selectedLevel, maxAvailable)}
               onChange={(e) => {
-                const newValue = parseInt((e.target as HTMLInputElement).value, 10);
+                const newValue = Number.parseInt((e.target as HTMLInputElement).value, 10);
                 onLevelChange(tech.id, newValue);
               }}
               style={{

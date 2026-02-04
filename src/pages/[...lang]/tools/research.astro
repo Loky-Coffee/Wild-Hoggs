@@ -15,6 +15,7 @@ import siegeToSeize from '../../../data/research/siege-to-seize.json';
 import '../../../styles/shared-layouts.css';
 
 // Import optimized images
+import type { ImageMetadata } from 'astro';
 import allianceRecognitionImg from '../../../assets/images/research/alliance-recognition.png';
 import unitSpecialTrainingImg from '../../../assets/images/research/unit-special-training.png';
 import fullyArmedAllianceImg from '../../../assets/images/research/fully-armed-alliance.png';
@@ -47,7 +48,7 @@ const researchDataMap: Record<string, any> = {
 };
 
 // Map optimized images by ID
-const imageMap: Record<string, any> = {
+const imageMap: Record<string, ImageMetadata> = {
   alliance_recognition: allianceRecognitionImg,
   unit_special_training: unitSpecialTrainingImg,
   fully_armed_alliance: fullyArmedAllianceImg,
@@ -81,7 +82,7 @@ const categories = [
       const category = researchDataMap[id];
       if (!category) return null;
 
-      const isEnabled = ['alliance_recognition', 'hero_training', 'military_strategies', 'unit_special_training'].includes(id);
+      const isEnabled = ['alliance_recognition', 'hero_training', 'military_strategies', 'unit_special_training', 'field'].includes(id);
       const CardTag = isEnabled ? 'a' : 'div';
 
       return (

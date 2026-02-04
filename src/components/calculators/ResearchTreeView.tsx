@@ -1,7 +1,6 @@
-import { useMemo, useCallback, useState, useEffect, useRef } from 'preact/hooks';
+import { useMemo, useCallback, useEffect, useRef } from 'preact/hooks';
 import type { Technology } from '../../schemas/research';
 import { formatNumber as sharedFormatNumber } from '../../utils/formatters';
-import { useTranslation } from '../../hooks/useTranslation';
 import ResearchTreeNode from './ResearchTreeNode';
 import ResearchTreeConnections from './ResearchTreeConnections';
 
@@ -12,20 +11,18 @@ interface TreeNodePosition {
 }
 
 interface ResearchTreeViewProps {
-  technologies: Technology[];
-  selectedLevels: Map<string, number>;
-  onLevelChange: (techId: string, level: number) => void;
-  onBatchLevelChange: (updates: Map<string, number>) => void;
-  layoutDirection: 'horizontal' | 'vertical';
-  lang: 'de' | 'en';
+  readonly technologies: Technology[];
+  readonly selectedLevels: Map<string, number>;
+  readonly onLevelChange: (techId: string, level: number) => void;
+  readonly onBatchLevelChange: (updates: Map<string, number>) => void;
+  readonly layoutDirection: 'horizontal' | 'vertical';
+  readonly lang: 'de' | 'en';
 }
 
 const NODE_WIDTH = 220;
 const NODE_HEIGHT = 180;
 const TIER_SPACING = 320;
 const NODE_SPACING = 240;
-
-type LayoutDirection = 'horizontal' | 'vertical';
 
 export default function ResearchTreeView({
   technologies,
@@ -159,20 +156,23 @@ export default function ResearchTreeView({
   const unlockWithPrerequisites = (tech: Technology) => {
     const newLevels = new Map(selectedLevels);
 
+    // Helper to process a single prerequisite
+    const processPrerequisite = (prereq: string | { id: string; requiredLevel?: number }) => {
+      const prereqId = typeof prereq === 'string' ? prereq : prereq.id;
+      const prereqTech = technologies.find(tech => tech.id === prereqId);
+
+      if (!prereqTech) return;
+
+      // First unlock the prerequisites of this prerequisite
+      unlockPrereqs(prereqTech);
+
+      // Then set this prerequisite to MAX level
+      newLevels.set(prereqId, prereqTech.maxLevel);
+    };
+
     // Recursive function to unlock all prerequisites to MAX level
     const unlockPrereqs = (t: Technology) => {
-      t.prerequisites.forEach(prereq => {
-        const prereqId = typeof prereq === 'string' ? prereq : prereq.id;
-        const prereqTech = technologies.find(tech => tech.id === prereqId);
-
-        if (prereqTech) {
-          // First unlock the prerequisites of this prerequisite
-          unlockPrereqs(prereqTech);
-
-          // Then set this prerequisite to MAX level
-          newLevels.set(prereqId, prereqTech.maxLevel);
-        }
-      });
+      t.prerequisites.forEach(processPrerequisite);
     };
 
     // Unlock all prerequisites to max
@@ -389,22 +389,6 @@ export default function ResearchTreeView({
     };
   }, [nodePositions]);
 
-  // Use shared translation hook
-  const t = useTranslation(lang, {
-    de: {
-      horizontal: 'Horizontal (Links→Rechts)',
-      vertical: 'Vertikal (Oben→Unten)',
-      layout: 'Layout',
-      level: 'Level'
-    },
-    en: {
-      horizontal: 'Horizontal (Left→Right)',
-      vertical: 'Vertical (Top→Bottom)',
-      layout: 'Layout',
-      level: 'Level'
-    }
-  });
-
   // Render tree with connections and nodes using extracted components
   return (
     <div
@@ -422,7 +406,7 @@ export default function ResearchTreeView({
         backgroundSize: '30px 30px',
         borderRadius: '12px',
         padding: '1rem',
-        WebkitOverflowScrolling: 'touch' as 'touch',
+        WebkitOverflowScrolling: 'touch' as const,
         touchAction: 'manipulation',
         cursor: 'grab',
         display: 'flex',

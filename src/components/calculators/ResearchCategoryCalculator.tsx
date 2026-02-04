@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect, useRef } from 'preact/hooks';
-import type { Technology, ResearchTree } from '../../schemas/research';
+import type { ResearchTree } from '../../schemas/research';
 import ResearchTreeView from './ResearchTreeView';
 import { useTranslation } from '../../hooks/useTranslation';
 import { formatNumber } from '../../utils/formatters';
