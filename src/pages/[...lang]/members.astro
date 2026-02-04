@@ -4,6 +4,9 @@ import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 import PageHeader from '../../components/PageHeader.astro';
 import { members } from '../../data/members';
 import MembersList from '../../components/MembersList';
+import { statSync } from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 
 export function getStaticPaths() {
   return [
@@ -14,12 +17,49 @@ export function getStaticPaths() {
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+
+// Get last modification time of members.ts
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const membersFilePath = join(__dirname, '../../data/members.ts');
+
+const monthNames = {
+  de: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
+  en: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+};
+
+let lastUpdated = '';
+try {
+  const stats = statSync(membersFilePath);
+  const date = new Date(stats.mtime);
+  const day = date.getDate();
+  const monthName = monthNames[lang][date.getMonth()];
+  const year = date.getFullYear();
+  const hours = date.getHours().toString().padStart(2, '0');
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+
+  // Format: "4. Feb 2026, 18:16" for DE, "Feb 4, 2026, 18:16" for EN
+  if (lang === 'de') {
+    lastUpdated = `${day}. ${monthName} ${year}, ${hours}:${minutes}`;
+  } else {
+    lastUpdated = `${monthName} ${day}, ${year}, ${hours}:${minutes}`;
+  }
+} catch {
+  const date = new Date();
+  const day = date.getDate();
+  const monthName = monthNames[lang][date.getMonth()];
+  const year = date.getFullYear();
+  const hours = date.getHours().toString().padStart(2, '0');
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+  lastUpdated = lang === 'de' ? `${day}. ${monthName} ${year}, ${hours}:${minutes}` : `${monthName} ${day}, ${year}, ${hours}:${minutes}`;
+}
+
+const lastUpdatedText = lang === 'de' ? 'Zuletzt aktualisiert' : 'Last updated';
 ---
 
 <PageLayout title={`${t('members.title')} - Wild Hoggs`} description="Wild Hoggs Guild Members Roster">
   <PageHeader
     title={t('members.title')}
-    subtitle={t('members.count').replace('{count}', members.length.toString())}
+    subtitle={`${t('members.count').replace('{count}', members.length.toString())} • ${lastUpdatedText}: ${lastUpdated}`}
   />
 
   <MembersList members={members} lang={lang} client:load />
