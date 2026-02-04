@@ -176,9 +176,8 @@ function ResearchTreeNode({
           y={-NODE_HEIGHT / 2 + 110}
           width={NODE_WIDTH - 30}
           height={40}
-          style={{ touchAction: 'none' } as any}
         >
-          <div style={{ width: '100%', height: '100%', touchAction: 'none' }}>
+          <div style={{ width: '100%', height: '100%' }}>
             <input
               type="range"
               min="0"
@@ -187,6 +186,12 @@ function ResearchTreeNode({
               onChange={(e) => {
                 const newValue = parseInt((e.target as HTMLInputElement).value, 10);
                 onLevelChange(tech.id, newValue);
+              }}
+              onMouseDown={(e) => {
+                e.stopPropagation();
+              }}
+              onTouchStart={(e) => {
+                e.stopPropagation();
               }}
               style={{
                 width: '100%',
