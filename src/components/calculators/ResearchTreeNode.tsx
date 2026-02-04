@@ -1,6 +1,8 @@
 import { memo } from 'preact/compat';
+import { useRef, useEffect } from 'preact/hooks';
 import type { Technology } from '../../schemas/research';
 import { getResearchImage } from '../../utils/researchImages';
+import RangeTouch from 'rangetouch';
 
 interface ResearchTreeNodeProps {
   tech: Technology;
@@ -39,6 +41,26 @@ function ResearchTreeNode({
   const totalBadges = tech.badgeCosts.slice(0, selectedLevel).reduce((sum, cost) => sum + cost, 0);
   const maxBadges = tech.badgeCosts.reduce((a, b) => a + b, 0);
   const isActive = selectedLevel > 0;
+
+  // RangeTouch for iOS touch support
+  const rangeInputRef = useRef<HTMLInputElement>(null);
+  const rangeTouchInstanceRef = useRef<any>(null);
+
+  useEffect(() => {
+    if (rangeInputRef.current && unlocked) {
+      // Initialize RangeTouch only for unlocked nodes
+      rangeTouchInstanceRef.current = new RangeTouch(rangeInputRef.current, {
+        addCSS: true,
+        thumbWidth: 15,
+        watch: true
+      });
+    }
+
+    return () => {
+      // Cleanup on unmount
+      rangeTouchInstanceRef.current?.destroy();
+    };
+  }, [unlocked]);
 
   // Get optimized image or use fallback with first letter
   let iconHref: string;
@@ -179,6 +201,7 @@ function ResearchTreeNode({
         >
           <div style={{ width: '100%', height: '100%' }}>
             <input
+              ref={rangeInputRef}
               type="range"
               min="0"
               max={maxAvailable}
