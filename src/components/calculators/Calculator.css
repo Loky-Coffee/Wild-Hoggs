@@ -399,3 +399,27 @@
     display: none !important;
   }
 }
+
+/* Research Tree Container - CSS-based Layout (No Flicker!) */
+.research-tree-container {
+  /* Default: flex-start for all */
+  justify-content: flex-start;
+}
+
+/* Desktop (>768px): Center vertical layout */
+@media (min-width: 769px) {
+  .research-tree-container.layout-vertical {
+    justify-content: center;
+  }
+
+  .research-tree-container.layout-horizontal {
+    justify-content: flex-start;
+  }
+}
+
+/* Mobile (<=768px): Always flex-start */
+@media (max-width: 768px) {
+  .research-tree-container {
+    justify-content: flex-start !important;
+  }
+}

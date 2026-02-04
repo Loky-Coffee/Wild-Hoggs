@@ -120,25 +120,6 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
 
   const remainingBadges = category.totalBadges - calculatedResults.totalBadges;
 
-  // Set layout based on screen size
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth <= 768) {
-        setLayoutDirection('vertical');  // Mobile: top to bottom
-      } else {
-        setLayoutDirection('horizontal'); // Desktop: left to right
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-    // Set initial state
-    handleResize();
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
   // Auto-collapse info box when user interacts with tree (mobile only)
   useEffect(() => {
     const treeContainer = treeContainerRef.current;

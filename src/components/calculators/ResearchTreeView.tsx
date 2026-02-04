@@ -185,22 +185,6 @@ export default function ResearchTreeView({
   // Use shared formatNumber utility
   const formatNumber = useCallback((num: number) => sharedFormatNumber(num, lang), [lang]);
 
-  // Detect if we're on desktop (PC) or mobile
-  const [isDesktop, setIsDesktop] = useState(false);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsDesktop(window.innerWidth > 768);
-    };
-
-    window.addEventListener('resize', handleResize);
-    handleResize(); // Set initial state
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
   // Drag-to-scroll functionality for both mouse and touch
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -305,6 +289,12 @@ export default function ResearchTreeView({
     const handleTouchStart = (e: TouchEvent) => {
       const target = e.target as HTMLElement;
 
+      // Allow pinch-zoom: If more than one touch point, don't interfere
+      if (e.touches.length > 1) {
+        touchStarted = false;
+        return;
+      }
+
       // Allow input interaction without scrolling or preventDefault
       // CRITICAL: Let iOS Safari handle range inputs completely natively
       if (
@@ -336,6 +326,12 @@ export default function ResearchTreeView({
     };
 
     const handleTouchMove = (e: TouchEvent) => {
+      // Allow pinch-zoom: If more than one touch point, stop drag-scroll
+      if (e.touches.length > 1) {
+        touchStarted = false;
+        return;
+      }
+
       if (!touchStarted) return;
 
       // Let browser handle native scrolling
@@ -413,19 +409,23 @@ export default function ResearchTreeView({
   return (
     <div
       ref={scrollContainerRef}
+      className={`research-tree-container ${layoutDirection === 'vertical' ? 'layout-vertical' : 'layout-horizontal'}`}
       style={{
         width: '100%',
         height: '100%',
         boxSizing: 'border-box',
         overflow: 'auto',
-        background: 'rgba(0, 0, 0, 0.2)',
+        background: `
+          radial-gradient(circle, rgba(255, 165, 0, 0.15) 1.5px, transparent 1.5px),
+          rgba(0, 0, 0, 0.3)
+        `,
+        backgroundSize: '30px 30px',
         borderRadius: '12px',
         padding: '1rem',
         WebkitOverflowScrolling: 'touch' as 'touch',
         touchAction: 'manipulation',
         cursor: 'grab',
         display: 'flex',
-        justifyContent: isDesktop && layoutDirection === 'vertical' ? 'center' : 'flex-start',
         alignItems: 'flex-start',
         userSelect: 'none',
         WebkitUserSelect: 'none'
