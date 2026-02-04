@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect, useRef } from 'preact/hooks';
 import type { ResearchTree } from '../../schemas/research';
 import ResearchTreeView from './ResearchTreeView';
-import { useTranslation } from '../../hooks/useTranslation';
+import { useTranslations } from '../../i18n/utils';
 import { formatNumber } from '../../utils/formatters';
 import './Calculator.css';
 
@@ -41,30 +41,7 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
 
   const category = categoryData;
 
-  const t = useTranslation(lang, {
-    de: {
-      results: 'Ergebnisse',
-      totalBadges: 'Gesamt Badges',
-      selectedCount: 'Ausgewählte Technologien',
-      reset: 'Alle zurücksetzen',
-      selectAll: 'Alle auf Maximum',
-      level: 'Level',
-      max: 'Max',
-      total: 'gesamt',
-      nodes: 'Technologien',
-    },
-    en: {
-      results: 'Results',
-      totalBadges: 'Total Badges',
-      selectedCount: 'Selected Technologies',
-      reset: 'Reset All',
-      selectAll: 'Select All to Max',
-      level: 'Level',
-      max: 'Max',
-      total: 'total',
-      nodes: 'nodes',
-    },
-  });
+  const t = useTranslations(lang);
 
   const setTechnologyLevel = (techId: string, level: number) => {
     // Use functional update to avoid race conditions when multiple sliders change quickly
@@ -109,9 +86,9 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
 
   const getInfoBoxAriaLabel = (isCollapsed: boolean): string => {
     if (isCollapsed) {
-      return lang === 'de' ? 'Info erweitern' : 'Expand info';
+      return t('calc.research.infoExpand');
     }
-    return lang === 'de' ? 'Info minimieren' : 'Collapse info';
+    return t('calc.research.infoCollapse');
   };
 
   const calculatedResults = useMemo(
@@ -123,7 +100,7 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
     return (
       <div className="calculator-container">
         <div className="calculator-error">
-          {lang === 'de' ? 'Kategorie nicht gefunden' : 'Category not found'}
+          {t('calc.research.categoryNotFound')}
         </div>
       </div>
     );
@@ -204,7 +181,7 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
             <div>
               <h3 style={{ margin: '0 0 0.5rem 0', color: '#ffa500' }}>{category.name[lang]}</h3>
               <p style={{ margin: 0, fontSize: '0.9rem', opacity: 0.8 }}>
-                {category.nodeCount} {t('nodes')} · {formatNumber(category.totalBadges, lang)} 🎖️ {t('total')}
+                {category.nodeCount} {t('calc.research.nodes')} · {formatNumber(category.totalBadges, lang)} 🎖️ {t('calc.research.total')}
               </p>
             </div>
           </div>
@@ -213,7 +190,7 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
           <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
             <div>
               <div style={{ fontSize: '0.85rem', opacity: 0.7, marginBottom: '0.25rem' }}>
-                {lang === 'de' ? 'Benutzt' : 'Used'}
+                {t('calc.research.used')}
               </div>
               <div style={{ fontSize: '1.2rem', fontWeight: 700, color: calculatedResults.totalBadges > 0 ? '#ffa500' : 'rgba(255,255,255,0.5)' }}>
                 {formatNumber(calculatedResults.totalBadges, lang)} 🎖️
@@ -221,7 +198,7 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
             </div>
             <div>
               <div style={{ fontSize: '0.85rem', opacity: 0.7, marginBottom: '0.25rem' }}>
-                {lang === 'de' ? 'Verbleibend' : 'Remaining'}
+                {t('calc.research.remaining')}
               </div>
               <div style={{ fontSize: '1.2rem', fontWeight: 700, color: remainingBadges > 0 ? 'rgba(255,255,255,0.7)' : '#52be80' }}>
                 {formatNumber(remainingBadges, lang)} 🎖️
@@ -239,10 +216,10 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
               {layoutDirection === 'horizontal' ? '⇅' : '⇄'} Layout
             </button>
             <button onClick={selectAllToMax} className="btn-secondary" style={{ padding: '0.6rem 1rem', fontSize: '0.9rem' }}>
-              {t('selectAll')}
+              {t('calc.research.selectAll')}
             </button>
             <button onClick={handleReset} className="btn-secondary" style={{ padding: '0.6rem 1rem', fontSize: '0.9rem' }}>
-              {t('reset')}
+              {t('calc.research.reset')}
             </button>
           </div>
         </div>

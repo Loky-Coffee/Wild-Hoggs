@@ -2,6 +2,7 @@ import { memo } from 'preact/compat';
 import { useRef, useEffect } from 'preact/hooks';
 import type { Technology } from '../../schemas/research';
 import { getResearchImage } from '../../utils/researchImages';
+import { useTranslations } from '../../i18n/utils';
 import RangeTouch from 'rangetouch';
 
 interface ResearchTreeNodeProps {
@@ -59,6 +60,7 @@ function ResearchTreeNode({
   onUnlockClick,
   lang
 }: ResearchTreeNodeProps) {
+  const t = useTranslations(lang);
   const totalBadges = tech.badgeCosts.slice(0, selectedLevel).reduce((sum, cost) => sum + cost, 0);
   const maxBadges = tech.badgeCosts.reduce((a, b) => a + b, 0);
   const isActive = selectedLevel > 0;
@@ -103,7 +105,7 @@ function ResearchTreeNode({
   return (
     <g transform={`translate(${x}, ${y})`} data-node-element="true">
       {!unlocked && (
-        <title>{lang === 'de' ? 'Klicken um alle Prerequisites freizuschalten' : 'Click to unlock all prerequisites'}</title>
+        <title>{t('calc.research.unlockPrerequisites')}</title>
       )}
 
       {/* Node background */}
@@ -289,7 +291,7 @@ function ResearchTreeNode({
           fontWeight="500"
           data-node-element="true"
         >
-          {lang === 'de' ? 'Nächste' : 'Next'}: {formatNumber(tech.badgeCosts[selectedLevel])} 🎖️
+          {t('calc.research.next')}: {formatNumber(tech.badgeCosts[selectedLevel])} 🎖️
         </text>
       )}
     </g>

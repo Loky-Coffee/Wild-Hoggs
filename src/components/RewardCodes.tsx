@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'preact/hooks';
-import { useTranslation } from '../hooks/useTranslation';
+import { useTranslations } from '../i18n/utils';
 import { ApiResponseSchema } from '../schemas/reward-codes';
 import './RewardCodes.css';
 
@@ -50,7 +50,7 @@ export default function RewardCodes({ lang, codes: initialCodes = [] }: RewardCo
         // Transform API response to RewardCode format
         const apiCodes = data.codes.map((item) => ({
           code: item.code,
-          description: item.description || (lang === 'de' ? 'Belohnung einlösen' : 'Redeem reward'),
+          description: item.description || t('bonus.codes.defaultDescription'),
           isActive: true,
           timestamp: item.timestamp
         }));
@@ -71,22 +71,7 @@ export default function RewardCodes({ lang, codes: initialCodes = [] }: RewardCo
     loadCodes();
   }, [lang]);
 
-  const t = useTranslation(lang, {
-    de: {
-      copy: 'Kopieren',
-      copied: 'Kopiert!',
-      active: 'Aktive Codes',
-      expired: 'Abgelaufen',
-      validUntil: 'Gültig bis',
-    },
-    en: {
-      copy: 'Copy',
-      copied: 'Copied!',
-      active: 'Active Codes',
-      expired: 'Expired',
-      validUntil: 'Valid until',
-    },
-  });
+  const t = useTranslations(lang);
 
   const copyToClipboard = async (code: string) => {
     try {
@@ -106,20 +91,20 @@ export default function RewardCodes({ lang, codes: initialCodes = [] }: RewardCo
       {loading && (
         <div className="loading-state">
           <div className="spinner"></div>
-          <p>{lang === 'de' ? 'Lade Reward Codes...' : 'Loading reward codes...'}</p>
+          <p>{t('bonus.codes.loading')}</p>
         </div>
       )}
 
       {error && !loading && codes.length === 0 && (
         <div className="error-state">
-          <p>⚠️ {lang === 'de' ? 'Codes konnten nicht geladen werden' : 'Failed to load codes'}</p>
+          <p>⚠️ {t('bonus.codes.error')}</p>
           <p className="error-detail">{error}</p>
         </div>
       )}
 
       {!loading && codes.length === 0 && !error && (
         <div className="empty-state">
-          <p>📭 {lang === 'de' ? 'Keine Codes verfügbar' : 'No codes available'}</p>
+          <p>📭 {t('bonus.codes.noCodes')}</p>
         </div>
       )}
 
@@ -137,9 +122,9 @@ export default function RewardCodes({ lang, codes: initialCodes = [] }: RewardCo
                 <button
                   className="copy-btn"
                   onClick={() => copyToClipboard(item.code)}
-                  aria-label={`${t('copy')} ${item.code}`}
+                  aria-label={`${t('bonus.codes.copy')} ${item.code}`}
                 >
-                  {copiedCode === item.code ? '✓ ' + t('copied') : t('copy')}
+                  {copiedCode === item.code ? '✓ ' + t('bonus.codes.copied') : t('bonus.codes.copy')}
                 </button>
               </div>
               <p className="code-description">{item.description}</p>

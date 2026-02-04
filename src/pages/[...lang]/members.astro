@@ -22,17 +22,27 @@ const t = useTranslations(lang);
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const membersFilePath = join(__dirname, '../../data/members.ts');
 
-const monthNames = {
-  de: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
-  en: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-};
+const monthNames = [
+  t('members.month.jan'),
+  t('members.month.feb'),
+  t('members.month.mar'),
+  t('members.month.apr'),
+  t('members.month.may'),
+  t('members.month.jun'),
+  t('members.month.jul'),
+  t('members.month.aug'),
+  t('members.month.sep'),
+  t('members.month.oct'),
+  t('members.month.nov'),
+  t('members.month.dec'),
+];
 
 let lastUpdated = '';
 try {
   const stats = statSync(membersFilePath);
   const date = new Date(stats.mtime);
   const day = date.getDate();
-  const monthName = monthNames[lang][date.getMonth()];
+  const monthName = monthNames[date.getMonth()];
   const year = date.getFullYear();
   const hours = date.getHours().toString().padStart(2, '0');
   const minutes = date.getMinutes().toString().padStart(2, '0');
@@ -46,14 +56,14 @@ try {
 } catch {
   const date = new Date();
   const day = date.getDate();
-  const monthName = monthNames[lang][date.getMonth()];
+  const monthName = monthNames[date.getMonth()];
   const year = date.getFullYear();
   const hours = date.getHours().toString().padStart(2, '0');
   const minutes = date.getMinutes().toString().padStart(2, '0');
   lastUpdated = lang === 'de' ? `${day}. ${monthName} ${year}, ${hours}:${minutes}` : `${monthName} ${day}, ${year}, ${hours}:${minutes}`;
 }
 
-const lastUpdatedText = lang === 'de' ? 'Zuletzt aktualisiert' : 'Last updated';
+const lastUpdatedText = t('members.lastUpdated');
 ---
 
 <PageLayout title={`${t('members.title')} - Wild Hoggs`} description="Wild Hoggs Guild Members Roster">

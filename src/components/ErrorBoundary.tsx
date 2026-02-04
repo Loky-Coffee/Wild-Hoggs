@@ -1,4 +1,5 @@
 import { Component, type ComponentChildren } from 'preact';
+import { ui } from '../i18n/ui';
 
 interface Props {
   children: ComponentChildren;
@@ -34,24 +35,7 @@ export class ErrorBoundary extends Component<Props, State> {
       }
 
       const lang = this.props.lang || 'en';
-      const messages = {
-        de: {
-          title: 'Etwas ist schiefgelaufen',
-          message: 'Der Calculator konnte nicht geladen werden.',
-          details: 'Fehlerdetails:',
-          reload: 'Seite neu laden',
-          retry: 'Erneut versuchen'
-        },
-        en: {
-          title: 'Something went wrong',
-          message: 'The calculator could not be loaded.',
-          details: 'Error details:',
-          reload: 'Reload page',
-          retry: 'Try again'
-        }
-      };
-
-      const t = messages[lang];
+      const translations = ui[lang];
 
       return (
         <div style={{
@@ -63,15 +47,15 @@ export class ErrorBoundary extends Component<Props, State> {
           color: '#fff'
         }}>
           <h2 style={{ color: '#ff6b6b', marginBottom: '1rem' }}>
-            ⚠️ {t.title}
+            ⚠️ {translations['error.title']}
           </h2>
           <p style={{ marginBottom: '1rem', opacity: 0.9 }}>
-            {t.message}
+            {translations['error.message']}
           </p>
           {this.state.error && (
             <details style={{ marginBottom: '1rem' }}>
               <summary style={{ cursor: 'pointer', marginBottom: '0.5rem' }}>
-                {t.details}
+                {translations['error.details']}
               </summary>
               <pre style={{
                 background: 'rgba(0,0,0,0.3)',
@@ -99,7 +83,7 @@ export class ErrorBoundary extends Component<Props, State> {
                 cursor: 'pointer'
               }}
             >
-              {t.retry}
+              {translations['error.retry']}
             </button>
             <button
               onClick={() => window.location.reload()}
@@ -113,7 +97,7 @@ export class ErrorBoundary extends Component<Props, State> {
                 cursor: 'pointer'
               }}
             >
-              {t.reload}
+              {translations['error.reload']}
             </button>
           </div>
         </div>

@@ -21,93 +21,73 @@ const t = useTranslations(lang);
 const allRoses = [
   {
     luckyNumber: 1,
-    name: lang === 'de' ? 'Glücksrose #1' : 'Lucky Rose #1',
-    buff: lang === 'de' ? '+20% Baugeschwindigkeit' : '+20% Construction Speed',
+    name: t('bonus.rose1.name'),
+    buff: t('bonus.rose1.buff'),
     duration: '2h',
-    description: lang === 'de'
-      ? 'Erhöht Baugeschwindigkeit um 20% für 2 Stunden'
-      : 'Increases construction speed by 20% for 2 hours',
+    description: t('bonus.rose1.description'),
   },
   {
     luckyNumber: 2,
-    name: lang === 'de' ? 'Glücksrose #2' : 'Lucky Rose #2',
-    buff: lang === 'de' ? '+15% Truppentransport' : '+15% Troop Load',
+    name: t('bonus.rose2.name'),
+    buff: t('bonus.rose2.buff'),
     duration: '24h',
-    description: lang === 'de'
-      ? 'Erhöht Truppentransportkapazität um 15% für 24 Stunden'
-      : 'Increases troop load capacity by 15% for 24 hours',
+    description: t('bonus.rose2.description'),
   },
   {
     luckyNumber: 3,
-    name: lang === 'de' ? 'Glücksrose #3' : 'Lucky Rose #3',
-    buff: lang === 'de' ? '+30% Sammelgeschwindigkeit' : '+30% Gathering Speed',
+    name: t('bonus.rose3.name'),
+    buff: t('bonus.rose3.buff'),
     duration: '24h',
-    description: lang === 'de'
-      ? 'Erhöht Sammelgeschwindigkeit um 30% für 24 Stunden'
-      : 'Increases gathering speed by 30% for 24 hours',
+    description: t('bonus.rose3.description'),
   },
   {
     luckyNumber: 4,
-    name: lang === 'de' ? 'Glücksrose #4' : 'Lucky Rose #4',
-    buff: lang === 'de' ? 'Allianz-Hilfe +120s' : 'Allied Assist +120s',
+    name: t('bonus.rose4.name'),
+    buff: t('bonus.rose4.buff'),
     duration: '24h',
-    description: lang === 'de'
-      ? 'Allianz-Hilfe-Dauer +120 Sekunden für 24 Stunden'
-      : 'Alliance help duration +120 seconds for 24 hours',
+    description: t('bonus.rose4.description'),
   },
   {
     luckyNumber: 5,
-    name: lang === 'de' ? 'Glücksrose #5' : 'Lucky Rose #5',
-    buff: lang === 'de' ? '+20% Forschungsgeschwindigkeit' : '+20% Research Speed',
+    name: t('bonus.rose5.name'),
+    buff: t('bonus.rose5.buff'),
     duration: '2h',
-    description: lang === 'de'
-      ? 'Erhöht Forschungsgeschwindigkeit um 20% für 2 Stunden'
-      : 'Increases research speed by 20% for 2 hours',
+    description: t('bonus.rose5.description'),
   },
   {
     luckyNumber: 6,
-    name: lang === 'de' ? 'Glücksrose #6' : 'Lucky Rose #6',
-    buff: lang === 'de' ? 'Allianz-Hilfe +120s' : 'Allied Assist +120s',
+    name: t('bonus.rose6.name'),
+    buff: t('bonus.rose6.buff'),
     duration: '24h',
-    description: lang === 'de'
-      ? 'Allianz-Hilfe-Dauer +120 Sekunden für 24 Stunden (Doppelte Hilfe-Zeit)'
-      : 'Alliance help duration +120 seconds for 24 hours (Double Help Time)',
+    description: t('bonus.rose6.description'),
   },
   {
     luckyNumber: 7,
-    name: lang === 'de' ? 'Glücksrose #7' : 'Lucky Rose #7',
-    buff: lang === 'de' ? '+10% Truppen-Angriff' : '+10% Troop ATK',
+    name: t('bonus.rose7.name'),
+    buff: t('bonus.rose7.buff'),
     duration: '2h',
-    description: lang === 'de'
-      ? 'Erhöht Truppenangriff um 10% für 2 Stunden'
-      : 'Increases troop attack by 10% for 2 hours',
+    description: t('bonus.rose7.description'),
   },
   {
     luckyNumber: 8,
-    name: lang === 'de' ? 'Glücksrose #8' : 'Lucky Rose #8',
-    buff: lang === 'de' ? '+20% Baugeschwindigkeit' : '+20% Construction Speed',
+    name: t('bonus.rose8.name'),
+    buff: t('bonus.rose8.buff'),
     duration: '2h',
-    description: lang === 'de'
-      ? 'Erhöht Baugeschwindigkeit um 20% für 2 Stunden'
-      : 'Increases construction speed by 20% for 2 hours',
+    description: t('bonus.rose8.description'),
   },
   {
     luckyNumber: 9,
-    name: lang === 'de' ? 'Glücksrose #9' : 'Lucky Rose #9',
-    buff: lang === 'de' ? '+20% Forschungsgeschwindigkeit' : '+20% Research Speed',
+    name: t('bonus.rose9.name'),
+    buff: t('bonus.rose9.buff'),
     duration: '2h',
-    description: lang === 'de'
-      ? 'Erhöht Forschungsgeschwindigkeit um 20% für 2 Stunden'
-      : 'Increases research speed by 20% for 2 hours',
+    description: t('bonus.rose9.description'),
   },
   {
     luckyNumber: 10,
-    name: lang === 'de' ? 'Glücksrose #10 (Gold)' : 'Lucky Rose #10 (Gold)',
-    buff: lang === 'de' ? '+10% Truppen-Angriff' : '+10% Troop ATK',
+    name: t('bonus.rose10.name'),
+    buff: t('bonus.rose10.buff'),
     duration: '2h',
-    description: lang === 'de'
-      ? 'Erhöht Truppenangriff um 10% für 2 Stunden'
-      : 'Increases troop attack by 10% for 2 hours',
+    description: t('bonus.rose10.description'),
   },
 ];
 

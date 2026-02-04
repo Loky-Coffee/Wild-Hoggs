@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'preact/hooks';
 import { validatedHeroExpTable } from '../../data/validated/hero-exp';
-import { useTranslation } from '../../hooks/useTranslation';
+import { useTranslations } from '../../i18n/utils';
 import { formatNumber } from '../../utils/formatters';
 import './Calculator.css';
 
@@ -15,30 +15,7 @@ export default function HeroExpCalculator({ lang }: HeroExpCalculatorProps) {
   const [currentLevel, setCurrentLevel] = useState<number>(1);
   const [targetLevel, setTargetLevel] = useState<number>(10);
 
-  const t = useTranslation(lang, {
-    de: {
-      title: 'Hero EXP Rechner',
-      currentLevel: 'Aktuelles Level',
-      targetLevel: 'Ziel Level',
-      calculate: 'Berechnen',
-      results: 'Ergebnisse',
-      totalExp: 'Benötigte EXP',
-      expPerLevel: 'EXP pro Level',
-      levelProgress: 'Level-Fortschritt',
-      reset: 'Zurücksetzen',
-    },
-    en: {
-      title: 'Hero EXP Calculator',
-      currentLevel: 'Current Level',
-      targetLevel: 'Target Level',
-      calculate: 'Calculate',
-      results: 'Results',
-      totalExp: 'Required EXP',
-      expPerLevel: 'EXP per Level',
-      levelProgress: 'Level Progress',
-      reset: 'Reset',
-    },
-  });
+  const t = useTranslations(lang);
 
   const maxLevel = 175; // Last-Z max hero level
 
@@ -68,16 +45,14 @@ export default function HeroExpCalculator({ lang }: HeroExpCalculatorProps) {
     <div className="calculator-container">
       <div className="info-box">
         <p>
-          {lang === 'de'
-            ? 'Alle Heroes in Last-Z verwenden die gleiche EXP-Kurve. Berechne die benötigte EXP für jedes Level-Upgrade.'
-            : 'All heroes in Last-Z use the same EXP curve. Calculate the required EXP for any level upgrade.'}
+          {t('calc.hero.infoText')}
         </p>
       </div>
 
       <div className="calculator-form compact">
         <div className="form-row compact-row centered">
           <div className="form-group compact">
-            <label htmlFor="current-level">{t('currentLevel')}:</label>
+            <label htmlFor="current-level">{t('calc.hero.currentLevel')}:</label>
             <input
               id="current-level"
               type="number"
@@ -89,7 +64,7 @@ export default function HeroExpCalculator({ lang }: HeroExpCalculatorProps) {
           </div>
 
           <div className="form-group compact">
-            <label htmlFor="target-level">{t('targetLevel')}:</label>
+            <label htmlFor="target-level">{t('calc.hero.targetLevel')}:</label>
             <input
               id="target-level"
               type="number"
@@ -101,7 +76,7 @@ export default function HeroExpCalculator({ lang }: HeroExpCalculatorProps) {
           </div>
 
           <button onClick={handleReset} className="btn-secondary compact">
-            {t('reset')}
+            {t('calc.hero.reset')}
           </button>
         </div>
       </div>
@@ -109,12 +84,12 @@ export default function HeroExpCalculator({ lang }: HeroExpCalculatorProps) {
       {calculatedResults && (
         <div className="calculator-results">
           <div className="result-card highlight">
-            <div className="result-label">{t('totalExp')}</div>
+            <div className="result-label">{t('calc.hero.totalExp')}</div>
             <div className="result-value">{formatNumber(calculatedResults.totalExp, lang)}</div>
           </div>
 
           <div className="breakdown">
-            <h4>{t('expPerLevel')}</h4>
+            <h4>{t('calc.hero.expPerLevel')}</h4>
             <div className="breakdown-list">
               {calculatedResults.breakdown.map((item) => (
                 <div key={item.level} className="breakdown-item">
@@ -129,9 +104,7 @@ export default function HeroExpCalculator({ lang }: HeroExpCalculatorProps) {
 
       {!calculatedResults && currentLevel >= targetLevel && (
         <div className="calculator-error">
-          {lang === 'de'
-            ? 'Das Ziel-Level muss höher sein als das aktuelle Level.'
-            : 'Target level must be higher than current level.'}
+          {t('calc.hero.errorTargetLevel')}
         </div>
       )}
     </div>
