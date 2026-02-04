@@ -223,6 +223,10 @@ export const ui = {
     'guides.placeholder': 'Guides werden in Phase 6 implementiert...',
     'events.placeholder': 'Event-Kalender wird in Phase 4 implementiert...',
     'heroes.placeholder': 'Helden-Datenbank wird in Phase 5 implementiert...',
+    // Time Units (formatDuration)
+    'time.hours': 'Std',
+    'time.minutes': 'Min',
+    'time.seconds': 'Sek',
     // Navigation
     'nav.switchToEnglish': 'Switch to English',
     'nav.switchToGerman': 'Zu Deutsch wechseln',
@@ -448,6 +452,10 @@ export const ui = {
     'guides.placeholder': 'Guides will be implemented in Phase 6...',
     'events.placeholder': 'Event calendar will be implemented in Phase 4...',
     'heroes.placeholder': 'Hero database will be implemented in Phase 5...',
+    // Time Units (formatDuration)
+    'time.hours': 'h',
+    'time.minutes': 'm',
+    'time.seconds': 's',
     // Navigation
     'nav.switchToEnglish': 'Switch to English',
     'nav.switchToGerman': 'Zu Deutsch wechseln',

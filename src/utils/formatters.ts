@@ -5,6 +5,8 @@
  * Eliminates ~30-40 LOC of duplicated formatter logic.
  */
 
+import { ui } from '../i18n/ui';
+
 /**
  * Format number with locale-specific thousand separators
  *
@@ -36,9 +38,12 @@ export function formatDuration(seconds: number, lang: 'de' | 'en'): string {
   const minutes = Math.floor((seconds % 3600) / 60);
   const secs = seconds % 60;
 
-  const units = lang === 'de'
-    ? { h: 'Std', m: 'Min', s: 'Sek' }
-    : { h: 'h', m: 'm', s: 's' };
+  const t = ui[lang];
+  const units = {
+    h: t['time.hours'],
+    m: t['time.minutes'],
+    s: t['time.seconds']
+  };
 
   const parts: string[] = [];
   if (hours > 0) parts.push(`${hours}${units.h}`);
