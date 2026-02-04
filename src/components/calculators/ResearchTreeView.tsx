@@ -201,7 +201,7 @@ export default function ResearchTreeView({
     };
   }, []);
 
-  // Drag-to-scroll functionality for mouse
+  // Drag-to-scroll functionality for both mouse and touch
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -214,17 +214,40 @@ export default function ResearchTreeView({
     let scrollLeft = 0;
     let scrollTop = 0;
 
-    const handleMouseDown = (e: MouseEvent) => {
-      // Ignore if clicking on interactive elements (sliders, buttons, links)
-      const target = e.target as HTMLElement;
+    // Helper function to check if element should allow scrolling
+    const shouldAllowScroll = (target: EventTarget | null): boolean => {
+      if (!target) return true;
+      const element = target as HTMLElement;
+
+      // Allow scrolling on interactive elements
       if (
-        target.tagName === 'INPUT' ||
-        target.tagName === 'BUTTON' ||
-        target.tagName === 'A' ||
-        target.closest('input') ||
-        target.closest('button') ||
-        target.closest('a')
+        element.tagName === 'INPUT' ||
+        element.tagName === 'BUTTON' ||
+        element.tagName === 'A' ||
+        element.closest('input') ||
+        element.closest('button') ||
+        element.closest('a')
       ) {
+        return true;
+      }
+
+      // Block scrolling on nodes (marked with data-node-element)
+      if (element.closest('[data-node-element="true"]')) {
+        return false;
+      }
+
+      // Block scrolling on foreignObject (contains sliders)
+      if (element.closest('foreignObject')) {
+        return false;
+      }
+
+      // Allow scrolling on empty space
+      return true;
+    };
+
+    // Mouse event handlers
+    const handleMouseDown = (e: MouseEvent) => {
+      if (!shouldAllowScroll(e.target)) {
         return;
       }
 
@@ -260,16 +283,59 @@ export default function ResearchTreeView({
       container.scrollTop = scrollTop - walkY;
     };
 
+    // Touch event handlers
+    let touchStarted = false;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      // Check if touch started on a node or interactive element
+      if (!shouldAllowScroll(e.target)) {
+        // Prevent scrolling when touching nodes
+        e.preventDefault();
+        return;
+      }
+
+      // Allow native scrolling on empty space
+      touchStarted = true;
+      const touch = e.touches[0];
+      startX = touch.pageX - container.offsetLeft;
+      startY = touch.pageY - container.offsetTop;
+      scrollLeft = container.scrollLeft;
+      scrollTop = container.scrollTop;
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!touchStarted) return;
+
+      // Let browser handle native scrolling
+      // We don't prevent default here to allow smooth native touch scrolling
+    };
+
+    const handleTouchEnd = () => {
+      touchStarted = false;
+    };
+
+    // Add mouse event listeners
     container.addEventListener('mousedown', handleMouseDown);
     container.addEventListener('mouseleave', handleMouseLeave);
     container.addEventListener('mouseup', handleMouseUp);
     container.addEventListener('mousemove', handleMouseMove);
 
+    // Add touch event listeners
+    container.addEventListener('touchstart', handleTouchStart, { passive: false });
+    container.addEventListener('touchmove', handleTouchMove, { passive: true });
+    container.addEventListener('touchend', handleTouchEnd);
+
     return () => {
+      // Remove mouse listeners
       container.removeEventListener('mousedown', handleMouseDown);
       container.removeEventListener('mouseleave', handleMouseLeave);
       container.removeEventListener('mouseup', handleMouseUp);
       container.removeEventListener('mousemove', handleMouseMove);
+
+      // Remove touch listeners
+      container.removeEventListener('touchstart', handleTouchStart);
+      container.removeEventListener('touchmove', handleTouchMove);
+      container.removeEventListener('touchend', handleTouchEnd);
     };
   }, []);
 

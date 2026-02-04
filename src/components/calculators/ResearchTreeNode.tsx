@@ -68,7 +68,7 @@ function ResearchTreeNode({
   // We instead clamp on user change only to preserve the displayed state.
 
   return (
-    <g transform={`translate(${x}, ${y})`}>
+    <g transform={`translate(${x}, ${y})`} data-node-element="true">
       {!unlocked && (
         <title>{lang === 'de' ? 'Klicken um alle Prerequisites freizuschalten' : 'Click to unlock all prerequisites'}</title>
       )}
@@ -84,6 +84,7 @@ function ResearchTreeNode({
         stroke={isActive ? '#ffa500' : unlocked ? 'rgba(255, 165, 0, 0.3)' : 'rgba(255, 255, 255, 0.1)'}
         strokeWidth={2}
         opacity={unlocked ? 1 : 0.5}
+        data-node-element="true"
       />
 
       {/* Unlock button in top-right corner */}
@@ -91,6 +92,7 @@ function ResearchTreeNode({
         <g
           onClick={() => onUnlockClick(tech)}
           style={{ cursor: 'pointer' }}
+          data-node-element="true"
         >
           <rect
             x={NODE_WIDTH / 2 - 45}
@@ -101,12 +103,14 @@ function ResearchTreeNode({
             fill="rgba(255, 165, 0, 0.2)"
             stroke="rgba(255, 165, 0, 0.5)"
             strokeWidth={1}
+            data-node-element="true"
           />
           <text
             x={NODE_WIDTH / 2 - 25}
             y={-NODE_HEIGHT / 2 + 20}
             textAnchor="middle"
             fontSize="16"
+            data-node-element="true"
           >
             🔒
           </text>
@@ -117,6 +121,7 @@ function ResearchTreeNode({
             fontSize="7"
             fill="rgba(255, 165, 0, 0.9)"
             fontWeight="600"
+            data-node-element="true"
           >
             {lang === 'de' ? 'Unlock' : 'Unlock'}
           </text>
@@ -131,6 +136,7 @@ function ResearchTreeNode({
         width={50}
         height={50}
         opacity={unlocked ? 1 : 0.3}
+        data-node-element="true"
       />
 
       {/* Technology name */}
@@ -141,6 +147,7 @@ function ResearchTreeNode({
         fontSize="13"
         fill={unlocked ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.4)'}
         fontWeight="600"
+        data-node-element="true"
       >
         {tech.name[lang].length > 20
           ? tech.name[lang].substring(0, 18) + '...'
@@ -155,6 +162,7 @@ function ResearchTreeNode({
         fontSize="12"
         fill={isActive ? '#ffa500' : 'rgba(255, 255, 255, 0.6)'}
         fontWeight="600"
+        data-node-element="true"
       >
         {levelText}: {selectedLevel} / {tech.maxLevel}
       </text>
@@ -165,8 +173,9 @@ function ResearchTreeNode({
         y={-NODE_HEIGHT / 2 + 110}
         width={NODE_WIDTH - 30}
         height={40}
+        style={{ touchAction: 'none' } as any}
       >
-        <div style={{ width: '100%', height: '100%' }}>
+        <div style={{ width: '100%', height: '100%', touchAction: 'none' }}>
           <input
             type="range"
             min="0"
@@ -196,6 +205,7 @@ function ResearchTreeNode({
         fontSize="10"
         fill={isActive ? '#ffa500' : 'rgba(255, 255, 255, 0.5)'}
         fontWeight="600"
+        data-node-element="true"
       >
         {formatNumber(totalBadges)} / {formatNumber(maxBadges)} 🎖️
       </text>
@@ -209,6 +219,7 @@ function ResearchTreeNode({
           fontSize="9"
           fill={unlocked ? 'rgba(255, 165, 0, 0.7)' : 'rgba(255, 255, 255, 0.4)'}
           fontWeight="500"
+          data-node-element="true"
         >
           {lang === 'de' ? 'Nächste' : 'Next'}: {formatNumber(tech.badgeCosts[selectedLevel])} 🎖️
         </text>

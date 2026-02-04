@@ -65,6 +65,11 @@ function ResearchTreeConnections({
         startY = prereqPos.y + NODE_HEIGHT / 2 + svgDimensions.offsetY;
       }
 
+      // Prüfe ob Prerequisite erfüllt ist
+      const requiredLevel = typeof prereq === 'string' ? 1 : (prereq.requiredLevel || 1);
+      const currentLevel = selectedLevels.get(prereqId) || 0;
+      const isMet = currentLevel >= requiredLevel;
+
       // Zeichne orthogonale Verbindung (rechtwinklig) vom Parent zum Child
       let pathData: string;
 
@@ -82,8 +87,8 @@ function ResearchTreeConnections({
         <path
           key={`${prereqId}-${tech.id}`}
           d={pathData}
-          stroke="#00bcd4"
-          strokeWidth={2}
+          stroke={isMet ? '#00bcd4' : 'rgba(0, 188, 212, 0.3)'}
+          strokeWidth={3}
           fill="none"
         />
       );
