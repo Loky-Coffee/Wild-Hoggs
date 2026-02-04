@@ -19,7 +19,13 @@ export const TechnologySchema = z.object({
   badges: z.array(z.number().nonnegative().int()).optional(),
   icon: z.string().optional(),
   prerequisites: z.array(PrerequisiteSchema),
-});
+}).refine(
+  (data) => data.badgeCosts.length === data.maxLevel,
+  (data) => ({
+    message: `badgeCosts array length (${data.badgeCosts.length}) must match maxLevel (${data.maxLevel}) for technology "${data.id}"`,
+    path: ['badgeCosts'],
+  })
+);
 
 export const ResearchTreeSchema = z.object({
   id: z.string(),

@@ -1,0 +1,11 @@
+{
+  "id": "shooter_training",
+  "name": {
+    "en": "Shooter Training",
+    "de": "Schützen-Training"
+  },
+  "totalBadges": 0,
+  "nodeCount": 0,
+  "image": "/images/research/shooter-training.png",
+  "technologies": []
+}

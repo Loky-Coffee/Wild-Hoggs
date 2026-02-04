@@ -1,0 +1,11 @@
+{
+  "id": "rider_training",
+  "name": {
+    "en": "Rider Training",
+    "de": "Reiter-Training"
+  },
+  "totalBadges": 0,
+  "nodeCount": 0,
+  "image": "/images/research/rider-training.png",
+  "technologies": []
+}

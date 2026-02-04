@@ -1,0 +1,11 @@
+{
+  "id": "assaulter_training",
+  "name": {
+    "en": "Assaulter Training",
+    "de": "Angreifer-Training"
+  },
+  "totalBadges": 0,
+  "nodeCount": 0,
+  "image": "/images/research/assaulter-training.png",
+  "technologies": []
+}

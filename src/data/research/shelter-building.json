@@ -1,0 +1,11 @@
+{
+  "id": "shelter_building",
+  "name": {
+    "en": "Shelter Building",
+    "de": "Unterschlupfbau"
+  },
+  "totalBadges": 0,
+  "nodeCount": 0,
+  "image": "/images/research/shelter-building.png",
+  "technologies": []
+}

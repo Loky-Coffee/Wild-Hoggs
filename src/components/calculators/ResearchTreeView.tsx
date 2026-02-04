@@ -34,18 +34,22 @@ export default function ResearchTreeView({
 }: ResearchTreeViewProps) {
 
   // Calculate tier for each technology (depth in dependency tree)
-  const calculateTiers = (): Map<string, number> => {
-    const tiers = new Map<string, number>();
+  // Memoized separately so tiers are only recalculated when technologies change
+  const tiers = useMemo((): Map<string, number> => {
+    const tiersMap = new Map<string, number>();
     const visited = new Set<string>();
 
     const calculateTier = (techId: string): number => {
-      if (tiers.has(techId)) return tiers.get(techId)!;
+      if (tiersMap.has(techId)) {
+        const tier = tiersMap.get(techId);
+        return tier !== undefined ? tier : 0;
+      }
       if (visited.has(techId)) return 0;
 
       visited.add(techId);
       const tech = technologies.find(t => t.id === techId);
       if (!tech || tech.prerequisites.length === 0) {
-        tiers.set(techId, 0);
+        tiersMap.set(techId, 0);
         return 0;
       }
 
@@ -54,20 +58,19 @@ export default function ResearchTreeView({
         return calculateTier(prereqId);
       }));
       const tier = maxPrereqTier + 1;
-      tiers.set(techId, tier);
+      tiersMap.set(techId, tier);
       return tier;
     };
 
     technologies.forEach(tech => calculateTier(tech.id));
-    return tiers;
-  };
+    return tiersMap;
+  }, [technologies]);
 
   // Calculate positions for all nodes
   // NO auto-correction - rely on slider clamping and maxAvailable to prevent invalid states
 
   const nodePositions = useMemo((): Map<string, TreeNodePosition> => {
     const positions = new Map<string, TreeNodePosition>();
-    const tiers = calculateTiers();
 
     const tierGroups = new Map<number, string[]>();
     tiers.forEach((tier, techId) => {
@@ -92,7 +95,7 @@ export default function ResearchTreeView({
     });
 
     return positions;
-  }, [technologies, layoutDirection]);
+  }, [tiers, layoutDirection]);
 
   const isUnlocked = (tech: Technology): boolean => {
     if (tech.prerequisites.length === 0) return true;
@@ -154,7 +157,8 @@ export default function ResearchTreeView({
   };
 
   const unlockWithPrerequisites = (tech: Technology) => {
-    const newLevels = new Map(selectedLevels);
+    // Only track NEW updates (deltas), not full state - prevents race conditions
+    const updates = new Map<string, number>();
 
     // Helper to process a single prerequisite
     const processPrerequisite = (prereq: string | { id: string; requiredLevel?: number }) => {
@@ -166,8 +170,8 @@ export default function ResearchTreeView({
       // First unlock the prerequisites of this prerequisite
       unlockPrereqs(prereqTech);
 
-      // Then set this prerequisite to MAX level
-      newLevels.set(prereqId, prereqTech.maxLevel);
+      // Then set this prerequisite to MAX level (only new updates)
+      updates.set(prereqId, prereqTech.maxLevel);
     };
 
     // Recursive function to unlock all prerequisites to MAX level
@@ -178,8 +182,8 @@ export default function ResearchTreeView({
     // Unlock all prerequisites to max
     unlockPrereqs(tech);
 
-    // Apply all changes at once using batch update
-    onBatchLevelChange(newLevels);
+    // Apply only the new changes (deltas) - prevents race condition state loss
+    onBatchLevelChange(updates);
   };
 
   // Use shared formatNumber utility

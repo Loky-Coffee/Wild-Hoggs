@@ -117,8 +117,14 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
   const [layoutDirection, setLayoutDirection] = useState<'horizontal' | 'vertical'>('vertical');
   const [isInfoBoxCollapsed, setIsInfoBoxCollapsed] = useState(false);
   const treeContainerRef = useRef<HTMLDivElement>(null);
+  const isInfoBoxCollapsedRef = useRef(isInfoBoxCollapsed);
 
   const remainingBadges = category.totalBadges - calculatedResults.totalBadges;
+
+  // Sync ref with state to avoid event listener thrashing
+  useEffect(() => {
+    isInfoBoxCollapsedRef.current = isInfoBoxCollapsed;
+  }, [isInfoBoxCollapsed]);
 
   // Auto-collapse info box when user interacts with tree (mobile only)
   useEffect(() => {
@@ -126,8 +132,8 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
     if (!treeContainer) return;
 
     const handleTreeInteraction = () => {
-      // Only auto-collapse on mobile screens
-      if (window.innerWidth <= 768 && !isInfoBoxCollapsed) {
+      // Only auto-collapse on mobile screens, using ref to avoid re-registering listeners
+      if (window.innerWidth <= 768 && !isInfoBoxCollapsedRef.current) {
         setIsInfoBoxCollapsed(true);
       }
     };
@@ -140,7 +146,7 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
       treeContainer.removeEventListener('touchstart', handleTreeInteraction);
       treeContainer.removeEventListener('mousedown', handleTreeInteraction);
     };
-  }, [isInfoBoxCollapsed]);
+  }, []); // Empty dependency array - listeners only added once
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: '1rem', minHeight: 0 }}>

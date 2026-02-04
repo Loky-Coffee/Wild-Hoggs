@@ -20,7 +20,13 @@ export const SingleBuildingSchema = z.object({
   }),
   maxLevel: z.number().positive().int(),
   costs: z.array(BuildingCostSchema),
-});
+}).refine(
+  (building) => building.costs.length === building.maxLevel,
+  {
+    message: "Building costs array length must equal maxLevel",
+    path: ["costs"],
+  }
+);
 
 export const BuildingSchema = z.array(SingleBuildingSchema);
 

@@ -2,6 +2,7 @@
 import PageLayout from '../../../layouts/PageLayout.astro';
 import { getLangFromUrl, useTranslations } from '../../../i18n/utils';
 import BuildingCalculator from '../../../components/calculators/BuildingCalculator';
+import { ErrorBoundary } from '../../../components/ErrorBoundary';
 import '../../../styles/shared-layouts.css';
 
 export function getStaticPaths() {
@@ -21,6 +22,8 @@ const t = useTranslations(lang);
     <p class="subtitle">{t('tools.building.description')}</p>
   </div>
 
-  <BuildingCalculator lang={lang} client:load />
+  <ErrorBoundary lang={lang} client:load>
+    <BuildingCalculator lang={lang} client:load />
+  </ErrorBoundary>
 </PageLayout>
 

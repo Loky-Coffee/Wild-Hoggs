@@ -2,6 +2,7 @@
 import PageLayout from '../../../../layouts/PageLayout.astro';
 import { getLangFromUrl, useTranslations } from '../../../../i18n/utils';
 import ResearchCategoryCalculator from '../../../../components/calculators/ResearchCategoryCalculator';
+import { ErrorBoundary } from '../../../../components/ErrorBoundary';
 import type { ResearchTree } from '../../../../schemas/research';
 import type { ImageMetadata } from 'astro';
 
@@ -95,12 +96,14 @@ if (!category) {
       {t('research.backToOverview')}
     </a>
 
-    <ResearchCategoryCalculator
-      categoryData={category}
-      categoryImageSrc={categoryImage.src}
-      lang={lang}
-      client:load
-    />
+    <ErrorBoundary lang={lang} client:load>
+      <ResearchCategoryCalculator
+        categoryData={category}
+        categoryImageSrc={categoryImage.src}
+        lang={lang}
+        client:load
+      />
+    </ErrorBoundary>
   </div>
 </PageLayout>
 

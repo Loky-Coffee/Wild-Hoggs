@@ -68,8 +68,14 @@ function ResearchTreeNode({
   const rangeTouchInstanceRef = useRef<RangeTouch | null>(null);
 
   useEffect(() => {
+    // Clean up any existing instance first to prevent memory leaks
+    if (rangeTouchInstanceRef.current) {
+      rangeTouchInstanceRef.current.destroy();
+      rangeTouchInstanceRef.current = null;
+    }
+
+    // Initialize RangeTouch only for unlocked nodes
     if (rangeInputRef.current && unlocked) {
-      // Initialize RangeTouch only for unlocked nodes
       rangeTouchInstanceRef.current = new RangeTouch(rangeInputRef.current, {
         addCSS: true,
         thumbWidth: 15,
@@ -78,8 +84,11 @@ function ResearchTreeNode({
     }
 
     return () => {
-      // Cleanup on unmount
-      rangeTouchInstanceRef.current?.destroy();
+      // Cleanup on unmount or when unlocked changes
+      if (rangeTouchInstanceRef.current) {
+        rangeTouchInstanceRef.current.destroy();
+        rangeTouchInstanceRef.current = null;
+      }
     };
   }, [unlocked]);
 

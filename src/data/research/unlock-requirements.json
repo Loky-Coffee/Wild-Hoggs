@@ -1,0 +1,185 @@
+{
+  "categories": {
+    "elite_troops": {
+      "id": "elite_troops",
+      "tier": 0,
+      "requires": []
+    },
+    "shelter_building": {
+      "id": "shelter_building",
+      "tier": 0,
+      "requires": []
+    },
+    "alliance_recognition": {
+      "id": "alliance_recognition",
+      "tier": 0,
+      "requires": []
+    },
+    "hero_training": {
+      "id": "hero_training",
+      "tier": 0,
+      "requires": []
+    },
+    "military_strategies": {
+      "id": "military_strategies",
+      "tier": 1,
+      "requires": [
+        {
+          "category": "elite_troops",
+          "progress": 100,
+          "description": {
+            "en": "100% Elite Troops required",
+            "de": "100% Elitetruppen erforderlich"
+          }
+        }
+      ]
+    },
+    "siege_to_seize": {
+      "id": "siege_to_seize",
+      "tier": 2,
+      "requires": [
+        {
+          "category": "military_strategies",
+          "progress": 40,
+          "description": {
+            "en": "40% Military Strategies required",
+            "de": "40% Militärstrategien erforderlich"
+          }
+        }
+      ]
+    },
+    "peace_shield": {
+      "id": "peace_shield",
+      "tier": 2,
+      "requires": [
+        {
+          "category": "military_strategies",
+          "progress": 45,
+          "description": {
+            "en": "45% Military Strategies required",
+            "de": "45% Militärstrategien erforderlich"
+          }
+        },
+        {
+          "category": "shelter_building",
+          "progress": 50,
+          "description": {
+            "en": "50% Shelter Building required",
+            "de": "50% Unterschlupfbau erforderlich"
+          }
+        }
+      ]
+    },
+    "hq_management": {
+      "id": "hq_management",
+      "tier": 1,
+      "requires": [
+        {
+          "category": "shelter_building",
+          "progress": 100,
+          "description": {
+            "en": "100% Shelter Building required",
+            "de": "100% Unterschlupfbau erforderlich"
+          }
+        }
+      ]
+    },
+    "rapid_growth": {
+      "id": "rapid_growth",
+      "tier": 2,
+      "requires": [
+        {
+          "category": "hq_management",
+          "progress": 100,
+          "description": {
+            "en": "100% HQ Management required",
+            "de": "100% HQ-Verwaltung erforderlich"
+          }
+        }
+      ]
+    },
+    "field": {
+      "id": "field",
+      "tier": 3,
+      "requires": [
+        {
+          "category": "siege_to_seize",
+          "progress": 100,
+          "description": {
+            "en": "100% Siege to Seize required",
+            "de": "100% Belagerung erforderlich"
+          }
+        }
+      ]
+    },
+    "shooter_training": {
+      "id": "shooter_training",
+      "tier": 4,
+      "requires": [
+        {
+          "category": "field",
+          "progress": 100,
+          "description": {
+            "en": "100% Field required",
+            "de": "100% Feld erforderlich"
+          }
+        }
+      ]
+    },
+    "assaulter_training": {
+      "id": "assaulter_training",
+      "tier": 4,
+      "requires": [
+        {
+          "category": "field",
+          "progress": 100,
+          "description": {
+            "en": "100% Field required",
+            "de": "100% Feld erforderlich"
+          }
+        }
+      ]
+    },
+    "rider_training": {
+      "id": "rider_training",
+      "tier": 4,
+      "requires": [
+        {
+          "category": "field",
+          "progress": 100,
+          "description": {
+            "en": "100% Field required",
+            "de": "100% Feld erforderlich"
+          }
+        }
+      ]
+    },
+    "unit_special_training": {
+      "id": "unit_special_training",
+      "tier": 5,
+      "requires": [
+        {
+          "type": "hq_level",
+          "level": 30,
+          "description": {
+            "en": "HQ Level 30 required",
+            "de": "HQ Level 30 erforderlich"
+          }
+        },
+        {
+          "type": "lab_level",
+          "level": 30,
+          "description": {
+            "en": "Lab Level 30 required",
+            "de": "Labor Level 30 erforderlich"
+          }
+        }
+      ]
+    },
+    "fully_armed_alliance": {
+      "id": "fully_armed_alliance",
+      "tier": 0,
+      "requires": []
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'preact/hooks';
 import { useTranslation } from '../hooks/useTranslation';
+import { ApiResponseSchema } from '../schemas/reward-codes';
 import './RewardCodes.css';
 
 interface RewardCode {
@@ -34,10 +35,20 @@ export default function RewardCodes({ lang, codes: initialCodes = [] }: RewardCo
           throw new Error(`API Error: ${response.status}`);
         }
 
-        const data = await response.json();
+        const rawData = await response.json();
+
+        // Validate API response with Zod schema
+        const validationResult = ApiResponseSchema.safeParse(rawData);
+
+        if (!validationResult.success) {
+          console.error('[RewardCodes] Invalid API response:', validationResult.error);
+          throw new Error('Invalid API response format');
+        }
+
+        const data = validationResult.data;
 
         // Transform API response to RewardCode format
-        const apiCodes = data.codes.map((item: any) => ({
+        const apiCodes = data.codes.map((item) => ({
           code: item.code,
           description: item.description || (lang === 'de' ? 'Belohnung einlösen' : 'Redeem reward'),
           isActive: true,

@@ -1,0 +1,11 @@
+{
+  "id": "hq_management",
+  "name": {
+    "en": "HQ Management",
+    "de": "HQ-Verwaltung"
+  },
+  "totalBadges": 0,
+  "nodeCount": 0,
+  "image": "/images/research/hq-management.png",
+  "technologies": []
+}
