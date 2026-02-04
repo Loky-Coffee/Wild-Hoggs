@@ -252,6 +252,17 @@ export default function ResearchTreeView({
 
     // Mouse event handlers
     const handleMouseDown = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+
+      // Block drag-to-scroll on inputs and interactive elements
+      if (
+        target.tagName === 'INPUT' ||
+        target.closest('input') ||
+        target.closest('foreignObject')
+      ) {
+        return;
+      }
+
       if (!shouldAllowScroll(e.target)) {
         return;
       }
@@ -292,9 +303,25 @@ export default function ResearchTreeView({
     let touchStarted = false;
 
     const handleTouchStart = (e: TouchEvent) => {
-      // Check if touch started on a node or interactive element
+      const target = e.target as HTMLElement;
+
+      // Allow input interaction without scrolling or preventDefault
+      // CRITICAL: Let iOS Safari handle range inputs completely natively
+      if (
+        target.tagName === 'INPUT' ||
+        (target instanceof HTMLInputElement && target.type === 'range') ||
+        target.closest('input[type="range"]') ||
+        target.closest('input') ||
+        target.closest('foreignObject')
+      ) {
+        // Don't preventDefault - let input work normally
+        // Don't set touchStarted - don't trigger scrolling
+        return;
+      }
+
+      // Check if touch started on a node
       if (!shouldAllowScroll(e.target)) {
-        // Prevent scrolling when touching nodes
+        // Prevent scrolling when touching nodes (but not inputs)
         e.preventDefault();
         return;
       }
@@ -395,7 +422,7 @@ export default function ResearchTreeView({
         borderRadius: '12px',
         padding: '1rem',
         WebkitOverflowScrolling: 'touch' as 'touch',
-        touchAction: 'pan-x pan-y',
+        touchAction: 'manipulation',
         cursor: 'grab',
         display: 'flex',
         justifyContent: isDesktop && layoutDirection === 'vertical' ? 'center' : 'flex-start',

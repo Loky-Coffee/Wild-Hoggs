@@ -187,17 +187,12 @@ function ResearchTreeNode({
                 const newValue = parseInt((e.target as HTMLInputElement).value, 10);
                 onLevelChange(tech.id, newValue);
               }}
-              onMouseDown={(e) => {
-                e.stopPropagation();
-              }}
-              onTouchStart={(e) => {
-                e.stopPropagation();
-              }}
               style={{
                 width: '100%',
                 height: '8px',
                 cursor: 'pointer',
-                accentColor: '#ffa500'
+                accentColor: '#ffa500',
+                touchAction: 'manipulation'
               }}
             />
           </div>
