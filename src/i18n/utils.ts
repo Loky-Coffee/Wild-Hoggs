@@ -1,13 +1,13 @@
-import { ui, defaultLang } from './ui';
+import { translations, defaultLang, type Language, type TranslationKey } from './index';
 
-export function getLangFromUrl(url: URL) {
+export function getLangFromUrl(url: URL): Language {
   const [, lang] = url.pathname.split('/');
-  if (lang in ui) return lang as keyof typeof ui;
-  return defaultLang as keyof typeof ui;
+  if (lang in translations) return lang as Language;
+  return defaultLang;
 }
 
-export function useTranslations(lang: keyof typeof ui) {
-  return function t(key: keyof typeof ui[typeof defaultLang]) {
-    return ui[lang][key] || ui[defaultLang][key];
+export function useTranslations(lang: Language) {
+  return function t(key: TranslationKey): string {
+    return translations[lang][key] || translations[defaultLang][key];
   }
 }

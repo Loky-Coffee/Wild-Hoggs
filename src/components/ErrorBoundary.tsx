@@ -1,5 +1,5 @@
 import { Component, type ComponentChildren } from 'preact';
-import { ui } from '../i18n/ui';
+import { translations } from '../i18n/index';
 
 interface Props {
   children: ComponentChildren;
@@ -35,7 +35,7 @@ export class ErrorBoundary extends Component<Props, State> {
       }
 
       const lang = this.props.lang || 'en';
-      const translations = ui[lang];
+      const t = t[lang];
 
       return (
         <div style={{
@@ -47,15 +47,15 @@ export class ErrorBoundary extends Component<Props, State> {
           color: '#fff'
         }}>
           <h2 style={{ color: '#ff6b6b', marginBottom: '1rem' }}>
-            ⚠️ {translations['error.title']}
+            ⚠️ {t['error.title']}
           </h2>
           <p style={{ marginBottom: '1rem', opacity: 0.9 }}>
-            {translations['error.message']}
+            {t['error.message']}
           </p>
           {this.state.error && (
             <details style={{ marginBottom: '1rem' }}>
               <summary style={{ cursor: 'pointer', marginBottom: '0.5rem' }}>
-                {translations['error.details']}
+                {t['error.details']}
               </summary>
               <pre style={{
                 background: 'rgba(0,0,0,0.3)',
@@ -83,7 +83,7 @@ export class ErrorBoundary extends Component<Props, State> {
                 cursor: 'pointer'
               }}
             >
-              {translations['error.retry']}
+              {t['error.retry']}
             </button>
             <button
               onClick={() => window.location.reload()}
@@ -97,7 +97,7 @@ export class ErrorBoundary extends Component<Props, State> {
                 cursor: 'pointer'
               }}
             >
-              {translations['error.reload']}
+              {t['error.reload']}
             </button>
           </div>
         </div>
