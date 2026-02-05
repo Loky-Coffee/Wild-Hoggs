@@ -6,20 +6,33 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://wild-hoggs.com',
   i18n: {
-    defaultLocale: 'de',
-    locales: ['de', 'en'],
+    defaultLocale: 'en',
+    locales: ['de', 'en', 'fr', 'ko', 'th', 'ja', 'pt', 'es', 'tr', 'id', 'zh-TW', 'zh-CN', 'it', 'ar', 'vi'],
     routing: {
-      prefixDefaultLocale: false
+      prefixDefaultLocale: true
     }
   },
   integrations: [
     preact(),
     sitemap({
       i18n: {
-        defaultLocale: 'de',
+        defaultLocale: 'en',
         locales: {
           de: 'de',
-          en: 'en'
+          en: 'en',
+          fr: 'fr',
+          ko: 'ko',
+          th: 'th',
+          ja: 'ja',
+          pt: 'pt',
+          es: 'es',
+          tr: 'tr',
+          id: 'id',
+          'zh-TW': 'zh-TW',
+          'zh-CN': 'zh-CN',
+          it: 'it',
+          ar: 'ar',
+          vi: 'vi'
         }
       }
     })

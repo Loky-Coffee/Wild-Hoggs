@@ -12,8 +12,8 @@ export function getStaticPaths() {
 // Get language from URL, default to 'en'
 const lang = Astro.params.lang || 'en';
 
-// Validate language
-if (lang !== 'en' && lang !== 'de') {
+// Validate language - redirect if not supported
+if (!(lang in languages)) {
   return Astro.redirect('/en');
 }
 
