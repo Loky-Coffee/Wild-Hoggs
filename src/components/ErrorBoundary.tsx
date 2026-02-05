@@ -35,7 +35,7 @@ export class ErrorBoundary extends Component<Props, State> {
       }
 
       const lang = this.props.lang || 'en';
-      const t = t[lang];
+      const t = translations[lang];
 
       return (
         <div style={{

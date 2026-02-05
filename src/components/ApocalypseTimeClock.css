@@ -1,0 +1,70 @@
+.apocalypse-clock {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1rem 0.5rem;
+  background: rgba(255, 165, 0, 0.1);
+  border: 2px solid rgba(255, 165, 0, 0.3);
+  border-radius: 8px;
+  font-family: 'Courier New', monospace;
+  color: #ffa500;
+  cursor: help;
+  transition: all 0.3s ease;
+}
+
+.apocalypse-clock:hover {
+  background: rgba(255, 165, 0, 0.15);
+  border-color: rgba(255, 165, 0, 0.5);
+}
+
+.clock-label {
+  position: absolute;
+  top: -0.45em;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: rgba(26, 26, 26, 0.9);
+  padding: 0 0.5rem;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.clock-time {
+  font-size: 1.1rem;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  line-height: 1;
+}
+
+@media (max-width: 768px) {
+  .apocalypse-clock {
+    padding: 0.65rem 0.85rem 0.45rem;
+  }
+
+  .clock-label {
+    font-size: 0.65rem;
+  }
+
+  .clock-time {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .apocalypse-clock {
+    padding: 0.6rem 0.75rem 0.4rem;
+  }
+
+  .clock-label {
+    font-size: 0.6rem;
+  }
+
+  .clock-time {
+    font-size: 0.85rem;
+  }
+}

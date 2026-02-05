@@ -13,12 +13,45 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const currentMonth = getCurrentMonth(lang);
 const currentYear = getCurrentYear();
+
+// HowTo Schema for SEO
+const siteUrl = Astro.site || new URL('https://wild-hoggs.com/');
+const howToSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  'name': t('codes.howto.title'),
+  'description': t('seo.codes.description', { month: currentMonth, year: currentYear }),
+  'image': new URL('/og-image.webp', siteUrl).toString(),
+  'totalTime': 'PT2M',
+  'step': [
+    {
+      '@type': 'HowToStep',
+      'name': t('codes.howto.step1'),
+      'text': t('codes.howto.step1'),
+      'position': 1
+    },
+    {
+      '@type': 'HowToStep',
+      'name': t('codes.howto.step2'),
+      'text': t('codes.howto.step2'),
+      'position': 2
+    },
+    {
+      '@type': 'HowToStep',
+      'name': t('codes.howto.step3'),
+      'text': t('codes.howto.step3'),
+      'position': 3
+    }
+  ]
+};
 ---
 
 <PageLayout
   title={t('seo.codes.title', { month: currentMonth, year: currentYear })}
   description={t('seo.codes.description', { month: currentMonth, year: currentYear })}
 >
+  <script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
+
   <div class="page-header">
     <h1>{t('seo.codes.h1', { month: currentMonth, year: currentYear })}</h1>
     <p class="subtitle">{t('codes.subtitle')}</p>

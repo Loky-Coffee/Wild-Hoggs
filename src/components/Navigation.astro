@@ -1,6 +1,7 @@
 ---
 import { getLangFromUrl, useTranslations } from '../i18n/utils';
 import LanguageDropdown from './LanguageDropdown.astro';
+import ApocalypseTimeClock from './ApocalypseTimeClock';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -55,8 +56,11 @@ const currentPath = Astro.url.pathname;
       ))}
     </ul>
 
-    <div class="lang-switcher">
-      <LanguageDropdown />
+    <div class="nav-controls">
+      <ApocalypseTimeClock client:load />
+      <div class="lang-switcher">
+        <LanguageDropdown />
+      </div>
     </div>
   </div>
 </nav>
@@ -160,6 +164,12 @@ const currentPath = Astro.url.pathname;
     color: #ffa500;
   }
 
+  .nav-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
   .lang-switcher {
     display: flex;
     align-items: center;
@@ -190,8 +200,13 @@ const currentPath = Astro.url.pathname;
       flex: 1;
     }
 
-    .lang-switcher {
+    .nav-controls {
       margin-left: 1rem;
+      gap: 0.5rem;
+    }
+
+    .lang-switcher {
+      margin-left: 0;
     }
 
     .nav-links {

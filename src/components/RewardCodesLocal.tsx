@@ -2,6 +2,7 @@ import { useState, useEffect } from 'preact/hooks';
 import { useTranslations } from '../i18n/utils';
 import type { Language } from '../i18n/index';
 import rewardCodesData from '../data/reward-codes.json';
+import { getApocalypseTime } from '../utils/time';
 import './RewardCodes.css';
 
 interface RewardCode {
@@ -18,9 +19,7 @@ interface RewardCodesLocalProps {
 
 function getTimeRemaining(expiresAt: string) {
   // Get current time in UTC-2 (Apocalypse Time / Last-Z Time)
-  const now = new Date();
-  const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000);
-  const apocalypseTime = new Date(utcTime + (-2 * 3600000)); // UTC-2
+  const apocalypseTime = getApocalypseTime();
 
   const expiry = new Date(expiresAt).getTime();
   const diff = expiry - apocalypseTime.getTime();

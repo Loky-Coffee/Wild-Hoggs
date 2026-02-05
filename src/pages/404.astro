@@ -1,0 +1,273 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { languages } from '../i18n/index';
+import type { Language } from '../i18n/index';
+
+// 404 pages don't have dynamic routes
+// Default to English, but support all languages
+const lang: Language = 'en';
+
+// Import all translations
+import en from '../i18n/locales/en';
+import de from '../i18n/locales/de';
+
+const translations: Record<Language, typeof en> = {
+  en,
+  de,
+  fr: en, // Fallback to English for other languages
+  ko: en,
+  th: en,
+  ja: en,
+  pt: en,
+  es: en,
+  tr: en,
+  id: en,
+  'zh-TW': en,
+  'zh-CN': en,
+  it: en,
+  ar: en,
+  vi: en,
+};
+
+// Helper function to get translation
+function t(key: string, currentLang: Language = lang): string {
+  const keys = key.split('.');
+  let value: any = translations[currentLang];
+
+  for (const k of keys) {
+    value = value?.[k];
+  }
+
+  return value || key;
+}
+
+const pageTitle = `${t('404.code')} - ${t('404.title')} | Wild Hoggs`;
+const pageDescription = t('404.message');
+---
+
+<Layout
+  title={pageTitle}
+  description={pageDescription}
+  lang={lang}
+  robots="noindex, nofollow"
+>
+  <div class="error-page">
+    <div class="error-container">
+      <h1 class="error-code">{t('404.code')}</h1>
+      <h2 class="error-title">{t('404.title')}</h2>
+      <p class="error-message">
+        {t('404.message')}
+      </p>
+
+      <div class="error-actions">
+        <h3>{t('404.tryThese')}</h3>
+        <ul class="error-links">
+          <li>
+            <a href="/" class="error-link">
+              <span class="link-icon">🏠</span>
+              <span class="link-text">{t('404.link.home')}</span>
+            </a>
+          </li>
+          <li>
+            <a href="/guides" class="error-link">
+              <span class="link-icon">📚</span>
+              <span class="link-text">{t('404.link.guides')}</span>
+            </a>
+          </li>
+          <li>
+            <a href="/tools" class="error-link">
+              <span class="link-icon">🧮</span>
+              <span class="link-text">{t('404.link.tools')}</span>
+            </a>
+          </li>
+          <li>
+            <a href="/codes" class="error-link">
+              <span class="link-icon">🎁</span>
+              <span class="link-text">{t('404.link.codes')}</span>
+            </a>
+          </li>
+          <li>
+            <a href="/heroes" class="error-link">
+              <span class="link-icon">⚔️</span>
+              <span class="link-text">{t('404.link.heroes')}</span>
+            </a>
+          </li>
+          <li>
+            <a href="/about" class="error-link">
+              <span class="link-icon">ℹ️</span>
+              <span class="link-text">{t('404.link.about')}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="error-search">
+        <p>
+          {t('404.backToHome')} <a href="/">{t('404.homepage')}</a> {t('404.andStartFresh')}
+        </p>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<!-- Client-side language detection -->
+<script>
+  // Detect browser language and redirect to localized version if available
+  function detectAndRedirect() {
+    const browserLang = navigator.language.split('-')[0];
+    const supportedLangs = ['de', 'fr', 'ko', 'th', 'ja', 'pt', 'es', 'tr', 'id', 'zh', 'it', 'ar', 'vi'];
+
+    // Only redirect if browser language is not English and is supported
+    if (browserLang !== 'en' && supportedLangs.includes(browserLang)) {
+      // Don't redirect if already attempted (prevent redirect loop)
+      if (!sessionStorage.getItem('404-redirect-attempted')) {
+        sessionStorage.setItem('404-redirect-attempted', 'true');
+
+        // Try to detect which page they wanted based on URL
+        const currentPath = window.location.pathname;
+
+        // If path starts with /lang/, redirect to that language's homepage
+        const langMatch = currentPath.match(/^\/(de|fr|ko|th|ja|pt|es|tr|id|zh-TW|zh-CN|it|ar|vi)\//);
+        if (langMatch) {
+          window.location.href = `/${langMatch[1]}`;
+        } else {
+          // Redirect to detected language homepage
+          window.location.href = `/${browserLang}`;
+        }
+      }
+    }
+  }
+
+  detectAndRedirect();
+</script>
+
+<style>
+  .error-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 200px);
+    padding: 2rem 1rem;
+  }
+
+  .error-container {
+    max-width: 600px;
+    text-align: center;
+  }
+
+  .error-code {
+    font-size: 8rem;
+    font-weight: bold;
+    margin: 0;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .error-title {
+    font-size: 2.5rem;
+    margin: 0 0 1rem;
+    color: var(--text-color);
+  }
+
+  .error-message {
+    font-size: 1.125rem;
+    color: var(--text-light);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+  }
+
+  .error-actions {
+    margin: 3rem 0;
+  }
+
+  .error-actions h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-color);
+  }
+
+  .error-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .error-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    background: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--text-color);
+    transition: all 0.3s ease;
+    font-weight: 500;
+  }
+
+  .error-link:hover {
+    border-color: var(--primary-color);
+    background: var(--hover-bg);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 165, 0, 0.2);
+  }
+
+  .link-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  .link-text {
+    flex: 1;
+    text-align: left;
+  }
+
+  .error-search {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-light);
+  }
+
+  .error-search a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+  }
+
+  .error-search a:hover {
+    color: var(--secondary-color);
+    text-decoration: underline;
+  }
+
+  @media (max-width: 768px) {
+    .error-code {
+      font-size: 5rem;
+    }
+
+    .error-title {
+      font-size: 2rem;
+    }
+
+    .error-message {
+      font-size: 1rem;
+    }
+
+    .error-links {
+      grid-template-columns: 1fr;
+    }
+
+    .error-link {
+      justify-content: center;
+    }
+  }
+</style>

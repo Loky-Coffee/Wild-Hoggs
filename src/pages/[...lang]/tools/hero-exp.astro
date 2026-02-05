@@ -1,9 +1,10 @@
 ---
 import PageLayout from '../../../layouts/PageLayout.astro';
-import { getLangFromUrl, useTranslations} from '../../../i18n/utils';
+import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../../i18n/utils';
 import { getLanguagePaths } from '../../../i18n/static-paths';
 import HeroExpCalculator from '../../../components/calculators/HeroExpCalculator';
 import { ErrorBoundary } from '../../../components/ErrorBoundary';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import '../../../styles/shared-layouts.css';
 
 export function getStaticPaths() {
@@ -12,9 +13,17 @@ export function getStaticPaths() {
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+
+const breadcrumbItems = [
+  { label: t('nav.home'), href: getLocalizedPath('', lang) },
+  { label: t('nav.tools'), href: getLocalizedPath('tools', lang) },
+  { label: t('tools.hero.title') }
+];
 ---
 
 <PageLayout title={`${t('tools.hero.title')} - Wild Hoggs`} description={t('tools.hero.description')}>
+  <Breadcrumbs items={breadcrumbItems} />
+
   <div class="page-header">
     <h1>{t('tools.hero.title')}</h1>
     <p class="subtitle">{t('tools.hero.description')}</p>
