@@ -103,4 +103,6 @@ export const members: Member[] = [
   { name: 'DazzaB90', gender: '♂', level: 26 },
   { name: 'Snail Tom', gender: '–', level: 26 },
   { name: 'NOTNUTT', gender: '♀', level: 27 },
+  { name: 'MAN 313', gender: '–', level: 26 },
+  { name: 'Userfaby1', gender: '♀', level: 25 },
 ];
