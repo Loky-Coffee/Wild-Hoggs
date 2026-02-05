@@ -3,11 +3,17 @@ import { languages } from './index';
 /**
  * Generate static paths for all supported languages
  * Use this in getStaticPaths() functions in Astro pages
+ * English (default locale) has no prefix, other languages have /{lang}/ prefix
  */
 export function getLanguagePaths() {
-  return Object.keys(languages).map((lang) => ({
-    params: { lang },
-  }));
+  const languagePaths = Object.keys(languages)
+    .filter(lang => lang !== 'en')
+    .map(lang => ({ params: { lang } }));
+
+  return [
+    ...languagePaths,
+    { params: { lang: undefined } } // English without prefix
+  ];
 }
 
 /**

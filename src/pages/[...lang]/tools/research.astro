@@ -1,6 +1,6 @@
 ---
 import PageLayout from '../../../layouts/PageLayout.astro';
-import { getLangFromUrl, useTranslations } from '../../../i18n/utils';
+import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../../i18n/utils';
 import { getLanguagePaths } from '../../../i18n/static-paths';
 import { Image } from 'astro:assets';
 
@@ -84,7 +84,7 @@ const categories = [
       const CardTag = isEnabled ? 'a' : 'div';
 
       return (
-        <CardTag href={isEnabled ? `/${lang}/tools/research/${id}` : undefined} class={`category-card ${!isEnabled ? 'disabled' : ''}`}>
+        <CardTag href={isEnabled ? getLocalizedPath(`tools/research/${id}`, lang) : undefined} class={`category-card ${!isEnabled ? 'disabled' : ''}`}>
           <div class="category-icon-wrapper">
             {imageMap[id] ? (
               <Image

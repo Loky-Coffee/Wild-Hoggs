@@ -1,6 +1,6 @@
 ---
 import PageLayout from '../../../../layouts/PageLayout.astro';
-import { getLangFromUrl, useTranslations } from '../../../../i18n/utils';
+import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../../../i18n/utils';
 import { languages } from '../../../../i18n/index';
 import ResearchCategoryCalculator from '../../../../components/calculators/ResearchCategoryCalculator';
 import { ErrorBoundary } from '../../../../components/ErrorBoundary';
@@ -34,7 +34,7 @@ import peaceShieldImg from '../../../../assets/images/research/peace-shield.png'
 import siegeToSeizeImg from '../../../../assets/images/research/siege-to-seize.png';
 
 export function getStaticPaths() {
-  const paths: { params: { lang: string; categoryId: string } }[] = [];
+  const paths: { params: { lang: string | undefined; categoryId: string } }[] = [];
   const categoryIds = [
     'alliance_recognition',
     'unit_special_training',
@@ -47,7 +47,8 @@ export function getStaticPaths() {
   ];
 
   // Generate paths for all languages
-  Object.keys(languages).forEach(lang => {
+  Object.keys(languages).forEach(langKey => {
+    const lang = langKey === 'en' ? undefined : langKey;
     categoryIds.forEach(categoryId => {
       paths.push({
         params: { lang, categoryId },
@@ -90,13 +91,13 @@ const category = researchDataMap[categoryId];
 const categoryImage = imageMap[categoryId];
 
 if (!category) {
-  return Astro.redirect(`/${lang}/tools/research`);
+  return Astro.redirect(getLocalizedPath('tools/research', lang));
 }
 ---
 
 <PageLayout title={`${t(category.nameKey)} - Wild Hoggs`} description={`Calculate badge costs for ${t(category.nameKey)}`}>
   <div class="calculator-wrapper">
-    <a href={`/${lang}/tools/research`} class="back-link">
+    <a href={getLocalizedPath('tools/research', lang)} class="back-link">
       {t('research.backToOverview')}
     </a>
 

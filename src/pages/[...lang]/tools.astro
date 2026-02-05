@@ -1,6 +1,6 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
-import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../i18n/utils';
 import { getLanguagePaths } from '../../i18n/static-paths';
 import PageHeader from '../../components/PageHeader.astro';
 import '../../styles/shared-layouts.css';
@@ -13,28 +13,31 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
-<PageLayout title={`${t('tools.title')} - Wild Hoggs`} description="Calculator tools for Last-Z">
+<PageLayout
+  title={t('seo.tools.title')}
+  description={t('seo.tools.description')}
+>
   <div class="page-header">
-    <h1>{t('tools.title')}</h1>
+    <h1>{t('seo.tools.h1')}</h1>
     <p class="subtitle">
       {t('tools.subtitle')}
     </p>
   </div>
 
   <div class="tools-grid">
-    <a href={`/${lang}/tools/hero-exp`} class="tool-card">
+    <a href={getLocalizedPath('tools/hero-exp', lang)} class="tool-card">
       <h2>{t('tools.hero.title')}</h2>
       <p>{t('tools.hero.description')}</p>
       <span class="available">{t('tools.available')}</span>
     </a>
 
-    <a href={`/${lang}/tools/building`} class="tool-card">
+    <a href={getLocalizedPath('tools/building', lang)} class="tool-card">
       <h2>{t('tools.building.title')}</h2>
       <p>{t('tools.building.description')}</p>
       <span class="available">{t('tools.available')}</span>
     </a>
 
-    <a href={`/${lang}/tools/research`} class="tool-card">
+    <a href={getLocalizedPath('tools/research', lang)} class="tool-card">
       <h2>{t('tools.research.title')}</h2>
       <p>{t('tools.research.description')}</p>
       <span class="available">{t('tools.available')}</span>

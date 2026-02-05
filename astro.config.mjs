@@ -34,6 +34,12 @@ export default defineConfig({
           ar: 'ar',
           vi: 'vi'
         }
+      },
+      // SEO-Optimierung: <lastmod> Tag hinzufügen (wichtigster optionaler Tag)
+      // Google, Bing, Yandex nutzen lastmod für intelligenteres Crawling
+      serialize(item) {
+        item.lastmod = new Date().toISOString();
+        return item;
       }
     })
   ],
