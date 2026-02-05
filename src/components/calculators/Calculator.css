@@ -426,6 +426,46 @@
 }
 
 /* ============================================
+   Research Tree Node - Keyboard Navigation
+   ============================================ */
+
+/* Make research tree nodes focusable */
+.research-tree-node {
+  outline: none;
+  cursor: pointer;
+}
+
+/* Show focus indicator when node is keyboard-focused */
+.research-tree-node:focus .node-focus-indicator {
+  opacity: 1;
+  animation: pulse-node-focus 0.3s ease-out;
+}
+
+/* Also show on focus-visible for modern browsers */
+.research-tree-node:focus-visible .node-focus-indicator {
+  opacity: 1;
+}
+
+/* Subtle glow on node background when focused */
+.research-tree-node:focus .node-background {
+  filter: brightness(1.2);
+}
+
+/* Focus animation - subtle pulse on focus */
+@keyframes pulse-node-focus {
+  0% {
+    opacity: 0;
+    stroke-width: 3px;
+    transform: scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    stroke-width: 3px;
+    transform: scale(1);
+  }
+}
+
+/* ============================================
    SVG Unlock Button - Keyboard Accessibility
    ============================================ */
 

@@ -103,11 +103,54 @@ function ResearchTreeNode({
   // when maxAvailable changes due to other node interactions.
   // We instead clamp on user change only to preserve the displayed state.
 
+  const handleNodeKeyDown = (e: React.KeyboardEvent) => {
+    // When node is focused and Enter/Space pressed
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+
+      // If locked, trigger unlock
+      if (!unlocked) {
+        onUnlockClick(tech);
+      } else {
+        // If unlocked and has slider, focus the slider input
+        if (rangeInputRef.current) {
+          rangeInputRef.current.focus();
+        }
+      }
+    }
+  };
+
   return (
-    <g transform={`translate(${x}, ${y})`} data-node-element="true">
+    <g
+      transform={`translate(${x}, ${y})`}
+      data-node-element="true"
+      tabIndex={0}
+      role="group"
+      aria-label={`${techName}: Level ${selectedLevel} of ${tech.maxLevel}${unlocked ? '' : ' (locked)'}`}
+      className="research-tree-node"
+      data-tech-id={tech.id}
+      data-unlocked={unlocked}
+      onKeyDown={handleNodeKeyDown}
+    >
       {!unlocked && (
         <title>{t('calc.research.unlockPrerequisites')}</title>
       )}
+
+      {/* Focus indicator ring - shows when node is focused */}
+      <rect
+        x={-NODE_WIDTH / 2 - 4}
+        y={-NODE_HEIGHT / 2 - 4}
+        width={NODE_WIDTH + 8}
+        height={NODE_HEIGHT + 8}
+        rx={10}
+        fill="none"
+        stroke="rgba(255, 165, 0, 0.8)"
+        strokeWidth={3}
+        opacity={0}
+        className="node-focus-indicator"
+        data-node-element="true"
+        pointerEvents="none"
+      />
 
       {/* Node background */}
       <rect
@@ -121,6 +164,7 @@ function ResearchTreeNode({
         strokeWidth={2}
         opacity={unlocked ? 1 : 0.5}
         data-node-element="true"
+        className="node-background"
       />
 
       {/* Unlock button in top-right corner - KEYBOARD ACCESSIBLE */}
