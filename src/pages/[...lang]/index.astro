@@ -2,19 +2,22 @@
 import PageLayout from '../../layouts/PageLayout.astro';
 import { useTranslations } from '../../i18n/utils';
 import { languages } from '../../i18n/index';
-import { getLanguagePaths } from '../../i18n/static-paths';
 
-// Define all static paths for build
 export function getStaticPaths() {
-  return getLanguagePaths();
+  const languagePaths = Object.keys(languages)
+    .filter(lang => lang !== 'en')
+    .map(lang => ({ params: { lang } }));
+
+  return [
+    ...languagePaths,
+    { params: { lang: undefined } }
+  ];
 }
 
-// Get language from URL, default to 'en'
 const lang = Astro.params.lang || 'en';
 
-// Validate language - redirect if not supported
 if (!(lang in languages)) {
-  return Astro.redirect('/en');
+  return Astro.redirect('/');
 }
 
 const t = useTranslations(lang as keyof typeof languages);
