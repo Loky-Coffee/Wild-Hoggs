@@ -38,6 +38,16 @@ export default defineConfig({
       // SEO-Optimierung: <lastmod> Tag hinzufügen (wichtigster optionaler Tag)
       // Google, Bing, Yandex nutzen lastmod für intelligenteres Crawling
       serialize(item) {
+        // SEO: Exclude placeholder pages from sitemap
+        const placeholderPages = ['/heroes', '/events', '/guides'];
+        const isPlaceholder = placeholderPages.some(page =>
+          item.url.includes(page + '/') || item.url.endsWith(page)
+        );
+
+        if (isPlaceholder) {
+          return undefined; // Excludes URL from sitemap
+        }
+
         item.lastmod = new Date().toISOString();
         return item;
       }
