@@ -5,15 +5,23 @@ import LanguageDropdown from './LanguageDropdown.astro';
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
+// Helper to generate paths: English without prefix, others with prefix
+const getPath = (page: string) => {
+  if (lang === 'en') {
+    return page === 'home' ? '/' : `/${page}`;
+  }
+  return page === 'home' ? `/${lang}` : `/${lang}/${page}`;
+};
+
 const routes = [
-  { key: 'nav.home', path: `/${lang}` },
-  { key: 'nav.members', path: `/${lang}/members` },
-  { key: 'nav.tools', path: `/${lang}/tools` },
-  { key: 'nav.events', path: `/${lang}/events` },
-  { key: 'nav.bonus', path: `/${lang}/bonus` },
-  { key: 'nav.heroes', path: `/${lang}/heroes` },
-  { key: 'nav.guides', path: `/${lang}/guides` },
-  { key: 'nav.about', path: `/${lang}/about` },
+  { key: 'nav.home', path: getPath('home') },
+  { key: 'nav.members', path: getPath('members') },
+  { key: 'nav.tools', path: getPath('tools') },
+  { key: 'nav.events', path: getPath('events') },
+  { key: 'nav.bonus', path: getPath('bonus') },
+  { key: 'nav.heroes', path: getPath('heroes') },
+  { key: 'nav.guides', path: getPath('guides') },
+  { key: 'nav.about', path: getPath('about') },
 ] as const;
 
 const currentPath = Astro.url.pathname;
@@ -22,7 +30,7 @@ const currentPath = Astro.url.pathname;
 <nav class="navigation">
   <div class="nav-container">
     <div class="nav-brand">
-      <a href={`/${lang}`}>
+      <a href={lang === 'en' ? '/' : `/${lang}`}>
         <span class="brand-text">Wild Hoggs</span>
       </a>
     </div>

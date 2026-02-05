@@ -1,6 +1,7 @@
 ---
 import { ViewTransitions } from 'astro:transitions';
 import { getLangFromUrl } from '../i18n/utils';
+import { languages } from '../i18n/index';
 import '../styles/design-tokens.css';
 
 interface Props {
@@ -20,42 +21,85 @@ const {
 } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const ogImageURL = new URL(image, Astro.site);
+const siteUrl = Astro.site || new URL('https://wild-hoggs.com/');
+const canonicalURL = new URL(Astro.url.pathname, siteUrl);
+const ogImageURL = new URL(image, siteUrl);
 
-// Construct alternate language URLs
-const deURL = lang === 'de'
-  ? canonicalURL
-  : new URL(Astro.url.pathname.replace('/en', ''), Astro.site);
-const enURL = lang === 'en'
-  ? canonicalURL
-  : new URL(`/en${Astro.url.pathname}`, Astro.site);
+function getAlternateURL(targetLang: string): URL {
+  const currentPath = Astro.url.pathname;
 
-// JSON-LD structured data - Organization
+  if (targetLang === 'en') {
+    const pathWithoutLang = currentPath.replace(/^\/(de|fr|ko|th|ja|pt|es|tr|id|zh-TW|zh-CN|it|ar|vi)(\/|$)/, '/');
+    return new URL(pathWithoutLang === '' ? '/' : pathWithoutLang, siteUrl);
+  }
+
+  if (lang === 'en') {
+    return new URL(`/${targetLang}${currentPath === '/' ? '' : currentPath}`, siteUrl);
+  } else {
+    const pathWithoutLang = currentPath.replace(/^\/(de|fr|ko|th|ja|pt|es|tr|id|zh-TW|zh-CN|it|ar|vi)(\/|$)/, '/');
+    return new URL(`/${targetLang}${pathWithoutLang === '/' ? '' : pathWithoutLang}`, siteUrl);
+  }
+}
+
+const alternateURLs = Object.keys(languages).reduce((acc, langCode) => {
+  acc[langCode] = getAlternateURL(langCode);
+  return acc;
+}, {} as Record<string, URL>);
+
+const xDefaultURL = alternateURLs['en'] || alternateURLs[lang] || canonicalURL;
+
+const hreflangTags = Object.entries(alternateURLs).map(([langCode, url]) => ({
+  langCode,
+  url: url.toString()
+}));
+
 const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: 'Wild Hoggs',
   description: description,
   url: canonicalURL.toString(),
-  logo: new URL('/favicon.svg', Astro.site).toString(),
-  sameAs: [
-    // Add social media links here if available
-  ]
+  logo: new URL('/favicon.svg', siteUrl).toString(),
+  sameAs: []
 };
 
-// JSON-LD structured data - WebSite with SearchAction
+const localeMap: Record<string, string> = {
+  'en': 'en_US',
+  'de': 'de_DE',
+  'fr': 'fr_FR',
+  'es': 'es_ES',
+  'pt': 'pt_PT',
+  'it': 'it_IT',
+  'tr': 'tr_TR',
+  'ja': 'ja_JP',
+  'ko': 'ko_KR',
+  'zh-CN': 'zh_CN',
+  'zh-TW': 'zh_TW',
+  'th': 'th_TH',
+  'id': 'id_ID',
+  'ar': 'ar_AR',
+  'vi': 'vi_VN'
+};
+
+const currentLocale = localeMap[lang] || 'en_US';
+const alternateLocales = Object.keys(languages)
+  .filter(l => l != lang)
+  .map(l => localeMap[l] || 'en_US');
+
+const ogLocaleAlternateTags = alternateLocales.slice(0, 5).map(locale => ({ locale }));
+
+const searchPath = lang === 'en' ? '/tools' : `/${lang}/tools`;
 const websiteSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
   name: 'Wild Hoggs',
-  url: Astro.site,
-  inLanguage: [lang === 'de' ? 'de-DE' : 'en-US'],
+  url: siteUrl.toString(),
+  inLanguage: Object.values(localeMap),
   potentialAction: {
     '@type': 'SearchAction',
     target: {
       '@type': 'EntryPoint',
-      urlTemplate: `${Astro.site}/${lang}/tools?q={search_term_string}`
+      urlTemplate: `${siteUrl}${searchPath}?q={search_term_string}`
     },
     'query-input': 'required name=search_term_string'
   }
@@ -75,7 +119,6 @@ const websiteSchema = {
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
 
-    <!-- Critical CSS: Prevent white flash during page navigation -->
     <style>
       html {
         background: #1a1a1a;
@@ -88,15 +131,13 @@ const websiteSchema = {
       }
     </style>
 
-    <!-- View Transitions for smooth page navigation -->
     <ViewTransitions />
-
     <link rel="canonical" href={canonicalURL} />
-    <link rel="alternate" hreflang="de" href={deURL} />
-    <link rel="alternate" hreflang="en" href={enURL} />
-    <link rel="alternate" hreflang="x-default" href={enURL} />
+    {hreflangTags.map(({ langCode, url }) => (
+      <link rel="alternate" hreflang={langCode} href={url} />
+    ))}
+    <link rel="alternate" hreflang="x-default" href={xDefaultURL} />
 
-    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
@@ -105,11 +146,12 @@ const websiteSchema = {
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={imageAlt} />
-    <meta property="og:locale" content={lang === 'de' ? 'de_DE' : 'en_US'} />
-    <meta property="og:locale:alternate" content={lang === 'de' ? 'en_US' : 'de_DE'} />
+    <meta property="og:locale" content={currentLocale} />
+    {ogLocaleAlternateTags.map(({ locale }) => (
+      <meta property="og:locale:alternate" content={locale} />
+    ))}
     <meta property="og:site_name" content="Wild Hoggs" />
 
-    <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content={canonicalURL} />
     <meta property="twitter:title" content={title} />
@@ -117,7 +159,6 @@ const websiteSchema = {
     <meta property="twitter:image" content={ogImageURL} />
     <meta property="twitter:image:alt" content={imageAlt} />
 
-    <!-- JSON-LD Structured Data -->
     <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
     <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
   </head>
@@ -139,6 +180,6 @@ const websiteSchema = {
     color: var(--color-text);
     min-height: 100vh;
     height: 100vh;
-    overflow: hidden; /* Kein Body-Scroll, nur Content-Scroll */
+    overflow: hidden;
   }
 </style>

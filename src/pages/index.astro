@@ -1,5 +1,336 @@
 ---
-import { defaultLang } from '../i18n';
+import PageLayout from '../layouts/PageLayout.astro';
+import { useTranslations } from '../i18n/utils';
 
-return Astro.redirect(`/${defaultLang}/`);
+const lang = 'en';
+const t = useTranslations(lang);
 ---
+
+<PageLayout title={`${t('hero.title')} - ${t('hero.subtitle')}`}>
+  <main>
+    <div class="container">
+      <div class="hero">
+        <h1>🐗 [BOAR] {t('hero.title')}</h1>
+        <p class="subtitle">{t('hero.subtitle')}</p>
+      </div>
+
+      <div class="card administrator-corner">
+        <h4>{t('administrator.title')}</h4>
+        <p>{t('administrator.description')}</p>
+      </div>
+
+      <section class="info">
+        <div class="card welcome-card">
+          <h2>{t('welcome.title')}</h2>
+          <p>{t('welcome.description')}</p>
+        </div>
+
+        <div class="card leadership-card">
+          <h3>{t('leadership.title')}</h3>
+          <div class="leadership-grid">
+            <div class="member-item r5-item">
+              <span class="rank-badge-round r5-badge-round">R5</span>
+              <span class="member-name">N0TNUTT</span>
+            </div>
+            <div class="member-item r4-item">
+              <span class="rank-badge-round r4-badge-round">R4</span>
+              <span class="member-name">Ediva</span>
+            </div>
+            <div class="member-item r4-item">
+              <span class="rank-badge-round r4-badge-round">R4</span>
+              <span class="member-name">Frollein Anne</span>
+            </div>
+            <div class="member-item r4-item">
+              <span class="rank-badge-round r4-badge-round">R4</span>
+              <span class="member-name">Tom</span>
+            </div>
+            <div class="member-item r4-item">
+              <span class="rank-badge-round r4-badge-round">R4</span>
+              <span class="member-name">Kappasugi</span>
+            </div>
+            <div class="member-item r4-item">
+              <span class="rank-badge-round r4-badge-round">R4</span>
+              <span class="member-name">Astral-Ra</span>
+            </div>
+            <div class="member-item r4-item">
+              <span class="rank-badge-round r4-badge-round">R4</span>
+              <span class="member-name">K1n3T1C</span>
+            </div>
+            <div class="member-item r4-item">
+              <span class="rank-badge-round r4-badge-round">R4</span>
+              <span class="member-name">Poseidon-Nath</span>
+            </div>
+            <div class="member-item r4-item">
+              <span class="rank-badge-round r4-badge-round">R4</span>
+              <span class="member-name">Piglja</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</PageLayout>
+
+<style>
+  main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  .container {
+    max-width: 1200px;
+    width: 100%;
+    position: relative;
+  }
+
+  .administrator-corner {
+    position: absolute;
+    top: 0;
+    right: 0;
+    max-width: 280px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 165, 0, 0.15);
+    border-radius: 8px;
+    padding: 1rem;
+    backdrop-filter: blur(10px);
+    font-size: 0.85rem;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+  }
+
+  .administrator-corner:hover {
+    opacity: 1;
+    border-color: rgba(255, 165, 0, 0.3);
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .administrator-corner h4 {
+    color: rgba(255, 165, 0, 0.8);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .administrator-corner p {
+    line-height: 1.4;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.8rem;
+    margin: 0;
+  }
+
+  .hero {
+    text-align: center;
+    margin-bottom: 4rem;
+    padding-right: 300px;
+  }
+
+  .hero h1 {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #ff6b35 0%, #ffa500 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    font-size: 1.5rem;
+    color: #ffa500;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+  }
+
+  .info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 165, 0, 0.2);
+    border-radius: 12px;
+    padding: 2rem;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(255, 165, 0, 0.2);
+  }
+
+  .card h2 {
+    color: #ffa500;
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+  }
+
+  .card h3 {
+    color: #ffa500;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+  }
+
+  .card p {
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .card ul {
+    list-style: none;
+  }
+
+  .card li {
+    padding: 0.5rem 0;
+    color: rgba(255, 255, 255, 0.8);
+    border-bottom: 1px solid rgba(255, 165, 0, 0.1);
+  }
+
+  .card li:last-child {
+    border-bottom: none;
+  }
+
+  .card strong {
+    color: #ffa500;
+  }
+
+  .welcome-card {
+    grid-column: 1 / -1;
+  }
+
+  .leadership-card {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(255, 165, 0, 0.1) 100%);
+    border: 2px solid rgba(255, 165, 0, 0.3);
+  }
+
+  .leadership-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .member-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 165, 0, 0.3);
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+  }
+
+  .member-item:hover {
+    background: rgba(255, 165, 0, 0.15);
+    border-color: rgba(255, 165, 0, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 165, 0, 0.3);
+  }
+
+  .r5-item {
+    grid-column: 1 / -1;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(255, 237, 78, 0.15) 100%);
+    border-color: rgba(255, 215, 0, 0.4);
+    padding: 1rem 1.5rem;
+  }
+
+  .r5-item:hover {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.25) 0%, rgba(255, 237, 78, 0.25) 100%);
+    border-color: rgba(255, 215, 0, 0.6);
+  }
+
+  .rank-badge-round {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+
+  .r5-badge-round {
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    color: #1a1a1a;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+    font-size: 0.85rem;
+  }
+
+  .r4-badge-round {
+    background: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 100%);
+    color: #1a1a1a;
+    box-shadow: 0 4px 15px rgba(192, 192, 192, 0.4);
+  }
+
+  .member-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff;
+  }
+
+  @media (max-width: 1024px) {
+    .leadership-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .hero {
+      padding-right: 0;
+    }
+
+    .administrator-corner {
+      position: static;
+      max-width: 100%;
+      margin-bottom: 2rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero h1 {
+      font-size: 2.5rem;
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+    }
+
+    .info {
+      grid-template-columns: 1fr;
+    }
+
+    .leadership-grid {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+
+    .member-item {
+      padding: 0.6rem 0.75rem;
+    }
+
+    .r5-item {
+      padding: 0.75rem 1rem;
+    }
+
+    .member-name {
+      font-size: 0.9rem;
+    }
+
+    .rank-badge-round {
+      width: 35px;
+      height: 35px;
+      font-size: 0.7rem;
+    }
+
+    .r5-badge-round {
+      font-size: 0.75rem;
+    }
+  }
+</style>

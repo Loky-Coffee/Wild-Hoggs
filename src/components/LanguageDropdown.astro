@@ -24,17 +24,19 @@ const flags: Record<string, string> = {
 };
 
 // Generate language URLs
-const getLanguageUrl = (lang: string) => {
+const getLanguageUrl = (targetLang: string) => {
   const currentPath = Astro.url.pathname;
 
-  // Remove language prefix if exists
-  const pathWithoutLang = currentPath.replace(/^\/(de|en|fr|ko|th|ja|pt|es|tr|id|zh-TW|zh-CN|it|ar|vi)/, '');
+  // Remove language prefix if exists (excluding 'en' which has no prefix now)
+  const pathWithoutLang = currentPath.replace(/^\/(de|fr|ko|th|ja|pt|es|tr|id|zh-TW|zh-CN|it|ar|vi)(\/|$)/, '/');
 
-  // Add new language prefix
-  if (lang === 'en') {
-    return `/en${pathWithoutLang || '/'}`;
+  // English has no prefix (root)
+  if (targetLang === 'en') {
+    return pathWithoutLang === '' ? '/' : pathWithoutLang;
   }
-  return `/${lang}${pathWithoutLang || '/'}`;
+
+  // Other languages get prefix
+  return `/${targetLang}${pathWithoutLang === '/' ? '' : pathWithoutLang}`;
 };
 ---
 
