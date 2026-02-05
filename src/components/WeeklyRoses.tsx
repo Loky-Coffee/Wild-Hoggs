@@ -48,7 +48,7 @@ export default function WeeklyRoses({ lang, roses }: WeeklyRosesProps) {
   if (roses.length === 0) {
     return (
       <div className="roses-empty">
-        <p>{t('bonus.roses.noRoses')}</p>
+        <p>{t('roses.noRoses')}</p>
       </div>
     );
   }
@@ -61,23 +61,23 @@ export default function WeeklyRoses({ lang, roses }: WeeklyRosesProps) {
             <div className="rose-icon">{rose.isActive ? '🌹' : '🥀'}</div>
 
             {rose.isActive && (
-              <div className="active-badge">{t('bonus.roses.activeThisWeek')}</div>
+              <div className="active-badge">{t('roses.activeThisWeek')}</div>
             )}
 
             <h3 className="rose-name">{rose.name}</h3>
             <div className="rose-buff">{rose.buff}</div>
-            <div className="rose-duration">{t('bonus.roses.duration')}: {rose.duration}</div>
+            <div className="rose-duration">{t('roses.duration')}: {rose.duration}</div>
             <p className="rose-description">{rose.description}</p>
 
             {rose.isActive && (
               <div className="rose-countdown">
-                <div className="countdown-label">{t('bonus.roses.endsIn')}:</div>
+                <div className="countdown-label">{t('roses.endsIn')}:</div>
                 <div className="countdown-timer">{timeLeft}</div>
               </div>
             )}
 
             {!rose.isActive && (
-              <div className="inactive-badge">{t('bonus.roses.inactive')}</div>
+              <div className="inactive-badge">{t('roses.inactive')}</div>
             )}
           </div>
         ))}

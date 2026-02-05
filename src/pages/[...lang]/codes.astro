@@ -1,0 +1,115 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+import { getLanguagePaths } from '../../i18n/static-paths';
+import RewardCodesLocal from '../../components/RewardCodesLocal';
+import '../../styles/shared-layouts.css';
+
+export function getStaticPaths() {
+  return getLanguagePaths();
+}
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<PageLayout
+  title={t('seo.codes.title')}
+  description={t('seo.codes.description')}
+>
+  <div class="page-header">
+    <h1>{t('seo.codes.h1')}</h1>
+    <p class="subtitle">{t('codes.subtitle')}</p>
+  </div>
+
+  <div class="codes-container">
+    <section class="codes-section">
+      <div class="howto-card">
+        <h3>{t('codes.howto.title')}</h3>
+        <div class="howto-steps">
+          <ol>
+            <li>{t('codes.howto.step1')}</li>
+            <li>{t('codes.howto.step2')}</li>
+            <li>{t('codes.howto.step3')}</li>
+          </ol>
+        </div>
+        <a href="https://last-z.com/giftCenter/#/login" target="_blank" rel="noopener noreferrer" class="redemption-link">
+          {t('codes.giftCenter')} →
+        </a>
+      </div>
+
+      <RewardCodesLocal lang={lang} client:load />
+    </section>
+  </div>
+</PageLayout>
+
+<style>
+  .codes-container {
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .codes-section {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 165, 0, 0.2);
+    border-radius: 12px;
+    padding: 2rem;
+  }
+
+  .howto-card {
+    background: rgba(255, 165, 0, 0.05);
+    border: 1px solid rgba(255, 165, 0, 0.2);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .howto-card h3 {
+    color: #ffa500;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+  }
+
+  .howto-steps ol {
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.8;
+    margin: 0 0 1.5rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .howto-steps li {
+    margin-bottom: 0.5rem;
+  }
+
+  .redemption-link {
+    display: inline-block;
+    color: #52be80;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    background: rgba(39, 174, 96, 0.1);
+    border: 1px solid rgba(39, 174, 96, 0.3);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+  }
+
+  .redemption-link:hover {
+    background: rgba(39, 174, 96, 0.2);
+    border-color: rgba(39, 174, 96, 0.5);
+    transform: translateX(4px);
+  }
+
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 2rem;
+    }
+
+    .codes-section {
+      padding: 1.5rem;
+    }
+
+    .howto-card {
+      padding: 1rem;
+    }
+  }
+</style>

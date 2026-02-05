@@ -1,0 +1,159 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+import { getLanguagePaths } from '../../i18n/static-paths';
+import WeeklyRoses from '../../components/WeeklyRoses';
+import { ACTIVE_LUCKY_NUMBER } from '../../config/bonus';
+import '../../styles/shared-layouts.css';
+
+export function getStaticPaths() {
+  return getLanguagePaths();
+}
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+// Alle 10 Lucky Rose Buffs
+// Die aktive Rose wird in src/config/bonus.ts eingestellt
+const allRoses = [
+  {
+    luckyNumber: 1,
+    name: t('roses.rose1.name'),
+    buff: t('roses.rose1.buff'),
+    duration: '2h',
+    description: t('roses.rose1.description'),
+  },
+  {
+    luckyNumber: 2,
+    name: t('roses.rose2.name'),
+    buff: t('roses.rose2.buff'),
+    duration: '24h',
+    description: t('roses.rose2.description'),
+  },
+  {
+    luckyNumber: 3,
+    name: t('roses.rose3.name'),
+    buff: t('roses.rose3.buff'),
+    duration: '24h',
+    description: t('roses.rose3.description'),
+  },
+  {
+    luckyNumber: 4,
+    name: t('roses.rose4.name'),
+    buff: t('roses.rose4.buff'),
+    duration: '24h',
+    description: t('roses.rose4.description'),
+  },
+  {
+    luckyNumber: 5,
+    name: t('roses.rose5.name'),
+    buff: t('roses.rose5.buff'),
+    duration: '2h',
+    description: t('roses.rose5.description'),
+  },
+  {
+    luckyNumber: 6,
+    name: t('roses.rose6.name'),
+    buff: t('roses.rose6.buff'),
+    duration: '24h',
+    description: t('roses.rose6.description'),
+  },
+  {
+    luckyNumber: 7,
+    name: t('roses.rose7.name'),
+    buff: t('roses.rose7.buff'),
+    duration: '2h',
+    description: t('roses.rose7.description'),
+  },
+  {
+    luckyNumber: 8,
+    name: t('roses.rose8.name'),
+    buff: t('roses.rose8.buff'),
+    duration: '2h',
+    description: t('roses.rose8.description'),
+  },
+  {
+    luckyNumber: 9,
+    name: t('roses.rose9.name'),
+    buff: t('roses.rose9.buff'),
+    duration: '2h',
+    description: t('roses.rose9.description'),
+  },
+  {
+    luckyNumber: 10,
+    name: t('roses.rose10.name'),
+    buff: t('roses.rose10.buff'),
+    duration: '2h',
+    description: t('roses.rose10.description'),
+  },
+];
+
+// Markiere die aktive Rose
+const roses = allRoses.map(rose => ({
+  ...rose,
+  isActive: rose.luckyNumber === ACTIVE_LUCKY_NUMBER
+}));
+---
+
+<PageLayout title={`${t('roses.title')} - Wild Hoggs`} description={t('roses.description')}>
+  <div class="page-header">
+    <h1>{t('roses.title')}</h1>
+    <p class="subtitle">{t('roses.subtitle')}</p>
+  </div>
+
+  <div class="roses-container">
+    <section class="roses-section">
+      <div class="section-header">
+        <h2>🌹 {t('roses.weekly.title')}</h2>
+        <p class="section-description">{t('roses.weekly.description')}</p>
+      </div>
+
+      <WeeklyRoses lang={lang} roses={roses} client:load />
+    </section>
+  </div>
+</PageLayout>
+
+<style>
+  .roses-container {
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .roses-section {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 165, 0, 0.2);
+    border-radius: 12px;
+    padding: 2rem;
+  }
+
+  .section-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .section-header h2 {
+    color: #ffa500;
+    font-size: 2rem;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .section-description {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 2rem;
+    }
+
+    .section-header h2 {
+      font-size: 1.5rem;
+    }
+
+    .roses-section {
+      padding: 1.5rem;
+    }
+  }
+</style>
