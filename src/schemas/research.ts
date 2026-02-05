@@ -10,10 +10,7 @@ export const PrerequisiteSchema = z.union([
 
 export const TechnologySchema = z.object({
   id: z.string(),
-  name: z.object({
-    de: z.string(),
-    en: z.string(),
-  }),
+  nameKey: z.string(),
   maxLevel: z.number().positive().int(),
   badgeCosts: z.array(z.number().nonnegative().int()),
   badges: z.array(z.number().nonnegative().int()).optional(),
@@ -29,10 +26,7 @@ export const TechnologySchema = z.object({
 
 export const ResearchTreeSchema = z.object({
   id: z.string(),
-  name: z.object({
-    de: z.string(),
-    en: z.string(),
-  }),
+  nameKey: z.string(),
   totalBadges: z.number().nonnegative().int(),
   nodeCount: z.number().nonnegative().int(),
   image: z.string().optional(),

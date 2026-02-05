@@ -1,6 +1,7 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
 import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+import { getLanguagePaths } from '../../i18n/static-paths';
 import PageHeader from '../../components/PageHeader.astro';
 import { members } from '../../data/members';
 import MembersList from '../../components/MembersList';
@@ -9,10 +10,7 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
 export function getStaticPaths() {
-  return [
-    { params: { lang: 'en' } },
-    { params: { lang: 'de' } },
-  ];
+  return getLanguagePaths();
 }
 
 const lang = getLangFromUrl(Astro.url);

@@ -28,18 +28,18 @@ function generateFallbackSvg(letter: string): string {
 }
 
 // Helper function to get technology icon href
-function getTechIconHref(tech: Technology, lang: 'de' | 'en'): string {
+function getTechIconHref(tech: Technology, techName: string): string {
   if (!tech.icon) {
-    return generateFallbackSvg(tech.name[lang].charAt(0));
+    return generateFallbackSvg(techName.charAt(0));
   }
 
   const [category, techId] = tech.icon.split('/');
   if (!category || !techId) {
-    return generateFallbackSvg(tech.name[lang].charAt(0));
+    return generateFallbackSvg(techName.charAt(0));
   }
 
   const image = getResearchImage(category, techId);
-  return image ? image.src : generateFallbackSvg(tech.name[lang].charAt(0));
+  return image ? image.src : generateFallbackSvg(techName.charAt(0));
 }
 
 // Helper function to determine node stroke color
@@ -61,6 +61,7 @@ function ResearchTreeNode({
   lang
 }: ResearchTreeNodeProps) {
   const t = useTranslations(lang);
+  const techName = t(tech.nameKey) || tech.nameKey || 'Unknown';
   const totalBadges = tech.badgeCosts.slice(0, selectedLevel).reduce((sum, cost) => sum + cost, 0);
   const maxBadges = tech.badgeCosts.reduce((a, b) => a + b, 0);
   const isActive = selectedLevel > 0;
@@ -94,7 +95,7 @@ function ResearchTreeNode({
     };
   }, [unlocked]);
 
-  const iconHref = getTechIconHref(tech, lang);
+  const iconHref = getTechIconHref(tech, techName);
   const nodeStrokeColor = getNodeStrokeColor(isActive, unlocked);
 
   // Important: Do not clamp the slider value here.
@@ -185,9 +186,9 @@ function ResearchTreeNode({
         fontWeight="600"
         data-node-element="true"
       >
-        {tech.name[lang].length > 20
-          ? tech.name[lang].substring(0, 18) + '...'
-          : tech.name[lang]}
+        {techName.length > 20
+          ? techName.substring(0, 18) + '...'
+          : techName}
       </text>
 
       {/* Level display */}

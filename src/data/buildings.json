@@ -1,10 +1,7 @@
 [
   {
     "id": "headquarters",
-    "name": {
-      "de": "Hauptquartier",
-      "en": "Headquarters"
-    },
+    "nameKey": "buildings.headquarters",
     "maxLevel": 35,
     "costs": [
       { "level": 1, "wood": 12000, "food": 0, "steel": 0, "zinc": 0, "time": 0, "requiredBuildings": "None", "heroLevelCap": 5, "power": 144 },

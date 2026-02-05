@@ -1,19 +1,13 @@
 {
   "id": "field",
-  "name": {
-    "en": "Field",
-    "de": "Feld"
-  },
+  "nameKey": "research.field.name",
   "totalBadges": 594430,
   "nodeCount": 14,
   "image": "/images/research/field.png",
   "technologies": [
     {
       "id": "field-training",
-      "name": {
-        "en": "Field Training",
-        "de": "Feldtraining"
-      },
+      "nameKey": "research.field.field-training",
       "maxLevel": 10,
       "badgeCosts": [
         380,
@@ -32,10 +26,7 @@
     },
     {
       "id": "camo-coating",
-      "name": {
-        "en": "Camo Coating",
-        "de": "Tarnanstrich"
-      },
+      "nameKey": "research.field.camo-coating",
       "maxLevel": 10,
       "badgeCosts": [
         380,
@@ -54,10 +45,7 @@
     },
     {
       "id": "mobility-enhancement",
-      "name": {
-        "en": "Mobility Enhancement",
-        "de": "Mobilitätsverbesserung"
-      },
+      "nameKey": "research.field.mobility-enhancement",
       "maxLevel": 10,
       "badgeCosts": [
         560,
@@ -78,10 +66,7 @@
     },
     {
       "id": "melee-combat",
-      "name": {
-        "en": "Melee Combat",
-        "de": "Nahkampf"
-      },
+      "nameKey": "research.field.melee-combat",
       "maxLevel": 10,
       "badgeCosts": [
         560,
@@ -103,10 +88,7 @@
     },
     {
       "id": "weapon-upgrading",
-      "name": {
-        "en": "Weapon Upgrading",
-        "de": "Waffenverbesserung"
-      },
+      "nameKey": "research.field.weapon-upgrading",
       "maxLevel": 10,
       "badgeCosts": [
         560,
@@ -127,10 +109,7 @@
     },
     {
       "id": "target-training",
-      "name": {
-        "en": "Target Training",
-        "de": "Zieltraining"
-      },
+      "nameKey": "research.field.target-training",
       "maxLevel": 5,
       "badgeCosts": [
         750,
@@ -146,10 +125,7 @@
     },
     {
       "id": "arms-assembly",
-      "name": {
-        "en": "Arms Assembly",
-        "de": "Waffenzusammenbau"
-      },
+      "nameKey": "research.field.arms-assembly",
       "maxLevel": 5,
       "badgeCosts": [
         750,
@@ -165,10 +141,7 @@
     },
     {
       "id": "quick-assembly",
-      "name": {
-        "en": "Quick Assembly",
-        "de": "Schnellzusammenbau"
-      },
+      "nameKey": "research.field.quick-assembly",
       "maxLevel": 5,
       "badgeCosts": [
         750,
@@ -184,10 +157,7 @@
     },
     {
       "id": "stronger-armor",
-      "name": {
-        "en": "Stronger Armor",
-        "de": "Stärkere Rüstung"
-      },
+      "nameKey": "research.field.stronger-armor",
       "maxLevel": 10,
       "badgeCosts": [
         1100,
@@ -208,10 +178,7 @@
     },
     {
       "id": "shield-upgrade",
-      "name": {
-        "en": "Shield Upgrade",
-        "de": "Schild-Upgrade"
-      },
+      "nameKey": "research.field.shield-upgrade",
       "maxLevel": 10,
       "badgeCosts": [
         1100,
@@ -232,10 +199,7 @@
     },
     {
       "id": "tactical-cover",
-      "name": {
-        "en": "Tactical Cover",
-        "de": "Taktische Deckung"
-      },
+      "nameKey": "research.field.tactical-cover",
       "maxLevel": 10,
       "badgeCosts": [
         1100,
@@ -256,10 +220,7 @@
     },
     {
       "id": "field-training-2",
-      "name": {
-        "en": "Field Training",
-        "de": "Feldtraining"
-      },
+      "nameKey": "research.field.field-training",
       "maxLevel": 20,
       "badgeCosts": [
         1300,
@@ -291,10 +252,7 @@
     },
     {
       "id": "camo-coating-2",
-      "name": {
-        "en": "Camo Coating",
-        "de": "Tarnanstrich"
-      },
+      "nameKey": "research.field.camo-coating",
       "maxLevel": 20,
       "badgeCosts": [
         1300,
@@ -326,10 +284,7 @@
     },
     {
       "id": "recharge-shield",
-      "name": {
-        "en": "Recharge Shield",
-        "de": "Schild-Aufladung"
-      },
+      "nameKey": "research.field.recharge-shield",
       "maxLevel": 10,
       "badgeCosts": [
         3700,

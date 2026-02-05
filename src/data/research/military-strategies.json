@@ -1,19 +1,13 @@
 {
   "id": "military_strategies",
-  "name": {
-    "en": "Military Strategies",
-    "de": "Militärische Theorie"
-  },
+  "nameKey": "research.military_strategies.name",
   "totalBadges": 79816,
   "nodeCount": 18,
   "image": "/images/research/military-strategies.png",
   "technologies": [
     {
       "id": "fire-up",
-      "name": {
-        "en": "Fire Up",
-        "de": "Verbesserung der Kraft"
-      },
+      "nameKey": "research.military_strategies.fire-up",
       "maxLevel": 10,
       "badgeCosts": [
         77,
@@ -32,10 +26,7 @@
     },
     {
       "id": "armor-upgrade",
-      "name": {
-        "en": "Armor Upgrade",
-        "de": "Verstärkte Rüstung"
-      },
+      "nameKey": "research.military_strategies.armor-upgrade",
       "maxLevel": 10,
       "badgeCosts": [
         77,
@@ -54,10 +45,7 @@
     },
     {
       "id": "joint-operation",
-      "name": {
-        "en": "Joint Operation",
-        "de": "Gemeinsamer Einsatz"
-      },
+      "nameKey": "research.military_strategies.joint-operation",
       "maxLevel": 10,
       "badgeCosts": [
         77,
@@ -78,10 +66,7 @@
     },
     {
       "id": "mobile-defense",
-      "name": {
-        "en": "Mobile Defense",
-        "de": "Mobilität Verteidigung"
-      },
+      "nameKey": "research.military_strategies.mobile-defense",
       "maxLevel": 10,
       "badgeCosts": [
         77,
@@ -102,10 +87,7 @@
     },
     {
       "id": "combat-policy",
-      "name": {
-        "en": "Combat Policy",
-        "de": "Kampfstrategie"
-      },
+      "nameKey": "research.military_strategies.combat-policy",
       "maxLevel": 10,
       "badgeCosts": [
         100,
@@ -126,10 +108,7 @@
     },
     {
       "id": "interceptions",
-      "name": {
-        "en": "Interceptions",
-        "de": "Abfangtechnik"
-      },
+      "nameKey": "research.military_strategies.interceptions",
       "maxLevel": 10,
       "badgeCosts": [
         100,
@@ -150,10 +129,7 @@
     },
     {
       "id": "demolition-crew",
-      "name": {
-        "en": "Demolition Crew",
-        "de": "Abriss-Team"
-      },
+      "nameKey": "research.military_strategies.demolition-crew",
       "maxLevel": 1,
       "badgeCosts": [
         570
@@ -166,10 +142,7 @@
     },
     {
       "id": "quick-assembly",
-      "name": {
-        "en": "Quick Assembly",
-        "de": "Schnellmontage"
-      },
+      "nameKey": "research.military_strategies.quick-assembly",
       "maxLevel": 5,
       "badgeCosts": [
         190,
@@ -185,10 +158,7 @@
     },
     {
       "id": "arms-assembly",
-      "name": {
-        "en": "Arms Assembly",
-        "de": "Zusammenbau der Waffen"
-      },
+      "nameKey": "research.military_strategies.arms-assembly",
       "maxLevel": 5,
       "badgeCosts": [
         190,
@@ -204,10 +174,7 @@
     },
     {
       "id": "target-training",
-      "name": {
-        "en": "Target Training",
-        "de": "Schiesstraining"
-      },
+      "nameKey": "research.military_strategies.target-training",
       "maxLevel": 5,
       "badgeCosts": [
         190,
@@ -223,10 +190,7 @@
     },
     {
       "id": "recharge-shield",
-      "name": {
-        "en": "Recharge Shield",
-        "de": "Schild-Aufladung"
-      },
+      "nameKey": "research.military_strategies.recharge-shield",
       "maxLevel": 3,
       "badgeCosts": [
         170,
@@ -242,10 +206,7 @@
     },
     {
       "id": "fire-up-2",
-      "name": {
-        "en": "Fire Up",
-        "de": "Verbesserung der Kraft"
-      },
+      "nameKey": "research.military_strategies.fire-up",
       "maxLevel": 10,
       "badgeCosts": [
         260,
@@ -266,10 +227,7 @@
     },
     {
       "id": "armor-upgrade-2",
-      "name": {
-        "en": "Armor Upgrade",
-        "de": "Verstärkte Rüstung"
-      },
+      "nameKey": "research.military_strategies.armor-upgrade",
       "maxLevel": 10,
       "badgeCosts": [
         260,
@@ -290,10 +248,7 @@
     },
     {
       "id": "field-training",
-      "name": {
-        "en": "Field Training",
-        "de": "Feldtraining"
-      },
+      "nameKey": "research.military_strategies.field-training",
       "maxLevel": 10,
       "badgeCosts": [
         260,
@@ -314,10 +269,7 @@
     },
     {
       "id": "camo-coating",
-      "name": {
-        "en": "Camo Coating",
-        "de": "Tarnfarbe"
-      },
+      "nameKey": "research.military_strategies.camo-coating",
       "maxLevel": 10,
       "badgeCosts": [
         260,
@@ -338,10 +290,7 @@
     },
     {
       "id": "alloy-plate",
-      "name": {
-        "en": "Alloy Plate",
-        "de": "Legierungsplatte"
-      },
+      "nameKey": "research.military_strategies.alloy-plate",
       "maxLevel": 10,
       "badgeCosts": [
         360,
@@ -362,10 +311,7 @@
     },
     {
       "id": "enhanced-armor",
-      "name": {
-        "en": "Enhanced Armor",
-        "de": "Verstärkte Rüstung"
-      },
+      "nameKey": "research.military_strategies.enhanced-armor",
       "maxLevel": 10,
       "badgeCosts": [
         360,
@@ -387,10 +333,7 @@
     },
     {
       "id": "aerocraft-material",
-      "name": {
-        "en": "Aerocraft Material",
-        "de": "Flugmaterial"
-      },
+      "nameKey": "research.military_strategies.aerocraft-material",
       "maxLevel": 10,
       "badgeCosts": [
         360,

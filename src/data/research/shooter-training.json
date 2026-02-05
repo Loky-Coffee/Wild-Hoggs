@@ -1,9 +1,6 @@
 {
   "id": "shooter_training",
-  "name": {
-    "en": "Shooter Training",
-    "de": "Schützen-Training"
-  },
+  "nameKey": "research.shooter_training.name",
   "totalBadges": 0,
   "nodeCount": 0,
   "image": "/images/research/shooter-training.png",

@@ -1,19 +1,13 @@
 {
   "id": "siege_to_seize",
-  "name": {
-    "en": "Siege to Seize",
-    "de": "Belagerung zum Erobern"
-  },
+  "nameKey": "research.siege_to_seize.name",
   "totalBadges": 256775,
   "nodeCount": 18,
   "image": "/images/research/siege-to-seize.png",
   "technologies": [
     {
       "id": "demolition-crew",
-      "name": {
-        "en": "Demolition Crew",
-        "de": "Sprengkommando"
-      },
+      "nameKey": "research.siege_to_seize.demolition-crew",
       "maxLevel": 5,
       "badgeCosts": [
         81,
@@ -27,10 +21,7 @@
     },
     {
       "id": "joint-operation",
-      "name": {
-        "en": "Joint Operation",
-        "de": "Gemeinsamer Einsatz"
-      },
+      "nameKey": "research.siege_to_seize.joint-operation",
       "maxLevel": 10,
       "badgeCosts": [
         97,
@@ -51,10 +42,7 @@
     },
     {
       "id": "mobile-defense",
-      "name": {
-        "en": "Mobile Defense",
-        "de": "Mobile Verteidigung"
-      },
+      "nameKey": "research.siege_to_seize.mobile-defense",
       "maxLevel": 10,
       "badgeCosts": [
         97,
@@ -75,10 +63,7 @@
     },
     {
       "id": "mobility-enhancement",
-      "name": {
-        "en": "Mobility Enhancement",
-        "de": "Mobilitätsverbesserung"
-      },
+      "nameKey": "research.siege_to_seize.mobility-enhancement",
       "maxLevel": 10,
       "badgeCosts": [
         230,
@@ -99,10 +84,7 @@
     },
     {
       "id": "melee-combat",
-      "name": {
-        "en": "Melee Combat",
-        "de": "Nahkampf"
-      },
+      "nameKey": "research.siege_to_seize.melee-combat",
       "maxLevel": 10,
       "badgeCosts": [
         230,
@@ -123,10 +105,7 @@
     },
     {
       "id": "weapon-upgrading",
-      "name": {
-        "en": "Weapon Upgrading",
-        "de": "Waffenverbesserung"
-      },
+      "nameKey": "research.siege_to_seize.weapon-upgrading",
       "maxLevel": 10,
       "badgeCosts": [
         230,
@@ -147,10 +126,7 @@
     },
     {
       "id": "load-module",
-      "name": {
-        "en": "Load Module",
-        "de": "Lademodul"
-      },
+      "nameKey": "research.siege_to_seize.load-module",
       "maxLevel": 10,
       "badgeCosts": [
         450,
@@ -172,10 +148,7 @@
     },
     {
       "id": "propulsion",
-      "name": {
-        "en": "Propulsion",
-        "de": "Antrieb"
-      },
+      "nameKey": "research.siege_to_seize.propulsion",
       "maxLevel": 10,
       "badgeCosts": [
         450,
@@ -197,10 +170,7 @@
     },
     {
       "id": "quick-assembly",
-      "name": {
-        "en": "Quick Assembly",
-        "de": "Schnellmontage"
-      },
+      "nameKey": "research.siege_to_seize.quick-assembly",
       "maxLevel": 5,
       "badgeCosts": [
         520,
@@ -216,10 +186,7 @@
     },
     {
       "id": "arms-assembly",
-      "name": {
-        "en": "Arms Assembly",
-        "de": "Waffenmontage"
-      },
+      "nameKey": "research.siege_to_seize.arms-assembly",
       "maxLevel": 5,
       "badgeCosts": [
         520,
@@ -235,10 +202,7 @@
     },
     {
       "id": "target-training",
-      "name": {
-        "en": "Target Training",
-        "de": "Zieltraining"
-      },
+      "nameKey": "research.siege_to_seize.target-training",
       "maxLevel": 5,
       "badgeCosts": [
         520,
@@ -254,10 +218,7 @@
     },
     {
       "id": "stronger-armor",
-      "name": {
-        "en": "Stronger Armor",
-        "de": "Stärkere Panzerung"
-      },
+      "nameKey": "research.siege_to_seize.stronger-armor",
       "maxLevel": 10,
       "badgeCosts": [
         690,
@@ -280,10 +241,7 @@
     },
     {
       "id": "shield-upgrade",
-      "name": {
-        "en": "Shield Upgrade",
-        "de": "Schild-Upgrade"
-      },
+      "nameKey": "research.siege_to_seize.shield-upgrade",
       "maxLevel": 10,
       "badgeCosts": [
         690,
@@ -306,10 +264,7 @@
     },
     {
       "id": "tactical-cover",
-      "name": {
-        "en": "Tactical Cover",
-        "de": "Taktische Deckung"
-      },
+      "nameKey": "research.siege_to_seize.tactical-cover",
       "maxLevel": 10,
       "badgeCosts": [
         690,
@@ -332,10 +287,7 @@
     },
     {
       "id": "recharge-shield",
-      "name": {
-        "en": "Recharge Shield",
-        "de": "Schild aufladen"
-      },
+      "nameKey": "research.siege_to_seize.recharge-shield",
       "maxLevel": 10,
       "badgeCosts": [
         770,
@@ -358,10 +310,7 @@
     },
     {
       "id": "demolition-crew-2",
-      "name": {
-        "en": "Demolition Crew",
-        "de": "Sprengkommando"
-      },
+      "nameKey": "research.siege_to_seize.demolition-crew",
       "maxLevel": 5,
       "badgeCosts": [
         405,
@@ -377,10 +326,7 @@
     },
     {
       "id": "joint-operation-2",
-      "name": {
-        "en": "Joint Operation",
-        "de": "Gemeinsamer Einsatz"
-      },
+      "nameKey": "research.siege_to_seize.joint-operation",
       "maxLevel": 10,
       "badgeCosts": [
         485,
@@ -401,10 +347,7 @@
     },
     {
       "id": "mobile-defense-2",
-      "name": {
-        "en": "Mobile Defense",
-        "de": "Mobile Verteidigung"
-      },
+      "nameKey": "research.siege_to_seize.mobile-defense",
       "maxLevel": 10,
       "badgeCosts": [
         485,

@@ -1,5 +1,6 @@
 ---
 import { getLangFromUrl, useTranslations } from '../i18n/utils';
+import LanguageDropdown from './LanguageDropdown.astro';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -46,18 +47,7 @@ const currentPath = Astro.url.pathname;
     </ul>
 
     <div class="lang-switcher">
-      <a
-        href={lang === 'de'
-          ? Astro.url.pathname.replace(/^\/de/, '/en')
-          : Astro.url.pathname === '/'
-            ? '/de'
-            : Astro.url.pathname.replace(/^\/en/, '/de')
-        }
-        class="lang-link"
-        aria-label={lang === 'de' ? t('nav.switchToEnglish') : t('nav.switchToGerman')}
-      >
-        {lang === 'de' ? 'EN' : 'DE'}
-      </a>
+      <LanguageDropdown />
     </div>
   </div>
 </nav>
@@ -165,22 +155,6 @@ const currentPath = Astro.url.pathname;
   .lang-switcher {
     display: flex;
     align-items: center;
-  }
-
-  .lang-link {
-    text-decoration: none;
-    color: #ffffff;
-    font-size: 0.9rem;
-    font-weight: 600;
-    padding: 0.5rem 1rem;
-    border: 2px solid #ffa500;
-    border-radius: 4px;
-    transition: all 0.3s ease;
-  }
-
-  .lang-link:hover {
-    background: #ffa500;
-    color: #1a1a1a;
   }
 
   @media (max-width: 768px) {

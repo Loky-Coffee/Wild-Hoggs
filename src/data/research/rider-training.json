@@ -1,9 +1,6 @@
 {
   "id": "rider_training",
-  "name": {
-    "en": "Rider Training",
-    "de": "Reiter-Training"
-  },
+  "nameKey": "research.rider_training.name",
   "totalBadges": 0,
   "nodeCount": 0,
   "image": "/images/research/rider-training.png",

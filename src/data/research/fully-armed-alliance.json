@@ -1,19 +1,13 @@
 {
   "id": "fully_armed_alliance",
-  "name": {
-    "en": "Fully Armed Alliance",
-    "de": "Vollbewaffnete Allianz"
-  },
+  "nameKey": "research.fully_armed_alliance.name",
   "totalBadges": 470820,
   "nodeCount": 18,
   "image": "/images/research/fully-armed-alliance.png",
   "technologies": [
     {
       "id": "mechanical-repair",
-      "name": {
-        "en": "Mechanical Repair",
-        "de": "Mechanische Reparatur"
-      },
+      "nameKey": "research.fully_armed_alliance.mechanical-repair",
       "maxLevel": 10,
       "badgeCosts": [
         270,
@@ -32,10 +26,7 @@
     },
     {
       "id": "piercing-shot",
-      "name": {
-        "en": "Piercing Shot",
-        "de": "Durchdringender Schuss"
-      },
+      "nameKey": "research.fully_armed_alliance.piercing-shot",
       "maxLevel": 10,
       "badgeCosts": [
         340,
@@ -56,10 +47,7 @@
     },
     {
       "id": "tough-shield",
-      "name": {
-        "en": "Tough Shield",
-        "de": "Robuster Schild"
-      },
+      "nameKey": "research.fully_armed_alliance.tough-shield",
       "maxLevel": 10,
       "badgeCosts": [
         340,
@@ -80,10 +68,7 @@
     },
     {
       "id": "bazooka",
-      "name": {
-        "en": "Bazooka",
-        "de": "Panzerfaust"
-      },
+      "nameKey": "research.fully_armed_alliance.bazooka",
       "maxLevel": 10,
       "badgeCosts": [
         490,
@@ -104,10 +89,7 @@
     },
     {
       "id": "hold-fast",
-      "name": {
-        "en": "Hold Fast",
-        "de": "Durchhalten"
-      },
+      "nameKey": "research.fully_armed_alliance.hold-fast",
       "maxLevel": 10,
       "badgeCosts": [
         490,
@@ -128,10 +110,7 @@
     },
     {
       "id": "circuitous-tactics",
-      "name": {
-        "en": "Circuitous Tactics",
-        "de": "Umwege-Taktiken"
-      },
+      "nameKey": "research.fully_armed_alliance.circuitous-tactics",
       "maxLevel": 10,
       "badgeCosts": [
         490,
@@ -152,10 +131,7 @@
     },
     {
       "id": "alloy-composite",
-      "name": {
-        "en": "Alloy Composite",
-        "de": "Legierungsverbund"
-      },
+      "nameKey": "research.fully_armed_alliance.alloy-composite",
       "maxLevel": 10,
       "badgeCosts": [
         490,
@@ -176,10 +152,7 @@
     },
     {
       "id": "peace-breaker",
-      "name": {
-        "en": "Peace Breaker",
-        "de": "Friedensbrecher"
-      },
+      "nameKey": "research.fully_armed_alliance.peace-breaker",
       "maxLevel": 10,
       "badgeCosts": [
         650,
@@ -201,10 +174,7 @@
     },
     {
       "id": "annihilation",
-      "name": {
-        "en": "Annihilation",
-        "de": "Vernichtung"
-      },
+      "nameKey": "research.fully_armed_alliance.annihilation",
       "maxLevel": 20,
       "badgeCosts": [
         800,
@@ -235,10 +205,7 @@
     },
     {
       "id": "riders-attack-training",
-      "name": {
-        "en": "Rider's Attack Training",
-        "de": "Reiter-Angriffstraining"
-      },
+      "nameKey": "research.fully_armed_alliance.riders-attack-training",
       "maxLevel": 10,
       "badgeCosts": [
         950,
@@ -259,10 +226,7 @@
     },
     {
       "id": "assaulters-attack-training",
-      "name": {
-        "en": "Assaulter's Attack Training",
-        "de": "Angreifer-Angriffstraining"
-      },
+      "nameKey": "research.fully_armed_alliance.assaulters-attack-training",
       "maxLevel": 10,
       "badgeCosts": [
         950,
@@ -283,10 +247,7 @@
     },
     {
       "id": "shooters-attack-training",
-      "name": {
-        "en": "Shooter's Attack Training",
-        "de": "Schützen-Angriffstraining"
-      },
+      "nameKey": "research.fully_armed_alliance.shooters-attack-training",
       "maxLevel": 10,
       "badgeCosts": [
         950,
@@ -307,10 +268,7 @@
     },
     {
       "id": "riders-defense-training",
-      "name": {
-        "en": "Rider's Defense Training",
-        "de": "Reiter-Verteidigungstraining"
-      },
+      "nameKey": "research.fully_armed_alliance.riders-defense-training",
       "maxLevel": 10,
       "badgeCosts": [
         950,
@@ -331,10 +289,7 @@
     },
     {
       "id": "assaulters-defense-training",
-      "name": {
-        "en": "Assaulter's Defense Training",
-        "de": "Angreifer-Verteidigungstraining"
-      },
+      "nameKey": "research.fully_armed_alliance.assaulters-defense-training",
       "maxLevel": 10,
       "badgeCosts": [
         950,
@@ -355,10 +310,7 @@
     },
     {
       "id": "shooters-defense-training",
-      "name": {
-        "en": "Shooter's Defense Training",
-        "de": "Schützen-Verteidigungstraining"
-      },
+      "nameKey": "research.fully_armed_alliance.shooters-defense-training",
       "maxLevel": 10,
       "badgeCosts": [
         950,
@@ -379,10 +331,7 @@
     },
     {
       "id": "mechanical-repair-2",
-      "name": {
-        "en": "Mechanical Repair",
-        "de": "Mechanische Reparatur"
-      },
+      "nameKey": "research.fully_armed_alliance.mechanical-repair",
       "maxLevel": 10,
       "badgeCosts": [
         1400,
@@ -404,10 +353,7 @@
     },
     {
       "id": "repair-kit",
-      "name": {
-        "en": "Repair Kit",
-        "de": "Reparatur-Set"
-      },
+      "nameKey": "research.fully_armed_alliance.repair-kit",
       "maxLevel": 10,
       "badgeCosts": [
         1400,
@@ -429,10 +375,7 @@
     },
     {
       "id": "move-out",
-      "name": {
-        "en": "Move Out",
-        "de": "Rücken aus"
-      },
+      "nameKey": "research.fully_armed_alliance.move-out",
       "maxLevel": 20,
       "badgeCosts": [
         1700,

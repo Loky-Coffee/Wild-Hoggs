@@ -1,19 +1,13 @@
 {
   "id": "hero_training",
-  "name": {
-    "en": "Hero Training",
-    "de": "Helden-Training"
-  },
+  "nameKey": "research.hero_training.name",
   "totalBadges": 39590,
   "nodeCount": 13,
   "image": "/images/research/hero-training.png",
   "technologies": [
     {
       "id": "atk-spec-1",
-      "name": {
-        "en": "Attack Special Training",
-        "de": "Angriffs-Spezialtraining"
-      },
+      "nameKey": "research.hero_training.attack-special-training",
       "maxLevel": 5,
       "badgeCosts": [
         120,
@@ -27,10 +21,7 @@
     },
     {
       "id": "str-train-1",
-      "name": {
-        "en": "Strength Training",
-        "de": "Krafttraining"
-      },
+      "nameKey": "research.hero_training.strength-training",
       "maxLevel": 5,
       "badgeCosts": [
         120,
@@ -44,10 +35,7 @@
     },
     {
       "id": "rose-bloom",
-      "name": {
-        "en": "Rose Bloom",
-        "de": "Rosenblüte"
-      },
+      "nameKey": "research.hero_training.rose-bloom",
       "maxLevel": 5,
       "badgeCosts": [
         170,
@@ -64,10 +52,7 @@
     },
     {
       "id": "morning-star",
-      "name": {
-        "en": "Morning Star",
-        "de": "Morgenstern"
-      },
+      "nameKey": "research.hero_training.morning-star",
       "maxLevel": 5,
       "badgeCosts": [
         170,
@@ -84,10 +69,7 @@
     },
     {
       "id": "light-of-order",
-      "name": {
-        "en": "Light of Order",
-        "de": "Licht der Ordnung"
-      },
+      "nameKey": "research.hero_training.light-of-order",
       "maxLevel": 5,
       "badgeCosts": [
         170,
@@ -104,10 +86,7 @@
     },
     {
       "id": "resource-gathering-1",
-      "name": {
-        "en": "Resource Gathering",
-        "de": "Ressourcensammlung"
-      },
+      "nameKey": "research.hero_training.resource-gathering",
       "maxLevel": 3,
       "badgeCosts": [
         340,
@@ -123,10 +102,7 @@
     },
     {
       "id": "rose-barrier",
-      "name": {
-        "en": "Rose Barrier",
-        "de": "Rosenbarriere"
-      },
+      "nameKey": "research.hero_training.rose-barrier",
       "maxLevel": 5,
       "badgeCosts": [
         290,
@@ -142,10 +118,7 @@
     },
     {
       "id": "dawns-light",
-      "name": {
-        "en": "Dawn's Light",
-        "de": "Licht der Dämmerung"
-      },
+      "nameKey": "research.hero_training.dawns-light",
       "maxLevel": 5,
       "badgeCosts": [
         290,
@@ -161,10 +134,7 @@
     },
     {
       "id": "shield-of-order",
-      "name": {
-        "en": "Shield of Order",
-        "de": "Schild der Ordnung"
-      },
+      "nameKey": "research.hero_training.shield-of-order",
       "maxLevel": 5,
       "badgeCosts": [
         290,
@@ -180,10 +150,7 @@
     },
     {
       "id": "cockpit",
-      "name": {
-        "en": "Cockpit",
-        "de": "Cockpit"
-      },
+      "nameKey": "research.hero_training.cockpit",
       "maxLevel": 1,
       "badgeCosts": [
         2200
@@ -197,10 +164,7 @@
     },
     {
       "id": "resource-gathering-2",
-      "name": {
-        "en": "Resource Gathering",
-        "de": "Ressourcensammlung"
-      },
+      "nameKey": "research.hero_training.resource-gathering",
       "maxLevel": 3,
       "badgeCosts": [
         500,
@@ -214,10 +178,7 @@
     },
     {
       "id": "atk-spec-2",
-      "name": {
-        "en": "Attack Special Training",
-        "de": "Angriffs-Spezialtraining"
-      },
+      "nameKey": "research.hero_training.attack-special-training",
       "maxLevel": 10,
       "badgeCosts": [
         280,
@@ -238,10 +199,7 @@
     },
     {
       "id": "str-train-2",
-      "name": {
-        "en": "Strength Training",
-        "de": "Krafttraining"
-      },
+      "nameKey": "research.hero_training.strength-training",
       "maxLevel": 10,
       "badgeCosts": [
         280,

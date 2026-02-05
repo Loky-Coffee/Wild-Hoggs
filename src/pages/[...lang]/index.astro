@@ -2,14 +2,11 @@
 import PageLayout from '../../layouts/PageLayout.astro';
 import { useTranslations } from '../../i18n/utils';
 import { languages } from '../../i18n/index';
+import { getLanguagePaths } from '../../i18n/static-paths';
 
 // Define all static paths for build
 export function getStaticPaths() {
-  return [
-    { params: { lang: undefined } },  // / -> English (default)
-    { params: { lang: 'en' } },       // /en -> English
-    { params: { lang: 'de' } },       // /de -> German
-  ];
+  return getLanguagePaths();
 }
 
 // Get language from URL, default to 'en'

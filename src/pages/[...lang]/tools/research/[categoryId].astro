@@ -1,6 +1,7 @@
 ---
 import PageLayout from '../../../../layouts/PageLayout.astro';
 import { getLangFromUrl, useTranslations } from '../../../../i18n/utils';
+import { languages } from '../../../../i18n/index';
 import ResearchCategoryCalculator from '../../../../components/calculators/ResearchCategoryCalculator';
 import { ErrorBoundary } from '../../../../components/ErrorBoundary';
 import type { ResearchTree } from '../../../../schemas/research';
@@ -44,13 +45,16 @@ export function getStaticPaths() {
     'peace_shield',
     'siege_to_seize'
   ];
-  ['en', 'de'].forEach(lang => {
+
+  // Generate paths for all languages
+  Object.keys(languages).forEach(lang => {
     categoryIds.forEach(categoryId => {
       paths.push({
         params: { lang, categoryId },
       });
     });
   });
+
   return paths;
 }
 
@@ -90,7 +94,7 @@ if (!category) {
 }
 ---
 
-<PageLayout title={`${category.name[lang]} - Wild Hoggs`} description={`Calculate badge costs for ${category.name[lang]}`}>
+<PageLayout title={`${t(category.nameKey)} - Wild Hoggs`} description={`Calculate badge costs for ${t(category.nameKey)}`}>
   <div class="calculator-wrapper">
     <a href={`/${lang}/tools/research`} class="back-link">
       {t('research.backToOverview')}

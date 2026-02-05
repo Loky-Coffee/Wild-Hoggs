@@ -1,9 +1,6 @@
 {
   "id": "assaulter_training",
-  "name": {
-    "en": "Assaulter Training",
-    "de": "Angreifer-Training"
-  },
+  "nameKey": "research.assaulter_training.name",
   "totalBadges": 0,
   "nodeCount": 0,
   "image": "/images/research/assaulter-training.png",

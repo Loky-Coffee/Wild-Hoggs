@@ -1,6 +1,7 @@
 ---
 import PageLayout from '../../../layouts/PageLayout.astro';
 import { getLangFromUrl, useTranslations } from '../../../i18n/utils';
+import { getLanguagePaths } from '../../../i18n/static-paths';
 import { Image } from 'astro:assets';
 
 // Import all research category data
@@ -26,10 +27,7 @@ import peaceShieldImg from '../../../assets/images/research/peace-shield.png';
 import siegeToSeizeImg from '../../../assets/images/research/siege-to-seize.png';
 
 export function getStaticPaths() {
-  return [
-    { params: { lang: 'en' } },
-    { params: { lang: 'de' } },
-  ];
+  return getLanguagePaths();
 }
 
 const lang = getLangFromUrl(Astro.url);
@@ -91,7 +89,7 @@ const categories = [
             {imageMap[id] ? (
               <Image
                 src={imageMap[id]}
-                alt={category.name[lang]}
+                alt={t(category.nameKey)}
                 class="category-image"
                 width={80}
                 height={80}
@@ -101,7 +99,7 @@ const categories = [
               <div class="category-icon">{icon}</div>
             )}
           </div>
-          <h2>{category.name[lang]}</h2>
+          <h2>{t(category.nameKey)}</h2>
           <div class="category-stats">
             <div class="stat">
               <span class="stat-value">{category.totalBadges.toLocaleString(lang === 'de' ? 'de-DE' : 'en-US')}</span>

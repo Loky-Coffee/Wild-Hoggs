@@ -174,12 +174,12 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
             {categoryImageSrc && (
               <img
                 src={categoryImageSrc}
-                alt={category.name[lang]}
+                alt={t(category.nameKey)}
                 style={{ width: '60px', height: '60px', objectFit: 'contain' }}
               />
             )}
             <div>
-              <h3 style={{ margin: '0 0 0.5rem 0', color: '#ffa500' }}>{category.name[lang]}</h3>
+              <h3 style={{ margin: '0 0 0.5rem 0', color: '#ffa500' }}>{t(category.nameKey)}</h3>
               <p style={{ margin: 0, fontSize: '0.9rem', opacity: 0.8 }}>
                 {category.nodeCount} {t('calc.research.nodes')} · {formatNumber(category.totalBadges, lang)} 🎖️ {t('calc.research.total')}
               </p>

@@ -1,19 +1,13 @@
 {
   "id": "peace_shield",
-  "name": {
-    "en": "Peace Shield",
-    "de": "Friedensschild"
-  },
+  "nameKey": "research.peace_shield.name",
   "totalBadges": 267613,
   "nodeCount": 16,
   "image": "/images/research/peace-shield.png",
   "technologies": [
     {
       "id": "auto-repair",
-      "name": {
-        "en": "Auto Repair",
-        "de": "Automatische Reparatur"
-      },
+      "nameKey": "research.peace_shield.auto-repair",
       "maxLevel": 10,
       "badgeCosts": [
         83,
@@ -32,10 +26,7 @@
     },
     {
       "id": "combat-policy",
-      "name": {
-        "en": "Combat Policy",
-        "de": "Kampfrichtlinie"
-      },
+      "nameKey": "research.peace_shield.combat-policy",
       "maxLevel": 10,
       "badgeCosts": [
         130,
@@ -54,10 +45,7 @@
     },
     {
       "id": "interceptions",
-      "name": {
-        "en": "Interceptions",
-        "de": "Abfangen"
-      },
+      "nameKey": "research.peace_shield.interceptions",
       "maxLevel": 10,
       "badgeCosts": [
         130,
@@ -76,10 +64,7 @@
     },
     {
       "id": "mobility-enhancement",
-      "name": {
-        "en": "Mobility Enhancement",
-        "de": "Mobilitätsverstärkung"
-      },
+      "nameKey": "research.peace_shield.mobility-enhancement",
       "maxLevel": 10,
       "badgeCosts": [
         200,
@@ -100,10 +85,7 @@
     },
     {
       "id": "melee-combat",
-      "name": {
-        "en": "Melee Combat",
-        "de": "Nahkampf"
-      },
+      "nameKey": "research.peace_shield.melee-combat",
       "maxLevel": 10,
       "badgeCosts": [
         200,
@@ -125,10 +107,7 @@
     },
     {
       "id": "weapon-upgrading",
-      "name": {
-        "en": "Weapon Upgrading",
-        "de": "Waffenverbesserung"
-      },
+      "nameKey": "research.peace_shield.weapon-upgrading",
       "maxLevel": 10,
       "badgeCosts": [
         200,
@@ -149,10 +128,7 @@
     },
     {
       "id": "quick-assembly",
-      "name": {
-        "en": "Quick Assembly",
-        "de": "Schnellmontage"
-      },
+      "nameKey": "research.peace_shield.quick-assembly",
       "maxLevel": 5,
       "badgeCosts": [
         450,
@@ -168,10 +144,7 @@
     },
     {
       "id": "arms-assembly",
-      "name": {
-        "en": "Arms Assembly",
-        "de": "Waffenmontage"
-      },
+      "nameKey": "research.peace_shield.arms-assembly",
       "maxLevel": 5,
       "badgeCosts": [
         450,
@@ -187,10 +160,7 @@
     },
     {
       "id": "target-training",
-      "name": {
-        "en": "Target Training",
-        "de": "Zieltraining"
-      },
+      "nameKey": "research.peace_shield.target-training",
       "maxLevel": 5,
       "badgeCosts": [
         450,
@@ -206,10 +176,7 @@
     },
     {
       "id": "urgent-rescue",
-      "name": {
-        "en": "Urgent Rescue",
-        "de": "Notrettung"
-      },
+      "nameKey": "research.peace_shield.urgent-rescue",
       "maxLevel": 10,
       "badgeCosts": [
         400,
@@ -232,10 +199,7 @@
     },
     {
       "id": "stronger-armor",
-      "name": {
-        "en": "Stronger Armor",
-        "de": "Stärkere Rüstung"
-      },
+      "nameKey": "research.peace_shield.stronger-armor",
       "maxLevel": 10,
       "badgeCosts": [
         580,
@@ -256,10 +220,7 @@
     },
     {
       "id": "shield-upgrade",
-      "name": {
-        "en": "Shield Upgrade",
-        "de": "Schild-Upgrade"
-      },
+      "nameKey": "research.peace_shield.shield-upgrade",
       "maxLevel": 10,
       "badgeCosts": [
         580,
@@ -280,10 +241,7 @@
     },
     {
       "id": "tactical-cover",
-      "name": {
-        "en": "Tactical Cover",
-        "de": "Taktische Deckung"
-      },
+      "nameKey": "research.peace_shield.tactical-cover",
       "maxLevel": 10,
       "badgeCosts": [
         580,
@@ -304,10 +262,7 @@
     },
     {
       "id": "combat-policy-2",
-      "name": {
-        "en": "Combat Policy",
-        "de": "Kampfrichtlinie"
-      },
+      "nameKey": "research.peace_shield.combat-policy",
       "maxLevel": 20,
       "badgeCosts": [
         600,
@@ -340,10 +295,7 @@
     },
     {
       "id": "interceptions-2",
-      "name": {
-        "en": "Interceptions",
-        "de": "Abfangen"
-      },
+      "nameKey": "research.peace_shield.interceptions",
       "maxLevel": 20,
       "badgeCosts": [
         600,
@@ -376,10 +328,7 @@
     },
     {
       "id": "recharge-shield",
-      "name": {
-        "en": "Recharge Shield",
-        "de": "Schild Aufladen"
-      },
+      "nameKey": "research.peace_shield.recharge-shield",
       "maxLevel": 10,
       "badgeCosts": [
         2000,

@@ -104,7 +104,7 @@ export default function BuildingCalculator({ lang }: BuildingCalculatorProps) {
           >
             {buildings.map((building) => (
               <option key={building.id} value={building.id}>
-                {building.name[lang]}
+                {t(building.nameKey)}
               </option>
             ))}
           </select>

@@ -14,10 +14,7 @@ export const BuildingCostSchema = z.object({
 
 export const SingleBuildingSchema = z.object({
   id: z.string(),
-  name: z.object({
-    de: z.string(),
-    en: z.string(),
-  }),
+  nameKey: z.string(),
   maxLevel: z.number().positive().int(),
   costs: z.array(BuildingCostSchema),
 }).refine(

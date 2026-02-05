@@ -1,16 +1,14 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
 import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+import { getLanguagePaths } from '../../i18n/static-paths';
 import RewardCodes from '../../components/RewardCodes';
 import WeeklyRoses from '../../components/WeeklyRoses';
 import { ACTIVE_LUCKY_NUMBER } from '../../config/bonus';
 import '../../styles/shared-layouts.css';
 
 export function getStaticPaths() {
-  return [
-    { params: { lang: 'en' } },
-    { params: { lang: 'de' } },
-  ];
+  return getLanguagePaths();
 }
 
 const lang = getLangFromUrl(Astro.url);

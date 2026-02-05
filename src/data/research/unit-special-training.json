@@ -1,19 +1,13 @@
 {
   "id": "unit_special_training",
-  "name": {
-    "en": "Unit Special Training",
-    "de": "Spezialtraining der Einheiten"
-  },
+  "nameKey": "research.unit_special_training.name",
   "totalBadges": 1488100,
   "nodeCount": 22,
   "image": "/images/research/unit-special-training.png",
   "technologies": [
     {
       "id": "fire-up",
-      "name": {
-        "en": "Fire Up",
-        "de": "Feuer frei"
-      },
+      "nameKey": "research.unit_special_training.fire-up",
       "maxLevel": 10,
       "badgeCosts": [700, 950, 1100, 1300, 1500, 1900, 2400, 3000, 3800, 4700],
       "icon": "unit-special-training/fire-up",
@@ -21,10 +15,7 @@
     },
     {
       "id": "armor-upgrade",
-      "name": {
-        "en": "Armor Upgrade",
-        "de": "Panzerverbesserung"
-      },
+      "nameKey": "research.unit_special_training.armor-upgrade",
       "maxLevel": 10,
       "badgeCosts": [700, 950, 1100, 1300, 1500, 1900, 2400, 3000, 3800, 4700],
       "icon": "unit-special-training/armor-upgrade",
@@ -32,10 +23,7 @@
     },
     {
       "id": "fast-production",
-      "name": {
-        "en": "Fast Production",
-        "de": "Schnellproduktion"
-      },
+      "nameKey": "research.unit_special_training.fast-production",
       "maxLevel": 10,
       "badgeCosts": [900, 1100, 1300, 1600, 1900, 2400, 3000, 3800, 4800, 5900],
       "icon": "unit-special-training/fast-production",
@@ -43,10 +31,7 @@
     },
     {
       "id": "mobility-enhancement",
-      "name": {
-        "en": "Mobility Enhancement",
-        "de": "Mobilitätsverbesserung"
-      },
+      "nameKey": "research.unit_special_training.mobility-enhancement",
       "maxLevel": 10,
       "badgeCosts": [1300, 1500, 1800, 2200, 2600, 3300, 4100, 5100, 6400, 7900],
       "icon": "unit-special-training/mobility-enhancement",
@@ -54,10 +39,7 @@
     },
     {
       "id": "melee-combat",
-      "name": {
-        "en": "Melee Combat",
-        "de": "Nahkampf"
-      },
+      "nameKey": "research.unit_special_training.melee-combat",
       "maxLevel": 10,
       "badgeCosts": [1300, 1500, 1800, 2200, 2600, 3300, 4100, 5100, 6400, 7900],
       "icon": "unit-special-training/melee-combat",
@@ -65,10 +47,7 @@
     },
     {
       "id": "weapon-upgrading",
-      "name": {
-        "en": "Weapon Upgrading",
-        "de": "Waffenverbesserung"
-      },
+      "nameKey": "research.unit_special_training.weapon-upgrading",
       "maxLevel": 10,
       "badgeCosts": [1300, 1500, 1800, 2200, 2600, 3300, 4100, 5100, 6400, 7900],
       "icon": "unit-special-training/weapon-upgrading",
@@ -76,10 +55,7 @@
     },
     {
       "id": "stronger-armor",
-      "name": {
-        "en": "Stronger Armor",
-        "de": "Stärkere Panzerung"
-      },
+      "nameKey": "research.unit_special_training.stronger-armor",
       "maxLevel": 10,
       "badgeCosts": [1300, 1500, 1800, 2200, 2600, 3300, 4100, 5100, 6400, 7900],
       "icon": "unit-special-training/stronger-armor",
@@ -87,10 +63,7 @@
     },
     {
       "id": "shield-upgrade",
-      "name": {
-        "en": "Shield Upgrade",
-        "de": "Schild-Upgrade"
-      },
+      "nameKey": "research.unit_special_training.shield-upgrade",
       "maxLevel": 10,
       "badgeCosts": [1300, 1500, 1800, 2200, 2600, 3300, 4100, 5100, 6400, 7900],
       "icon": "unit-special-training/shield-upgrade",
@@ -98,10 +71,7 @@
     },
     {
       "id": "camo-coating",
-      "name": {
-        "en": "Camo Coating",
-        "de": "Tarnbeschichtung"
-      },
+      "nameKey": "research.unit_special_training.camo-coating",
       "maxLevel": 10,
       "badgeCosts": [1300, 1500, 1800, 2200, 2600, 3300, 4100, 5100, 6400, 7900],
       "icon": "unit-special-training/camo-coating",
@@ -109,10 +79,7 @@
     },
     {
       "id": "propulsion",
-      "name": {
-        "en": "Propulsion",
-        "de": "Antrieb"
-      },
+      "nameKey": "research.unit_special_training.propulsion",
       "maxLevel": 10,
       "badgeCosts": [1400, 1700, 2000, 2400, 2900, 3600, 4500, 5600, 7100, 8600],
       "icon": "unit-special-training/propulsion",
@@ -120,10 +87,7 @@
     },
     {
       "id": "fast-production-2",
-      "name": {
-        "en": "Fast Production",
-        "de": "Schnellproduktion"
-      },
+      "nameKey": "research.unit_special_training.fast-production",
       "maxLevel": 10,
       "badgeCosts": [1400, 1700, 2000, 2400, 2900, 3600, 4500, 5600, 7100, 8600],
       "icon": "unit-special-training/fast-production",
@@ -131,10 +95,7 @@
     },
     {
       "id": "fire-up-2",
-      "name": {
-        "en": "Fire Up",
-        "de": "Feuer frei"
-      },
+      "nameKey": "research.unit_special_training.fire-up",
       "maxLevel": 10,
       "badgeCosts": [2100, 2500, 2900, 3600, 4200, 5200, 6500, 8200, 10300, 12700],
       "icon": "unit-special-training/fire-up",
@@ -142,10 +103,7 @@
     },
     {
       "id": "armor-upgrade-2",
-      "name": {
-        "en": "Armor Upgrade",
-        "de": "Panzerverbesserung"
-      },
+      "nameKey": "research.unit_special_training.armor-upgrade",
       "maxLevel": 10,
       "badgeCosts": [2100, 2500, 2900, 3600, 4200, 5200, 6500, 8200, 10300, 12700],
       "icon": "unit-special-training/armor-upgrade",
@@ -153,10 +111,7 @@
     },
     {
       "id": "demolition-crew",
-      "name": {
-        "en": "Demolition Crew",
-        "de": "Sprengkommando"
-      },
+      "nameKey": "research.unit_special_training.demolition-crew",
       "maxLevel": 5,
       "badgeCosts": [2900, 3700, 5300, 8000, 12700],
       "icon": "unit-special-training/demolition-crew",
@@ -167,10 +122,7 @@
     },
     {
       "id": "mobility-enhancement-2",
-      "name": {
-        "en": "Mobility Enhancement",
-        "de": "Mobilitätsverbesserung"
-      },
+      "nameKey": "research.unit_special_training.mobility-enhancement",
       "maxLevel": 15,
       "badgeCosts": [2000, 2400, 2800, 3300, 3900, 4700, 5500, 6500, 7800, 9000, 10300, 11700, 13300, 15400, 17900],
       "icon": "unit-special-training/mobility-enhancement",
@@ -178,10 +130,7 @@
     },
     {
       "id": "melee-combat-2",
-      "name": {
-        "en": "Melee Combat",
-        "de": "Nahkampf"
-      },
+      "nameKey": "research.unit_special_training.melee-combat",
       "maxLevel": 15,
       "badgeCosts": [2000, 2400, 2800, 3300, 3900, 4700, 5500, 6500, 7800, 9000, 10300, 11700, 13300, 15400, 17900],
       "icon": "unit-special-training/melee-combat",
@@ -189,10 +138,7 @@
     },
     {
       "id": "weapon-upgrading-2",
-      "name": {
-        "en": "Weapon Upgrading",
-        "de": "Waffenverbesserung"
-      },
+      "nameKey": "research.unit_special_training.weapon-upgrading",
       "maxLevel": 15,
       "badgeCosts": [2000, 2400, 2800, 3300, 3900, 4700, 5500, 6500, 7800, 9000, 10300, 11700, 13300, 15400, 17900],
       "icon": "unit-special-training/weapon-upgrading",
@@ -200,10 +146,7 @@
     },
     {
       "id": "stronger-armor-2",
-      "name": {
-        "en": "Stronger Armor",
-        "de": "Stärkere Panzerung"
-      },
+      "nameKey": "research.unit_special_training.stronger-armor",
       "maxLevel": 15,
       "badgeCosts": [2000, 2400, 2800, 3300, 3900, 4700, 5500, 6500, 7800, 9000, 10300, 11700, 13300, 15400, 17900],
       "icon": "unit-special-training/stronger-armor",
@@ -211,10 +154,7 @@
     },
     {
       "id": "shield-upgrade-2",
-      "name": {
-        "en": "Shield Upgrade",
-        "de": "Schild-Upgrade"
-      },
+      "nameKey": "research.unit_special_training.shield-upgrade",
       "maxLevel": 15,
       "badgeCosts": [2000, 2400, 2800, 3300, 3900, 4700, 5500, 6500, 7800, 9000, 10300, 11700, 13300, 15400, 17900],
       "icon": "unit-special-training/shield-upgrade",
@@ -222,10 +162,7 @@
     },
     {
       "id": "camo-coating-2",
-      "name": {
-        "en": "Camo Coating",
-        "de": "Tarnbeschichtung"
-      },
+      "nameKey": "research.unit_special_training.camo-coating",
       "maxLevel": 15,
       "badgeCosts": [2000, 2400, 2800, 3300, 3900, 4700, 5500, 6500, 7800, 9000, 10300, 11700, 13300, 15400, 17900],
       "icon": "unit-special-training/camo-coating",
@@ -233,10 +170,7 @@
     },
     {
       "id": "recharge-shield",
-      "name": {
-        "en": "Recharge Shield",
-        "de": "Schild aufladen"
-      },
+      "nameKey": "research.unit_special_training.recharge-shield",
       "maxLevel": 20,
       "badgeCosts": [1900, 2300, 2600, 3000, 3600, 4400, 5100, 6100, 7200, 8400, 9500, 10900, 12400, 14300, 16600, 17200, 19900, 21000, 23900, 28700],
       "icon": "unit-special-training/recharge-shield",
@@ -248,10 +182,7 @@
     },
     {
       "id": "unit-special-training",
-      "name": {
-        "en": "Unit Special Training",
-        "de": "Spezialtraining der Einheiten"
-      },
+      "nameKey": "research.unit_special_training.name",
       "maxLevel": 1,
       "badgeCosts": [54900],
       "icon": "unit-special-training/unit-special-training",

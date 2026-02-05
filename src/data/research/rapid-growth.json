@@ -1,9 +1,6 @@
 {
   "id": "rapid_growth",
-  "name": {
-    "en": "Rapid Growth",
-    "de": "Schnelles Wachstum"
-  },
+  "nameKey": "research.rapid_growth.name",
   "totalBadges": 0,
   "nodeCount": 0,
   "image": "/images/research/rapid-growth.png",

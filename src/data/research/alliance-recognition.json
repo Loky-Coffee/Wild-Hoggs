@@ -1,19 +1,13 @@
 {
   "id": "alliance_recognition",
-  "name": {
-    "en": "Alliance Recognition",
-    "de": "Allianz-Anerkennung"
-  },
+  "nameKey": "research.alliance_recognition.name",
   "totalBadges": 356770,
   "nodeCount": 19,
   "image": "/images/research/alliance-recognition.png",
   "technologies": [
     {
       "id": "collect-wood",
-      "name": {
-        "en": "Collect Wood",
-        "de": "Holz sammeln"
-      },
+      "nameKey": "research.alliance_recognition.collect-wood",
       "maxLevel": 10,
       "badgeCosts": [
         150,
@@ -32,10 +26,7 @@
     },
     {
       "id": "zent-gatherer",
-      "name": {
-        "en": "Zent Gatherer",
-        "de": "Zent-Sammler"
-      },
+      "nameKey": "research.alliance_recognition.zent-gatherer",
       "maxLevel": 10,
       "badgeCosts": [
         150,
@@ -54,10 +45,7 @@
     },
     {
       "id": "premium-rewards",
-      "name": {
-        "en": "Premium Rewards",
-        "de": "Premium-Belohnungen"
-      },
+      "nameKey": "research.alliance_recognition.premium-rewards",
       "maxLevel": 1,
       "badgeCosts": [
         1200
@@ -76,10 +64,7 @@
     },
     {
       "id": "event-expert",
-      "name": {
-        "en": "Event Expert",
-        "de": "Event-Experte"
-      },
+      "nameKey": "research.alliance_recognition.event-expert",
       "maxLevel": 20,
       "badgeCosts": [
         160,
@@ -113,10 +98,7 @@
     },
     {
       "id": "augmented-engine",
-      "name": {
-        "en": "Augmented Engine",
-        "de": "Verbesserter Motor"
-      },
+      "nameKey": "research.alliance_recognition.augmented-engine",
       "maxLevel": 10,
       "badgeCosts": [
         300,
@@ -140,10 +122,7 @@
     },
     {
       "id": "transport-capacity-up",
-      "name": {
-        "en": "Transport Capacity Up",
-        "de": "Transportkapazität erhöhen"
-      },
+      "nameKey": "research.alliance_recognition.transport-capacity-up",
       "maxLevel": 10,
       "badgeCosts": [
         300,
@@ -167,10 +146,7 @@
     },
     {
       "id": "production-line-expansion",
-      "name": {
-        "en": "Production Line Expansion",
-        "de": "Produktionslinie erweitern"
-      },
+      "nameKey": "research.alliance_recognition.production-line-expansion",
       "maxLevel": 10,
       "badgeCosts": [
         300,
@@ -194,10 +170,7 @@
     },
     {
       "id": "fast-production",
-      "name": {
-        "en": "Fast Production",
-        "de": "Schnellproduktion"
-      },
+      "nameKey": "research.alliance_recognition.fast-production",
       "maxLevel": 10,
       "badgeCosts": [
         300,
@@ -221,10 +194,7 @@
     },
     {
       "id": "super-rewards",
-      "name": {
-        "en": "Super Rewards",
-        "de": "Super-Belohnungen"
-      },
+      "nameKey": "research.alliance_recognition.super-rewards",
       "maxLevel": 1,
       "badgeCosts": [
         4100
@@ -243,10 +213,7 @@
     },
     {
       "id": "incentive-gathering",
-      "name": {
-        "en": "Incentive - Gathering",
-        "de": "Anreiz - Sammeln"
-      },
+      "nameKey": "research.alliance_recognition.incentive-gathering",
       "maxLevel": 10,
       "badgeCosts": [
         520,
@@ -270,10 +237,7 @@
     },
     {
       "id": "incentive-modified-vehicle",
-      "name": {
-        "en": "Incentive - Modified Vehicle",
-        "de": "Anreiz - Modifiziertes Fahrzeug"
-      },
+      "nameKey": "research.alliance_recognition.incentive-modified-vehicle",
       "maxLevel": 10,
       "badgeCosts": [
         520,
@@ -297,10 +261,7 @@
     },
     {
       "id": "incentive-development",
-      "name": {
-        "en": "Incentive - Development",
-        "de": "Anreiz - Entwicklung"
-      },
+      "nameKey": "research.alliance_recognition.incentive-development",
       "maxLevel": 10,
       "badgeCosts": [
         520,
@@ -324,10 +285,7 @@
     },
     {
       "id": "incentive-equipment",
-      "name": {
-        "en": "Incentive - Equipment",
-        "de": "Anreiz - Ausrüstung"
-      },
+      "nameKey": "research.alliance_recognition.incentive-equipment",
       "maxLevel": 10,
       "badgeCosts": [
         520,
@@ -351,10 +309,7 @@
     },
     {
       "id": "incentive-creeps",
-      "name": {
-        "en": "Incentive - Creeps",
-        "de": "Anreiz - Creeps"
-      },
+      "nameKey": "research.alliance_recognition.incentive-creeps",
       "maxLevel": 10,
       "badgeCosts": [
         520,
@@ -378,10 +333,7 @@
     },
     {
       "id": "incentive-training",
-      "name": {
-        "en": "Incentive - Training",
-        "de": "Anreiz - Training"
-      },
+      "nameKey": "research.alliance_recognition.incentive-training",
       "maxLevel": 10,
       "badgeCosts": [
         520,
@@ -405,10 +357,7 @@
     },
     {
       "id": "incentive-recruiting",
-      "name": {
-        "en": "Incentive - Recruiting",
-        "de": "Anreiz - Rekrutierung"
-      },
+      "nameKey": "research.alliance_recognition.incentive-recruiting",
       "maxLevel": 10,
       "badgeCosts": [
         820,
@@ -432,10 +381,7 @@
     },
     {
       "id": "incentive-killing",
-      "name": {
-        "en": "Incentive - Killing",
-        "de": "Anreiz - Töten"
-      },
+      "nameKey": "research.alliance_recognition.incentive-killing",
       "maxLevel": 10,
       "badgeCosts": [
         820,
@@ -459,10 +405,7 @@
     },
     {
       "id": "event-king",
-      "name": {
-        "en": "Event King",
-        "de": "Event-König"
-      },
+      "nameKey": "research.alliance_recognition.event-king",
       "maxLevel": 20,
       "badgeCosts": [
         1200,
@@ -500,10 +443,7 @@
     },
     {
       "id": "one-more",
-      "name": {
-        "en": "One More!",
-        "de": "Noch einer!"
-      },
+      "nameKey": "research.alliance_recognition.one-more",
       "maxLevel": 1,
       "badgeCosts": [
         20500

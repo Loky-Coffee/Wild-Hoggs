@@ -1,0 +1,276 @@
+---
+import { languages } from '../i18n/index';
+import { getLangFromUrl } from '../i18n/utils';
+
+const currentLang = getLangFromUrl(Astro.url);
+
+// Language codes to flag emojis mapping
+const flags: Record<string, string> = {
+  de: '🇩🇪',
+  en: '🇬🇧',
+  fr: '🇫🇷',
+  ko: '🇰🇷',
+  th: '🇹🇭',
+  ja: '🇯🇵',
+  pt: '🇵🇹',
+  es: '🇪🇸',
+  tr: '🇹🇷',
+  id: '🇮🇩',
+  'zh-TW': '🇹🇼',
+  'zh-CN': '🇨🇳',
+  it: '🇮🇹',
+  ar: '🇸🇦',
+  vi: '🇻🇳',
+};
+
+// Generate language URLs
+const getLanguageUrl = (lang: string) => {
+  const currentPath = Astro.url.pathname;
+
+  // Remove language prefix if exists
+  const pathWithoutLang = currentPath.replace(/^\/(de|en|fr|ko|th|ja|pt|es|tr|id|zh-TW|zh-CN|it|ar|vi)/, '');
+
+  // Add new language prefix
+  if (lang === 'en') {
+    return `/en${pathWithoutLang || '/'}`;
+  }
+  return `/${lang}${pathWithoutLang || '/'}`;
+};
+---
+
+<div class="language-dropdown">
+  <button class="dropdown-toggle" aria-label="Select language" aria-haspopup="true" aria-expanded="false">
+    <span class="flag">{flags[currentLang]}</span>
+    <span class="lang-name">{languages[currentLang]}</span>
+    <span class="arrow">▼</span>
+  </button>
+
+  <div class="dropdown-menu" role="menu">
+    {Object.entries(languages).map(([code, name]) => (
+      <a
+        href={getLanguageUrl(code)}
+        class:list={['dropdown-item', { active: currentLang === code }]}
+        role="menuitem"
+      >
+        <span class="flag">{flags[code]}</span>
+        <span class="lang-name">{name}</span>
+        {currentLang === code && <span class="check">✓</span>}
+      </a>
+    ))}
+  </div>
+</div>
+
+<style>
+  .language-dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+  .dropdown-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 165, 0, 0.3);
+    border-radius: 8px;
+    color: #ffa500;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    font-size: 0.95rem;
+  }
+
+  .dropdown-toggle:hover {
+    background: rgba(255, 165, 0, 0.2);
+    border-color: rgba(255, 165, 0, 0.6);
+    transform: translateY(-2px);
+  }
+
+  .dropdown-toggle .flag {
+    font-size: 1.2rem;
+    line-height: 1;
+  }
+
+  .dropdown-toggle .arrow {
+    font-size: 0.7rem;
+    transition: transform 0.3s ease;
+    margin-left: 0.25rem;
+  }
+
+  .dropdown-toggle[aria-expanded="true"] .arrow {
+    transform: rotate(180deg);
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    min-width: 200px;
+    max-height: 400px;
+    overflow-y: auto;
+    background: rgba(26, 26, 26, 0.98);
+    border: 2px solid rgba(255, 165, 0, 0.3);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  }
+
+  .language-dropdown.open .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border-bottom: 1px solid rgba(255, 165, 0, 0.1);
+  }
+
+  .dropdown-item:last-child {
+    border-bottom: none;
+  }
+
+  .dropdown-item:hover {
+    background: rgba(255, 165, 0, 0.15);
+    color: #ffa500;
+  }
+
+  .dropdown-item.active {
+    background: rgba(255, 165, 0, 0.2);
+    color: #ffa500;
+    font-weight: 600;
+  }
+
+  .dropdown-item .flag {
+    font-size: 1.3rem;
+    line-height: 1;
+  }
+
+  .dropdown-item .lang-name {
+    flex: 1;
+    font-size: 0.95rem;
+  }
+
+  .dropdown-item .check {
+    color: #4caf50;
+    font-weight: bold;
+    font-size: 1.1rem;
+  }
+
+  /* Scrollbar styling */
+  .dropdown-menu::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .dropdown-menu::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+  }
+
+  .dropdown-menu::-webkit-scrollbar-thumb {
+    background: rgba(255, 165, 0, 0.4);
+    border-radius: 8px;
+  }
+
+  .dropdown-menu::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 165, 0, 0.6);
+  }
+
+  /* Mobile responsive */
+  @media (max-width: 768px) {
+    .dropdown-toggle {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.85rem;
+    }
+
+    .dropdown-toggle .lang-name {
+      display: none;
+    }
+
+    .dropdown-menu {
+      right: 0;
+      left: auto;
+      min-width: 180px;
+    }
+
+    .dropdown-item {
+      padding: 0.6rem 0.8rem;
+    }
+
+    .dropdown-item .lang-name {
+      font-size: 0.9rem;
+    }
+  }
+
+  /* RTL Support for Arabic */
+  .dropdown-item[href*="/ar"] {
+    direction: rtl;
+  }
+</style>
+
+<script>
+  function setupLanguageDropdown() {
+    const dropdown = document.querySelector('.language-dropdown');
+    const toggle = dropdown?.querySelector('.dropdown-toggle');
+    const menu = dropdown?.querySelector('.dropdown-menu');
+
+    if (!dropdown || !toggle || !menu) return;
+
+    // Remove old listeners if they exist
+    const oldHandler = (toggle as any).__clickHandler;
+    if (oldHandler) {
+      toggle.removeEventListener('click', oldHandler);
+      document.removeEventListener('click', (toggle as any).__outsideHandler);
+    }
+
+    // Toggle dropdown
+    const clickHandler = (e: Event) => {
+      e.stopPropagation();
+      const isOpen = dropdown.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', String(isOpen));
+    };
+
+    // Close on outside click
+    const outsideHandler = (e: Event) => {
+      if (!dropdown.contains(e.target as Node)) {
+        dropdown.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    };
+
+    // Store handlers
+    (toggle as any).__clickHandler = clickHandler;
+    (toggle as any).__outsideHandler = outsideHandler;
+
+    // Add listeners
+    toggle.addEventListener('click', clickHandler);
+    document.addEventListener('click', outsideHandler);
+
+    // Close on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && dropdown.classList.contains('open')) {
+        dropdown.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+  // Run on initial load
+  document.addEventListener('DOMContentLoaded', setupLanguageDropdown);
+
+  // Run on View Transitions
+  document.addEventListener('astro:page-load', setupLanguageDropdown);
+</script>
