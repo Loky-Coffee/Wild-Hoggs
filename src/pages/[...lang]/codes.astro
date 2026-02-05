@@ -1,6 +1,6 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
-import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+import { getLangFromUrl, useTranslations, getCurrentMonth, getCurrentYear } from '../../i18n/utils';
 import { getLanguagePaths } from '../../i18n/static-paths';
 import RewardCodesLocal from '../../components/RewardCodesLocal';
 import '../../styles/shared-layouts.css';
@@ -11,14 +11,16 @@ export function getStaticPaths() {
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+const currentMonth = getCurrentMonth(lang);
+const currentYear = getCurrentYear();
 ---
 
 <PageLayout
-  title={t('seo.codes.title')}
-  description={t('seo.codes.description')}
+  title={t('seo.codes.title', { month: currentMonth, year: currentYear })}
+  description={t('seo.codes.description', { month: currentMonth, year: currentYear })}
 >
   <div class="page-header">
-    <h1>{t('seo.codes.h1')}</h1>
+    <h1>{t('seo.codes.h1', { month: currentMonth, year: currentYear })}</h1>
     <p class="subtitle">{t('codes.subtitle')}</p>
   </div>
 

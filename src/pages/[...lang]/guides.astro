@@ -1,6 +1,6 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
-import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+import { getLangFromUrl, useTranslations, getCurrentYear } from '../../i18n/utils';
 import { getLanguagePaths } from '../../i18n/static-paths';
 import PageHeader from '../../components/PageHeader.astro';
 import '../../styles/shared-layouts.css';
@@ -11,11 +11,15 @@ export function getStaticPaths() {
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+const currentYear = getCurrentYear();
 ---
 
-<PageLayout title={`${t('guides.title')} - Wild Hoggs`} description="Helpful guides and tutorials">
+<PageLayout
+  title={t('seo.guides.title', { year: currentYear })}
+  description={t('seo.guides.description')}
+>
   <div class="page-header">
-    <h1>{t('guides.title')}</h1>
+    <h1>{t('seo.guides.h1', { year: currentYear })}</h1>
     <p class="subtitle">
       {t('guides.subtitle')}
     </p>

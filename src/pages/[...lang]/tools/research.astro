@@ -1,6 +1,6 @@
 ---
 import PageLayout from '../../../layouts/PageLayout.astro';
-import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../../i18n/utils';
+import { getLangFromUrl, useTranslations, getLocalizedPath, getCurrentYear } from '../../../i18n/utils';
 import { getLanguagePaths } from '../../../i18n/static-paths';
 import { Image } from 'astro:assets';
 
@@ -32,6 +32,7 @@ export function getStaticPaths() {
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+const currentYear = getCurrentYear();
 
 // Map category data by ID
 const researchDataMap: Record<string, any> = {
@@ -69,9 +70,12 @@ const categories = [
 ];
 ---
 
-<PageLayout title={`${t('tools.research.title')} - Wild Hoggs`} description={t('tools.research.description')}>
+<PageLayout
+  title={t('seo.research.title', { year: currentYear })}
+  description={t('seo.research.description')}
+>
   <div class="page-header">
-    <h1>{t('tools.research.title')}</h1>
+    <h1>{t('seo.research.h1', { year: currentYear })}</h1>
     <p class="subtitle">{t('research.subtitle')}</p>
   </div>
 

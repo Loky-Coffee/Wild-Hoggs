@@ -1,6 +1,6 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
-import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+import { getLangFromUrl, useTranslations, getCurrentMonth, getCurrentYear } from '../../i18n/utils';
 import { getLanguagePaths } from '../../i18n/static-paths';
 import WeeklyRoses from '../../components/WeeklyRoses';
 import { ACTIVE_LUCKY_NUMBER } from '../../config/bonus';
@@ -12,6 +12,8 @@ export function getStaticPaths() {
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+const currentMonth = getCurrentMonth(lang);
+const currentYear = getCurrentYear();
 
 // Alle 10 Lucky Rose Buffs
 // Die aktive Rose wird in src/config/bonus.ts eingestellt
@@ -95,9 +97,12 @@ const roses = allRoses.map(rose => ({
 }));
 ---
 
-<PageLayout title={`${t('roses.title')} - Wild Hoggs`} description={t('roses.description')}>
+<PageLayout
+  title={t('seo.roses.title', { month: currentMonth, year: currentYear })}
+  description={t('seo.roses.description')}
+>
   <div class="page-header">
-    <h1>{t('roses.title')}</h1>
+    <h1>{t('seo.roses.h1', { year: currentYear })}</h1>
     <p class="subtitle">{t('roses.subtitle')}</p>
   </div>
 
