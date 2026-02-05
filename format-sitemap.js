@@ -9,21 +9,34 @@ function formatXML(xml) {
   let indent = '';
   const tab = '   '; // 3 spaces like in the example
 
-  xml.split(/>\s*</).forEach((node) => {
+  // Split on >< and process each node
+  const nodes = xml.split(/>\s*</);
+
+  nodes.forEach((node, index) => {
+    // Check if this is a closing tag
     if (node.match(/^\/\w/)) {
-      // Closing tag
       indent = indent.substring(tab.length);
     }
 
-    formatted += indent + '<' + node + '>\n';
+    // Add the node with proper formatting
+    if (index === 0) {
+      // First node - starts with <
+      formatted += indent + node + '>\n';
+    } else if (index === nodes.length - 1) {
+      // Last node - ends with >
+      formatted += indent + '<' + node + '\n';
+    } else {
+      // Middle nodes
+      formatted += indent + '<' + node + '>\n';
+    }
 
+    // Check if this is an opening tag (increase indent for next line)
     if (node.match(/^<?\w[^>]*[^\/]$/) && !node.startsWith('?xml')) {
-      // Opening tag (not self-closing, not xml declaration)
       indent += tab;
     }
   });
 
-  return formatted.substring(1, formatted.length - 1);
+  return formatted.trim();
 }
 
 /**
