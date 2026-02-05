@@ -79,7 +79,6 @@ export default {
   'research.technologies': 'テクノロジー',
   'research.available': '利用可能 →',
   'research.comingSoon': '近日公開',
-  'research.backToOverview': '← 概要に戻る',
   // Calculator: Building
   'calc.building.title': '建築計算機',
   'calc.building.selectBuilding': '建物を選択',

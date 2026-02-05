@@ -1,6 +1,6 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
-import { getLangFromUrl, useTranslations, getCurrentMonth, getCurrentYear } from '../../i18n/utils';
+import { getLangFromUrl, useTranslations, getCurrentMonth, getCurrentYear, getLocalizedPath } from '../../i18n/utils';
 import { getLanguagePaths } from '../../i18n/static-paths';
 import WeeklyRoses from '../../components/WeeklyRoses';
 import { ACTIVE_LUCKY_NUMBER } from '../../config/bonus';
@@ -95,11 +95,17 @@ const roses = allRoses.map(rose => ({
   ...rose,
   isActive: rose.luckyNumber === ACTIVE_LUCKY_NUMBER
 }));
+
+const breadcrumbItems = [
+  { label: t('nav.home'), href: getLocalizedPath('', lang) },
+  { label: t('nav.roses') }
+];
 ---
 
 <PageLayout
   title={t('seo.roses.title', { month: currentMonth, year: currentYear })}
   description={t('seo.roses.description')}
+  breadcrumbs={breadcrumbItems}
 >
   <div class="page-header">
     <h1>{t('seo.roses.h1', { year: currentYear })}</h1>

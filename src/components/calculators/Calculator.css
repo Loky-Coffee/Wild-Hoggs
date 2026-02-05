@@ -424,3 +424,47 @@
     justify-content: flex-start !important;
   }
 }
+
+/* ============================================
+   SVG Unlock Button - Keyboard Accessibility
+   ============================================ */
+
+/* Make SVG element focusable */
+g[data-unlock-button="true"] {
+  outline: none;
+}
+
+/* Show focus indicator when keyboard-focused */
+g[data-unlock-button="true"]:focus .unlock-button-focus-indicator {
+  opacity: 1;
+  animation: pulse-focus 0.3s ease-out;
+}
+
+/* Hover state for mouse users */
+g[data-unlock-button="true"]:hover .unlock-button-bg {
+  fill: rgba(255, 165, 0, 0.3);
+  stroke: rgba(255, 165, 0, 0.7);
+}
+
+/* Active/pressed state */
+g[data-unlock-button="true"]:active .unlock-button-bg {
+  fill: rgba(255, 165, 0, 0.4);
+  stroke: rgba(255, 165, 0, 0.8);
+}
+
+/* Focus animation - subtle pulse on focus */
+@keyframes pulse-focus {
+  0% {
+    opacity: 0;
+    stroke-width: 2px;
+  }
+  100% {
+    opacity: 1;
+    stroke-width: 2px;
+  }
+}
+
+/* Ensure focus-visible works on modern browsers */
+g[data-unlock-button="true"]:focus-visible .unlock-button-focus-indicator {
+  opacity: 1;
+}

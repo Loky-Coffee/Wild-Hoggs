@@ -1,6 +1,6 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
-import { getLangFromUrl, useTranslations, getCurrentYear } from '../../i18n/utils';
+import { getLangFromUrl, useTranslations, getCurrentYear, getLocalizedPath } from '../../i18n/utils';
 import { getLanguagePaths } from '../../i18n/static-paths';
 import PageHeader from '../../components/PageHeader.astro';
 import '../../styles/shared-layouts.css';
@@ -12,12 +12,18 @@ export function getStaticPaths() {
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const currentYear = getCurrentYear();
+
+const breadcrumbItems = [
+  { label: t('nav.home'), href: getLocalizedPath('', lang) },
+  { label: t('nav.guides') }
+];
 ---
 
 <PageLayout
   title={t('seo.guides.title', { year: currentYear })}
   description={t('seo.guides.description')}
   robots="noindex, nofollow"
+  breadcrumbs={breadcrumbItems}
 >
   <div class="page-header">
     <h1>{t('seo.guides.h1', { year: currentYear })}</h1>

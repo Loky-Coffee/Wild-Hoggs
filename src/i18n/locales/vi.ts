@@ -79,7 +79,6 @@ export default {
   'research.technologies': 'Công nghệ',
   'research.available': 'Có sẵn →',
   'research.comingSoon': 'Sắp ra mắt',
-  'research.backToOverview': '← Quay lại tổng quan',
   // Calculator: Building
   'calc.building.title': 'Bộ tính công trình',
   'calc.building.selectBuilding': 'Chọn công trình',

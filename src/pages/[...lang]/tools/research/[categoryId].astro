@@ -93,14 +93,17 @@ const categoryImage = imageMap[categoryId];
 if (!category) {
   return Astro.redirect(getLocalizedPath('tools/research', lang));
 }
+
+const breadcrumbItems = [
+  { label: t('nav.home'), href: getLocalizedPath('', lang) },
+  { label: t('nav.tools'), href: getLocalizedPath('tools', lang) },
+  { label: t('tools.research.title'), href: getLocalizedPath('tools/research', lang) },
+  { label: t(category.nameKey) }
+];
 ---
 
-<PageLayout title={`${t(category.nameKey)} - Wild Hoggs`} description={`Calculate badge costs for ${t(category.nameKey)}`}>
+<PageLayout title={`${t(category.nameKey)} - Wild Hoggs`} description={`Calculate badge costs for ${t(category.nameKey)}`} breadcrumbs={breadcrumbItems}>
   <div class="calculator-wrapper">
-    <a href={getLocalizedPath('tools/research', lang)} class="back-link">
-      {t('research.backToOverview')}
-    </a>
-
     <ErrorBoundary lang={lang} client:load>
       <ResearchCategoryCalculator
         categoryData={category}
@@ -167,24 +170,10 @@ if (!category) {
     gap: 0;
   }
 
-  .back-link {
-    display: inline-block;
-    flex-shrink: 0;
-    margin-bottom: 1rem;
-    color: #ffa500;
-    text-decoration: none;
-    font-size: 0.95rem;
-    transition: color 0.3s ease;
-  }
-
   /* Make ResearchCategoryCalculator take remaining space */
   .calculator-wrapper > :global(*:last-child) {
     flex: 1;
     min-height: 0;
-  }
-
-  .back-link:hover {
-    color: #ff8c00;
   }
 
   h1 {

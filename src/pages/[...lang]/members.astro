@@ -1,6 +1,6 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
-import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../i18n/utils';
 import { getLanguagePaths } from '../../i18n/static-paths';
 import PageHeader from '../../components/PageHeader.astro';
 import { members } from '../../data/members';
@@ -62,9 +62,14 @@ try {
 }
 
 const lastUpdatedText = t('members.lastUpdated');
+
+const breadcrumbItems = [
+  { label: t('nav.home'), href: getLocalizedPath('', lang) },
+  { label: t('nav.members') }
+];
 ---
 
-<PageLayout title={`${t('members.title')} - Wild Hoggs`} description="Wild Hoggs Guild Members Roster">
+<PageLayout title={`${t('members.title')} - Wild Hoggs`} description="Wild Hoggs Guild Members Roster" breadcrumbs={breadcrumbItems}>
   <PageHeader
     title={t('members.title')}
     subtitle={`${t('members.count').replace('{count}', members.length.toString())} • ${lastUpdatedText}: ${lastUpdated}`}

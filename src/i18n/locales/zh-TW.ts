@@ -79,7 +79,6 @@ export default {
   'research.technologies': '科技',
   'research.available': '可用 →',
   'research.comingSoon': '敬請期待',
-  'research.backToOverview': '← 返回總覽',
   // Calculator: Building
   'calc.building.title': '建築計算器',
   'calc.building.selectBuilding': '選擇建築',

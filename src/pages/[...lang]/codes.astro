@@ -1,6 +1,6 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
-import { getLangFromUrl, useTranslations, getCurrentMonth, getCurrentYear } from '../../i18n/utils';
+import { getLangFromUrl, useTranslations, getCurrentMonth, getCurrentYear, getLocalizedPath } from '../../i18n/utils';
 import { getLanguagePaths } from '../../i18n/static-paths';
 import RewardCodesLocal from '../../components/RewardCodesLocal';
 import '../../styles/shared-layouts.css';
@@ -13,6 +13,11 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const currentMonth = getCurrentMonth(lang);
 const currentYear = getCurrentYear();
+
+const breadcrumbItems = [
+  { label: t('nav.home'), href: getLocalizedPath('', lang) },
+  { label: t('nav.codes') }
+];
 
 // HowTo Schema for SEO
 const siteUrl = Astro.site || new URL('https://wild-hoggs.com/');
@@ -49,6 +54,7 @@ const howToSchema = {
 <PageLayout
   title={t('seo.codes.title', { month: currentMonth, year: currentYear })}
   description={t('seo.codes.description', { month: currentMonth, year: currentYear })}
+  breadcrumbs={breadcrumbItems}
 >
   <script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
 

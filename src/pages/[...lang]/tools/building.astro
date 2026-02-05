@@ -1,6 +1,6 @@
 ---
 import PageLayout from '../../../layouts/PageLayout.astro';
-import { getLangFromUrl, useTranslations } from '../../../i18n/utils';
+import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../../i18n/utils';
 import { getLanguagePaths } from '../../../i18n/static-paths';
 import BuildingCalculator from '../../../components/calculators/BuildingCalculator';
 import { ErrorBoundary } from '../../../components/ErrorBoundary';
@@ -12,9 +12,15 @@ export function getStaticPaths() {
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+
+const breadcrumbItems = [
+  { label: t('nav.home'), href: getLocalizedPath('', lang) },
+  { label: t('nav.tools'), href: getLocalizedPath('tools', lang) },
+  { label: t('tools.building.title') }
+];
 ---
 
-<PageLayout title={`${t('tools.building.title')} - Wild Hoggs`} description={t('tools.building.description')}>
+<PageLayout title={`${t('tools.building.title')} - Wild Hoggs`} description={t('tools.building.description')} breadcrumbs={breadcrumbItems}>
   <div class="page-header">
     <h1>{t('tools.building.title')}</h1>
     <p class="subtitle">{t('tools.building.description')}</p>

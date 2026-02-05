@@ -79,7 +79,6 @@ export default {
   'research.technologies': 'التقنيات',
   'research.available': 'متاح →',
   'research.comingSoon': 'قريبًا',
-  'research.backToOverview': '← العودة إلى النظرة العامة',
   // Calculator: Building
   'calc.building.title': 'حاسبة المباني',
   'calc.building.selectBuilding': 'اختر مبنى',

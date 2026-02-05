@@ -1,19 +1,31 @@
 ---
 import Layout from './Layout.astro';
 import Navigation from '../components/Navigation.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+
+interface BreadcrumbItem {
+  label: string;
+  href?: string;
+}
 
 interface Props {
   title: string;
   description?: string;
   robots?: string;
+  breadcrumbs?: BreadcrumbItem[];
 }
 
-const { title, description, robots } = Astro.props;
+const { title, description, robots, breadcrumbs } = Astro.props;
 ---
 
 <Layout title={title} description={description} robots={robots}>
   <a href="#main-content" class="skip-link">Skip to main content</a>
   <Navigation />
+  {breadcrumbs && breadcrumbs.length > 0 && (
+    <div class="breadcrumbs-container">
+      <Breadcrumbs items={breadcrumbs} />
+    </div>
+  )}
   <main id="main-content" class="page-content">
     <slot />
   </main>
@@ -39,10 +51,22 @@ const { title, description, robots } = Astro.props;
     top: 0;
   }
 
+  .breadcrumbs-container {
+    position: fixed;
+    top: 80px;
+    left: 0;
+    right: 0;
+    background: rgba(26, 26, 26, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 165, 0, 0.2);
+    padding: 0.5rem 2rem;
+    z-index: 999;
+  }
+
   .page-content {
     max-width: 100%;
     margin: 0 auto;
-    padding: 2rem;
+    padding: 0.5rem 2rem 2rem;
     margin-top: 80px; /* Platz für fixierten Header */
     min-height: calc(100vh - 80px);
     height: calc(100vh - 80px);
@@ -51,13 +75,29 @@ const { title, description, robots } = Astro.props;
     -webkit-overflow-scrolling: touch; /* Smooth scrolling auf iOS */
   }
 
+  /* Wenn Breadcrumbs vorhanden, extra Platz */
+  .breadcrumbs-container + .page-content {
+    margin-top: 120px; /* 80px Header + ~40px Breadcrumbs */
+    height: calc(100vh - 120px);
+    min-height: calc(100vh - 120px);
+  }
+
   @media (max-width: 768px) {
+    .breadcrumbs-container {
+      top: 70px;
+      padding: 0.4rem 1rem;
+    }
+
     .page-content {
-      padding: 1rem;
-      padding-bottom: 3rem; /* Extra Platz am Ende */
+      padding: 0.5rem 1rem 3rem;
       margin-top: 70px; /* Kleinerer Header auf Mobile */
       height: calc(100dvh - 70px); /* dvh berücksichtigt Browser-UI */
       min-height: auto;
+    }
+
+    .breadcrumbs-container + .page-content {
+      margin-top: 105px; /* 70px Header + ~35px Breadcrumbs */
+      height: calc(100dvh - 105px);
     }
   }
 </style>

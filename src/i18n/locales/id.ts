@@ -79,7 +79,6 @@ export default {
   'research.technologies': 'Teknologi',
   'research.available': 'Tersedia →',
   'research.comingSoon': 'Segera hadir',
-  'research.backToOverview': '← Kembali ke ringkasan',
   // Calculator: Building
   'calc.building.title': 'Kalkulator Bangunan',
   'calc.building.selectBuilding': 'Pilih bangunan',

@@ -79,7 +79,6 @@ export default {
   'research.technologies': '기술',
   'research.available': '사용 가능 →',
   'research.comingSoon': '곧 제공',
-  'research.backToOverview': '← 개요로 돌아가기',
   // Calculator: Building
   'calc.building.title': '건물 계산기',
   'calc.building.selectBuilding': '건물 선택',

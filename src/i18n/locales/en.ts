@@ -79,7 +79,6 @@ export default {
   'research.technologies': 'Technologies',
   'research.available': 'Available →',
   'research.comingSoon': 'Coming Soon',
-  'research.backToOverview': '← Back to Overview',
   // Calculator: Building
   'calc.building.title': 'Building Calculator',
   'calc.building.selectBuilding': 'Select Building',

@@ -4,7 +4,6 @@ import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../../i18n
 import { getLanguagePaths } from '../../../i18n/static-paths';
 import HeroExpCalculator from '../../../components/calculators/HeroExpCalculator';
 import { ErrorBoundary } from '../../../components/ErrorBoundary';
-import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import '../../../styles/shared-layouts.css';
 
 export function getStaticPaths() {
@@ -21,8 +20,11 @@ const breadcrumbItems = [
 ];
 ---
 
-<PageLayout title={`${t('tools.hero.title')} - Wild Hoggs`} description={t('tools.hero.description')}>
-  <Breadcrumbs items={breadcrumbItems} />
+<PageLayout
+  title={`${t('tools.hero.title')} - Wild Hoggs`}
+  description={t('tools.hero.description')}
+  breadcrumbs={breadcrumbItems}
+>
 
   <div class="page-header">
     <h1>{t('tools.hero.title')}</h1>

@@ -123,14 +123,39 @@ function ResearchTreeNode({
         data-node-element="true"
       />
 
-      {/* Unlock button in top-right corner */}
+      {/* Unlock button in top-right corner - KEYBOARD ACCESSIBLE */}
       {!unlocked && (
         <g
           onClick={() => onUnlockClick(tech)}
-          style={{ cursor: 'pointer' }}
+          onKeyDown={(e: React.KeyboardEvent) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              onUnlockClick(tech);
+            }
+          }}
+          tabIndex={0}
+          role="button"
+          aria-label={`Unlock ${techName}`}
+          style={{ cursor: 'pointer', outline: 'none' }}
           data-node-element="true"
           data-clickable="true"
+          data-unlock-button="true"
         >
+          {/* Focus indicator rectangle */}
+          <rect
+            x={NODE_WIDTH / 2 - 47}
+            y={-NODE_HEIGHT / 2 + 3}
+            width={44}
+            height={39}
+            rx={6}
+            fill="none"
+            stroke="rgba(255, 165, 0, 0.8)"
+            strokeWidth={2}
+            opacity={0}
+            className="unlock-button-focus-indicator"
+            data-node-element="true"
+          />
+          {/* Main unlock button background */}
           <rect
             x={NODE_WIDTH / 2 - 45}
             y={-NODE_HEIGHT / 2 + 5}
@@ -140,6 +165,7 @@ function ResearchTreeNode({
             fill="rgba(255, 165, 0, 0.2)"
             stroke="rgba(255, 165, 0, 0.5)"
             strokeWidth={1}
+            className="unlock-button-bg"
             data-node-element="true"
           />
           <text
@@ -224,6 +250,11 @@ function ResearchTreeNode({
                 const newValue = Number.parseInt((e.target as HTMLInputElement).value, 10);
                 onLevelChange(tech.id, newValue);
               }}
+              aria-label={`${techName} level`}
+              aria-valuemin={0}
+              aria-valuemax={maxAvailable}
+              aria-valuenow={Math.min(selectedLevel, maxAvailable)}
+              aria-valuetext={`Level ${Math.min(selectedLevel, maxAvailable)} of ${maxAvailable}`}
               style={{
                 width: '100%',
                 height: '8px',

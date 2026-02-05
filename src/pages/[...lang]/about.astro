@@ -1,6 +1,6 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
-import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../i18n/utils';
 import { getLanguagePaths } from '../../i18n/static-paths';
 import '../../styles/shared-layouts.css';
 
@@ -10,9 +10,18 @@ export function getStaticPaths() {
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+
+const breadcrumbItems = [
+  { label: t('nav.home'), href: getLocalizedPath('', lang) },
+  { label: t('about.title') }
+];
 ---
 
-<PageLayout title={`${t('about.title')} - Wild Hoggs`} description={t('about.who.text')}>
+<PageLayout
+  title={`${t('about.title')} - Wild Hoggs`}
+  description={t('about.who.text')}
+  breadcrumbs={breadcrumbItems}
+>
   <div class="page-header">
     <h1>{t('about.title')}</h1>
     <p class="subtitle">Wild Hoggs - Server 395</p>

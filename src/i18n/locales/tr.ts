@@ -79,7 +79,6 @@ export default {
   'research.technologies': 'Teknolojiler',
   'research.available': 'Mevcut →',
   'research.comingSoon': 'Çok yakında',
-  'research.backToOverview': '← Genel görünüme geri dön',
   // Calculator: Building
   'calc.building.title': 'Bina Hesaplayıcı',
   'calc.building.selectBuilding': 'Bina seçin',

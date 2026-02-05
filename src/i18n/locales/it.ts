@@ -79,7 +79,6 @@ export default {
   'research.technologies': 'Tecnologie',
   'research.available': 'Disponibile →',
   'research.comingSoon': 'In arrivo',
-  'research.backToOverview': '← Torna alla panoramica',
   // Calculator: Building
   'calc.building.title': 'Calcolatore edifici',
   'calc.building.selectBuilding': 'Seleziona edificio',

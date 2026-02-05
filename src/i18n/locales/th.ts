@@ -79,7 +79,6 @@ export default {
   'research.technologies': 'เทคโนโลยี',
   'research.available': 'พร้อมใช้งาน →',
   'research.comingSoon': 'เร็ว ๆ นี้',
-  'research.backToOverview': '← กลับไปภาพรวม',
   // Calculator: Building
   'calc.building.title': 'ตัวคำนวณสิ่งปลูกสร้าง',
   'calc.building.selectBuilding': 'เลือกสิ่งปลูกสร้าง',
