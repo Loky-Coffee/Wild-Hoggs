@@ -110,7 +110,12 @@ export default function RewardCodesLocal({ lang }: RewardCodesLocalProps) {
                     </button>
                   </div>
                   {!timeRemaining.expired && (
-                    <div className="code-timer">
+                    <div
+                      className="code-timer"
+                      role="timer"
+                      aria-label={`Expires in ${timeRemaining.days > 0 ? `${timeRemaining.days} days ` : ''}${timeRemaining.hours} hours ${timeRemaining.minutes} minutes`}
+                      aria-atomic="true"
+                    >
                       ⏰ {t('codes.expiresIn')}:{' '}
                       {timeRemaining.days > 0 && `${timeRemaining.days}${t('codes.days')} `}
                       {timeRemaining.hours}${t('codes.hours')} {timeRemaining.minutes}${t('codes.minutes')}

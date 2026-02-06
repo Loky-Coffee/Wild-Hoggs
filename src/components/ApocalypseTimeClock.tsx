@@ -15,7 +15,13 @@ export default function ApocalypseTimeClock() {
   });
 
   return (
-    <div className="apocalypse-clock" title="Last-Z Game Time (UTC-2)">
+    <div
+      className="apocalypse-clock"
+      role="timer"
+      aria-label="Apocalypse Time - Current UTC-2 game time"
+      aria-atomic="true"
+      title="Last-Z Game Time (UTC-2)"
+    >
       <span className="clock-label">Apocalypse Time</span>
       <div className="clock-time">{time}</div>
     </div>

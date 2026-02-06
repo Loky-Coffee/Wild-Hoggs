@@ -69,7 +69,12 @@ export default function WeeklyRoses({ lang, roses }: WeeklyRosesProps) {
             <p className="rose-description">{rose.description}</p>
 
             {rose.isActive && (
-              <div className="rose-countdown">
+              <div
+                className="rose-countdown"
+                role="timer"
+                aria-label="Time remaining until next Sunday 23:59:59 UTC-2"
+                aria-atomic="true"
+              >
                 <div className="countdown-label">{t('roses.endsIn')}:</div>
                 <div className="countdown-timer">{timeLeft}</div>
               </div>
