@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'preact/hooks';
 import { useTranslations } from '../i18n/utils';
-import type { Language } from '../i18n/index';
+import type { Language, TranslationData } from '../i18n/index';
 import rewardCodesData from '../data/reward-codes.json';
 import { getApocalypseTime } from '../utils/time';
 import './RewardCodes.css';
@@ -15,6 +15,7 @@ interface RewardCode {
 
 interface RewardCodesLocalProps {
   lang: Language;
+  translationData: TranslationData;
 }
 
 function getTimeRemaining(expiresAt: string) {
@@ -35,12 +36,12 @@ function getTimeRemaining(expiresAt: string) {
   return { expired: false, days, hours, minutes };
 }
 
-export default function RewardCodesLocal({ lang }: RewardCodesLocalProps) {
+export default function RewardCodesLocal({ lang, translationData }: RewardCodesLocalProps) {
   const [codes, setCodes] = useState<RewardCode[]>(rewardCodesData.codes as RewardCode[]);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
   const [currentTime, setCurrentTime] = useState(Date.now());
 
-  const t = useTranslations(lang);
+  const t = useTranslations(translationData);
 
   // Update time every minute for countdown
   useEffect(() => {

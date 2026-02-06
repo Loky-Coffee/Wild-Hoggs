@@ -5,7 +5,11 @@
  * Eliminates ~30-40 LOC of duplicated formatter logic.
  */
 
-import { translations } from '../i18n/index';
+// Inline time unit translations (small, frequently used utility)
+const timeUnits = {
+  de: { h: 'Std', m: 'Min', s: 'Sek' },
+  en: { h: 'h', m: 'm', s: 's' }
+};
 
 /**
  * Format number with locale-specific thousand separators
@@ -38,12 +42,7 @@ export function formatDuration(seconds: number, lang: 'de' | 'en'): string {
   const minutes = Math.floor((seconds % 3600) / 60);
   const secs = seconds % 60;
 
-  const t = translations[lang];
-  const units = {
-    h: t['time.hours'],
-    m: t['time.minutes'],
-    s: t['time.seconds']
-  };
+  const units = timeUnits[lang];
 
   const parts: string[] = [];
   if (hours > 0) parts.push(`${hours}${units.h}`);

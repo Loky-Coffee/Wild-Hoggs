@@ -2,6 +2,7 @@
 import PageLayout from '../../../layouts/PageLayout.astro';
 import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../../i18n/utils';
 import { getLanguagePaths } from '../../../i18n/static-paths';
+import { loadTranslations } from '../../../i18n/index';
 import HeroExpCalculator from '../../../components/calculators/HeroExpCalculator';
 import { ErrorBoundary } from '../../../components/ErrorBoundary';
 import '../../../styles/shared-layouts.css';
@@ -11,7 +12,8 @@ export function getStaticPaths() {
 }
 
 const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const translationData = await loadTranslations(lang);
+const t = useTranslations(translationData);
 
 const breadcrumbItems = [
   { label: t('nav.home'), href: getLocalizedPath('', lang) },
@@ -32,7 +34,7 @@ const breadcrumbItems = [
   </div>
 
   <ErrorBoundary lang={lang} client:load>
-    <HeroExpCalculator lang={lang} client:load />
+    <HeroExpCalculator lang={lang} translationData={translationData} client:load />
   </ErrorBoundary>
 </PageLayout>
 

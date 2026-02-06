@@ -3,12 +3,14 @@ import type { ResearchTree } from '../../schemas/research';
 import ResearchTreeView from './ResearchTreeView';
 import { useTranslations } from '../../i18n/utils';
 import { formatNumber } from '../../utils/formatters';
+import type { TranslationData } from '../../i18n/index';
 import './Calculator.css';
 
 interface ResearchCategoryCalculatorProps {
   readonly categoryData: ResearchTree;
   readonly categoryImageSrc?: string;
   readonly lang: 'de' | 'en';
+  readonly translationData: TranslationData;
 }
 
 function calculateTotalBadges(
@@ -36,12 +38,12 @@ function calculateTotalBadges(
   };
 }
 
-export default function ResearchCategoryCalculator({ categoryData, categoryImageSrc, lang }: ResearchCategoryCalculatorProps) {
+export default function ResearchCategoryCalculator({ categoryData, categoryImageSrc, lang, translationData }: ResearchCategoryCalculatorProps) {
   const [selectedTechnologies, setSelectedTechnologies] = useState<Map<string, number>>(new Map());
 
   const category = categoryData;
 
-  const t = useTranslations(lang);
+  const t = useTranslations(translationData);
 
   const setTechnologyLevel = (techId: string, level: number) => {
     // Use functional update to avoid race conditions when multiple sliders change quickly
@@ -239,6 +241,7 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
           onBatchLevelChange={setMultipleTechnologyLevels}
           layoutDirection={layoutDirection}
           lang={lang}
+          translationData={translationData}
         />
       </div>
     </div>

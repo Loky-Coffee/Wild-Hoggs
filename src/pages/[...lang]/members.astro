@@ -2,6 +2,7 @@
 import PageLayout from '../../layouts/PageLayout.astro';
 import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../i18n/utils';
 import { getLanguagePaths } from '../../i18n/static-paths';
+import { loadTranslations } from '../../i18n/index';
 import PageHeader from '../../components/PageHeader.astro';
 import { members } from '../../data/members';
 import MembersList from '../../components/MembersList';
@@ -14,7 +15,8 @@ export function getStaticPaths() {
 }
 
 const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const translationData = await loadTranslations(lang);
+const t = useTranslations(translationData);
 
 // Get last modification time of members.ts
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -75,7 +77,7 @@ const breadcrumbItems = [
     subtitle={`${t('members.count').replace('{count}', members.length.toString())} • ${lastUpdatedText}: ${lastUpdated}`}
   />
 
-  <MembersList members={members} lang={lang} client:load />
+  <MembersList members={members} lang={lang} translationData={translationData} client:load />
 </PageLayout>
 
 <style>

@@ -3,6 +3,7 @@ import { useRef, useEffect } from 'preact/hooks';
 import type { Technology } from '../../schemas/research';
 import { getResearchImage } from '../../utils/researchImages';
 import { useTranslations } from '../../i18n/utils';
+import type { TranslationData } from '../../i18n/index';
 import RangeTouch from 'rangetouch';
 
 interface ResearchTreeNodeProps {
@@ -16,6 +17,7 @@ interface ResearchTreeNodeProps {
   readonly onLevelChange: (techId: string, level: number) => void;
   readonly onUnlockClick: (tech: Technology) => void;
   readonly lang: 'de' | 'en';
+  readonly translationData: TranslationData;
 }
 
 const NODE_WIDTH = 220;
@@ -58,9 +60,10 @@ function ResearchTreeNode({
   formatNumber,
   onLevelChange,
   onUnlockClick,
-  lang
+  lang,
+  translationData
 }: ResearchTreeNodeProps) {
-  const t = useTranslations(lang);
+  const t = useTranslations(translationData);
   const techName = t(tech.nameKey) || tech.nameKey || 'Unknown';
   const totalBadges = tech.badgeCosts.slice(0, selectedLevel).reduce((sum, cost) => sum + cost, 0);
   const maxBadges = tech.badgeCosts.reduce((a, b) => a + b, 0);

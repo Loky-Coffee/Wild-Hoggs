@@ -1,7 +1,7 @@
 ---
 import PageLayout from '../../../../layouts/PageLayout.astro';
 import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../../../i18n/utils';
-import { languages } from '../../../../i18n/index';
+import { languages, loadTranslations } from '../../../../i18n/index';
 import ResearchCategoryCalculator from '../../../../components/calculators/ResearchCategoryCalculator';
 import { ErrorBoundary } from '../../../../components/ErrorBoundary';
 import type { ResearchTree } from '../../../../schemas/research';
@@ -85,7 +85,8 @@ const imageMap: Record<string, ImageMetadata> = {
 
 const { categoryId } = Astro.params;
 const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const translationData = await loadTranslations(lang);
+const t = useTranslations(translationData);
 
 const category = researchDataMap[categoryId];
 const categoryImage = imageMap[categoryId];
@@ -109,6 +110,7 @@ const breadcrumbItems = [
         categoryData={category}
         categoryImageSrc={categoryImage.src}
         lang={lang}
+        translationData={translationData}
         client:load
       />
     </ErrorBoundary>

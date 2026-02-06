@@ -1,5 +1,5 @@
 ---
-import { getLangFromUrl, useTranslations, getLocalizedPath } from '../i18n/utils';
+import { getLangFromUrl, getLocalizedPath } from '../i18n/utils';
 
 interface BreadcrumbItem {
   label: string;
@@ -12,7 +12,6 @@ interface Props {
 
 const { items } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
 
 const siteUrl = Astro.site || new URL('https://wild-hoggs.com/');
 

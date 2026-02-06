@@ -1,16 +1,18 @@
 import { useState } from 'preact/hooks';
 import type { Member } from '../data/members';
 import { useTranslations } from '../i18n/utils';
+import type { TranslationData } from '../i18n/index';
 
 interface Props {
   members: Member[];
   lang: 'en' | 'de';
+  translationData: TranslationData;
 }
 
 type SortOption = 'name' | 'gender' | 'level-high' | 'level-low';
 
-export default function MembersList({ members, lang }: Props) {
-  const t = useTranslations(lang);
+export default function MembersList({ members, lang, translationData }: Props) {
+  const t = useTranslations(translationData);
   const [sortBy, setSortBy] = useState<SortOption>('name');
 
   const sortedMembers = [...members].sort((a, b) => {

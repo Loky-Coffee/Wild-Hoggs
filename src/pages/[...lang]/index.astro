@@ -1,7 +1,8 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
 import { useTranslations } from '../../i18n/utils';
-import { languages } from '../../i18n/index';
+import { languages, loadTranslations } from '../../i18n/index';
+import type { Language } from '../../i18n/index';
 
 export function getStaticPaths() {
   const languagePaths = Object.keys(languages)
@@ -14,13 +15,14 @@ export function getStaticPaths() {
   ];
 }
 
-const lang = Astro.params.lang || 'en';
+const lang = (Astro.params.lang || 'en') as Language;
 
 if (!(lang in languages)) {
   return Astro.redirect('/');
 }
 
-const t = useTranslations(lang as keyof typeof languages);
+const translationData = await loadTranslations(lang);
+const t = useTranslations(translationData);
 ---
 
 <PageLayout

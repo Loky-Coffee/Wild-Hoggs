@@ -2,6 +2,7 @@
 import PageLayout from '../../layouts/PageLayout.astro';
 import { getLangFromUrl, useTranslations, getCurrentMonth, getCurrentYear, getLocalizedPath } from '../../i18n/utils';
 import { getLanguagePaths } from '../../i18n/static-paths';
+import { loadTranslations } from '../../i18n/index';
 import WeeklyRoses from '../../components/WeeklyRoses';
 import { ACTIVE_LUCKY_NUMBER } from '../../config/bonus';
 import '../../styles/shared-layouts.css';
@@ -11,7 +12,8 @@ export function getStaticPaths() {
 }
 
 const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const translationData = await loadTranslations(lang);
+const t = useTranslations(translationData);
 const currentMonth = getCurrentMonth(lang);
 const currentYear = getCurrentYear();
 
@@ -119,7 +121,7 @@ const breadcrumbItems = [
         <p class="section-description">{t('roses.weekly.description')}</p>
       </div>
 
-      <WeeklyRoses lang={lang} roses={roses} client:load />
+      <WeeklyRoses lang={lang} roses={roses} translationData={translationData} client:load />
     </section>
   </div>
 </PageLayout>

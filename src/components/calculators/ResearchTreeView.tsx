@@ -1,6 +1,7 @@
 import { useMemo, useCallback, useEffect, useRef } from 'preact/hooks';
 import type { Technology } from '../../schemas/research';
 import { formatNumber as sharedFormatNumber } from '../../utils/formatters';
+import type { TranslationData } from '../../i18n/index';
 import ResearchTreeNode from './ResearchTreeNode';
 import ResearchTreeConnections from './ResearchTreeConnections';
 
@@ -17,6 +18,7 @@ interface ResearchTreeViewProps {
   readonly onBatchLevelChange: (updates: Map<string, number>) => void;
   readonly layoutDirection: 'horizontal' | 'vertical';
   readonly lang: 'de' | 'en';
+  readonly translationData: TranslationData;
 }
 
 const NODE_WIDTH = 220;
@@ -30,7 +32,8 @@ export default function ResearchTreeView({
   onLevelChange,
   onBatchLevelChange,
   layoutDirection,
-  lang
+  lang,
+  translationData
 }: ResearchTreeViewProps) {
 
   // Calculate tier for each technology (depth in dependency tree)
@@ -458,6 +461,7 @@ export default function ResearchTreeView({
                   onLevelChange={onLevelChange}
                   onUnlockClick={unlockWithPrerequisites}
                   lang={lang}
+                  translationData={translationData}
                 />
               );
             })}

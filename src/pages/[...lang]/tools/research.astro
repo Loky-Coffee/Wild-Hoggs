@@ -2,6 +2,7 @@
 import PageLayout from '../../../layouts/PageLayout.astro';
 import { getLangFromUrl, useTranslations, getLocalizedPath, getCurrentYear } from '../../../i18n/utils';
 import { getLanguagePaths } from '../../../i18n/static-paths';
+import { loadTranslations } from '../../../i18n/index';
 import { Image } from 'astro:assets';
 
 // Import all research category data
@@ -31,7 +32,8 @@ export function getStaticPaths() {
 }
 
 const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const translationData = await loadTranslations(lang);
+const t = useTranslations(translationData);
 const currentYear = getCurrentYear();
 
 // Map category data by ID

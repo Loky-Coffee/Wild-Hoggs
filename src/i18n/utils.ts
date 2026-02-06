@@ -1,24 +1,43 @@
-import { translations, defaultLang, type Language, type TranslationKey } from './index';
+import { defaultLang, type Language, type TranslationKey, type TranslationData, loadTranslations } from './index';
 
 export function getLangFromUrl(url: URL): Language {
   const [, lang] = url.pathname.split('/');
-  if (lang in translations) return lang as Language;
+  // Check if lang is a valid language key
+  const validLangs: Language[] = ['de', 'en', 'es', 'fr', 'ja', 'ko', 'pt', 'tr', 'it', 'ar', 'th', 'vi', 'id', 'zh-CN', 'zh-TW'];
+  if (validLangs.includes(lang as Language)) {
+    return lang as Language;
+  }
   return defaultLang;
 }
 
-export function useTranslations(lang: Language) {
+/**
+ * Create a translation function from translation data
+ * @param translationData - The loaded translation data for a specific language
+ * @returns A translation function
+ */
+export function useTranslations(translationData: TranslationData) {
   return function t(key: TranslationKey, params?: Record<string, string>): string {
-    let text = translations[lang][key] || translations[defaultLang][key];
+    let text = translationData[key] || key;
 
     // Replace placeholders with params
     if (params) {
-      Object.keys(params).forEach(key => {
-        text = text.replace(new RegExp(`\\{${key}\\}`, 'g'), params[key]);
+      Object.keys(params).forEach(paramKey => {
+        text = text.replace(new RegExp(`\\{${paramKey}\\}`, 'g'), params[paramKey]);
       });
     }
 
     return text;
   }
+}
+
+/**
+ * Async helper to load translations and create a translation function
+ * @param lang - The language to load
+ * @returns A translation function
+ */
+export async function useTranslationsAsync(lang: Language) {
+  const translationData = await loadTranslations(lang);
+  return useTranslations(translationData);
 }
 
 /**

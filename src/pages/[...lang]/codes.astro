@@ -2,6 +2,7 @@
 import PageLayout from '../../layouts/PageLayout.astro';
 import { getLangFromUrl, useTranslations, getCurrentMonth, getCurrentYear, getLocalizedPath } from '../../i18n/utils';
 import { getLanguagePaths } from '../../i18n/static-paths';
+import { loadTranslations } from '../../i18n/index';
 import RewardCodesLocal from '../../components/RewardCodesLocal';
 import '../../styles/shared-layouts.css';
 
@@ -10,7 +11,8 @@ export function getStaticPaths() {
 }
 
 const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const translationData = await loadTranslations(lang);
+const t = useTranslations(translationData);
 const currentMonth = getCurrentMonth(lang);
 const currentYear = getCurrentYear();
 
@@ -79,7 +81,7 @@ const howToSchema = {
         </a>
       </div>
 
-      <RewardCodesLocal lang={lang} client:load />
+      <RewardCodesLocal lang={lang} translationData={translationData} client:load />
     </section>
   </div>
 </PageLayout>

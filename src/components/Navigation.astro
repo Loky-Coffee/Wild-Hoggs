@@ -1,10 +1,12 @@
 ---
 import { getLangFromUrl, useTranslations } from '../i18n/utils';
+import { loadTranslations } from '../i18n/index';
 import LanguageDropdown from './LanguageDropdown.astro';
 import ApocalypseTimeClock from './ApocalypseTimeClock';
 
 const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const translationData = await loadTranslations(lang);
+const t = useTranslations(translationData);
 
 // Helper to generate paths: English without prefix, others with prefix
 const getPath = (page: string) => {

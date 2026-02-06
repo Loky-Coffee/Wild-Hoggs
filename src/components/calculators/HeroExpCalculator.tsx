@@ -2,20 +2,22 @@ import { useState, useMemo } from 'preact/hooks';
 import { validatedHeroExpTable } from '../../data/validated/hero-exp';
 import { useTranslations } from '../../i18n/utils';
 import { formatNumber } from '../../utils/formatters';
+import type { TranslationData } from '../../i18n/index';
 import './Calculator.css';
 
 interface HeroExpCalculatorProps {
   readonly lang: 'de' | 'en';
+  readonly translationData: TranslationData;
 }
 
 // Hero exp table is already an array of exp values (index = level)
 const heroExpTable = validatedHeroExpTable;
 
-export default function HeroExpCalculator({ lang }: HeroExpCalculatorProps) {
+export default function HeroExpCalculator({ lang, translationData }: HeroExpCalculatorProps) {
   const [currentLevel, setCurrentLevel] = useState<number>(1);
   const [targetLevel, setTargetLevel] = useState<number>(10);
 
-  const t = useTranslations(lang);
+  const t = useTranslations(translationData);
 
   const maxLevel = 175; // Last-Z max hero level
 

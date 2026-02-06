@@ -1,5 +1,4 @@
 import { Component, type ComponentChildren } from 'preact';
-import { translations } from '../i18n/index';
 
 interface Props {
   children: ComponentChildren;
@@ -11,6 +10,24 @@ interface State {
   hasError: boolean;
   error?: Error;
 }
+
+// Inline translations for error boundary (loaded very rarely, only on errors)
+const errorTranslations = {
+  de: {
+    title: 'Etwas ist schiefgelaufen',
+    message: 'Die Komponente konnte nicht geladen werden. Bitte versuche es erneut.',
+    details: 'Fehlerdetails anzeigen',
+    retry: 'Erneut versuchen',
+    reload: 'Seite neu laden'
+  },
+  en: {
+    title: 'Something went wrong',
+    message: 'The component could not be loaded. Please try again.',
+    details: 'Show error details',
+    retry: 'Try again',
+    reload: 'Reload page'
+  }
+};
 
 export class ErrorBoundary extends Component<Props, State> {
   state: State = { hasError: false };
@@ -35,7 +52,7 @@ export class ErrorBoundary extends Component<Props, State> {
       }
 
       const lang = this.props.lang || 'en';
-      const t = translations[lang];
+      const t = errorTranslations[lang];
 
       return (
         <div
@@ -52,15 +69,15 @@ export class ErrorBoundary extends Component<Props, State> {
           aria-atomic="true"
         >
           <h2 style={{ color: '#ff6b6b', marginBottom: '1rem' }}>
-            ⚠️ {t['error.title']}
+            ⚠️ {t.title}
           </h2>
           <p style={{ marginBottom: '1rem', opacity: 0.9 }}>
-            {t['error.message']}
+            {t.message}
           </p>
           {this.state.error && (
             <details style={{ marginBottom: '1rem' }}>
               <summary style={{ cursor: 'pointer', marginBottom: '0.5rem' }}>
-                {t['error.details']}
+                {t.details}
               </summary>
               <pre style={{
                 background: 'rgba(0,0,0,0.3)',
@@ -88,7 +105,7 @@ export class ErrorBoundary extends Component<Props, State> {
                 cursor: 'pointer'
               }}
             >
-              {t['error.retry']}
+              {t.retry}
             </button>
             <button
               onClick={() => window.location.reload()}
@@ -102,7 +119,7 @@ export class ErrorBoundary extends Component<Props, State> {
                 cursor: 'pointer'
               }}
             >
-              {t['error.reload']}
+              {t.reload}
             </button>
           </div>
         </div>

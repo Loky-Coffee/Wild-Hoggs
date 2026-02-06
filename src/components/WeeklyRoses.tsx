@@ -2,6 +2,7 @@ import { useState } from 'preact/hooks';
 import { useTranslations } from '../i18n/utils';
 import { useGlobalTimer } from '../hooks/useGlobalTimer';
 import { getApocalypseTime } from '../utils/time';
+import type { TranslationData } from '../i18n/index';
 import './WeeklyRoses.css';
 
 interface Rose {
@@ -16,12 +17,13 @@ interface Rose {
 interface WeeklyRosesProps {
   lang: 'de' | 'en';
   roses: Rose[];
+  translationData: TranslationData;
 }
 
-export default function WeeklyRoses({ lang, roses }: WeeklyRosesProps) {
+export default function WeeklyRoses({ lang, roses, translationData }: WeeklyRosesProps) {
   const [timeLeft, setTimeLeft] = useState('');
 
-  const t = useTranslations(lang);
+  const t = useTranslations(translationData);
 
   // Calculate time until next Sunday 23:59:59 in Apocalypse Time (UTC-2)
   useGlobalTimer(() => {

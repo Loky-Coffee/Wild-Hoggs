@@ -2,6 +2,7 @@ import { useState, useMemo } from 'preact/hooks';
 import { validatedBuildings as buildingsData } from '../../data/validated/buildings';
 import { useTranslations } from '../../i18n/utils';
 import { formatNumber } from '../../utils/formatters';
+import type { TranslationData } from '../../i18n/index';
 import './Calculator.css';
 
 interface BuildingCost {
@@ -28,16 +29,17 @@ interface Building {
 
 interface BuildingCalculatorProps {
   readonly lang: 'de' | 'en';
+  readonly translationData: TranslationData;
 }
 
 const buildings = buildingsData;
 
-export default function BuildingCalculator({ lang }: BuildingCalculatorProps) {
+export default function BuildingCalculator({ lang, translationData }: BuildingCalculatorProps) {
   const [selectedBuilding, setSelectedBuilding] = useState<string>(buildings[0].id);
   const [currentLevel, setCurrentLevel] = useState<number>(1);
   const [targetLevel, setTargetLevel] = useState<number>(5);
 
-  const t = useTranslations(lang);
+  const t = useTranslations(translationData);
 
   const selectedBuildingData = useMemo(() => {
     return buildings.find((b) => b.id === selectedBuilding) || buildings[0];
