@@ -234,7 +234,12 @@ export default function BuildingCalculator({ lang }: BuildingCalculatorProps) {
       )}
 
       {!calculatedResults && currentLevel >= targetLevel && (
-        <div className="calculator-error">
+        <div
+          className="calculator-error"
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+        >
           {t('calc.building.errorTargetLevel')}
         </div>
       )}

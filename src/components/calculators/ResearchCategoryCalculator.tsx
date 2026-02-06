@@ -99,7 +99,12 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
   if (!category) {
     return (
       <div className="calculator-container">
-        <div className="calculator-error">
+        <div
+          className="calculator-error"
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+        >
           {t('calc.research.categoryNotFound')}
         </div>
       </div>

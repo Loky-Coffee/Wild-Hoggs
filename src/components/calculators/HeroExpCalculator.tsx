@@ -103,7 +103,12 @@ export default function HeroExpCalculator({ lang }: HeroExpCalculatorProps) {
       )}
 
       {!calculatedResults && currentLevel >= targetLevel && (
-        <div className="calculator-error">
+        <div
+          className="calculator-error"
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+        >
           {t('calc.hero.errorTargetLevel')}
         </div>
       )}

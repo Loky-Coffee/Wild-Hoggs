@@ -38,14 +38,19 @@ export class ErrorBoundary extends Component<Props, State> {
       const t = translations[lang];
 
       return (
-        <div style={{
-          padding: '2rem',
-          margin: '1rem',
-          borderRadius: '12px',
-          background: 'rgba(255, 0, 0, 0.1)',
-          border: '2px solid rgba(255, 0, 0, 0.3)',
-          color: '#fff'
-        }}>
+        <div
+          style={{
+            padding: '2rem',
+            margin: '1rem',
+            borderRadius: '12px',
+            background: 'rgba(255, 0, 0, 0.1)',
+            border: '2px solid rgba(255, 0, 0, 0.3)',
+            color: '#fff'
+          }}
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+        >
           <h2 style={{ color: '#ff6b6b', marginBottom: '1rem' }}>
             ⚠️ {t['error.title']}
           </h2>
