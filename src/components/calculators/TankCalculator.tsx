@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'preact/hooks';
+import { useState, useMemo, useEffect, useRef } from 'preact/hooks';
 import TankModificationTree from './TankModificationTree';
 import TankModificationList from './TankModificationList';
 import tankData from '../../data/tank-modifications.json';
@@ -32,6 +32,10 @@ export default function TankCalculator({ lang, translationData }: TankCalculator
   const [unlockedLevels, setUnlockedLevels] = useState<Set<number>>(new Set([0]));
   const [subLevels, setSubLevels] = useState<Map<number, number>>(new Map([[0, 0]]));
   const [viewMode, setViewMode] = useState<'tree' | 'list'>('tree');
+  const [isInfoBoxCollapsed, setIsInfoBoxCollapsed] = useState(false);
+
+  const treeContainerRef = useRef<HTMLDivElement>(null);
+  const isInfoBoxCollapsedRef = useRef(isInfoBoxCollapsed);
 
   const totalWrenchesUsed = useMemo(() => {
     let total = 0;
@@ -43,6 +47,33 @@ export default function TankCalculator({ lang, translationData }: TankCalculator
   }, [subLevels]);
 
   const remainingWrenches = maxWrenches - totalWrenchesUsed;
+
+  // Sync ref with state to avoid event listener thrashing
+  useEffect(() => {
+    isInfoBoxCollapsedRef.current = isInfoBoxCollapsed;
+  }, [isInfoBoxCollapsed]);
+
+  // Auto-collapse info box when user interacts with tree (mobile only)
+  useEffect(() => {
+    const treeContainer = treeContainerRef.current;
+    if (!treeContainer) return;
+
+    const handleTreeInteraction = () => {
+      // Only auto-collapse on mobile screens
+      if (window.innerWidth <= 768 && !isInfoBoxCollapsedRef.current) {
+        setIsInfoBoxCollapsed(true);
+      }
+    };
+
+    // Listen for touch/click on tree
+    treeContainer.addEventListener('touchstart', handleTreeInteraction, { passive: true });
+    treeContainer.addEventListener('mousedown', handleTreeInteraction);
+
+    return () => {
+      treeContainer.removeEventListener('touchstart', handleTreeInteraction);
+      treeContainer.removeEventListener('mousedown', handleTreeInteraction);
+    };
+  }, []); // Empty dependency array - listeners only added once
 
   const lastVehicle = useMemo(() => {
     const unlocked = milestones.filter(ms => totalWrenchesUsed >= ms.cumulativeWrenches);
@@ -65,20 +96,39 @@ export default function TankCalculator({ lang, translationData }: TankCalculator
     setSubLevels(newSubLevels);
   };
 
+  const getInfoBoxAriaLabel = (collapsed: boolean) => {
+    return collapsed ? t('calc.research.expandInfo') || 'Expand info' : t('calc.research.collapseInfo') || 'Collapse info';
+  };
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: '1rem', minHeight: 0 }}>
-      {/* ONE LINE INFO BOX */}
-      <div className="info-box" style={{
-        flexShrink: 0,
-        padding: '0.75rem 1.5rem'
-      }}>
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '1.5rem',
-          flexWrap: 'nowrap',
-          fontSize: '1rem'
-        }}>
+      {/* INFO BOX - Mobile Responsive with Collapse */}
+      <div className={`info-box ${isInfoBoxCollapsed ? 'collapsed' : ''}`} style={{ flexShrink: 0 }}>
+        {/* Mobile Toggle Button */}
+        <button
+          className="info-box-toggle"
+          onClick={() => setIsInfoBoxCollapsed(!isInfoBoxCollapsed)}
+          aria-label={getInfoBoxAriaLabel(isInfoBoxCollapsed)}
+        >
+          {isInfoBoxCollapsed ? '▼' : '▲'}
+          {isInfoBoxCollapsed && (
+            <span style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
+              🔧 {formatNumber(totalWrenchesUsed, lang)} / {formatNumber(remainingWrenches, lang)}
+            </span>
+          )}
+        </button>
+
+        {/* Main Info Content */}
+        <div
+          className="info-box-content"
+          style={{
+            display: isInfoBoxCollapsed ? 'none' : 'flex',
+            alignItems: 'center',
+            gap: '0.75rem',
+            flexWrap: 'wrap',
+            fontSize: '0.95rem'
+          }}
+        >
           <div style={{ fontWeight: 'bold', color: '#ffa500', whiteSpace: 'nowrap' }}>
             {t('calc.tank.title')}
           </div>
@@ -100,18 +150,18 @@ export default function TankCalculator({ lang, translationData }: TankCalculator
               <span style={{ fontWeight: 'bold', color: '#3498db' }}>{t(lastVehicle.nameKey)}</span>
             </div>
           )}
-          <div style={{ marginLeft: 'auto', display: 'flex', gap: '0.5rem' }}>
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginLeft: 'auto', minWidth: 'fit-content' }}>
             <button
               onClick={() => setViewMode(viewMode === 'tree' ? 'list' : 'tree')}
               className="btn-secondary"
-              style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}
+              style={{ padding: '0.5rem 0.75rem', fontSize: '0.85rem', whiteSpace: 'nowrap' }}
             >
               {viewMode === 'tree' ? '📋 ' + t('tank.listView') : '🗺️ ' + t('tank.treeView')}
             </button>
-            <button onClick={handleMaxAll} className="btn-secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>
+            <button onClick={handleMaxAll} className="btn-secondary" style={{ padding: '0.5rem 0.75rem', fontSize: '0.85rem', whiteSpace: 'nowrap' }}>
               {t('tank.maxAll')}
             </button>
-            <button onClick={handleReset} className="btn-secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>
+            <button onClick={handleReset} className="btn-secondary" style={{ padding: '0.5rem 0.75rem', fontSize: '0.85rem', whiteSpace: 'nowrap' }}>
               {t('tank.resetAll')}
             </button>
           </div>
@@ -119,7 +169,7 @@ export default function TankCalculator({ lang, translationData }: TankCalculator
       </div>
 
       {/* View Container */}
-      <div style={{ flex: 1, minHeight: 0 }}>
+      <div ref={treeContainerRef} style={{ flex: 1, minHeight: 0 }}>
         {viewMode === 'tree' ? (
           <TankModificationTree
             modifications={modifications}

@@ -238,7 +238,7 @@ export default function TankModificationTree({
         borderRadius: '12px',
         padding: '1rem',
         WebkitOverflowScrolling: 'touch' as any,
-        touchAction: 'manipulation',
+        touchAction: 'pan-x pan-y pinch-zoom',
         cursor: 'grab',
         display: 'flex',
         alignItems: 'flex-start',
