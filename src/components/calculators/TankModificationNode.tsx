@@ -23,6 +23,7 @@ interface TankModificationNodeProps {
   readonly formatNumber: (num: number) => string;
   readonly onSubLevelChange: (level: number, subLevel: number) => void;
   readonly onUnlockClick: (mod: TankModification) => void;
+  readonly onFocus?: () => void;
   readonly lang: 'de' | 'en';
   readonly translationData: TranslationData;
 }
@@ -40,6 +41,7 @@ function TankModificationNode({
   formatNumber,
   onSubLevelChange,
   onUnlockClick,
+  onFocus,
   lang,
   translationData
 }: TankModificationNodeProps) {
@@ -103,6 +105,7 @@ function TankModificationNode({
       data-mod-level={mod.level}
       data-unlocked={unlocked}
       onKeyDown={handleNodeKeyDown}
+      onFocus={onFocus}
     >
       {!unlocked && (
         <title>Click to unlock this modification</title>

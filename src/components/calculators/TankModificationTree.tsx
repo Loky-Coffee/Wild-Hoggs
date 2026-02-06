@@ -1,4 +1,4 @@
-import { useMemo, useRef, useCallback, useEffect } from 'preact/hooks';
+import { useMemo, useRef, useCallback, useEffect, useState } from 'preact/hooks';
 import TankModificationNode from './TankModificationNode';
 import TankModificationConnections from './TankModificationConnections';
 import { formatNumber as sharedFormatNumber } from '../../utils/formatters';
@@ -51,7 +51,53 @@ export default function TankModificationTree({
   const isDraggingRef = useRef(false);
   const dragStartRef = useRef({ x: 0, y: 0, scrollLeft: 0, scrollTop: 0 });
 
+  const [zoomLevel, setZoomLevel] = useState(1);
+  const [focusedNodeLevel, setFocusedNodeLevel] = useState<number | null>(null);
+  const MIN_ZOOM = 0.3;
+  const MAX_ZOOM = 2.0;
+  const ZOOM_STEP = 0.2;
+
   const formatNumber = (num: number) => sharedFormatNumber(num, lang);
+
+  const handleZoomIn = () => {
+    const newZoom = Math.min(zoomLevel + ZOOM_STEP, MAX_ZOOM);
+    setZoomLevel(newZoom);
+
+    // If a node is focused, scroll to center it
+    if (focusedNodeLevel !== null && scrollContainerRef.current) {
+      setTimeout(() => {
+        const nodePos = nodePositions.get(focusedNodeLevel);
+        if (nodePos) {
+          const container = scrollContainerRef.current!;
+          const adjustedX = (nodePos.x + svgDimensions.offsetX) * newZoom;
+          const adjustedY = (nodePos.y + svgDimensions.offsetY) * newZoom;
+
+          container.scrollLeft = adjustedX - container.clientWidth / 2;
+          container.scrollTop = adjustedY - container.clientHeight / 2;
+        }
+      }, 50);
+    }
+  };
+
+  const handleZoomOut = () => {
+    const newZoom = Math.max(zoomLevel - ZOOM_STEP, MIN_ZOOM);
+    setZoomLevel(newZoom);
+
+    // If a node is focused, scroll to center it
+    if (focusedNodeLevel !== null && scrollContainerRef.current) {
+      setTimeout(() => {
+        const nodePos = nodePositions.get(focusedNodeLevel);
+        if (nodePos) {
+          const container = scrollContainerRef.current!;
+          const adjustedX = (nodePos.x + svgDimensions.offsetX) * newZoom;
+          const adjustedY = (nodePos.y + svgDimensions.offsetY) * newZoom;
+
+          container.scrollLeft = adjustedX - container.clientWidth / 2;
+          container.scrollTop = adjustedY - container.clientHeight / 2;
+        }
+      }, 50);
+    }
+  };
 
   // Calculate zigzag layout positions
   const nodePositions = useMemo((): Map<number, NodePosition> => {
@@ -243,12 +289,16 @@ export default function TankModificationTree({
         display: 'flex',
         alignItems: 'flex-start',
         userSelect: 'none',
-        WebkitUserSelect: 'none'
+        WebkitUserSelect: 'none',
+        position: 'relative'
       }}
     >
       <div style={{
         minWidth: 'min-content',
-        minHeight: 'min-content'
+        minHeight: 'min-content',
+        transform: `scale(${zoomLevel})`,
+        transformOrigin: 'top left',
+        transition: 'transform 0.2s ease-out'
       }}>
         <svg
           ref={svgRef}
@@ -284,12 +334,87 @@ export default function TankModificationTree({
                 formatNumber={formatNumber}
                 onSubLevelChange={handleSubLevelChange}
                 onUnlockClick={handleUnlock}
+                onFocus={() => setFocusedNodeLevel(mod.level)}
                 lang={lang}
                 translationData={translationData}
               />
             );
           })}
         </svg>
+      </div>
+
+      {/* Zoom Controls */}
+      <div
+        className="zoom-controls"
+        style={{
+          position: 'fixed',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '0.25rem',
+          zIndex: 100
+        }}
+      >
+        <style>{`
+          .zoom-controls {
+            bottom: 1rem;
+            right: 1rem;
+          }
+          @media (min-width: 769px) {
+            .zoom-controls {
+              bottom: 3.5rem;
+              right: 3.5rem;
+            }
+          }
+        `}</style>
+        <button
+          onClick={handleZoomIn}
+          disabled={zoomLevel >= MAX_ZOOM}
+          style={{
+            background: 'rgba(0, 0, 0, 0.8)',
+            border: '1px solid rgba(255, 165, 0, 0.6)',
+            borderRadius: '4px',
+            padding: '0.25rem',
+            cursor: zoomLevel >= MAX_ZOOM ? 'not-allowed' : 'pointer',
+            fontSize: '1.2rem',
+            color: '#ffa500',
+            fontWeight: 'bold',
+            opacity: zoomLevel >= MAX_ZOOM ? 0.4 : 1,
+            transition: 'all 0.2s',
+            width: '32px',
+            height: '32px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+          aria-label="Zoom in"
+        >
+          +
+        </button>
+
+        <button
+          onClick={handleZoomOut}
+          disabled={zoomLevel <= MIN_ZOOM}
+          style={{
+            background: 'rgba(0, 0, 0, 0.8)',
+            border: '1px solid rgba(255, 165, 0, 0.6)',
+            borderRadius: '4px',
+            padding: '0.25rem',
+            cursor: zoomLevel <= MIN_ZOOM ? 'not-allowed' : 'pointer',
+            fontSize: '1.2rem',
+            color: '#ffa500',
+            fontWeight: 'bold',
+            opacity: zoomLevel <= MIN_ZOOM ? 0.4 : 1,
+            transition: 'all 0.2s',
+            width: '32px',
+            height: '32px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+          aria-label="Zoom out"
+        >
+          −
+        </button>
       </div>
     </div>
   );
