@@ -1,0 +1,33 @@
+---
+import PageLayout from '../../../layouts/PageLayout.astro';
+import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../../i18n/utils';
+import { getLanguagePaths } from '../../../i18n/static-paths';
+import { loadTranslations } from '../../../i18n/index';
+import TankCalculator from '../../../components/calculators/TankCalculator';
+import { ErrorBoundary } from '../../../components/ErrorBoundary';
+import '../../../styles/shared-layouts.css';
+
+export function getStaticPaths() {
+  return getLanguagePaths();
+}
+
+const lang = getLangFromUrl(Astro.url);
+const translationData = await loadTranslations(lang);
+const t = useTranslations(translationData);
+
+const breadcrumbItems = [
+  { label: t('nav.home'), href: getLocalizedPath('', lang) },
+  { label: t('nav.tools'), href: getLocalizedPath('tools', lang) },
+  { label: t('tools.tank.title') }
+];
+---
+
+<PageLayout
+  title={`${t('tools.tank.title')} - Wild Hoggs`}
+  description={t('tools.tank.description')}
+  breadcrumbs={breadcrumbItems}
+>
+  <ErrorBoundary lang={lang} client:load>
+    <TankCalculator lang={lang} translationData={translationData} client:load />
+  </ErrorBoundary>
+</PageLayout>

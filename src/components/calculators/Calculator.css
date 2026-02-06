@@ -508,3 +508,55 @@ g[data-unlock-button="true"]:active .unlock-button-bg {
 g[data-unlock-button="true"]:focus-visible .unlock-button-focus-indicator {
   opacity: 1;
 }
+
+/* ============================================
+   Tank Calculator - Vehicle Styles
+   ============================================ */
+
+.vehicle-unlock {
+  background: rgba(52, 152, 219, 0.1);
+  border-color: rgba(52, 152, 219, 0.4);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.vehicle-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.vehicle-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  border-left: 3px solid #ffa500;
+}
+
+.vehicle-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffa500;
+}
+
+.vehicle-level {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 165, 0, 0.2);
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+}
+
+.breakdown-item.vehicle-mod {
+  background: rgba(52, 152, 219, 0.1);
+  border-left: 3px solid #3498db;
+}
+
+.breakdown-item.vehicle-mod:hover {
+  background: rgba(52, 152, 219, 0.2);
+}
