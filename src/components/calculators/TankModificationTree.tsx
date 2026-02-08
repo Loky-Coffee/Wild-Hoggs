@@ -57,10 +57,20 @@ export default function TankModificationTree({
   const calculateInitialZoom = () => {
     if (typeof window === 'undefined') return 1;
     const viewportWidth = window.innerWidth;
-    const targetNodesVisible = 3;
-    const requiredWidth = (NODE_WIDTH * targetNodesVisible) + (NODE_SPACING_X * (targetNodesVisible - 1)) + 200;
-    const calculatedZoom = Math.min(viewportWidth / requiredWidth, 1);
-    return Math.max(calculatedZoom, 0.3);
+    const isMobile = viewportWidth < 768;
+
+    if (isMobile) {
+      const containerPadding = 16;
+      const availableWidth = viewportWidth - (containerPadding * 2);
+      const targetNodesVisible = 3;
+      const mobileSvgPadding = 30;
+      const svgContentWidth = (NODE_WIDTH * targetNodesVisible) + (NODE_SPACING_X * (targetNodesVisible - 1));
+      const requiredWidth = svgContentWidth + (mobileSvgPadding * 2);
+      const calculatedZoom = availableWidth / requiredWidth;
+      return Math.max(calculatedZoom, 0.3);
+    }
+
+    return 1;
   };
 
   const [zoomLevel, setZoomLevel] = useState(calculateInitialZoom);
@@ -135,10 +145,10 @@ export default function TankModificationTree({
     return positions;
   }, [modifications]);
 
-  const svgDimensions = useMemo(
-    () => calculateSVGDimensions(nodePositions),
-    [nodePositions]
-  );
+  const svgDimensions = useMemo(() => {
+    const mobileSvgPadding = typeof window !== 'undefined' && window.innerWidth < 768 ? 30 : 100;
+    return calculateSVGDimensions(nodePositions, mobileSvgPadding);
+  }, [nodePositions]);
 
   // Handle sub-level change with dependency logic
   const handleSubLevelChange = useCallback((level: number, subLevel: number) => {
@@ -276,7 +286,7 @@ export default function TankModificationTree({
         `,
         backgroundSize: '30px 30px',
         borderRadius: '12px',
-        padding: '1rem',
+        padding: typeof window !== 'undefined' && window.innerWidth < 768 ? '0.5rem' : '1rem',
         WebkitOverflowScrolling: 'touch' as any,
         touchAction: 'pan-x pan-y pinch-zoom',
         cursor: 'grab',
