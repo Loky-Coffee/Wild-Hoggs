@@ -30,10 +30,10 @@ export default function WeeklyRoses({ lang, roses, translationData }: WeeklyRose
     // Get current time in UTC-2 (Apocalypse Time)
     const apocalypseTime = getApocalypseTime();
 
-    // Calculate next Sunday 23:59:59 in Apocalypse Time
+    // Calculate this Sunday 23:59:59 in Apocalypse Time
     const nextSunday = new Date(apocalypseTime);
-    const daysUntilSunday = 7 - apocalypseTime.getDay();
-    nextSunday.setDate(apocalypseTime.getDate() + (daysUntilSunday === 0 ? 7 : daysUntilSunday));
+    const daysUntilSunday = (7 - apocalypseTime.getDay()) % 7;
+    nextSunday.setDate(apocalypseTime.getDate() + daysUntilSunday);
     nextSunday.setHours(23, 59, 59, 999);
 
     const diff = nextSunday.getTime() - apocalypseTime.getTime();
