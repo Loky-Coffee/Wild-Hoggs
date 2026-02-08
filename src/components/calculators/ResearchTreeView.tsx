@@ -37,7 +37,16 @@ export default function ResearchTreeView({
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  const [zoomLevel, setZoomLevel] = useState(1);
+  const calculateInitialZoom = () => {
+    if (typeof window === 'undefined') return 1;
+    const viewportWidth = window.innerWidth;
+    const targetNodesVisible = 3;
+    const requiredWidth = (NODE_WIDTH * targetNodesVisible) + (NODE_SPACING * (targetNodesVisible - 1)) + 200;
+    const calculatedZoom = Math.min(viewportWidth / requiredWidth, 1);
+    return Math.max(calculatedZoom, 0.3);
+  };
+
+  const [zoomLevel, setZoomLevel] = useState(calculateInitialZoom);
   const [focusedNodeId, setFocusedNodeId] = useState<string | null>(null);
   const MIN_ZOOM = 0.3;
   const MAX_ZOOM = 2.0;

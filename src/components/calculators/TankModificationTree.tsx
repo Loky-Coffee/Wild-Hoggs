@@ -54,7 +54,16 @@ export default function TankModificationTree({
   const isDraggingRef = useRef(false);
   const dragStartRef = useRef({ x: 0, y: 0, scrollLeft: 0, scrollTop: 0 });
 
-  const [zoomLevel, setZoomLevel] = useState(1);
+  const calculateInitialZoom = () => {
+    if (typeof window === 'undefined') return 1;
+    const viewportWidth = window.innerWidth;
+    const targetNodesVisible = 3;
+    const requiredWidth = (NODE_WIDTH * targetNodesVisible) + (NODE_SPACING_X * (targetNodesVisible - 1)) + 200;
+    const calculatedZoom = Math.min(viewportWidth / requiredWidth, 1);
+    return Math.max(calculatedZoom, 0.3);
+  };
+
+  const [zoomLevel, setZoomLevel] = useState(calculateInitialZoom);
   const [focusedNodeLevel, setFocusedNodeLevel] = useState<number | null>(null);
   const MIN_ZOOM = 0.3;
   const MAX_ZOOM = 2.0;
