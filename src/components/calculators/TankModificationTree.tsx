@@ -54,30 +54,42 @@ export default function TankModificationTree({
   const isDraggingRef = useRef(false);
   const dragStartRef = useRef({ x: 0, y: 0, scrollLeft: 0, scrollTop: 0 });
 
-  const calculateInitialZoom = () => {
-    if (typeof window === 'undefined') return 1;
-    const viewportWidth = window.innerWidth;
-    const isMobile = viewportWidth < 768;
-
-    if (isMobile) {
-      const containerPadding = 16;
-      const availableWidth = viewportWidth - (containerPadding * 2);
-      const targetNodesVisible = 3;
-      const mobileSvgPadding = 30;
-      const svgContentWidth = (NODE_WIDTH * targetNodesVisible) + (NODE_SPACING_X * (targetNodesVisible - 1));
-      const requiredWidth = svgContentWidth + (mobileSvgPadding * 2);
-      const calculatedZoom = availableWidth / requiredWidth;
-      return Math.max(calculatedZoom, 0.3);
-    }
-
-    return 1;
-  };
-
-  const [zoomLevel, setZoomLevel] = useState(calculateInitialZoom);
+  const [zoomLevel, setZoomLevel] = useState(1);
   const [focusedNodeLevel, setFocusedNodeLevel] = useState<number | null>(null);
   const MIN_ZOOM = 0.3;
   const MAX_ZOOM = 2.0;
   const ZOOM_STEP = 0.2;
+
+  useEffect(() => {
+    const calculateAndSetZoom = () => {
+      if (!scrollContainerRef.current) return;
+
+      const containerWidth = scrollContainerRef.current.clientWidth;
+      const viewportWidth = window.innerWidth;
+      const isMobile = viewportWidth < 768;
+
+      if (isMobile) {
+        const targetNodesVisible = 3;
+        const mobileSvgPadding = 30;
+        const svgContentWidth = (NODE_WIDTH * targetNodesVisible) + (NODE_SPACING_X * (targetNodesVisible - 1));
+        const requiredWidth = svgContentWidth + (mobileSvgPadding * 2);
+        const calculatedZoom = containerWidth / requiredWidth;
+        const finalZoom = Math.max(Math.min(calculatedZoom, 1), MIN_ZOOM);
+        setZoomLevel(finalZoom);
+      } else {
+        setZoomLevel(1);
+      }
+    };
+
+    calculateAndSetZoom();
+
+    const handleResize = () => {
+      calculateAndSetZoom();
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const formatNumber = (num: number) => sharedFormatNumber(num, lang);
 

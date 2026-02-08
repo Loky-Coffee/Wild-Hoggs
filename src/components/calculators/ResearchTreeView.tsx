@@ -37,30 +37,42 @@ export default function ResearchTreeView({
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  const calculateInitialZoom = () => {
-    if (typeof window === 'undefined') return 1;
-    const viewportWidth = window.innerWidth;
-    const isMobile = viewportWidth < 768;
-
-    if (isMobile) {
-      const containerPadding = 16;
-      const availableWidth = viewportWidth - (containerPadding * 2);
-      const targetNodesVisible = 3;
-      const mobileSvgPadding = 30;
-      const svgContentWidth = (NODE_WIDTH * targetNodesVisible) + (TIER_SPACING * (targetNodesVisible - 1));
-      const requiredWidth = svgContentWidth + (mobileSvgPadding * 2);
-      const calculatedZoom = availableWidth / requiredWidth;
-      return Math.max(calculatedZoom, 0.3);
-    }
-
-    return 1;
-  };
-
-  const [zoomLevel, setZoomLevel] = useState(calculateInitialZoom);
+  const [zoomLevel, setZoomLevel] = useState(1);
   const [focusedNodeId, setFocusedNodeId] = useState<string | null>(null);
   const MIN_ZOOM = 0.3;
   const MAX_ZOOM = 2.0;
   const ZOOM_STEP = 0.2;
+
+  useEffect(() => {
+    const calculateAndSetZoom = () => {
+      if (!scrollContainerRef.current) return;
+
+      const containerWidth = scrollContainerRef.current.clientWidth;
+      const viewportWidth = window.innerWidth;
+      const isMobile = viewportWidth < 768;
+
+      if (isMobile) {
+        const targetNodesVisible = 3;
+        const mobileSvgPadding = 30;
+        const svgContentWidth = (NODE_WIDTH * targetNodesVisible) + (TIER_SPACING * (targetNodesVisible - 1));
+        const requiredWidth = svgContentWidth + (mobileSvgPadding * 2);
+        const calculatedZoom = containerWidth / requiredWidth;
+        const finalZoom = Math.max(Math.min(calculatedZoom, 1), MIN_ZOOM);
+        setZoomLevel(finalZoom);
+      } else {
+        setZoomLevel(1);
+      }
+    };
+
+    calculateAndSetZoom();
+
+    const handleResize = () => {
+      calculateAndSetZoom();
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleZoomIn = () => {
     const newZoom = Math.min(zoomLevel + ZOOM_STEP, MAX_ZOOM);
