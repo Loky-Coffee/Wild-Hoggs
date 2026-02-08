@@ -69,11 +69,8 @@ export default function TankModificationTree({
       const isMobile = viewportWidth < 768;
 
       if (isMobile) {
-        const targetNodesVisible = 3;
-        const mobileSvgPadding = 30;
-        const svgContentWidth = (NODE_WIDTH * targetNodesVisible) + (NODE_SPACING_X * (targetNodesVisible - 1));
-        const requiredWidth = svgContentWidth + (mobileSvgPadding * 2);
-        const calculatedZoom = containerWidth / requiredWidth;
+        const targetSVGWidth = svgDimensions.width * 0.85;
+        const calculatedZoom = containerWidth / targetSVGWidth;
         const finalZoom = Math.max(Math.min(calculatedZoom, 1), MIN_ZOOM);
         setZoomLevel(finalZoom);
       } else {
@@ -89,7 +86,7 @@ export default function TankModificationTree({
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  }, [svgDimensions]);
 
   const formatNumber = (num: number) => sharedFormatNumber(num, lang);
 
