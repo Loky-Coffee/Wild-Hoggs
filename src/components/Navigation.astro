@@ -278,6 +278,32 @@ const currentPath = Astro.url.pathname;
 
     // Add new listener
     toggle.addEventListener('click', clickHandler);
+
+    // Close menu when clicking outside
+    const closeMenuOnClickOutside = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+
+      // Check if menu is open
+      if (!navLinks.classList.contains('open')) return;
+
+      // Check if click is outside nav-links and nav-toggle
+      if (!navLinks.contains(target) && !toggle.contains(target)) {
+        navLinks.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    };
+
+    // Remove old click-outside listener if exists
+    const oldOutsideHandler = (document as any).__navOutsideHandler;
+    if (oldOutsideHandler) {
+      document.removeEventListener('click', oldOutsideHandler);
+    }
+
+    // Store handler reference for cleanup
+    (document as any).__navOutsideHandler = closeMenuOnClickOutside;
+
+    // Add click-outside listener
+    document.addEventListener('click', closeMenuOnClickOutside);
   }
 
   // Run on initial page load
