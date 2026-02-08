@@ -4,12 +4,15 @@ import { formatNumber as sharedFormatNumber } from '../../utils/formatters';
 import type { TranslationData } from '../../i18n/index';
 import ResearchTreeNode from './ResearchTreeNode';
 import ResearchTreeConnections from './ResearchTreeConnections';
-
-interface TreeNodePosition {
-  x: number;
-  y: number;
-  tier: number;
-}
+import {
+  NODE_WIDTH,
+  NODE_HEIGHT,
+  RESEARCH_TIER_SPACING as TIER_SPACING,
+  RESEARCH_NODE_SPACING as NODE_SPACING,
+  calculateSVGDimensions,
+  type TreeNodePosition,
+  type SVGDimensions
+} from '../../utils/treeNodeConfig';
 
 interface ResearchTreeViewProps {
   readonly technologies: Technology[];
@@ -21,10 +24,6 @@ interface ResearchTreeViewProps {
   readonly translationData: TranslationData;
 }
 
-const NODE_WIDTH = 220;
-const NODE_HEIGHT = 180;
-const TIER_SPACING = 250; // Reduced from 320 to bring rows closer together
-const NODE_SPACING = 240;
 
 export default function ResearchTreeView({
   technologies,
@@ -373,27 +372,10 @@ export default function ResearchTreeView({
     };
   }, []);
 
-  const svgDimensions = useMemo(() => {
-    let minX = 0, minY = 0, maxX = 0, maxY = 0;
-
-    nodePositions.forEach((pos) => {
-      minX = Math.min(minX, pos.x - NODE_WIDTH / 2);
-      minY = Math.min(minY, pos.y - NODE_HEIGHT / 2);
-      maxX = Math.max(maxX, pos.x + NODE_WIDTH / 2);
-      maxY = Math.max(maxY, pos.y + NODE_HEIGHT / 2);
-    });
-
-    const padding = 100;
-    const offsetX = -minX + padding;
-    const offsetY = -minY + padding;
-
-    return {
-      width: maxX - minX + padding * 2,
-      height: maxY - minY + padding * 2,
-      offsetX,
-      offsetY
-    };
-  }, [nodePositions]);
+  const svgDimensions = useMemo(
+    () => calculateSVGDimensions(nodePositions),
+    [nodePositions]
+  );
 
   // Render tree with connections and nodes using extracted components
   return (

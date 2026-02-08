@@ -1,5 +1,6 @@
 import { memo } from 'preact/compat';
 import type { VNode } from 'preact';
+import { NODE_WIDTH, NODE_HEIGHT, type SVGDimensions } from '../../utils/treeNodeConfig';
 
 interface TankModification {
   level: number;
@@ -22,16 +23,8 @@ interface TankModificationConnectionsProps {
   readonly modifications: TankModification[];
   readonly nodePositions: Map<number, NodePosition>;
   readonly unlockedLevels: Set<number>;
-  readonly svgDimensions: {
-    width: number;
-    height: number;
-    offsetX: number;
-    offsetY: number;
-  };
+  readonly svgDimensions: SVGDimensions;
 }
-
-const NODE_WIDTH = 220;
-const NODE_HEIGHT = 180;
 
 function TankModificationConnections({
   modifications,

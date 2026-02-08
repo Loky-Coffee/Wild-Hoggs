@@ -3,6 +3,14 @@ import TankModificationNode from './TankModificationNode';
 import TankModificationConnections from './TankModificationConnections';
 import { formatNumber as sharedFormatNumber } from '../../utils/formatters';
 import type { TranslationData } from '../../i18n/index';
+import {
+  NODE_WIDTH,
+  NODE_HEIGHT,
+  TANK_NODE_SPACING_X as NODE_SPACING_X,
+  TANK_NODE_SPACING_Y as NODE_SPACING_Y,
+  TANK_NODES_PER_ROW as NODES_PER_ROW,
+  calculateSVGDimensions
+} from '../../utils/treeNodeConfig';
 
 interface TankModification {
   level: number;
@@ -31,11 +39,6 @@ interface TankModificationTreeProps {
   readonly translationData: TranslationData;
 }
 
-const NODE_WIDTH = 220;
-const NODE_HEIGHT = 180;
-const NODE_SPACING_X = 280;
-const NODE_SPACING_Y = 300;
-const NODES_PER_ROW = 5;
 
 export default function TankModificationTree({
   modifications,
@@ -123,28 +126,10 @@ export default function TankModificationTree({
     return positions;
   }, [modifications]);
 
-  // Calculate SVG dimensions with proper padding (EXACT copy from ResearchTreeView)
-  const svgDimensions = useMemo(() => {
-    let minX = 0, minY = 0, maxX = 0, maxY = 0;
-
-    nodePositions.forEach((pos) => {
-      minX = Math.min(minX, pos.x - NODE_WIDTH / 2);
-      minY = Math.min(minY, pos.y - NODE_HEIGHT / 2);
-      maxX = Math.max(maxX, pos.x + NODE_WIDTH / 2);
-      maxY = Math.max(maxY, pos.y + NODE_HEIGHT / 2);
-    });
-
-    const padding = 100;
-    const offsetX = -minX + padding;
-    const offsetY = -minY + padding;
-
-    return {
-      width: maxX - minX + padding * 2,
-      height: maxY - minY + padding * 2,
-      offsetX,
-      offsetY
-    };
-  }, [nodePositions]);
+  const svgDimensions = useMemo(
+    () => calculateSVGDimensions(nodePositions),
+    [nodePositions]
+  );
 
   // Handle sub-level change with dependency logic
   const handleSubLevelChange = useCallback((level: number, subLevel: number) => {

@@ -1,28 +1,20 @@
 import { memo } from 'preact/compat';
 import type { VNode } from 'preact';
 import type { Technology } from '../../schemas/research';
-
-interface TreeNodePosition {
-  x: number;
-  y: number;
-  tier: number;
-}
+import {
+  NODE_WIDTH,
+  NODE_HEIGHT,
+  type TreeNodePosition,
+  type SVGDimensions
+} from '../../utils/treeNodeConfig';
 
 interface ResearchTreeConnectionsProps {
   readonly technologies: Technology[];
   readonly nodePositions: Map<string, TreeNodePosition>;
   readonly selectedLevels: Map<string, number>;
-  readonly svgDimensions: {
-    width: number;
-    height: number;
-    offsetX: number;
-    offsetY: number;
-  };
+  readonly svgDimensions: SVGDimensions;
   readonly layoutDirection: 'horizontal' | 'vertical';
 }
-
-const NODE_WIDTH = 220;
-const NODE_HEIGHT = 180;
 
 function ResearchTreeConnections({
   technologies,

@@ -2,6 +2,7 @@ import { memo, useRef, useEffect } from 'preact/compat';
 import { useTranslations } from '../../i18n/utils';
 import type { TranslationData } from '../../i18n/index';
 import RangeTouch from 'rangetouch';
+import { NODE_WIDTH, NODE_HEIGHT } from '../../utils/treeNodeConfig';
 
 interface TankModification {
   level: number;
@@ -27,9 +28,6 @@ interface TankModificationNodeProps {
   readonly lang: 'de' | 'en';
   readonly translationData: TranslationData;
 }
-
-const NODE_WIDTH = 220;
-const NODE_HEIGHT = 180;
 
 function TankModificationNode({
   mod,

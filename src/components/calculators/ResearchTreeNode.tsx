@@ -5,6 +5,7 @@ import { getResearchImage } from '../../utils/researchImages';
 import { useTranslations } from '../../i18n/utils';
 import type { TranslationData } from '../../i18n/index';
 import RangeTouch from 'rangetouch';
+import { NODE_WIDTH, NODE_HEIGHT } from '../../utils/treeNodeConfig';
 
 interface ResearchTreeNodeProps {
   readonly tech: Technology;
@@ -20,10 +21,6 @@ interface ResearchTreeNodeProps {
   readonly translationData: TranslationData;
 }
 
-const NODE_WIDTH = 220;
-const NODE_HEIGHT = 180;
-
-// Function to generate fallback SVG with first letter of tech name
 function generateFallbackSvg(letter: string): string {
   const encodedLetter = encodeURIComponent(letter.toUpperCase());
   return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%23333' width='100' height='100'/%3E%3Ctext x='50' y='50' text-anchor='middle' dy='.3em' fill='%23ffa500' font-size='50' font-weight='bold'%3E${encodedLetter}%3C/text%3E%3C/svg%3E`;
