@@ -23,7 +23,7 @@ interface ResearchTreeViewProps {
 
 const NODE_WIDTH = 220;
 const NODE_HEIGHT = 180;
-const TIER_SPACING = 320;
+const TIER_SPACING = 250; // Reduced from 320 to bring rows closer together
 const NODE_SPACING = 240;
 
 export default function ResearchTreeView({
