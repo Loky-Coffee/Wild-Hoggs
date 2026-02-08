@@ -7,6 +7,9 @@ import TankCalculator from '../../../components/calculators/TankCalculator';
 import { ErrorBoundary } from '../../../components/ErrorBoundary';
 import '../../../styles/shared-layouts.css';
 
+// Mark this page as special for CSS scoping
+const pageClass = 'page-tank-calculator';
+
 export function getStaticPaths() {
   return getLanguagePaths();
 }
@@ -27,7 +30,71 @@ const breadcrumbItems = [
   description={t('tools.tank.description')}
   breadcrumbs={breadcrumbItems}
 >
-  <ErrorBoundary lang={lang} client:load>
-    <TankCalculator lang={lang} translationData={translationData} client:load />
-  </ErrorBoundary>
+  <div class="calculator-wrapper">
+    <ErrorBoundary lang={lang} client:load>
+      <TankCalculator lang={lang} translationData={translationData} client:load />
+    </ErrorBoundary>
+  </div>
 </PageLayout>
+
+<script define:vars={{ pageClass }}>
+  function applyPageClass() {
+    document.body.classList.add(pageClass);
+  }
+
+  function removePageClass() {
+    document.body.classList.remove(pageClass);
+  }
+
+  // Apply immediately on initial load
+  applyPageClass();
+
+  // Cleanup BEFORE swap to prevent flickering
+  document.addEventListener('astro:before-swap', removePageClass);
+
+  // Re-apply AFTER swap completes
+  document.addEventListener('astro:after-swap', () => {
+    if (window.location.pathname.includes('/tools/tank')) {
+      applyPageClass();
+    }
+  });
+</script>
+
+<style is:global>
+  /* Override page-content only when body has this specific class */
+  body.page-tank-calculator .page-content {
+    overflow: hidden !important;
+    overflow-y: hidden !important;
+    overflow-x: hidden !important;
+    padding: 0 !important;
+    margin-top: 80px;
+    height: calc(100vh - 80px);
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+  }
+
+  @media (max-width: 768px) {
+    body.page-tank-calculator .page-content {
+      margin-top: 70px;
+      height: calc(100dvh - 70px);
+    }
+  }
+</style>
+
+<style>
+  .calculator-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    padding: 1rem;
+    gap: 0;
+  }
+
+  /* Make TankCalculator take remaining space */
+  .calculator-wrapper > :global(*:last-child) {
+    flex: 1;
+    min-height: 0;
+  }
+</style>

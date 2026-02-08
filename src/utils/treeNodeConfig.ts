@@ -27,7 +27,11 @@ export function calculateSVGDimensions(
   nodePositions: Map<string | number, TreeNodePosition>,
   padding: number = 100
 ): SVGDimensions {
-  let minX = 0, minY = 0, maxX = 0, maxY = 0;
+  if (nodePositions.size === 0) {
+    return { width: 0, height: 0, offsetX: 0, offsetY: 0 };
+  }
+
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
 
   nodePositions.forEach((pos) => {
     minX = Math.min(minX, pos.x - NODE_WIDTH / 2);

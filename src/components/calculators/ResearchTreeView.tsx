@@ -512,6 +512,7 @@ export default function ResearchTreeView({
         backgroundSize: '30px 30px',
         borderRadius: '12px',
         padding: typeof window !== 'undefined' && window.innerWidth < 768 ? `${CONTAINER_PADDING_MOBILE}rem` : `${CONTAINER_PADDING_DESKTOP}rem`,
+        paddingBottom: typeof window !== 'undefined' && window.innerWidth < 768 ? '120px' : '140px',
         WebkitOverflowScrolling: 'touch' as const,
         touchAction: 'pan-x pan-y pinch-zoom',
         cursor: 'grab',

@@ -56,93 +56,76 @@ export default function TankModificationTree({
 
   const [zoomLevel, setZoomLevel] = useState(1);
   const [focusedNodeLevel, setFocusedNodeLevel] = useState<number | null>(null);
+  const [mounted, setMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const MIN_ZOOM = 0.3;
   const MAX_ZOOM = 2.0;
   const ZOOM_STEP = 0.2;
-
-  useEffect(() => {
-    const calculateAndSetZoom = () => {
-      if (!scrollContainerRef.current) return;
-
-      const containerWidth = scrollContainerRef.current.clientWidth;
-      const viewportWidth = window.innerWidth;
-      const isMobile = viewportWidth < 768;
-
-      if (isMobile) {
-        const targetSVGWidth = svgDimensions.width * 0.85;
-        const calculatedZoom = containerWidth / targetSVGWidth;
-        const finalZoom = Math.max(Math.min(calculatedZoom, 1), MIN_ZOOM);
-        setZoomLevel(finalZoom);
-      } else {
-        setZoomLevel(1);
-      }
-    };
-
-    calculateAndSetZoom();
-
-    const handleResize = () => {
-      calculateAndSetZoom();
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [svgDimensions]);
+  const SVG_PADDING = 5;
+  const CONTAINER_PADDING_MOBILE = 0.5; // rem
+  const CONTAINER_PADDING_DESKTOP = 1; // rem
 
   const formatNumber = (num: number) => sharedFormatNumber(num, lang);
 
-  const handleZoomIn = () => {
-    const newZoom = Math.min(zoomLevel + ZOOM_STEP, MAX_ZOOM);
-    setZoomLevel(newZoom);
+  // Set mounted flag and detect mobile/desktop on mount and resize
+  useEffect(() => {
+    console.log('[TankTree] Mount effect running...');
+    setMounted(true);
 
-    // If a node is focused, scroll to center it
-    if (focusedNodeLevel !== null && scrollContainerRef.current) {
-      setTimeout(() => {
-        const nodePos = nodePositions.get(focusedNodeLevel);
-        if (nodePos) {
-          const container = scrollContainerRef.current!;
-          const adjustedX = (nodePos.x + svgDimensions.offsetX) * newZoom;
-          const adjustedY = (nodePos.y + svgDimensions.offsetY) * newZoom;
+    const handleResize = () => {
+      const mobile = window.innerWidth < 768;
+      console.log('[TankTree] handleResize called:', { innerWidth: window.innerWidth, mobile });
+      setIsMobile(mobile);
+    };
 
-          container.scrollLeft = adjustedX - container.clientWidth / 2;
-          container.scrollTop = adjustedY - container.clientHeight / 2;
-        }
-      }, 50);
-    }
-  };
+    // Immediate check on mount
+    handleResize();
 
-  const handleZoomOut = () => {
-    const newZoom = Math.max(zoomLevel - ZOOM_STEP, MIN_ZOOM);
-    setZoomLevel(newZoom);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
-    // If a node is focused, scroll to center it
-    if (focusedNodeLevel !== null && scrollContainerRef.current) {
-      setTimeout(() => {
-        const nodePos = nodePositions.get(focusedNodeLevel);
-        if (nodePos) {
-          const container = scrollContainerRef.current!;
-          const adjustedX = (nodePos.x + svgDimensions.offsetX) * newZoom;
-          const adjustedY = (nodePos.y + svgDimensions.offsetY) * newZoom;
+  // Log state changes
+  useEffect(() => {
+    console.log('[TankTree] State changed:', { mounted, isMobile });
+  }, [mounted, isMobile]);
 
-          container.scrollLeft = adjustedX - container.clientWidth / 2;
-          container.scrollTop = adjustedY - container.clientHeight / 2;
-        }
-      }, 50);
-    }
-  };
-
-  // Calculate zigzag layout positions
+  // Calculate zigzag layout positions (responsive: 3 nodes on mobile, 5 on desktop)
+  // IMPORTANT: Only use responsive layout after client-side hydration to avoid SSR mismatch
   const nodePositions = useMemo((): Map<number, NodePosition> => {
     const positions = new Map<number, NodePosition>();
+    // Use responsive layout only after mounting on client
+    const nodesPerRow = (mounted && isMobile) ? 3 : NODES_PER_ROW; // 3 on mobile, 5 on desktop
+
+    // Log first 10 modifications to see their levels
+    const firstMods = modifications.slice(0, 10).map(m => m.level);
+    console.log('[TankTree] Calculating nodePositions:', {
+      mounted,
+      isMobile,
+      nodesPerRow,
+      windowWidth: typeof window !== 'undefined' ? window.innerWidth : 'unknown',
+      modificationsCount: modifications.length,
+      firstModLevels: firstMods
+    });
+
+    // Log all nodes in first row
+    const firstRowNodes = modifications.slice(0, nodesPerRow).map((m, idx) => ({
+      index: idx,
+      level: m.level,
+      row: Math.floor(idx / nodesPerRow),
+      col: Math.floor(idx / nodesPerRow) % 2 === 0 ? idx % nodesPerRow : (nodesPerRow - 1) - (idx % nodesPerRow)
+    }));
+    console.log('[TankTree] First row nodes:', firstRowNodes);
 
     modifications.forEach((mod, index) => {
-      const row = Math.floor(index / NODES_PER_ROW);
+      const row = Math.floor(index / nodesPerRow);
       const isEvenRow = row % 2 === 0;
 
       let col: number;
       if (isEvenRow) {
-        col = index % NODES_PER_ROW;
+        col = index % nodesPerRow;
       } else {
-        col = (NODES_PER_ROW - 1) - (index % NODES_PER_ROW);
+        col = (nodesPerRow - 1) - (index % nodesPerRow);
       }
 
       const x = col * NODE_SPACING_X;
@@ -152,76 +135,190 @@ export default function TankModificationTree({
     });
 
     return positions;
-  }, [modifications]);
+  }, [modifications, mounted, isMobile]);
 
   const svgDimensions = useMemo(() => {
-    const mobileSvgPadding = typeof window !== 'undefined' && window.innerWidth < 768 ? 30 : 100;
-    return calculateSVGDimensions(nodePositions, mobileSvgPadding);
-  }, [nodePositions]);
+    const padding = (mounted && isMobile) ? 10 : SVG_PADDING;
+    return calculateSVGDimensions(nodePositions, padding);
+  }, [nodePositions, mounted, isMobile]);
+
+  useEffect(() => {
+    if (focusedNodeLevel === null && modifications.length > 0 && nodePositions.size > 0) {
+      let centerNodeLevel = modifications[0].level;
+      let minDistanceToCenter = Infinity;
+
+      nodePositions.forEach((pos, level) => {
+        const distanceToCenter = Math.abs(pos.x);
+        if (distanceToCenter < minDistanceToCenter) {
+          minDistanceToCenter = distanceToCenter;
+          centerNodeLevel = level;
+        }
+      });
+
+      console.log('Auto-focusing center node level:', centerNodeLevel);
+      setFocusedNodeLevel(centerNodeLevel);
+    }
+  }, [modifications, focusedNodeLevel, nodePositions]);
+
+  // Calculate initial zoom to fit content perfectly on mobile
+  useEffect(() => {
+    if (!scrollContainerRef.current || !mounted) return;
+
+    const container = scrollContainerRef.current;
+    const containerWidth = container.clientWidth;
+
+    if (isMobile) {
+      // Get actual computed padding to calculate available space
+      const computedStyle = window.getComputedStyle(container);
+      const paddingLeft = parseFloat(computedStyle.paddingLeft);
+      const paddingRight = parseFloat(computedStyle.paddingRight);
+      const containerPadding = paddingLeft + paddingRight;
+      const availableWidth = containerWidth - containerPadding;
+
+      // Target: show 3 nodes side-by-side (exact width calculation like ResearchTree)
+      const targetContentWidth = NODE_SPACING_X * 3;
+
+      // Calculate zoom to fit content perfectly in available space
+      const calculatedZoom = availableWidth / targetContentWidth;
+      const finalZoom = Math.max(Math.min(calculatedZoom, 1), MIN_ZOOM);
+
+      console.log('[TankModificationTree] Initial mobile zoom:', {
+        containerWidth,
+        containerPadding,
+        availableWidth,
+        targetContentWidth,
+        svgWidth: svgDimensions.width,
+        svgHeight: svgDimensions.height,
+        scaledWidth: svgDimensions.width * finalZoom,
+        scaledHeight: svgDimensions.height * finalZoom,
+        calculatedZoom,
+        finalZoom
+      });
+
+      setZoomLevel(finalZoom);
+    } else {
+      setZoomLevel(1);
+    }
+  }, [svgDimensions, mounted, isMobile]);
+
+  const handleZoomIn = () => {
+    setZoomLevel(prev => Math.min(prev + ZOOM_STEP, MAX_ZOOM));
+  };
+
+  const handleZoomOut = () => {
+    setZoomLevel(prev => Math.max(prev - ZOOM_STEP, MIN_ZOOM));
+  };
+
+  const handleResetView = () => {
+    // Reset zoom to initial mobile zoom or 1 for desktop
+    if (mounted && isMobile && scrollContainerRef.current) {
+      // Recalculate initial mobile zoom
+      const container = scrollContainerRef.current;
+      const containerWidth = container.clientWidth;
+      const computedStyle = window.getComputedStyle(container);
+      const paddingLeft = parseFloat(computedStyle.paddingLeft);
+      const paddingRight = parseFloat(computedStyle.paddingRight);
+      const containerPadding = paddingLeft + paddingRight;
+      const availableWidth = containerWidth - containerPadding;
+      const targetContentWidth = NODE_SPACING_X * 3;
+      const calculatedZoom = availableWidth / targetContentWidth;
+      const finalZoom = Math.max(Math.min(calculatedZoom, 1), MIN_ZOOM);
+      setZoomLevel(finalZoom);
+    } else {
+      setZoomLevel(1);
+    }
+
+    // Scroll to center
+    if (scrollContainerRef.current) {
+      const container = scrollContainerRef.current;
+      container.scrollTo({
+        left: (container.scrollWidth - container.clientWidth) / 2,
+        top: (container.scrollHeight - container.clientHeight) / 2,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  // Navigation scroll handlers - scroll by 80% of viewport (20% overlap)
+  const handleScrollLeft = () => {
+    if (!scrollContainerRef.current) return;
+    const container = scrollContainerRef.current;
+    const scrollAmount = container.clientWidth * 0.8;
+    container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+  };
+
+  const handleScrollRight = () => {
+    if (!scrollContainerRef.current) return;
+    const container = scrollContainerRef.current;
+    const scrollAmount = container.clientWidth * 0.8;
+    container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+  };
+
+  const handleScrollUp = () => {
+    if (!scrollContainerRef.current) return;
+    const container = scrollContainerRef.current;
+    const scrollAmount = container.clientHeight * 0.8;
+    container.scrollBy({ top: -scrollAmount, behavior: 'smooth' });
+  };
+
+  const handleScrollDown = () => {
+    if (!scrollContainerRef.current) return;
+    const container = scrollContainerRef.current;
+    const scrollAmount = container.clientHeight * 0.8;
+    container.scrollBy({ top: scrollAmount, behavior: 'smooth' });
+  };
 
   // Handle sub-level change with dependency logic
   const handleSubLevelChange = useCallback((level: number, subLevel: number) => {
-    onSubLevelsChange((prev) => {
-      const newMap = new Map(prev);
-      const currentMod = modifications.find(m => m.level === level);
-      if (!currentMod) return prev;
+    const newMap = new Map(subLevels);
+    const currentMod = modifications.find(m => m.level === level);
+    if (!currentMod) return;
 
-      newMap.set(level, subLevel);
+    newMap.set(level, subLevel);
 
-      const wasMax = prev.get(level) === currentMod.subLevels;
-      const isNowLessThanMax = subLevel < currentMod.subLevels;
+    const wasMax = subLevels.get(level) === currentMod.subLevels;
+    const isNowLessThanMax = subLevel < currentMod.subLevels;
 
-      if (wasMax && isNowLessThanMax) {
-        const currentIndex = modifications.findIndex(m => m.level === level);
-        for (let i = currentIndex + 1; i < modifications.length; i++) {
-          newMap.set(modifications[i].level, 0);
-        }
+    if (wasMax && isNowLessThanMax) {
+      const currentIndex = modifications.findIndex(m => m.level === level);
+      for (let i = currentIndex + 1; i < modifications.length; i++) {
+        newMap.set(modifications[i].level, 0);
       }
+    }
 
-      return newMap;
-    });
+    onSubLevelsChange(newMap);
 
-    onUnlockedLevelsChange((prev) => {
-      const newSet = new Set(prev);
-      const currentMod = modifications.find(m => m.level === level);
-      if (!currentMod) return prev;
+    const newSet = new Set(unlockedLevels);
 
-      const isNowLessThanMax = subLevel < currentMod.subLevels;
-
-      if (isNowLessThanMax) {
-        const currentIndex = modifications.findIndex(m => m.level === level);
-        for (let i = currentIndex + 1; i < modifications.length; i++) {
-          newSet.delete(modifications[i].level);
-        }
+    if (isNowLessThanMax) {
+      const currentIndex = modifications.findIndex(m => m.level === level);
+      for (let i = currentIndex + 1; i < modifications.length; i++) {
+        newSet.delete(modifications[i].level);
       }
+    }
 
-      return newSet;
-    });
-  }, [modifications, onSubLevelsChange, onUnlockedLevelsChange]);
+    onUnlockedLevelsChange(newSet);
+  }, [modifications, subLevels, unlockedLevels, onSubLevelsChange, onUnlockedLevelsChange]);
 
   // Handle unlock - set all previous to MAX
   const handleUnlock = useCallback((mod: TankModification) => {
     const currentIndex = modifications.findIndex(m => m.level === mod.level);
 
-    onUnlockedLevelsChange((prev) => {
-      const newSet = new Set(prev);
-      newSet.add(mod.level);
-      for (let i = 0; i <= currentIndex; i++) {
-        newSet.add(modifications[i].level);
-      }
-      return newSet;
-    });
+    const newSet = new Set(unlockedLevels);
+    newSet.add(mod.level);
+    for (let i = 0; i <= currentIndex; i++) {
+      newSet.add(modifications[i].level);
+    }
+    onUnlockedLevelsChange(newSet);
 
-    onSubLevelsChange((prev) => {
-      const newMap = new Map(prev);
-      for (let i = 0; i < currentIndex; i++) {
-        const prevMod = modifications[i];
-        newMap.set(prevMod.level, prevMod.subLevels);
-      }
-      newMap.set(mod.level, 0);
-      return newMap;
-    });
-  }, [modifications, onUnlockedLevelsChange, onSubLevelsChange]);
+    const newMap = new Map(subLevels);
+    for (let i = 0; i < currentIndex; i++) {
+      const prevMod = modifications[i];
+      newMap.set(prevMod.level, prevMod.subLevels);
+    }
+    newMap.set(mod.level, 0);
+    onSubLevelsChange(newMap);
+  }, [modifications, subLevels, unlockedLevels, onUnlockedLevelsChange, onSubLevelsChange]);
 
   // Drag-to-scroll (EXACT copy from ResearchTreeView)
   const handleMouseDown = useCallback((e: MouseEvent) => {
@@ -295,28 +392,20 @@ export default function TankModificationTree({
         `,
         backgroundSize: '30px 30px',
         borderRadius: '12px',
-        padding: typeof window !== 'undefined' && window.innerWidth < 768 ? '0.5rem' : '1rem',
+        padding: (mounted && isMobile) ? `${CONTAINER_PADDING_MOBILE}rem` : `${CONTAINER_PADDING_DESKTOP}rem`,
+        paddingBottom: (mounted && isMobile) ? '120px' : '140px',
         WebkitOverflowScrolling: 'touch' as any,
         touchAction: 'pan-x pan-y pinch-zoom',
         cursor: 'grab',
-        display: 'flex',
-        alignItems: 'flex-start',
         userSelect: 'none',
-        WebkitUserSelect: 'none',
-        position: 'relative'
+        WebkitUserSelect: 'none'
       }}
     >
-      <div style={{
-        minWidth: 'min-content',
-        minHeight: 'min-content',
-        transform: `scale(${zoomLevel})`,
-        transformOrigin: 'top left',
-        transition: 'transform 0.2s ease-out'
-      }}>
         <svg
           ref={svgRef}
-          width={svgDimensions.width}
-          height={svgDimensions.height}
+          width={svgDimensions.width * zoomLevel}
+          height={svgDimensions.height * zoomLevel}
+          viewBox={`0 0 ${svgDimensions.width} ${svgDimensions.height}`}
           style={{ display: 'block' }}
         >
           {/* Connections */}
@@ -328,9 +417,20 @@ export default function TankModificationTree({
           />
 
           {/* Nodes */}
-          {modifications.map((mod) => {
+          {modifications.map((mod, index) => {
             const pos = nodePositions.get(mod.level);
             if (!pos) return null;
+
+            // Debug: log first 5 node positions
+            if (index < 5) {
+              console.log(`[TankTree] Rendering node ${index}:`, {
+                level: mod.level,
+                x: pos.x,
+                y: pos.y,
+                row: pos.row,
+                col: pos.col
+              });
+            }
 
             const isUnlocked = unlockedLevels.has(mod.level);
             const currentSubLevel = subLevels.get(mod.level) || 0;
@@ -354,7 +454,6 @@ export default function TankModificationTree({
             );
           })}
         </svg>
-      </div>
 
       {/* Zoom Controls */}
       <div
@@ -363,8 +462,8 @@ export default function TankModificationTree({
           position: 'fixed',
           display: 'flex',
           flexDirection: 'column',
-          gap: '0.25rem',
-          zIndex: 100
+          gap: '0.5rem',
+          zIndex: 1000
         }}
       >
         <style>{`
@@ -374,9 +473,15 @@ export default function TankModificationTree({
           }
           @media (min-width: 769px) {
             .zoom-controls {
-              bottom: 3.5rem;
-              right: 3.5rem;
+              bottom: 2rem;
+              right: 2rem;
             }
+          }
+          .research-tree-node:focus .node-focus-indicator {
+            opacity: 1 !important;
+          }
+          .research-tree-node:focus {
+            outline: none;
           }
         `}</style>
         <button
@@ -405,6 +510,30 @@ export default function TankModificationTree({
         </button>
 
         <button
+          onClick={handleResetView}
+          style={{
+            background: 'rgba(0, 0, 0, 0.8)',
+            border: '1px solid rgba(255, 165, 0, 0.6)',
+            borderRadius: '4px',
+            padding: '0.25rem',
+            cursor: 'pointer',
+            fontSize: '1rem',
+            color: '#ffa500',
+            fontWeight: 'bold',
+            transition: 'all 0.2s',
+            width: '32px',
+            height: '32px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+          aria-label="Reset view"
+          title="Reset view"
+        >
+          ⊙
+        </button>
+
+        <button
           onClick={handleZoomOut}
           disabled={zoomLevel <= MIN_ZOOM}
           style={{
@@ -427,6 +556,136 @@ export default function TankModificationTree({
           aria-label="Zoom out"
         >
           −
+        </button>
+      </div>
+
+      {/* Navigation Controls */}
+      <div
+        className="navigation-controls"
+        style={{
+          position: 'fixed',
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 32px)',
+          gridTemplateRows: 'repeat(3, 32px)',
+          gap: '0.25rem',
+          zIndex: 1000
+        }}
+      >
+        <style>{`
+          .navigation-controls {
+            bottom: 1rem;
+            left: 1rem;
+          }
+          @media (min-width: 769px) {
+            .navigation-controls {
+              bottom: 2rem;
+              left: 2rem;
+            }
+          }
+        `}</style>
+
+        {/* Up arrow - top center */}
+        <button
+          onClick={handleScrollUp}
+          style={{
+            gridColumn: '2',
+            gridRow: '1',
+            background: 'rgba(0, 0, 0, 0.8)',
+            border: '1px solid rgba(255, 165, 0, 0.6)',
+            borderRadius: '4px',
+            padding: '0.25rem',
+            cursor: 'pointer',
+            fontSize: '1rem',
+            color: '#ffa500',
+            fontWeight: 'bold',
+            transition: 'all 0.2s',
+            width: '32px',
+            height: '32px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+          aria-label="Scroll up"
+        >
+          ▲
+        </button>
+
+        {/* Left arrow - middle left */}
+        <button
+          onClick={handleScrollLeft}
+          style={{
+            gridColumn: '1',
+            gridRow: '2',
+            background: 'rgba(0, 0, 0, 0.8)',
+            border: '1px solid rgba(255, 165, 0, 0.6)',
+            borderRadius: '4px',
+            padding: '0.25rem',
+            cursor: 'pointer',
+            fontSize: '1rem',
+            color: '#ffa500',
+            fontWeight: 'bold',
+            transition: 'all 0.2s',
+            width: '32px',
+            height: '32px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+          aria-label="Scroll left"
+        >
+          ◄
+        </button>
+
+        {/* Right arrow - middle right */}
+        <button
+          onClick={handleScrollRight}
+          style={{
+            gridColumn: '3',
+            gridRow: '2',
+            background: 'rgba(0, 0, 0, 0.8)',
+            border: '1px solid rgba(255, 165, 0, 0.6)',
+            borderRadius: '4px',
+            padding: '0.25rem',
+            cursor: 'pointer',
+            fontSize: '1rem',
+            color: '#ffa500',
+            fontWeight: 'bold',
+            transition: 'all 0.2s',
+            width: '32px',
+            height: '32px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+          aria-label="Scroll right"
+        >
+          ►
+        </button>
+
+        {/* Down arrow - bottom center */}
+        <button
+          onClick={handleScrollDown}
+          style={{
+            gridColumn: '2',
+            gridRow: '3',
+            background: 'rgba(0, 0, 0, 0.8)',
+            border: '1px solid rgba(255, 165, 0, 0.6)',
+            borderRadius: '4px',
+            padding: '0.25rem',
+            cursor: 'pointer',
+            fontSize: '1rem',
+            color: '#ffa500',
+            fontWeight: 'bold',
+            transition: 'all 0.2s',
+            width: '32px',
+            height: '32px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+          aria-label="Scroll down"
+        >
+          ▼
         </button>
       </div>
     </div>
