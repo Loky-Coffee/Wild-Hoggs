@@ -119,7 +119,7 @@ export default function RewardCodesLocal({ lang, translationData }: RewardCodesL
                     >
                       ⏰ {t('codes.expiresIn')}:{' '}
                       {timeRemaining.days > 0 && `${timeRemaining.days}${t('codes.days')} `}
-                      {timeRemaining.hours}${t('codes.hours')} {timeRemaining.minutes}${t('codes.minutes')}
+                      {timeRemaining.hours}{t('codes.hours')} {timeRemaining.minutes}{t('codes.minutes')}
                     </div>
                   )}
                 </div>
