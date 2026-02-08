@@ -42,72 +42,9 @@ export default function ResearchTreeView({
   const MIN_ZOOM = 0.3;
   const MAX_ZOOM = 2.0;
   const ZOOM_STEP = 0.2;
-
-  useEffect(() => {
-    const calculateAndSetZoom = () => {
-      if (!scrollContainerRef.current) return;
-
-      const containerWidth = scrollContainerRef.current.clientWidth;
-      const viewportWidth = window.innerWidth;
-      const isMobile = viewportWidth < 768;
-
-      if (isMobile) {
-        const targetSVGWidth = svgDimensions.width * 0.85;
-        const calculatedZoom = containerWidth / targetSVGWidth;
-        const finalZoom = Math.max(Math.min(calculatedZoom, 1), MIN_ZOOM);
-        setZoomLevel(finalZoom);
-      } else {
-        setZoomLevel(1);
-      }
-    };
-
-    calculateAndSetZoom();
-
-    const handleResize = () => {
-      calculateAndSetZoom();
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [svgDimensions]);
-
-  const handleZoomIn = () => {
-    const newZoom = Math.min(zoomLevel + ZOOM_STEP, MAX_ZOOM);
-    setZoomLevel(newZoom);
-
-    if (focusedNodeId !== null && scrollContainerRef.current) {
-      setTimeout(() => {
-        const nodePos = nodePositions.get(focusedNodeId);
-        if (nodePos) {
-          const container = scrollContainerRef.current!;
-          const adjustedX = (nodePos.x + svgDimensions.offsetX) * newZoom;
-          const adjustedY = (nodePos.y + svgDimensions.offsetY) * newZoom;
-
-          container.scrollLeft = adjustedX - container.clientWidth / 2;
-          container.scrollTop = adjustedY - container.clientHeight / 2;
-        }
-      }, 50);
-    }
-  };
-
-  const handleZoomOut = () => {
-    const newZoom = Math.max(zoomLevel - ZOOM_STEP, MIN_ZOOM);
-    setZoomLevel(newZoom);
-
-    if (focusedNodeId !== null && scrollContainerRef.current) {
-      setTimeout(() => {
-        const nodePos = nodePositions.get(focusedNodeId);
-        if (nodePos) {
-          const container = scrollContainerRef.current!;
-          const adjustedX = (nodePos.x + svgDimensions.offsetX) * newZoom;
-          const adjustedY = (nodePos.y + svgDimensions.offsetY) * newZoom;
-
-          container.scrollLeft = adjustedX - container.clientWidth / 2;
-          container.scrollTop = adjustedY - container.clientHeight / 2;
-        }
-      }, 50);
-    }
-  };
+  const SVG_PADDING = 5;
+  const CONTAINER_PADDING_MOBILE = 0.5; // rem
+  const CONTAINER_PADDING_DESKTOP = 1; // rem
 
   const tiers = useMemo((): Map<string, number> => {
     const tiersMap = new Map<string, number>();
@@ -169,6 +106,96 @@ export default function ResearchTreeView({
 
     return positions;
   }, [tiers, layoutDirection]);
+
+  const svgDimensions = useMemo(() => {
+    return calculateSVGDimensions(nodePositions, SVG_PADDING);
+  }, [nodePositions]);
+
+  // Calculate initial zoom to fit content perfectly on mobile
+  useEffect(() => {
+    if (!scrollContainerRef.current) return;
+
+    const container = scrollContainerRef.current;
+    const containerWidth = container.clientWidth;
+    const viewportWidth = window.innerWidth;
+    const isMobile = viewportWidth < 768;
+
+    if (isMobile) {
+      // Get actual computed padding to calculate available space
+      const computedStyle = window.getComputedStyle(container);
+      const paddingLeft = parseFloat(computedStyle.paddingLeft);
+      const paddingRight = parseFloat(computedStyle.paddingRight);
+      const containerPadding = paddingLeft + paddingRight;
+      const availableWidth = containerWidth - containerPadding;
+
+      // Target: show 3 nodes side-by-side in vertical layout
+      const targetContentWidth = layoutDirection === 'vertical'
+        ? NODE_SPACING * 3  // Width for 3 nodes
+        : svgDimensions.width * 0.95;
+
+      // Calculate zoom to fit content perfectly in available space
+      const calculatedZoom = availableWidth / targetContentWidth;
+      const finalZoom = Math.max(Math.min(calculatedZoom, 1), MIN_ZOOM);
+
+      console.log('[ResearchTreeView] Initial mobile zoom:', {
+        containerWidth,
+        containerPadding,
+        availableWidth,
+        targetContentWidth,
+        svgWidth: svgDimensions.width,
+        svgHeight: svgDimensions.height,
+        scaledWidth: svgDimensions.width * finalZoom,
+        scaledHeight: svgDimensions.height * finalZoom,
+        calculatedZoom,
+        finalZoom
+      });
+
+      setZoomLevel(finalZoom);
+    } else {
+      setZoomLevel(1);
+    }
+  }, [svgDimensions, layoutDirection]);
+
+  const handleZoomIn = () => {
+    setZoomLevel(prev => Math.min(prev + ZOOM_STEP, MAX_ZOOM));
+  };
+
+  const handleZoomOut = () => {
+    setZoomLevel(prev => Math.max(prev - ZOOM_STEP, MIN_ZOOM));
+  };
+
+  const handleResetView = () => {
+    // Reset zoom to initial mobile zoom or 1 for desktop
+    const viewportWidth = window.innerWidth;
+    const isMobile = viewportWidth < 768;
+
+    if (isMobile && scrollContainerRef.current) {
+      // Recalculate initial mobile zoom
+      const container = scrollContainerRef.current;
+      const containerWidth = container.clientWidth;
+      const computedStyle = window.getComputedStyle(container);
+      const paddingLeft = parseFloat(computedStyle.paddingLeft);
+      const paddingRight = parseFloat(computedStyle.paddingRight);
+      const containerPadding = paddingLeft + paddingRight;
+      const availableWidth = containerWidth - containerPadding;
+      const targetContentWidth = layoutDirection === 'vertical' ? NODE_SPACING * 3 : svgDimensions.width * 0.95;
+      const calculatedZoom = availableWidth / targetContentWidth;
+      const finalZoom = Math.max(Math.min(calculatedZoom, 1), MIN_ZOOM);
+      setZoomLevel(finalZoom);
+    } else {
+      setZoomLevel(1);
+    }
+
+    // Scroll to center
+    if (scrollContainerRef.current) {
+      const container = scrollContainerRef.current;
+      container.scrollTo({
+        left: (container.scrollWidth - container.clientWidth) / 2,
+        top: (container.scrollHeight - container.clientHeight) / 2,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   const isUnlocked = (tech: Technology): boolean => {
     if (tech.prerequisites.length === 0) return true;
@@ -440,12 +467,6 @@ export default function ResearchTreeView({
     };
   }, []);
 
-  const svgDimensions = useMemo(() => {
-    const mobileSvgPadding = typeof window !== 'undefined' && window.innerWidth < 768 ? 30 : 100;
-    return calculateSVGDimensions(nodePositions, mobileSvgPadding);
-  }, [nodePositions]);
-
-  // Render tree with connections and nodes using extracted components
   return (
     <div
       ref={scrollContainerRef}
@@ -461,26 +482,18 @@ export default function ResearchTreeView({
         `,
         backgroundSize: '30px 30px',
         borderRadius: '12px',
-        padding: typeof window !== 'undefined' && window.innerWidth < 768 ? '0.5rem' : '1rem',
+        padding: typeof window !== 'undefined' && window.innerWidth < 768 ? `${CONTAINER_PADDING_MOBILE}rem` : `${CONTAINER_PADDING_DESKTOP}rem`,
         WebkitOverflowScrolling: 'touch' as const,
         touchAction: 'pan-x pan-y pinch-zoom',
         cursor: 'grab',
-        display: 'flex',
-        alignItems: 'flex-start',
         userSelect: 'none',
         WebkitUserSelect: 'none'
       }}
     >
-        <div style={{
-          minWidth: 'min-content',
-          minHeight: 'min-content',
-          transform: `scale(${zoomLevel})`,
-          transformOrigin: 'top left',
-          transition: 'transform 0.2s ease-out'
-        }}>
           <svg
-            width={svgDimensions.width}
-            height={svgDimensions.height}
+            width={svgDimensions.width * zoomLevel}
+            height={svgDimensions.height * zoomLevel}
+            viewBox={`0 0 ${svgDimensions.width} ${svgDimensions.height}`}
             style={{ display: 'block' }}
           >
             {/* Connection lines - extracted to separate component */}
@@ -513,13 +526,16 @@ export default function ResearchTreeView({
                   formatNumber={formatNumber}
                   onLevelChange={onLevelChange}
                   onUnlockClick={unlockWithPrerequisites}
+                  onFocus={() => {
+                    console.log(`[ResearchTreeView] Setting focusedNodeId to: ${tech.id}`);
+                    setFocusedNodeId(tech.id);
+                  }}
                   lang={lang}
                   translationData={translationData}
                 />
               );
             })}
           </svg>
-        </div>
 
       <div
         className="zoom-controls"
@@ -538,9 +554,15 @@ export default function ResearchTreeView({
           }
           @media (min-width: 769px) {
             .zoom-controls {
-              bottom: 3.5rem;
-              right: 3.5rem;
+              bottom: 2rem;
+              right: 2rem;
             }
+          }
+          .research-tree-node:focus .node-focus-indicator {
+            opacity: 1 !important;
+          }
+          .research-tree-node:focus {
+            outline: none;
           }
         `}</style>
         <button
@@ -566,6 +588,30 @@ export default function ResearchTreeView({
           aria-label="Zoom in"
         >
           +
+        </button>
+
+        <button
+          onClick={handleResetView}
+          style={{
+            background: 'rgba(0, 0, 0, 0.8)',
+            border: '1px solid rgba(255, 165, 0, 0.6)',
+            borderRadius: '4px',
+            padding: '0.25rem',
+            cursor: 'pointer',
+            fontSize: '1rem',
+            color: '#ffa500',
+            fontWeight: 'bold',
+            transition: 'all 0.2s',
+            width: '32px',
+            height: '32px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+          aria-label="Reset view"
+          title="Reset view"
+        >
+          ⊙
         </button>
 
         <button

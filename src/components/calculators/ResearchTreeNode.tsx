@@ -1,5 +1,5 @@
 import { memo } from 'preact/compat';
-import { useRef, useEffect } from 'preact/hooks';
+import { useRef, useEffect, useState } from 'preact/hooks';
 import type { Technology } from '../../schemas/research';
 import { getResearchImage } from '../../utils/researchImages';
 import { useTranslations } from '../../i18n/utils';
@@ -17,6 +17,7 @@ interface ResearchTreeNodeProps {
   readonly formatNumber: (num: number) => string;
   readonly onLevelChange: (techId: string, level: number) => void;
   readonly onUnlockClick: (tech: Technology) => void;
+  readonly onFocus?: () => void;
   readonly lang: 'de' | 'en';
   readonly translationData: TranslationData;
 }
@@ -57,6 +58,7 @@ function ResearchTreeNode({
   formatNumber,
   onLevelChange,
   onUnlockClick,
+  onFocus,
   lang,
   translationData
 }: ResearchTreeNodeProps) {
@@ -69,6 +71,11 @@ function ResearchTreeNode({
   // RangeTouch for iOS touch support
   const rangeInputRef = useRef<HTMLInputElement>(null);
   const rangeTouchInstanceRef = useRef<RangeTouch | null>(null);
+  // Ref for the node group element to programmatically focus it
+  const nodeGroupRef = useRef<SVGGElement>(null);
+
+  // State to control focus indicator visibility (React state for reliable SVG styling)
+  const [isFocused, setIsFocused] = useState(false);
 
   useEffect(() => {
     // Clean up any existing instance first to prevent memory leaks
@@ -122,6 +129,7 @@ function ResearchTreeNode({
 
   return (
     <g
+      ref={nodeGroupRef}
       transform={`translate(${x}, ${y})`}
       data-node-element="true"
       tabIndex={0}
@@ -131,6 +139,28 @@ function ResearchTreeNode({
       data-tech-id={tech.id}
       data-unlocked={unlocked}
       onKeyDown={handleNodeKeyDown}
+      onFocus={() => {
+        console.log(`[ResearchTreeNode] onFocus event triggered for node: ${tech.id}`);
+        setIsFocused(true);
+        onFocus?.();
+      }}
+      onBlur={() => {
+        console.log(`[ResearchTreeNode] onBlur event triggered for node: ${tech.id}`);
+        setIsFocused(false);
+      }}
+      onClick={(e) => {
+        const target = e.target as any;
+        if (!target.closest('input') && !target.closest('[data-clickable="true"]')) {
+          console.log(`[ResearchTreeNode] onClick triggered for node: ${tech.id}, setting focus state`);
+          setIsFocused(true);
+          onFocus?.();
+          // Programmatically focus the node element to trigger :focus CSS
+          if (nodeGroupRef.current) {
+            nodeGroupRef.current.focus();
+            console.log(`[ResearchTreeNode] Called .focus() on node element: ${tech.id}`);
+          }
+        }
+      }}
     >
       {!unlocked && (
         <title>{t('calc.research.unlockPrerequisites')}</title>
@@ -146,10 +176,13 @@ function ResearchTreeNode({
         fill="none"
         stroke="rgba(255, 165, 0, 0.8)"
         strokeWidth={3}
-        opacity={0}
+        opacity={isFocused ? 1 : 0}
         className="node-focus-indicator"
         data-node-element="true"
         pointerEvents="none"
+        style={{
+          transition: 'opacity 0.2s ease-out'
+        }}
       />
 
       {/* Node background */}
@@ -165,6 +198,10 @@ function ResearchTreeNode({
         opacity={unlocked ? 1 : 0.5}
         data-node-element="true"
         className="node-background"
+        style={{
+          filter: isFocused ? 'brightness(1.3)' : 'brightness(1)',
+          transition: 'filter 0.2s ease-out'
+        }}
       />
 
       {/* Unlock button in top-right corner - KEYBOARD ACCESSIBLE */}
