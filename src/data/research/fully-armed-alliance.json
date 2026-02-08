@@ -1,7 +1,7 @@
 {
   "id": "fully_armed_alliance",
   "nameKey": "research.fully_armed_alliance.name",
-  "totalBadges": 470820,
+  "totalBadges": 512480,
   "nodeCount": 18,
   "image": "/images/research/fully-armed-alliance.png",
   "technologies": [
@@ -33,12 +33,12 @@
         410,
         470,
         570,
-        2000,
-        2500,
-        3100,
-        3900,
-        4800,
-        6000
+        680,
+        840,
+        1000,
+        1300,
+        1600,
+        2000
       ],
       "icon": "fully-armed-alliance/piercing-shot",
       "prerequisites": [
@@ -54,12 +54,12 @@
         410,
         470,
         570,
-        2000,
-        2500,
-        3100,
-        3900,
-        4800,
-        6000
+        680,
+        840,
+        1000,
+        1300,
+        1600,
+        2000
       ],
       "icon": "fully-armed-alliance/tough-shield",
       "prerequisites": [
@@ -71,16 +71,16 @@
       "nameKey": "research.fully_armed_alliance.bazooka",
       "maxLevel": 10,
       "badgeCosts": [
+        410,
         490,
+        570,
         690,
         810,
+        1000,
         1200,
         1500,
         1900,
-        2400,
-        3000,
-        3700,
-        4600
+        2400
       ],
       "icon": "fully-armed-alliance/bazooka",
       "prerequisites": [
@@ -92,16 +92,16 @@
       "nameKey": "research.fully_armed_alliance.hold-fast",
       "maxLevel": 10,
       "badgeCosts": [
+        410,
         490,
+        570,
         690,
         810,
+        1000,
         1200,
         1500,
         1900,
-        2400,
-        3000,
-        3700,
-        4600
+        2400
       ],
       "icon": "fully-armed-alliance/hold-fast",
       "prerequisites": [
@@ -113,16 +113,16 @@
       "nameKey": "research.fully_armed_alliance.circuitous-tactics",
       "maxLevel": 10,
       "badgeCosts": [
+        410,
         490,
+        570,
         690,
         810,
+        1000,
         1200,
         1500,
         1900,
-        2400,
-        3000,
-        3700,
-        4600
+        2400
       ],
       "icon": "fully-armed-alliance/circuitous-tactics",
       "prerequisites": [
@@ -134,16 +134,16 @@
       "nameKey": "research.fully_armed_alliance.alloy-composite",
       "maxLevel": 10,
       "badgeCosts": [
+        410,
         490,
+        570,
         690,
         810,
+        1000,
         1200,
         1500,
         1900,
-        2400,
-        3000,
-        3700,
-        4600
+        2400
       ],
       "icon": "fully-armed-alliance/alloy-composite",
       "prerequisites": [
@@ -177,26 +177,26 @@
       "nameKey": "research.fully_armed_alliance.annihilation",
       "maxLevel": 20,
       "badgeCosts": [
+        570,
+        680,
         800,
         910,
+        1000,
+        1300,
+        1500,
         1800,
+        2100,
         2500,
         2800,
+        3200,
         3700,
+        4200,
+        4700,
         5100,
         5900,
-        8500,
-        10500,
-        12200,
-        14100,
-        16400,
-        19000,
-        22000,
-        25500,
-        29500,
-        34200,
-        39500,
-        45700
+        6800,
+        7500,
+        8500
       ],
       "icon": "fully-armed-alliance/annihilation",
       "prerequisites": [
@@ -210,14 +210,14 @@
       "badgeCosts": [
         950,
         1100,
+        1300,
+        1600,
+        1800,
         2300,
         2900,
         3600,
         4600,
-        5600,
-        7000,
-        8700,
-        10700
+        5600
       ],
       "icon": "fully-armed-alliance/riders-attack-training",
       "prerequisites": [
@@ -231,14 +231,14 @@
       "badgeCosts": [
         950,
         1100,
+        1300,
+        1600,
+        1800,
         2300,
         2900,
         3600,
         4600,
-        5600,
-        7000,
-        8700,
-        10700
+        5600
       ],
       "icon": "fully-armed-alliance/assaulters-attack-training",
       "prerequisites": [
@@ -252,14 +252,14 @@
       "badgeCosts": [
         950,
         1100,
+        1300,
+        1600,
+        1800,
         2300,
         2900,
         3600,
         4600,
-        5600,
-        7000,
-        8700,
-        10700
+        5600
       ],
       "icon": "fully-armed-alliance/shooters-attack-training",
       "prerequisites": [
@@ -273,14 +273,14 @@
       "badgeCosts": [
         950,
         1100,
+        1300,
+        1600,
+        1800,
         2300,
         2900,
         3600,
         4600,
-        5600,
-        7000,
-        8700,
-        10700
+        5600
       ],
       "icon": "fully-armed-alliance/riders-defense-training",
       "prerequisites": [
@@ -294,14 +294,14 @@
       "badgeCosts": [
         950,
         1100,
+        1300,
+        1600,
+        1800,
         2300,
         2900,
         3600,
         4600,
-        5600,
-        7000,
-        8700,
-        10700
+        5600
       ],
       "icon": "fully-armed-alliance/assaulters-defense-training",
       "prerequisites": [
@@ -315,14 +315,14 @@
       "badgeCosts": [
         950,
         1100,
+        1300,
+        1600,
+        1800,
         2300,
         2900,
         3600,
         4600,
-        5600,
-        7000,
-        8700,
-        10700
+        5600
       ],
       "icon": "fully-armed-alliance/shooters-defense-training",
       "prerequisites": [
@@ -334,16 +334,16 @@
       "nameKey": "research.fully_armed_alliance.mechanical-repair",
       "maxLevel": 10,
       "badgeCosts": [
+        1100,
         1400,
+        1600,
+        2000,
+        2300,
+        2900,
+        3600,
+        4600,
         5700,
-        7000,
-        8800,
-        10800,
-        13500,
-        16700,
-        20900,
-        25800,
-        32000
+        7000
       ],
       "icon": "fully-armed-alliance/mechanical-repair",
       "prerequisites": [
@@ -356,16 +356,16 @@
       "nameKey": "research.fully_armed_alliance.repair-kit",
       "maxLevel": 10,
       "badgeCosts": [
+        1100,
         1400,
+        1600,
+        2000,
+        2300,
+        2900,
+        3600,
+        4600,
         5700,
-        7000,
-        8800,
-        10800,
-        13500,
-        16700,
-        20900,
-        25800,
-        32000
+        7000
       ],
       "icon": "fully-armed-alliance/repair-kit",
       "prerequisites": [
@@ -378,7 +378,13 @@
       "nameKey": "research.fully_armed_alliance.move-out",
       "maxLevel": 20,
       "badgeCosts": [
+        1100,
+        1300,
+        1500,
         1700,
+        2000,
+        2500,
+        2900,
         3500,
         4100,
         4800,
@@ -391,13 +397,7 @@
         11400,
         12000,
         13700,
-        16400,
-        18800,
-        21600,
-        24800,
-        28400,
-        32600,
-        37300
+        16400
       ],
       "icon": "fully-armed-alliance/move-out",
       "prerequisites": [
