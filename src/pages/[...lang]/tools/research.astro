@@ -93,7 +93,7 @@ const breadcrumbItems = [
       const category = researchDataMap[id];
       if (!category) return null;
 
-      const isEnabled = ['alliance_recognition', 'hero_training', 'military_strategies', 'unit_special_training', 'field', 'fully_armed_alliance'].includes(id);
+      const isEnabled = ['alliance_recognition', 'hero_training', 'military_strategies', 'unit_special_training', 'field', 'fully_armed_alliance', 'peace_shield'].includes(id);
       const CardTag = isEnabled ? 'a' : 'div';
 
       return (

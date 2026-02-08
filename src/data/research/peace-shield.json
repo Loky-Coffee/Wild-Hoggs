@@ -1,7 +1,7 @@
 {
   "id": "peace_shield",
   "nameKey": "research.peace_shield.name",
-  "totalBadges": 267613,
+  "totalBadges": 268930,
   "nodeCount": 16,
   "image": "/images/research/peace-shield.png",
   "technologies": [
@@ -10,16 +10,16 @@
       "nameKey": "research.peace_shield.auto-repair",
       "maxLevel": 10,
       "badgeCosts": [
-        83,
-        100,
-        120,
-        140,
-        170,
-        260,
-        320,
-        410,
-        500,
-        610
+        130,
+        150,
+        180,
+        210,
+        250,
+        310,
+        390,
+        490,
+        610,
+        750
       ],
       "icon": "peace-shield/auto-repair",
       "prerequisites": []
@@ -67,16 +67,16 @@
       "nameKey": "research.peace_shield.mobility-enhancement",
       "maxLevel": 10,
       "badgeCosts": [
+        170,
         200,
         230,
+        280,
         330,
         420,
         510,
         650,
         810,
-        1000,
-        1200,
-        1500
+        1000
       ],
       "icon": "peace-shield/mobility-enhancement",
       "prerequisites": [
@@ -88,16 +88,16 @@
       "nameKey": "research.peace_shield.melee-combat",
       "maxLevel": 10,
       "badgeCosts": [
+        170,
         200,
         230,
+        280,
         330,
         420,
         510,
         650,
         810,
-        1000,
-        1200,
-        1500
+        1000
       ],
       "icon": "peace-shield/melee-combat",
       "prerequisites": [
@@ -110,16 +110,16 @@
       "nameKey": "research.peace_shield.weapon-upgrading",
       "maxLevel": 10,
       "badgeCosts": [
+        170,
         200,
         230,
+        280,
         330,
         420,
         510,
         650,
         810,
-        1000,
-        1200,
-        1500
+        1000
       ],
       "icon": "peace-shield/weapon-upgrading",
       "prerequisites": [
@@ -131,11 +131,11 @@
       "nameKey": "research.peace_shield.quick-assembly",
       "maxLevel": 5,
       "badgeCosts": [
+        250,
+        320,
         450,
         670,
-        950,
-        1300,
-        1800
+        1000
       ],
       "icon": "peace-shield/quick-assembly",
       "prerequisites": [
@@ -147,11 +147,11 @@
       "nameKey": "research.peace_shield.arms-assembly",
       "maxLevel": 5,
       "badgeCosts": [
+        250,
+        320,
         450,
         670,
-        950,
-        1300,
-        1800
+        1000
       ],
       "icon": "peace-shield/arms-assembly",
       "prerequisites": [
@@ -163,11 +163,11 @@
       "nameKey": "research.peace_shield.target-training",
       "maxLevel": 5,
       "badgeCosts": [
+        250,
+        320,
         450,
         670,
-        950,
-        1300,
-        1800
+        1000
       ],
       "icon": "peace-shield/target-training",
       "prerequisites": [
@@ -179,16 +179,16 @@
       "nameKey": "research.peace_shield.urgent-rescue",
       "maxLevel": 10,
       "badgeCosts": [
+        330,
         400,
         470,
         560,
         660,
         830,
+        1000,
         1200,
         1600,
-        1900,
-        2400,
-        3000
+        1900
       ],
       "icon": "peace-shield/urgent-rescue",
       "prerequisites": [
@@ -202,16 +202,16 @@
       "nameKey": "research.peace_shield.stronger-armor",
       "maxLevel": 10,
       "badgeCosts": [
+        420,
+        500,
         580,
         710,
-        950,
+        830,
+        1000,
         1200,
-        1500,
-        1900,
-        2400,
-        3000,
-        3700,
-        4600
+        1600,
+        2030,
+        2400
       ],
       "icon": "peace-shield/stronger-armor",
       "prerequisites": [
@@ -223,16 +223,16 @@
       "nameKey": "research.peace_shield.shield-upgrade",
       "maxLevel": 10,
       "badgeCosts": [
+        420,
+        500,
         580,
         710,
-        950,
+        830,
+        1000,
         1200,
-        1500,
-        1900,
-        2400,
-        3000,
-        3700,
-        4600
+        1600,
+        2030,
+        2400
       ],
       "icon": "peace-shield/shield-upgrade",
       "prerequisites": [
@@ -244,16 +244,16 @@
       "nameKey": "research.peace_shield.tactical-cover",
       "maxLevel": 10,
       "badgeCosts": [
+        420,
+        500,
         580,
         710,
-        950,
+        830,
+        1000,
         1200,
-        1500,
-        1900,
-        2400,
-        3000,
-        3700,
-        4600
+        1600,
+        2030,
+        2400
       ],
       "icon": "peace-shield/tactical-cover",
       "prerequisites": [
@@ -271,6 +271,7 @@
         960,
         1140,
         1300,
+        1600,
         1800,
         2200,
         2600,
@@ -283,8 +284,7 @@
         6200,
         6600,
         7500,
-        9000,
-        10000
+        9000
       ],
       "icon": "peace-shield/combat-policy",
       "prerequisites": [
@@ -304,6 +304,7 @@
         960,
         1140,
         1300,
+        1600,
         1800,
         2200,
         2600,
@@ -316,8 +317,7 @@
         6200,
         6600,
         7500,
-        9000,
-        10000
+        9000
       ],
       "icon": "peace-shield/interceptions",
       "prerequisites": [
@@ -332,6 +332,7 @@
       "maxLevel": 10,
       "badgeCosts": [
         2000,
+        2400,
         2900,
         3520,
         4150,
@@ -339,8 +340,7 @@
         6400,
         8000,
         10100,
-        12400,
-        15000
+        12400
       ],
       "icon": "peace-shield/recharge-shield",
       "prerequisites": [
