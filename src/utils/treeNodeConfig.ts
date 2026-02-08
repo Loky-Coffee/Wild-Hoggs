@@ -51,9 +51,14 @@ export function getResponsiveNodeDimensions(
   viewportWidth: number
 ): { width: number; height: number } {
   if (viewportWidth < 768) {
+    const targetNodesPerRow = 3;
+    const padding = 40;
+    const availableWidth = viewportWidth - padding;
+    const nodeWidth = Math.floor(availableWidth / targetNodesPerRow);
+    const scale = Math.min(nodeWidth / NODE_WIDTH, 0.6);
     return {
-      width: Math.round(NODE_WIDTH * 0.82),
-      height: Math.round(NODE_HEIGHT * 0.82)
+      width: Math.round(NODE_WIDTH * scale),
+      height: Math.round(NODE_HEIGHT * scale)
     };
   }
   return { width: NODE_WIDTH, height: NODE_HEIGHT };

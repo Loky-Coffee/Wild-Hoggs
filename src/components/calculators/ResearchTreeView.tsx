@@ -1,4 +1,4 @@
-import { useMemo, useCallback, useEffect, useRef } from 'preact/hooks';
+import { useMemo, useCallback, useEffect, useRef, useState } from 'preact/hooks';
 import type { Technology } from '../../schemas/research';
 import { formatNumber as sharedFormatNumber } from '../../utils/formatters';
 import type { TranslationData } from '../../i18n/index';
@@ -35,8 +35,52 @@ export default function ResearchTreeView({
   translationData
 }: ResearchTreeViewProps) {
 
-  // Calculate tier for each technology (depth in dependency tree)
-  // Memoized separately so tiers are only recalculated when technologies change
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const [zoomLevel, setZoomLevel] = useState(1);
+  const [focusedNodeId, setFocusedNodeId] = useState<string | null>(null);
+  const MIN_ZOOM = 0.3;
+  const MAX_ZOOM = 2.0;
+  const ZOOM_STEP = 0.2;
+
+  const handleZoomIn = () => {
+    const newZoom = Math.min(zoomLevel + ZOOM_STEP, MAX_ZOOM);
+    setZoomLevel(newZoom);
+
+    if (focusedNodeId !== null && scrollContainerRef.current) {
+      setTimeout(() => {
+        const nodePos = nodePositions.get(focusedNodeId);
+        if (nodePos) {
+          const container = scrollContainerRef.current!;
+          const adjustedX = (nodePos.x + svgDimensions.offsetX) * newZoom;
+          const adjustedY = (nodePos.y + svgDimensions.offsetY) * newZoom;
+
+          container.scrollLeft = adjustedX - container.clientWidth / 2;
+          container.scrollTop = adjustedY - container.clientHeight / 2;
+        }
+      }, 50);
+    }
+  };
+
+  const handleZoomOut = () => {
+    const newZoom = Math.max(zoomLevel - ZOOM_STEP, MIN_ZOOM);
+    setZoomLevel(newZoom);
+
+    if (focusedNodeId !== null && scrollContainerRef.current) {
+      setTimeout(() => {
+        const nodePos = nodePositions.get(focusedNodeId);
+        if (nodePos) {
+          const container = scrollContainerRef.current!;
+          const adjustedX = (nodePos.x + svgDimensions.offsetX) * newZoom;
+          const adjustedY = (nodePos.y + svgDimensions.offsetY) * newZoom;
+
+          container.scrollLeft = adjustedX - container.clientWidth / 2;
+          container.scrollTop = adjustedY - container.clientHeight / 2;
+        }
+      }, 50);
+    }
+  };
+
   const tiers = useMemo((): Map<string, number> => {
     const tiersMap = new Map<string, number>();
     const visited = new Set<string>();
@@ -187,11 +231,7 @@ export default function ResearchTreeView({
     onBatchLevelChange(updates);
   };
 
-  // Use shared formatNumber utility
   const formatNumber = useCallback((num: number) => sharedFormatNumber(num, lang), [lang]);
-
-  // Drag-to-scroll functionality for both mouse and touch
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const container = scrollContainerRef.current;
@@ -395,7 +435,7 @@ export default function ResearchTreeView({
         borderRadius: '12px',
         padding: '1rem',
         WebkitOverflowScrolling: 'touch' as const,
-        touchAction: 'manipulation',
+        touchAction: 'pan-x pan-y pinch-zoom',
         cursor: 'grab',
         display: 'flex',
         alignItems: 'flex-start',
@@ -405,7 +445,10 @@ export default function ResearchTreeView({
     >
         <div style={{
           minWidth: 'min-content',
-          minHeight: 'min-content'
+          minHeight: 'min-content',
+          transform: `scale(${zoomLevel})`,
+          transformOrigin: 'top left',
+          transition: 'transform 0.2s ease-out'
         }}>
           <svg
             width={svgDimensions.width}
@@ -449,6 +492,79 @@ export default function ResearchTreeView({
             })}
           </svg>
         </div>
+
+      <div
+        className="zoom-controls"
+        style={{
+          position: 'fixed',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '0.5rem',
+          zIndex: 1000
+        }}
+      >
+        <style>{`
+          .zoom-controls {
+            bottom: 1rem;
+            right: 1rem;
+          }
+          @media (min-width: 769px) {
+            .zoom-controls {
+              bottom: 3.5rem;
+              right: 3.5rem;
+            }
+          }
+        `}</style>
+        <button
+          onClick={handleZoomIn}
+          disabled={zoomLevel >= MAX_ZOOM}
+          style={{
+            background: 'rgba(0, 0, 0, 0.8)',
+            border: '1px solid rgba(255, 165, 0, 0.6)',
+            borderRadius: '4px',
+            padding: '0.25rem',
+            cursor: zoomLevel >= MAX_ZOOM ? 'not-allowed' : 'pointer',
+            fontSize: '1.2rem',
+            color: '#ffa500',
+            fontWeight: 'bold',
+            opacity: zoomLevel >= MAX_ZOOM ? 0.4 : 1,
+            transition: 'all 0.2s',
+            width: '32px',
+            height: '32px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+          aria-label="Zoom in"
+        >
+          +
+        </button>
+
+        <button
+          onClick={handleZoomOut}
+          disabled={zoomLevel <= MIN_ZOOM}
+          style={{
+            background: 'rgba(0, 0, 0, 0.8)',
+            border: '1px solid rgba(255, 165, 0, 0.6)',
+            borderRadius: '4px',
+            padding: '0.25rem',
+            cursor: zoomLevel <= MIN_ZOOM ? 'not-allowed' : 'pointer',
+            fontSize: '1.2rem',
+            color: '#ffa500',
+            fontWeight: 'bold',
+            opacity: zoomLevel <= MIN_ZOOM ? 0.4 : 1,
+            transition: 'all 0.2s',
+            width: '32px',
+            height: '32px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+          aria-label="Zoom out"
+        >
+          −
+        </button>
+      </div>
     </div>
   );
 }
