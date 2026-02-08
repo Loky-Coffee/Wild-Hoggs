@@ -22,13 +22,79 @@ function calculateTotalBadges(
 
   if (!category) return { totalBadges: 0, selectedCount: 0 };
 
+  // Helper to check if a technology is unlocked
+  const isUnlocked = (tech: Technology): boolean => {
+    if (tech.prerequisites.length === 0) return true;
+    return tech.prerequisites.every(prereq => {
+      const prereqId = typeof prereq === 'string' ? prereq : prereq.id;
+      const requiredLevel = typeof prereq === 'string' ? 1 : (prereq.requiredLevel || 1);
+      const currentLevel = selectedTechnologies.get(prereqId) || 0;
+      return currentLevel >= requiredLevel;
+    });
+  };
+
+  // Helper to get max available level for a technology
+  const getMaxAvailableLevel = (tech: Technology): number => {
+    if (tech.prerequisites.length === 0) return tech.maxLevel;
+
+    // First check if tech is unlocked at all
+    if (!isUnlocked(tech)) return 0;
+
+    // Find progressive dependencies (requiredLevel < prerequisite's maxLevel)
+    const progressiveDeps = tech.prerequisites.filter(prereq => {
+      const prereqTech = category.technologies.find(t =>
+        t.id === (typeof prereq === 'string' ? prereq : prereq.id)
+      );
+      const reqLevel = typeof prereq === 'string' ? 1 : (prereq.requiredLevel || 1);
+      return reqLevel < (prereqTech?.maxLevel || 1);
+    });
+
+    // If ANY prerequisite is progressive, cap at maximum current level of progressives
+    if (progressiveDeps.length > 0) {
+      const progressiveLevels = progressiveDeps.map(prereq => {
+        const prereqId = typeof prereq === 'string' ? prereq : prereq.id;
+        const prereqTech = category.technologies.find(t => t.id === prereqId);
+        const prereqCurrentLevel = selectedTechnologies.get(prereqId) || 0;
+        const prereqMaxLevel = prereqTech?.maxLevel || 1;
+
+        // If prerequisite is at max level, it doesn't limit us
+        if (prereqCurrentLevel >= prereqMaxLevel) {
+          return Infinity;
+        }
+
+        return prereqCurrentLevel;
+      });
+
+      const maxProgressiveLevel = Math.max(...progressiveLevels);
+
+      // If all progressive prerequisites are at max, no limit
+      if (maxProgressiveLevel === Infinity) {
+        return tech.maxLevel;
+      }
+
+      return Math.min(tech.maxLevel, maxProgressiveLevel);
+    }
+
+    // All prerequisites are hard: once unlocked, tech can level independently
+    return tech.maxLevel;
+  };
+
   selectedTechnologies.forEach((level, techId) => {
     const tech = category.technologies.find((t) => t.id === techId);
     if (tech && level > 0) {
-      for (let i = 0; i < level && i < tech.badgeCosts.length; i++) {
+      // Calculate maxAvailable for this tech based on current dependencies
+      const maxAvailable = getMaxAvailableLevel(tech);
+
+      // Only count badges up to the maximum available level
+      const effectiveLevel = Math.min(level, maxAvailable);
+
+      for (let i = 0; i < effectiveLevel && i < tech.badgeCosts.length; i++) {
         totalBadges += tech.badgeCosts[i];
       }
-      selectedCount++;
+
+      if (effectiveLevel > 0) {
+        selectedCount++;
+      }
     }
   });
 
