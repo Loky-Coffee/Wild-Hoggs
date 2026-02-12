@@ -479,6 +479,7 @@ export default {
   'tank.remaining': 'เหลืออยู่',
   'tank.unlocked': 'ปลดล็อคแล้ว',
   'tank.vehicle': 'ยานพาหนะ',
+  'tank.nextVehicle': 'ยานพาหนะถัดไป',
   'tank.maxAll': 'ทั้งหมดสูงสุด',
   'tank.resetAll': 'รีเซ็ตทั้งหมด',
   'tank.unlock': 'ปลดล็อค',

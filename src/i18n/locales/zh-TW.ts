@@ -479,6 +479,7 @@ export default {
   'tank.remaining': '剩餘',
   'tank.unlocked': '已解鎖',
   'tank.vehicle': '車輛',
+  'tank.nextVehicle': '下一輛車',
   'tank.maxAll': '全部最大',
   'tank.resetAll': '全部重置',
   'tank.unlock': '解鎖',

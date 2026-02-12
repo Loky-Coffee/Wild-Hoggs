@@ -479,6 +479,7 @@ export default {
   'tank.remaining': '残り',
   'tank.unlocked': 'アンロック済み',
   'tank.vehicle': '車両',
+  'tank.nextVehicle': '次の車両',
   'tank.maxAll': 'すべて最大',
   'tank.resetAll': 'すべてリセット',
   'tank.unlock': 'アンロック',

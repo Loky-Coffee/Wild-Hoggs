@@ -479,6 +479,7 @@ export default {
   'tank.remaining': 'Restante',
   'tank.unlocked': 'Desbloqueado',
   'tank.vehicle': 'Veículo',
+  'tank.nextVehicle': 'Próximo Veículo',
   'tank.maxAll': 'Máximo em Tudo',
   'tank.resetAll': 'Redefinir Tudo',
   'tank.unlock': 'Desbloquear',

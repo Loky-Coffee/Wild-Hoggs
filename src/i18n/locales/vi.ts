@@ -479,6 +479,7 @@ export default {
   'tank.remaining': 'Còn Lại',
   'tank.unlocked': 'Đã Mở Khóa',
   'tank.vehicle': 'Phương Tiện',
+  'tank.nextVehicle': 'Phương Tiện Tiếp Theo',
   'tank.maxAll': 'Tối Đa Tất Cả',
   'tank.resetAll': 'Đặt Lại Tất Cả',
   'tank.unlock': 'Mở Khóa',

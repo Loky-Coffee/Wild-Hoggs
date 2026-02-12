@@ -479,6 +479,7 @@ export default {
   'tank.remaining': 'Kalan',
   'tank.unlocked': 'Kilidi Açıldı',
   'tank.vehicle': 'Araç',
+  'tank.nextVehicle': 'Sonraki Araç',
   'tank.maxAll': 'Hepsini Maksimum Yap',
   'tank.resetAll': 'Hepsini Sıfırla',
   'tank.unlock': 'Kilidi Aç',

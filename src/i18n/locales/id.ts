@@ -479,6 +479,7 @@ export default {
   'tank.remaining': 'Tersisa',
   'tank.unlocked': 'Dibuka',
   'tank.vehicle': 'Kendaraan',
+  'tank.nextVehicle': 'Kendaraan Berikutnya',
   'tank.maxAll': 'Maksimalkan Semua',
   'tank.resetAll': 'Reset Semua',
   'tank.unlock': 'Buka',

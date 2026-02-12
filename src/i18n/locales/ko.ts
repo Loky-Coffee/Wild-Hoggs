@@ -479,6 +479,7 @@ export default {
   'tank.remaining': '남은',
   'tank.unlocked': '잠금 해제됨',
   'tank.vehicle': '차량',
+  'tank.nextVehicle': '다음 차량',
   'tank.maxAll': '모두 최대',
   'tank.resetAll': '모두 초기화',
   'tank.unlock': '잠금 해제',

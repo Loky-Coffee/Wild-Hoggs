@@ -479,6 +479,7 @@ export default {
   'tank.remaining': 'متبقي',
   'tank.unlocked': 'مفتوح',
   'tank.vehicle': 'المركبة',
+  'tank.nextVehicle': 'المركبة التالية',
   'tank.maxAll': 'الكل للحد الأقصى',
   'tank.resetAll': 'إعادة تعيين الكل',
   'tank.unlock': 'فتح',

@@ -80,6 +80,16 @@ export default function TankCalculator({ lang, translationData }: TankCalculator
     return unlocked.length > 0 ? unlocked[unlocked.length - 1] : null;
   }, [totalWrenchesUsed]);
 
+  const nextMilestone = useMemo(() => {
+    const next = milestones.find(ms => totalWrenchesUsed < ms.cumulativeWrenches);
+    return next;
+  }, [totalWrenchesUsed]);
+
+  const wrenchesToNextMilestone = useMemo(() => {
+    if (!nextMilestone) return 0;
+    return nextMilestone.cumulativeWrenches - totalWrenchesUsed;
+  }, [nextMilestone, totalWrenchesUsed]);
+
   const handleReset = () => {
     setUnlockedLevels(new Set([0]));
     setSubLevels(new Map([[0, 0]]));
@@ -114,6 +124,11 @@ export default function TankCalculator({ lang, translationData }: TankCalculator
           {isInfoBoxCollapsed && (
             <span style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
               🔧 {formatNumber(totalWrenchesUsed, lang)} / {formatNumber(remainingWrenches, lang)}
+              {nextMilestone && (
+                <span style={{ marginLeft: '0.5rem', color: '#9b59b6' }}>
+                  → {t(nextMilestone.nameKey)}: {formatNumber(wrenchesToNextMilestone, lang)}
+                </span>
+              )}
             </span>
           )}
         </button>
@@ -148,6 +163,15 @@ export default function TankCalculator({ lang, translationData }: TankCalculator
             <div style={{ whiteSpace: 'nowrap' }}>
               <span style={{ color: 'rgba(255, 255, 255, 0.6)' }}>{t('tank.vehicle')}:</span>{' '}
               <span style={{ fontWeight: 'bold', color: '#3498db' }}>{t(lastVehicle.nameKey)}</span>
+            </div>
+          )}
+          {nextMilestone && (
+            <div style={{ whiteSpace: 'nowrap' }}>
+              <span style={{ color: 'rgba(255, 255, 255, 0.6)' }}>{t('tank.nextVehicle')}:</span>{' '}
+              <span style={{ fontWeight: 'bold', color: '#9b59b6' }}>{t(nextMilestone.nameKey)}</span>
+              <span style={{ color: 'rgba(255, 255, 255, 0.5)', marginLeft: '0.25rem' }}>
+                (🔧 {formatNumber(wrenchesToNextMilestone, lang)})
+              </span>
             </div>
           )}
           <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginLeft: 'auto', minWidth: 'fit-content' }}>
