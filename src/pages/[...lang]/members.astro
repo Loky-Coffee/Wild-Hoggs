@@ -77,7 +77,7 @@ const breadcrumbItems = [
     subtitle={`${t('members.count').replace('{count}', members.length.toString())} • ${lastUpdatedText}: ${lastUpdated}`}
   />
 
-  <MembersList members={members} lang={lang} translationData={translationData} client:load />
+  <MembersList members={members} lang={lang} translationData={translationData} client:visible />
 </PageLayout>
 
 <style>
