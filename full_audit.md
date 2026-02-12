@@ -339,10 +339,11 @@ Das Wild Hoggs Projekt ist eine **gut strukturierte, sichere und funktionale Web
    - **Impact:** Wasted Hydration auf Homepage
    - **Lösung:** `client:visible` oder `client:idle` verwenden
 
-3. **PNG-Fallbacks (840 KB)**
-   - 8 PNG-Dateien neben WebP
-   - +76% der Bildgröße
-   - **Lösung:** PNG-Fallbacks für alte Browser evaluieren
+3. **✅ ERLEDIGT: PNG-Fallbacks entfernt (383 KB gespart)**
+   - ~~8 PNG-Dateien neben WebP~~ → **GELÖSCHT: Alle 8 dist/ PNGs entfernt**
+   - ~~8 Source-PNGs (385 KB)~~ → **KONVERTIERT: Alle zu WebP (182 KB, 52.7% Einsparung)**
+   - **Status:** Nur noch WebP-Dateien, schnellerer Build (Astro muss nicht mehr konvertieren)
+   - **Begründung:** PNGs wurden nicht verwendet, WebP hat 99%+ Browser-Support
 
 4. **ResearchTreeView Mega-Komponente (810 Zeilen)**
    - Einzelne Komponente mit 810 Zeilen
