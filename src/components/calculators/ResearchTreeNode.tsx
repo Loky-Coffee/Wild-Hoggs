@@ -14,9 +14,11 @@ interface ResearchTreeNodeProps {
   readonly selectedLevel: number;
   readonly maxAvailable: number;
   readonly unlocked: boolean;
+  readonly isTarget?: boolean;
   readonly formatNumber: (num: number) => string;
   readonly onLevelChange: (techId: string, level: number) => void;
   readonly onUnlockClick: (tech: Technology) => void;
+  readonly onSetTarget?: () => void;
   readonly onFocus?: () => void;
   readonly lang: 'de' | 'en';
   readonly translationData: TranslationData;
@@ -55,9 +57,11 @@ function ResearchTreeNode({
   selectedLevel,
   maxAvailable,
   unlocked,
+  isTarget = false,
   formatNumber,
   onLevelChange,
   onUnlockClick,
+  onSetTarget,
   onFocus,
   lang,
   translationData
@@ -193,8 +197,8 @@ function ResearchTreeNode({
         height={NODE_HEIGHT}
         rx={8}
         fill={isActive ? '#3d2a00' : '#1e1e1e'}
-        stroke={nodeStrokeColor}
-        strokeWidth={2}
+        stroke={isTarget ? '#e74c3c' : nodeStrokeColor}
+        strokeWidth={isTarget ? 3 : 2}
         opacity={unlocked ? 1 : 0.5}
         data-node-element="true"
         className="node-background"
@@ -203,6 +207,72 @@ function ResearchTreeNode({
           transition: 'filter 0.2s ease-out'
         }}
       />
+
+      {/* Target button (top-left corner) */}
+      {onSetTarget && (
+        <g
+          onClick={onSetTarget}
+          onKeyDown={(e: React.KeyboardEvent) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              onSetTarget();
+            }
+          }}
+          tabIndex={0}
+          role="button"
+          aria-label={`Set ${techName} as target`}
+          style={{ cursor: 'pointer', outline: 'none' }}
+          data-node-element="true"
+          data-clickable="true"
+          data-target-button="true"
+        >
+          <rect
+            x={-NODE_WIDTH / 2 + 3}
+            y={-NODE_HEIGHT / 2 + 3}
+            width={44}
+            height={39}
+            rx={6}
+            fill="none"
+            stroke={isTarget ? 'rgba(231, 76, 60, 0.8)' : 'rgba(231, 76, 60, 0.8)'}
+            strokeWidth={2}
+            opacity={0}
+            className="target-button-focus-indicator"
+            data-node-element="true"
+          />
+          <rect
+            x={-NODE_WIDTH / 2 + 5}
+            y={-NODE_HEIGHT / 2 + 5}
+            width={40}
+            height={35}
+            rx={6}
+            fill={isTarget ? 'rgba(231, 76, 60, 0.4)' : 'rgba(231, 76, 60, 0.2)'}
+            stroke={isTarget ? 'rgba(231, 76, 60, 0.8)' : 'rgba(231, 76, 60, 0.5)'}
+            strokeWidth={isTarget ? 2 : 1}
+            className="target-button-bg"
+            data-node-element="true"
+          />
+          <text
+            x={-NODE_WIDTH / 2 + 25}
+            y={-NODE_HEIGHT / 2 + 20}
+            textAnchor="middle"
+            fontSize="16"
+            data-node-element="true"
+          >
+            🎯
+          </text>
+          <text
+            x={-NODE_WIDTH / 2 + 25}
+            y={-NODE_HEIGHT / 2 + 33}
+            textAnchor="middle"
+            fontSize="7"
+            fill={isTarget ? '#e74c3c' : '#e74c3c'}
+            fontWeight="600"
+            data-node-element="true"
+          >
+            {isTarget ? t('tank.targetSet') : t('tank.setTarget')}
+          </text>
+        </g>
+      )}
 
       {/* Unlock button in top-right corner - KEYBOARD ACCESSIBLE */}
       {!unlocked && (

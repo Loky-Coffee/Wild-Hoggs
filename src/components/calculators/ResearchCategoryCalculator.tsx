@@ -106,6 +106,7 @@ function calculateTotalBadges(
 
 export default function ResearchCategoryCalculator({ categoryData, categoryImageSrc, lang, translationData }: ResearchCategoryCalculatorProps) {
   const [selectedTechnologies, setSelectedTechnologies] = useState<Map<string, number>>(new Map());
+  const [targetTechId, setTargetTechId] = useState<string | null>(null);
 
   const category = categoryData;
 
@@ -163,6 +164,65 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
     () => calculateTotalBadges(selectedTechnologies, category),
     [selectedTechnologies, category]
   );
+
+  const targetTech = useMemo(() => {
+    if (!targetTechId || !category) return null;
+    return category.technologies.find(t => t.id === targetTechId) || null;
+  }, [targetTechId, category]);
+
+  const badgesToTarget = useMemo(() => {
+    if (!targetTech || !category) return 0;
+
+    // Map to track required levels for each tech (prevents double counting)
+    const requiredLevels = new Map<string, number>();
+
+    // Recursively collect required levels for a tech and its prerequisites
+    const collectRequiredLevels = (tech: Technology, targetLevel: number) => {
+      // Update required level for this tech (use max if already set)
+      const existingLevel = requiredLevels.get(tech.id) || 0;
+      requiredLevels.set(tech.id, Math.max(existingLevel, targetLevel));
+
+      // Process prerequisites
+      tech.prerequisites.forEach(prereq => {
+        const prereqId = typeof prereq === 'string' ? prereq : prereq.id;
+        const prereqTech = category.technologies.find(t => t.id === prereqId);
+        if (!prereqTech) return;
+
+        const requiredLevel = typeof prereq === 'string' ? 1 : (prereq.requiredLevel || 1);
+
+        // Check if this is a progressive dependency
+        const isProgressive = requiredLevel < prereqTech.maxLevel;
+
+        if (isProgressive) {
+          // Progressive: prerequisite must match the target level
+          const neededPrereqLevel = Math.min(targetLevel, prereqTech.maxLevel);
+          collectRequiredLevels(prereqTech, neededPrereqLevel);
+        } else {
+          // Hard dependency: prerequisite must be at max level
+          collectRequiredLevels(prereqTech, prereqTech.maxLevel);
+        }
+      });
+    };
+
+    // Collect all required levels starting from target
+    collectRequiredLevels(targetTech, targetTech.maxLevel);
+
+    // Calculate total badges needed (only count each tech once)
+    let totalNeededBadges = 0;
+    requiredLevels.forEach((neededLevel, techId) => {
+      const tech = category.technologies.find(t => t.id === techId);
+      if (!tech) return;
+
+      const currentLevel = selectedTechnologies.get(techId) || 0;
+      if (currentLevel < neededLevel) {
+        for (let i = currentLevel; i < neededLevel && i < tech.badgeCosts.length; i++) {
+          totalNeededBadges += tech.badgeCosts[i];
+        }
+      }
+    });
+
+    return totalNeededBadges;
+  }, [targetTech, selectedTechnologies, category]);
 
   if (!category) {
     return (
@@ -227,6 +287,11 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
           {isInfoBoxCollapsed && (
             <span style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
               {formatNumber(calculatedResults.totalBadges, lang)} / {formatNumber(category.totalBadges, lang)} 🎖️
+              {targetTech && (
+                <span style={{ marginLeft: '0.5rem', color: '#e74c3c' }}>
+                  🎯 {t(targetTech.nameKey)}: {formatNumber(badgesToTarget, lang)}
+                </span>
+              )}
             </span>
           )}
         </button>
@@ -260,7 +325,7 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
           </div>
 
           {/* Center: Badge Stats */}
-          <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: '2rem', alignItems: 'center', flexWrap: 'wrap' }}>
             <div>
               <div style={{ fontSize: '0.85rem', opacity: 0.7, marginBottom: '0.25rem' }}>
                 {t('calc.research.used')}
@@ -277,6 +342,30 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
                 {formatNumber(remainingBadges, lang)} 🎖️
               </div>
             </div>
+            {targetTech && (
+              <div>
+                <div style={{ fontSize: '0.85rem', opacity: 0.7, marginBottom: '0.25rem' }}>
+                  {t('tank.target')}
+                </div>
+                <div style={{ fontSize: '1.2rem', fontWeight: 700, color: '#e74c3c', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  {t(targetTech.nameKey)} · {formatNumber(badgesToTarget, lang)} 🎖️
+                  <button
+                    onClick={() => setTargetTechId(null)}
+                    style={{
+                      padding: '0.2rem 0.4rem',
+                      fontSize: '0.75rem',
+                      background: 'rgba(231, 76, 60, 0.2)',
+                      border: '1px solid rgba(231, 76, 60, 0.5)',
+                      borderRadius: '4px',
+                      color: '#e74c3c',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    ✕
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Right: Controls */}
@@ -305,6 +394,8 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
           selectedLevels={selectedTechnologies}
           onLevelChange={setTechnologyLevel}
           onBatchLevelChange={setMultipleTechnologyLevels}
+          targetTechId={targetTechId}
+          onTargetTechIdChange={setTargetTechId}
           layoutDirection={layoutDirection}
           lang={lang}
           translationData={translationData}

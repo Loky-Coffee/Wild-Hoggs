@@ -19,6 +19,8 @@ interface ResearchTreeViewProps {
   readonly selectedLevels: Map<string, number>;
   readonly onLevelChange: (techId: string, level: number) => void;
   readonly onBatchLevelChange: (updates: Map<string, number>) => void;
+  readonly targetTechId: string | null;
+  readonly onTargetTechIdChange: (techId: string | null) => void;
   readonly layoutDirection: 'horizontal' | 'vertical';
   readonly lang: 'de' | 'en';
   readonly translationData: TranslationData;
@@ -30,6 +32,8 @@ export default function ResearchTreeView({
   selectedLevels,
   onLevelChange,
   onBatchLevelChange,
+  targetTechId,
+  onTargetTechIdChange,
   layoutDirection,
   lang,
   translationData
@@ -553,9 +557,11 @@ export default function ResearchTreeView({
                   selectedLevel={selectedLevel}
                   maxAvailable={maxAvailable}
                   unlocked={unlocked}
+                  isTarget={targetTechId === tech.id}
                   formatNumber={formatNumber}
                   onLevelChange={onLevelChange}
                   onUnlockClick={unlockWithPrerequisites}
+                  onSetTarget={() => onTargetTechIdChange(tech.id)}
                   onFocus={() => {
                     console.log(`[ResearchTreeView] Setting focusedNodeId to: ${tech.id}`);
                     setFocusedNodeId(tech.id);

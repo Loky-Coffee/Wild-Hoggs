@@ -35,6 +35,8 @@ interface TankModificationTreeProps {
   readonly subLevels: Map<number, number>;
   readonly onUnlockedLevelsChange: (levels: Set<number>) => void;
   readonly onSubLevelsChange: (levels: Map<number, number>) => void;
+  readonly targetLevel: number | null;
+  readonly onTargetLevelChange: (level: number | null) => void;
   readonly lang: 'de' | 'en';
   readonly translationData: TranslationData;
 }
@@ -46,6 +48,8 @@ export default function TankModificationTree({
   subLevels,
   onUnlockedLevelsChange,
   onSubLevelsChange,
+  targetLevel,
+  onTargetLevelChange,
   lang,
   translationData
 }: TankModificationTreeProps) {
@@ -444,9 +448,11 @@ export default function TankModificationTree({
                 currentSubLevel={currentSubLevel}
                 maxSubLevel={mod.subLevels}
                 unlocked={isUnlocked}
+                isTarget={targetLevel === mod.level}
                 formatNumber={formatNumber}
                 onSubLevelChange={handleSubLevelChange}
                 onUnlockClick={handleUnlock}
+                onSetTarget={() => onTargetLevelChange(mod.level)}
                 onFocus={() => setFocusedNodeLevel(mod.level)}
                 lang={lang}
                 translationData={translationData}

@@ -33,6 +33,7 @@ export default function TankCalculator({ lang, translationData }: TankCalculator
   const [subLevels, setSubLevels] = useState<Map<number, number>>(new Map([[0, 0]]));
   const [viewMode, setViewMode] = useState<'tree' | 'list'>('tree');
   const [isInfoBoxCollapsed, setIsInfoBoxCollapsed] = useState(false);
+  const [targetLevel, setTargetLevel] = useState<number | null>(null);
 
   const treeContainerRef = useRef<HTMLDivElement>(null);
   const isInfoBoxCollapsedRef = useRef(isInfoBoxCollapsed);
@@ -90,6 +91,17 @@ export default function TankCalculator({ lang, translationData }: TankCalculator
     return nextMilestone.cumulativeWrenches - totalWrenchesUsed;
   }, [nextMilestone, totalWrenchesUsed]);
 
+  const targetMod = useMemo(() => {
+    if (targetLevel === null) return null;
+    return modifications.find(m => m.level === targetLevel) || null;
+  }, [targetLevel]);
+
+  const wrenchesToTarget = useMemo(() => {
+    if (!targetMod) return 0;
+    // Calculate wrenches needed to fully complete target level
+    return targetMod.cumulativeTotal - totalWrenchesUsed;
+  }, [targetMod, totalWrenchesUsed]);
+
   const handleReset = () => {
     setUnlockedLevels(new Set([0]));
     setSubLevels(new Map([[0, 0]]));
@@ -124,7 +136,12 @@ export default function TankCalculator({ lang, translationData }: TankCalculator
           {isInfoBoxCollapsed && (
             <span style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
               🔧 {formatNumber(totalWrenchesUsed, lang)} / {formatNumber(remainingWrenches, lang)}
-              {nextMilestone && (
+              {targetMod && (
+                <span style={{ marginLeft: '0.5rem', color: '#e74c3c' }}>
+                  🎯 L{targetMod.level}: {formatNumber(wrenchesToTarget, lang)}
+                </span>
+              )}
+              {!targetMod && nextMilestone && (
                 <span style={{ marginLeft: '0.5rem', color: '#9b59b6' }}>
                   → {t(nextMilestone.nameKey)}: {formatNumber(wrenchesToNextMilestone, lang)}
                 </span>
@@ -174,6 +191,30 @@ export default function TankCalculator({ lang, translationData }: TankCalculator
               </span>
             </div>
           )}
+          {targetMod && (
+            <div style={{ whiteSpace: 'nowrap' }}>
+              <span style={{ color: 'rgba(255, 255, 255, 0.6)' }}>{t('tank.target')}:</span>{' '}
+              <span style={{ fontWeight: 'bold', color: '#e74c3c' }}>Level {targetMod.level}</span>
+              <span style={{ color: 'rgba(255, 255, 255, 0.5)', marginLeft: '0.25rem' }}>
+                (🔧 {formatNumber(wrenchesToTarget, lang)})
+              </span>
+              <button
+                onClick={() => setTargetLevel(null)}
+                style={{
+                  marginLeft: '0.5rem',
+                  padding: '0.2rem 0.4rem',
+                  fontSize: '0.75rem',
+                  background: 'rgba(231, 76, 60, 0.2)',
+                  border: '1px solid rgba(231, 76, 60, 0.5)',
+                  borderRadius: '4px',
+                  color: '#e74c3c',
+                  cursor: 'pointer'
+                }}
+              >
+                ✕
+              </button>
+            </div>
+          )}
           <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginLeft: 'auto', minWidth: 'fit-content' }}>
             <button
               onClick={() => setViewMode(viewMode === 'tree' ? 'list' : 'tree')}
@@ -201,6 +242,8 @@ export default function TankCalculator({ lang, translationData }: TankCalculator
             subLevels={subLevels}
             onUnlockedLevelsChange={setUnlockedLevels}
             onSubLevelsChange={setSubLevels}
+            targetLevel={targetLevel}
+            onTargetLevelChange={setTargetLevel}
             lang={lang}
             translationData={translationData}
           />
