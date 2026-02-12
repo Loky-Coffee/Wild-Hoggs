@@ -144,24 +144,20 @@ function ResearchTreeNode({
       data-unlocked={unlocked}
       onKeyDown={handleNodeKeyDown}
       onFocus={() => {
-        console.log(`[ResearchTreeNode] onFocus event triggered for node: ${tech.id}`);
         setIsFocused(true);
         onFocus?.();
       }}
       onBlur={() => {
-        console.log(`[ResearchTreeNode] onBlur event triggered for node: ${tech.id}`);
         setIsFocused(false);
       }}
       onClick={(e) => {
         const target = e.target as any;
         if (!target.closest('input') && !target.closest('[data-clickable="true"]')) {
-          console.log(`[ResearchTreeNode] onClick triggered for node: ${tech.id}, setting focus state`);
           setIsFocused(true);
           onFocus?.();
           // Programmatically focus the node element to trigger :focus CSS
           if (nodeGroupRef.current) {
             nodeGroupRef.current.focus();
-            console.log(`[ResearchTreeNode] Called .focus() on node element: ${tech.id}`);
           }
         }
       }}

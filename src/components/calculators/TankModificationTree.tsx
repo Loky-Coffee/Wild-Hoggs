@@ -73,12 +73,10 @@ export default function TankModificationTree({
 
   // Set mounted flag and detect mobile/desktop on mount and resize
   useEffect(() => {
-    console.log('[TankTree] Mount effect running...');
     setMounted(true);
 
     const handleResize = () => {
       const mobile = window.innerWidth < 768;
-      console.log('[TankTree] handleResize called:', { innerWidth: window.innerWidth, mobile });
       setIsMobile(mobile);
     };
 
@@ -89,37 +87,12 @@ export default function TankModificationTree({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Log state changes
-  useEffect(() => {
-    console.log('[TankTree] State changed:', { mounted, isMobile });
-  }, [mounted, isMobile]);
-
   // Calculate zigzag layout positions (responsive: 3 nodes on mobile, 5 on desktop)
   // IMPORTANT: Only use responsive layout after client-side hydration to avoid SSR mismatch
   const nodePositions = useMemo((): Map<number, NodePosition> => {
     const positions = new Map<number, NodePosition>();
     // Use responsive layout only after mounting on client
     const nodesPerRow = (mounted && isMobile) ? 3 : NODES_PER_ROW; // 3 on mobile, 5 on desktop
-
-    // Log first 10 modifications to see their levels
-    const firstMods = modifications.slice(0, 10).map(m => m.level);
-    console.log('[TankTree] Calculating nodePositions:', {
-      mounted,
-      isMobile,
-      nodesPerRow,
-      windowWidth: typeof window !== 'undefined' ? window.innerWidth : 'unknown',
-      modificationsCount: modifications.length,
-      firstModLevels: firstMods
-    });
-
-    // Log all nodes in first row
-    const firstRowNodes = modifications.slice(0, nodesPerRow).map((m, idx) => ({
-      index: idx,
-      level: m.level,
-      row: Math.floor(idx / nodesPerRow),
-      col: Math.floor(idx / nodesPerRow) % 2 === 0 ? idx % nodesPerRow : (nodesPerRow - 1) - (idx % nodesPerRow)
-    }));
-    console.log('[TankTree] First row nodes:', firstRowNodes);
 
     modifications.forEach((mod, index) => {
       const row = Math.floor(index / nodesPerRow);
@@ -159,7 +132,6 @@ export default function TankModificationTree({
         }
       });
 
-      console.log('Auto-focusing center node level:', centerNodeLevel);
       setFocusedNodeLevel(centerNodeLevel);
     }
   }, [modifications, focusedNodeLevel, nodePositions]);
@@ -185,19 +157,6 @@ export default function TankModificationTree({
       // Calculate zoom to fit content perfectly in available space
       const calculatedZoom = availableWidth / targetContentWidth;
       const finalZoom = Math.max(Math.min(calculatedZoom, 1), MIN_ZOOM);
-
-      console.log('[TankModificationTree] Initial mobile zoom:', {
-        containerWidth,
-        containerPadding,
-        availableWidth,
-        targetContentWidth,
-        svgWidth: svgDimensions.width,
-        svgHeight: svgDimensions.height,
-        scaledWidth: svgDimensions.width * finalZoom,
-        scaledHeight: svgDimensions.height * finalZoom,
-        calculatedZoom,
-        finalZoom
-      });
 
       setZoomLevel(finalZoom);
     } else {

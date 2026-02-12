@@ -141,19 +141,6 @@ export default function ResearchTreeView({
       const calculatedZoom = availableWidth / targetContentWidth;
       const finalZoom = Math.max(Math.min(calculatedZoom, 1), MIN_ZOOM);
 
-      console.log('[ResearchTreeView] Initial mobile zoom:', {
-        containerWidth,
-        containerPadding,
-        availableWidth,
-        targetContentWidth,
-        svgWidth: svgDimensions.width,
-        svgHeight: svgDimensions.height,
-        scaledWidth: svgDimensions.width * finalZoom,
-        scaledHeight: svgDimensions.height * finalZoom,
-        calculatedZoom,
-        finalZoom
-      });
-
       setZoomLevel(finalZoom);
     } else {
       setZoomLevel(1);
@@ -563,7 +550,6 @@ export default function ResearchTreeView({
                   onUnlockClick={unlockWithPrerequisites}
                   onSetTarget={() => onTargetTechIdChange(tech.id)}
                   onFocus={() => {
-                    console.log(`[ResearchTreeView] Setting focusedNodeId to: ${tech.id}`);
                     setFocusedNodeId(tech.id);
                   }}
                   lang={lang}
