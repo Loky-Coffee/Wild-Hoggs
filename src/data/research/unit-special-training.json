@@ -27,7 +27,10 @@
       "maxLevel": 10,
       "badgeCosts": [900, 1100, 1300, 1600, 1900, 2400, 3000, 3800, 4800, 5900],
       "icon": "unit-special-training/fast-production",
-      "prerequisites": ["fire-up", "armor-upgrade"]
+      "prerequisites": [
+        {"id": "fire-up", "requiredLevel": 10},
+        {"id": "armor-upgrade", "requiredLevel": 10}
+      ]
     },
     {
       "id": "mobility-enhancement",
@@ -35,7 +38,9 @@
       "maxLevel": 10,
       "badgeCosts": [1300, 1500, 1800, 2200, 2600, 3300, 4100, 5100, 6400, 7900],
       "icon": "unit-special-training/mobility-enhancement",
-      "prerequisites": ["fast-production"]
+      "prerequisites": [
+        {"id": "fast-production", "requiredLevel": 10}
+      ]
     },
     {
       "id": "melee-combat",
@@ -43,7 +48,9 @@
       "maxLevel": 10,
       "badgeCosts": [1300, 1500, 1800, 2200, 2600, 3300, 4100, 5100, 6400, 7900],
       "icon": "unit-special-training/melee-combat",
-      "prerequisites": ["fast-production"]
+      "prerequisites": [
+        {"id": "fast-production", "requiredLevel": 10}
+      ]
     },
     {
       "id": "weapon-upgrading",
@@ -51,7 +58,9 @@
       "maxLevel": 10,
       "badgeCosts": [1300, 1500, 1800, 2200, 2600, 3300, 4100, 5100, 6400, 7900],
       "icon": "unit-special-training/weapon-upgrading",
-      "prerequisites": ["fast-production"]
+      "prerequisites": [
+        {"id": "fast-production", "requiredLevel": 10}
+      ]
     },
     {
       "id": "stronger-armor",
@@ -59,7 +68,9 @@
       "maxLevel": 10,
       "badgeCosts": [1300, 1500, 1800, 2200, 2600, 3300, 4100, 5100, 6400, 7900],
       "icon": "unit-special-training/stronger-armor",
-      "prerequisites": ["mobility-enhancement"]
+      "prerequisites": [
+        {"id": "mobility-enhancement", "requiredLevel": 10}
+      ]
     },
     {
       "id": "shield-upgrade",
@@ -67,7 +78,9 @@
       "maxLevel": 10,
       "badgeCosts": [1300, 1500, 1800, 2200, 2600, 3300, 4100, 5100, 6400, 7900],
       "icon": "unit-special-training/shield-upgrade",
-      "prerequisites": ["melee-combat"]
+      "prerequisites": [
+        {"id": "melee-combat", "requiredLevel": 10}
+      ]
     },
     {
       "id": "camo-coating",
@@ -75,7 +88,9 @@
       "maxLevel": 10,
       "badgeCosts": [1300, 1500, 1800, 2200, 2600, 3300, 4100, 5100, 6400, 7900],
       "icon": "unit-special-training/camo-coating",
-      "prerequisites": ["weapon-upgrading"]
+      "prerequisites": [
+        {"id": "weapon-upgrading", "requiredLevel": 10}
+      ]
     },
     {
       "id": "propulsion",
@@ -83,7 +98,11 @@
       "maxLevel": 10,
       "badgeCosts": [1400, 1700, 2000, 2400, 2900, 3600, 4500, 5600, 7100, 8600],
       "icon": "unit-special-training/propulsion",
-      "prerequisites": ["stronger-armor", "shield-upgrade", "camo-coating"]
+      "prerequisites": [
+        {"id": "stronger-armor", "requiredLevel": 10},
+        {"id": "shield-upgrade", "requiredLevel": 10},
+        {"id": "camo-coating", "requiredLevel": 10}
+      ]
     },
     {
       "id": "fast-production-2",
@@ -91,7 +110,9 @@
       "maxLevel": 10,
       "badgeCosts": [1400, 1700, 2000, 2400, 2900, 3600, 4500, 5600, 7100, 8600],
       "icon": "unit-special-training/fast-production",
-      "prerequisites": ["propulsion"]
+      "prerequisites": [
+        {"id": "propulsion", "requiredLevel": 10}
+      ]
     },
     {
       "id": "fire-up-2",
@@ -99,7 +120,9 @@
       "maxLevel": 10,
       "badgeCosts": [2100, 2500, 2900, 3600, 4200, 5200, 6500, 8200, 10300, 12700],
       "icon": "unit-special-training/fire-up",
-      "prerequisites": ["fast-production-2"]
+      "prerequisites": [
+        {"id": "fast-production-2", "requiredLevel": 10}
+      ]
     },
     {
       "id": "armor-upgrade-2",
@@ -107,7 +130,9 @@
       "maxLevel": 10,
       "badgeCosts": [2100, 2500, 2900, 3600, 4200, 5200, 6500, 8200, 10300, 12700],
       "icon": "unit-special-training/armor-upgrade",
-      "prerequisites": ["fast-production-2"]
+      "prerequisites": [
+        {"id": "fast-production-2", "requiredLevel": 10}
+      ]
     },
     {
       "id": "demolition-crew",
@@ -126,7 +151,9 @@
       "maxLevel": 15,
       "badgeCosts": [2000, 2400, 2800, 3300, 3900, 4700, 5500, 6500, 7800, 9000, 10300, 11700, 13300, 15400, 17900],
       "icon": "unit-special-training/mobility-enhancement",
-      "prerequisites": ["demolition-crew"]
+      "prerequisites": [
+        {"id": "demolition-crew", "requiredLevel": 5}
+      ]
     },
     {
       "id": "melee-combat-2",
@@ -134,7 +161,9 @@
       "maxLevel": 15,
       "badgeCosts": [2000, 2400, 2800, 3300, 3900, 4700, 5500, 6500, 7800, 9000, 10300, 11700, 13300, 15400, 17900],
       "icon": "unit-special-training/melee-combat",
-      "prerequisites": ["demolition-crew"]
+      "prerequisites": [
+        {"id": "demolition-crew", "requiredLevel": 5}
+      ]
     },
     {
       "id": "weapon-upgrading-2",
@@ -142,7 +171,9 @@
       "maxLevel": 15,
       "badgeCosts": [2000, 2400, 2800, 3300, 3900, 4700, 5500, 6500, 7800, 9000, 10300, 11700, 13300, 15400, 17900],
       "icon": "unit-special-training/weapon-upgrading",
-      "prerequisites": ["demolition-crew"]
+      "prerequisites": [
+        {"id": "demolition-crew", "requiredLevel": 5}
+      ]
     },
     {
       "id": "stronger-armor-2",
@@ -150,7 +181,9 @@
       "maxLevel": 15,
       "badgeCosts": [2000, 2400, 2800, 3300, 3900, 4700, 5500, 6500, 7800, 9000, 10300, 11700, 13300, 15400, 17900],
       "icon": "unit-special-training/stronger-armor",
-      "prerequisites": ["mobility-enhancement-2"]
+      "prerequisites": [
+        {"id": "mobility-enhancement-2", "requiredLevel": 15}
+      ]
     },
     {
       "id": "shield-upgrade-2",
@@ -158,7 +191,9 @@
       "maxLevel": 15,
       "badgeCosts": [2000, 2400, 2800, 3300, 3900, 4700, 5500, 6500, 7800, 9000, 10300, 11700, 13300, 15400, 17900],
       "icon": "unit-special-training/shield-upgrade",
-      "prerequisites": ["melee-combat-2"]
+      "prerequisites": [
+        {"id": "melee-combat-2", "requiredLevel": 15}
+      ]
     },
     {
       "id": "camo-coating-2",
@@ -166,7 +201,9 @@
       "maxLevel": 15,
       "badgeCosts": [2000, 2400, 2800, 3300, 3900, 4700, 5500, 6500, 7800, 9000, 10300, 11700, 13300, 15400, 17900],
       "icon": "unit-special-training/camo-coating",
-      "prerequisites": ["weapon-upgrading-2"]
+      "prerequisites": [
+        {"id": "weapon-upgrading-2", "requiredLevel": 15}
+      ]
     },
     {
       "id": "recharge-shield",
