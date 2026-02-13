@@ -41,7 +41,9 @@
         750
       ],
       "icon": "peace-shield/combat-policy",
-      "prerequisites": []
+      "prerequisites": [
+        "auto-repair"
+      ]
     },
     {
       "id": "interceptions",
@@ -60,7 +62,9 @@
         750
       ],
       "icon": "peace-shield/interceptions",
-      "prerequisites": []
+      "prerequisites": [
+        "auto-repair"
+      ]
     },
     {
       "id": "mobility-enhancement",
