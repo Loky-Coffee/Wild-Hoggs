@@ -100,8 +100,7 @@
       "icon": "unit-special-training/propulsion",
       "prerequisites": [
         {"id": "stronger-armor", "requiredLevel": 10},
-        {"id": "shield-upgrade", "requiredLevel": 10},
-        {"id": "camo-coating", "requiredLevel": 10}
+        {"id": "shield-upgrade", "requiredLevel": 10}
       ]
     },
     {
@@ -111,7 +110,8 @@
       "badgeCosts": [1400, 1700, 2000, 2400, 2900, 3600, 4500, 5600, 7100, 8600],
       "icon": "unit-special-training/fast-production",
       "prerequisites": [
-        {"id": "propulsion", "requiredLevel": 10}
+        {"id": "shield-upgrade", "requiredLevel": 10},
+        {"id": "camo-coating", "requiredLevel": 10}
       ]
     },
     {
