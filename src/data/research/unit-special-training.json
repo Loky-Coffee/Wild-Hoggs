@@ -121,7 +121,7 @@
       "badgeCosts": [2100, 2500, 2900, 3600, 4200, 5200, 6500, 8200, 10300, 12700],
       "icon": "unit-special-training/fire-up",
       "prerequisites": [
-        {"id": "fast-production-2", "requiredLevel": 10}
+        {"id": "propulsion", "requiredLevel": 10}
       ]
     },
     {
