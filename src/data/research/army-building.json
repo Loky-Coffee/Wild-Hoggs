@@ -1,0 +1,193 @@
+{
+  "id": "army_building",
+  "nameKey": "research.army_building.name",
+  "totalBadges": 604530,
+  "nodeCount": 23,
+  "image": "/images/research/army-building.png",
+  "technologies": [
+    {
+      "id": "combat-policy",
+      "nameKey": "research.army_building.combat-policy",
+      "maxLevel": 10,
+      "badgeCosts": [150, 180, 210, 260, 300, 380, 470, 590, 740, 900],
+      "icon": "army-building/combat-policy",
+      "prerequisites": []
+    },
+    {
+      "id": "interceptions",
+      "nameKey": "research.army_building.interceptions",
+      "maxLevel": 10,
+      "badgeCosts": [150, 180, 210, 260, 300, 380, 470, 590, 740, 900],
+      "icon": "army-building/interceptions",
+      "prerequisites": []
+    },
+    {
+      "id": "field-training",
+      "nameKey": "research.army_building.field-training",
+      "maxLevel": 10,
+      "badgeCosts": [150, 180, 210, 260, 300, 380, 470, 590, 740, 900],
+      "icon": "army-building/field-training",
+      "prerequisites": ["combat-policy", "interceptions"]
+    },
+    {
+      "id": "camo-coating",
+      "nameKey": "research.army_building.camo-coating",
+      "maxLevel": 10,
+      "badgeCosts": [150, 180, 210, 260, 300, 380, 470, 590, 740, 900],
+      "icon": "army-building/camo-coating",
+      "prerequisites": ["combat-policy", "interceptions"]
+    },
+    {
+      "id": "demolition-crew",
+      "nameKey": "research.army_building.demolition-crew",
+      "maxLevel": 1,
+      "badgeCosts": [420],
+      "icon": "army-building/demolition-crew",
+      "prerequisites": ["field-training", "camo-coating"]
+    },
+    {
+      "id": "alloy-plate",
+      "nameKey": "research.army_building.alloy-plate",
+      "maxLevel": 3,
+      "badgeCosts": [730, 1200, 2100],
+      "icon": "army-building/alloy-plate",
+      "prerequisites": ["demolition-crew"]
+    },
+    {
+      "id": "enhanced-armour",
+      "nameKey": "research.army_building.enhanced-armour",
+      "maxLevel": 3,
+      "badgeCosts": [730, 1200, 2100],
+      "icon": "army-building/enhanced-armour",
+      "prerequisites": ["demolition-crew"]
+    },
+    {
+      "id": "aerocraft-material",
+      "nameKey": "research.army_building.aerocraft-material",
+      "maxLevel": 3,
+      "badgeCosts": [730, 1200, 2100],
+      "icon": "army-building/aerocraft-material",
+      "prerequisites": ["demolition-crew"]
+    },
+    {
+      "id": "mobility-enhancement",
+      "nameKey": "research.army_building.mobility-enhancement",
+      "maxLevel": 9,
+      "badgeCosts": [1000, 1200, 1500, 1800, 2200, 2800, 3500, 4400, 5400],
+      "icon": "army-building/mobility-enhancement",
+      "prerequisites": ["alloy-plate", "enhanced-armour", "aerocraft-material"]
+    },
+    {
+      "id": "melee-combat",
+      "nameKey": "research.army_building.melee-combat",
+      "maxLevel": 9,
+      "badgeCosts": [1000, 1200, 1500, 1800, 2200, 2800, 3500, 4400, 5400],
+      "icon": "army-building/melee-combat",
+      "prerequisites": ["alloy-plate", "enhanced-armour", "aerocraft-material"]
+    },
+    {
+      "id": "weapon-upgrading",
+      "nameKey": "research.army_building.weapon-upgrading",
+      "maxLevel": 9,
+      "badgeCosts": [1000, 1200, 1500, 1800, 2200, 2800, 3500, 4400, 5400],
+      "icon": "army-building/weapon-upgrading",
+      "prerequisites": ["alloy-plate", "enhanced-armour", "aerocraft-material"]
+    },
+    {
+      "id": "stronger-armor",
+      "nameKey": "research.army_building.stronger-armor",
+      "maxLevel": 9,
+      "badgeCosts": [1000, 1200, 1500, 1800, 2200, 2800, 3500, 4400, 5400],
+      "icon": "army-building/stronger-armor",
+      "prerequisites": ["mobility-enhancement", "melee-combat", "weapon-upgrading"]
+    },
+    {
+      "id": "shield-upgrade",
+      "nameKey": "research.army_building.shield-upgrade",
+      "maxLevel": 9,
+      "badgeCosts": [1000, 1200, 1500, 1800, 2200, 2800, 3500, 4400, 5400],
+      "icon": "army-building/shield-upgrade",
+      "prerequisites": ["mobility-enhancement", "melee-combat", "weapon-upgrading"]
+    },
+    {
+      "id": "tactical-cover",
+      "nameKey": "research.army_building.tactical-cover",
+      "maxLevel": 9,
+      "badgeCosts": [1000, 1200, 1500, 1800, 2200, 2800, 3500, 4400, 5400],
+      "icon": "army-building/tactical-cover",
+      "prerequisites": ["mobility-enhancement", "melee-combat", "weapon-upgrading"]
+    },
+    {
+      "id": "joint-operation",
+      "nameKey": "research.army_building.joint-operation",
+      "maxLevel": 14,
+      "badgeCosts": [1000, 1230, 1410, 1670, 2000, 2300, 2800, 3300, 3800, 4300, 5000, 5700, 6500, 7600],
+      "icon": "army-building/joint-operation",
+      "prerequisites": ["stronger-armor", "shield-upgrade", "tactical-cover"]
+    },
+    {
+      "id": "mobile-defense",
+      "nameKey": "research.army_building.mobile-defense",
+      "maxLevel": 14,
+      "badgeCosts": [1000, 1230, 1410, 1670, 2000, 2300, 2800, 3300, 3800, 4300, 5000, 5700, 6500, 7600],
+      "icon": "army-building/mobile-defense",
+      "prerequisites": ["stronger-armor", "shield-upgrade", "tactical-cover"]
+    },
+    {
+      "id": "combat-policy-2",
+      "nameKey": "research.army_building.combat-policy",
+      "maxLevel": 14,
+      "badgeCosts": [1000, 1230, 1410, 1670, 2000, 2300, 2800, 3300, 3800, 4300, 5000, 5700, 6500, 7600],
+      "icon": "army-building/combat-policy",
+      "prerequisites": ["joint-operation", "mobile-defense"]
+    },
+    {
+      "id": "interceptions-2",
+      "nameKey": "research.army_building.interceptions",
+      "maxLevel": 14,
+      "badgeCosts": [1000, 1230, 1410, 1670, 2000, 2300, 2800, 3300, 3800, 4300, 5000, 5700, 6500, 7600],
+      "icon": "army-building/interceptions",
+      "prerequisites": ["joint-operation", "mobile-defense"]
+    },
+    {
+      "id": "field-training-2",
+      "nameKey": "research.army_building.field-training",
+      "maxLevel": 14,
+      "badgeCosts": [1000, 1230, 1410, 1670, 2000, 2300, 2800, 3300, 3800, 4300, 5000, 5700, 6500, 7600],
+      "icon": "army-building/field-training",
+      "prerequisites": ["combat-policy-2", "interceptions-2"]
+    },
+    {
+      "id": "camo-coating-2",
+      "nameKey": "research.army_building.camo-coating",
+      "maxLevel": 14,
+      "badgeCosts": [1000, 1230, 1410, 1670, 2000, 2300, 2800, 3300, 3800, 4300, 5000, 5700, 6500, 7600],
+      "icon": "army-building/camo-coating",
+      "prerequisites": ["combat-policy-2", "interceptions-2"]
+    },
+    {
+      "id": "fire-up",
+      "nameKey": "research.army_building.fire-up",
+      "maxLevel": 15,
+      "badgeCosts": [1000, 1270, 1450, 1700, 2000, 2400, 2900, 3400, 3900, 4500, 5100, 5900, 6800, 7800, 8100],
+      "icon": "army-building/fire-up",
+      "prerequisites": ["field-training-2", "camo-coating-2"]
+    },
+    {
+      "id": "armor-upgrade",
+      "nameKey": "research.army_building.armor-upgrade",
+      "maxLevel": 15,
+      "badgeCosts": [1000, 1270, 1450, 1700, 2000, 2400, 2900, 3400, 3900, 4500, 5100, 5900, 6800, 7800, 8100],
+      "icon": "army-building/armor-upgrade",
+      "prerequisites": ["field-training-2", "camo-coating-2"]
+    },
+    {
+      "id": "recharge-shield",
+      "nameKey": "research.army_building.recharge-shield",
+      "maxLevel": 9,
+      "badgeCosts": [1300, 1540, 1760, 2000, 2500, 2900, 3500, 4100, 4800],
+      "icon": "army-building/recharge-shield",
+      "prerequisites": ["fire-up", "armor-upgrade"]
+    }
+  ]
+}

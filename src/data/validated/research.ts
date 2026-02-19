@@ -9,6 +9,7 @@ import heroTrainingRaw from '../research/hero-training.json';
 import militaryStrategiesRaw from '../research/military-strategies.json';
 import peaceShieldRaw from '../research/peace-shield.json';
 import siegeToSeizeRaw from '../research/siege-to-seize.json';
+import armyBuildingRaw from '../research/army-building.json';
 
 // Validate all research trees at import time
 export const allianceRecognition = ResearchTreeSchema.parse(allianceRecognitionRaw);
@@ -19,3 +20,4 @@ export const heroTraining = ResearchTreeSchema.parse(heroTrainingRaw);
 export const militaryStrategies = ResearchTreeSchema.parse(militaryStrategiesRaw);
 export const peaceShield = ResearchTreeSchema.parse(peaceShieldRaw);
 export const siegeToSeize = ResearchTreeSchema.parse(siegeToSeizeRaw);
+export const armyBuilding = ResearchTreeSchema.parse(armyBuildingRaw);
