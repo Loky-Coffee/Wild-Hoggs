@@ -6,63 +6,56 @@ import './Calculator.css';
 import './CaravanCalculator.css';
 
 interface CaravanCalculatorProps {
-  readonly lang: 'de' | 'en';
+  readonly lang: string;
   readonly translationData: TranslationData;
 }
 
 type Faction = 'red' | 'blue' | 'yellow';
 
-// Counter system: counters[a] = b means faction a beats faction b
+// counters[f] = enemy that f beats
 const COUNTERS: Record<Faction, Faction> = {
-  blue: 'red',    // Wings of Dawn beats Blood Rose
-  red: 'yellow',  // Blood Rose beats Guard of Order
-  yellow: 'blue', // Guard of Order beats Wings of Dawn
+  blue: 'red',
+  red: 'yellow',
+  yellow: 'blue',
 };
 
-// Hero name and buff type per faction
 const FACTION_HERO: Record<Faction, { name: string; buffKey: string }> = {
   blue:   { name: 'Laura',   buffKey: 'ATK' },
   red:    { name: 'Katrina', buffKey: 'DEF' },
   yellow: { name: 'Chicha',  buffKey: 'DMG' },
 };
 
+const FACTIONS: Faction[] = ['red', 'blue', 'yellow'];
+
 function parsePower(input: string): number {
   let s = input.trim().toLowerCase().replace(/\s/g, '');
   let multiplier = 1;
-
   if (s.endsWith('m')) { multiplier = 1_000_000; s = s.slice(0, -1); }
   else if (s.endsWith('k')) { multiplier = 1_000; s = s.slice(0, -1); }
-
   const commaCount = (s.match(/,/g) || []).length;
   const dotCount   = (s.match(/\./g) || []).length;
-
-  if (commaCount > 1) {
-    s = s.replace(/,/g, '');
-  } else if (dotCount > 1) {
-    s = s.replace(/\./g, '');
-  } else if (commaCount === 1 && dotCount === 1) {
+  if (commaCount > 1) { s = s.replace(/,/g, ''); }
+  else if (dotCount > 1) { s = s.replace(/\./g, ''); }
+  else if (commaCount === 1 && dotCount === 1) {
     const lastComma = s.lastIndexOf(',');
     const lastDot   = s.lastIndexOf('.');
-    s = lastComma > lastDot
-      ? s.replace('.', '').replace(',', '.')
-      : s.replace(',', '');
+    s = lastComma > lastDot ? s.replace('.', '').replace(',', '.') : s.replace(',', '');
   } else if (commaCount === 1) {
     const afterComma = s.split(',')[1] || '';
     s = afterComma.length === 3 ? s.replace(',', '') : s.replace(',', '.');
   }
-
   const num = parseFloat(s);
   return isNaN(num) ? NaN : num * multiplier;
 }
 
 function formatCompact(value: number, lang: string): string {
   if (value >= 1_000_000) {
-    const m   = value / 1_000_000;
+    const m = value / 1_000_000;
     const str = m % 1 === 0 ? m.toFixed(0) : m.toFixed(1);
     return lang === 'de' ? `${str.replace('.', ',')}m` : `${str}m`;
   }
   if (value >= 1_000) {
-    const k   = value / 1_000;
+    const k = value / 1_000;
     const str = k % 1 === 0 ? k.toFixed(0) : k.toFixed(1);
     return lang === 'de' ? `${str.replace('.', ',')}k` : `${str}k`;
   }
@@ -82,241 +75,193 @@ function getMatchingBonus(count: number): number {
   return 0;
 }
 
-interface FactionButtonsProps {
-  value: Faction | null;
-  onChange: (f: Faction | null) => void;
-  includeNone?: boolean;
-  noneLabel: string;
-  redLabel: string;
-  blueLabel: string;
-  yellowLabel: string;
-}
-
-function FactionButtons({ value, onChange, includeNone, noneLabel, redLabel, blueLabel, yellowLabel }: FactionButtonsProps) {
-  const options: { key: Faction | null; label: string; cls: string }[] = [
-    { key: 'red',    label: redLabel,    cls: 'faction-btn-red'    },
-    { key: 'blue',   label: blueLabel,   cls: 'faction-btn-blue'   },
-    { key: 'yellow', label: yellowLabel, cls: 'faction-btn-yellow' },
-  ];
-  if (includeNone) options.push({ key: null, label: noneLabel, cls: 'faction-btn-none' });
-
-  return (
-    <div className="faction-btn-group">
-      {options.map(({ key, label, cls }) => (
-        <button
-          key={String(key)}
-          type="button"
-          className={`faction-btn ${cls} ${value === key ? 'active' : ''}`}
-          onClick={() => onChange(value === key ? (includeNone ? null : null) : key)}
-        >
-          {label}
-        </button>
-      ))}
-    </div>
-  );
-}
-
 export default function CaravanCalculator({ lang, translationData }: CaravanCalculatorProps) {
-  const [powerInput,      setPowerInput]      = useState('');
-  const [yourFaction,     setYourFaction]     = useState<Faction | null>(null);
-  const [matchingCount,   setMatchingCount]   = useState<number>(5);
-  const [weeklyActive,    setWeeklyActive]    = useState(false);
-  const [enemyFaction,    setEnemyFaction]    = useState<Faction | null>(null);
+  const [powerInput,    setPowerInput]    = useState('');
+  const [enemyFaction,  setEnemyFaction]  = useState<Faction | null>(null);
+  const [yourFaction,   setYourFaction]   = useState<Faction | null>(null);
+  const [matchingCount, setMatchingCount] = useState(5);
+  const [weeklyActive,  setWeeklyActive]  = useState(false);
 
   const t = useTranslations(translationData);
 
+  // Which faction counters the enemy?
+  const recommendedFaction = useMemo<Faction | null>(() => {
+    if (!enemyFaction) return null;
+    return FACTIONS.find(f => COUNTERS[f] === enemyFaction) ?? null;
+  }, [enemyFaction]);
+
+  const handleEnemySelect = (f: Faction) => {
+    if (f === enemyFaction) {
+      setEnemyFaction(null);
+      setYourFaction(null);
+      return;
+    }
+    setEnemyFaction(f);
+    const counter = FACTIONS.find(c => COUNTERS[c] === f) ?? null;
+    setYourFaction(counter);
+  };
+
   const basePower = useMemo(() => {
     if (!powerInput.trim()) return null;
-    const parsed = parsePower(powerInput);
-    return isNaN(parsed) || parsed <= 0 ? null : parsed;
+    const p = parsePower(powerInput);
+    return isNaN(p) || p <= 0 ? null : p;
   }, [powerInput]);
 
   const buffs = useMemo(() => {
     const matchingBonus = yourFaction ? getMatchingBonus(matchingCount) : 0;
     const heroBonus     = weeklyActive && yourFaction ? 0.40 : 0;
-    const counterBonus  = (yourFaction && enemyFaction && COUNTERS[yourFaction] === enemyFaction) ? 0.10 : 0;
-    const totalMultiplier = (1 + matchingBonus) * (1 + heroBonus) * (1 + counterBonus);
-    return { matchingBonus, heroBonus, counterBonus, totalMultiplier };
+    const counterBonus  = yourFaction && enemyFaction && COUNTERS[yourFaction] === enemyFaction ? 0.10 : 0;
+    const total = (1 + matchingBonus) * (1 + heroBonus) * (1 + counterBonus);
+    return { matchingBonus, heroBonus, counterBonus, total };
   }, [yourFaction, matchingCount, weeklyActive, enemyFaction]);
 
-  const effectivePower = basePower !== null ? Math.round(basePower * buffs.totalMultiplier) : null;
+  const effectivePower = basePower !== null ? Math.round(basePower * buffs.total) : null;
 
   const results = useMemo(() => {
     if (effectivePower === null) return null;
     return caravanLevels.map(({ level, start, end }) => ({
-      level,
-      start,
-      end,
+      level, start, end,
       beatable: getBeatableSubLevels(start, end, effectivePower),
     }));
   }, [effectivePower]);
 
   const summary = useMemo(() => {
     if (!results) return null;
-    let maxFullLevel   = 0;
-    let maxReachLevel  = 0;
-    let maxReachSub    = 0;
+    let maxFull = 0, maxLevel = 0, maxSub = 0;
     for (const { level, beatable } of results) {
-      if (beatable === 20) maxFullLevel = level;
-      if (beatable > 0) { maxReachLevel = level; maxReachSub = beatable; }
+      if (beatable === 20) maxFull = level;
+      if (beatable > 0) { maxLevel = level; maxSub = beatable; }
     }
-    return { maxFullLevel, maxReachLevel, maxReachSub };
+    return { maxFull, maxLevel, maxSub };
   }, [results]);
 
-  const factionNames = {
+  const fn: Record<Faction, string> = {
     red:    t('calc.caravan.factionRed'),
     blue:   t('calc.caravan.factionBlue'),
     yellow: t('calc.caravan.factionYellow'),
   };
 
-  const hasAnyBuff = buffs.totalMultiplier > 1.0001;
-
   return (
-    <div className="calculator-container">
-      <div className="info-box">
-        <p>{t('calc.caravan.infoText')}</p>
+    <div className="caravan-calc">
+    <div className="cc-controls">
+
+      {/* ── Step 1: Enemy Faction ── */}
+      <div className="cc-step">
+        <div className="cc-step-label">{t('calc.caravan.enemyFaction')}</div>
+        <div className="cc-faction-row">
+          {FACTIONS.map(f => (
+            <button
+              key={f}
+              type="button"
+              className={`cc-faction-card cc-${f}${enemyFaction === f ? ' selected' : ''}`}
+              onClick={() => handleEnemySelect(f)}
+            >
+              {fn[f]}
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* Power input */}
-      <div className="calculator-form compact">
-        <div className="form-row compact-row centered">
-          <div className="form-group compact" style={{ minWidth: '220px' }}>
-            <label htmlFor="formation-power">{t('calc.caravan.formationPower')}:</label>
-            <input
-              id="formation-power"
-              type="text"
-              value={powerInput}
-              placeholder={t('calc.caravan.placeholder')}
-              onInput={(e) => setPowerInput((e.target as HTMLInputElement).value)}
-              style={{ width: '220px' }}
-            />
+      {/* ── Step 2: Power Input ── */}
+      <div className="cc-step">
+        <div className="cc-step-label">{t('calc.caravan.formationPower')}</div>
+        <input
+          type="text"
+          className="cc-power-input"
+          value={powerInput}
+          placeholder={t('calc.caravan.placeholder')}
+          onInput={e => setPowerInput((e.target as HTMLInputElement).value)}
+        />
+      </div>
+
+      {/* ── Step 3: Your Setup (only after enemy selected) ── */}
+      {enemyFaction && (
+        <div className="cc-step">
+          <div className="cc-step-label">{t('calc.caravan.yourFaction')}</div>
+          <div className="cc-faction-row">
+            {FACTIONS.map(f => {
+              const isRec = f === recommendedFaction;
+              const isSel = f === yourFaction;
+              return (
+                <button
+                  key={f}
+                  type="button"
+                  className={`cc-faction-card cc-${f}${isSel ? ' selected' : ''}${isRec && !isSel ? ` pulse-${f}` : ''}${isRec ? ' recommended' : ''}`}
+                  onClick={() => setYourFaction(f === yourFaction ? null : f)}
+                >
+                  {isRec && <span className="cc-rec-star">★</span>}
+                  {fn[f]}
+                </button>
+              );
+            })}
           </div>
-        </div>
-      </div>
 
-      {/* Faction & Buffs section */}
-      <div className="faction-section">
-        <h4 className="faction-section-title">{t('calc.caravan.factionSection')}</h4>
-
-        <div className="faction-row">
-          <span className="faction-label">{t('calc.caravan.yourFaction')}:</span>
-          <FactionButtons
-            value={yourFaction}
-            onChange={setYourFaction}
-            includeNone={true}
-            noneLabel={t('calc.caravan.factionNone')}
-            redLabel={factionNames.red}
-            blueLabel={factionNames.blue}
-            yellowLabel={factionNames.yellow}
-          />
-        </div>
-
-        {yourFaction && (
-          <>
-            <div className="faction-row">
-              <span className="faction-label">{t('calc.caravan.matchingHeroes')}:</span>
-              <div className="faction-btn-group">
+          {yourFaction && (
+            <div className="cc-options-row">
+              <div className="cc-heroes">
+                <span className="cc-opt-label">{t('calc.caravan.matchingHeroes')}:</span>
                 {[3, 4, 5].map(n => (
                   <button
                     key={n}
                     type="button"
-                    className={`faction-btn faction-btn-count ${matchingCount === n ? 'active' : ''}`}
+                    className={`cc-count-chip${matchingCount === n ? ' active' : ''}`}
                     onClick={() => setMatchingCount(n)}
                   >
                     {n}
                   </button>
                 ))}
               </div>
+              <button
+                type="button"
+                className={`cc-weekly-btn${weeklyActive ? ' active' : ''}`}
+                onClick={() => setWeeklyActive(v => !v)}
+              >
+                {weeklyActive
+                  ? `${FACTION_HERO[yourFaction].name} +40% ${FACTION_HERO[yourFaction].buffKey}`
+                  : t('calc.caravan.weeklyBonusOff')}
+              </button>
             </div>
-
-            <div className="faction-row">
-              <span className="faction-label">{t('calc.caravan.weeklyBonus')}:</span>
-              <div className="faction-btn-group">
-                <button
-                  type="button"
-                  className={`faction-btn ${weeklyActive ? 'faction-btn-yes active' : 'faction-btn-no'}`}
-                  onClick={() => setWeeklyActive(!weeklyActive)}
-                >
-                  {weeklyActive
-                    ? `${FACTION_HERO[yourFaction].name} (+40% ${FACTION_HERO[yourFaction].buffKey})`
-                    : t('calc.caravan.weeklyBonusOff')}
-                </button>
-              </div>
-            </div>
-          </>
-        )}
-
-        <div className="faction-row">
-          <span className="faction-label">{t('calc.caravan.enemyFaction')}:</span>
-          <FactionButtons
-            value={enemyFaction}
-            onChange={setEnemyFaction}
-            includeNone={true}
-            noneLabel={t('calc.caravan.factionNone')}
-            redLabel={factionNames.red}
-            blueLabel={factionNames.blue}
-            yellowLabel={factionNames.yellow}
-          />
+          )}
         </div>
+      )}
 
-        {/* Faction interaction hint */}
-        {yourFaction && enemyFaction && (() => {
-          const counters = COUNTERS[yourFaction] === enemyFaction;
-          const countered = COUNTERS[enemyFaction] === yourFaction;
-          return (
-            <div className={`faction-hint ${counters ? 'hint-good' : countered ? 'hint-bad' : 'hint-neutral'}`}>
-              {counters
-                ? `${factionNames[yourFaction]} > ${factionNames[enemyFaction]} — +10% ${t('calc.caravan.counterAdvantage')}`
-                : countered
-                  ? `${factionNames[enemyFaction]} > ${factionNames[yourFaction]} — ${t('calc.caravan.counterDisadvantage')}`
-                  : t('calc.caravan.noCounterBonus')}
-            </div>
-          );
-        })()}
-      </div>
-
-      {/* Effective power breakdown */}
-      {basePower !== null && hasAnyBuff && (
-        <div className="effective-power-box">
-          <div className="effective-power-header">{t('calc.caravan.effectivePower')}</div>
-          <div className="effective-power-value">{formatCompact(effectivePower!, lang)}</div>
-          <div className="effective-power-breakdown">
-            <span>{formatCompact(basePower, lang)}</span>
+      {/* ── Effective Power ── */}
+      {basePower !== null && buffs.total > 1.001 && (
+        <div className="cc-eff-row">
+          <span className="cc-eff-label">{t('calc.caravan.effectivePower')}:</span>
+          <span className="cc-eff-value">{formatCompact(effectivePower!, lang)}</span>
+          <div className="cc-eff-chips">
             {buffs.matchingBonus > 0 && (
-              <span className="buff-chip buff-match">
-                ×{(1 + buffs.matchingBonus).toFixed(2)} (+{Math.round(buffs.matchingBonus * 100)}% {t('calc.caravan.matchingBonus')})
-              </span>
+              <span className="cc-chip cc-chip-match">+{Math.round(buffs.matchingBonus * 100)}%</span>
             )}
-            {buffs.heroBonus > 0 && yourFaction && (
-              <span className="buff-chip buff-hero">
-                ×1.40 ({FACTION_HERO[yourFaction].name} +40% {FACTION_HERO[yourFaction].buffKey})
-              </span>
+            {buffs.heroBonus > 0 && (
+              <span className="cc-chip cc-chip-hero">+40%</span>
             )}
             {buffs.counterBonus > 0 && (
-              <span className="buff-chip buff-counter">
-                ×1.10 (+10% {t('calc.caravan.counterAdvantage')})
-              </span>
+              <span className="cc-chip cc-chip-counter">+10%</span>
             )}
           </div>
         </div>
       )}
 
-      {/* Results */}
-      {summary && results && (
+    </div>{/* end cc-controls */}
+    <div className="cc-results">
+
+      {/* ── Results ── */}
+      {summary && results ? (
         <>
-          <div className="calculator-results">
-            <div className="result-card highlight">
-              <div className="result-label">{t('calc.caravan.maxFullLevel')}</div>
-              <div className="result-value">
-                {summary.maxFullLevel > 0 ? `Level ${summary.maxFullLevel}` : t('calc.caravan.none')}
+          <div className="cc-summary">
+            <div className="cc-summary-card">
+              <div className="cc-summary-lbl">{t('calc.caravan.maxFullLevel')}</div>
+              <div className="cc-summary-val">
+                {summary.maxFull > 0 ? `Lvl ${summary.maxFull}` : '—'}
               </div>
             </div>
-
-            {summary.maxReachLevel > summary.maxFullLevel && (
-              <div className="result-card">
-                <div className="result-label">{t('calc.caravan.maxReach')}</div>
-                <div className="result-value">
-                  {`Level ${summary.maxReachLevel} · ${t('calc.caravan.subLevel')} ${summary.maxReachSub}`}
+            {summary.maxLevel > summary.maxFull && (
+              <div className="cc-summary-card">
+                <div className="cc-summary-lbl">{t('calc.caravan.maxReach')}</div>
+                <div className="cc-summary-val">
+                  Lvl {summary.maxLevel} · {summary.maxSub}/20
                 </div>
               </div>
             )}
@@ -335,19 +280,15 @@ export default function CaravanCalculator({ lang, translationData }: CaravanCalc
                 {results.map(({ level, start, end, beatable }) => (
                   <tr
                     key={level}
-                    className={
-                      beatable === 20 ? 'caravan-row-green'
-                      : beatable > 0  ? 'caravan-row-yellow'
-                      :                 'caravan-row-red'
-                    }
+                    className={beatable === 20 ? 'caravan-row-green' : beatable > 0 ? 'caravan-row-yellow' : 'caravan-row-red'}
                   >
                     <td>{level}</td>
-                    <td>{formatCompact(start, lang)} – {formatCompact(end, lang)}</td>
+                    <td>{formatCompact(start, lang)}–{formatCompact(end, lang)}</td>
                     <td>
                       {beatable === 20
                         ? t('calc.caravan.allClear')
                         : beatable === 0
-                          ? t('calc.caravan.none')
+                          ? '—'
                           : `${beatable}/20`}
                     </td>
                   </tr>
@@ -356,13 +297,11 @@ export default function CaravanCalculator({ lang, translationData }: CaravanCalc
             </table>
           </div>
         </>
+      ) : (
+        <p className="cc-hint">{t('calc.caravan.enterPower')}</p>
       )}
 
-      {!summary && (
-        <div className="info-box" style={{ marginTop: '1rem' }}>
-          <p>{t('calc.caravan.enterPower')}</p>
-        </div>
-      )}
+    </div>{/* end cc-results */}
     </div>
   );
 }
