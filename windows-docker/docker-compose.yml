@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  windows:
+    image: dockurr/windows
+    container_name: windows11
+    environment:
+      VERSION: "11"              # Windows 11 (alternativ: "10", "win11", "win10")
+      RAM_SIZE: "24G"            # RAM für Windows VM (24GB - mehr für Android Emulator)
+      CPU_CORES: "8"             # Anzahl CPU-Kerne (mehr = besser für Emulator)
+      DISK_SIZE: "64G"           # Virtuelle Festplattengröße
+      ARGUMENTS: "-cpu host"     # CPU-Features durchreichen (VT-x für nested virtualization)
+    devices:
+      - /dev/kvm                 # KVM für Hardware-Beschleunigung
+    cap_add:
+      - NET_ADMIN                # Für Netzwerk-Funktionen
+    ports:
+      - "8006:8006"              # Web-Interface (noVNC)
+      - "3389:3389/tcp"          # RDP (Remote Desktop Protocol)
+      - "3389:3389/udp"          # RDP UDP
+    volumes:
+      - windows-data:/storage    # Persistenter Speicher für Windows
+    restart: unless-stopped
+    stop_grace_period: 2m        # Zeit für sauberes Herunterfahren
+
+volumes:
+  windows-data:
+    driver: local
