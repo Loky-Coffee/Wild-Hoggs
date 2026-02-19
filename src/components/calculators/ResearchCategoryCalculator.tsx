@@ -1,9 +1,9 @@
 import { useState, useMemo, useEffect, useRef } from 'preact/hooks';
-import type { ResearchTree } from '../../schemas/research';
+import type { ResearchTree, Technology } from '../../schemas/research';
 import ResearchTreeView from './ResearchTreeView';
 import { useTranslations } from '../../i18n/utils';
 import { formatNumber } from '../../utils/formatters';
-import type { TranslationData } from '../../i18n/index';
+import type { TranslationData, TranslationKey } from '../../i18n/index';
 import './Calculator.css';
 
 interface ResearchCategoryCalculatorProps {
@@ -289,7 +289,7 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
               {formatNumber(calculatedResults.totalBadges, lang)} / {formatNumber(category.totalBadges, lang)} 🎖️
               {targetTech && (
                 <span style={{ marginLeft: '0.5rem', color: '#e74c3c' }}>
-                  🎯 {t(targetTech.nameKey)}: {formatNumber(badgesToTarget, lang)}
+                  🎯 {t(targetTech.nameKey as TranslationKey)}: {formatNumber(badgesToTarget, lang)}
                 </span>
               )}
             </span>
@@ -312,12 +312,12 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
             {categoryImageSrc && (
               <img
                 src={categoryImageSrc}
-                alt={t(category.nameKey)}
+                alt={t(category.nameKey as TranslationKey)}
                 style={{ width: '60px', height: '60px', objectFit: 'contain' }}
               />
             )}
             <div>
-              <h3 style={{ margin: '0 0 0.5rem 0', color: '#ffa500' }}>{t(category.nameKey)}</h3>
+              <h3 style={{ margin: '0 0 0.5rem 0', color: '#ffa500' }}>{t(category.nameKey as TranslationKey)}</h3>
               <p style={{ margin: 0, fontSize: '0.9rem', opacity: 0.8 }}>
                 {category.nodeCount} {t('calc.research.nodes')} · {formatNumber(category.totalBadges, lang)} 🎖️ {t('calc.research.total')}
               </p>
@@ -348,7 +348,7 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
                   {t('tank.target')}
                 </div>
                 <div style={{ fontSize: '1.2rem', fontWeight: 700, color: '#e74c3c', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  {t(targetTech.nameKey)} · {formatNumber(badgesToTarget, lang)} 🎖️
+                  {t(targetTech.nameKey as TranslationKey)} · {formatNumber(badgesToTarget, lang)} 🎖️
                   <button
                     onClick={() => setTargetTechId(null)}
                     style={{

@@ -4,7 +4,7 @@ import { NODE_WIDTH, NODE_HEIGHT, type SVGDimensions } from '../../utils/treeNod
 
 interface TankModification {
   level: number;
-  name: string;
+  nameKey: string;
   wrenchesPerSub: number;
   subLevels: number;
   totalWrenches: number;

@@ -65,13 +65,13 @@ const breadcrumbItems = [
       </div>
     </a>
 
-    <div class="tool-card disabled has-image" style="background-image: url('/images/caravan.webp')">
+    <a href={getLocalizedPath('tools/caravan', lang)} class="tool-card has-image" style="background-image: url('/images/caravan.webp')">
       <div class="tool-card-body">
         <h2>{t('tools.caravan.title')}</h2>
         <p>{t('tools.caravan.description')}</p>
-        <span class="coming-soon">{t('research.comingSoon')}</span>
+        <span class="available">{t('tools.available')}</span>
       </div>
-    </div>
+    </a>
   </div>
 </PageLayout>
 

@@ -1,6 +1,6 @@
 import { memo, useRef, useEffect } from 'preact/compat';
 import { useTranslations } from '../../i18n/utils';
-import type { TranslationData } from '../../i18n/index';
+import type { TranslationData, TranslationKey } from '../../i18n/index';
 import RangeTouch from 'rangetouch';
 import { NODE_WIDTH, NODE_HEIGHT } from '../../utils/treeNodeConfig';
 
@@ -85,7 +85,7 @@ function TankModificationNode({
 
   const totalWrenchesForSubLevel = currentSubLevel * mod.wrenchesPerSub;
 
-  const handleNodeKeyDown = (e: React.KeyboardEvent) => {
+  const handleNodeKeyDown = (e: React.KeyboardEvent<Element>) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       if (!unlocked) {
@@ -102,7 +102,7 @@ function TankModificationNode({
       data-node-element="true"
       tabIndex={0}
       role="group"
-      aria-label={`Level ${mod.level}: ${t(mod.nameKey)} - Sub-Level ${currentSubLevel} of ${maxSubLevel}${unlocked ? '' : ' (locked)'}`}
+      aria-label={`Level ${mod.level}: ${t(mod.nameKey as TranslationKey)} - Sub-Level ${currentSubLevel} of ${maxSubLevel}${unlocked ? '' : ' (locked)'}`}
       className="research-tree-node"
       data-mod-level={mod.level}
       data-unlocked={unlocked}
@@ -148,7 +148,7 @@ function TankModificationNode({
       {onSetTarget && (
         <g
           onClick={onSetTarget}
-          onKeyDown={(e: React.KeyboardEvent) => {
+          onKeyDown={(e: React.KeyboardEvent<Element>) => {
             if (e.key === 'Enter' || e.key === ' ') {
               e.preventDefault();
               onSetTarget();
@@ -214,7 +214,7 @@ function TankModificationNode({
       {!unlocked && (
         <g
           onClick={() => onUnlockClick(mod)}
-          onKeyDown={(e: React.KeyboardEvent) => {
+          onKeyDown={(e: React.KeyboardEvent<Element>) => {
             if (e.key === 'Enter' || e.key === ' ') {
               e.preventDefault();
               onUnlockClick(mod);
@@ -287,7 +287,7 @@ function TankModificationNode({
           fontWeight="bold"
           data-node-element="true"
         >
-          {t(mod.nameKey)}
+          {t(mod.nameKey as TranslationKey)}
         </text>
       )}
 
@@ -313,7 +313,7 @@ function TankModificationNode({
         fill="rgba(255, 255, 255, 0.6)"
         data-node-element="true"
       >
-        {t(mod.nameKey).length > 22 ? t(mod.nameKey).substring(0, 22) + '...' : t(mod.nameKey)}
+        {t(mod.nameKey as TranslationKey).length > 22 ? t(mod.nameKey as TranslationKey).substring(0, 22) + '...' : t(mod.nameKey as TranslationKey)}
       </text>
 
       {/* Wrenches per sub-level */}

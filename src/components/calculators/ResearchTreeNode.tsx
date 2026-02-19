@@ -3,7 +3,7 @@ import { useRef, useEffect, useState } from 'preact/hooks';
 import type { Technology } from '../../schemas/research';
 import { getResearchImage } from '../../utils/researchImages';
 import { useTranslations } from '../../i18n/utils';
-import type { TranslationData } from '../../i18n/index';
+import type { TranslationData, TranslationKey } from '../../i18n/index';
 import RangeTouch from 'rangetouch';
 import { NODE_WIDTH, NODE_HEIGHT } from '../../utils/treeNodeConfig';
 
@@ -67,7 +67,7 @@ function ResearchTreeNode({
   translationData
 }: ResearchTreeNodeProps) {
   const t = useTranslations(translationData);
-  const techName = t(tech.nameKey) || tech.nameKey || 'Unknown';
+  const techName = t(tech.nameKey as TranslationKey) || tech.nameKey || 'Unknown';
   const totalBadges = tech.badgeCosts.slice(0, selectedLevel).reduce((sum, cost) => sum + cost, 0);
   const maxBadges = tech.badgeCosts.reduce((a, b) => a + b, 0);
   const isActive = selectedLevel > 0;
@@ -114,7 +114,7 @@ function ResearchTreeNode({
   // when maxAvailable changes due to other node interactions.
   // We instead clamp on user change only to preserve the displayed state.
 
-  const handleNodeKeyDown = (e: React.KeyboardEvent) => {
+  const handleNodeKeyDown = (e: React.KeyboardEvent<Element>) => {
     // When node is focused and Enter/Space pressed
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
@@ -208,7 +208,7 @@ function ResearchTreeNode({
       {onSetTarget && (
         <g
           onClick={onSetTarget}
-          onKeyDown={(e: React.KeyboardEvent) => {
+          onKeyDown={(e: React.KeyboardEvent<Element>) => {
             if (e.key === 'Enter' || e.key === ' ') {
               e.preventDefault();
               onSetTarget();
@@ -274,7 +274,7 @@ function ResearchTreeNode({
       {!unlocked && (
         <g
           onClick={() => onUnlockClick(tech)}
-          onKeyDown={(e: React.KeyboardEvent) => {
+          onKeyDown={(e: React.KeyboardEvent<Element>) => {
             if (e.key === 'Enter' || e.key === ' ') {
               e.preventDefault();
               onUnlockClick(tech);

@@ -2,7 +2,7 @@ import { useState, useMemo } from 'preact/hooks';
 import { validatedBuildings as buildingsData } from '../../data/validated/buildings';
 import { useTranslations } from '../../i18n/utils';
 import { formatNumber } from '../../utils/formatters';
-import type { TranslationData } from '../../i18n/index';
+import type { TranslationData, TranslationKey } from '../../i18n/index';
 import './Calculator.css';
 
 interface BuildingCost {
@@ -106,7 +106,7 @@ export default function BuildingCalculator({ lang, translationData }: BuildingCa
           >
             {buildings.map((building) => (
               <option key={building.id} value={building.id}>
-                {t(building.nameKey)}
+                {t(building.nameKey as TranslationKey)}
               </option>
             ))}
           </select>

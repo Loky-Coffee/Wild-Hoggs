@@ -1,6 +1,6 @@
 import { useTranslations } from '../../i18n/utils';
 import { formatNumber as sharedFormatNumber } from '../../utils/formatters';
-import type { TranslationData } from '../../i18n/index';
+import type { TranslationData, TranslationKey } from '../../i18n/index';
 
 interface TankModification {
   level: number;
@@ -96,7 +96,7 @@ export default function TankModificationList({
                   padding: '0.75rem 1rem',
                   color: 'rgba(255, 255, 255, 0.8)'
                 }}>
-                  {t(mod.nameKey)}
+                  {t(mod.nameKey as TranslationKey)}
                 </td>
 
                 {/* Wrenches per sub */}

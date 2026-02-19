@@ -14,6 +14,7 @@ import heroTraining from '../../../data/research/hero-training.json';
 import militaryStrategies from '../../../data/research/military-strategies.json';
 import peaceShield from '../../../data/research/peace-shield.json';
 import siegeToSeize from '../../../data/research/siege-to-seize.json';
+import armyBuilding from '../../../data/research/army-building.json';
 import '../../../styles/shared-layouts.css';
 
 // Import optimized images
@@ -26,6 +27,7 @@ import heroTrainingImg from '../../../assets/images/research/hero-training.webp'
 import militaryStrategiesImg from '../../../assets/images/research/military-strategies.webp';
 import peaceShieldImg from '../../../assets/images/research/peace-shield.webp';
 import siegeToSeizeImg from '../../../assets/images/research/siege-to-seize.webp';
+import armyBuildingImg from '../../../assets/images/research/army-building.webp';
 
 export function getStaticPaths() {
   return getLanguagePaths();
@@ -46,6 +48,7 @@ const researchDataMap: Record<string, any> = {
   military_strategies: militaryStrategies,
   peace_shield: peaceShield,
   siege_to_seize: siegeToSeize,
+  army_building: armyBuilding,
 };
 
 // Map optimized images by ID
@@ -58,6 +61,7 @@ const imageMap: Record<string, ImageMetadata> = {
   military_strategies: militaryStrategiesImg,
   peace_shield: peaceShieldImg,
   siege_to_seize: siegeToSeizeImg,
+  army_building: armyBuildingImg,
 };
 
 const categories = [
@@ -69,6 +73,7 @@ const categories = [
   { id: 'peace_shield', icon: '🛡️' },
   { id: 'siege_to_seize', icon: '🏰' },
   { id: 'hero_training', icon: '💪' },
+  { id: 'army_building', icon: '🪖' },
 ];
 
 const breadcrumbItems = [
@@ -93,7 +98,7 @@ const breadcrumbItems = [
       const category = researchDataMap[id];
       if (!category) return null;
 
-      const isEnabled = ['alliance_recognition', 'hero_training', 'military_strategies', 'unit_special_training', 'field', 'fully_armed_alliance', 'peace_shield', 'siege_to_seize'].includes(id);
+      const isEnabled = ['alliance_recognition', 'hero_training', 'military_strategies', 'unit_special_training', 'field', 'fully_armed_alliance', 'peace_shield', 'siege_to_seize', 'army_building'].includes(id);
       const CardTag = isEnabled ? 'a' : 'div';
 
       return (

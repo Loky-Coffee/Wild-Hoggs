@@ -88,7 +88,7 @@ export default function RewardCodesLocal({ lang, translationData }: RewardCodesL
       {activeCodes.length > 0 && (
         <div className="codes-section">
           <h3 className="section-title">
-            🎁 {t('active')} ({activeCodes.length})
+            🎁 {t('codes.active')} ({activeCodes.length})
           </h3>
           <div className="codes-grid">
             {activeCodes.map((item) => {
@@ -132,7 +132,7 @@ export default function RewardCodesLocal({ lang, translationData }: RewardCodesL
       {expiredCodes.length > 0 && (
         <div className="codes-section">
           <h3 className="section-title expired-title">
-            ⏰ {t('expired')} ({expiredCodes.length})
+            ⏰ {t('codes.expired')} ({expiredCodes.length})
           </h3>
           <div className="codes-grid">
             {expiredCodes.map((item) => (
@@ -144,7 +144,7 @@ export default function RewardCodesLocal({ lang, translationData }: RewardCodesL
                 )}
                 <div className="code-header">
                   <span className="code-text">{item.code}</span>
-                  <span className="expired-badge">{t('expired')}</span>
+                  <span className="expired-badge">{t('codes.expired')}</span>
                 </div>
                 <div className="code-expired-date">
                   {t('codes.expiredOn')}: {new Date(item.expiresAt).toLocaleDateString(lang)}

@@ -2,6 +2,7 @@
 import PageLayout from '../../../../layouts/PageLayout.astro';
 import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../../../i18n/utils';
 import { languages, loadTranslations } from '../../../../i18n/index';
+import type { TranslationKey } from '../../../../i18n/index';
 import ResearchCategoryCalculator from '../../../../components/calculators/ResearchCategoryCalculator';
 import { ErrorBoundary } from '../../../../components/ErrorBoundary';
 import type { ResearchTree } from '../../../../schemas/research';
@@ -20,6 +21,7 @@ import {
   militaryStrategies,
   peaceShield,
   siegeToSeize,
+  armyBuilding,
 } from '../../../../data/validated/research';
 import '../../../../styles/shared-layouts.css';
 
@@ -32,6 +34,7 @@ import heroTrainingImg from '../../../../assets/images/research/hero-training.we
 import militaryStrategiesImg from '../../../../assets/images/research/military-strategies.webp';
 import peaceShieldImg from '../../../../assets/images/research/peace-shield.webp';
 import siegeToSeizeImg from '../../../../assets/images/research/siege-to-seize.webp';
+import armyBuildingImg from '../../../../assets/images/research/army-building.webp';
 
 export function getStaticPaths() {
   const paths: { params: { lang: string | undefined; categoryId: string } }[] = [];
@@ -43,7 +46,8 @@ export function getStaticPaths() {
     'hero_training',
     'military_strategies',
     'peace_shield',
-    'siege_to_seize'
+    'siege_to_seize',
+    'army_building',
   ];
 
   // Generate paths for all languages
@@ -69,6 +73,7 @@ const researchDataMap: Record<string, ResearchTree> = {
   military_strategies: militaryStrategies,
   peace_shield: peaceShield,
   siege_to_seize: siegeToSeize,
+  army_building: armyBuilding,
 };
 
 // Map category images by ID
@@ -81,6 +86,7 @@ const imageMap: Record<string, ImageMetadata> = {
   military_strategies: militaryStrategiesImg,
   peace_shield: peaceShieldImg,
   siege_to_seize: siegeToSeizeImg,
+  army_building: armyBuildingImg,
 };
 
 const { categoryId } = Astro.params;
@@ -103,7 +109,7 @@ const breadcrumbItems = [
 ];
 ---
 
-<PageLayout title={`${t(category.nameKey)} - Wild Hoggs`} description={`Calculate badge costs for ${t(category.nameKey)}`} breadcrumbs={breadcrumbItems}>
+<PageLayout title={`Last Z ${t(category.nameKey as TranslationKey)}`} description={`Calculate Last Z badge costs for ${t(category.nameKey as TranslationKey)} research`} breadcrumbs={breadcrumbItems}>
   <div class="calculator-wrapper">
     <ErrorBoundary lang={lang} client:load>
       <ResearchCategoryCalculator

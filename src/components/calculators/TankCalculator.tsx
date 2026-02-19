@@ -4,7 +4,7 @@ import TankModificationList from './TankModificationList';
 import tankData from '../../data/tank-modifications.json';
 import { useTranslations } from '../../i18n/utils';
 import { formatNumber } from '../../utils/formatters';
-import type { TranslationData } from '../../i18n/index';
+import type { TranslationData, TranslationKey } from '../../i18n/index';
 import './Calculator.css';
 
 interface TankModification {
@@ -119,7 +119,7 @@ export default function TankCalculator({ lang, translationData }: TankCalculator
   };
 
   const getInfoBoxAriaLabel = (collapsed: boolean) => {
-    return collapsed ? t('calc.research.expandInfo') || 'Expand info' : t('calc.research.collapseInfo') || 'Collapse info';
+    return collapsed ? t('calc.research.infoExpand') || 'Expand info' : t('calc.research.infoCollapse') || 'Collapse info';
   };
 
   return (
@@ -143,7 +143,7 @@ export default function TankCalculator({ lang, translationData }: TankCalculator
               )}
               {!targetMod && nextMilestone && (
                 <span style={{ marginLeft: '0.5rem', color: '#9b59b6' }}>
-                  → {t(nextMilestone.nameKey)}: {formatNumber(wrenchesToNextMilestone, lang)}
+                  → {t(nextMilestone.nameKey as TranslationKey)}: {formatNumber(wrenchesToNextMilestone, lang)}
                 </span>
               )}
             </span>
@@ -179,13 +179,13 @@ export default function TankCalculator({ lang, translationData }: TankCalculator
           {lastVehicle && (
             <div style={{ whiteSpace: 'nowrap' }}>
               <span style={{ color: 'rgba(255, 255, 255, 0.6)' }}>{t('tank.vehicle')}:</span>{' '}
-              <span style={{ fontWeight: 'bold', color: '#3498db' }}>{t(lastVehicle.nameKey)}</span>
+              <span style={{ fontWeight: 'bold', color: '#3498db' }}>{t(lastVehicle.nameKey as TranslationKey)}</span>
             </div>
           )}
           {nextMilestone && (
             <div style={{ whiteSpace: 'nowrap' }}>
               <span style={{ color: 'rgba(255, 255, 255, 0.6)' }}>{t('tank.nextVehicle')}:</span>{' '}
-              <span style={{ fontWeight: 'bold', color: '#9b59b6' }}>{t(nextMilestone.nameKey)}</span>
+              <span style={{ fontWeight: 'bold', color: '#9b59b6' }}>{t(nextMilestone.nameKey as TranslationKey)}</span>
               <span style={{ color: 'rgba(255, 255, 255, 0.5)', marginLeft: '0.25rem' }}>
                 (🔧 {formatNumber(wrenchesToNextMilestone, lang)})
               </span>
