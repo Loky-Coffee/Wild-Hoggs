@@ -203,6 +203,12 @@ export default function HeroShowcase() {
         </div>
       </div>
 
+      {/* ── 16: Just the photo + border, fully transparent ── */}
+      <div className="sc-card sc-s16">
+        <Num n={16} />
+        <img src={img(2)} alt={NAME} className="sc-img" />
+      </div>
+
     </div>
   );
 }
