@@ -4,7 +4,7 @@ import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../i18n/ut
 import { getLanguagePaths } from '../../i18n/static-paths';
 import { loadTranslations } from '../../i18n/index';
 import PageHeader from '../../components/PageHeader.astro';
-import HeroShowcase from '../../components/HeroShowcase';
+import HeroInfoShowcase from '../../components/HeroInfoShowcase';
 
 export function getStaticPaths() {
   return getLanguagePaths();
@@ -26,9 +26,9 @@ const breadcrumbItems = [
   breadcrumbs={breadcrumbItems}
 >
   <PageHeader
-    title="Card Style Comparison"
-    subtitle="15 different designs — pick your favourite"
+    title="Info-Anzeige Vergleich"
+    subtitle="Klick auf eine Karte — 9 verschiedene Arten wie die Hero-Info erscheint"
   />
 
-  <HeroShowcase client:visible />
+  <HeroInfoShowcase client:visible />
 </PageLayout>
