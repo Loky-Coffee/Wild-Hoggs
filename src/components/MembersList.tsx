@@ -62,7 +62,7 @@ export default function MembersList({ members, lang, translationData }: Props) {
   const visibleCount = sortedMembers.length;
 
   return (
-    <div>
+    <div className="members-layout">
 
       {/* ── Level Statistics Panel ── */}
       <div className="level-stats-panel">
