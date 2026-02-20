@@ -204,6 +204,8 @@ export default {
   'members.sortLevel': 'Cấp HQ',
   'members.sortLevelHigh': 'Cấp (cao→thấp)',
   'members.sortLevelLow': 'Cấp (thấp→cao)',
+  'members.avgLevel': 'Cấp độ TB',
+  'members.filterByLevel': 'Lọc theo cấp độ',
   'members.sortPower': 'Sức mạnh',
   'members.month.jan': 'Th1',
   'members.month.feb': 'Th2',

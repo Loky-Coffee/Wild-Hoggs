@@ -204,6 +204,8 @@ export default {
   'members.sortLevel': 'HQ Level',
   'members.sortLevelHigh': 'Level (hoch-niedrig)',
   'members.sortLevelLow': 'Level (niedrig-hoch)',
+  'members.avgLevel': 'Ø Level',
+  'members.filterByLevel': 'Nach Level filtern',
   'members.sortPower': 'Power',
   'members.month.jan': 'Jan',
   'members.month.feb': 'Feb',

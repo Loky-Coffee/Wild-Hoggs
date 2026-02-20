@@ -204,6 +204,8 @@ export default {
   'members.sortLevel': 'HQ 等级',
   'members.sortLevelHigh': '等级（高→低）',
   'members.sortLevelLow': '等级（低→高）',
+  'members.avgLevel': '平均等级',
+  'members.filterByLevel': '按等级筛选',
   'members.sortPower': '战力',
   'members.month.jan': '1月',
   'members.month.feb': '2月',

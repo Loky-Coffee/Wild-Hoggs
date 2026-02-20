@@ -82,6 +82,115 @@ const breadcrumbItems = [
 
 <style>
 
+  /* ── Level Stats Panel ── */
+  :global(.level-stats-panel) {
+    background: rgba(255, 165, 0, 0.05);
+    border: 1px solid rgba(255, 165, 0, 0.2);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  :global(.level-stats-header) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  :global(.avg-level-box) {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+
+  :global(.avg-label) {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  :global(.avg-value) {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #ffa500;
+    line-height: 1;
+  }
+
+  :global(.level-filter-label) {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.45);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  :global(.level-checkboxes) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  :global(.level-cb-row) {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    cursor: pointer;
+    padding: 0.35rem 0.7rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 165, 0, 0.25);
+    background: rgba(255, 165, 0, 0.07);
+    transition: all 0.15s;
+    user-select: none;
+  }
+
+  :global(.level-cb-row:hover) {
+    border-color: rgba(255, 165, 0, 0.5);
+    background: rgba(255, 165, 0, 0.12);
+  }
+
+  :global(.level-cb-row.hidden-level) {
+    opacity: 0.4;
+    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  :global(.level-checkbox) {
+    accent-color: #ffa500;
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  :global(.level-cb-text) {
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.8);
+    white-space: nowrap;
+  }
+
+  :global(.level-cb-count) {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #ffa500;
+    background: rgba(255, 165, 0, 0.12);
+    border-radius: 4px;
+    padding: 0 0.3rem;
+    min-width: 1.4em;
+    text-align: center;
+  }
+
+  :global(.visible-count) {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.4);
+    margin-left: auto;
+  }
+
+  /* ── Sort Controls ── */
   :global(.sort-controls) {
     display: flex;
     align-items: center;

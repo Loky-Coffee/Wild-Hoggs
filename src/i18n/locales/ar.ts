@@ -204,6 +204,8 @@ export default {
   'members.sortLevel': 'مستوى HQ',
   'members.sortLevelHigh': 'المستوى (عالي-منخفض)',
   'members.sortLevelLow': 'المستوى (منخفض-عالي)',
+  'members.avgLevel': 'متوسط المستوى',
+  'members.filterByLevel': 'تصفية حسب المستوى',
   'members.sortPower': 'القوة',
   'members.month.jan': 'ينا',
   'members.month.feb': 'فبر',

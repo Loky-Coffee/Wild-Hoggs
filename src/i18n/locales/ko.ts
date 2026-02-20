@@ -204,6 +204,8 @@ export default {
   'members.sortLevel': 'HQ 레벨',
   'members.sortLevelHigh': '레벨 (높음→낮음)',
   'members.sortLevelLow': '레벨 (낮음→높음)',
+  'members.avgLevel': '평균 레벨',
+  'members.filterByLevel': '레벨로 필터',
   'members.sortPower': '전투력',
   'members.month.jan': '1월',
   'members.month.feb': '2월',

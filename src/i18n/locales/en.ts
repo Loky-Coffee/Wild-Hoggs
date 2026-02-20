@@ -310,6 +310,8 @@ export default {
   '404.homepage': 'homepage',
   '404.andStartFresh': 'and start fresh.',
   // Members Page
+  'members.avgLevel': 'Avg. Level',
+  'members.filterByLevel': 'Filter by Level',
   'members.lastUpdated': 'Last updated',
   'members.sortBy': 'Sort by',
   'members.sortName': 'Name',

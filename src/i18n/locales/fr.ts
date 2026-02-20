@@ -204,6 +204,8 @@ export default {
   'members.sortLevel': 'Niveau HQ',
   'members.sortLevelHigh': 'Niveau (haut-bas)',
   'members.sortLevelLow': 'Niveau (bas-haut)',
+  'members.avgLevel': 'Niv. moy.',
+  'members.filterByLevel': 'Filtrer par niveau',
   'members.sortPower': 'Puissance',
   'members.month.jan': 'Jan',
   'members.month.feb': 'Fév',

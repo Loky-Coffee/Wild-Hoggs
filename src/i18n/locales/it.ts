@@ -204,6 +204,8 @@ export default {
   'members.sortLevel': 'Livello HQ',
   'members.sortLevelHigh': 'Livello (alto-basso)',
   'members.sortLevelLow': 'Livello (basso-alto)',
+  'members.avgLevel': 'Liv. med.',
+  'members.filterByLevel': 'Filtra per livello',
   'members.sortPower': 'Potenza',
   'members.month.jan': 'Gen',
   'members.month.feb': 'Feb',

@@ -204,6 +204,8 @@ export default {
   'members.sortLevel': 'HQ Seviyesi',
   'members.sortLevelHigh': 'Seviye (yüksek-düşük)',
   'members.sortLevelLow': 'Seviye (düşük-yüksek)',
+  'members.avgLevel': 'Ort. Seviye',
+  'members.filterByLevel': 'Seviyeye göre filtrele',
   'members.sortPower': 'Güç',
   'members.month.jan': 'Oca',
   'members.month.feb': 'Şub',

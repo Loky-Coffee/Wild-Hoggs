@@ -204,6 +204,8 @@ export default {
   'members.sortLevel': 'HQ レベル',
   'members.sortLevelHigh': 'レベル（高→低）',
   'members.sortLevelLow': 'レベル（低→高）',
+  'members.avgLevel': '平均レベル',
+  'members.filterByLevel': 'レベルで絞り込む',
   'members.sortPower': '戦力',
   'members.month.jan': '1月',
   'members.month.feb': '2月',

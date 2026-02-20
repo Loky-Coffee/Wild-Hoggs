@@ -1,4 +1,4 @@
-import { useState } from 'preact/hooks';
+import { useState, useMemo } from 'preact/hooks';
 import type { Member } from '../data/members';
 import { useTranslations } from '../i18n/utils';
 import type { TranslationData } from '../i18n/index';
@@ -15,26 +15,89 @@ export default function MembersList({ members, lang, translationData }: Props) {
   const t = useTranslations(translationData);
   const [sortBy, setSortBy] = useState<SortOption>('name');
 
-  const sortedMembers = [...members].sort((a, b) => {
-    switch (sortBy) {
-      case 'name':
-        return a.name.localeCompare(b.name);
-      case 'gender':
-        // Sort order: ♀, ♂, –
-        if (a.gender === b.gender) return a.name.localeCompare(b.name);
-        const genderOrder = { '♀': 0, '♂': 1, '–': 2 };
-        return genderOrder[a.gender] - genderOrder[b.gender];
-      case 'level-high':
-        return b.level - a.level || a.name.localeCompare(b.name);
-      case 'level-low':
-        return a.level - b.level || a.name.localeCompare(b.name);
-      default:
-        return 0;
+  // Level statistics
+  const levelStats = useMemo(() => {
+    const counts: Record<number, number> = {};
+    let total = 0;
+    for (const m of members) {
+      counts[m.level] = (counts[m.level] || 0) + 1;
+      total += m.level;
     }
-  });
+    const avg = members.length > 0 ? (total / members.length).toFixed(1) : '0';
+    const levels = Object.keys(counts).map(Number).sort((a, b) => a - b);
+    return { counts, avg, levels };
+  }, [members]);
+
+  // All levels visible by default
+  const [hiddenLevels, setHiddenLevels] = useState<Set<number>>(new Set());
+
+  const toggleLevel = (level: number) => {
+    setHiddenLevels(prev => {
+      const next = new Set(prev);
+      if (next.has(level)) next.delete(level);
+      else next.add(level);
+      return next;
+    });
+  };
+
+  const sortedMembers = useMemo(() =>
+    [...members]
+      .filter(m => !hiddenLevels.has(m.level))
+      .sort((a, b) => {
+        switch (sortBy) {
+          case 'name':       return a.name.localeCompare(b.name);
+          case 'gender': {
+            if (a.gender === b.gender) return a.name.localeCompare(b.name);
+            const order = { '♀': 0, '♂': 1, '–': 2 };
+            return order[a.gender] - order[b.gender];
+          }
+          case 'level-high': return b.level - a.level || a.name.localeCompare(b.name);
+          case 'level-low':  return a.level - b.level || a.name.localeCompare(b.name);
+          default:           return 0;
+        }
+      }),
+    [members, sortBy, hiddenLevels]
+  );
+
+  const visibleCount = sortedMembers.length;
 
   return (
     <div>
+
+      {/* ── Level Statistics Panel ── */}
+      <div className="level-stats-panel">
+        <div className="level-stats-header">
+          <div className="avg-level-box">
+            <span className="avg-label">{t('members.avgLevel')}</span>
+            <span className="avg-value">{levelStats.avg}</span>
+          </div>
+          <span className="level-filter-label">{t('members.filterByLevel')}</span>
+        </div>
+        <div className="level-checkboxes">
+          {levelStats.levels.map(level => {
+            const count = levelStats.counts[level];
+            const hidden = hiddenLevels.has(level);
+            const id = `lvl-cb-${level}`;
+            return (
+              <label key={level} htmlFor={id} className={`level-cb-row${hidden ? ' hidden-level' : ''}`}>
+                <input
+                  id={id}
+                  type="checkbox"
+                  checked={!hidden}
+                  onChange={() => toggleLevel(level)}
+                  className="level-checkbox"
+                />
+                <span className="level-cb-text">
+                  {t('members.sortLevel')} {level}
+                </span>
+                <span className="level-cb-count">{count}</span>
+              </label>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ── Sort Controls ── */}
       <div className="sort-controls">
         <label htmlFor="sort-select">{t('members.sortBy')}:</label>
         <select
@@ -47,8 +110,12 @@ export default function MembersList({ members, lang, translationData }: Props) {
           <option value="level-high">{t('members.sortLevelHigh')}</option>
           <option value="level-low">{t('members.sortLevelLow')}</option>
         </select>
+        <span className="visible-count">
+          {visibleCount} / {members.length}
+        </span>
       </div>
 
+      {/* ── Member Grid ── */}
       <div className="members-grid">
         {sortedMembers.map((member) => (
           <div key={member.name} className="member-card">
@@ -61,6 +128,7 @@ export default function MembersList({ members, lang, translationData }: Props) {
           </div>
         ))}
       </div>
+
     </div>
   );
 }

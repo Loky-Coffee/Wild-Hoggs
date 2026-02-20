@@ -204,6 +204,8 @@ export default {
   'members.sortLevel': 'เลเวล HQ',
   'members.sortLevelHigh': 'เลเวล (มาก→น้อย)',
   'members.sortLevelLow': 'เลเวล (น้อย→มาก)',
+  'members.avgLevel': 'เลเวลเฉลี่ย',
+  'members.filterByLevel': 'กรองตามเลเวล',
   'members.sortPower': 'พลัง',
   'members.month.jan': 'ม.ค.',
   'members.month.feb': 'ก.พ.',

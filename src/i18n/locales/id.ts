@@ -204,6 +204,8 @@ export default {
   'members.sortLevel': 'Level HQ',
   'members.sortLevelHigh': 'Level (tinggi-rendah)',
   'members.sortLevelLow': 'Level (rendah-tinggi)',
+  'members.avgLevel': 'Rata-rata Level',
+  'members.filterByLevel': 'Filter berdasarkan level',
   'members.sortPower': 'Kekuatan',
   'members.month.jan': 'Jan',
   'members.month.feb': 'Feb',
