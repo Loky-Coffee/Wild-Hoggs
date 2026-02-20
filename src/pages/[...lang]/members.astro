@@ -85,151 +85,167 @@ const breadcrumbItems = [
   /* ── Level Stats Panel ── */
   :global(.level-stats-panel) {
     background: rgba(255, 165, 0, 0.05);
-    border: 1px solid rgba(255, 165, 0, 0.2);
-    border-radius: 12px;
-    padding: 1rem 1.25rem;
-    margin-bottom: 1.25rem;
+    border: 1px solid rgba(255, 165, 0, 0.18);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1.75rem;
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  :global(.level-stats-header) {
-    display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    flex-wrap: wrap;
+    gap: 1.25rem;
   }
 
+  /* avg level – centred stat */
   :global(.avg-level-box) {
     display: flex;
-    align-items: baseline;
-    gap: 0.5rem;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
   }
 
   :global(.avg-label) {
-    font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.7rem;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.35);
   }
 
   :global(.avg-value) {
-    font-size: 1.6rem;
-    font-weight: 700;
+    font-size: 2.8rem;
+    font-weight: 800;
     color: #ffa500;
     line-height: 1;
   }
 
-  :global(.level-filter-label) {
-    font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.45);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+  /* filter + sort section */
+  :global(.level-filter-section) {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    padding-top: 1.1rem;
   }
 
-  :global(.level-checkboxes) {
+  :global(.level-filter-label) {
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.3);
+  }
+
+  /* pill chips */
+  :global(.level-chips) {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  :global(.level-cb-row) {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    cursor: pointer;
-    padding: 0.35rem 0.7rem;
-    border-radius: 8px;
-    border: 1px solid rgba(255, 165, 0, 0.25);
-    background: rgba(255, 165, 0, 0.07);
-    transition: all 0.15s;
-    user-select: none;
-  }
-
-  :global(.level-cb-row:hover) {
-    border-color: rgba(255, 165, 0, 0.5);
-    background: rgba(255, 165, 0, 0.12);
-  }
-
-  :global(.level-cb-row.hidden-level) {
-    opacity: 0.4;
-    border-color: rgba(255, 255, 255, 0.1);
-    background: rgba(255, 255, 255, 0.03);
-  }
-
-  :global(.level-checkbox) {
-    accent-color: #ffa500;
-    width: 14px;
-    height: 14px;
-    cursor: pointer;
-    flex-shrink: 0;
-  }
-
-  :global(.level-cb-text) {
-    font-size: 0.82rem;
-    color: rgba(255, 255, 255, 0.8);
-    white-space: nowrap;
-  }
-
-  :global(.level-cb-count) {
-    font-size: 0.78rem;
-    font-weight: 700;
-    color: #ffa500;
-    background: rgba(255, 165, 0, 0.12);
-    border-radius: 4px;
-    padding: 0 0.3rem;
-    min-width: 1.4em;
-    text-align: center;
-  }
-
-  :global(.visible-count) {
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.4);
-    margin-left: auto;
-  }
-
-  /* ── Sort Controls ── */
-  :global(.sort-controls) {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 2rem;
+    gap: 0.45rem;
     justify-content: center;
   }
 
-  :global(.sort-controls label) {
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.9);
-    font-weight: 500;
+  /* hide native checkbox but keep it accessible */
+  :global(.level-checkbox-hidden) {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
   }
 
-  :global(.sort-controls select) {
-    padding: 0.5rem 1rem;
+  :global(.level-chip) {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    cursor: pointer;
+    padding: 0.38rem 0.85rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 165, 0, 0.45);
+    background: rgba(255, 165, 0, 0.1);
+    transition: all 0.15s ease;
+    user-select: none;
+  }
+
+  :global(.level-chip:hover) {
+    background: rgba(255, 165, 0, 0.2);
+    border-color: rgba(255, 165, 0, 0.7);
+  }
+
+  :global(.level-chip.off) {
+    opacity: 0.3;
+    border-color: rgba(255, 255, 255, 0.1);
+    background: transparent;
+  }
+
+  :global(.chip-level) {
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.85);
+    white-space: nowrap;
+  }
+
+  :global(.chip-count) {
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: #ffa500;
+    background: rgba(255, 165, 0, 0.15);
+    border-radius: 999px;
+    padding: 0 0.38rem;
+    min-width: 1.5em;
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  /* sort row inside the panel */
+  :global(.members-sort-row) {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-top: 0.85rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    width: 100%;
+  }
+
+  :global(.sort-row-label) {
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.45);
+    white-space: nowrap;
+  }
+
+  :global(.sort-row-select) {
+    padding: 0.42rem 0.9rem;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 165, 0, 0.3);
     border-radius: 8px;
     color: #ffffff;
-    font-size: 0.95rem;
+    font-size: 0.88rem;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s;
   }
 
-  :global(.sort-controls select:hover) {
+  :global(.sort-row-select:hover) {
     background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 165, 0, 0.5);
+    border-color: rgba(255, 165, 0, 0.55);
   }
 
-  :global(.sort-controls select:focus) {
+  :global(.sort-row-select:focus) {
     outline: none;
     border-color: #ffa500;
     box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.1);
   }
 
-  :global(.sort-controls select option) {
+  :global(.sort-row-select option) {
     background: #1a1a1a;
     color: #ffffff;
+  }
+
+  :global(.visible-count) {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.35);
+    font-weight: 500;
   }
 
   :global(.members-grid) {
@@ -306,6 +322,23 @@ const breadcrumbItems = [
 
     .subtitle {
       font-size: 1rem;
+    }
+
+    :global(.level-stats-panel) {
+      padding: 1.1rem 1rem;
+      gap: 1rem;
+    }
+
+    :global(.avg-value) {
+      font-size: 2.2rem;
+    }
+
+    :global(.level-chip) {
+      padding: 0.32rem 0.7rem;
+    }
+
+    :global(.chip-level) {
+      font-size: 0.78rem;
     }
 
     :global(.members-grid) {

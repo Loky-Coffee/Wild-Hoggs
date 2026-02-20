@@ -66,53 +66,50 @@ export default function MembersList({ members, lang, translationData }: Props) {
 
       {/* ── Level Statistics Panel ── */}
       <div className="level-stats-panel">
-        <div className="level-stats-header">
-          <div className="avg-level-box">
-            <span className="avg-label">{t('members.avgLevel')}</span>
-            <span className="avg-value">{levelStats.avg}</span>
-          </div>
+        <div className="avg-level-box">
+          <span className="avg-label">{t('members.avgLevel')}</span>
+          <span className="avg-value">{levelStats.avg}</span>
+        </div>
+        <div className="level-filter-section">
           <span className="level-filter-label">{t('members.filterByLevel')}</span>
+          <div className="level-chips">
+            {levelStats.levels.map(level => {
+              const count = levelStats.counts[level];
+              const hidden = hiddenLevels.has(level);
+              const id = `lvl-cb-${level}`;
+              return (
+                <label key={level} htmlFor={id} className={`level-chip${hidden ? ' off' : ''}`}>
+                  <input
+                    id={id}
+                    type="checkbox"
+                    checked={!hidden}
+                    onChange={() => toggleLevel(level)}
+                    className="level-checkbox-hidden"
+                  />
+                  <span className="chip-level">{t('members.sortLevel')} {level}</span>
+                  <span className="chip-count">{count}</span>
+                </label>
+              );
+            })}
+          </div>
         </div>
-        <div className="level-checkboxes">
-          {levelStats.levels.map(level => {
-            const count = levelStats.counts[level];
-            const hidden = hiddenLevels.has(level);
-            const id = `lvl-cb-${level}`;
-            return (
-              <label key={level} htmlFor={id} className={`level-cb-row${hidden ? ' hidden-level' : ''}`}>
-                <input
-                  id={id}
-                  type="checkbox"
-                  checked={!hidden}
-                  onChange={() => toggleLevel(level)}
-                  className="level-checkbox"
-                />
-                <span className="level-cb-text">
-                  {t('members.sortLevel')} {level}
-                </span>
-                <span className="level-cb-count">{count}</span>
-              </label>
-            );
-          })}
+        <div className="members-sort-row">
+          <label htmlFor="sort-select" className="sort-row-label">{t('members.sortBy')}:</label>
+          <select
+            id="sort-select"
+            className="sort-row-select"
+            value={sortBy}
+            onChange={(e) => setSortBy((e.target as HTMLSelectElement).value as SortOption)}
+          >
+            <option value="name">{t('members.sortName')}</option>
+            <option value="gender">{t('members.sortGender')}</option>
+            <option value="level-high">{t('members.sortLevelHigh')}</option>
+            <option value="level-low">{t('members.sortLevelLow')}</option>
+          </select>
+          <span className="visible-count">
+            {visibleCount} / {members.length}
+          </span>
         </div>
-      </div>
-
-      {/* ── Sort Controls ── */}
-      <div className="sort-controls">
-        <label htmlFor="sort-select">{t('members.sortBy')}:</label>
-        <select
-          id="sort-select"
-          value={sortBy}
-          onChange={(e) => setSortBy((e.target as HTMLSelectElement).value as SortOption)}
-        >
-          <option value="name">{t('members.sortName')}</option>
-          <option value="gender">{t('members.sortGender')}</option>
-          <option value="level-high">{t('members.sortLevelHigh')}</option>
-          <option value="level-low">{t('members.sortLevelLow')}</option>
-        </select>
-        <span className="visible-count">
-          {visibleCount} / {members.length}
-        </span>
       </div>
 
       {/* ── Member Grid ── */}
