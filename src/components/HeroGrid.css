@@ -234,66 +234,153 @@
 .hg-skills-section {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.6rem;
   flex: 1;
 }
 
 .hg-skills-title {
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.28);
   margin: 0;
 }
 
+/* ── Skill accordion list ── */
 .hg-skills-list {
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
+  gap: 0.45rem;
 }
 
-.hg-skill {
+.hg-skill-item {
   border-radius: 10px;
-  padding: 0.75rem 0.9rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
+  overflow: hidden;
+  border: 1px solid transparent;
 }
-.hg-skill-active  { background: rgba(255,165,0,0.07);   border: 1px solid rgba(255,165,0,0.2); }
-.hg-skill-passive { background: rgba(79,195,247,0.07);  border: 1px solid rgba(79,195,247,0.2); }
-.hg-skill-global  { background: rgba(39,174,96,0.07);   border: 1px solid rgba(39,174,96,0.2); }
 
+/* type colors */
+.skill-normal    { background: rgba(79,195,247,0.06);  border-color: rgba(79,195,247,0.18); }
+.skill-active    { background: rgba(255,165,0,0.06);   border-color: rgba(255,165,0,0.18); }
+.skill-global    { background: rgba(39,174,96,0.06);   border-color: rgba(39,174,96,0.18); }
+.skill-exclusive { background: rgba(206,147,216,0.06); border-color: rgba(206,147,216,0.18); }
+
+/* header button */
 .hg-skill-header {
+  width: 100%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 0.6rem;
+  padding: 0.7rem 0.85rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s;
+}
+.hg-skill-header:hover { background: rgba(255,255,255,0.04); }
+
+.hg-skill-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex: 1;
+  min-width: 0;
+  flex-wrap: wrap;
 }
 
 .hg-skill-name {
-  font-size: 0.88rem;
+  font-size: 0.87rem;
   font-weight: 700;
   color: #fff;
+  white-space: nowrap;
 }
 
-.hg-skill-type {
-  font-size: 0.62rem;
+/* category badge */
+.hg-skill-cat-badge {
+  font-size: 0.58rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: rgba(255, 255, 255, 0.35);
+  padding: 0.1rem 0.4rem;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+.skill-normal-badge    { background: rgba(79,195,247,0.15);  color: #4fc3f7; }
+.skill-active-badge    { background: rgba(255,165,0,0.15);   color: #ffa500; }
+.skill-global-badge    { background: rgba(39,174,96,0.15);   color: #52be80; }
+.skill-exclusive-badge { background: rgba(206,147,216,0.15); color: #ce93d8; }
+
+/* chevron */
+.hg-skill-chevron {
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.3);
+  line-height: 1;
+  transform: rotate(90deg);
+  transition: transform 0.22s ease, color 0.15s;
+  flex-shrink: 0;
+}
+.hg-skill-chevron.open {
+  transform: rotate(270deg);
+  color: rgba(255,255,255,0.7);
 }
 
-.hg-skill-desc {
-  font-size: 0.82rem;
-  line-height: 1.6;
-  color: rgba(255, 255, 255, 0.55);
+/* expanded body */
+.hg-skill-body {
+  padding: 0 0.85rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.hg-skill-category-label {
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.35);
   margin: 0;
+  font-style: italic;
+}
+
+.hg-skill-effect {
+  font-size: 0.87rem;
+  color: rgba(255,255,255,0.75);
+  margin: 0;
+  line-height: 1.55;
+}
+
+/* level rows */
+.hg-skill-levels {
+  display: flex;
+  flex-direction: column;
+  gap: 0.28rem;
+}
+
+.hg-skill-level-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+
+.hg-skill-lv {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.35);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  flex-shrink: 0;
+  min-width: 2.4em;
+}
+
+.hg-skill-lv-desc {
+  font-size: 0.83rem;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.45;
 }
 
 .hg-skills-empty {
   font-size: 0.82rem;
-  color: rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.22);
   font-style: italic;
   margin: 0;
 }
