@@ -88,13 +88,13 @@
 .hg-split {
   position: relative;
   display: flex;
+  align-items: flex-start;      /* columns size themselves, not each other */
   background: linear-gradient(140deg, #141526 0%, #0e1a30 100%);
   border: 1px solid rgba(79, 195, 247, 0.18);
   border-radius: 20px;
   overflow: hidden;
   max-width: 860px;
   width: 100%;
-  height: min(88vh, 640px);
   box-shadow:
     0 0 0 1px rgba(79, 195, 247, 0.08),
     0 0 70px rgba(79, 195, 247, 0.08),
@@ -102,12 +102,14 @@
   animation: hg-split-in 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* ── Left: portrait ── */
+/* ── Left: portrait — determines the modal height via aspect-ratio ── */
 .hg-split-img-col {
   position: relative;
   width: 38%;
   flex-shrink: 0;
-  min-height: 460px;
+  aspect-ratio: 2 / 3;          /* photo sets the height — no fixed px needed */
+  max-height: 88vh;
+  overflow: hidden;
 }
 
 .hg-split-img {
@@ -129,16 +131,18 @@
   background: linear-gradient(to right, transparent, #141526);
 }
 
-/* ── Right: info ── */
+/* ── Right: info — fills the photo height and scrolls internally ── */
 .hg-split-info-col {
-  flex: 1;
+  position: absolute;           /* fills exactly the same space as the photo */
+  left: 38%;
+  top: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
   flex-direction: column;
   gap: 1.1rem;
   padding: 2.25rem 2rem 2.25rem 1rem;
   overflow-y: auto;
-  min-width: 0;
-  min-height: 0;
 }
 
 .hg-split-info-col::-webkit-scrollbar       { width: 4px; }
@@ -395,15 +399,28 @@
 
   .hg-split {
     flex-direction: column;
-    height: min(95vh, 700px);
+    align-items: stretch;
+    max-height: 92vh;
     border-radius: 16px;
   }
 
   .hg-split-img-col {
     width: 100%;
+    aspect-ratio: unset;
     height: 240px;
-    min-height: unset;
+    max-height: unset;
     flex-shrink: 0;
+  }
+
+  /* on mobile, info col is back in normal flow (not absolute) */
+  .hg-split-info-col {
+    position: relative;
+    left: unset;
+    top: unset;
+    right: unset;
+    bottom: unset;
+    flex: 1;
+    min-height: 0;
   }
 
   .hg-split-img-col::after {
