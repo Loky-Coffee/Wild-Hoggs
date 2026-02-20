@@ -19,15 +19,13 @@ export default function HeroGrid({ heroes }: Props) {
   const open  = (hero: Hero) => setSelected(hero);
   const close = () => setSelected(null);
 
-  // Close on Escape key
   useEffect(() => {
     if (!selected) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') close(); };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
+    const h = (e: KeyboardEvent) => { if (e.key === 'Escape') close(); };
+    window.addEventListener('keydown', h);
+    return () => window.removeEventListener('keydown', h);
   }, [selected]);
 
-  // Lock body scroll while modal is open
   useEffect(() => {
     document.body.style.overflow = selected ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
@@ -36,90 +34,83 @@ export default function HeroGrid({ heroes }: Props) {
   return (
     <div>
       {/* ── Hero Grid ── */}
-      <div className="hero-grid">
+      <div className="hg-grid">
         {heroes.map((hero) => (
           <button
             key={hero.id}
             type="button"
-            className={`hero-card rarity-${hero.rarity}${selected?.id === hero.id ? ' active' : ''}`}
+            className={`hg-card rarity-${hero.rarity}${selected?.id === hero.id ? ' active' : ''}`}
             onClick={() => open(hero)}
             aria-label={hero.name}
           >
-            <div className="hero-card-img-wrap">
-              <img
-                src={hero.image}
-                alt={hero.name}
-                className="hero-card-img"
-                loading="lazy"
-              />
-            </div>
-
-            <div className="hero-card-overlay">
-              <span className={`rarity-badge rarity-badge-${hero.rarity}`}>
-                {RARITY_LABEL[hero.rarity]}
-              </span>
-              <span className="hero-card-name">{hero.name}</span>
-              <span className="hero-card-type">{hero.type}</span>
-            </div>
-
-            {/* shimmer on hover */}
-            <div className="hero-card-shimmer" />
+            <img
+              src={hero.image}
+              alt={hero.name}
+              className="hg-card-img"
+              loading="lazy"
+            />
           </button>
         ))}
       </div>
 
-      {/* ── Detail Modal ── */}
+      {/* ── Split-Screen Modal ── */}
       {selected && (
-        <div
-          className="hero-modal-backdrop"
-          onClick={close}
-          role="dialog"
-          aria-modal="true"
-          aria-label={selected.name}
-        >
-          <div
-            className="hero-modal"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              type="button"
-              className="hero-modal-close"
-              onClick={close}
-              aria-label="Close"
-            >
-              ✕
-            </button>
+        <div className="hg-backdrop" onClick={close}>
+          <div className="hg-split" onClick={(e) => e.stopPropagation()}>
 
-            {/* Portrait */}
-            <div className="hero-modal-img-col">
-              <div className={`hero-modal-img-frame rarity-frame-${selected.rarity}`}>
-                <img
-                  src={selected.image}
-                  alt={selected.name}
-                  className="hero-modal-img"
-                />
-              </div>
+            {/* Left — portrait */}
+            <div className="hg-split-img-col">
+              <img
+                src={selected.image}
+                alt={selected.name}
+                className="hg-split-img"
+              />
             </div>
 
-            {/* Info */}
-            <div className="hero-modal-info">
-              <div className="hero-modal-top">
-                <h2 className="hero-modal-name">{selected.name}</h2>
-                <div className="hero-modal-tags">
-                  <span className={`rarity-badge rarity-badge-${selected.rarity}`}>
+            {/* Right — info */}
+            <div className="hg-split-info-col">
+              <button className="hg-close" onClick={close} type="button" aria-label="Close">✕</button>
+
+              <div className="hg-hero-header">
+                <h2 className="hg-hero-name">{selected.name}</h2>
+                <div className="hg-hero-tags">
+                  <span className={`hg-rarity-badge hg-rarity-${selected.rarity}`}>
                     {RARITY_LABEL[selected.rarity]}
                   </span>
-                  <span className="hero-tag">{selected.type}</span>
+                  <span className="hg-tag">{selected.type}</span>
                   {selected.globalPassive && (
-                    <span className="hero-tag hero-tag-global">Global Passive</span>
+                    <span className="hg-tag hg-tag-green">Global Passive</span>
                   )}
                 </div>
               </div>
 
-              <hr className="hero-modal-divider" />
+              <hr className="hg-divider" />
 
-              <p className="hero-modal-desc">{selected.description}</p>
+              <p className="hg-desc">{selected.description}</p>
+
+              <hr className="hg-divider" />
+
+              {/* Skills section — ready for future content */}
+              <div className="hg-skills-section">
+                <h3 className="hg-skills-title">Skills</h3>
+                {selected.skills && selected.skills.length > 0 ? (
+                  <div className="hg-skills-list">
+                    {selected.skills.map((skill) => (
+                      <div key={skill.name} className={`hg-skill hg-skill-${skill.type}`}>
+                        <div className="hg-skill-header">
+                          <span className="hg-skill-name">{skill.name}</span>
+                          <span className="hg-skill-type">{skill.type}</span>
+                        </div>
+                        <p className="hg-skill-desc">{skill.description}</p>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="hg-skills-empty">Skills coming soon...</p>
+                )}
+              </div>
             </div>
+
           </div>
         </div>
       )}

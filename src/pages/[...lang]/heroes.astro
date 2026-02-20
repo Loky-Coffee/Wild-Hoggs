@@ -4,7 +4,8 @@ import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../i18n/ut
 import { getLanguagePaths } from '../../i18n/static-paths';
 import { loadTranslations } from '../../i18n/index';
 import PageHeader from '../../components/PageHeader.astro';
-import HeroInfoShowcase from '../../components/HeroInfoShowcase';
+import HeroGrid from '../../components/HeroGrid';
+import { heroes } from '../../data/heroes';
 
 export function getStaticPaths() {
   return getLanguagePaths();
@@ -26,9 +27,9 @@ const breadcrumbItems = [
   breadcrumbs={breadcrumbItems}
 >
   <PageHeader
-    title="Info-Anzeige Vergleich"
-    subtitle="Klick auf eine Karte — 9 verschiedene Arten wie die Hero-Info erscheint"
+    title={t('heroes.title')}
+    subtitle={t('heroes.subtitle')}
   />
 
-  <HeroInfoShowcase client:visible />
+  <HeroGrid heroes={heroes} client:visible />
 </PageLayout>
