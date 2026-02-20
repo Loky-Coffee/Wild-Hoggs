@@ -94,18 +94,24 @@ export default function MembersList({ members, lang, translationData }: Props) {
           </div>
         </div>
         <div className="members-sort-row">
-          <label htmlFor="sort-select" className="sort-row-label">{t('members.sortBy')}:</label>
-          <select
-            id="sort-select"
-            className="sort-row-select"
-            value={sortBy}
-            onChange={(e) => setSortBy((e.target as HTMLSelectElement).value as SortOption)}
-          >
-            <option value="name">{t('members.sortName')}</option>
-            <option value="gender">{t('members.sortGender')}</option>
-            <option value="level-high">{t('members.sortLevelHigh')}</option>
-            <option value="level-low">{t('members.sortLevelLow')}</option>
-          </select>
+          <span className="sort-row-label">{t('members.sortBy')}</span>
+          <div className="sort-chips">
+            {([
+              { value: 'name',       label: t('members.sortName') },
+              { value: 'gender',     label: t('members.sortGender') },
+              { value: 'level-high', label: `HQ ↓` },
+              { value: 'level-low',  label: `HQ ↑` },
+            ] as { value: SortOption; label: string }[]).map(({ value, label }) => (
+              <button
+                key={value}
+                type="button"
+                className={`sort-chip${sortBy === value ? ' active' : ''}`}
+                onClick={() => setSortBy(value)}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
           <span className="visible-count">
             {visibleCount} / {members.length}
           </span>
