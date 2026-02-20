@@ -1,0 +1,625 @@
+/* ============================================================
+   Hero Card Showcase — 15 Styles
+   ============================================================ */
+
+/* ── Grid ── */
+.sc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 1.5rem;
+  align-items: start;
+}
+
+/* Style 7 (horizontal) spans 2 columns */
+.sc-s7 { grid-column: span 2; }
+
+/* ── Number badge ── */
+.sc-num {
+  position: absolute;
+  top: 0.55rem;
+  left: 0.55rem;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 800;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0;
+  backdrop-filter: blur(4px);
+}
+
+/* ── Shared image fill ── */
+.sc-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+
+/* ── Rarity badge ── */
+.sc-badge {
+  display: inline-block;
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0.12rem 0.42rem;
+  border-radius: 4px;
+  background: rgba(79, 195, 247, 0.2);
+  color: #4fc3f7;
+  border: 1px solid rgba(79, 195, 247, 0.5);
+  align-self: flex-start;
+}
+
+/* ── Shared text ── */
+.sc-name {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.sc-type {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* ── Bottom overlay (shared) ── */
+.sc-overlay-bottom {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.5) 65%, rgba(0,0,0,0.92) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0.75rem 0.7rem;
+  gap: 0.2rem;
+}
+
+/* ── Top overlay (shared) ── */
+.sc-overlay-top {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, transparent 40%, rgba(0,0,0,0.5) 65%, rgba(0,0,0,0.92) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 0.75rem 0.7rem;
+  gap: 0.2rem;
+}
+
+/* ── Base card shell ── */
+.sc-card {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  aspect-ratio: 2 / 3;
+  background: #111;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sc-card:hover {
+  transform: translateY(-4px);
+}
+
+/* ================================================================
+   STYLE 1 — Bottom gradient + blue glow border (baseline)
+   ================================================================ */
+.sc-s1 {
+  box-shadow: 0 0 0 2px rgba(79, 195, 247, 0.4), 0 6px 20px rgba(0,0,0,0.5);
+}
+.sc-s1:hover {
+  box-shadow: 0 0 0 2px rgba(79, 195, 247, 1), 0 12px 40px rgba(79, 195, 247, 0.35);
+}
+
+/* ================================================================
+   STYLE 2 — Frosted glass panel below image
+   ================================================================ */
+.sc-s2 {
+  display: flex;
+  flex-direction: column;
+  aspect-ratio: unset;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+.sc-s2:hover {
+  box-shadow: 0 12px 40px rgba(79, 195, 247, 0.2);
+  border-color: rgba(79, 195, 247, 0.35);
+}
+.sc-s2-imgwrap {
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.sc-s2-imgwrap .sc-img {
+  position: absolute;
+  object-position: top;
+}
+.sc-s2-glass {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.85rem 0.9rem;
+  background: rgba(15, 25, 45, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(79, 195, 247, 0.15);
+}
+
+/* ================================================================
+   STYLE 3 — Outline only, transparent background
+   ================================================================ */
+.sc-s3 {
+  background: transparent;
+  box-shadow: none;
+  border: 2px solid rgba(79, 195, 247, 0.7);
+}
+.sc-s3:hover {
+  border-color: #4fc3f7;
+  box-shadow: 0 0 20px rgba(79, 195, 247, 0.4), inset 0 0 20px rgba(79, 195, 247, 0.06);
+}
+.sc-s3 .sc-img {
+  border-radius: 12px;
+}
+.sc-overlay-minimal {
+  background: linear-gradient(to bottom, transparent 55%, rgba(0,0,0,0.85) 100%) !important;
+}
+
+/* ================================================================
+   STYLE 4 — Top overlay (info at the top)
+   ================================================================ */
+.sc-s4 {
+  box-shadow: 0 6px 24px rgba(0,0,0,0.6);
+}
+.sc-s4:hover {
+  box-shadow: 0 10px 36px rgba(0,0,0,0.7);
+}
+
+/* ================================================================
+   STYLE 5 — Solid nameplate band at bottom
+   ================================================================ */
+.sc-s5 {
+  box-shadow: 0 6px 24px rgba(0,0,0,0.5);
+}
+.sc-s5:hover {
+  box-shadow: 0 10px 36px rgba(0,0,0,0.6);
+}
+.sc-nameplate {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(12, 28, 55, 0.97);
+  border-top: 2px solid rgba(79, 195, 247, 0.7);
+  padding: 0.55rem 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.sc-nameplate .sc-name {
+  font-size: 0.82rem;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ================================================================
+   STYLE 6 — Neon dark with scanlines
+   ================================================================ */
+.sc-s6 {
+  background: #050510;
+  box-shadow: 0 0 0 1px rgba(79, 195, 247, 0.3), 0 0 30px rgba(79, 195, 247, 0.15);
+}
+.sc-s6:hover {
+  box-shadow: 0 0 0 1px #4fc3f7, 0 0 50px rgba(79, 195, 247, 0.35);
+}
+.sc-img-tint {
+  filter: brightness(0.75) saturate(0.6) hue-rotate(10deg);
+}
+.sc-scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 2px,
+    rgba(0, 0, 0, 0.18) 2px,
+    rgba(0, 0, 0, 0.18) 4px
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+.sc-s6 .sc-overlay-bottom {
+  z-index: 3;
+}
+
+/* ================================================================
+   STYLE 7 — Horizontal banner (spans 2 cols)
+   ================================================================ */
+.sc-s7 {
+  aspect-ratio: 16 / 7;
+  display: flex;
+  background: #0b1220;
+  border: 1px solid rgba(79, 195, 247, 0.2);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+.sc-s7:hover {
+  border-color: rgba(79, 195, 247, 0.55);
+  box-shadow: 0 12px 40px rgba(79, 195, 247, 0.15);
+}
+.sc-s7-imgcol {
+  position: relative;
+  width: 45%;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.sc-s7-imgcol .sc-img {
+  position: absolute;
+  object-position: top center;
+}
+.sc-s7-imgcol::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 60px;
+  background: linear-gradient(to right, transparent, #0b1220);
+}
+.sc-s7-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1.5rem 1.25rem;
+  z-index: 1;
+}
+.sc-s7-info .sc-name { font-size: 1.15rem; }
+.sc-s7-tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #52be80;
+  background: rgba(39, 174, 96, 0.1);
+  border: 1px solid rgba(39, 174, 96, 0.3);
+  border-radius: 999px;
+  padding: 0.2rem 0.65rem;
+  margin-top: 0.25rem;
+  align-self: flex-start;
+}
+
+/* ================================================================
+   STYLE 8 — Circle portrait on dark card
+   ================================================================ */
+.sc-s8 {
+  aspect-ratio: 1 / 1;
+  background: linear-gradient(160deg, #0d1b33 0%, #091122 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  border: 1px solid rgba(79, 195, 247, 0.15);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.5);
+}
+.sc-s8:hover {
+  border-color: rgba(79, 195, 247, 0.4);
+  box-shadow: 0 10px 36px rgba(79, 195, 247, 0.18);
+}
+.sc-s8-circle {
+  position: relative;
+  width: 68%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid rgba(79, 195, 247, 0.6);
+  box-shadow: 0 0 24px rgba(79, 195, 247, 0.25);
+  flex-shrink: 0;
+}
+.sc-s8-circle .sc-img {
+  border-radius: 50%;
+}
+.sc-s8-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  z-index: 1;
+}
+.sc-s8-info .sc-name { font-size: 0.85rem; text-align: center; }
+.sc-s8-info .sc-type { font-size: 0.65rem; }
+
+/* ================================================================
+   STYLE 9 — Polaroid
+   ================================================================ */
+.sc-s9 {
+  aspect-ratio: unset;
+  background: #f0ece4;
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.55), 0 2px 8px rgba(0,0,0,0.3);
+  padding: 0.5rem 0.5rem 0;
+}
+.sc-s9:hover {
+  box-shadow: 0 14px 48px rgba(0,0,0,0.65);
+  transform: translateY(-5px) rotate(0.5deg);
+}
+.sc-s9-imgwrap {
+  position: relative;
+  height: 210px;
+  overflow: hidden;
+  border-radius: 4px;
+}
+.sc-s9-imgwrap .sc-img {
+  position: absolute;
+  object-position: top;
+  border-radius: 4px;
+}
+.sc-s9-caption {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.7rem 0.5rem 0.85rem;
+}
+.sc-name-dark {
+  color: #1a1a1a !important;
+  font-size: 0.85rem !important;
+}
+.sc-type-dark {
+  color: rgba(0, 0, 0, 0.45) !important;
+  font-size: 0.65rem !important;
+}
+
+/* ================================================================
+   STYLE 10 — Diagonal accent stripe
+   ================================================================ */
+.sc-s10 {
+  box-shadow: 0 6px 24px rgba(0,0,0,0.5);
+}
+.sc-s10:hover {
+  box-shadow: 0 10px 36px rgba(0,0,0,0.65);
+}
+.sc-s10-stripe {
+  position: absolute;
+  bottom: -10px;
+  left: -30px;
+  right: -10px;
+  height: 60px;
+  background: rgba(79, 195, 247, 0.85);
+  transform: skewY(-8deg);
+  z-index: 1;
+}
+.sc-s10-info {
+  position: absolute;
+  bottom: 0.55rem;
+  left: 0.75rem;
+  right: 0.75rem;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.sc-s10-info .sc-name {
+  font-size: 0.82rem;
+  flex: 1;
+  color: #0b1220;
+  font-weight: 800;
+}
+.sc-s10-info .sc-badge {
+  background: rgba(11, 18, 32, 0.3);
+  color: #0b1220;
+  border-color: rgba(11, 18, 32, 0.4);
+}
+
+/* ================================================================
+   STYLE 11 — Clean split (image top, info section below)
+   ================================================================ */
+.sc-s11 {
+  aspect-ratio: unset;
+  background: #0f1a2e;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+}
+.sc-s11:hover {
+  border-color: rgba(79, 195, 247, 0.3);
+  box-shadow: 0 12px 40px rgba(79, 195, 247, 0.12);
+}
+.sc-s11-imgwrap {
+  position: relative;
+  height: 195px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.sc-s11-imgwrap .sc-img {
+  position: absolute;
+  object-position: top;
+}
+.sc-s11-info {
+  padding: 0.85rem 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  flex: 1;
+}
+.sc-s11-tags {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.sc-s11-type {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* ================================================================
+   STYLE 12 — Full color wash overlay
+   ================================================================ */
+.sc-s12 {
+  box-shadow: 0 6px 24px rgba(0,0,0,0.5);
+}
+.sc-s12:hover {
+  box-shadow: 0 10px 36px rgba(79, 195, 247, 0.3);
+}
+.sc-s12-wash {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    160deg,
+    rgba(9, 50, 100, 0.65) 0%,
+    rgba(79, 195, 247, 0.2) 50%,
+    rgba(9, 30, 65, 0.75) 100%
+  );
+  mix-blend-mode: multiply;
+  z-index: 1;
+}
+.sc-s12 .sc-overlay-bottom {
+  z-index: 2;
+  background: linear-gradient(to bottom, transparent 30%, rgba(5, 15, 35, 0.96) 100%);
+}
+
+/* ================================================================
+   STYLE 13 — Cinematic film bars
+   ================================================================ */
+.sc-s13 {
+  box-shadow: 0 6px 24px rgba(0,0,0,0.5);
+}
+.sc-s13:hover {
+  box-shadow: 0 10px 36px rgba(0,0,0,0.7);
+}
+.sc-s13-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.9);
+}
+.sc-s13-top {
+  top: 0;
+  height: 14%;
+}
+.sc-s13-bottom {
+  bottom: 0;
+  height: 18%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+.sc-s13-bottom .sc-name { font-size: 0.82rem; letter-spacing: 0.04em; }
+.sc-type-muted { color: rgba(255,255,255,0.35) !important; font-size: 0.6rem !important; }
+
+/* ================================================================
+   STYLE 14 — Trophy achievement plate
+   ================================================================ */
+.sc-s14 {
+  aspect-ratio: unset;
+  background: #0c1422;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(79, 195, 247, 0.25);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+.sc-s14:hover {
+  border-color: rgba(79, 195, 247, 0.6);
+  box-shadow: 0 12px 40px rgba(79, 195, 247, 0.2);
+}
+.sc-s14-imgwrap {
+  position: relative;
+  height: 185px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.sc-s14-imgwrap .sc-img {
+  position: absolute;
+  object-position: top;
+}
+.sc-s14-plate {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.8rem 0.9rem;
+  background: linear-gradient(135deg, #0d2440 0%, #0a1a30 100%);
+  border-top: 2px solid rgba(79, 195, 247, 0.5);
+  flex: 1;
+}
+.sc-s14-platename {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 0.02em;
+}
+.sc-s14-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.sc-s14-type {
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.4);
+}
+
+/* ================================================================
+   STYLE 15 — Diagonal split (image left, solid color right)
+   ================================================================ */
+.sc-s15 {
+  aspect-ratio: 1 / 1;
+  background: #0d1f3c;
+  border: 1px solid rgba(79, 195, 247, 0.15);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.5);
+}
+.sc-s15:hover {
+  border-color: rgba(79, 195, 247, 0.45);
+  box-shadow: 0 10px 36px rgba(79, 195, 247, 0.18);
+}
+.sc-s15 .sc-img {
+  clip-path: polygon(0 0, 60% 0, 40% 100%, 0 100%);
+}
+.sc-s15-panel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 1.25rem 1rem 1.25rem 0;
+  gap: 0.4rem;
+  text-align: right;
+  pointer-events: none;
+}
+.sc-s15-panel .sc-name {
+  font-size: 0.82rem;
+  max-width: 48%;
+  line-height: 1.3;
+}
+.sc-s15-panel .sc-type {
+  font-size: 0.65rem;
+}
+.sc-s15-panel .sc-badge {
+  align-self: flex-end;
+}
+
+/* ── Mobile ── */
+@media (max-width: 600px) {
+  .sc-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.9rem;
+  }
+  .sc-s7 { grid-column: span 2; }
+}
