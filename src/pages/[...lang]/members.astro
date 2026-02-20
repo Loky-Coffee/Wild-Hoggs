@@ -342,6 +342,15 @@ const breadcrumbItems = [
       margin-bottom: 0;
     }
 
+    :global(.sort-chips) {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    :global(.sort-chip) {
+      border-radius: 8px;
+    }
+
     :global(.members-grid) {
       grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
     }
