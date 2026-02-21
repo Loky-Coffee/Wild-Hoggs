@@ -39,7 +39,7 @@ export default defineConfig({
       // Google, Bing, Yandex nutzen lastmod für intelligenteres Crawling
       serialize(item) {
         // SEO: Exclude placeholder pages from sitemap
-        const placeholderPages = ['/heroes', '/events', '/guides'];
+        const placeholderPages = ['/events', '/guides'];
         const isPlaceholder = placeholderPages.some(page =>
           item.url.includes(page + '/') || item.url.endsWith(page)
         );
