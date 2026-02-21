@@ -133,37 +133,23 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 
   .nav-link {
     text-decoration: none;
-    color: #ffffff;
+    color: rgba(255, 255, 255, 0.75);
     font-size: 1rem;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    transition: all 0.3s ease;
+    padding: 0.4rem 0.9rem;
+    border-radius: 6px;
+    transition: color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
     position: relative;
-  }
-
-  .nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 2px;
-    background: #ffa500;
-    transition: width 0.3s ease;
-  }
-
-  .nav-link:hover::after,
-  .nav-link.active::after {
-    width: 80%;
   }
 
   .nav-link:hover {
     color: #ffa500;
+    background: rgba(255, 165, 0, 0.1);
   }
 
   .nav-link.active {
-    color: #ffa500;
+    color: #fff;
+    background: rgba(255, 165, 0, 0.18);
+    box-shadow: 0 0 0 1px rgba(255, 165, 0, 0.35), 0 2px 12px rgba(255, 165, 0, 0.15);
   }
 
   .nav-controls {
@@ -243,13 +229,18 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
       display: block;
       width: 100%;
       padding: 1rem 1.5rem;
-      border-bottom: 1px solid rgba(255, 165, 0, 0.2);
+      border-bottom: 1px solid rgba(255, 165, 0, 0.15);
+      border-radius: 0;
       text-align: left;
       box-sizing: border-box;
+      box-shadow: none;
     }
 
-    .nav-link::after {
-      display: none;
+    .nav-link.active {
+      background: rgba(255, 165, 0, 0.12);
+      border-left: 3px solid #ffa500;
+      padding-left: calc(1.5rem - 3px);
+      box-shadow: none;
     }
   }
 </style>
