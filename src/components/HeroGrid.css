@@ -4,15 +4,74 @@
 
 /* ── Filter bar ── */
 .hg-filters {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  align-items: center;
-  gap: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
   margin-bottom: 1.25rem;
   padding: 1.1rem 1.25rem;
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.07);
   border-radius: 14px;
+}
+
+/* Search row */
+.hg-search-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.hg-filter-group-search {
+  width: 100%;
+}
+
+.hg-search-icon {
+  position: absolute;
+  left: 0.85rem;
+  font-size: 1.2rem;
+  color: rgba(255,255,255,0.3);
+  pointer-events: none;
+  line-height: 1;
+}
+
+.hg-search {
+  width: 100%;
+  padding: 0.55rem 2.5rem 0.55rem 2.4rem;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px;
+  color: #fff;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.hg-search::placeholder { color: rgba(255,255,255,0.25); }
+.hg-search:focus {
+  border-color: rgba(255,165,0,0.45);
+  background: rgba(255,255,255,0.09);
+}
+
+.hg-search-clear {
+  position: absolute;
+  right: 0.6rem;
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.35);
+  font-size: 0.75rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  line-height: 1;
+  transition: color 0.15s;
+}
+.hg-search-clear:hover { color: rgba(255,255,255,0.75); }
+
+/* 5-column row (session / role / search / faction / grade) */
+.hg-filter-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .hg-filter-group {
@@ -22,14 +81,13 @@
   gap: 0.45rem;
 }
 
-.hg-filter-group:first-child { align-items: center; padding-left: 2rem; }
-.hg-filter-group:last-child  { align-items: center; padding-right: 2rem; }
+.hg-filter-group:first-child { padding-left: 1rem; }
+.hg-filter-group:last-child  { padding-right: 1rem; }
 
-/* clear button spans full width below */
+/* clear button */
 .hg-clear-btn {
-  grid-column: 1 / -1;
-  justify-self: center;
-  margin-top: 0.5rem;
+  align-self: center;
+  margin-top: 0.1rem;
 }
 
 .hg-filter-label {
@@ -82,6 +140,32 @@
 .hg-chip-blood-rose:hover      { border-color: rgba(239,83,80,0.4);   color: rgba(239,83,80,0.9); }
 .hg-chip-guard-of-order.active { border-color: rgba(255,213,0,0.7);   background: rgba(255,213,0,0.12);   color: #ffd500; }
 .hg-chip-guard-of-order:hover  { border-color: rgba(255,213,0,0.4);   color: rgba(255,213,0,0.9); }
+
+/* rarity chip — circular like session */
+.hg-chip-rarity {
+  padding: 0.2rem;
+  border-radius: 50%;
+}
+
+.hg-rarity-circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.68rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+/* rarity chip colors */
+.hg-chip-rarity-blue.active   { border-color: rgba(79,195,247,0.7);  background: rgba(79,195,247,0.12);  color: #4fc3f7; }
+.hg-chip-rarity-blue:hover    { border-color: rgba(79,195,247,0.4);  color: rgba(79,195,247,0.9); }
+.hg-chip-rarity-purple.active { border-color: rgba(206,147,216,0.7); background: rgba(167,107,200,0.15); color: #ce93d8; }
+.hg-chip-rarity-purple:hover  { border-color: rgba(206,147,216,0.4); color: rgba(206,147,216,0.9); }
+.hg-chip-rarity-orange.active { border-color: rgba(255,165,0,0.7);   background: rgba(255,165,0,0.12);   color: #ffa500; }
+.hg-chip-rarity-orange:hover  { border-color: rgba(255,165,0,0.4);   color: rgba(255,165,0,0.9); }
 
 .hg-chip-icon {
   width: 16px;
@@ -545,6 +629,30 @@
   font-weight: 700;
   color: #fff;
   white-space: nowrap;
+}
+
+/* ── Skill stars ── */
+.hg-skill-stars {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: 2px;
+}
+
+.hg-star {
+  font-size: 0.85rem;
+  line-height: 1;
+}
+
+.hg-star-filled {
+  color: #ffd700;
+  text-shadow:
+    0 0 6px rgba(255, 215, 0, 0.9),
+    0 0 14px rgba(255, 180, 0, 0.6);
+}
+
+.hg-star-empty {
+  color: rgba(255, 255, 255, 0.25);
 }
 
 /* category badge */

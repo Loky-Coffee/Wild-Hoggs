@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'preact/hooks';
-import type { Hero, HeroSkill, HeroRole, HeroFaction } from '../data/heroes';
+import type { Hero, HeroSkill, HeroRole, HeroFaction, HeroRarity } from '../data/heroes';
 import { RARITY_COLOR, RARITY_SESSION, FACTIONS } from '../data/heroes';
 import './HeroGrid.css';
 
@@ -45,6 +45,15 @@ function SkillAccordion({ skills }: { skills: HeroSkill[] }) {
                 <span className={`hg-skill-cat-badge ${TYPE_COLOR[skill.type]}-badge`}>
                   {TYPE_LABEL[skill.type]}
                 </span>
+                {skill.stars != null && (
+                  <span className="hg-skill-stars">
+                    {Array.from({ length: 5 }, (_, i) => (
+                      <span key={i} className={i < skill.stars! ? 'hg-star hg-star-filled' : 'hg-star hg-star-empty'}>
+                        {i < skill.stars! ? '★' : '☆'}
+                      </span>
+                    ))}
+                  </span>
+                )}
               </div>
               <span className={`hg-skill-chevron${isOpen ? ' open' : ''}`}>›</span>
             </button>
@@ -149,9 +158,10 @@ function toggle<T>(set: T[], val: T): T[] {
   return set.includes(val) ? set.filter(v => v !== val) : [...set, val];
 }
 
-const SESSIONS   = [0, 1, 2, 3, 4];
-const ROLES      = ['attack', 'support', 'defense'] as HeroRole[];
+const SESSIONS      = [0, 1, 2, 3, 4];
+const ROLES         = ['attack', 'support', 'defense'] as HeroRole[];
 const FACTIONS_LIST = ['blood-rose', 'wings-of-dawn', 'guard-of-order'] as HeroFaction[];
+const RARITIES      = ['B', 'A', 'S', 'S1', 'S2', 'S3', 'S4'] as HeroRarity[];
 
 const ROLE_LABEL: Record<HeroRole, string>       = { attack: 'Attack', support: 'Support', defense: 'Defense' };
 const FACTION_LABEL: Record<HeroFaction, string> = {
@@ -161,27 +171,42 @@ const FACTION_LABEL: Record<HeroFaction, string> = {
 };
 
 /* ── Main grid ── */
-export default function HeroGrid({ heroes }: Props) {
+export default function HeroGrid({ heroes }: { heroes: Hero[] }) {
   const [selected,      setSelected]      = useState<Hero | null>(null);
+  const [search,        setSearch]        = useState('');
+  const [filterRarity,  setFilterRarity]  = useState<HeroRarity[]>([]);
   const [filterSession, setFilterSession] = useState<number[]>([]);
   const [filterRole,    setFilterRole]    = useState<HeroRole[]>([]);
   const [filterFaction, setFilterFaction] = useState<HeroFaction[]>([]);
 
   const close = () => setSelected(null);
 
-  const filtered = useMemo(() => heroes
-    .filter(h => {
-      if (filterSession.length && !filterSession.includes(RARITY_SESSION[h.rarity])) return false;
-      if (filterRole.length    && !filterRole.includes(h.role))                       return false;
-      if (filterFaction.length && !filterFaction.includes(h.faction))                 return false;
-      return true;
-    })
-    .sort((a, b) => {
-      const byRarity = RARITY_ORDER[b.rarity] - RARITY_ORDER[a.rarity];
-      if (byRarity !== 0) return byRarity;
-      return FACTION_ORDER[a.faction] - FACTION_ORDER[b.faction];
-    }),
-  [heroes, filterSession, filterRole, filterFaction]);
+  const filtered = useMemo(() => {
+    const term = search.toLowerCase().trim();
+    return heroes
+      .filter(h => {
+        if (term) {
+          const inName   = h.name.toLowerCase().includes(term);
+          const inSkills = h.skills?.some(s =>
+            s.name.toLowerCase().includes(term) ||
+            s.category.toLowerCase().includes(term) ||
+            (s.effect?.toLowerCase().includes(term) ?? false) ||
+            (s.levels?.some(l => l.description.toLowerCase().includes(term)) ?? false)
+          ) ?? false;
+          if (!inName && !inSkills) return false;
+        }
+        if (filterRarity.length  && !filterRarity.includes(h.rarity))                    return false;
+        if (filterSession.length && !filterSession.includes(RARITY_SESSION[h.rarity]))   return false;
+        if (filterRole.length    && !filterRole.includes(h.role))                         return false;
+        if (filterFaction.length && !filterFaction.includes(h.faction))                   return false;
+        return true;
+      })
+      .sort((a, b) => {
+        const byRarity = RARITY_ORDER[b.rarity] - RARITY_ORDER[a.rarity];
+        if (byRarity !== 0) return byRarity;
+        return FACTION_ORDER[a.faction] - FACTION_ORDER[b.faction];
+      });
+  }, [heroes, search, filterRarity, filterSession, filterRole, filterFaction]);
 
   useEffect(() => {
     if (!selected) return;
@@ -195,71 +220,108 @@ export default function HeroGrid({ heroes }: Props) {
     return () => { document.body.style.overflow = ''; };
   }, [selected]);
 
-  const anyFilter = filterSession.length || filterRole.length || filterFaction.length;
+  const clearAll = () => {
+    setSearch(''); setFilterRarity([]); setFilterSession([]); setFilterRole([]); setFilterFaction([]);
+  };
+  const anyFilter = search || filterRarity.length || filterSession.length || filterRole.length || filterFaction.length;
 
   return (
     <div>
       {/* ── Filter bar ── */}
       <div className="hg-filters">
 
-        <div className="hg-filter-group">
-          <span className="hg-filter-label">Session</span>
-          <div className="hg-chips">
-            {SESSIONS.map(s => (
-              <button
-                key={s}
-                type="button"
-                className={`hg-chip hg-chip-session${filterSession.includes(s) ? ' active' : ''}`}
-                onClick={() => setFilterSession(prev => toggle(prev, s))}
-                title={`Session ${s}`}
-              >
-                <span className="hg-session-circle">{s}</span>
-              </button>
-            ))}
+        {/* Session / Role / Search / Faction / Grade */}
+        <div className="hg-filter-cols">
+          <div className="hg-filter-group">
+            <span className="hg-filter-label">Session</span>
+            <div className="hg-chips">
+              {SESSIONS.map(s => (
+                <button
+                  key={s}
+                  type="button"
+                  className={`hg-chip hg-chip-session${filterSession.includes(s) ? ' active' : ''}`}
+                  onClick={() => setFilterSession(prev => toggle(prev, s))}
+                  title={`Session ${s}`}
+                >
+                  <span className="hg-session-circle">{s}</span>
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
 
-        <div className="hg-filter-group">
-          <span className="hg-filter-label">Role</span>
-          <div className="hg-chips">
-            {ROLES.map(r => (
-              <button
-                key={r}
-                type="button"
-                className={`hg-chip hg-chip-role hg-chip-icon-only${filterRole.includes(r) ? ' active' : ''}`}
-                onClick={() => setFilterRole(prev => toggle(prev, r))}
-                title={ROLE_LABEL[r]}
-              >
-                <img src={roleIcon(r)} alt={ROLE_LABEL[r]} className="hg-chip-icon-lg" />
-              </button>
-            ))}
+          <div className="hg-filter-group">
+            <span className="hg-filter-label">Role</span>
+            <div className="hg-chips">
+              {ROLES.map(r => (
+                <button
+                  key={r}
+                  type="button"
+                  className={`hg-chip hg-chip-role hg-chip-icon-only${filterRole.includes(r) ? ' active' : ''}`}
+                  onClick={() => setFilterRole(prev => toggle(prev, r))}
+                  title={ROLE_LABEL[r]}
+                >
+                  <img src={roleIcon(r)} alt={ROLE_LABEL[r]} className="hg-chip-icon-lg" />
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
 
-        <div className="hg-filter-group">
-          <span className="hg-filter-label">Faction</span>
-          <div className="hg-chips">
-            {FACTIONS_LIST.map(f => (
-              <button
-                key={f}
-                type="button"
-                className={`hg-chip hg-chip-faction hg-chip-icon-only hg-chip-${f}${filterFaction.includes(f) ? ' active' : ''}`}
-                onClick={() => setFilterFaction(prev => toggle(prev, f))}
-                title={FACTION_LABEL[f]}
-              >
-                <img src={factionIcon(f)} alt={FACTION_LABEL[f]} className="hg-chip-icon-lg" />
-              </button>
-            ))}
+          {/* Search — middle column */}
+          <div className="hg-filter-group hg-filter-group-search">
+            <span className="hg-filter-label">Search</span>
+            <div className="hg-search-row">
+              <span className="hg-search-icon">⌕</span>
+              <input
+                type="text"
+                className="hg-search"
+                placeholder="Name oder Skill…"
+                value={search}
+                onInput={(e) => setSearch((e.target as HTMLInputElement).value)}
+              />
+              {search && (
+                <button type="button" className="hg-search-clear" onClick={() => setSearch('')}>✕</button>
+              )}
+            </div>
+          </div>
+
+          <div className="hg-filter-group">
+            <span className="hg-filter-label">Faction</span>
+            <div className="hg-chips">
+              {FACTIONS_LIST.map(f => (
+                <button
+                  key={f}
+                  type="button"
+                  className={`hg-chip hg-chip-faction hg-chip-icon-only hg-chip-${f}${filterFaction.includes(f) ? ' active' : ''}`}
+                  onClick={() => setFilterFaction(prev => toggle(prev, f))}
+                  title={FACTION_LABEL[f]}
+                >
+                  <img src={factionIcon(f)} alt={FACTION_LABEL[f]} className="hg-chip-icon-lg" />
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="hg-filter-group">
+            <span className="hg-filter-label">Grade</span>
+            <div className="hg-chips">
+              {RARITIES.map(r => (
+                <button
+                  key={r}
+                  type="button"
+                  className={`hg-chip hg-chip-rarity hg-chip-rarity-${RARITY_COLOR[r]}${filterRarity.includes(r) ? ' active' : ''}`}
+                  onClick={() => setFilterRarity(prev => toggle(prev, r))}
+                  title={r}
+                >
+                  <span className="hg-rarity-circle">{r}</span>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
         {anyFilter ? (
-          <button
-            type="button"
-            className="hg-clear-btn"
-            onClick={() => { setFilterSession([]); setFilterRole([]); setFilterFaction([]); }}
-          >
-            ✕ Clear
+          <button type="button" className="hg-clear-btn" onClick={clearAll}>
+            ✕ Clear all
           </button>
         ) : null}
       </div>
