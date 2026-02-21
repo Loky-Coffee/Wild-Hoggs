@@ -77,6 +77,7 @@ export default {
   'tools.subtitle': 'Last-Z 实用计算器',
   'tools.available': '可用 →',
   'heroes.subtitle': '技能、梯度榜与阵营指南',
+  'heroes.clearFilters': '重置所有筛选',
   'events.subtitle': '与公会协同安排',
   'guides.subtitle': 'Last-Z 实用指南',
   'research.subtitle': 'Last-Z 研究分类',

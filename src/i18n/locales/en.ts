@@ -77,6 +77,7 @@ export default {
   'tools.subtitle': 'Helpful calculators for Last-Z',
   'tools.available': 'Available →',
   'heroes.subtitle': 'Skills, tier list & faction guide',
+  'heroes.clearFilters': 'Reset all filters',
   'events.subtitle': 'Coordinate with the guild',
   'guides.subtitle': 'Helpful guides for Last-Z',
   'research.subtitle': 'Last-Z Research Categories',

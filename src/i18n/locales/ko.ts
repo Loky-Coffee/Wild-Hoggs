@@ -77,6 +77,7 @@ export default {
   'tools.subtitle': 'Last-Z 유용한 계산기',
   'tools.available': '사용 가능 →',
   'heroes.subtitle': '스킬, 티어 리스트 & 진영 가이드',
+  'heroes.clearFilters': '모든 필터 초기화',
   'events.subtitle': '길드와 함께 조율',
   'guides.subtitle': 'Last-Z 유용한 가이드',
   'research.subtitle': 'Last-Z 연구 카테고리',

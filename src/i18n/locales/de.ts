@@ -77,6 +77,7 @@ export default {
   'tools.subtitle': 'Hilfreiche Rechner für Last-Z',
   'tools.available': 'Verfügbar →',
   'heroes.subtitle': 'Skills, Tier-Liste & Fraktionsguide',
+  'heroes.clearFilters': 'Alle Filter zurücksetzen',
   'events.subtitle': 'Koordiniere dich mit der Gilde',
   'guides.subtitle': 'Hilfreiche Anleitungen für Last-Z',
   'research.subtitle': 'Last-Z Forschungs-Kategorien',

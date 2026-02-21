@@ -77,6 +77,7 @@ export default {
   'tools.subtitle': 'ตัวคำนวณที่มีประโยชน์สำหรับ Last-Z',
   'tools.available': 'พร้อมใช้งาน →',
   'heroes.subtitle': 'ทักษะ, Tier List & คู่มือฝ่าย',
+  'heroes.clearFilters': 'รีเซ็ตตัวกรองทั้งหมด',
   'events.subtitle': 'ประสานงานกับกิลด์',
   'guides.subtitle': 'คู่มือที่มีประโยชน์สำหรับ Last-Z',
   'research.subtitle': 'หมวดหมู่งานวิจัยของ Last-Z',

@@ -77,6 +77,7 @@ export default {
   'tools.subtitle': 'Last-Z için yararlı hesaplayıcılar',
   'tools.available': 'Mevcut →',
   'heroes.subtitle': 'Beceriler, tier listesi ve hizip rehberi',
+  'heroes.clearFilters': 'Tüm filtreleri sıfırla',
   'events.subtitle': 'Lonca ile koordinasyon sağlayın',
   'guides.subtitle': 'Last-Z için yararlı rehberler',
   'research.subtitle': 'Last-Z araştırma kategorileri',

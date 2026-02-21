@@ -77,6 +77,7 @@ export default {
   'tools.subtitle': 'حسابات مفيدة لـ Last-Z',
   'tools.available': 'متاح →',
   'heroes.subtitle': 'المهارات وقائمة التصنيف ودليل الفصائل',
+  'heroes.clearFilters': 'إعادة تعيين جميع الفلاتر',
   'events.subtitle': 'التنسيق مع النقابة',
   'guides.subtitle': 'أدلة مفيدة لـ Last-Z',
   'research.subtitle': 'فئات البحث في Last-Z',

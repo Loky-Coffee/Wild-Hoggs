@@ -171,7 +171,7 @@ const FACTION_LABEL: Record<HeroFaction, string> = {
 };
 
 /* ── Main grid ── */
-export default function HeroGrid({ heroes }: { heroes: Hero[] }) {
+export default function HeroGrid({ heroes, clearLabel = 'Reset all filters' }: { heroes: Hero[]; clearLabel?: string }) {
   const [selected,      setSelected]      = useState<Hero | null>(null);
   const [search,        setSearch]        = useState('');
   const [filterRarity,  setFilterRarity]  = useState<HeroRarity[]>([]);
@@ -321,7 +321,7 @@ export default function HeroGrid({ heroes }: { heroes: Hero[] }) {
 
         {anyFilter ? (
           <button type="button" className="hg-clear-btn" onClick={clearAll}>
-            ✕ Clear all
+            ✕ {clearLabel}
           </button>
         ) : null}
       </div>

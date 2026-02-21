@@ -77,6 +77,7 @@ export default {
   'tools.subtitle': 'Last-Z の便利な計算機',
   'tools.available': '利用可能 →',
   'heroes.subtitle': 'スキル・ティアリスト・陣営ガイド',
+  'heroes.clearFilters': 'フィルターをすべてリセット',
   'events.subtitle': 'ギルドで連携しよう',
   'guides.subtitle': 'Last-Z の役立つガイド',
   'research.subtitle': 'Last-Z 研究カテゴリ',

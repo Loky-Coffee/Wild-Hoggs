@@ -77,6 +77,7 @@ export default {
   'tools.subtitle': 'Kalkulator yang berguna untuk Last-Z',
   'tools.available': 'Tersedia →',
   'heroes.subtitle': 'Skill, tier list & panduan faksi',
+  'heroes.clearFilters': 'Reset semua filter',
   'events.subtitle': 'Koordinasi dengan guild',
   'guides.subtitle': 'Panduan bermanfaat untuk Last-Z',
   'research.subtitle': 'Kategori riset Last-Z',

@@ -77,6 +77,7 @@ export default {
   'tools.subtitle': 'Bộ tính hữu ích cho Last-Z',
   'tools.available': 'Có sẵn →',
   'heroes.subtitle': 'Kỹ năng, tier list & hướng dẫn phe phái',
+  'heroes.clearFilters': 'Đặt lại tất cả bộ lọc',
   'events.subtitle': 'Phối hợp cùng bang hội',
   'guides.subtitle': 'Hướng dẫn hữu ích cho Last-Z',
   'research.subtitle': 'Danh mục nghiên cứu Last-Z',
