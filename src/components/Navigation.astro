@@ -28,7 +28,7 @@ const routes = [
   { key: 'nav.about', path: getPath('about') },
 ] as const;
 
-const currentPath = Astro.url.pathname;
+const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 ---
 
 <nav class="navigation">
