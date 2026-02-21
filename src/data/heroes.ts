@@ -1,42 +1,155 @@
+/* ── Rarity ── */
+export type HeroRarity = 'B' | 'A' | 'S' | 'S1' | 'S2' | 'S3' | 'S4' | 'S5' | 'S6' | 'S7' | 'S8' | 'S9';
+export type RarityColor = 'blue' | 'purple' | 'orange';
+
+export const RARITY_COLOR: Record<HeroRarity, RarityColor> = {
+  'B':  'blue',
+  'A':  'blue',
+  'S':  'blue',
+  'S1': 'purple',
+  'S2': 'purple',
+  'S3': 'purple',
+  'S4': 'purple',
+  'S5': 'orange',
+  'S6': 'orange',
+  'S7': 'orange',
+  'S8': 'orange',
+  'S9': 'orange',
+};
+
+/* ── Session (derived from rarity) ── */
+export const RARITY_SESSION: Record<HeroRarity, number> = {
+  'B':  0,
+  'A':  0,
+  'S':  0,
+  'S1': 1,
+  'S2': 2,
+  'S3': 3,
+  'S4': 4,
+  'S5': 5,
+  'S6': 6,
+  'S7': 7,
+  'S8': 8,
+  'S9': 9,
+};
+
+/* ── Faction / Type ── */
+export type HeroFaction = 'blood-rose' | 'wings-of-dawn' | 'guard-of-order';
+
+export interface FactionInfo {
+  name:   string;
+  troops: string;
+  focus:  string;
+}
+
+export const FACTIONS: Record<HeroFaction, FactionInfo> = {
+  'blood-rose': {
+    name:   'Blood Rose',
+    troops: 'Assaulter Troops',
+    focus:  'High-damage frontline combat.',
+  },
+  'wings-of-dawn': {
+    name:   'Wings of Dawn',
+    troops: 'Shooter Troops',
+    focus:  'Balanced ranged offense and defense.',
+  },
+  'guard-of-order': {
+    name:   'Guard of Order',
+    troops: 'Rider Troops',
+    focus:  'Mobility and flanking maneuvers.',
+  },
+};
+
+/* ── Skills ── */
 export interface SkillLevel {
   level: number;
   description: string;
 }
 
 export interface HeroSkill {
-  name: string;
-  category: string;
-  type: 'normal' | 'active' | 'global' | 'exclusive';
-  levels?: SkillLevel[];
-  effect?: string;
+  name:      string;
+  category:  string;
+  type:      'normal' | 'active' | 'global' | 'exclusive';
+  levels?:   SkillLevel[];
+  effect?:   string;
 }
 
+/* ── Role ── */
+export type HeroRole = 'attack' | 'support' | 'defense';
+
+/* ── Hero ── */
 export interface Hero {
-  id: string;
-  name: string;
-  rarity: 'blue' | 'purple' | 'gold' | 'legendary';
-  type: string;
+  id:            string;
+  name:          string;
+  rarity:        HeroRarity;
+  faction:       HeroFaction;
+  role:          HeroRole;
   globalPassive: boolean;
-  description: string;
-  image: string;
-  skills?: HeroSkill[];
+  description:   string;
+  image:         string;
+  skills?:       HeroSkill[];
 }
 
+/* ── Hero roster ── */
 export const heroes: Hero[] = [
   {
-    id: 'athena',
-    name: 'Athena',
-    rarity: 'blue',
-    type: 'Gathering',
+    id:            'amber',
+    name:          'Amber',
+    rarity:        'S4',
+    faction:       'guard-of-order',
+    role:          'attack',
+    globalPassive: false,
+    description:   '',
+    image:         '/images/heroes/amber.webp',
+    skills:        [],
+  },
+  {
+    id:            'alma',
+    name:          'Alma',
+    rarity:        'S2',
+    faction:       'wings-of-dawn',
+    role:          'defense',
+    globalPassive: false,
+    description:   '',
+    image:         '/images/heroes/alma.webp',
+    skills:        [],
+  },
+  {
+    id:            'amelia',
+    name:          'Amelia',
+    rarity:        'S',
+    faction:       'wings-of-dawn',
+    role:          'attack',
+    globalPassive: false,
+    description:   '',
+    image:         '/images/heroes/amelia.webp',
+    skills:        [],
+  },
+  {
+    id:            'angelina',
+    name:          'Angelina',
+    rarity:        'B',
+    faction:       'wings-of-dawn',
+    role:          'defense',
+    globalPassive: false,
+    description:   '',
+    image:         '/images/heroes/angelina.webp',
+    skills:        [],
+  },
+  {
+    id:            'athena',
+    name:          'Athena',
+    rarity:        'B',
+    faction:       'guard-of-order',
+    role:          'attack',
     globalPassive: true,
-    description:
-      "She is a gathering hero but also one with a global passive so you don't really use her after a certain point and you actually only want her for the global skill.",
-    image: '/images/heroes/athena2.png',
+    description:   "She is a gathering hero but also one with a global passive so you don't really use her after a certain point and you actually only want her for the global skill.",
+    image:         '/images/heroes/athena.webp',
     skills: [
       {
-        name: 'Bullet Upgrade',
+        name:     'Bullet Upgrade',
         category: 'Normal Attack Boost',
-        type: 'normal',
+        type:     'normal',
         levels: [
           { level: 1, description: 'Increase damage factor by an additional 30.' },
           { level: 2, description: 'Increase damage factor by an additional 30.' },
@@ -46,9 +159,9 @@ export const heroes: Hero[] = [
         ],
       },
       {
-        name: 'Pistol Shooting',
+        name:     'Pistol Shooting',
         category: 'Active Skill',
-        type: 'active',
+        type:     'active',
         levels: [
           { level: 1, description: 'Increase damage factor by an additional 60.' },
           { level: 2, description: 'Increase damage factor by an additional 60.' },
@@ -58,9 +171,9 @@ export const heroes: Hero[] = [
         ],
       },
       {
-        name: 'Gathering Master: Electricity',
+        name:     'Gathering Master: Electricity',
         category: 'Global Effect',
-        type: 'global',
+        type:     'global',
         levels: [
           { level: 1, description: 'Electricity Gathering speed +3%' },
           { level: 2, description: 'Gathering speed +3%' },
@@ -70,71 +183,352 @@ export const heroes: Hero[] = [
         ],
       },
       {
-        name: 'Faction Attack',
+        name:     'Faction Attack',
         category: 'Exclusive Talent',
-        type: 'exclusive',
-        effect: 'Increases Hero ATK of faction Guard of Order by 5%',
+        type:     'exclusive',
+        effect:   'Increases Hero ATK of faction Guard of Order by 5%',
       },
     ],
   },
   {
-    id: 'selena',
-    name: 'Selena',
-    rarity: 'blue',
-    type: 'Gathering',
+    id:            'audrey',
+    name:          'Audrey',
+    rarity:        'B',
+    faction:       'blood-rose',
+    role:          'defense',
     globalPassive: false,
-    description: '',
-    image: '/images/heroes/selena.png',
-    skills: [],
+    description:   '',
+    image:         '/images/heroes/audrey.webp',
+    skills:        [],
   },
   {
-    id: 'sakura',
-    name: 'Sakura',
-    rarity: 'blue',
-    type: 'Gathering',
+    id:            'ava',
+    name:          'Ava',
+    rarity:        'A',
+    faction:       'blood-rose',
+    role:          'support',
     globalPassive: false,
-    description: '',
-    image: '/images/heroes/sakura.png',
-    skills: [],
+    description:   '',
+    image:         '/images/heroes/ava.webp',
+    skills:        [],
   },
   {
-    id: 'natalie',
-    name: 'Natalie',
-    rarity: 'blue',
-    type: 'Gathering',
+    id:            'bella',
+    name:          'Bella',
+    rarity:        'S2',
+    faction:       'blood-rose',
+    role:          'defense',
     globalPassive: false,
-    description: '',
-    image: '/images/heroes/natalie.png',
-    skills: [],
+    description:   '',
+    image:         '/images/heroes/bella.webp',
+    skills:        [],
   },
   {
-    id: 'angelina',
-    name: 'Angelina',
-    rarity: 'blue',
-    type: 'Gathering',
+    id:            'chicha',
+    name:          'Chicha',
+    rarity:        'S',
+    faction:       'guard-of-order',
+    role:          'attack',
     globalPassive: false,
-    description: '',
-    image: '/images/heroes/angelina.png',
-    skills: [],
+    description:   '',
+    image:         '/images/heroes/chicha.webp',
+    skills:        [],
   },
   {
-    id: 'audrey',
-    name: 'Audrey',
-    rarity: 'blue',
-    type: 'Gathering',
+    id:            'christina',
+    name:          'Christina',
+    rarity:        'A',
+    faction:       'wings-of-dawn',
+    role:          'support',
     globalPassive: false,
-    description: '',
-    image: '/images/heroes/audrey.png',
-    skills: [],
+    description:   '',
+    image:         '/images/heroes/christina.webp',
+    skills:        [],
   },
   {
-    id: 'william',
-    name: 'William',
-    rarity: 'blue',
-    type: 'Gathering',
+    id:            'dodomeki',
+    name:          'Dodomeki',
+    rarity:        'S3',
+    faction:       'guard-of-order',
+    role:          'attack',
     globalPassive: false,
-    description: '',
-    image: '/images/heroes/william.png',
-    skills: [],
+    description:   '',
+    image:         '/images/heroes/dodomeki.webp',
+    skills:        [],
+  },
+  {
+    id:            'elizabeth',
+    name:          'Elizabeth',
+    rarity:        'A',
+    faction:       'guard-of-order',
+    role:          'defense',
+    globalPassive: false,
+    description:   '',
+    image:         '/images/heroes/elizabeth.webp',
+    skills:        [],
+  },
+  {
+    id:            'evelyn',
+    name:          'Evelyn',
+    rarity:        'S1',
+    faction:       'guard-of-order',
+    role:          'attack',
+    globalPassive: false,
+    description:   '',
+    image:         '/images/heroes/evelyn.webp',
+    skills:        [],
+  },
+  {
+    id:            'fiona',
+    name:          'Fiona',
+    rarity:        'A',
+    faction:       'guard-of-order',
+    role:          'attack',
+    globalPassive: false,
+    description:   '',
+    image:         '/images/heroes/fiona.webp',
+    skills:        [],
+  },
+  {
+    id:            'giselle',
+    name:          'Giselle',
+    rarity:        'B',
+    faction:       'blood-rose',
+    role:          'attack',
+    globalPassive: false,
+    description:   '',
+    image:         '/images/heroes/giselle.webp',
+    skills:        [],
+  },
+  {
+    id:            'harleyna',
+    name:          'Harleyna',
+    rarity:        'S2',
+    faction:       'guard-of-order',
+    role:          'defense',
+    globalPassive: false,
+    description:   '',
+    image:         '/images/heroes/harleyna.webp',
+    skills:        [],
+  },
+  {
+    id:            'isabella',
+    name:          'Isabella',
+    rarity:        'A',
+    faction:       'wings-of-dawn',
+    role:          'defense',
+    globalPassive: false,
+    description:   '',
+    image:         '/images/heroes/isabella.webp',
+    skills:        [],
+  },
+  {
+    id:            'katrina',
+    name:          'Katrina',
+    rarity:        'S',
+    faction:       'blood-rose',
+    role:          'defense',
+    globalPassive: false,
+    description:   '',
+    image:         '/images/heroes/katrina.webp',
+    skills:        [],
+  },
+  {
+    id:            'laura',
+    name:          'Laura',
+    rarity:        'S',
+    faction:       'wings-of-dawn',
+    role:          'defense',
+    globalPassive: false,
+    description:   '',
+    image:         '/images/heroes/laura.webp',
+    skills:        [],
+  },
+  {
+    id:            'leah',
+    name:          'Leah',
+    rarity:        'A',
+    faction:       'guard-of-order',
+    role:          'attack',
+    globalPassive: false,
+    description:   '',
+    image:         '/images/heroes/leah.webp',
+    skills:        [],
+  },
+  {
+    id:            'licia',
+    name:          'Licia',
+    rarity:        'S3',
+    faction:       'blood-rose',
+    role:          'attack',
+    globalPassive: false,
+    description:   '',
+    image:         '/images/heroes/licia.webp',
+    skills:        [],
+  },
+  {
+    id:            'liliana',
+    name:          'Liliana',
+    rarity:        'S3',
+    faction:       'wings-of-dawn',
+    role:          'attack',
+    globalPassive: false,
+    description:   '',
+    image:         '/images/heroes/liliana.webp',
+    skills:        [],
+  },
+  {
+    id:            'maria',
+    name:          'Maria',
+    rarity:        'A',
+    faction:       'guard-of-order',
+    role:          'support',
+    globalPassive: false,
+    description:   '',
+    image:         '/images/heroes/maria.webp',
+    skills:        [],
+  },
+  {
+    id:            'mia',
+    name:          'Mia',
+    rarity:        'S',
+    faction:       'guard-of-order',
+    role:          'defense',
+    globalPassive: false,
+    description:   '',
+    image:         '/images/heroes/mia.webp',
+    skills:        [],
+  },
+  {
+    id:            'miranda',
+    name:          'Miranda',
+    rarity:        'A',
+    faction:       'blood-rose',
+    role:          'defense',
+    globalPassive: false,
+    description:   '',
+    image:         '/images/heroes/miranda.webp',
+    skills:        [],
+  },
+  {
+    id:            'natalie',
+    name:          'Natalie',
+    rarity:        'B',
+    faction:       'wings-of-dawn',
+    role:          'attack',
+    globalPassive: false,
+    description:   '',
+    image:         '/images/heroes/natalie.webp',
+    skills:        [],
+  },
+  {
+    id:            'nyx',
+    name:          'Nyx',
+    rarity:        'S1',
+    faction:       'wings-of-dawn',
+    role:          'attack',
+    globalPassive: false,
+    description:   '',
+    image:         '/images/heroes/nyx.webp',
+    skills:        [],
+  },
+  {
+    id:            'oliveira',
+    name:          'Oliveira',
+    rarity:        'S1',
+    faction:       'blood-rose',
+    role:          'attack',
+    globalPassive: false,
+    description:   '',
+    image:         '/images/heroes/oliveira.webp',
+    skills:        [],
+  },
+  {
+    id:            'queenie',
+    name:          'Queenie',
+    rarity:        'S4',
+    faction:       'wings-of-dawn',
+    role:          'attack',
+    globalPassive: false,
+    description:   '',
+    image:         '/images/heroes/queenie.webp',
+    skills:        [],
+  },
+  {
+    id:            'sakura',
+    name:          'Sakura',
+    rarity:        'S1',
+    faction:       'guard-of-order',
+    role:          'attack',
+    globalPassive: false,
+    description:   '',
+    image:         '/images/heroes/sakura.webp',
+    skills:        [],
+  },
+  {
+    id:            'scarlett',
+    name:          'Scarlett',
+    rarity:        'S1',
+    faction:       'wings-of-dawn',
+    role:          'attack',
+    globalPassive: false,
+    description:   '',
+    image:         '/images/heroes/scarlett.webp',
+    skills:        [],
+  },
+  {
+    id:            'selena',
+    name:          'Selena',
+    rarity:        'S1',
+    faction:       'blood-rose',
+    role:          'attack',
+    globalPassive: false,
+    description:   '',
+    image:         '/images/heroes/selena.webp',
+    skills:        [],
+  },
+  {
+    id:            'sophia',
+    name:          'Sophia',
+    rarity:        'S',
+    faction:       'blood-rose',
+    role:          'attack',
+    globalPassive: false,
+    description:   '',
+    image:         '/images/heroes/sophia.webp',
+    skills:        [],
+  },
+  {
+    id:            'vivian',
+    name:          'Vivian',
+    rarity:        'A',
+    faction:       'blood-rose',
+    role:          'attack',
+    globalPassive: false,
+    description:   '',
+    image:         '/images/heroes/vivian.webp',
+    skills:        [],
+  },
+  {
+    id:            'william',
+    name:          'William',
+    rarity:        'B',
+    faction:       'guard-of-order',
+    role:          'defense',
+    globalPassive: false,
+    description:   '',
+    image:         '/images/heroes/william.webp',
+    skills:        [],
+  },
+  {
+    id:            'yu_chan',
+    name:          'Yu Chan',
+    rarity:        'S4',
+    faction:       'blood-rose',
+    role:          'attack',
+    globalPassive: false,
+    description:   '',
+    image:         '/images/heroes/yu_chan.webp',
+    skills:        [],
   },
 ];
