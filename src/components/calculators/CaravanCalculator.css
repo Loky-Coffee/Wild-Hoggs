@@ -164,6 +164,7 @@
 }
 
 .cc-weekly-btn {
+  flex: 1;
   min-width: 130px;
   padding: 0.4rem 0.8rem;
   border-radius: 8px;

@@ -162,16 +162,13 @@ export default function CaravanCalculator({ lang, translationData }: CaravanCalc
                 </button>
               ))}
             </div>
-            <div className="cc-weekly-row">
-              <span className="cc-opt-label">{t('calc.caravan.weeklyBonus')}:</span>
-              <button
-                type="button"
-                className={`cc-weekly-btn${weeklyActive ? ' active' : ''}`}
-                onClick={() => setWeeklyActive(v => !v)}
-              >
-                {FACTION_HERO[yourFaction].name} +10% {FACTION_HERO[yourFaction].buffKey}
-              </button>
-            </div>
+            <button
+              type="button"
+              className={`cc-weekly-btn${weeklyActive ? ' active' : ''}`}
+              onClick={() => setWeeklyActive(v => !v)}
+            >
+              {FACTION_HERO[yourFaction].name} +40% {FACTION_HERO[yourFaction].buffKey}
+            </button>
           </div>
         )}
       </div>
@@ -186,7 +183,7 @@ export default function CaravanCalculator({ lang, translationData }: CaravanCalc
               <span className="cc-chip cc-chip-match">+{Math.round(buffs.matchingBonus * 100)}%</span>
             )}
             {buffs.heroBonus > 0 && (
-              <span className="cc-chip cc-chip-hero">+10%</span>
+              <span className="cc-chip cc-chip-hero">+40%</span>
             )}
           </div>
         </div>
