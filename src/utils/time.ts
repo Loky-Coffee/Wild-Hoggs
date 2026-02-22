@@ -4,6 +4,7 @@
  * Provides timezone conversions and time calculations for Last-Z game times.
  * Last-Z uses "Apocalypse Time" which is UTC-2.
  */
+import { APOCALYPSE_TIMEZONE_OFFSET } from '../config/game';
 
 /**
  * Get current time in Apocalypse Time (UTC-2)
@@ -19,7 +20,7 @@
 export function getApocalypseTime(): Date {
   const now = new Date();
   const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000);
-  return new Date(utcTime + (-2 * 3600000)); // UTC-2
+  return new Date(utcTime + (APOCALYPSE_TIMEZONE_OFFSET * 3600000));
 }
 
 /**

@@ -1,4 +1,5 @@
 import { Component, type ComponentChildren } from 'preact';
+import type { ErrorInfo } from 'preact/compat';
 
 interface Props {
   children: ComponentChildren;
@@ -36,7 +37,7 @@ export class ErrorBoundary extends Component<Props, State> {
     return { hasError: true, error };
   }
 
-  componentDidCatch(error: Error, errorInfo: any) {
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error('[ErrorBoundary] Caught error:', error, errorInfo);
     // TODO: Send to error tracking service (Sentry, LogRocket, etc.)
   }

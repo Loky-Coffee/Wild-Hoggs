@@ -16,6 +16,9 @@ export function getLangFromUrl(url: URL): Language {
  */
 export function useTranslations(translationData: TranslationData) {
   return function t(key: TranslationKey, params?: Record<string, string>): string {
+    if (import.meta.env.DEV && !translationData[key]) {
+      console.warn(`[i18n] Missing translation key: "${key}"`);
+    }
     let text = translationData[key] || key;
 
     // Replace placeholders with params

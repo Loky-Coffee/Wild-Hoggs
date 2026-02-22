@@ -496,6 +496,7 @@ export default {
   'codes.minutes': 'm',
   'codes.copy': 'Copia',
   'codes.copied': 'Copiato!',
+  'codes.copyError': 'Copia fallita',
   'codes.noCodes': 'Nessun codice attivo disponibile',
   'codes.active': 'Attivo',
   'codes.expired': 'Scaduto',

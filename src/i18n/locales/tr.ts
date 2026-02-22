@@ -496,6 +496,7 @@ export default {
   'codes.minutes': 'd',
   'codes.copy': 'Kopyala',
   'codes.copied': 'Kopyalandı!',
+  'codes.copyError': 'Kopyalama başarısız',
   'codes.noCodes': 'Aktif kod yok',
   'codes.active': 'Aktif',
   'codes.expired': 'Süresi Doldu',

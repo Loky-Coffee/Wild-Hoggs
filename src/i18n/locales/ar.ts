@@ -496,6 +496,7 @@ export default {
   'codes.minutes': 'د',
   'codes.copy': 'نسخ',
   'codes.copied': 'تم النسخ!',
+  'codes.copyError': 'فشل النسخ',
   'codes.noCodes': 'لا توجد أكواد فعالة',
   'codes.active': 'نشط',
   'codes.expired': 'منتهي',

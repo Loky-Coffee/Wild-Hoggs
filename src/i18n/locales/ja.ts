@@ -496,6 +496,7 @@ export default {
   'codes.minutes': '分',
   'codes.copy': 'コピー',
   'codes.copied': 'コピーしました！',
+  'codes.copyError': 'コピー失敗',
   'codes.noCodes': '有効なコードがありません',
   'codes.active': 'アクティブ',
   'codes.expired': '期限切れ',

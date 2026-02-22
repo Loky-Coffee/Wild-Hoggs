@@ -496,6 +496,7 @@ export default {
   'codes.minutes': 'น',
   'codes.copy': 'คัดลอก',
   'codes.copied': 'คัดลอกแล้ว!',
+  'codes.copyError': 'คัดลอกไม่สำเร็จ',
   'codes.noCodes': 'ไม่มีโค้ดที่ใช้งานอยู่',
   'codes.active': 'ใช้งานอยู่',
   'codes.expired': 'หมดอายุ',

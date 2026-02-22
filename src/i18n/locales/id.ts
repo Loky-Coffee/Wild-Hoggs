@@ -496,6 +496,7 @@ export default {
   'codes.minutes': 'm',
   'codes.copy': 'Salin',
   'codes.copied': 'Tersalin!',
+  'codes.copyError': 'Gagal menyalin',
   'codes.noCodes': 'Tidak ada kode aktif yang tersedia',
   'codes.active': 'Aktif',
   'codes.expired': 'Kedaluwarsa',

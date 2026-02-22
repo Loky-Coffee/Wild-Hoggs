@@ -496,6 +496,7 @@ export default {
   'codes.minutes': '분',
   'codes.copy': '복사',
   'codes.copied': '복사됨!',
+  'codes.copyError': '복사 실패',
   'codes.noCodes': '활성 코드가 없습니다',
   'codes.active': '활성',
   'codes.expired': '만료됨',

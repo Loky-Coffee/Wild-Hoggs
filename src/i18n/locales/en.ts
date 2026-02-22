@@ -230,6 +230,7 @@ export default {
   'codes.minutes': 'm',
   'codes.copy': 'Copy',
   'codes.copied': 'Copied!',
+  'codes.copyError': 'Copy failed',
   'codes.noCodes': 'No active codes available',
   'codes.active': 'Active',
   'codes.expired': 'Expired',

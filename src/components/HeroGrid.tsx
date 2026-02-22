@@ -133,7 +133,7 @@ function HeroModal({ hero, onClose }: { hero: Hero; onClose: () => void }) {
 
         {/* Left — portrait */}
         <div className="hg-split-img-col">
-          <img src={hero.image} alt={hero.name} className="hg-split-img" width={400} height={600} />
+          <img src={hero.image} alt={hero.name} className="hg-split-img" width={400} height={600} onError={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = '0'; }} />
         </div>
 
         {/* Right — info */}
@@ -376,7 +376,7 @@ export default function HeroGrid({ heroes, clearLabel = 'Reset all filters' }: {
             onClick={() => setSelected(hero)}
             aria-label={hero.name}
           >
-            <img src={hero.image} alt={hero.name} className="hg-card-img" loading="lazy" width={300} height={450} />
+            <img src={hero.image} alt={hero.name} className="hg-card-img" loading="lazy" width={300} height={450} onError={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = '0'; }} />
 
             <img src={rarityIcon(hero.rarity)} alt={hero.rarity} className="hg-card-rarity" width={155} height={155} />
 

@@ -496,6 +496,7 @@ export default {
   'codes.minutes': 'ph',
   'codes.copy': 'Sao chép',
   'codes.copied': 'Đã sao chép!',
+  'codes.copyError': 'Sao chép thất bại',
   'codes.noCodes': 'Không có mã đang hoạt động',
   'codes.active': 'Đang hoạt động',
   'codes.expired': 'Hết hạn',

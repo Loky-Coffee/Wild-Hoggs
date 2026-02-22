@@ -39,6 +39,7 @@ function getTimeRemaining(expiresAt: string) {
 export default function RewardCodesLocal({ lang, translationData }: RewardCodesLocalProps) {
   const [codes, setCodes] = useState<RewardCode[]>(rewardCodesData.codes as RewardCode[]);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
+  const [errorCode, setErrorCode] = useState<string | null>(null);
   const [currentTime, setCurrentTime] = useState(Date.now());
 
   const t = useTranslations(translationData);
@@ -59,6 +60,8 @@ export default function RewardCodesLocal({ lang, translationData }: RewardCodesL
       setTimeout(() => setCopiedCode(null), 2000);
     } catch (err) {
       console.error('Failed to copy:', err);
+      setErrorCode(code);
+      setTimeout(() => setErrorCode(null), 2000);
     }
   };
 
@@ -107,7 +110,7 @@ export default function RewardCodesLocal({ lang, translationData }: RewardCodesL
                       onClick={() => copyToClipboard(item.code)}
                       aria-label={`${t('codes.copy')} ${item.code}`}
                     >
-                      {copiedCode === item.code ? '✓ ' + t('codes.copied') : t('codes.copy')}
+                      {copiedCode === item.code ? '✓ ' + t('codes.copied') : errorCode === item.code ? '✗ ' + t('codes.copyError') : t('codes.copy')}
                     </button>
                   </div>
                   {!timeRemaining.expired && (

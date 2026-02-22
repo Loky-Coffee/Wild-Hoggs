@@ -496,6 +496,7 @@ export default {
   'codes.minutes': '分钟',
   'codes.copy': '复制',
   'codes.copied': '已复制！',
+  'codes.copyError': '复制失败',
   'codes.noCodes': '暂无有效代码',
   'codes.active': '有效',
   'codes.expired': '已过期',
