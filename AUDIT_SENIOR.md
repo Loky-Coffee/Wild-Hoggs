@@ -50,11 +50,10 @@ alle `.tsx`- und `.astro`-Dateien auf XSS/Injection, `package.json` (npm audit)
 ~~**Problem:** `levelgeeks.org` ist als externe Bildquelle erlaubt, aber alle Bilder sind lokal gespeichert.~~
 **Fix:** `https://levelgeeks.org` aus `img-src` entfernt. CSP ist jetzt `img-src 'self' data:` — minimale Angriffsfläche.
 
-#### SEC-2 — NIEDRIG: Transitive Abhängigkeit `devalue` mit LOW-Schwachstelle
-**Datei:** `package.json` (transitive via `astro`)
-**CVEs:** GHSA-33hq-fvwr-56pm (CPU/Memory aus Sparse Arrays), GHSA-8qm3-746x-r74r (Prototype Pollution bei eval)
-**Risiko:** Niedrig — `devalue` wird intern von Astro für Serialisierung genutzt, kein User-Input.
-**Fix:** `npm update astro` bei nächstem regulären Update.
+#### ~~SEC-2 — NIEDRIG: Transitive Abhängigkeit `devalue` mit LOW-Schwachstelle~~ ✅ BEHOBEN
+~~**Datei:** `package.json` (transitive via `astro`)~~
+~~**CVEs:** GHSA-33hq-fvwr-56pm, GHSA-8qm3-746x-r74r~~
+**Fix:** `npm update astro` → Astro 5.17.3 installiert.
 
 ---
 
@@ -232,12 +231,9 @@ Nahezu identische Implementierung von:
 
 **Fix:** Custom Hook `useTreeViewControls(containerRef, options)` + Utility `calculateMobileZoom()` extrahieren.
 
-#### CODE-3 — NIEDRIG: Hardcodierter Breakpoint `768` an mehreren Stellen
-**Dateien:**
-- `src/components/calculators/ResearchTreeView.tsx` Z. 125 (3×)
-- `src/components/calculators/TankModificationTree.tsx` Z. 79
-
-**Fix:** Konstante `const BREAKPOINT_MOBILE = 768` in `src/config/` extrahieren.
+#### ~~CODE-3 — NIEDRIG: Hardcodierter Breakpoint `768` an mehreren Stellen~~ ✅ BEHOBEN
+~~**Dateien:** `ResearchTreeView.tsx` (4×), `TankModificationTree.tsx` (1×)~~
+**Fix:** `BREAKPOINT_MOBILE = 768` in `src/config/game.ts` — beide Komponenten importieren und nutzen die Konstante.
 
 #### CODE-4 — NIEDRIG: TODO für Error-Tracking-Service
 **Datei:** `src/components/ErrorBoundary.tsx` Z. 42
@@ -261,16 +257,14 @@ Nahezu identische Implementierung von:
 
 ### Findings
 
-#### DEAD-1 — NIEDRIG: 4 exportierte Utility-Funktionen nie importiert
+#### ~~DEAD-1 — NIEDRIG: 4 exportierte Utility-Funktionen nie importiert~~ ✅ BEHOBEN
 
-| Funktion | Datei | Zeile |
-|----------|-------|-------|
-| `getResponsiveNodeDimensions` | `src/utils/treeNodeConfig.ts` | 54–69 |
-| `getTreeSpacing` | `src/utils/treeNodeConfig.ts` | 71–89 |
-| `getAllResearchImages` | `src/utils/researchImages.ts` | 48–50 |
-| `getImageCount` | `src/utils/researchImages.ts` | 67–69 |
-
-**Fix:** Entfernen, falls nicht für zukünftige Features geplant. Sonst JSDoc-Kommentar ergänzen.
+| Funktion | Datei | Status |
+|----------|-------|--------|
+| ~~`getResponsiveNodeDimensions`~~ | `treeNodeConfig.ts` | ✅ entfernt |
+| ~~`getTreeSpacing`~~ | `treeNodeConfig.ts` | ✅ entfernt |
+| ~~`getAllResearchImages`~~ | `researchImages.ts` | ✅ entfernt |
+| ~~`getImageCount`~~ | `researchImages.ts` | ✅ entfernt |
 
 ---
 
@@ -410,14 +404,14 @@ und damit JavaScript-Overhead auf der 404-Seite eliminieren.
 
 ### 🟢 Niedrig (Nice-to-Have)
 
-| ID | Beschreibung | Aufwand |
-|----|-------------|---------|
-| DEAD-1 | 4 ungenutzte Utility-Funktionen entfernen | 15 min |
-| CODE-3 | Breakpoint `768` als Konstante zentralisieren | 15 min |
-| SEC-2 | `astro` updaten (transitive `devalue`-Schwachstelle) | 5 min |
-| BUG-5 | Aktuelle Reward Codes eintragen | laufend |
-| CF-2 | Optional: Cloudflare Worker für 404-Redirect | 2–3 h |
-| CODE-4 | Error-Tracking-Service (Sentry) integrieren | 4–8 h |
+| ID | Beschreibung | Aufwand | Status |
+|----|-------------|---------|--------|
+| ~~DEAD-1~~ | ~~4 ungenutzte Utility-Funktionen entfernen~~ | ~~15 min~~ | ✅ erledigt |
+| ~~CODE-3~~ | ~~Breakpoint `768` als Konstante zentralisieren~~ | ~~15 min~~ | ✅ erledigt |
+| ~~SEC-2~~ | ~~`astro` updaten (transitive `devalue`-Schwachstelle)~~ | ~~5 min~~ | ✅ Astro 5.17.3 |
+| BUG-5 | Aktuelle Reward Codes eintragen | laufend | Spieldaten nötig |
+| CF-2 | Optional: Cloudflare Worker für 404-Redirect | 2–3 h | offen |
+| CODE-4 | Error-Tracking-Service (Sentry) integrieren | 4–8 h | offen |
 
 ---
 
