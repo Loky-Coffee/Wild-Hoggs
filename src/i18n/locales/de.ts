@@ -170,6 +170,8 @@ export default {
   'calc.caravan.matchingHeroes': 'Gleiche Fraktion Helden',
   'calc.caravan.weeklyBonus': 'Feind-Held',
   'calc.caravan.weeklyBonusOff': 'Aus',
+  'calc.caravan.calculate': 'Berechnen',
+  'calc.caravan.autoCalculate': 'Auto Berechnen',
   'calc.caravan.effectivePower': 'Effektive Stärke',
   'calc.caravan.matchingBonus': 'Formation',
   'calc.caravan.counterAdvantage': 'Konter-Vorteil',

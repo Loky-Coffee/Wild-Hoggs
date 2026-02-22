@@ -170,6 +170,8 @@ export default {
   'calc.caravan.matchingHeroes': '同阵营英雄数',
   'calc.caravan.weeklyBonus': '敌方英雄',
   'calc.caravan.weeklyBonusOff': '关闭',
+  'calc.caravan.calculate': '计算',
+  'calc.caravan.autoCalculate': '自动计算',
   'calc.caravan.effectivePower': '有效战力',
   'calc.caravan.matchingBonus': '编队加成',
   'calc.caravan.counterAdvantage': '克制优势',

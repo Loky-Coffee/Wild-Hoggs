@@ -170,6 +170,8 @@ export default {
   'calc.caravan.matchingHeroes': 'ฮีโร่กลุ่มเดียวกัน',
   'calc.caravan.weeklyBonus': 'ฮีโร่ศัตรู',
   'calc.caravan.weeklyBonusOff': 'ปิด',
+  'calc.caravan.calculate': 'คำนวณ',
+  'calc.caravan.autoCalculate': 'คำนวณอัตโนมัติ',
   'calc.caravan.effectivePower': 'พลังที่มีประสิทธิผล',
   'calc.caravan.matchingBonus': 'การจัดทัพ',
   'calc.caravan.counterAdvantage': 'ได้เปรียบตอบโต้',

@@ -170,6 +170,8 @@ export default {
   'calc.caravan.matchingHeroes': 'Heróis mesma facção',
   'calc.caravan.weeklyBonus': 'Herói inimigo',
   'calc.caravan.weeklyBonusOff': 'Desativado',
+  'calc.caravan.calculate': 'Calcular',
+  'calc.caravan.autoCalculate': 'Calcular auto',
   'calc.caravan.effectivePower': 'Poder efetivo',
   'calc.caravan.matchingBonus': 'formação',
   'calc.caravan.counterAdvantage': 'vantagem de contra',

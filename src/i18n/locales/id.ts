@@ -170,6 +170,8 @@ export default {
   'calc.caravan.matchingHeroes': 'Pahlawan faksi sama',
   'calc.caravan.weeklyBonus': 'Hero musuh',
   'calc.caravan.weeklyBonusOff': 'Nonaktif',
+  'calc.caravan.calculate': 'Hitung',
+  'calc.caravan.autoCalculate': 'Hitung otomatis',
   'calc.caravan.effectivePower': 'Kekuatan efektif',
   'calc.caravan.matchingBonus': 'formasi',
   'calc.caravan.counterAdvantage': 'keunggulan kontra',

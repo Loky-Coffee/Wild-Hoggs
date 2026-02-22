@@ -170,6 +170,8 @@ export default {
   'calc.caravan.matchingHeroes': 'أبطال نفس الفصيل',
   'calc.caravan.weeklyBonus': 'بطل العدو',
   'calc.caravan.weeklyBonusOff': 'معطّل',
+  'calc.caravan.calculate': 'احسب',
+  'calc.caravan.autoCalculate': 'حساب تلقائي',
   'calc.caravan.effectivePower': 'القوة الفعّالة',
   'calc.caravan.matchingBonus': 'تشكيل',
   'calc.caravan.counterAdvantage': 'ميزة الصد',

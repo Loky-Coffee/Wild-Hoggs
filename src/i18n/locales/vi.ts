@@ -170,6 +170,8 @@ export default {
   'calc.caravan.matchingHeroes': 'Anh hùng cùng phe phái',
   'calc.caravan.weeklyBonus': 'Anh hùng địch',
   'calc.caravan.weeklyBonusOff': 'Tắt',
+  'calc.caravan.calculate': 'Tính toán',
+  'calc.caravan.autoCalculate': 'Tính tự động',
   'calc.caravan.effectivePower': 'Sức mạnh hiệu quả',
   'calc.caravan.matchingBonus': 'đội hình',
   'calc.caravan.counterAdvantage': 'lợi thế khắc chế',

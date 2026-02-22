@@ -323,6 +323,36 @@
 .caravan-table-wrapper::-webkit-scrollbar-track  { background: rgba(255,255,255,0.04); border-radius: 3px; }
 .caravan-table-wrapper::-webkit-scrollbar-thumb  { background: rgba(255,165,0,0.28); border-radius: 3px; }
 
+/* ── Calculate Button ── */
+.cc-calc-btn {
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  border: 2px solid rgba(255, 165, 0, 0.6);
+  background: rgba(255, 165, 0, 0.12);
+  color: #ffa500;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.04em;
+}
+
+.cc-calc-btn:hover:not(:disabled) {
+  background: rgba(255, 165, 0, 0.25);
+  border-color: #ffa500;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(255, 165, 0, 0.2);
+}
+
+.cc-calc-btn.done {
+  border-color: rgba(39, 174, 96, 0.5);
+  background: rgba(39, 174, 96, 0.08);
+  color: #52be80;
+  cursor: default;
+  opacity: 0.75;
+}
+
 /* ── Hint ── */
 .cc-hint {
   text-align: center;
@@ -343,43 +373,126 @@
   gap: 0.9rem;
 }
 
-/* ── Desktop: 2-column layout ── */
+/* ── Desktop ── */
 @media (min-width: 769px) {
   astro-island {
     display: block;
     width: 100%;
   }
 
+  /* Default: controls centered, single column */
   .caravan-calc {
     width: 100%;
     max-width: 100%;
     display: grid;
-    grid-template-columns: 360px 1fr;
-    grid-template-rows: 1fr;
-    gap: 1.25rem;
-    height: calc(100vh - 290px);
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 1.5rem;
   }
 
   .cc-controls {
+    width: 540px;
+    max-width: 100%;
     align-self: start;
-    overflow-y: auto;
   }
 
   .cc-results {
+    width: 540px;
+    max-width: 100%;
     display: flex;
     flex-direction: column;
-    min-height: 0;
-    height: 100%;
+    gap: 0.9rem;
   }
 
-  .cc-summary {
+  /* When results are present: switch to 2-column, table slides in */
+  .caravan-calc.has-results {
+    grid-template-columns: 500px 1fr;
+    justify-items: start;
+    align-items: start;
+    gap: 1.75rem;
+    height: calc(100dvh - 290px);
+  }
+
+  .caravan-calc.has-results .cc-controls {
+    width: 100%;
+    overflow-y: auto;
+    align-self: start;
+  }
+
+  .caravan-calc.has-results .cc-results {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+  }
+
+  .caravan-calc.has-results .cc-summary {
     flex-shrink: 0;
   }
 
-  .caravan-table-wrapper {
+  .caravan-calc.has-results .caravan-table-wrapper {
     flex: 1;
     max-height: none;
     min-height: 0;
+  }
+
+  /* Make all controls bigger on desktop */
+  .cc-step {
+    padding: 1.4rem 1.75rem;
+    gap: 1rem;
+  }
+
+  .cc-step-label {
+    font-size: 0.82rem;
+  }
+
+  .cc-faction-card {
+    min-height: 90px;
+    padding: 0.75rem 0.5rem;
+  }
+
+  .cc-faction-icon {
+    width: 52px;
+    height: 52px;
+  }
+
+  .cc-faction-name {
+    font-size: 0.78rem;
+  }
+
+  .cc-power-input {
+    font-size: 1.1rem;
+    padding: 0.85rem 1.25rem;
+  }
+
+  .cc-count-chip {
+    width: 40px;
+    height: 36px;
+    font-size: 0.92rem;
+  }
+
+  .cc-weekly-btn {
+    font-size: 0.88rem;
+    padding: 0.5rem 1rem;
+  }
+
+  /* Slide-in animation for results content */
+  @keyframes slideInFromRight {
+    from {
+      opacity: 0;
+      transform: translateX(70px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .cc-summary {
+    animation: slideInFromRight 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  }
+
+  .caravan-table-wrapper {
+    animation: slideInFromRight 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.15s both;
   }
 }
 

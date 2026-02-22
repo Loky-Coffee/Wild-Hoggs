@@ -170,6 +170,8 @@ export default {
   'calc.caravan.matchingHeroes': 'Aynı hizip kahramanları',
   'calc.caravan.weeklyBonus': 'Düşman kahraman',
   'calc.caravan.weeklyBonusOff': 'Kapalı',
+  'calc.caravan.calculate': 'Hesapla',
+  'calc.caravan.autoCalculate': 'Otomatik hesapla',
   'calc.caravan.effectivePower': 'Efektif güç',
   'calc.caravan.matchingBonus': 'birlik',
   'calc.caravan.counterAdvantage': 'karşı avantajı',
