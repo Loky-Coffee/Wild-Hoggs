@@ -1,7 +1,7 @@
 # AUDIT_SENIOR.md — Wild Hoggs Project Audit
 
 **Datum:** 2026-02-22
-**Zuletzt aktualisiert:** 2026-02-22 (Security-Fixes angewendet)
+**Zuletzt aktualisiert:** 2026-02-22 (Security-Fixes + C-PERF-1 behoben)
 **Stack:** Astro 5.17.1 · Preact 10.28.3 · TypeScript · Cloudflare Pages
 **Sprachen:** 15 (de, en, es, fr, ja, ko, pt, tr, it, ar, th, vi, id, zh-CN, zh-TW)
 **Methode:** 5 spezialisierte Senior-Agents haben alle Dateien verifiziert und gelesen — keine Vermutungen, kein Halluzinieren.
@@ -78,23 +78,23 @@
 
 ### 🔴 CRITICAL
 
-**C-PERF-1: Fehlende width/height-Attribute auf allen Hero-Bildern**
-**Datei:** `src/components/HeroGrid.tsx` (Zeilen 97, 342-349)
+~~**C-PERF-1: Fehlende width/height-Attribute auf allen Hero-Bildern**~~
+**Status:** ✅ Behoben am 2026-02-22 — alle 10 `<img>` Tags in `HeroGrid.tsx` haben jetzt explizite Dimensionen:
 ```tsx
-// Modal-Portrait — kein width/height
-<img src={hero.image} alt={hero.name} className="hg-split-img" />
-
-// Grid-Karte — kein width/height
-<img src={hero.image} alt={hero.name} className="hg-card-img" loading="lazy" />
-
-// Alle Icon-Bilder — kein width/height
-<img src={rarityIcon(hero.rarity)} alt={hero.rarity} className="hg-badge-icon" />
-<img src={factionIcon(hero.faction)} alt={hero.faction} className="hg-badge-icon" />
-<img src={roleIcon(hero.role)} alt={hero.role} className="hg-badge-icon" />
+// Modal-Portrait
+<img ... width={400} height={600} />
+// Grid-Karte
+<img ... width={300} height={450} loading="lazy" />
+// Rarity-Icon
+<img ... width={155} height={155} />
+// Duo-Icons (Fraktion + Rolle auf Karte)
+<img ... width={40} height={40} />
+// Badge-Icons (im Modal)
+<img ... width={16} height={16} />
+// Chip-Icons (Filter-Buttons)
+<img ... width={28} height={28} />
 ```
-- **Ursache:** Ohne explizite Dimensionen kann der Browser keinen Platz reservieren → **CLS (Cumulative Layout Shift)**
-- **Impact:** Schlechter CWV-Score, SEO-Einbußen
-- **Fix:** `width` und `height` Attribute zu allen `<img>` Tags hinzufügen (z.B. `width="240" height="360"` für Portraits, `width="20" height="20"` für Icons)
+CLS verhindert — Browser reserviert jetzt Platz vor dem Laden der Bilder.
 
 **C-PERF-2: Raw `<img>` statt Astro `<Image>` Komponente**
 **Dateien:** `src/components/HeroGrid.tsx` (alle img-Tags), `src/components/RewardCodesLocal.tsx` (Zeilen 100, 142), `src/components/calculators/ResearchCategoryCalculator.tsx`
@@ -565,7 +565,7 @@ return a.name.localeCompare(b.name);
 
 ### ⚠️ DIESE WOCHE (UX + SEO-Auswirkung)
 
-4. **[C-PERF-1]** `width`/`height` auf alle `<img>` Tags — verhindert CLS
+4. ~~**[C-PERF-1]**~~ ✅ `width`/`height` auf alle `<img>` Tags — behoben am 2026-02-22
 5. **[C-A11Y-2]** Suchfeld: `aria-label` hinzufügen
 6. **[C-A11Y-3]** Hero-Anzahl: `aria-live="polite"` hinzufügen
 7. **[H-BUG-1]** Mobile Menü: schließt sich bei Nav-Link-Klick
@@ -586,7 +586,7 @@ return a.name.localeCompare(b.name);
 16. **[C-PERF-2]** `<img>` → `<Image>` von Astro:assets (größtes Optimierungspotential)
 17. **[H-CODE-2]** Copy-Fehler: UI-Feedback statt stiller `console.error`
 18. **[H-CODE-3]** Image-Fallback bei 404-Bild
-19. **[M-SEC-2]** `levelgeeks.org` aus CSP entfernen
+19. ~~**[M-SEC-2]**~~ ✅ `levelgeeks.org` aus CSP entfernt — behoben am 2026-02-22
 20. **[L-BUG-1]** Sprach-Array in utils.ts aus index.ts importieren (DRY)
 21. **[M-CODE-2]** Fehlende Übersetzungen in DEV warnen
 22. **[M-BUG-2]** Sort-Tiebreaker: `a.name.localeCompare(b.name)`
