@@ -3,14 +3,14 @@
     {
       "id": "2",
       "code": "GOLDBARMALL",
-      "rewardImage": "/images/rewards/2026-02-05_17-47.png",
+      "rewardImage": "/images/rewards/2026-02-05_17-47.webp",
       "expiresAt": "2026-02-08T23:59:59Z",
       "addedAt": "2026-02-05"
     },
     {
       "id": "1",
       "code": "MONDAYBLESS",
-      "rewardImage": "/images/rewards/IMG_7942.jpg",
+      "rewardImage": "/images/rewards/IMG_7942.webp",
       "expiresAt": "2026-02-09T23:59:59Z",
       "addedAt": "2026-02-09"
     }
