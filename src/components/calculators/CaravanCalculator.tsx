@@ -18,6 +18,12 @@ const FACTION_HERO: Record<Faction, { name: string; buffKey: string }> = {
   yellow: { name: 'Chicha',  buffKey: 'DMG' },
 };
 
+const FACTION_ICON: Record<Faction, string> = {
+  red:    '/images/heroes/symbols/blood-rose.webp',
+  blue:   '/images/heroes/symbols/wings-of-dawn.webp',
+  yellow: '/images/heroes/symbols/guard-of-order.webp',
+};
+
 const FACTIONS: Faction[] = ['red', 'blue', 'yellow'];
 
 function parsePower(input: string): number {
@@ -141,8 +147,10 @@ export default function CaravanCalculator({ lang, translationData }: CaravanCalc
               type="button"
               className={`cc-faction-card cc-${f}${yourFaction === f ? ' selected' : ''}`}
               onClick={() => setYourFaction(f === yourFaction ? null : f)}
+              aria-label={fn[f]}
             >
-              {fn[f]}
+              <img src={FACTION_ICON[f]} alt={fn[f]} className="cc-faction-icon" />
+              <span className="cc-faction-name">{fn[f]}</span>
             </button>
           ))}
         </div>
