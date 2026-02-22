@@ -59,7 +59,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
     </ul>
 
     <div class="nav-controls">
-      <ApocalypseTimeClock client:load />
+      <ApocalypseTimeClock client:idle />
       <div class="lang-switcher">
         <LanguageDropdown />
       </div>

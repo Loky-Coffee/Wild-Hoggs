@@ -1,509 +1,470 @@
-# AUDIT_SENIOR.md — Wild Hoggs Project Audit
+# AUDIT_SENIOR.md — Wild Hoggs
+## Vollständiger Senior-Audit · 5 Agenten · 22. Februar 2026
 
-**Datum:** 2026-02-22
-**Zuletzt aktualisiert:** 2026-02-22 (Alle Code-Fixes abgeschlossen — Security, Performance, A11Y, Bugs, Code-Qualität)
-**Stack:** Astro 5.17.1 · Preact 10.28.3 · TypeScript · Cloudflare Pages
-**Sprachen:** 15 (de, en, es, fr, ja, ko, pt, tr, it, ar, th, vi, id, zh-CN, zh-TW)
-**Methode:** 5 spezialisierte Senior-Agents haben alle Dateien verifiziert und gelesen — keine Vermutungen, kein Halluzinieren.
-
----
-
-## INHALTSVERZEICHNIS
-
-1. [Sicherheit (Security)](#1-sicherheit)
-2. [Performance](#2-performance)
-3. [SEO](#3-seo)
-4. [Accessibility (Barrierefreiheit)](#4-accessibility)
-5. [Code-Qualität](#5-code-qualität)
-6. [Toter Code (Dead Code)](#6-toter-code)
-7. [Bugs](#7-bugs)
-8. [Cloudflare Pages Konfiguration](#8-cloudflare-pages-konfiguration)
-9. [Gesamtbewertung](#9-gesamtbewertung)
+> **Stack:** Astro 5.17.1 · Preact 10.28.3 · TypeScript · 15 Sprachen
+> **Hosting:** Cloudflare Pages
+> **Methode:** Jeder Befund wurde durch direktes Lesen der Quelldateien verifiziert — keine Vermutungen.
 
 ---
 
-## 1. SICHERHEIT
+## Gesamtbewertung
 
-**Bewertung: A+ (Ausgezeichnet)**
-
-### ✅ BESTANDEN
-
-| Prüfung | Ergebnis | Datei |
-|--------|---------|-------|
-| Keine Secrets / API-Keys im Code | BESTANDEN | `.gitignore` korrekt konfiguriert |
-| Keine XSS-Schwachstellen | BESTANDEN | Kein `dangerouslySetInnerHTML`, kein `innerHTML` |
-| `set:html` nur für JSON-LD (sicher) | BESTANDEN | `Breadcrumbs.astro:56`, `Layout.astro:163-164`, `codes.astro:61` |
-| Keine Code-Injection (`eval`, `Function()`) | BESTANDEN | Gesamtes Projekt geprüft |
-| Keine Prototype-Pollution | BESTANDEN | Gesamtes Projekt geprüft |
-| Input-Validierung (Sprache) | BESTANDEN | `src/i18n/utils.ts:3-10` — Whitelist-Validierung |
-| Zod-Schemas für alle Datendateien | BESTANDEN | `src/schemas/` — Zod validiert Research, Buildings, HeroExp |
-| Keine verwundbaren Dependencies | BESTANDEN | Alle Pakete aktuell (Astro 5.17.1, Preact 10.28.3, Zod 3.25.76) |
-| Keine PII / sensible Daten | BESTANDEN | Nur öffentliche Guild-Daten |
-| HSTS aktiviert | BESTANDEN | `public/_headers` — `max-age=15552000; includeSubDomains; preload` |
-| X-Frame-Options: DENY | BESTANDEN | `public/_headers` |
-| X-Content-Type-Options: nosniff | BESTANDEN | `public/_headers` |
-| Permissions-Policy gesetzt | BESTANDEN | `public/_headers` |
-| frame-ancestors: none (Clickjacking) | BESTANDEN | CSP korrekt konfiguriert |
-| Keine externen Skripte | BESTANDEN | Kein Analytics, kein Tracking |
-| TypeScript Strict Mode | BESTANDEN | `tsconfig.json` — `extends "astro/tsconfigs/strict"` |
-| `unsafe-inline` dokumentiert ✅ BEHOBEN | BESTANDEN | `public/_headers` — Kommentar erklärt Astro-Anforderung |
-| `levelgeeks.org` aus CSP entfernt ✅ BEHOBEN | BESTANDEN | `public/_headers` — `img-src 'self' data:` |
-| `X-XSS-Protection` entfernt ✅ BEHOBEN | BESTANDEN | `public/_headers` — Veralteter Header gelöscht |
-
-### ~~⚠️ MEDIUM~~ → ✅ BEHOBEN
-
-~~**M-SEC-1: CSP verwendet `'unsafe-inline'`**~~
-**Status:** ✅ Behoben am 2026-02-22
-- `unsafe-inline` ist für Astro's ViewTransitions und Build-System technisch notwendig
-- Kommentar direkt in `public/_headers` eingefügt, erklärt den Grund und das niedrige Risiko
-- Risiko verbleibt niedrig: keine User-Inputs werden gerendert, alle Daten Zod-validiert
-
-~~**M-SEC-2: Ungenutzte externe Domain in CSP**~~
-**Status:** ✅ Behoben am 2026-02-22
-- `https://levelgeeks.org` aus `img-src` in `public/_headers` entfernt
-- CSP lautet jetzt: `img-src 'self' data:` (kein externer Domain-Wildcard)
-
-### ~~ℹ️ LOW~~ → ✅ BEHOBEN
-
-~~**L-SEC-1: `X-XSS-Protection` veraltet**~~
-**Status:** ✅ Behoben am 2026-02-22
-- Header `X-XSS-Protection: 1; mode=block` aus `public/_headers` entfernt
-- Moderne Browser ignorieren diesen Header; CSP übernimmt den Schutz vollständig
+| Bereich | Note | Kritisch | Hoch | Mittel | Niedrig |
+|---------|------|----------|------|--------|---------|
+| Security | A- | 0 | 0 | 1 | 1 |
+| Performance | B+ | 1 | 2 | 1 | 1 |
+| SEO | A | 0 | 0 | 2 | 1 |
+| Accessibility | B+ | 0 | 1 | 3 | 2 |
+| Code Quality | A | 0 | 0 | 2 | 2 |
+| Dead Code | A | 0 | 0 | 0 | 4 |
+| Bugs | B+ | 0 | 3 | 2 | 0 |
+| Cloudflare | A- | 0 | 0 | 0 | 2 |
 
 ---
 
-## 2. PERFORMANCE
+## 1. Security — Note: A-
 
-**Bewertung: A (Sehr gut — alle Optimierungen umgesetzt)**
+**Geprüfte Dateien:** `public/_headers`, `astro.config.mjs`, `src/schemas/research.ts`,
+alle `.tsx`- und `.astro`-Dateien auf XSS/Injection, `package.json` (npm audit)
 
-### 🔴 CRITICAL
+### ✅ Positiv
 
-~~**C-PERF-1: Fehlende width/height-Attribute auf allen Hero-Bildern**~~
-**Status:** ✅ Behoben am 2026-02-22 — alle 10 `<img>` Tags in `HeroGrid.tsx` haben jetzt explizite Dimensionen:
-```tsx
-// Modal-Portrait
-<img ... width={400} height={600} />
-// Grid-Karte
-<img ... width={300} height={450} loading="lazy" />
-// Rarity-Icon
-<img ... width={155} height={155} />
-// Duo-Icons (Fraktion + Rolle auf Karte)
-<img ... width={40} height={40} />
-// Badge-Icons (im Modal)
-<img ... width={16} height={16} />
-// Chip-Icons (Filter-Buttons)
-<img ... width={28} height={28} />
-```
-CLS verhindert — Browser reserviert jetzt Platz vor dem Laden der Bilder.
+- **HTTP-Header komplett:** `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`,
+  `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy` (alle Gerätezugriffe deaktiviert),
+  `Strict-Transport-Security: max-age=15552000; includeSubDomains; preload`
+- **CSP vorhanden** (`public/_headers` Z. 13) — `unsafe-inline` ist durch Astro ViewTransitions begründet
+  und dokumentiert. Kein User-Input wird ungesäubert gerendert.
+- **Kein XSS:** Kein `dangerouslySetInnerHTML`. Einziges `set:html` in `Layout.astro` Z. 163–164
+  rendert `JSON.stringify(organizationSchema)` — sicher.
+- **Zod-Validierung** auf allen Datendateien (`src/schemas/research.ts`).
+- **Keine Secrets** im Code. `.env` und `.env.production` korrekt in `.gitignore`.
+- **Externe Links** mit `rel="noopener noreferrer"` (`codes.astro` Z. 79).
+- **Keine Third-Party-Scripts** — null externe CDN-Abhängigkeiten.
+- **Open-Redirect** verhindert: `404.astro` nutzt Whitelist-Regex für erlaubte Sprachen.
 
-~~**C-PERF-2: Raw `<img>` statt Astro `<Image>` Komponente**~~
-**Status:** ⚠️ Nicht umsetzbar für dynamische Pfade in Preact-Komponenten
-- Astro's `<Image>` optimiert nur **statisch importierte** Assets, nicht Laufzeit-Pfad-Strings wie `/images/heroes/${id}.webp`
-- `HeroGrid.tsx`, `RewardCodesLocal.tsx` u.a. verwenden dynamische URLs — hier ist `<Image>` nicht anwendbar
-- Alternative: Bilder manuell vorab optimieren (→ H-PERF-1/H-PERF-2) oder Cloudflare Image Resizing aktivieren
-- **Bewertung:** Kein Codefehler — architekturelle Einschränkung, manuell kompensiert
+### Findings
 
-### 🟠 HIGH
+#### ~~SEC-1 — MITTEL: Externe Domain in CSP img-src~~ ✅ BEHOBEN
+~~**Datei:** `public/_headers` Z. 13~~
+~~**Code:** `img-src 'self' data: https://levelgeeks.org;`~~
+~~**Problem:** `levelgeeks.org` ist als externe Bildquelle erlaubt, aber alle Bilder sind lokal gespeichert.~~
+**Fix:** `https://levelgeeks.org` aus `img-src` entfernt. CSP ist jetzt `img-src 'self' data:` — minimale Angriffsfläche.
 
-~~**H-PERF-1: Übergroße Hero-Bilder**~~
-**Status:** ✅ Behoben am 2026-02-22 — `public/images/heroes/`
-- `isabella.webp`: 1024×1536 (197 KB) → 408×612 (38 KB) — **−81%** via Sharp, auf Standardgröße aller anderen Heroes
-- Alle anderen Heroes waren bereits auf 408×612 (20–43 KB) — kein weiterer Handlungsbedarf
-
-~~**H-PERF-2: Große statische Bilder (Haupt-Seiten)**~~
-**Status:** ✅ Behoben am 2026-02-22 — `public/images/`
-- Alle 5 Bilder von 1536×1024 auf 800px Breite (Quality 82) reduziert:
-  - `caravan.webp`: 474 KB → 119 KB (−75%)
-  - `hero.webp`: 541 KB → 140 KB (−74%)
-  - `garage.webp`: 326 KB → 89 KB (−73%)
-  - `hq.webp`: 255 KB → 69 KB (−73%)
-  - `lab.webp`: 344 KB → 87 KB (−75%)
-- **Gesamtersparnis: ~1.2 MB** — 800px reicht für alle Display-Szenarien (Tool-Cards, 2× Retina)
-
-**Zusätzlich entdeckt und behoben (2026-02-22):**
-
-~~**BONUS-PERF-1: Symbol-Icons massiv übergroß**~~
-**Status:** ✅ Behoben am 2026-02-22 — `public/images/heroes/symbols/`
-- Rarity-Icons (a, b, s, s0–s9): 1024×1536 (152–239 KB) → 320px Breite (16–29 KB), **−88%**
-  - Werden bei max. 155px auf Karte angezeigt
-- Rollen-/Fraktions-Icons (attack, defense, support, blood-rose, guard-of-order, wings-of-dawn): 1024×1024 (91–136 KB) → 80×80px (1–2 KB), **−98%**
-  - Werden bei max. 40px angezeigt (badge: 16px, chip: 28px, duo: 40px)
-- **Gesamtersparnis: ~3.4 MB → ~335 KB** — größter Einzelposten im Projekt
-
-~~**BONUS-PERF-2: Reward-Bilder als PNG/JPG statt WebP**~~
-**Status:** ✅ Behoben am 2026-02-22 — `public/images/rewards/`
-- `2026-02-05_17-47.png` (1142×328, 270 KB) → `.webp` (800px, 16 KB), **−94%**
-- `IMG_7942.jpg` (1203×643, 97 KB) → `.webp` (800px, 19 KB), **−80%**
-- `src/data/reward-codes.json` Pfade auf `.webp` aktualisiert, alte Originale gelöscht
-
-**Gesamt-Bildeinsparung (alle Fixes kombiniert): ~6.1 MB → ~927 KB (−85%)**
-
-~~**H-PERF-3: Calculator-Komponenten nutzen `client:load` statt `client:idle`**~~
-**Status:** ✅ Behoben am 2026-02-22 — alle 5 Calculator-Seiten umgestellt:
-- `hero-exp.astro`, `caravan.astro`, `tank.astro`, `building.astro`, `[categoryId].astro`
-- Sowohl `<ErrorBoundary>` als auch Calculator-Komponenten: `client:load` → `client:idle`
-- Preact-Runtime hydratisiert jetzt erst nach Browser-Idle → weniger Blockierung des Main Threads
-
-~~**H-PERF-4: Mehrfache `backdrop-filter` ohne Fallback**~~
-**Status:** ✅ Behoben am 2026-02-22 — `src/components/HeroGrid.css`
-- `@supports (backdrop-filter: blur(1px))` Fallback hinzugefügt: Ohne Unterstützung greift `background: rgba(0,0,0,0.92)` (opaker)
-- Mobile Blur von 10px auf 6px reduziert via `@media (max-width: 640px)` + `@supports`
-
-### 🟡 MEDIUM
-
-~~**M-PERF-1: `inlineStylesheets: 'never'` ohne HTTP/2 Push**~~
-**Status:** ✅ Akzeptiert (kein Fix nötig)
-- `astro.config.mjs` — korrekte Entscheidung für Cache-Effizienz
-- Cloudflare Pages unterstützt HTTP/2 → Waterfall-Abhängigkeiten minimal
-- Externe CSS-Datei kann gecacht werden; bei Astro-Inline würde jede Seite die Styles neu übertragen
-
-### ✅ BESTANDEN
-
-| Prüfung | Ergebnis | Datei |
-|--------|---------|-------|
-| Lazy Loading auf Hero-Karten | BESTANDEN | `HeroGrid.tsx:342` — `loading="lazy"` |
-| Preact Bundle-Isolation | BESTANDEN | `astro.config.mjs:66-73` — Separater Vendor-Chunk |
-| CSS Code-Splitting | BESTANDEN | `astro.config.mjs:61` — `cssCodeSplit: true` |
-| ViewTransitions für schnelle Navigation | BESTANDEN | `Layout.astro:134` |
-| Cache-Headers für statische Assets | BESTANDEN | `public/_headers` — 1 Jahr immutable für `/_astro/*` |
-| `client:visible` für HeroGrid | BESTANDEN | `heroes.astro:34` — Hydration erst wenn sichtbar |
-| Console-Entfernung in Production | BESTANDEN | `astro.config.mjs:77-79` |
+#### SEC-2 — NIEDRIG: Transitive Abhängigkeit `devalue` mit LOW-Schwachstelle
+**Datei:** `package.json` (transitive via `astro`)
+**CVEs:** GHSA-33hq-fvwr-56pm (CPU/Memory aus Sparse Arrays), GHSA-8qm3-746x-r74r (Prototype Pollution bei eval)
+**Risiko:** Niedrig — `devalue` wird intern von Astro für Serialisierung genutzt, kein User-Input.
+**Fix:** `npm update astro` bei nächstem regulären Update.
 
 ---
 
-## 3. SEO
+## 2. Performance — Note: B+
 
-**Bewertung: A (Sehr gut)**
+**Geprüfte Dateien:** `src/layouts/Layout.astro`, `src/layouts/PageLayout.astro`,
+`public/_headers`, `astro.config.mjs`, `src/components/Navigation.astro`,
+`src/components/ApocalypseTimeClock.tsx`, alle Bilddateien in `public/`
 
-### ✅ BESTANDEN
+### ✅ Positiv
 
-| Prüfung | Ergebnis | Datei |
-|--------|---------|-------|
-| Meta Title & Description (alle Seiten) | BESTANDEN | `Layout.astro:120,144` — dynamisch pro Seite |
-| OG Tags vollständig | BESTANDEN | `Layout.astro:145-153` — og:image, og:image:alt, og:locale |
-| Twitter Card | BESTANDEN | `Layout.astro:156-161` — summary_large_image |
-| Canonical URLs | BESTANDEN | `Layout.astro:135` — korrekt generiert |
-| Hreflang alle 15 Sprachen | BESTANDEN | `Layout.astro:136-139` — alle Sprachen + x-default |
-| robots.txt vorhanden | BESTANDEN | `public/robots.txt` — `Allow: /` + Sitemap-Link |
-| Sitemap konfiguriert | BESTANDEN | `astro.config.mjs:17-54` — alle 15 Sprachen |
-| Strukturierte Daten (JSON-LD) | BESTANDEN | Organization + WebSite + SearchAction + BreadcrumbList + HowTo |
-| Saubere URL-Struktur | BESTANDEN | `/`, `/de/`, `/heroes`, `/de/heroes` |
-| Einzigartiger H1 pro Seite | BESTANDEN | Alle Pages geprüft |
-| SEO-optimierte Titles (alle 15 Sprachen) | BESTANDEN | `src/i18n/locales/en.ts:529-547` |
-| Heroes-Seite im Sitemap | BESTANDEN | `/heroes` nicht mehr ausgeschlossen |
-| Placeholder-Seiten ausgeschlossen | BESTANDEN | `/events`, `/guides` in exclusion list |
-| Breadcrumb-Schema | BESTANDEN | `Breadcrumbs.astro:18-30,56` |
-| HowTo-Schema (Codes-Seite) | BESTANDEN | `codes.astro:24-61` |
-| Dynamische Titles ({month} {year}) | BESTANDEN | Roses- und Codes-Seite |
+- **Cache-Strategie perfekt:** `/_astro/*` 1 Jahr immutable, `/images/*` 30 Tage, HTML 1 Stunde.
+- **Hydration-Strategie gut:** Kalkulatoren auf `client:idle`, interaktive Listen auf `client:visible`.
+- **Bundle-Splitting:** Preact in eigenem `vendor-preact`-Chunk (29 KB). `esbuild.drop: ['console']`.
+- **System-Fonts:** Keine Web-Fonts → kein FOUT, kein extra Netzwerk-Request.
+- **Globaler Timer:** `useGlobalTimer`-Hook teilt ein einziges `setInterval` für alle Timer-Instanzen.
+- **Hero-Bilder mit Dimensionen:** `HeroGrid.tsx` Z. 136/379 — `width` und `height` gesetzt → kein CLS.
+- **Lazy Loading:** `loading="lazy"` auf allen Nicht-kritischen Bildern.
 
-**Keine kritischen SEO-Probleme gefunden.**
+### Findings
 
----
+#### ~~PERF-1 — KRITISCH: `body { overflow: hidden; height: 100vh }` — CLS-Risiko auf Mobile~~ ✅ BEHOBEN
+**Dateien:** `src/layouts/Layout.astro`, `src/layouts/PageLayout.astro`
 
-## 4. ACCESSIBILITY
+~~`height: 100vh; overflow: hidden` aus `body` — CLS-Risiko, Mobile-Adressleiste abgeschnitten~~
 
-**Bewertung: A− (Alle WCAG-A-Verletzungen behoben)**
+**Fix:**
+- `Layout.astro`: `height: 100vh` + `overflow: hidden` entfernt → `min-height: 100dvh`
+- `PageLayout.astro`: alle `100vh` → `100dvh` (Desktop + Breadcrumb-Variante)
 
-### 🔴 CRITICAL (WCAG Level A Verletzungen)
+#### PERF-2 — HOCH: `hero.webp` (140 KB) als CSS-Hintergrundbild ohne Preload
+**Datei:** `src/pages/[...lang]/tools.astro` Z. 36, 44, 52, 60, 68
 
-~~**C-A11Y-1: Hero-Modal ohne ARIA-Dialog-Attribute**~~
-**Status:** ✅ Behoben am 2026-02-22 — `src/components/HeroGrid.tsx`
-- `role="dialog"`, `aria-modal="true"`, `aria-labelledby="hg-hero-modal-title"` zu `hg-split` hinzugefügt
-- `id="hg-hero-modal-title"` zum `<h2>` hinzugefügt
-- **Focus-Trap implementiert:** `useRef` + `useEffect` — Tab/Shift+Tab bleibt im Modal, Escape schließt
-- Fokus kehrt beim Schließen zum auslösenden Element zurück (`prevFocus.focus()`)
-
-~~**C-A11Y-2: Suchfeld ohne zugängliches Label**~~
-**Status:** ✅ Behoben am 2026-02-22 — `src/components/HeroGrid.tsx`
-- `id="hg-search-label"` zur sichtbaren Beschriftung `<span>Search</span>` hinzugefügt
-- `aria-labelledby="hg-search-label"` + `id="hg-search"` zum `<input>` hinzugefügt
-- Screen-Reader liest jetzt „Search" als Feld-Label vor
-
-~~**C-A11Y-3: Hero-Anzahl nicht für Screen-Reader angekündigt**~~
-**Status:** ✅ Behoben am 2026-02-22 — `src/components/HeroGrid.tsx`
-- `aria-live="polite"` + `aria-atomic="true"` zum Zähler-`<p>` hinzugefügt
-- Screen-Reader kündigt jetzt Filterergebnis-Änderungen an (z.B. „12 / 36 heroes")
-
-### 🟡 MEDIUM
-
-~~**M-A11Y-1: Filter-Buttons nutzen `title` statt `aria-label`**~~
-**Status:** ✅ Behoben am 2026-02-22 — `src/components/HeroGrid.tsx`
-- Alle 4 Filter-Gruppen gefixt: Session, Role, Faction, Grade
-- `title={...}` → `aria-label={...}` (z.B. `aria-label="Session 1"`, `aria-label="Grade S9"`)
+```astro
+<a class="tool-card has-image" style="background-image: url('/images/hero.webp')">
 ```
 
-### ✅ BESTANDEN
+**Probleme:**
+- CSS-Hintergrundbilder werden erst nach CSS-Parsing geladen → späte LCP-Kandidaten
+- Kein `fetchpriority="high"` oder `<link rel="preload">`
+- Keine responsiven Varianten (140 KB auch auf 300 px breiten Mobilgeräten)
 
-| Prüfung | Ergebnis | Datei |
-|--------|---------|-------|
-| Skip-to-Content Link | BESTANDEN | `PageLayout.astro:22` |
-| `<nav>` Landmark | BESTANDEN | `Navigation.astro:34` |
-| `<main>` Landmark | BESTANDEN | `PageLayout.astro:29` |
-| Breadcrumb `aria-label` | BESTANDEN | `Breadcrumbs.astro:33` |
-| Hamburger-Menü aria-expanded | BESTANDEN | `Navigation.astro:42,264` |
-| Sprach-Dropdown aria-haspopup | BESTANDEN | `LanguageDropdown.astro:44` |
-| Close-Button aria-label | BESTANDEN | `HeroGrid.tsx:102` |
-| Hero-Karten aria-label | BESTANDEN | `HeroGrid.tsx:340` |
-| Alle Bilder mit alt-Text | BESTANDEN | Alle img-Tags geprüft |
-| Dekorative Trennzeichen aria-hidden | BESTANDEN | `Breadcrumbs.astro:43` |
-| Focus-Visible Ring (Hero-Karten) | BESTANDEN | `HeroGrid.css:271-274` |
-| Timer role="timer" + aria-live | BESTANDEN | `RewardCodesLocal.tsx:116-118` |
-| ApocalypseTimeClock aria-label | BESTANDEN | `ApocalypseTimeClock.tsx:21` |
-| High-Contrast Mode Support | BESTANDEN | `Breadcrumbs.astro:120-128` |
-| Touch-Targets ausreichend groß | BESTANDEN | Alle Buttons ≥ 44px |
-| WCAG AA Kontrast-Werte | BESTANDEN | `design-tokens.css:26-30` — Kommentare bestätigen WCAG AA |
+**Fix:** `<link rel="preload" as="image" href="/images/hero.webp">` im `<head>`,
+oder auf `<picture>`-Element umstellen.
+
+#### ~~PERF-3 — HOCH: `ApocalypseTimeClock` auf `client:load` statt `client:idle`~~ ✅ BEHOBEN
+**Datei:** `src/components/Navigation.astro` Z. 62
+
+~~`client:load` → blockiert TTI unnötig~~
+**Fix:** `client:idle` — Hydration auf Browser-Leerlaufzeit verschoben.
+
+#### PERF-4 — MITTEL: Mehrere CSS-Bundles pro Seite
+**Evidenz:** `dist/_astro/heroes.bD_XahlR.css` (13 KB) + `dist/_astro/heroes.Fo94m1cc.css` (452 B)
+— 2–3 CSS-Requests pro Seite durch `cssCodeSplit: true`.
+**Bewertung:** HTTP/2 auf Cloudflare mildert dies, aber Konsolidierung würde FCP auf 3G verbessern.
+**Fix (optional):** `cssCodeSplit: false` in `astro.config.mjs` testen.
 
 ---
 
-## 5. CODE-QUALITÄT
+## 3. SEO — Note: A
 
-**Bewertung: A− (Alle Code-Probleme behoben; Content-Lücken separat dokumentiert)**
+**Geprüfte Dateien:** `src/layouts/Layout.astro`, `public/robots.txt`, `astro.config.mjs`,
+alle `src/pages/[...lang]/*.astro`-Dateien, `src/components/Breadcrumbs.astro`
 
-### 🔴 CRITICAL (Datenfehler)
+### ✅ Positiv
 
-**C-CODE-1: Mia — Exclusive Talent fehlt komplett**
-**Datei:** `src/data/heroes.ts` (Zeilen 1054-1099)
-```typescript
-{
-  id: 'mia',
-  // Hat nur 3 Skills: normal, active, global
-  // FEHLT: 4. Exclusive Talent
-  skills: [
-    { name: 'Electro Amplification', type: 'normal', ... },
-    { name: 'Lightning Ink', type: 'active', ... },
-    { name: 'Modification Expert', type: 'global', ... },
-    // ← 4. Skill fehlt!
-  ],
+- **Hreflang für alle 15 Sprachen** korrekt implementiert (`Layout.astro` Z. 28–54)
+  inkl. `x-default` auf Englisch und korrekte `zh-TW`/`zh-CN`-Codes.
+- **Canonical URLs** auf jeder Seite (`Layout.astro` Z. 135).
+- **Sitemap** mit allen 15 Sprachvarianten, dynamischem `lastmod`, Ausschluss von Platzhalterseiten.
+- **robots.txt** korrekt: `Allow: /` + Sitemap-URL.
+- **Structured Data:** Organization, WebSite, BreadcrumbList, HowTo-Schemas (`Layout.astro` Z. 56–106).
+- **OG-Tags komplett:** `og:type`, `og:url`, `og:title`, `og:description`, `og:image` (1200×630),
+  `og:locale`, `og:locale:alternate`, `twitter:card`.
+- **404 noindex:** `<meta name="robots" content="noindex, nofollow">` korrekt gesetzt.
+- **Einzigartige Seitentitel** auf allen Seiten, inklusive dynamischer Monats/Jahres-Tokens.
+
+### Findings
+
+#### ~~SEO-1 — MITTEL: `og:locale:alternate` auf 5 Einträge begrenzt~~ ✅ BEHOBEN
+**Datei:** `src/layouts/Layout.astro` Z. 89
+
+~~`.slice(0, 5)` begrenzte auf 5 von 15 Sprachen~~
+**Fix:** `.slice(0, 5)` entfernt → alle 14 Alternativ-Locales werden ausgegeben.
+
+#### SEO-2 — NIEDRIG: `members.astro` — Description hardcodiert auf Englisch
+**Datei:** `src/pages/[...lang]/members.astro` Z. 74
+
+```astro
+description="Wild Hoggs Guild Members Roster"
+```
+
+**Problem:** Die Meta-Description ist nicht übersetzt — schadet SEO in Nicht-Englisch-Sprachen.
+**Fix:** Übersetzungsschlüssel `seo.members.description` in alle 15 Locales einfügen und nutzen.
+
+---
+
+## 4. Accessibility — Note: B+
+
+**Geprüfte Dateien:** alle `.tsx`- und `.astro`-Dateien, `src/styles/design-tokens.css`,
+`src/pages/[...lang]/members.astro`, `src/components/HeroGrid.css`
+
+### ✅ Positiv
+
+- **Skip-Link** implementiert (`PageLayout.astro` Z. 22–52) — WCAG 2.4.1 ✓
+- **Semantische Struktur:** Korrekte Heading-Hierarchie, `<nav>`, `<main>`, `<section>`.
+- **Modal vollständig zugänglich:** `role="dialog"`, `aria-modal`, `aria-labelledby`, Focus-Trap,
+  ESC-Taste, Fokus-Rückgabe (`HeroGrid.tsx` Z. 90–181) — WCAG 2.1.1 ✓
+- **Formulare korrekt:** Alle `<input>`-Elemente haben verknüpfte `<label>` via `htmlFor/id`.
+- **ARIA-Live-Regionen:** Hero-Counter (`aria-live="polite"`), ErrorBoundary (`role="alert"`),
+  Timer (`role="timer"`, `aria-atomic="true"`).
+- **Buttons mit ARIA-Labels:** Alle Icon-Buttons haben `aria-label`.
+- **Sprachdropdown:** `aria-haspopup`, `aria-expanded`, ESC-Unterstützung, RTL für Arabisch.
+- **Breadcrumbs:** `aria-current="page"`, `aria-hidden` auf Trennzeichen, BreadcrumbList-Schema.
+
+### Findings
+
+#### ~~A11Y-1 — HOCH: Farb-Kontrast-Verstöße (WCAG 1.4.3 Level AA)~~ ✅ BEHOBEN
+
+| Datei | Selektor | Vorher | Nachher |
+|-------|----------|--------|---------|
+| `members.astro` | `.level-filter-label` | `rgba(255,255,255,0.3)` | `rgba(255,255,255,0.6)` |
+| `members.astro` | `.sort-row-label` | `rgba(255,255,255,0.3)` | `rgba(255,255,255,0.6)` |
+| `members.astro` | `.visible-count` | `rgba(255,255,255,0.28)` | `rgba(255,255,255,0.6)` |
+| `members.astro` | `.avg-label` | `rgba(255,255,255,0.3)` | `rgba(255,255,255,0.6)` |
+| `HeroGrid.css` | `::placeholder` | `rgba(255,255,255,0.25)` | `rgba(255,255,255,0.5)` |
+
+Alle Texte erfüllen jetzt WCAG AA Mindestkontrast.
+
+#### A11Y-2 — MITTEL: Tool-Cards haben kein `aria-label` für Hintergrundbilder
+**Datei:** `src/pages/[...lang]/tools.astro` Z. 36, 44, 52, 60, 68
+
+```astro
+<a class="tool-card has-image" style="background-image: url('/images/hero.webp')">
+```
+
+**Problem:** Hintergrundbilder werden von Screenreadern ignoriert — Link-Kontext ist unklar.
+**Fix:** `aria-label` auf dem `<a>`-Tag ergänzen, z. B. `aria-label="Hero EXP Calculator"`.
+
+#### A11Y-3 — MITTEL: Fehlende `focus-visible`-Stile auf Tool-Cards
+**Datei:** `src/pages/[...lang]/tools.astro` (CSS) — WCAG 2.4.7 Level AA
+**Problem:** Hover-Stile existieren, aber keine expliziten `:focus-visible`-Stile für Tastaturnutzer.
+**Fix:**
+```css
+.tool-card:focus-visible {
+  outline: 2px solid #ffa500;
+  outline-offset: 2px;
 }
 ```
-- Alle anderen vollständigen Heroes haben 4 Skills; Mia hat nur 3
-- **Fix:** Exclusive Talent Daten recherchieren und eintragen
 
-**C-CODE-2: Sakura — Global + Exclusive fehlen**
-**Datei:** `src/data/heroes.ts` (Zeilen 1297-1316)
+#### A11Y-4 — NIEDRIG: Sprachdropdown — Arrow-Key-Navigation fehlt
+**Datei:** `src/components/LanguageDropdown.astro`
+**Problem:** Menü nutzt `role="menu"` + `role="menuitem"`, aber keine ↑↓-Tastaturnavigation.
+Links sind per Tab erreichbar, aber ARIA-Menü-Muster erwartet Arrow-Keys.
+**Fix:** Keyboard-Handler für `ArrowUp`/`ArrowDown` ergänzen, oder Muster auf `listbox` umstellen.
+
+#### A11Y-5 — NIEDRIG: `og:locale:alternate` begrenzt (→ auch SEO-1)
+Bereits bei SEO dokumentiert.
+
+---
+
+## 5. Code Quality — Note: A
+
+**Geprüfte Dateien:** alle `src/components/**/*.tsx`, `src/utils/*.ts`, `tsconfig.json`,
+`src/hooks/useGlobalTimer.ts`, `src/components/calculators/*.tsx`
+
+### ✅ Positiv
+
+- **TypeScript strict:** `tsconfig.json` extends `astro/tsconfigs/strict`. Keine `any`-Typen in Produktionspfaden.
+- **Alle Props typisiert:** Jede Komponente hat ein klar definiertes Interface mit `readonly`.
+- **Preact-Best-Practices:** `useEffect`-Cleanups vorhanden, korrekte `key`-Props in Listen,
+  `useMemo`/`useCallback`/`memo()` an sinnvollen Stellen.
+- **Error Boundary** korrekt als Klassen-Komponente mit `componentDidCatch`.
+- **Naming Conventions** konsistent: camelCase Variablen, PascalCase Komponenten, UPPER_SNAKE_CASE Konstanten.
+- **Keine TODO/FIXMEs** außer einem dokumentierten Enhancement (Error-Tracking-Service).
+- **Globaler Timer-Hook** (`useGlobalTimer`) — teilt ein `setInterval` über alle Abonnenten.
+- **Konfigurationskonstante:** `APOCALYPSE_TIMEZONE_OFFSET` in `src/config/game.ts` zentralisiert.
+
+### Findings
+
+#### CODE-1 — MITTEL: Debug-`console.log` in Render-Loop (Produktionscode)
+**Datei:** `src/components/calculators/TankModificationTree.tsx` Z. 388–396
+
 ```typescript
-{
-  id: 'sakura',
-  skills: [
-    { name: 'Mech Modification', type: 'normal', ... },
-    { name: 'Motorcycle Frenzy', type: 'active', effect: 'Increases damage (details coming soon).' },
-    // FEHLT: Global Effect
-    // FEHLT: Exclusive Talent
-  ],
+if (index < 5) {
+  console.log(`[TankTree] Rendering node ${index}:`, {
+    level: mod.level, x: pos.x, y: pos.y, row: pos.row, col: pos.col
+  });
 }
 ```
-- Sakura hat nur 2 (unvollständige) Skills
-- **Fix:** Fehlende Skill-Daten recherchieren und nachtragen
 
-### 🟠 HIGH
+**Problem:** Loggt bei jedem Re-Render für die ersten 5 Nodes — Console-Pollution in Produktion.
+(Andere `console.error`-Aufrufe in ErrorBoundary und RewardCodes sind akzeptabel.)
+**Fix:** Zeilen entfernen oder in `if (import.meta.env.DEV)` wrappen.
 
-~~**H-CODE-1: `errorInfo: any` in ErrorBoundary**~~
-**Status:** ✅ Behoben am 2026-02-22 — `src/components/ErrorBoundary.tsx`
-- `import type { ErrorInfo } from 'preact/compat'` hinzugefügt
-- `componentDidCatch(error: Error, errorInfo: ErrorInfo)` — korrekter Typ
+#### CODE-2 — MITTEL: Duplizierter Zoom-Control-Code (~130 Zeilen)
+**Dateien:**
+- `src/components/calculators/ResearchTreeView.tsx` Z. 118–223
+- `src/components/calculators/TankModificationTree.tsx` Z. 140–232
 
-~~**H-CODE-2: Stille Fehlerbehandlung beim Kopieren**~~
-**Status:** ✅ Behoben am 2026-02-22 — `src/components/RewardCodesLocal.tsx`
-- `errorCode` State hinzugefügt; bei `catch` wird `setErrorCode(code)` für 2s gesetzt
-- Button zeigt jetzt: `✓ Copied!` | `✗ Copy failed` | `Copy` je nach Zustand
-- `codes.copyError` Translation-Key in alle 15 Sprachdateien eingetragen
+Nahezu identische Implementierung von:
+- Mobile-Zoom-Berechnung (`window.innerWidth < 768`, Padding-Berechnung)
+- `handleZoomIn/Out`, `handleResetView`
+- `handleScroll[Up/Down/Left/Right]`
 
-~~**H-CODE-3: Kein Fallback bei fehlgeschlagenen Hero-Bildern**~~
-**Status:** ✅ Behoben am 2026-02-22 — `src/components/HeroGrid.tsx`
-- `onError={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = '0'; }}` auf beiden Hero-Portrait-`<img>` Tags
-- Kaputtes Bild wird ausgeblendet statt als leeres Rechteck anzuzeigen
+**Fix:** Custom Hook `useTreeViewControls(containerRef, options)` + Utility `calculateMobileZoom()` extrahieren.
 
-### 🟡 MEDIUM
+#### CODE-3 — NIEDRIG: Hardcodierter Breakpoint `768` an mehreren Stellen
+**Dateien:**
+- `src/components/calculators/ResearchTreeView.tsx` Z. 125 (3×)
+- `src/components/calculators/TankModificationTree.tsx` Z. 79
 
-**M-CODE-1: Zu große Komponenten**
-| Datei | Zeilen | Status |
-|-------|--------|--------|
-| `src/components/calculators/ResearchTreeView.tsx` | 796 | ℹ️ Organisatorische Empfehlung |
-| `src/components/calculators/TankModificationTree.tsx` | 658 | ℹ️ Organisatorische Empfehlung |
-| `src/data/heroes.ts` | 1604 | ℹ️ Wächst mit mehr Heroes |
-- Kein akuter Bug — Refactoring bei Gelegenheit
+**Fix:** Konstante `const BREAKPOINT_MOBILE = 768` in `src/config/` extrahieren.
 
-~~**M-CODE-2: Übersetzungs-Fehler stumm (keine Warnung)**~~
-**Status:** ✅ Behoben am 2026-02-22 — `src/i18n/utils.ts`
-- `if (import.meta.env.DEV && !translationData[key]) console.warn(\`[i18n] Missing translation key: "${key}"\`)` hinzugefügt
-- Nur im DEV-Modus sichtbar — kein Einfluss auf Production-Build
-
-~~**M-CODE-3: Hardcodierte Zeitzone UTC-2**~~
-**Status:** ✅ Behoben am 2026-02-22
-- `src/config/game.ts` erstellt: `export const APOCALYPSE_TIMEZONE_OFFSET = -2;`
-- `src/utils/time.ts` importiert die Konstante — ein einziger Ort zum Ändern
-
-### 🟢 BESTANDEN
-
-| Prüfung | Ergebnis |
-|--------|---------|
-| TypeScript Strict Mode | BESTANDEN |
-| Zod-Validierung für alle Schemas | BESTANDEN |
-| useEffect-Cleanup korrekt | BESTANDEN |
-| useMemo-Dependencies korrekt | BESTANDEN |
-| Singleton-Pattern für GlobalTimer | BESTANDEN — spart ~90% Overhead |
-| Eindeutige Hero-IDs | BESTANDEN |
-| Gültige Rarity-Werte | BESTANDEN |
-| Gültige Fraktions-Werte | BESTANDEN |
-| Gültige Rollen-Werte | BESTANDEN |
-| 15 Sprachen alle gleich viele Keys | BESTANDEN — je 556-557 Zeilen |
+#### CODE-4 — NIEDRIG: TODO für Error-Tracking-Service
+**Datei:** `src/components/ErrorBoundary.tsx` Z. 42
+`// TODO: Send to error tracking service (Sentry, LogRocket, etc.)`
+**Bewertung:** Kein Bug — gültiges Enhancement-Item. Bei Gelegenheit Sentry o. Ä. integrieren.
 
 ---
 
-## 6. TOTER CODE
+## 6. Dead Code — Note: A
 
-**Bewertung: A+ — KEIN TOTER CODE GEFUNDEN**
+**Geprüfte Dateien:** `src/utils/*.ts`, alle Komponenten und Seiten
 
-Nach vollständiger Analyse aller Dateien:
+### ✅ Positiv
 
-- ✅ Keine ungenutzten Imports
-- ✅ Keine ungenutzten Exports
-- ✅ Keine nicht referenzierten Komponenten
-- ✅ Keine nicht referenzierten CSS-Klassen (stichprobenartig geprüft)
-- ✅ Keine auskommentierten Code-Blöcke
-- ✅ Keine verwaisten Übersetzungskeys
-- ✅ Alle 15 Sprachdateien vollständig konsistent
+- Keine ungenutzten Imports in geprüften Dateien.
+- Keine ungenutzten Variablen.
+- Alle Komponenten werden aktiv genutzt.
+- Alle Datendateien (`src/data/`) sind importiert.
+- Alle Routen (`src/pages/`) sind verlinkt und erreichbar.
+- Keine auskommentierten Code-Blöcke.
 
-**Das Projekt hat eine sehr saubere Code-Basis ohne unnötigen Ballast.**
+### Findings
 
----
+#### DEAD-1 — NIEDRIG: 4 exportierte Utility-Funktionen nie importiert
 
-## 7. BUGS
+| Funktion | Datei | Zeile |
+|----------|-------|-------|
+| `getResponsiveNodeDimensions` | `src/utils/treeNodeConfig.ts` | 54–69 |
+| `getTreeSpacing` | `src/utils/treeNodeConfig.ts` | 71–89 |
+| `getAllResearchImages` | `src/utils/researchImages.ts` | 48–50 |
+| `getImageCount` | `src/utils/researchImages.ts` | 67–69 |
 
-**Bewertung: A− (Alle echten Bugs behoben)**
-
-### 🔴 CRITICAL
-
-~~**C-BUG-1: Cross-Category Research-Voraussetzung**~~
-**Status:** ✅ False Positive — kein Bug
-- `fire-up-2` existiert SOWOHL in `unit-special-training.json` (Zeile 118) ALS AUCH in `military-strategies.json` (Zeile 208, nameKey: `research.military_strategies.fire-up`)
-- `field-training` referenziert das `fire-up-2` derselben Kategorie — der Calculator löst Voraussetzungen nur innerhalb von `category.technologies` auf (`ResearchCategoryCalculator.tsx:45`)
-- **Kein Fix nötig**
-
-~~**C-BUG-2: SSR-Sicherheitslücke — `document.body` ohne Guard**~~
-**Status:** ✅ Behoben am 2026-02-22 — `src/components/HeroGrid.tsx`
-- `typeof document === 'undefined'` Guard in `useEffect` hinzugefügt
-- Technisch war es sicher (`selected` startet als `null`, `useEffect` läuft nie auf SSR), aber Guard macht den Code explizit und defensiv
-- Gleichzeitig: doppelten Escape-Key-Handler entfernt (HeroModal übernimmt das jetzt via Focus-Trap-`useEffect`)
-
-### 🟠 HIGH
-
-~~**H-BUG-1: Mobiles Navigationsmenü schließt sich nicht bei Link-Klick**~~
-**Status:** ✅ Behoben am 2026-02-22 — `src/components/Navigation.astro`
-- `closeMenu`-Helper erstellt; alle `.nav-link` Elemente bekommen `click`-Listener
-- Menü schließt sich jetzt korrekt beim Klick auf Nav-Links (Standard-Mobile-UX)
-
-~~**H-BUG-2: Event-Listener-Akkumulation bei View Transitions**~~
-**Status:** ✅ Behoben am 2026-02-22 — `src/components/Navigation.astro`
-- `{ once: true }` für `DOMContentLoaded` hinzugefügt (feuert sowieso nur einmal)
-- `astro:page-load`: Astro-Module-Scripts laufen nur 1x → kein echtes Akkumulationsproblem; bestehende Cleanup-Logik (`__clickHandler`, `__navOutsideHandler`) ist korrekt
-
-~~**H-BUG-3: Chinesische Sprache in 404-Redirect falsch behandelt**~~
-**Status:** ✅ Behoben am 2026-02-22 — `src/pages/404.astro`
-- `navigator.language.split('-')[0]` → `zh` → Redirect auf `/zh` (existiert nicht) — **behoben**
-- Neue Logik: `zh-TW`/`zh-Hant` → `zh-TW`; alle anderen `zh-*` → `zh-CN`
-- `supportedLangs`-Array enthält kein `zh` mehr — nur noch konkrete Sprachcodes
-
-### 🟡 MEDIUM
-
-~~**M-BUG-1: Suche normalisiert keine mehrfachen Leerzeichen**~~
-**Status:** ✅ Behoben am 2026-02-22 — `src/components/HeroGrid.tsx`
-- `.replace(/\s+/g, ' ')` nach `.trim()` hinzugefügt
-
-~~**M-BUG-2: Hero-Sortierung nicht stabil bei gleicher Rarity + Fraktion**~~
-**Status:** ✅ Behoben am 2026-02-22 — `src/components/HeroGrid.tsx`
-- `a.name.localeCompare(b.name)` als letzter Tiebreaker hinzugefügt → stabile, deterministische Sortierung
-
-### 🟣 LOW
-
-~~**L-BUG-1: Sprachliste doppelt definiert (DRY-Verstoß)**~~
-**Status:** ✅ Behoben am 2026-02-22 — `src/i18n/utils.ts`
-- `languages` aus `./index` importiert; `validLangs` = `Object.keys(languages) as Language[]`
-- Neue Sprache muss jetzt nur noch in `index.ts` eingetragen werden
-
-**L-BUG-2: `RARITY_ORDER` enthält S5-S9, `RARITIES` nur bis S4**
-**Datei:** `src/components/HeroGrid.tsx`
-- Informell: keine S5+ Heroes im Spiel — kein akuter Handlungsbedarf
-- `RARITY_ORDER` enthält Vorbereitung für zukünftige Rarities — bewusste Entscheidung, kein Fix nötig
+**Fix:** Entfernen, falls nicht für zukünftige Features geplant. Sonst JSDoc-Kommentar ergänzen.
 
 ---
 
-## 8. CLOUDFLARE PAGES KONFIGURATION
+## 7. Bugs — Note: B+
 
-**Bewertung: A (Vollständig korrekt konfiguriert)**
+**Geprüfte Dateien:** `src/data/heroes.ts`, `src/data/research/*.json`,
+`src/data/reward-codes.json`, alle Routing-Dateien, i18n-Dateien
 
-### ✅ BESTANDEN
+### ✅ Positiv
 
-| Prüfung | Ergebnis | Datei |
-|--------|---------|-------|
-| Output-Modus: Static (korrekt für CF Pages) | BESTANDEN | `astro.config.mjs` — kein Adapter, reines SSG |
-| i18n-Konfiguration | BESTANDEN | `prefixDefaultLocale: false` korrekt |
-| Sitemap-Exclusion | BESTANDEN | `/events`, `/guides` ausgeschlossen |
-| `_headers` Datei vorhanden | BESTANDEN | `public/_headers` |
-| Cache-Control richtig gesetzt | BESTANDEN | 1 Jahr für `/_astro/*`, 30 Tage für `/images/*`, 1h für HTML |
-| `immutable` für versionierte Assets | BESTANDEN | `/_astro/*` Cache-Control: immutable |
-| Kein `wrangler.toml` nötig | BESTANDEN | Konfiguration via Web-UI + `_headers` ausreichend |
-| HTTPS/TLS automatisch | BESTANDEN | Cloudflare Pages verwaltet Zertifikate automatisch |
-| DDoS-Schutz | BESTANDEN | Cloudflare-seitig ohne Konfiguration |
-| Automatische Brotli/gzip Kompression | BESTANDEN | Cloudflare-seitig |
-| Keine serverspezifischen Features | BESTANDEN | Alle Features sind build-time oder client-seitig |
-| `.gitignore` vollständig | BESTANDEN | Alle Build-Artefakte, node_modules, .env ausgeschlossen |
-| Build-Skripte korrekt | BESTANDEN | `package.json` — `astro build` als Haupt-Build |
+- **i18n konsistent:** 535 Schlüssel in allen 15 Locales identisch vorhanden.
+- **Routing korrekt:** `[...lang]`-Dynamic-Routing, Fallback auf Englisch, `getStaticPaths`.
+- **State-Cleanups:** Alle `useEffect`-Hooks haben korrekte Cleanup-Funktionen.
+- **Async-Error-Handling:** Alle `async`-Funktionen korrekt mit try/catch.
+- **`typeof document`-Guard:** In SSR-sensiblen `useEffect`-Blöcken vorhanden.
+- **Event-Listener einmalig:** `{ once: true }` und `astro:page-load`-Cleanup in Navigation.
+
+### Findings
+
+#### BUG-1 — HOCH: Sakura — Active Skill unvollständig (fehlendes `levels`-Array)
+**Datei:** `src/data/heroes.ts` Z. 1310–1315
+
+```typescript
+{
+  name:     'Motorcycle Frenzy',
+  category: 'Active Skill',
+  type:     'active',
+  effect:   'Increases damage (details coming soon).',  // ← Placeholder, kein levels-Array
+}
+```
+
+**Problem:** Alle anderen Aktiv-Skills haben ein `levels`-Array mit 5+ Einträgen.
+Diese Struktur weicht vom Schema ab und kann zu Render-Fehlern in `HeroGrid.tsx` führen.
+**Fix:** `levels`-Array mit allen Stufen-Beschreibungen ergänzen.
+
+#### BUG-2 — HOCH: Sakura — Nur 2 von 4 Skills definiert
+**Datei:** `src/data/heroes.ts` Z. 1297–1316
+
+Sakura hat nur 2 Skills. Alle S1-Helden haben 4 Skills:
+1. Normal-Angriff-Boost ✓
+2. Aktiv-Skill ✓
+3. **Global Effect ← fehlt**
+4. **Exclusive Talent (type: 'exclusive') ← fehlt**
+
+**Fix:** Global Effect und Exclusive Talent zu Sakuras `skills`-Array hinzufügen.
+
+#### BUG-3 — HOCH: Mia — Nur 3 von 4 Skills definiert
+**Datei:** `src/data/heroes.ts` Z. 1062–1099
+
+Mia hat nur 3 Skills — der Exclusive Talent (`type: 'exclusive'`, `stars: 4`) fehlt.
+Vergleich: Oliveira (S1) und Scarlett (S1) haben jeweils 4 vollständige Skills.
+**Fix:** Exclusive Talent mit `type: 'exclusive'` und `stars: 4` ergänzen.
+
+#### BUG-4 — MITTEL: Research Tree — `nameKey`-Kollisionen bei Tier-2-Technologien
+**Dateien:** `src/data/research/siege-to-seize.json`, `army-building.json`, `unit-special-training.json`
+
+Tier-1 und Tier-2 Technologien teilen denselben `nameKey`:
+
+```json
+{ "id": "demolition-crew",   "nameKey": "research.siege_to_seize.demolition-crew" }
+{ "id": "demolition-crew-2", "nameKey": "research.siege_to_seize.demolition-crew" }  // ← identisch!
+```
+
+Betroffen: `demolition-crew`, `joint-operation`, `mobile-defense`, `fire-up`, `armor-upgrade`, `combat-policy`.
+**Problem:** UI kann Tier-1 und Tier-2 nicht unterscheiden — beide zeigen denselben Namen.
+**Fix:** Für alle `*-2`-IDs eigenen `nameKey` anlegen, z. B. `research.siege_to_seize.demolition-crew-2`,
+und entsprechende Übersetzungsschlüssel in allen 15 Locales hinzufügen.
+
+#### BUG-5 — MITTEL: Reward Codes — beide Codes abgelaufen (Daten-Freshness)
+**Datei:** `src/data/reward-codes.json`
+
+```json
+{ "code": "GOLDBARMALL",  "expiresAt": "2026-02-08T23:59:59Z" }  // vor 14 Tagen
+{ "code": "MONDAYBLESS",  "expiresAt": "2026-02-09T23:59:59Z" }  // vor 13 Tagen
+```
+
+**Kein Code-Bug** — `RewardCodesLocal.tsx` zeigt abgelaufene Codes korrekt in eigenem Bereich.
+**Aktion:** Aktuelle Codes aus dem Spiel eintragen.
 
 ---
 
-## 9. GESAMTBEWERTUNG
+## 8. Cloudflare Config — Note: A-
 
-| Bereich | Note | Status |
-|---------|------|--------|
-| 🔒 Sicherheit | **A+** | Keine kritischen Schwachstellen |
-| ⚡ Performance | **B** | Bilder optimieren, Dimensionen setzen |
-| 🔍 SEO | **A** | Vollständig und mehrsprachig |
-| ♿ Accessibility | **C+** | 3 WCAG-A-Verletzungen beheben |
-| 🧹 Code-Qualität | **B+** | Hero-Daten vervollständigen |
-| 🗑️ Toter Code | **A+** | Keiner gefunden |
-| 🐛 Bugs | **C** | 2 kritische Bugs sofort fixen |
-| ☁️ Cloudflare Config | **A** | Optimal konfiguriert |
+**Geprüfte Dateien:** `public/_headers`, `astro.config.mjs`, `package.json`
 
----
+### ✅ Positiv
 
-## PRIORITÄTSLISTE — Was zuerst fixen?
+- **`_headers` korrekt:** Alle Security-Header vorhanden (→ Security-Sektion).
+- **Cache-Strategie optimal:** `/_astro/*` immutable 1 Jahr, HTML 1 Stunde, Bilder 30 Tage.
+- **Kein wrangler.toml nötig** — Cloudflare Pages, kein Worker.
+- **Build-Output `dist/`** korrekt konfiguriert.
+- **Keine Node.js-APIs** in Browser-Code (kein `fs`, kein `path` im Client).
+- **`typeof window`-Guards** vorhanden wo nötig.
+- **ESM-Module:** `"type": "module"` in `package.json` — Cloudflare-kompatibel.
 
-### 🚨 SOFORT (Blockiert Funktionalität)
+### Findings
 
-1. **[C-BUG-1]** Research-Calculator: `fire-up-2` Cross-Category-Referenz in `military-strategies.json` korrigieren
-2. **[C-BUG-2]** SSR-Guard für `document.body` in `HeroGrid.tsx` hinzufügen
-3. **[C-A11Y-1]** Hero-Modal: `role="dialog"`, `aria-modal="true"`, `aria-labelledby` + Focus-Trap
+#### CF-1 — NIEDRIG: `levelgeeks.org` in CSP img-src
+Bereits als SEC-1 dokumentiert — auch Cloudflare-relevant.
 
-### ⚠️ DIESE WOCHE (UX + SEO-Auswirkung)
-
-4. ~~**[C-PERF-1]**~~ ✅ `width`/`height` auf alle `<img>` Tags — behoben am 2026-02-22
-5. **[C-A11Y-2]** Suchfeld: `aria-label` hinzufügen
-6. **[C-A11Y-3]** Hero-Anzahl: `aria-live="polite"` hinzufügen
-7. **[H-BUG-1]** Mobile Menü: schließt sich bei Nav-Link-Klick
-8. **[H-BUG-3]** 404-Seite: Chinese zh-CN/zh-TW Redirect fixen
-
-### 📅 DIESEN MONAT (Performance + Qualität)
-
-9. **[H-PERF-1]** Hero-Bilder auf < 20 KB re-enkodieren (isabella.webp = 197 KB!)
-10. **[H-PERF-2]** Große statische Bilder (caravan.webp 474 KB, hero.webp 541 KB) optimieren
-11. ~~**[H-PERF-3]**~~ ✅ Calculator-Seiten: `client:load` → `client:idle` — behoben 2026-02-22
-12. **[C-BUG-2]** `errorInfo: any` → `ErrorInfo` in ErrorBoundary
-13. **[C-CODE-1]** Mia: Exclusive Talent Daten nachtragen
-14. **[C-CODE-2]** Sakura: Global + Exclusive Talent nachtragen
-15. **[H-BUG-2]** Nav Event-Listener-Leak bei View Transitions
-
-### 🗓️ BACKLOG (Qualität + Wartbarkeit)
-
-16. ~~**[C-PERF-2]**~~ ⚠️ Nicht umsetzbar für dynamische Pfade in Preact (architekturelle Einschränkung)
-17. **[H-CODE-2]** Copy-Fehler: UI-Feedback statt stiller `console.error`
-18. **[H-CODE-3]** Image-Fallback bei 404-Bild
-19. ~~**[M-SEC-2]**~~ ✅ `levelgeeks.org` aus CSP entfernt — behoben am 2026-02-22
-20. **[L-BUG-1]** Sprach-Array in utils.ts aus index.ts importieren (DRY)
-21. **[M-CODE-2]** Fehlende Übersetzungen in DEV warnen
-22. **[M-BUG-2]** Sort-Tiebreaker: `a.name.localeCompare(b.name)`
-23. **[10 Heroes]** Fehlende Skills für: amber, alma, bella, dodomeki, harleyna, licia, liliana, nyx, queenie, yu_chan
+#### CF-2 — NIEDRIG: Client-seitige Spracherkennung auf 404-Seite
+**Datei:** `src/pages/404.astro` Z. 85–122
+**Bewertung:** Funktioniert korrekt, aber ein Cloudflare Worker könnte dies serverseitig übernehmen
+und damit JavaScript-Overhead auf der 404-Seite eliminieren.
+**Empfehlung:** Optional — aktueller Ansatz ist ausreichend.
 
 ---
 
-*Audit durchgeführt von 5 Senior-Agents (Security, Performance, SEO/Accessibility, Code Quality, QA/DevOps) — alle Befunde wurden durch direkte Dateilesungen verifiziert.*
+## Prioritäten-Matrix (Action Plan)
+
+### ~~🔴 Sofort (Produktions-kritisch)~~ ✅ ALLE ERLEDIGT
+
+| ID | Beschreibung | Status |
+|----|-------------|--------|
+| ~~PERF-1~~ | ~~`overflow: hidden` + `100vh` → CLS-Risiko~~ | ✅ `min-height: 100dvh`, kein overflow |
+| ~~A11Y-1~~ | ~~Farb-Kontrast-Verstöße (WCAG 1.4.3)~~ | ✅ Alle auf 0.6+ Alpha erhöht |
+| ~~SEC-1~~ | ~~`levelgeeks.org` aus CSP img-src entfernen~~ | ✅ Entfernt |
+
+### 🟠 Hoch (nächster Sprint)
+
+| ID | Beschreibung | Datei | Aufwand |
+|----|-------------|-------|---------|
+| BUG-1/2 | Sakura — fehlende Skills ergänzen (Inhalt) | `src/data/heroes.ts` | Spieldaten nötig |
+| BUG-3 | Mia — Exclusive Talent ergänzen (Inhalt) | `src/data/heroes.ts` | Spieldaten nötig |
+| PERF-2 | Tool-Cards: `<link rel="preload">` für hero.webp | `tools.astro` + `Layout.astro` | 30 min |
+| ~~PERF-3~~ | ~~`ApocalypseTimeClock client:load` → `client:idle`~~ | ✅ `client:idle` |
+| A11Y-2 | `aria-label` auf Tool-Card-Links | `tools.astro` | 30 min |
+| CODE-1 | Debug-`console.log` in `TankModificationTree` | Z. 388–396 | 5 min |
+| ~~SEO-1~~ | ~~`og:locale:alternate` `.slice(0, 5)` entfernen~~ | ✅ Alle 14 Locales ausgegeben |
+
+### 🟡 Mittel (Backlog)
+
+| ID | Beschreibung | Datei | Aufwand |
+|----|-------------|-------|---------|
+| BUG-4 | Research-Tree `nameKey`-Kollisionen beheben | JSON-Dateien + 15 Locales | 2–3 h |
+| CODE-2 | Zoom-Logic in Custom Hook extrahieren | ResearchTreeView + TankModTree | 2 h |
+| A11Y-3 | `focus-visible`-Stile für Tool-Cards | `tools.astro` CSS | 1 h |
+| A11Y-4 | Arrow-Key-Navigation im Sprachdropdown | `LanguageDropdown.astro` | 2 h |
+| SEO-2 | Members-Description übersetzen | `members.astro` + 15 Locales | 1 h |
+
+### 🟢 Niedrig (Nice-to-Have)
+
+| ID | Beschreibung | Aufwand |
+|----|-------------|---------|
+| DEAD-1 | 4 ungenutzte Utility-Funktionen entfernen | 15 min |
+| CODE-3 | Breakpoint `768` als Konstante zentralisieren | 15 min |
+| SEC-2 | `astro` updaten (transitive `devalue`-Schwachstelle) | 5 min |
+| BUG-5 | Aktuelle Reward Codes eintragen | laufend |
+| CF-2 | Optional: Cloudflare Worker für 404-Redirect | 2–3 h |
+| CODE-4 | Error-Tracking-Service (Sentry) integrieren | 4–8 h |
+
+---
+
+## Inhalts-Lücken (kein Code-Bug — Spieldaten nötig)
+
+Diese Punkte erfordern das Sammeln von Spieldaten, keine Code-Änderungen:
+
+- **10 Helden ohne Skills:** Amber, Alma, Bella, Dodomeki, Harleyna, Licia, Liliana, Nyx, Queenie, Yu Chan
+- **34 von 36 Helden** ohne `description`-Feld
+- **Research-Icons** fehlen für mehrere Kategorien (army-building, hero-training, military-strategies,
+  peace-shield, siege-to-seize, fully-armed-alliance sowie Teile von field und unit-special-training)
+- **Reward Codes** — aktuell beide abgelaufen (BUG-5)
+
+---
+
+*Audit erstellt von 5 parallelen Senior-Agenten am 22. Februar 2026.*
+*Alle Findings wurden durch direktes Lesen der Quelldateien verifiziert — keine Vermutungen.*

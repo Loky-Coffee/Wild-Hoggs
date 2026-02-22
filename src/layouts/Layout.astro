@@ -86,7 +86,7 @@ const alternateLocales = Object.keys(languages)
   .filter(l => l != lang)
   .map(l => localeMap[l] || 'en_US');
 
-const ogLocaleAlternateTags = alternateLocales.slice(0, 5).map(locale => ({ locale }));
+const ogLocaleAlternateTags = alternateLocales.map(locale => ({ locale }));
 
 const searchPath = lang === 'en' ? '/tools' : `/${lang}/tools`;
 const websiteSchema = {
@@ -179,8 +179,6 @@ const websiteSchema = {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     background: linear-gradient(135deg, var(--color-bg-gradient-start) 0%, var(--color-bg-gradient-end) 100%);
     color: var(--color-text);
-    min-height: 100vh;
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100dvh;
   }
 </style>

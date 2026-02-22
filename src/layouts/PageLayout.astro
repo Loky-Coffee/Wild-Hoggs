@@ -68,8 +68,8 @@ const { title, description, robots, breadcrumbs } = Astro.props;
     margin: 0 auto;
     padding: 0.5rem 2rem 2rem;
     margin-top: 80px; /* Platz für fixierten Header */
-    min-height: calc(100vh - 80px);
-    height: calc(100vh - 80px);
+    min-height: calc(100dvh - 80px);
+    height: calc(100dvh - 80px);
     overflow-y: auto; /* Content scrollt, nicht Body */
     overflow-x: hidden;
   }
@@ -77,8 +77,8 @@ const { title, description, robots, breadcrumbs } = Astro.props;
   /* Wenn Breadcrumbs vorhanden, extra Platz */
   .breadcrumbs-container + .page-content {
     margin-top: 120px; /* 80px Header + ~40px Breadcrumbs */
-    height: calc(100vh - 120px);
-    min-height: calc(100vh - 120px);
+    height: calc(100dvh - 120px);
+    min-height: calc(100dvh - 120px);
   }
 
   @media (max-width: 768px) {
