@@ -202,72 +202,34 @@ CLS verhindert — Browser reserviert jetzt Platz vor dem Laden der Bilder.
 
 ## 4. ACCESSIBILITY
 
-**Bewertung: C+ (Verbesserungsbedarf bei kritischen WCAG-Punkten)**
+**Bewertung: A− (Alle WCAG-A-Verletzungen behoben)**
 
 ### 🔴 CRITICAL (WCAG Level A Verletzungen)
 
-**C-A11Y-1: Hero-Modal ohne ARIA-Dialog-Attribute**
-**Datei:** `src/components/HeroGrid.tsx` (Zeilen 92-140)
-```tsx
-// AKTUELL (fehlerhaft):
-<div className="hg-split" onClick={(e) => e.stopPropagation()}>
-  <h2 className="hg-hero-name">{hero.name}</h2>
+~~**C-A11Y-1: Hero-Modal ohne ARIA-Dialog-Attribute**~~
+**Status:** ✅ Behoben am 2026-02-22 — `src/components/HeroGrid.tsx`
+- `role="dialog"`, `aria-modal="true"`, `aria-labelledby="hg-hero-modal-title"` zu `hg-split` hinzugefügt
+- `id="hg-hero-modal-title"` zum `<h2>` hinzugefügt
+- **Focus-Trap implementiert:** `useRef` + `useEffect` — Tab/Shift+Tab bleibt im Modal, Escape schließt
+- Fokus kehrt beim Schließen zum auslösenden Element zurück (`prevFocus.focus()`)
 
-// SOLL:
-<div className="hg-split" role="dialog" aria-modal="true" aria-labelledby="hero-modal-title">
-  <h2 className="hg-hero-name" id="hero-modal-title">{hero.name}</h2>
-```
-- **Fehlend:** `role="dialog"`, `aria-modal="true"`, `aria-labelledby`
-- **Fehlend:** Focus-Trap (Tastatur-Fokus kann aus dem Modal heraus wandern)
-- **WCAG:** Verletzt 4.1.3 (Status Messages) und 1.3.1 (Info and Relationships)
-- **Fix:** ARIA-Attribute hinzufügen + Focus-Trap implementieren (z.B. mit `focus-trap-js` oder manuell)
+~~**C-A11Y-2: Suchfeld ohne zugängliches Label**~~
+**Status:** ✅ Behoben am 2026-02-22 — `src/components/HeroGrid.tsx`
+- `id="hg-search-label"` zur sichtbaren Beschriftung `<span>Search</span>` hinzugefügt
+- `aria-labelledby="hg-search-label"` + `id="hg-search"` zum `<input>` hinzugefügt
+- Screen-Reader liest jetzt „Search" als Feld-Label vor
 
-**C-A11Y-2: Suchfeld ohne zugängliches Label**
-**Datei:** `src/components/HeroGrid.tsx` (Zeilen 274-280)
-```tsx
-// AKTUELL (fehlerhaft):
-<input
-  type="text"
-  className="hg-search"
-  placeholder="Name oder Skill…"
-  value={search}
-  onInput={...}
-/>
-
-// SOLL:
-<input
-  type="text"
-  id="hero-search"
-  aria-label="Search heroes by name or skill"
-  ...
-/>
-```
-- `placeholder` ist **kein** Ersatz für ein zugängliches Label (WCAG-Verletzung)
-- Screen-Reader-Nutzer erfahren nicht, wozu dieses Feld dient
-- **Fix:** `aria-label` oder ein verknüpftes `<label htmlFor="">` hinzufügen
-
-**C-A11Y-3: Hero-Anzahl nicht für Screen-Reader angekündigt**
-**Datei:** `src/components/HeroGrid.tsx` (Zeile 330)
-```tsx
-// AKTUELL (fehlerhaft):
-<p className="hg-count">{filtered.length} / {heroes.length} heroes</p>
-
-// SOLL:
-<p className="hg-count" aria-live="polite" aria-atomic="true">
-  {filtered.length} / {heroes.length} heroes
-</p>
-```
-- Wenn Filter geändert werden, wird die neue Anzahl **nicht** an Screen-Reader weitergegeben
-- **Fix:** `aria-live="polite"` + `aria-atomic="true"` zum `<p>` hinzufügen
+~~**C-A11Y-3: Hero-Anzahl nicht für Screen-Reader angekündigt**~~
+**Status:** ✅ Behoben am 2026-02-22 — `src/components/HeroGrid.tsx`
+- `aria-live="polite"` + `aria-atomic="true"` zum Zähler-`<p>` hinzugefügt
+- Screen-Reader kündigt jetzt Filterergebnis-Änderungen an (z.B. „12 / 36 heroes")
 
 ### 🟡 MEDIUM
 
-**M-A11Y-1: Session-Filter-Buttons nutzen `title` statt `aria-label`**
-**Datei:** `src/components/HeroGrid.tsx` (Zeilen 240-248)
-```tsx
-<button title={`Session ${s}`}>  // Tastatur-Nutzer bekommen weniger klare Information
-// Besser:
-<button aria-label={`Filter heroes by Session ${s}`}>
+~~**M-A11Y-1: Filter-Buttons nutzen `title` statt `aria-label`**~~
+**Status:** ✅ Behoben am 2026-02-22 — `src/components/HeroGrid.tsx`
+- Alle 4 Filter-Gruppen gefixt: Session, Role, Faction, Grade
+- `title={...}` → `aria-label={...}` (z.B. `aria-label="Session 1"`, `aria-label="Grade S9"`)
 ```
 
 ### ✅ BESTANDEN

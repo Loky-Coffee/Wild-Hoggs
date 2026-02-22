@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'preact/hooks';
+import { useState, useEffect, useRef, useMemo } from 'preact/hooks';
 import { createPortal } from 'preact/compat';
 import type { Hero, HeroSkill, HeroRole, HeroFaction, HeroRarity } from '../data/heroes';
 import { RARITY_COLOR, RARITY_SESSION, FACTIONS } from '../data/heroes';
@@ -88,9 +88,48 @@ function SkillAccordion({ skills }: { skills: HeroSkill[] }) {
 
 /* ── Modal (split-screen) ── */
 function HeroModal({ hero, onClose }: { hero: Hero; onClose: () => void }) {
+  const dialogRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const prevFocus = document.activeElement as HTMLElement;
+
+    // Focus first focusable element inside dialog
+    const focusable = () => dialogRef.current?.querySelectorAll<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    focusable()?.[0]?.focus();
+
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') { onClose(); return; }
+      if (e.key !== 'Tab') return;
+      const els = focusable();
+      if (!els || els.length === 0) return;
+      const first = els[0];
+      const last = els[els.length - 1];
+      if (e.shiftKey) {
+        if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+      } else {
+        if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      prevFocus?.focus();
+    };
+  }, [onClose]);
+
   return (
     <div className="hg-backdrop" onClick={onClose}>
-      <div className="hg-split" onClick={(e) => e.stopPropagation()}>
+      <div
+        className="hg-split"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="hg-hero-modal-title"
+        ref={dialogRef}
+        onClick={(e) => e.stopPropagation()}
+      >
 
         {/* Left — portrait */}
         <div className="hg-split-img-col">
@@ -102,7 +141,7 @@ function HeroModal({ hero, onClose }: { hero: Hero; onClose: () => void }) {
           <button className="hg-close" onClick={onClose} type="button" aria-label="Close">✕</button>
 
           <div className="hg-hero-header">
-            <h2 className="hg-hero-name">{hero.name}</h2>
+            <h2 className="hg-hero-name" id="hg-hero-modal-title">{hero.name}</h2>
             <div className="hg-hero-tags">
               <span className={`hg-rarity-badge hg-rarity-${RARITY_COLOR[hero.rarity]}`}>
                 <img src={rarityIcon(hero.rarity)} alt={hero.rarity} className="hg-badge-icon" width={16} height={16} />
@@ -242,7 +281,7 @@ export default function HeroGrid({ heroes, clearLabel = 'Reset all filters' }: {
                   type="button"
                   className={`hg-chip hg-chip-session${filterSession.includes(s) ? ' active' : ''}`}
                   onClick={() => setFilterSession(prev => toggle(prev, s))}
-                  title={`Session ${s}`}
+                  aria-label={`Session ${s}`}
                 >
                   <span className="hg-session-circle">{s}</span>
                 </button>
@@ -259,7 +298,7 @@ export default function HeroGrid({ heroes, clearLabel = 'Reset all filters' }: {
                   type="button"
                   className={`hg-chip hg-chip-role hg-chip-icon-only${filterRole.includes(r) ? ' active' : ''}`}
                   onClick={() => setFilterRole(prev => toggle(prev, r))}
-                  title={ROLE_LABEL[r]}
+                  aria-label={ROLE_LABEL[r]}
                 >
                   <img src={roleIcon(r)} alt={ROLE_LABEL[r]} className="hg-chip-icon-lg" width={28} height={28} />
                 </button>
@@ -269,12 +308,14 @@ export default function HeroGrid({ heroes, clearLabel = 'Reset all filters' }: {
 
           {/* Search — middle column */}
           <div className="hg-filter-group hg-filter-group-search">
-            <span className="hg-filter-label">Search</span>
+            <span className="hg-filter-label" id="hg-search-label">Search</span>
             <div className="hg-search-row">
               <span className="hg-search-icon">⌕</span>
               <input
                 type="text"
+                id="hg-search"
                 className="hg-search"
+                aria-labelledby="hg-search-label"
                 placeholder="Name oder Skill…"
                 value={search}
                 onInput={(e) => setSearch((e.target as HTMLInputElement).value)}
@@ -294,7 +335,7 @@ export default function HeroGrid({ heroes, clearLabel = 'Reset all filters' }: {
                   type="button"
                   className={`hg-chip hg-chip-faction hg-chip-icon-only hg-chip-${f}${filterFaction.includes(f) ? ' active' : ''}`}
                   onClick={() => setFilterFaction(prev => toggle(prev, f))}
-                  title={FACTION_LABEL[f]}
+                  aria-label={FACTION_LABEL[f]}
                 >
                   <img src={factionIcon(f)} alt={FACTION_LABEL[f]} className="hg-chip-icon-lg" width={28} height={28} />
                 </button>
@@ -311,7 +352,7 @@ export default function HeroGrid({ heroes, clearLabel = 'Reset all filters' }: {
                   type="button"
                   className={`hg-chip hg-chip-rarity hg-chip-rarity-${RARITY_COLOR[r]}${filterRarity.includes(r) ? ' active' : ''}`}
                   onClick={() => setFilterRarity(prev => toggle(prev, r))}
-                  title={r}
+                  aria-label={`Grade ${r}`}
                 >
                   <span className="hg-rarity-circle">{r}</span>
                 </button>
@@ -327,7 +368,7 @@ export default function HeroGrid({ heroes, clearLabel = 'Reset all filters' }: {
         ) : null}
       </div>
 
-      <p className="hg-count">{filtered.length} / {heroes.length} heroes</p>
+      <p className="hg-count" aria-live="polite" aria-atomic="true">{filtered.length} / {heroes.length} heroes</p>
 
       {/* ── Grid ── */}
       <div className="hg-grid">
