@@ -84,8 +84,8 @@ export default function CaravanCalculator({ lang, translationData }: CaravanCalc
 
   const buffs = useMemo(() => {
     const matchingBonus = yourFaction ? getMatchingBonus(matchingCount) : 0;
-    const heroBonus     = weeklyActive && yourFaction ? 0.40 : 0;
-    const total = (1 + matchingBonus) * (1 + heroBonus);
+    const heroBonus     = weeklyActive && yourFaction ? 0.10 : 0;
+    const total = 1 + matchingBonus + heroBonus;
     return { matchingBonus, heroBonus, total };
   }, [yourFaction, matchingCount, weeklyActive]);
 
@@ -168,7 +168,7 @@ export default function CaravanCalculator({ lang, translationData }: CaravanCalc
               onClick={() => setWeeklyActive(v => !v)}
             >
               {weeklyActive
-                ? `${FACTION_HERO[yourFaction].name} +40% ${FACTION_HERO[yourFaction].buffKey}`
+                ? `${FACTION_HERO[yourFaction].name} +10% ${FACTION_HERO[yourFaction].buffKey}`
                 : t('calc.caravan.weeklyBonusOff')}
             </button>
           </div>
@@ -185,7 +185,7 @@ export default function CaravanCalculator({ lang, translationData }: CaravanCalc
               <span className="cc-chip cc-chip-match">+{Math.round(buffs.matchingBonus * 100)}%</span>
             )}
             {buffs.heroBonus > 0 && (
-              <span className="cc-chip cc-chip-hero">+40%</span>
+              <span className="cc-chip cc-chip-hero">+10%</span>
             )}
           </div>
         </div>
