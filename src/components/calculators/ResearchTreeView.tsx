@@ -1,4 +1,5 @@
 import { useMemo, useCallback, useEffect, useRef, useState } from 'preact/hooks';
+import { useTreeZoom, calculateMobileZoom, TREE_ZOOM_DEFAULTS } from '../../hooks/useTreeZoom';
 import type { Technology } from '../../schemas/research';
 import { formatNumber as sharedFormatNumber } from '../../utils/formatters';
 import type { TranslationData } from '../../i18n/index';
@@ -42,14 +43,11 @@ export default function ResearchTreeView({
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  const [zoomLevel, setZoomLevel] = useState(1);
+  const { zoomLevel, setZoomLevel, handleZoomIn, handleZoomOut,
+    handleScrollLeft, handleScrollRight, handleScrollUp, handleScrollDown,
+    resetView } = useTreeZoom(scrollContainerRef);
+
   const [focusedNodeId, setFocusedNodeId] = useState<string | null>(null);
-  const MIN_ZOOM = 0.3;
-  const MAX_ZOOM = 2.0;
-  const ZOOM_STEP = 0.2;
-  const SVG_PADDING = 5;
-  const CONTAINER_PADDING_MOBILE = 0.5; // rem
-  const CONTAINER_PADDING_DESKTOP = 1; // rem
 
   const tiers = useMemo((): Map<string, number> => {
     const tiersMap = new Map<string, number>();
@@ -113,110 +111,20 @@ export default function ResearchTreeView({
   }, [tiers, layoutDirection]);
 
   const svgDimensions = useMemo(() => {
-    return calculateSVGDimensions(nodePositions, SVG_PADDING);
+    return calculateSVGDimensions(nodePositions, TREE_ZOOM_DEFAULTS.SVG_PADDING);
   }, [nodePositions]);
 
   // Calculate initial zoom to fit content perfectly on mobile
   useEffect(() => {
     if (!scrollContainerRef.current) return;
-
-    const container = scrollContainerRef.current;
-    const containerWidth = container.clientWidth;
-    const viewportWidth = window.innerWidth;
-    const isMobile = viewportWidth < BREAKPOINT_MOBILE;
-
+    const isMobile = window.innerWidth < BREAKPOINT_MOBILE;
     if (isMobile) {
-      // Get actual computed padding to calculate available space
-      const computedStyle = window.getComputedStyle(container);
-      const paddingLeft = parseFloat(computedStyle.paddingLeft);
-      const paddingRight = parseFloat(computedStyle.paddingRight);
-      const containerPadding = paddingLeft + paddingRight;
-      const availableWidth = containerWidth - containerPadding;
-
-      // Target: show 3 nodes side-by-side in vertical layout
-      const targetContentWidth = layoutDirection === 'vertical'
-        ? NODE_SPACING * 3  // Width for 3 nodes
-        : svgDimensions.width * 0.95;
-
-      // Calculate zoom to fit content perfectly in available space
-      const calculatedZoom = availableWidth / targetContentWidth;
-      const finalZoom = Math.max(Math.min(calculatedZoom, 1), MIN_ZOOM);
-
-      setZoomLevel(finalZoom);
+      const targetContentWidth = layoutDirection === 'vertical' ? NODE_SPACING * 3 : svgDimensions.width * 0.95;
+      setZoomLevel(calculateMobileZoom(scrollContainerRef.current, targetContentWidth));
     } else {
       setZoomLevel(1);
     }
   }, [svgDimensions, layoutDirection]);
-
-  const handleZoomIn = () => {
-    setZoomLevel(prev => Math.min(prev + ZOOM_STEP, MAX_ZOOM));
-  };
-
-  const handleZoomOut = () => {
-    setZoomLevel(prev => Math.max(prev - ZOOM_STEP, MIN_ZOOM));
-  };
-
-  const handleResetView = () => {
-    // Reset zoom to initial mobile zoom or 1 for desktop
-    const viewportWidth = window.innerWidth;
-    const isMobile = viewportWidth < BREAKPOINT_MOBILE;
-
-    if (isMobile && scrollContainerRef.current) {
-      // Recalculate initial mobile zoom
-      const container = scrollContainerRef.current;
-      const containerWidth = container.clientWidth;
-      const computedStyle = window.getComputedStyle(container);
-      const paddingLeft = parseFloat(computedStyle.paddingLeft);
-      const paddingRight = parseFloat(computedStyle.paddingRight);
-      const containerPadding = paddingLeft + paddingRight;
-      const availableWidth = containerWidth - containerPadding;
-      const targetContentWidth = layoutDirection === 'vertical' ? NODE_SPACING * 3 : svgDimensions.width * 0.95;
-      const calculatedZoom = availableWidth / targetContentWidth;
-      const finalZoom = Math.max(Math.min(calculatedZoom, 1), MIN_ZOOM);
-      setZoomLevel(finalZoom);
-    } else {
-      setZoomLevel(1);
-    }
-
-    // Scroll to center
-    if (scrollContainerRef.current) {
-      const container = scrollContainerRef.current;
-      container.scrollTo({
-        left: (container.scrollWidth - container.clientWidth) / 2,
-        top: (container.scrollHeight - container.clientHeight) / 2,
-        behavior: 'smooth'
-      });
-    }
-  };
-
-  // Navigation scroll handlers - scroll by 80% of viewport (20% overlap)
-  const handleScrollLeft = () => {
-    if (!scrollContainerRef.current) return;
-    const container = scrollContainerRef.current;
-    const scrollAmount = container.clientWidth * 0.8;
-    container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-  };
-
-  const handleScrollRight = () => {
-    if (!scrollContainerRef.current) return;
-    const container = scrollContainerRef.current;
-    const scrollAmount = container.clientWidth * 0.8;
-    container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-  };
-
-  const handleScrollUp = () => {
-    if (!scrollContainerRef.current) return;
-    const container = scrollContainerRef.current;
-    const scrollAmount = container.clientHeight * 0.8;
-    container.scrollBy({ top: -scrollAmount, behavior: 'smooth' });
-  };
-
-  const handleScrollDown = () => {
-    if (!scrollContainerRef.current) return;
-    const container = scrollContainerRef.current;
-    const scrollAmount = container.clientHeight * 0.8;
-    container.scrollBy({ top: scrollAmount, behavior: 'smooth' });
-  };
 
   const isUnlocked = (tech: Technology): boolean => {
     if (tech.prerequisites.length === 0) return true;
@@ -503,7 +411,7 @@ export default function ResearchTreeView({
         `,
         backgroundSize: '30px 30px',
         borderRadius: '12px',
-        padding: typeof window !== 'undefined' && window.innerWidth < BREAKPOINT_MOBILE ? `${CONTAINER_PADDING_MOBILE}rem` : `${CONTAINER_PADDING_DESKTOP}rem`,
+        padding: typeof window !== 'undefined' && window.innerWidth < BREAKPOINT_MOBILE ? `${TREE_ZOOM_DEFAULTS.CONTAINER_PADDING_MOBILE}rem` : `${TREE_ZOOM_DEFAULTS.CONTAINER_PADDING_DESKTOP}rem`,
         paddingBottom: typeof window !== 'undefined' && window.innerWidth < BREAKPOINT_MOBILE ? '120px' : '140px',
         WebkitOverflowScrolling: 'touch' as const,
         touchAction: 'pan-x pan-y pinch-zoom',
@@ -590,17 +498,17 @@ export default function ResearchTreeView({
         `}</style>
         <button
           onClick={handleZoomIn}
-          disabled={zoomLevel >= MAX_ZOOM}
+          disabled={zoomLevel >= TREE_ZOOM_DEFAULTS.MAX_ZOOM}
           style={{
             background: 'rgba(0, 0, 0, 0.8)',
             border: '1px solid rgba(255, 165, 0, 0.6)',
             borderRadius: '4px',
             padding: '0.25rem',
-            cursor: zoomLevel >= MAX_ZOOM ? 'not-allowed' : 'pointer',
+            cursor: zoomLevel >= TREE_ZOOM_DEFAULTS.MAX_ZOOM ? 'not-allowed' : 'pointer',
             fontSize: '1.2rem',
             color: '#ffa500',
             fontWeight: 'bold',
-            opacity: zoomLevel >= MAX_ZOOM ? 0.4 : 1,
+            opacity: zoomLevel >= TREE_ZOOM_DEFAULTS.MAX_ZOOM ? 0.4 : 1,
             transition: 'all 0.2s',
             width: '32px',
             height: '32px',
@@ -614,7 +522,10 @@ export default function ResearchTreeView({
         </button>
 
         <button
-          onClick={handleResetView}
+          onClick={() => {
+            const isMobile = window.innerWidth < BREAKPOINT_MOBILE;
+            resetView(isMobile ? () => layoutDirection === 'vertical' ? NODE_SPACING * 3 : svgDimensions.width * 0.95 : undefined);
+          }}
           style={{
             background: 'rgba(0, 0, 0, 0.8)',
             border: '1px solid rgba(255, 165, 0, 0.6)',
@@ -639,17 +550,17 @@ export default function ResearchTreeView({
 
         <button
           onClick={handleZoomOut}
-          disabled={zoomLevel <= MIN_ZOOM}
+          disabled={zoomLevel <= TREE_ZOOM_DEFAULTS.MIN_ZOOM}
           style={{
             background: 'rgba(0, 0, 0, 0.8)',
             border: '1px solid rgba(255, 165, 0, 0.6)',
             borderRadius: '4px',
             padding: '0.25rem',
-            cursor: zoomLevel <= MIN_ZOOM ? 'not-allowed' : 'pointer',
+            cursor: zoomLevel <= TREE_ZOOM_DEFAULTS.MIN_ZOOM ? 'not-allowed' : 'pointer',
             fontSize: '1.2rem',
             color: '#ffa500',
             fontWeight: 'bold',
-            opacity: zoomLevel <= MIN_ZOOM ? 0.4 : 1,
+            opacity: zoomLevel <= TREE_ZOOM_DEFAULTS.MIN_ZOOM ? 0.4 : 1,
             transition: 'all 0.2s',
             width: '32px',
             height: '32px',
