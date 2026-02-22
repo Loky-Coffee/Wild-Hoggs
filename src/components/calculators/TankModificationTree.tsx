@@ -11,6 +11,7 @@ import {
   TANK_NODES_PER_ROW as NODES_PER_ROW,
   calculateSVGDimensions
 } from '../../utils/treeNodeConfig';
+import { BREAKPOINT_MOBILE } from '../../config/game';
 
 interface TankModification {
   level: number;
@@ -76,7 +77,7 @@ export default function TankModificationTree({
     setMounted(true);
 
     const handleResize = () => {
-      const mobile = window.innerWidth < 768;
+      const mobile = window.innerWidth < BREAKPOINT_MOBILE;
       setIsMobile(mobile);
     };
 

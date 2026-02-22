@@ -8,3 +8,5 @@
  * Change this value if the game ever adjusts its server timezone.
  */
 export const APOCALYPSE_TIMEZONE_OFFSET = -2;
+
+export const BREAKPOINT_MOBILE = 768;

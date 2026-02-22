@@ -13,6 +13,7 @@ import {
   type TreeNodePosition,
   type SVGDimensions
 } from '../../utils/treeNodeConfig';
+import { BREAKPOINT_MOBILE } from '../../config/game';
 
 interface ResearchTreeViewProps {
   readonly technologies: Technology[];
@@ -122,7 +123,7 @@ export default function ResearchTreeView({
     const container = scrollContainerRef.current;
     const containerWidth = container.clientWidth;
     const viewportWidth = window.innerWidth;
-    const isMobile = viewportWidth < 768;
+    const isMobile = viewportWidth < BREAKPOINT_MOBILE;
 
     if (isMobile) {
       // Get actual computed padding to calculate available space
@@ -158,7 +159,7 @@ export default function ResearchTreeView({
   const handleResetView = () => {
     // Reset zoom to initial mobile zoom or 1 for desktop
     const viewportWidth = window.innerWidth;
-    const isMobile = viewportWidth < 768;
+    const isMobile = viewportWidth < BREAKPOINT_MOBILE;
 
     if (isMobile && scrollContainerRef.current) {
       // Recalculate initial mobile zoom
@@ -502,8 +503,8 @@ export default function ResearchTreeView({
         `,
         backgroundSize: '30px 30px',
         borderRadius: '12px',
-        padding: typeof window !== 'undefined' && window.innerWidth < 768 ? `${CONTAINER_PADDING_MOBILE}rem` : `${CONTAINER_PADDING_DESKTOP}rem`,
-        paddingBottom: typeof window !== 'undefined' && window.innerWidth < 768 ? '120px' : '140px',
+        padding: typeof window !== 'undefined' && window.innerWidth < BREAKPOINT_MOBILE ? `${CONTAINER_PADDING_MOBILE}rem` : `${CONTAINER_PADDING_DESKTOP}rem`,
+        paddingBottom: typeof window !== 'undefined' && window.innerWidth < BREAKPOINT_MOBILE ? '120px' : '140px',
         WebkitOverflowScrolling: 'touch' as const,
         touchAction: 'pan-x pan-y pinch-zoom',
         cursor: 'grab',

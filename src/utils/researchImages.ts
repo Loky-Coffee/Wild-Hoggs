@@ -42,14 +42,6 @@ export function getResearchImage(category: string, techId: string): ImageMetadat
 }
 
 /**
- * Get all available research images as a map
- * Useful for debugging or listing available images
- */
-export function getAllResearchImages(): Map<string, ImageMetadata> {
-  return new Map(imageMap);
-}
-
-/**
  * Check if a research image exists
  *
  * @example
@@ -59,11 +51,4 @@ export function getAllResearchImages(): Map<string, ImageMetadata> {
  */
 export function hasResearchImage(category: string, techId: string): boolean {
   return imageMap.has(`${category}/${techId}`);
-}
-
-/**
- * Get the total number of loaded research images
- */
-export function getImageCount(): number {
-  return imageMap.size;
 }
