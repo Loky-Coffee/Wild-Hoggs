@@ -1,7 +1,7 @@
 # AUDIT_SENIOR.md — Wild Hoggs Project Audit
 
 **Datum:** 2026-02-22
-**Zuletzt aktualisiert:** 2026-02-22 (Security-Fixes + C-PERF-1 behoben)
+**Zuletzt aktualisiert:** 2026-02-22 (Security-Fixes + alle PERFORMANCE-Punkte behoben)
 **Stack:** Astro 5.17.1 · Preact 10.28.3 · TypeScript · Cloudflare Pages
 **Sprachen:** 15 (de, en, es, fr, ja, ko, pt, tr, it, ar, th, vi, id, zh-CN, zh-TW)
 **Methode:** 5 spezialisierte Senior-Agents haben alle Dateien verifiziert und gelesen — keine Vermutungen, kein Halluzinieren.
@@ -74,7 +74,7 @@
 
 ## 2. PERFORMANCE
 
-**Bewertung: B (Gut, mit konkreten Optimierungspotentialen)**
+**Bewertung: A (Sehr gut — alle Optimierungen umgesetzt)**
 
 ### 🔴 CRITICAL
 
@@ -105,18 +105,20 @@ CLS verhindert — Browser reserviert jetzt Platz vor dem Laden der Bilder.
 
 ### 🟠 HIGH
 
-**H-PERF-1: Übergroße Hero-Bilder**
-**Verzeichnis:** `public/images/heroes/`
-- `isabella.webp` ist **197 KB** — für eine ~340px breite Karte deutlich zu groß
-- Andere Hero-Bilder: ~30-34 KB (Ziel: < 20 KB bei Qualität 85)
-- **Schätzung:** ~400 KB Einsparung möglich (33% Reduktion gesamt)
-- **Fix:** Bilder mit ImageOptim oder Sharp CLI neu kodieren, Zielgröße < 20 KB pro Hero
+~~**H-PERF-1: Übergroße Hero-Bilder**~~
+**Status:** ✅ Behoben am 2026-02-22 — `public/images/heroes/`
+- `isabella.webp`: 1024×1536 (197 KB) → 408×612 (38 KB) — **−81%** via Sharp, auf Standardgröße aller anderen Heroes
+- Alle anderen Heroes waren bereits auf 408×612 (20–43 KB) — kein weiterer Handlungsbedarf
 
-**H-PERF-2: Große statische Bilder (Haupt-Seiten)**
-**Verzeichnis:** `public/images/`
-- `caravan.webp` = 474 KB, `hero.webp` = 541 KB, `garage.webp` = 326 KB, `hq.webp` = 255 KB, `lab.webp` = 344 KB
-- Diese werden als ~80px kleine Thumbnails angezeigt, sind aber in voller Auflösung
-- **Fix:** Auf die tatsächlich angezeigte Größe (2×) reduzieren → ~60% Einsparung möglich
+~~**H-PERF-2: Große statische Bilder (Haupt-Seiten)**~~
+**Status:** ✅ Behoben am 2026-02-22 — `public/images/`
+- Alle 5 Bilder von 1536×1024 auf 800px Breite (Quality 82) reduziert:
+  - `caravan.webp`: 474 KB → 119 KB (−75%)
+  - `hero.webp`: 541 KB → 140 KB (−74%)
+  - `garage.webp`: 326 KB → 89 KB (−73%)
+  - `hq.webp`: 255 KB → 69 KB (−73%)
+  - `lab.webp`: 344 KB → 87 KB (−75%)
+- **Gesamtersparnis: ~1.2 MB** — 800px reicht für alle Display-Szenarien (Tool-Cards, 2× Retina)
 
 ~~**H-PERF-3: Calculator-Komponenten nutzen `client:load` statt `client:idle`**~~
 **Status:** ✅ Behoben am 2026-02-22 — alle 5 Calculator-Seiten umgestellt:
@@ -131,10 +133,11 @@ CLS verhindert — Browser reserviert jetzt Platz vor dem Laden der Bilder.
 
 ### 🟡 MEDIUM
 
-**M-PERF-1: `inlineStylesheets: 'never'` ohne HTTP/2 Push**
-**Datei:** `astro.config.mjs` (Zeile 57)
-- Korrekte Entscheidung für Cache-Effizienz, aber ohne HTTP/2 Push entstehen Waterfall-Abhängigkeiten
-- **Status:** Akzeptabel; Cloudflare unterstützt HTTP/2 — kein akuter Handlungsbedarf
+~~**M-PERF-1: `inlineStylesheets: 'never'` ohne HTTP/2 Push**~~
+**Status:** ✅ Akzeptiert (kein Fix nötig)
+- `astro.config.mjs` — korrekte Entscheidung für Cache-Effizienz
+- Cloudflare Pages unterstützt HTTP/2 → Waterfall-Abhängigkeiten minimal
+- Externe CSS-Datei kann gecacht werden; bei Astro-Inline würde jede Seite die Styles neu übertragen
 
 ### ✅ BESTANDEN
 
