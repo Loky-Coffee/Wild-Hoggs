@@ -380,119 +380,77 @@
     width: 100%;
   }
 
-  /* Default: controls centered, single column */
+  /*
+   * Grid: 540px controls + 1fr results, always side-by-side.
+   * padding-left = (50% - 270px) centers the 540px controls column.
+   * When has-results: padding-left → 0, controls slide left naturally.
+   */
   .caravan-calc {
-    width: 100%;
-    max-width: 100%;
     display: grid;
-    grid-template-columns: 1fr;
-    justify-items: center;
-    gap: 1.5rem;
+    grid-template-columns: 540px 1fr;
+    gap: 1.75rem;
+    align-items: start;
+    max-width: none;
+    margin: 0;
+    padding-left: max(0px, calc(50% - 270px));
+    transition: padding-left 1.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .caravan-calc.has-results {
+    padding-left: 0;
   }
 
   .cc-controls {
-    width: 540px;
-    max-width: 100%;
     align-self: start;
-  }
-
-  .cc-results {
-    width: 540px;
-    max-width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 0.9rem;
-  }
-
-  /* When results are present: switch to 2-column, table slides in */
-  .caravan-calc.has-results {
-    grid-template-columns: 500px 1fr;
-    justify-items: start;
-    align-items: start;
-    gap: 1.75rem;
-    height: calc(100dvh - 290px);
+    min-width: 0;
   }
 
   .caravan-calc.has-results .cc-controls {
-    width: 100%;
-    overflow-y: auto;
-    align-self: start;
+    position: sticky;
+    top: 1.5rem;
+  }
+
+  /* Results: hidden until has-results, inner elements animate on mount */
+  .cc-results {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    visibility: hidden;
+    pointer-events: none;
   }
 
   .caravan-calc.has-results .cc-results {
-    width: 100%;
-    height: 100%;
-    min-height: 0;
-  }
-
-  .caravan-calc.has-results .cc-summary {
-    flex-shrink: 0;
+    visibility: visible;
+    pointer-events: auto;
   }
 
   .caravan-calc.has-results .caravan-table-wrapper {
-    flex: 1;
     max-height: none;
-    min-height: 0;
   }
 
-  /* Make all controls bigger on desktop */
-  .cc-step {
-    padding: 1.4rem 1.75rem;
-    gap: 1rem;
-  }
+  /* Bigger controls on desktop */
+  .cc-step { padding: 1.4rem 1.75rem; gap: 1rem; }
+  .cc-step-label { font-size: 0.82rem; }
+  .cc-faction-card { min-height: 90px; padding: 0.75rem 0.5rem; }
+  .cc-faction-icon { width: 52px; height: 52px; }
+  .cc-faction-name { font-size: 0.78rem; }
+  .cc-power-input { font-size: 1.1rem; padding: 0.85rem 1.25rem; }
+  .cc-count-chip { width: 40px; height: 36px; font-size: 0.92rem; }
+  .cc-weekly-btn { font-size: 0.88rem; padding: 0.5rem 1rem; }
+  .cc-calc-btn { font-size: 1.05rem; padding: 0.85rem 1.5rem; }
 
-  .cc-step-label {
-    font-size: 0.82rem;
-  }
-
-  .cc-faction-card {
-    min-height: 90px;
-    padding: 0.75rem 0.5rem;
-  }
-
-  .cc-faction-icon {
-    width: 52px;
-    height: 52px;
-  }
-
-  .cc-faction-name {
-    font-size: 0.78rem;
-  }
-
-  .cc-power-input {
-    font-size: 1.1rem;
-    padding: 0.85rem 1.25rem;
-  }
-
-  .cc-count-chip {
-    width: 40px;
-    height: 36px;
-    font-size: 0.92rem;
-  }
-
-  .cc-weekly-btn {
-    font-size: 0.88rem;
-    padding: 0.5rem 1rem;
-  }
-
-  /* Slide-in animation for results content */
+  /* Slide-in animation — plays when summary + table mount (= when results first appear) */
   @keyframes slideInFromRight {
-    from {
-      opacity: 0;
-      transform: translateX(70px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
+    from { opacity: 0; transform: translateX(80px); }
+    to   { opacity: 1; transform: translateX(0); }
   }
 
   .cc-summary {
-    animation: slideInFromRight 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+    animation: slideInFromRight 1.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
   }
 
   .caravan-table-wrapper {
-    animation: slideInFromRight 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.15s both;
+    animation: slideInFromRight 1.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.15s both;
   }
 }
 
