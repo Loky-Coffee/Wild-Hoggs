@@ -85,11 +85,22 @@ const pageDescription = t('404.message');
 <script>
   // Detect browser language and redirect to localized version if available
   function detectAndRedirect() {
-    const browserLang = navigator.language.split('-')[0];
-    const supportedLangs = ['de', 'fr', 'ko', 'th', 'ja', 'pt', 'es', 'tr', 'id', 'zh', 'it', 'ar', 'vi'];
+    const fullLang = navigator.language;        // e.g. "zh-TW", "zh-CN", "de"
+    const shortLang = fullLang.split('-')[0];   // e.g. "zh", "de"
 
-    // Only redirect if browser language is not English and is supported
-    if (browserLang !== 'en' && supportedLangs.includes(browserLang)) {
+    // Resolve Chinese variants to the correct supported lang code (zh-TW or zh-CN)
+    let detectedLang: string | null = null;
+    if (shortLang === 'zh') {
+      // zh-TW / zh-Hant = Traditional; everything else defaults to Simplified
+      detectedLang = (fullLang === 'zh-TW' || fullLang === 'zh-Hant') ? 'zh-TW' : 'zh-CN';
+    } else {
+      const supportedLangs = ['de', 'fr', 'ko', 'th', 'ja', 'pt', 'es', 'tr', 'id', 'it', 'ar', 'vi'];
+      if (shortLang !== 'en' && supportedLangs.includes(shortLang)) {
+        detectedLang = shortLang;
+      }
+    }
+
+    if (detectedLang) {
       // Don't redirect if already attempted (prevent redirect loop)
       if (!sessionStorage.getItem('404-redirect-attempted')) {
         sessionStorage.setItem('404-redirect-attempted', 'true');
@@ -102,8 +113,7 @@ const pageDescription = t('404.message');
         if (langMatch) {
           window.location.href = `/${langMatch[1]}`;
         } else {
-          // Redirect to detected language homepage
-          window.location.href = `/${browserLang}`;
+          window.location.href = `/${detectedLang}`;
         }
       }
     }

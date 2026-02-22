@@ -270,17 +270,23 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
     // Add new listener
     toggle.addEventListener('click', clickHandler);
 
+    // Shared close helper
+    const closeMenu = () => {
+      navLinks.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    };
+
+    // H-BUG-1: Close menu when clicking a nav link
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', closeMenu);
+    });
+
     // Close menu when clicking outside
     const closeMenuOnClickOutside = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-
-      // Check if menu is open
       if (!navLinks.classList.contains('open')) return;
-
-      // Check if click is outside nav-links and nav-toggle
       if (!navLinks.contains(target) && !toggle.contains(target)) {
-        navLinks.classList.remove('open');
-        toggle.setAttribute('aria-expanded', 'false');
+        closeMenu();
       }
     };
 
@@ -297,8 +303,8 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
     document.addEventListener('click', closeMenuOnClickOutside);
   }
 
-  // Run on initial page load
-  document.addEventListener('DOMContentLoaded', setupNavToggle);
+  // Run on initial page load (once: true — DOMContentLoaded fires only once anyway)
+  document.addEventListener('DOMContentLoaded', setupNavToggle, { once: true });
 
   // Run on every View Transition navigation
   document.addEventListener('astro:page-load', setupNavToggle);

@@ -1,9 +1,8 @@
-import { defaultLang, type Language, type TranslationKey, type TranslationData, loadTranslations } from './index';
+import { languages, defaultLang, type Language, type TranslationKey, type TranslationData, loadTranslations } from './index';
 
 export function getLangFromUrl(url: URL): Language {
   const [, lang] = url.pathname.split('/');
-  // Check if lang is a valid language key
-  const validLangs: Language[] = ['de', 'en', 'es', 'fr', 'ja', 'ko', 'pt', 'tr', 'it', 'ar', 'th', 'vi', 'id', 'zh-CN', 'zh-TW'];
+  const validLangs = Object.keys(languages) as Language[];
   if (validLangs.includes(lang as Language)) {
     return lang as Language;
   }

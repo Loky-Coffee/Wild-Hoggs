@@ -222,7 +222,7 @@ export default function HeroGrid({ heroes, clearLabel = 'Reset all filters' }: {
   const close = () => setSelected(null);
 
   const filtered = useMemo(() => {
-    const term = search.toLowerCase().trim();
+    const term = search.toLowerCase().trim().replace(/\s+/g, ' ');
     return heroes
       .filter(h => {
         if (term) {
@@ -244,18 +244,14 @@ export default function HeroGrid({ heroes, clearLabel = 'Reset all filters' }: {
       .sort((a, b) => {
         const byRarity = RARITY_ORDER[b.rarity] - RARITY_ORDER[a.rarity];
         if (byRarity !== 0) return byRarity;
-        return FACTION_ORDER[a.faction] - FACTION_ORDER[b.faction];
+        const byFaction = FACTION_ORDER[a.faction] - FACTION_ORDER[b.faction];
+        if (byFaction !== 0) return byFaction;
+        return a.name.localeCompare(b.name);
       });
   }, [heroes, search, filterRarity, filterSession, filterRole, filterFaction]);
 
   useEffect(() => {
-    if (!selected) return;
-    const h = (e: KeyboardEvent) => { if (e.key === 'Escape') close(); };
-    window.addEventListener('keydown', h);
-    return () => window.removeEventListener('keydown', h);
-  }, [selected]);
-
-  useEffect(() => {
+    if (typeof document === 'undefined') return;
     document.body.style.overflow = selected ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
   }, [selected]);

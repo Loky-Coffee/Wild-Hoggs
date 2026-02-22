@@ -384,116 +384,61 @@ Nach vollständiger Analyse aller Dateien:
 
 ## 7. BUGS
 
-**Bewertung: C (Mehrere kritische und hochpriorisierte Bugs gefunden)**
+**Bewertung: A− (Alle echten Bugs behoben)**
 
 ### 🔴 CRITICAL
 
-**C-BUG-1: Cross-Category Research-Voraussetzung bricht Research-Calculator**
-**Datei:** `src/data/research/military-strategies.json` (Zeile 267)
-```json
-{
-  "id": "field-training",
-  "prerequisites": ["fire-up-2"]  // ← fire-up-2 existiert in unit-special-training.json, NICHT hier!
-}
-```
-- `fire-up-2` ist in `unit-special-training.json` (Zeile 118) definiert, **nicht** in `military-strategies.json`
-- Der Research-Calculator kann diese Voraussetzung nicht auflösen → **Berechnungsfehler**
-- **Fix:** Entweder eine Technologie aus `military-strategies.json` als Voraussetzung verwenden, oder Cross-Category-References im Calculator unterstützen
+~~**C-BUG-1: Cross-Category Research-Voraussetzung**~~
+**Status:** ✅ False Positive — kein Bug
+- `fire-up-2` existiert SOWOHL in `unit-special-training.json` (Zeile 118) ALS AUCH in `military-strategies.json` (Zeile 208, nameKey: `research.military_strategies.fire-up`)
+- `field-training` referenziert das `fire-up-2` derselben Kategorie — der Calculator löst Voraussetzungen nur innerhalb von `category.technologies` auf (`ResearchCategoryCalculator.tsx:45`)
+- **Kein Fix nötig**
 
-**C-BUG-2: SSR-Sicherheitslücke — `document.body` ohne Guard**
-**Datei:** `src/components/HeroGrid.tsx` (Zeilen 219-221, 359)
-```tsx
-// Zeile 219-221:
-useEffect(() => {
-  document.body.style.overflow = selected ? 'hidden' : '';  // Kein typeof-Check!
-}, [selected]);
-
-// Zeile 359:
-{selected && createPortal(<HeroModal ... />, document.body)}  // Kein SSR-Guard!
-```
-- Beim Astro-Build wird der Code server-seitig ausgeführt, wo `document` **nicht existiert**
-- Das kann zu `ReferenceError: document is not defined` führen
-- **Fix:**
-```tsx
-useEffect(() => {
-  if (typeof document === 'undefined') return;
-  document.body.style.overflow = selected ? 'hidden' : '';
-  return () => { document.body.style.overflow = ''; };
-}, [selected]);
-
-{selected && typeof document !== 'undefined' && createPortal(..., document.body)}
-```
+~~**C-BUG-2: SSR-Sicherheitslücke — `document.body` ohne Guard**~~
+**Status:** ✅ Behoben am 2026-02-22 — `src/components/HeroGrid.tsx`
+- `typeof document === 'undefined'` Guard in `useEffect` hinzugefügt
+- Technisch war es sicher (`selected` startet als `null`, `useEffect` läuft nie auf SSR), aber Guard macht den Code explizit und defensiv
+- Gleichzeitig: doppelten Escape-Key-Handler entfernt (HeroModal übernimmt das jetzt via Focus-Trap-`useEffect`)
 
 ### 🟠 HIGH
 
-**H-BUG-1: Mobiles Navigationsmenü schließt sich nicht bei Link-Klick**
-**Datei:** `src/components/Navigation.astro` (Zeilen 48-59, 248-305)
-- Das Menü schließt sich beim Klick außerhalb (implementiert), aber **nicht beim Klick auf einen Nav-Link**
-- Standard-UX-Verhalten auf Mobile: Menü schließt sich automatisch
-- **Fix:** Event-Listener auf `.nav-link` Elementen hinzufügen:
-```typescript
-document.querySelectorAll('.nav-link').forEach(link => {
-  link.addEventListener('click', () => {
-    navLinks.classList.remove('open');
-    toggle.setAttribute('aria-expanded', 'false');
-  });
-});
-```
+~~**H-BUG-1: Mobiles Navigationsmenü schließt sich nicht bei Link-Klick**~~
+**Status:** ✅ Behoben am 2026-02-22 — `src/components/Navigation.astro`
+- `closeMenu`-Helper erstellt; alle `.nav-link` Elemente bekommen `click`-Listener
+- Menü schließt sich jetzt korrekt beim Klick auf Nav-Links (Standard-Mobile-UX)
 
-**H-BUG-2: Event-Listener-Akkumulation bei View Transitions**
-**Datei:** `src/components/Navigation.astro` (Zeilen 301, 304)
-```javascript
-document.addEventListener('DOMContentLoaded', setupNavToggle);
-document.addEventListener('astro:page-load', setupNavToggle);
-```
-- Diese Listener werden bei jeder Seitennavigation **hinzugefügt, aber nie entfernt**
-- Über eine längere Session: Memory Leak + mehrfaches Handler-Firing
-- **Fix:** `astro:before-swap` nutzen um alte Listener zu entfernen; alternativ `{ once: true }` für `DOMContentLoaded`
+~~**H-BUG-2: Event-Listener-Akkumulation bei View Transitions**~~
+**Status:** ✅ Behoben am 2026-02-22 — `src/components/Navigation.astro`
+- `{ once: true }` für `DOMContentLoaded` hinzugefügt (feuert sowieso nur einmal)
+- `astro:page-load`: Astro-Module-Scripts laufen nur 1x → kein echtes Akkumulationsproblem; bestehende Cleanup-Logik (`__clickHandler`, `__navOutsideHandler`) ist korrekt
 
-**H-BUG-3: Chinesische Sprache in 404-Redirect falsch behandelt**
-**Datei:** `src/pages/404.astro` (Zeilen 86-113)
-```typescript
-const supportedLangs = ['de', 'fr', ..., 'zh', ...];  // 'zh' statt 'zh-CN'/'zh-TW'!
-// Redirect zu: /zh  ← EXISTIERT NICHT
-```
-- `navigator.language.split('-')[0]` ergibt `'zh'`, aber die Site verwendet `zh-CN` und `zh-TW`
-- Chinesische Nutzer bei 404 werden auf `/zh` geleitet — **eine weitere 404**
-- **Fix:** Vollständige Sprach-Tags (`zh-CN`, `zh-TW`) prüfen:
-```typescript
-const browserFullLang = navigator.language;  // z.B. "zh-TW"
-const supportedLangs = ['de', 'fr', ..., 'zh-CN', 'zh-TW', ...];
-```
+~~**H-BUG-3: Chinesische Sprache in 404-Redirect falsch behandelt**~~
+**Status:** ✅ Behoben am 2026-02-22 — `src/pages/404.astro`
+- `navigator.language.split('-')[0]` → `zh` → Redirect auf `/zh` (existiert nicht) — **behoben**
+- Neue Logik: `zh-TW`/`zh-Hant` → `zh-TW`; alle anderen `zh-*` → `zh-CN`
+- `supportedLangs`-Array enthält kein `zh` mehr — nur noch konkrete Sprachcodes
 
 ### 🟡 MEDIUM
 
-**M-BUG-1: Suche normalisiert keine mehrfachen Leerzeichen**
-**Datei:** `src/components/HeroGrid.tsx` (Zeile 186)
-```tsx
-const term = search.toLowerCase().trim();
-// Soll:
-const term = search.toLowerCase().trim().replace(/\s+/g, ' ');
-```
+~~**M-BUG-1: Suche normalisiert keine mehrfachen Leerzeichen**~~
+**Status:** ✅ Behoben am 2026-02-22 — `src/components/HeroGrid.tsx`
+- `.replace(/\s+/g, ' ')` nach `.trim()` hinzugefügt
 
-**M-BUG-2: Hero-Sortierung nicht stabil bei gleicher Rarity + Fraktion**
-**Datei:** `src/components/HeroGrid.tsx` (Zeilen 205-209)
-```tsx
-// Kein Tiebreaker wenn Rarity UND Fraktion gleich sind
-return FACTION_ORDER[a.faction] - FACTION_ORDER[b.faction];
-// Soll als letzter Tiebreaker:
-return a.name.localeCompare(b.name);
-```
+~~**M-BUG-2: Hero-Sortierung nicht stabil bei gleicher Rarity + Fraktion**~~
+**Status:** ✅ Behoben am 2026-02-22 — `src/components/HeroGrid.tsx`
+- `a.name.localeCompare(b.name)` als letzter Tiebreaker hinzugefügt → stabile, deterministische Sortierung
 
 ### 🟣 LOW
 
-**L-BUG-1: Sprachliste doppelt definiert (DRY-Verstoß)**
-**Dateien:** `src/i18n/utils.ts:6` und `src/i18n/index.ts:4-20`
-- Gültige Sprachen sind an zwei Stellen hard-kodiert; bei neuer Sprache muss man beide aktualisieren
-- **Fix:** In `utils.ts` aus `index.ts` importieren: `Object.keys(languages) as Language[]`
+~~**L-BUG-1: Sprachliste doppelt definiert (DRY-Verstoß)**~~
+**Status:** ✅ Behoben am 2026-02-22 — `src/i18n/utils.ts`
+- `languages` aus `./index` importiert; `validLangs` = `Object.keys(languages) as Language[]`
+- Neue Sprache muss jetzt nur noch in `index.ts` eingetragen werden
 
 **L-BUG-2: `RARITY_ORDER` enthält S5-S9, `RARITIES` nur bis S4**
-**Datei:** `src/components/HeroGrid.tsx` (Zeilen 145-165)
-- `RARITY_ORDER` definiert S5-S9, aber der Filter-UI zeigt nur bis S4
-- Inkonsistenz, derzeit keine S5+ Heroes vorhanden — aber verwirrend für Wartung
+**Datei:** `src/components/HeroGrid.tsx`
+- Informell: keine S5+ Heroes im Spiel — kein akuter Handlungsbedarf
+- `RARITY_ORDER` enthält Vorbereitung für zukünftige Rarities — bewusste Entscheidung, kein Fix nötig
 
 ---
 
