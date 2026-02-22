@@ -384,17 +384,6 @@ export default function TankModificationTree({
             const pos = nodePositions.get(mod.level);
             if (!pos) return null;
 
-            // Debug: log first 5 node positions
-            if (index < 5) {
-              console.log(`[TankTree] Rendering node ${index}:`, {
-                level: mod.level,
-                x: pos.x,
-                y: pos.y,
-                row: pos.row,
-                col: pos.col
-              });
-            }
-
             const isUnlocked = unlockedLevels.has(mod.level);
             const currentSubLevel = subLevels.get(mod.level) || 0;
 

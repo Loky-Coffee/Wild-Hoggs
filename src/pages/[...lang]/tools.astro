@@ -33,7 +33,7 @@ const breadcrumbItems = [
   </div>
 
   <div class="tools-grid">
-    <a href={getLocalizedPath('tools/hero-exp', lang)} class="tool-card has-image" style="background-image: url('/images/hero.webp')">
+    <a href={getLocalizedPath('tools/hero-exp', lang)} class="tool-card has-image" style="background-image: url('/images/hero.webp')" aria-label={t('tools.hero.title')}>
       <div class="tool-card-body">
         <h2>{t('tools.hero.title')}</h2>
         <p>{t('tools.hero.description')}</p>
@@ -41,7 +41,7 @@ const breadcrumbItems = [
       </div>
     </a>
 
-    <a href={getLocalizedPath('tools/building', lang)} class="tool-card has-image" style="background-image: url('/images/hq.webp')">
+    <a href={getLocalizedPath('tools/building', lang)} class="tool-card has-image" style="background-image: url('/images/hq.webp')" aria-label={t('tools.building.title')}>
       <div class="tool-card-body">
         <h2>{t('tools.building.title')}</h2>
         <p>{t('tools.building.description')}</p>
@@ -49,7 +49,7 @@ const breadcrumbItems = [
       </div>
     </a>
 
-    <a href={getLocalizedPath('tools/tank', lang)} class="tool-card has-image" style="background-image: url('/images/garage.webp')">
+    <a href={getLocalizedPath('tools/tank', lang)} class="tool-card has-image" style="background-image: url('/images/garage.webp')" aria-label={t('tools.tank.title')}>
       <div class="tool-card-body">
         <h2>{t('tools.tank.title')}</h2>
         <p>{t('tools.tank.description')}</p>
@@ -57,7 +57,7 @@ const breadcrumbItems = [
       </div>
     </a>
 
-    <a href={getLocalizedPath('tools/research', lang)} class="tool-card has-image" style="background-image: url('/images/lab.webp')">
+    <a href={getLocalizedPath('tools/research', lang)} class="tool-card has-image" style="background-image: url('/images/lab.webp')" aria-label={t('tools.research.title')}>
       <div class="tool-card-body">
         <h2>{t('tools.research.title')}</h2>
         <p>{t('tools.research.description')}</p>
@@ -65,7 +65,7 @@ const breadcrumbItems = [
       </div>
     </a>
 
-    <a href={getLocalizedPath('tools/caravan', lang)} class="tool-card has-image" style="background-image: url('/images/caravan.webp')">
+    <a href={getLocalizedPath('tools/caravan', lang)} class="tool-card has-image" style="background-image: url('/images/caravan.webp')" aria-label={t('tools.caravan.title')}>
       <div class="tool-card-body">
         <h2>{t('tools.caravan.title')}</h2>
         <p>{t('tools.caravan.description')}</p>
@@ -136,6 +136,12 @@ const breadcrumbItems = [
     border-color: rgba(255, 165, 0, 0.5);
     transform: translateY(-4px);
     box-shadow: 0 8px 16px rgba(255, 165, 0, 0.2);
+  }
+
+  .tool-card:focus-visible {
+    outline: 2px solid #ffa500;
+    outline-offset: 3px;
+    border-color: rgba(255, 165, 0, 0.5);
   }
 
   .tool-card.disabled {

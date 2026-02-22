@@ -85,20 +85,8 @@ alle `.tsx`- und `.astro`-Dateien auf XSS/Injection, `package.json` (npm audit)
 - `Layout.astro`: `height: 100vh` + `overflow: hidden` entfernt → `min-height: 100dvh`
 - `PageLayout.astro`: alle `100vh` → `100dvh` (Desktop + Breadcrumb-Variante)
 
-#### PERF-2 — HOCH: `hero.webp` (140 KB) als CSS-Hintergrundbild ohne Preload
-**Datei:** `src/pages/[...lang]/tools.astro` Z. 36, 44, 52, 60, 68
-
-```astro
-<a class="tool-card has-image" style="background-image: url('/images/hero.webp')">
-```
-
-**Probleme:**
-- CSS-Hintergrundbilder werden erst nach CSS-Parsing geladen → späte LCP-Kandidaten
-- Kein `fetchpriority="high"` oder `<link rel="preload">`
-- Keine responsiven Varianten (140 KB auch auf 300 px breiten Mobilgeräten)
-
-**Fix:** `<link rel="preload" as="image" href="/images/hero.webp">` im `<head>`,
-oder auf `<picture>`-Element umstellen.
+~~#### PERF-2 — HOCH: `hero.webp` als CSS-Hintergrundbild~~ — **ENTFERNT (by design)**
+CSS-Hintergrundbilder auf Tool-Cards sind gewolltes Design. Kein Handlungsbedarf.
 
 #### ~~PERF-3 — HOCH: `ApocalypseTimeClock` auf `client:load` statt `client:idle`~~ ✅ BEHOBEN
 **Datei:** `src/components/Navigation.astro` Z. 62
@@ -184,26 +172,21 @@ description="Wild Hoggs Guild Members Roster"
 
 Alle Texte erfüllen jetzt WCAG AA Mindestkontrast.
 
-#### A11Y-2 — MITTEL: Tool-Cards haben kein `aria-label` für Hintergrundbilder
-**Datei:** `src/pages/[...lang]/tools.astro` Z. 36, 44, 52, 60, 68
+#### ~~A11Y-2 — MITTEL: Tool-Cards haben kein `aria-label` für Hintergrundbilder~~ ✅ BEHOBEN
+**Datei:** `src/pages/[...lang]/tools.astro`
 
-```astro
-<a class="tool-card has-image" style="background-image: url('/images/hero.webp')">
-```
+Alle 5 Tool-Card-Links haben jetzt `aria-label={t('tools.X.title')}` — übersetzt in allen 15 Sprachen.
 
-**Problem:** Hintergrundbilder werden von Screenreadern ignoriert — Link-Kontext ist unklar.
-**Fix:** `aria-label` auf dem `<a>`-Tag ergänzen, z. B. `aria-label="Hero EXP Calculator"`.
+#### ~~A11Y-3 — MITTEL: Fehlende `focus-visible`-Stile auf Tool-Cards~~ ✅ BEHOBEN
+**Datei:** `src/pages/[...lang]/tools.astro`
 
-#### A11Y-3 — MITTEL: Fehlende `focus-visible`-Stile auf Tool-Cards
-**Datei:** `src/pages/[...lang]/tools.astro` (CSS) — WCAG 2.4.7 Level AA
-**Problem:** Hover-Stile existieren, aber keine expliziten `:focus-visible`-Stile für Tastaturnutzer.
-**Fix:**
 ```css
 .tool-card:focus-visible {
   outline: 2px solid #ffa500;
-  outline-offset: 2px;
+  outline-offset: 3px;
 }
 ```
+WCAG 2.4.7 Level AA erfüllt.
 
 #### A11Y-4 — NIEDRIG: Sprachdropdown — Arrow-Key-Navigation fehlt
 **Datei:** `src/components/LanguageDropdown.astro`
@@ -235,20 +218,11 @@ Bereits bei SEO dokumentiert.
 
 ### Findings
 
-#### CODE-1 — MITTEL: Debug-`console.log` in Render-Loop (Produktionscode)
-**Datei:** `src/components/calculators/TankModificationTree.tsx` Z. 388–396
+#### ~~CODE-1 — MITTEL: Debug-`console.log` in Render-Loop (Produktionscode)~~ ✅ BEHOBEN
+**Datei:** `src/components/calculators/TankModificationTree.tsx`
 
-```typescript
-if (index < 5) {
-  console.log(`[TankTree] Rendering node ${index}:`, {
-    level: mod.level, x: pos.x, y: pos.y, row: pos.row, col: pos.col
-  });
-}
-```
-
-**Problem:** Loggt bei jedem Re-Render für die ersten 5 Nodes — Console-Pollution in Produktion.
-(Andere `console.error`-Aufrufe in ErrorBoundary und RewardCodes sind akzeptabel.)
-**Fix:** Zeilen entfernen oder in `if (import.meta.env.DEV)` wrappen.
+~~`console.log` für erste 5 Nodes bei jedem Re-Render — Console-Pollution~~
+**Fix:** Debug-Block vollständig entfernt.
 
 #### CODE-2 — MITTEL: Duplizierter Zoom-Control-Code (~130 Zeilen)
 **Dateien:**
@@ -425,11 +399,12 @@ und damit JavaScript-Overhead auf der 404-Seite eliminieren.
 |----|-------------|-------|---------|
 | BUG-1/2 | Sakura — fehlende Skills ergänzen (Inhalt) | `src/data/heroes.ts` | Spieldaten nötig |
 | BUG-3 | Mia — Exclusive Talent ergänzen (Inhalt) | `src/data/heroes.ts` | Spieldaten nötig |
-| PERF-2 | Tool-Cards: `<link rel="preload">` für hero.webp | `tools.astro` + `Layout.astro` | 30 min |
+| ~~PERF-2~~ | ~~Tool-Cards: `hero.webp` Preload~~ | ENTFERNT (by design) |
 | ~~PERF-3~~ | ~~`ApocalypseTimeClock client:load` → `client:idle`~~ | ✅ `client:idle` |
-| A11Y-2 | `aria-label` auf Tool-Card-Links | `tools.astro` | 30 min |
-| CODE-1 | Debug-`console.log` in `TankModificationTree` | Z. 388–396 | 5 min |
+| ~~A11Y-2~~ | ~~`aria-label` auf Tool-Card-Links~~ | ✅ `aria-label={t(...)}` in allen 15 Sprachen |
+| ~~CODE-1~~ | ~~Debug-`console.log` in `TankModificationTree`~~ | ✅ Entfernt |
 | ~~SEO-1~~ | ~~`og:locale:alternate` `.slice(0, 5)` entfernen~~ | ✅ Alle 14 Locales ausgegeben |
+| ~~A11Y-3~~ | ~~`focus-visible` auf Tool-Cards~~ | ✅ `outline: 2px solid #ffa500` |
 
 ### 🟡 Mittel (Backlog)
 
