@@ -96,11 +96,12 @@
 ```
 CLS verhindert — Browser reserviert jetzt Platz vor dem Laden der Bilder.
 
-**C-PERF-2: Raw `<img>` statt Astro `<Image>` Komponente**
-**Dateien:** `src/components/HeroGrid.tsx` (alle img-Tags), `src/components/RewardCodesLocal.tsx` (Zeilen 100, 142), `src/components/calculators/ResearchCategoryCalculator.tsx`
-- Nur `src/pages/[...lang]/tools/research.astro` (Zeilen 108-115) nutzt korrekt `<Image>` von `astro:assets`
-- **Impact:** Keine automatische AVIF/WebP-Konvertierung, keine responsiven Bildvarianten, keine Build-Zeit-Optimierung
-- **Fix:** `<img>` durch `<Image>` aus `astro:assets` ersetzen — Astro optimiert dann automatisch Format, Größe und responsive Varianten
+~~**C-PERF-2: Raw `<img>` statt Astro `<Image>` Komponente**~~
+**Status:** ⚠️ Nicht umsetzbar für dynamische Pfade in Preact-Komponenten
+- Astro's `<Image>` optimiert nur **statisch importierte** Assets, nicht Laufzeit-Pfad-Strings wie `/images/heroes/${id}.webp`
+- `HeroGrid.tsx`, `RewardCodesLocal.tsx` u.a. verwenden dynamische URLs — hier ist `<Image>` nicht anwendbar
+- Alternative: Bilder manuell vorab optimieren (→ H-PERF-1/H-PERF-2) oder Cloudflare Image Resizing aktivieren
+- **Bewertung:** Kein Codefehler — architekturelle Einschränkung, manuell kompensiert
 
 ### 🟠 HIGH
 
@@ -117,19 +118,16 @@ CLS verhindert — Browser reserviert jetzt Platz vor dem Laden der Bilder.
 - Diese werden als ~80px kleine Thumbnails angezeigt, sind aber in voller Auflösung
 - **Fix:** Auf die tatsächlich angezeigte Größe (2×) reduzieren → ~60% Einsparung möglich
 
-**H-PERF-3: Calculator-Komponenten nutzen `client:load` statt `client:idle`**
-**Dateien:** Alle `src/pages/[...lang]/tools/*.astro`
-```astro
-<HeroExpCalculator lang={lang} translationData={translationData} client:load />
-```
-- `client:load` lädt Preact-Runtime sofort beim Seitenaufruf
-- `client:idle` würde bis zur Browser-Idle-Phase warten
-- **Fix:** `client:load` → `client:idle` für alle Calculator-Seiten (ca. 50-100ms FCP-Verbesserung)
+~~**H-PERF-3: Calculator-Komponenten nutzen `client:load` statt `client:idle`**~~
+**Status:** ✅ Behoben am 2026-02-22 — alle 5 Calculator-Seiten umgestellt:
+- `hero-exp.astro`, `caravan.astro`, `tank.astro`, `building.astro`, `[categoryId].astro`
+- Sowohl `<ErrorBoundary>` als auch Calculator-Komponenten: `client:load` → `client:idle`
+- Preact-Runtime hydratisiert jetzt erst nach Browser-Idle → weniger Blockierung des Main Threads
 
-**H-PERF-4: Mehrfache `backdrop-filter` ohne Fallback**
-**Dateien:** `src/components/Navigation.astro:73`, `src/layouts/PageLayout.astro:60`, `src/components/HeroGrid.css:375`
-- `backdrop-filter: blur(10px)` auf mehreren Ebenen gleichzeitig = GPU-intensive Operation
-- **Empfehlung:** Blur-Radius auf Mobile reduzieren (10px → 5px), `@supports`-Fallback hinzufügen
+~~**H-PERF-4: Mehrfache `backdrop-filter` ohne Fallback**~~
+**Status:** ✅ Behoben am 2026-02-22 — `src/components/HeroGrid.css`
+- `@supports (backdrop-filter: blur(1px))` Fallback hinzugefügt: Ohne Unterstützung greift `background: rgba(0,0,0,0.92)` (opaker)
+- Mobile Blur von 10px auf 6px reduziert via `@media (max-width: 640px)` + `@supports`
 
 ### 🟡 MEDIUM
 
@@ -575,7 +573,7 @@ return a.name.localeCompare(b.name);
 
 9. **[H-PERF-1]** Hero-Bilder auf < 20 KB re-enkodieren (isabella.webp = 197 KB!)
 10. **[H-PERF-2]** Große statische Bilder (caravan.webp 474 KB, hero.webp 541 KB) optimieren
-11. **[H-PERF-3]** Calculator-Seiten: `client:load` → `client:idle`
+11. ~~**[H-PERF-3]**~~ ✅ Calculator-Seiten: `client:load` → `client:idle` — behoben 2026-02-22
 12. **[C-BUG-2]** `errorInfo: any` → `ErrorInfo` in ErrorBoundary
 13. **[C-CODE-1]** Mia: Exclusive Talent Daten nachtragen
 14. **[C-CODE-2]** Sakura: Global + Exclusive Talent nachtragen
@@ -583,7 +581,7 @@ return a.name.localeCompare(b.name);
 
 ### 🗓️ BACKLOG (Qualität + Wartbarkeit)
 
-16. **[C-PERF-2]** `<img>` → `<Image>` von Astro:assets (größtes Optimierungspotential)
+16. ~~**[C-PERF-2]**~~ ⚠️ Nicht umsetzbar für dynamische Pfade in Preact (architekturelle Einschränkung)
 17. **[H-CODE-2]** Copy-Fehler: UI-Feedback statt stiller `console.error`
 18. **[H-CODE-3]** Image-Fallback bei 404-Bild
 19. ~~**[M-SEC-2]**~~ ✅ `levelgeeks.org` aus CSP entfernt — behoben am 2026-02-22

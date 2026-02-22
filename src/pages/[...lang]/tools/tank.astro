@@ -31,8 +31,8 @@ const breadcrumbItems = [
   breadcrumbs={breadcrumbItems}
 >
   <div class="calculator-wrapper">
-    <ErrorBoundary lang={lang} client:load>
-      <TankCalculator lang={lang} translationData={translationData} client:load />
+    <ErrorBoundary lang={lang} client:idle>
+      <TankCalculator lang={lang} translationData={translationData} client:idle />
     </ErrorBoundary>
   </div>
 </PageLayout>

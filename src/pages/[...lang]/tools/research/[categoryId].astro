@@ -111,13 +111,13 @@ const breadcrumbItems = [
 
 <PageLayout title={`Last Z ${t(category.nameKey as TranslationKey)}`} description={`Calculate Last Z badge costs for ${t(category.nameKey as TranslationKey)} research`} breadcrumbs={breadcrumbItems}>
   <div class="calculator-wrapper">
-    <ErrorBoundary lang={lang} client:load>
+    <ErrorBoundary lang={lang} client:idle>
       <ResearchCategoryCalculator
         categoryData={category}
         categoryImageSrc={categoryImage.src}
         lang={lang}
         translationData={translationData}
-        client:load
+        client:idle
       />
     </ErrorBoundary>
   </div>

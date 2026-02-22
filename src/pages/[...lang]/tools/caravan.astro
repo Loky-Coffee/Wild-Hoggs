@@ -32,7 +32,7 @@ const breadcrumbItems = [
     <p class="subtitle">{t('tools.caravan.description')}</p>
   </div>
 
-  <ErrorBoundary lang={lang} client:load>
-    <CaravanCalculator lang={lang} translationData={translationData} client:load />
+  <ErrorBoundary lang={lang} client:idle>
+    <CaravanCalculator lang={lang} translationData={translationData} client:idle />
   </ErrorBoundary>
 </PageLayout>
