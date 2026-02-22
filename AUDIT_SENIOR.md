@@ -120,6 +120,24 @@ CLS verhindert — Browser reserviert jetzt Platz vor dem Laden der Bilder.
   - `lab.webp`: 344 KB → 87 KB (−75%)
 - **Gesamtersparnis: ~1.2 MB** — 800px reicht für alle Display-Szenarien (Tool-Cards, 2× Retina)
 
+**Zusätzlich entdeckt und behoben (2026-02-22):**
+
+~~**BONUS-PERF-1: Symbol-Icons massiv übergroß**~~
+**Status:** ✅ Behoben am 2026-02-22 — `public/images/heroes/symbols/`
+- Rarity-Icons (a, b, s, s0–s9): 1024×1536 (152–239 KB) → 320px Breite (16–29 KB), **−88%**
+  - Werden bei max. 155px auf Karte angezeigt
+- Rollen-/Fraktions-Icons (attack, defense, support, blood-rose, guard-of-order, wings-of-dawn): 1024×1024 (91–136 KB) → 80×80px (1–2 KB), **−98%**
+  - Werden bei max. 40px angezeigt (badge: 16px, chip: 28px, duo: 40px)
+- **Gesamtersparnis: ~3.4 MB → ~335 KB** — größter Einzelposten im Projekt
+
+~~**BONUS-PERF-2: Reward-Bilder als PNG/JPG statt WebP**~~
+**Status:** ✅ Behoben am 2026-02-22 — `public/images/rewards/`
+- `2026-02-05_17-47.png` (1142×328, 270 KB) → `.webp` (800px, 16 KB), **−94%**
+- `IMG_7942.jpg` (1203×643, 97 KB) → `.webp` (800px, 19 KB), **−80%**
+- `src/data/reward-codes.json` Pfade auf `.webp` aktualisiert, alte Originale gelöscht
+
+**Gesamt-Bildeinsparung (alle Fixes kombiniert): ~6.1 MB → ~927 KB (−85%)**
+
 ~~**H-PERF-3: Calculator-Komponenten nutzen `client:load` statt `client:idle`**~~
 **Status:** ✅ Behoben am 2026-02-22 — alle 5 Calculator-Seiten umgestellt:
 - `hero-exp.astro`, `caravan.astro`, `tank.astro`, `building.astro`, `[categoryId].astro`
