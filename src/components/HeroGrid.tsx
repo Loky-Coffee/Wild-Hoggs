@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'preact/hooks';
+import { createPortal } from 'preact/compat';
 import type { Hero, HeroSkill, HeroRole, HeroFaction, HeroRarity } from '../data/heroes';
 import { RARITY_COLOR, RARITY_SESSION, FACTIONS } from '../data/heroes';
 import './HeroGrid.css';
@@ -355,7 +356,7 @@ export default function HeroGrid({ heroes, clearLabel = 'Reset all filters' }: {
         ))}
       </div>
 
-      {selected && <HeroModal hero={selected} onClose={close} />}
+      {selected && createPortal(<HeroModal hero={selected} onClose={close} />, document.body)}
     </div>
   );
 }
