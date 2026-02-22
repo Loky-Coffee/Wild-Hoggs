@@ -398,6 +398,7 @@ export default {
   'research.army_building.armor-upgrade': '장갑 업그레이드',
   'research.army_building.camo-coating': '위장 코팅',
   'research.army_building.combat-policy': '전투 정책',
+  'research.army_building.combat-policy-2': '전투 정책',
   'research.army_building.demolition-crew': '폭파 반',
   'research.army_building.enhanced-armour': '강화 장갑',
   'research.army_building.field-training': '야전 훈련',

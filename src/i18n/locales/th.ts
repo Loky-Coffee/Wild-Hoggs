@@ -398,6 +398,7 @@ export default {
   'research.army_building.armor-upgrade': 'อัปเกรดเกราะ',
   'research.army_building.camo-coating': 'เคลือบลายพราง',
   'research.army_building.combat-policy': 'นโยบายการรบ',
+  'research.army_building.combat-policy-2': 'นโยบายการรบ',
   'research.army_building.demolition-crew': 'หน่วยรื้อถอน',
   'research.army_building.enhanced-armour': 'เกราะเสริมความแข็งแรง',
   'research.army_building.field-training': 'ฝึกภาคสนาม',

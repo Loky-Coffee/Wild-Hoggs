@@ -398,6 +398,7 @@ export default {
   'research.army_building.armor-upgrade': 'Zırh Yükseltmesi',
   'research.army_building.camo-coating': 'Kamuflaj Kaplama',
   'research.army_building.combat-policy': 'Muharebe Politikası',
+  'research.army_building.combat-policy-2': 'Muharebe Politikası',
   'research.army_building.demolition-crew': 'Yıkım Ekibi',
   'research.army_building.enhanced-armour': 'Gelişmiş Zırh',
   'research.army_building.field-training': 'Saha Eğitimi',

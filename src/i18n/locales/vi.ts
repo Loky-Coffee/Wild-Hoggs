@@ -398,6 +398,7 @@ export default {
   'research.army_building.armor-upgrade': 'Nâng cấp giáp',
   'research.army_building.camo-coating': 'Phủ ngụy trang',
   'research.army_building.combat-policy': 'Chính sách tác chiến',
+  'research.army_building.combat-policy-2': 'Chính sách tác chiến',
   'research.army_building.demolition-crew': 'Đội phá dỡ',
   'research.army_building.enhanced-armour': 'Giáp tăng cường',
   'research.army_building.field-training': 'Huấn luyện dã chiến',

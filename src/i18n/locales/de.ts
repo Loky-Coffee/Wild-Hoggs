@@ -398,6 +398,7 @@ export default {
   'research.army_building.armor-upgrade': 'Panzerverbesserung',
   'research.army_building.camo-coating': 'Tarnfarbe',
   'research.army_building.combat-policy': 'Kampfstrategie',
+  'research.army_building.combat-policy-2': 'Kampfstrategie',
   'research.army_building.demolition-crew': 'Abriss-Team',
   'research.army_building.enhanced-armour': 'Verstärkte Rüstung',
   'research.army_building.field-training': 'Feldtraining',

@@ -398,6 +398,7 @@ export default {
   'research.army_building.armor-upgrade': '装甲強化',
   'research.army_building.camo-coating': '迷彩コーティング',
   'research.army_building.combat-policy': '戦闘方針',
+  'research.army_building.combat-policy-2': '戦闘方針',
   'research.army_building.demolition-crew': '爆破班',
   'research.army_building.enhanced-armour': '強化装甲',
   'research.army_building.field-training': '野外訓練',

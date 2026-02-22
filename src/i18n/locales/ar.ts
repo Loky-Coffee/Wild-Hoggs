@@ -398,6 +398,7 @@ export default {
   'research.army_building.armor-upgrade': 'ترقية الدرع',
   'research.army_building.camo-coating': 'طلاء تمويهي',
   'research.army_building.combat-policy': 'سياسة القتال',
+  'research.army_building.combat-policy-2': 'سياسة القتال',
   'research.army_building.demolition-crew': 'فريق هدم',
   'research.army_building.enhanced-armour': 'درع مقوّى',
   'research.army_building.field-training': 'تدريب ميداني',

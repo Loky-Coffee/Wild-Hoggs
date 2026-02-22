@@ -9,7 +9,13 @@
       "id": "demolition-crew",
       "nameKey": "research.siege_to_seize.demolition-crew",
       "maxLevel": 5,
-      "badgeCosts": [81, 110, 150, 220, 350],
+      "badgeCosts": [
+        81,
+        110,
+        150,
+        220,
+        350
+      ],
       "icon": "siege-to-seize/demolition-crew",
       "prerequisites": []
     },
@@ -17,137 +23,374 @@
       "id": "joint-operation",
       "nameKey": "research.siege_to_seize.joint-operation",
       "maxLevel": 10,
-      "badgeCosts": [97, 120, 140, 160, 190, 240, 300, 380, 470, 580],
+      "badgeCosts": [
+        97,
+        120,
+        140,
+        160,
+        190,
+        240,
+        300,
+        380,
+        470,
+        580
+      ],
       "icon": "siege-to-seize/joint-operation",
-      "prerequisites": ["demolition-crew"]
+      "prerequisites": [
+        "demolition-crew"
+      ]
     },
     {
       "id": "mobile-defense",
       "nameKey": "research.siege_to_seize.mobile-defense",
       "maxLevel": 10,
-      "badgeCosts": [97, 120, 140, 160, 190, 240, 300, 380, 470, 580],
+      "badgeCosts": [
+        97,
+        120,
+        140,
+        160,
+        190,
+        240,
+        300,
+        380,
+        470,
+        580
+      ],
       "icon": "siege-to-seize/mobile-defense",
-      "prerequisites": ["demolition-crew"]
+      "prerequisites": [
+        "demolition-crew"
+      ]
     },
     {
       "id": "mobility-enhancement",
       "nameKey": "research.siege_to_seize.mobility-enhancement",
       "maxLevel": 10,
-      "badgeCosts": [160, 190, 230, 270, 320, 400, 500, 630, 790, 960],
+      "badgeCosts": [
+        160,
+        190,
+        230,
+        270,
+        320,
+        400,
+        500,
+        630,
+        790,
+        960
+      ],
       "icon": "siege-to-seize/mobility-enhancement",
-      "prerequisites": ["joint-operation"]
+      "prerequisites": [
+        "joint-operation"
+      ]
     },
     {
       "id": "melee-combat",
       "nameKey": "research.siege_to_seize.melee-combat",
       "maxLevel": 10,
-      "badgeCosts": [160, 190, 230, 270, 320, 400, 500, 630, 790, 960],
+      "badgeCosts": [
+        160,
+        190,
+        230,
+        270,
+        320,
+        400,
+        500,
+        630,
+        790,
+        960
+      ],
       "icon": "siege-to-seize/melee-combat",
-      "prerequisites": ["joint-operation", "mobile-defense"]
+      "prerequisites": [
+        "joint-operation",
+        "mobile-defense"
+      ]
     },
     {
       "id": "weapon-upgrading",
       "nameKey": "research.siege_to_seize.weapon-upgrading",
       "maxLevel": 10,
-      "badgeCosts": [160, 190, 230, 270, 320, 400, 500, 630, 790, 960],
+      "badgeCosts": [
+        160,
+        190,
+        230,
+        270,
+        320,
+        400,
+        500,
+        630,
+        790,
+        960
+      ],
       "icon": "siege-to-seize/weapon-upgrading",
-      "prerequisites": ["mobile-defense"]
+      "prerequisites": [
+        "mobile-defense"
+      ]
     },
     {
       "id": "load-module",
       "nameKey": "research.siege_to_seize.load-module",
       "maxLevel": 10,
-      "badgeCosts": [230, 270, 320, 380, 450, 560, 700, 880, 1100, 1300],
+      "badgeCosts": [
+        230,
+        270,
+        320,
+        380,
+        450,
+        560,
+        700,
+        880,
+        1100,
+        1300
+      ],
       "icon": "siege-to-seize/load-module",
-      "prerequisites": ["mobility-enhancement", "melee-combat"]
+      "prerequisites": [
+        "mobility-enhancement",
+        "melee-combat"
+      ]
     },
     {
       "id": "propulsion",
       "nameKey": "research.siege_to_seize.propulsion",
       "maxLevel": 10,
-      "badgeCosts": [230, 270, 320, 380, 450, 560, 700, 880, 1100, 1300],
+      "badgeCosts": [
+        230,
+        270,
+        320,
+        380,
+        450,
+        560,
+        700,
+        880,
+        1100,
+        1300
+      ],
       "icon": "siege-to-seize/propulsion",
-      "prerequisites": ["melee-combat", "weapon-upgrading"]
+      "prerequisites": [
+        "melee-combat",
+        "weapon-upgrading"
+      ]
     },
     {
       "id": "quick-assembly",
       "nameKey": "research.siege_to_seize.quick-assembly",
       "maxLevel": 5,
-      "badgeCosts": [400, 520, 720, 1070, 1720],
+      "badgeCosts": [
+        400,
+        520,
+        720,
+        1070,
+        1720
+      ],
       "icon": "siege-to-seize/quick-assembly",
-      "prerequisites": ["load-module"]
+      "prerequisites": [
+        "load-module"
+      ]
     },
     {
       "id": "arms-assembly",
       "nameKey": "research.siege_to_seize.arms-assembly",
       "maxLevel": 5,
-      "badgeCosts": [400, 520, 720, 1070, 1720],
+      "badgeCosts": [
+        400,
+        520,
+        720,
+        1070,
+        1720
+      ],
       "icon": "siege-to-seize/arms-assembly",
-      "prerequisites": ["load-module", "propulsion"]
+      "prerequisites": [
+        "load-module",
+        "propulsion"
+      ]
     },
     {
       "id": "target-training",
       "nameKey": "research.siege_to_seize.target-training",
       "maxLevel": 5,
-      "badgeCosts": [400, 520, 720, 1070, 1720],
+      "badgeCosts": [
+        400,
+        520,
+        720,
+        1070,
+        1720
+      ],
       "icon": "siege-to-seize/target-training",
-      "prerequisites": ["propulsion"]
+      "prerequisites": [
+        "propulsion"
+      ]
     },
     {
       "id": "demolition-crew-2",
-      "nameKey": "research.siege_to_seize.demolition-crew",
+      "nameKey": "research.siege_to_seize.demolition-crew-2",
       "maxLevel": 10,
-      "badgeCosts": [480, 580, 670, 820, 960, 1200, 1400, 1800, 2300, 2800],
+      "badgeCosts": [
+        480,
+        580,
+        670,
+        820,
+        960,
+        1200,
+        1400,
+        1800,
+        2300,
+        2800
+      ],
       "icon": "siege-to-seize/demolition-crew",
-      "prerequisites": ["quick-assembly", "arms-assembly", "target-training"]
+      "prerequisites": [
+        "quick-assembly",
+        "arms-assembly",
+        "target-training"
+      ]
     },
     {
       "id": "stronger-armor",
       "nameKey": "research.siege_to_seize.stronger-armor",
       "maxLevel": 10,
-      "badgeCosts": [580, 690, 810, 980, 1160, 1400, 1700, 2200, 2800, 3400],
+      "badgeCosts": [
+        580,
+        690,
+        810,
+        980,
+        1160,
+        1400,
+        1700,
+        2200,
+        2800,
+        3400
+      ],
       "icon": "siege-to-seize/stronger-armor",
-      "prerequisites": ["demolition-crew-2"]
+      "prerequisites": [
+        "demolition-crew-2"
+      ]
     },
     {
       "id": "shield-upgrade",
       "nameKey": "research.siege_to_seize.shield-upgrade",
       "maxLevel": 10,
-      "badgeCosts": [580, 690, 810, 980, 1160, 1400, 1700, 2200, 2800, 3400],
+      "badgeCosts": [
+        580,
+        690,
+        810,
+        980,
+        1160,
+        1400,
+        1700,
+        2200,
+        2800,
+        3400
+      ],
       "icon": "siege-to-seize/shield-upgrade",
-      "prerequisites": ["demolition-crew-2"]
+      "prerequisites": [
+        "demolition-crew-2"
+      ]
     },
     {
       "id": "tactical-cover",
       "nameKey": "research.siege_to_seize.tactical-cover",
       "maxLevel": 10,
-      "badgeCosts": [580, 690, 810, 980, 1160, 1400, 1700, 2200, 2800, 3400],
+      "badgeCosts": [
+        580,
+        690,
+        810,
+        980,
+        1160,
+        1400,
+        1700,
+        2200,
+        2800,
+        3400
+      ],
       "icon": "siege-to-seize/tactical-cover",
-      "prerequisites": ["demolition-crew-2"]
+      "prerequisites": [
+        "demolition-crew-2"
+      ]
     },
     {
       "id": "joint-operation-2",
-      "nameKey": "research.siege_to_seize.joint-operation",
+      "nameKey": "research.siege_to_seize.joint-operation-2",
       "maxLevel": 20,
-      "badgeCosts": [620, 740, 870, 990, 1180, 1400, 1700, 1900, 2300, 2700, 3100, 3500, 4000, 4600, 5300, 5500, 6400, 6800, 7700, 9100],
+      "badgeCosts": [
+        620,
+        740,
+        870,
+        990,
+        1180,
+        1400,
+        1700,
+        1900,
+        2300,
+        2700,
+        3100,
+        3500,
+        4000,
+        4600,
+        5300,
+        5500,
+        6400,
+        6800,
+        7700,
+        9100
+      ],
       "icon": "siege-to-seize/joint-operation",
-      "prerequisites": ["stronger-armor", "shield-upgrade", "tactical-cover"]
+      "prerequisites": [
+        "stronger-armor",
+        "shield-upgrade",
+        "tactical-cover"
+      ]
     },
     {
       "id": "mobile-defense-2",
-      "nameKey": "research.siege_to_seize.mobile-defense",
+      "nameKey": "research.siege_to_seize.mobile-defense-2",
       "maxLevel": 20,
-      "badgeCosts": [620, 740, 870, 990, 1180, 1400, 1700, 1900, 2300, 2700, 3100, 3500, 4000, 4600, 5300, 5500, 6400, 6800, 7700, 9100],
+      "badgeCosts": [
+        620,
+        740,
+        870,
+        990,
+        1180,
+        1400,
+        1700,
+        1900,
+        2300,
+        2700,
+        3100,
+        3500,
+        4000,
+        4600,
+        5300,
+        5500,
+        6400,
+        6800,
+        7700,
+        9100
+      ],
       "icon": "siege-to-seize/mobile-defense",
-      "prerequisites": ["stronger-armor", "shield-upgrade", "tactical-cover"]
+      "prerequisites": [
+        "stronger-armor",
+        "shield-upgrade",
+        "tactical-cover"
+      ]
     },
     {
       "id": "recharge-shield",
       "nameKey": "research.siege_to_seize.recharge-shield",
       "maxLevel": 10,
-      "badgeCosts": [770, 920, 1080, 1310, 1540, 1900, 2300, 3000, 3700, 4600],
+      "badgeCosts": [
+        770,
+        920,
+        1080,
+        1310,
+        1540,
+        1900,
+        2300,
+        3000,
+        3700,
+        4600
+      ],
       "icon": "siege-to-seize/recharge-shield",
-      "prerequisites": ["joint-operation-2", "mobile-defense-2"]
+      "prerequisites": [
+        "joint-operation-2",
+        "mobile-defense-2"
+      ]
     }
   ]
 }

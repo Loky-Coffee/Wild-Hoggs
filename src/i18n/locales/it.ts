@@ -398,6 +398,7 @@ export default {
   'research.army_building.armor-upgrade': 'Potenziamento armatura',
   'research.army_building.camo-coating': 'Rivestimento mimetico',
   'research.army_building.combat-policy': 'Politica di combattimento',
+  'research.army_building.combat-policy-2': 'Politica di combattimento',
   'research.army_building.demolition-crew': 'Squadra demolizioni',
   'research.army_building.enhanced-armour': 'Corazza rinforzata',
   'research.army_building.field-training': 'Addestramento sul campo',

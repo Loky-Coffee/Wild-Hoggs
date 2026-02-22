@@ -398,6 +398,7 @@ export default {
   'research.army_building.armor-upgrade': 'Peningkatan zirah',
   'research.army_building.camo-coating': 'Pelapis kamuflase',
   'research.army_building.combat-policy': 'Kebijakan tempur',
+  'research.army_building.combat-policy-2': 'Kebijakan tempur',
   'research.army_building.demolition-crew': 'Tim pembongkar',
   'research.army_building.enhanced-armour': 'Zirah diperkuat',
   'research.army_building.field-training': 'Pelatihan lapangan',

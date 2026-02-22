@@ -512,6 +512,7 @@ export default {
   'research.army_building.armor-upgrade': 'Armor Upgrade',
   'research.army_building.camo-coating': 'Camo Coating',
   'research.army_building.combat-policy': 'Combat Policy',
+  'research.army_building.combat-policy-2': 'Combat Policy',
   'research.army_building.demolition-crew': 'Demolition Crew',
   'research.army_building.enhanced-armour': 'Enhanced Armour',
   'research.army_building.field-training': 'Field Training',

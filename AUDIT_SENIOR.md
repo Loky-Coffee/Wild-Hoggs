@@ -128,15 +128,11 @@ alle `src/pages/[...lang]/*.astro`-Dateien, `src/components/Breadcrumbs.astro`
 ~~`.slice(0, 5)` begrenzte auf 5 von 15 Sprachen~~
 **Fix:** `.slice(0, 5)` entfernt → alle 14 Alternativ-Locales werden ausgegeben.
 
-#### SEO-2 — NIEDRIG: `members.astro` — Description hardcodiert auf Englisch
-**Datei:** `src/pages/[...lang]/members.astro` Z. 74
+#### ~~SEO-2 — NIEDRIG: `members.astro` — Description hardcodiert auf Englisch~~ ✅ BEHOBEN
+**Datei:** `src/pages/[...lang]/members.astro`
 
-```astro
-description="Wild Hoggs Guild Members Roster"
-```
-
-**Problem:** Die Meta-Description ist nicht übersetzt — schadet SEO in Nicht-Englisch-Sprachen.
-**Fix:** Übersetzungsschlüssel `seo.members.description` in alle 15 Locales einfügen und nutzen.
+~~`description="Wild Hoggs Guild Members Roster"` — hardcodiert Englisch~~
+**Fix:** `description={t('seo.members.description')}` — `seo.members.description` existiert bereits in allen 15 Locales.
 
 ---
 
@@ -188,11 +184,11 @@ Alle 5 Tool-Card-Links haben jetzt `aria-label={t('tools.X.title')}` — überse
 ```
 WCAG 2.4.7 Level AA erfüllt.
 
-#### A11Y-4 — NIEDRIG: Sprachdropdown — Arrow-Key-Navigation fehlt
+#### ~~A11Y-4 — NIEDRIG: Sprachdropdown — Arrow-Key-Navigation fehlt~~ ✅ BEHOBEN
 **Datei:** `src/components/LanguageDropdown.astro`
-**Problem:** Menü nutzt `role="menu"` + `role="menuitem"`, aber keine ↑↓-Tastaturnavigation.
-Links sind per Tab erreichbar, aber ARIA-Menü-Muster erwartet Arrow-Keys.
-**Fix:** Keyboard-Handler für `ArrowUp`/`ArrowDown` ergänzen, oder Muster auf `listbox` umstellen.
+
+~~Kein `ArrowUp`/`ArrowDown`-Support im `role="menu"`~~
+**Fix:** `keydown`-Handler auf `menu` ergänzt — `ArrowDown`/`ArrowUp` (zyklisch), `Home`/`End`, `Escape` (mit Fokus-Rückgabe auf Toggle). WCAG 2.4.3 ✓
 
 #### A11Y-5 — NIEDRIG: `og:locale:alternate` begrenzt (→ auch SEO-1)
 Bereits bei SEO dokumentiert.
@@ -328,20 +324,16 @@ Mia hat nur 3 Skills — der Exclusive Talent (`type: 'exclusive'`, `stars: 4`) 
 Vergleich: Oliveira (S1) und Scarlett (S1) haben jeweils 4 vollständige Skills.
 **Fix:** Exclusive Talent mit `type: 'exclusive'` und `stars: 4` ergänzen.
 
-#### BUG-4 — MITTEL: Research Tree — `nameKey`-Kollisionen bei Tier-2-Technologien
-**Dateien:** `src/data/research/siege-to-seize.json`, `army-building.json`, `unit-special-training.json`
+#### ~~BUG-4 — MITTEL: Research Tree — `nameKey`-Kollisionen bei Tier-2-Technologien~~ ✅ BEHOBEN
+**Dateien:** `siege-to-seize.json`, `army-building.json`, `unit-special-training.json`
 
-Tier-1 und Tier-2 Technologien teilen denselben `nameKey`:
+~~Tier-1 und Tier-2 Technologien teilten denselben `nameKey`~~
 
-```json
-{ "id": "demolition-crew",   "nameKey": "research.siege_to_seize.demolition-crew" }
-{ "id": "demolition-crew-2", "nameKey": "research.siege_to_seize.demolition-crew" }  // ← identisch!
-```
-
-Betroffen: `demolition-crew`, `joint-operation`, `mobile-defense`, `fire-up`, `armor-upgrade`, `combat-policy`.
-**Problem:** UI kann Tier-1 und Tier-2 nicht unterscheiden — beide zeigen denselben Namen.
-**Fix:** Für alle `*-2`-IDs eigenen `nameKey` anlegen, z. B. `research.siege_to_seize.demolition-crew-2`,
-und entsprechende Übersetzungsschlüssel in allen 15 Locales hinzufügen.
+**Fix:**
+- `siege-to-seize.json`: `demolition-crew-2`, `joint-operation-2`, `mobile-defense-2` → eigene `nameKey`
+- `army-building.json`: `combat-policy-2` → eigener `nameKey` + neuer Key `research.army_building.combat-policy-2` in allen 15 Locales
+- `unit-special-training.json`: `fire-up-2`, `armor-upgrade-2` → eigene `nameKey`
+- Alle 5 übrigen `-2`-Keys existierten bereits in allen 15 Locales ✓
 
 #### BUG-5 — MITTEL: Reward Codes — beide Codes abgelaufen (Daten-Freshness)
 **Datei:** `src/data/reward-codes.json`
@@ -410,11 +402,11 @@ und damit JavaScript-Overhead auf der 404-Seite eliminieren.
 
 | ID | Beschreibung | Datei | Aufwand |
 |----|-------------|-------|---------|
-| BUG-4 | Research-Tree `nameKey`-Kollisionen beheben | JSON-Dateien + 15 Locales | 2–3 h |
-| CODE-2 | Zoom-Logic in Custom Hook extrahieren | ResearchTreeView + TankModTree | 2 h |
-| A11Y-3 | `focus-visible`-Stile für Tool-Cards | `tools.astro` CSS | 1 h |
-| A11Y-4 | Arrow-Key-Navigation im Sprachdropdown | `LanguageDropdown.astro` | 2 h |
-| SEO-2 | Members-Description übersetzen | `members.astro` + 15 Locales | 1 h |
+| ~~BUG-4~~ | ~~Research-Tree `nameKey`-Kollisionen~~ | ✅ 6 JSON-Nodes + `combat-policy-2` in 15 Locales |
+| CODE-2 | Zoom-Logic in Custom Hook extrahieren | offen — zu viele Unterschiede für sicheres Refactoring |
+| ~~A11Y-3~~ | ~~`focus-visible` auf Tool-Cards~~ | ✅ erledigt |
+| ~~A11Y-4~~ | ~~Arrow-Key-Navigation Sprachdropdown~~ | ✅ `ArrowUp/Down/Home/End/Escape` |
+| ~~SEO-2~~ | ~~Members-Description übersetzen~~ | ✅ `t('seo.members.description')` |
 
 ### 🟢 Niedrig (Nice-to-Have)
 
