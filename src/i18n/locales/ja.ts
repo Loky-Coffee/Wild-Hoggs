@@ -168,7 +168,7 @@ export default {
   'calc.caravan.factionBlue': 'Wings of Dawn',
   'calc.caravan.factionYellow': 'Guard of Order',
   'calc.caravan.matchingHeroes': '同派閥英雄数',
-  'calc.caravan.weeklyBonus': '週次ヒーローバフ',
+  'calc.caravan.weeklyBonus': '敵ヒーロー',
   'calc.caravan.weeklyBonusOff': 'オフ',
   'calc.caravan.effectivePower': '実効戦力',
   'calc.caravan.matchingBonus': '編成ボーナス',

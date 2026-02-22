@@ -168,7 +168,7 @@ export default {
   'calc.caravan.factionBlue': 'Wings of Dawn',
   'calc.caravan.factionYellow': 'Guard of Order',
   'calc.caravan.matchingHeroes': 'Anh hùng cùng phe phái',
-  'calc.caravan.weeklyBonus': 'Buff anh hùng hàng tuần',
+  'calc.caravan.weeklyBonus': 'Anh hùng địch',
   'calc.caravan.weeklyBonusOff': 'Tắt',
   'calc.caravan.effectivePower': 'Sức mạnh hiệu quả',
   'calc.caravan.matchingBonus': 'đội hình',

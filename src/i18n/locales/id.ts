@@ -168,7 +168,7 @@ export default {
   'calc.caravan.factionBlue': 'Wings of Dawn',
   'calc.caravan.factionYellow': 'Guard of Order',
   'calc.caravan.matchingHeroes': 'Pahlawan faksi sama',
-  'calc.caravan.weeklyBonus': 'Bonus pahlawan mingguan',
+  'calc.caravan.weeklyBonus': 'Hero musuh',
   'calc.caravan.weeklyBonusOff': 'Nonaktif',
   'calc.caravan.effectivePower': 'Kekuatan efektif',
   'calc.caravan.matchingBonus': 'formasi',

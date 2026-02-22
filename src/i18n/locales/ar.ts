@@ -168,7 +168,7 @@ export default {
   'calc.caravan.factionBlue': 'Wings of Dawn',
   'calc.caravan.factionYellow': 'Guard of Order',
   'calc.caravan.matchingHeroes': 'أبطال نفس الفصيل',
-  'calc.caravan.weeklyBonus': 'مكافأة البطل الأسبوعية',
+  'calc.caravan.weeklyBonus': 'بطل العدو',
   'calc.caravan.weeklyBonusOff': 'معطّل',
   'calc.caravan.effectivePower': 'القوة الفعّالة',
   'calc.caravan.matchingBonus': 'تشكيل',

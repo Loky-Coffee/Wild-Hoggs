@@ -168,7 +168,7 @@ export default {
   'calc.caravan.factionBlue': 'Wings of Dawn',
   'calc.caravan.factionYellow': 'Guard of Order',
   'calc.caravan.matchingHeroes': 'Héros même faction',
-  'calc.caravan.weeklyBonus': 'Bonus héros hebdomadaire',
+  'calc.caravan.weeklyBonus': 'Héros ennemi',
   'calc.caravan.weeklyBonusOff': 'Désactivé',
   'calc.caravan.effectivePower': 'Puissance effective',
   'calc.caravan.matchingBonus': 'formation',

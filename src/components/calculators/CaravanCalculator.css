@@ -132,6 +132,12 @@
   gap: 0.35rem;
 }
 
+.cc-weekly-row {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
 .cc-opt-label {
   font-size: 0.8rem;
   color: rgba(255, 255, 255, 0.5);
@@ -158,7 +164,6 @@
 }
 
 .cc-weekly-btn {
-  flex: 1;
   min-width: 130px;
   padding: 0.4rem 0.8rem;
   border-radius: 8px;

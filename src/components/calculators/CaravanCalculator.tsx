@@ -162,15 +162,16 @@ export default function CaravanCalculator({ lang, translationData }: CaravanCalc
                 </button>
               ))}
             </div>
-            <button
-              type="button"
-              className={`cc-weekly-btn${weeklyActive ? ' active' : ''}`}
-              onClick={() => setWeeklyActive(v => !v)}
-            >
-              {weeklyActive
-                ? `${FACTION_HERO[yourFaction].name} +10% ${FACTION_HERO[yourFaction].buffKey}`
-                : t('calc.caravan.weeklyBonusOff')}
-            </button>
+            <div className="cc-weekly-row">
+              <span className="cc-opt-label">{t('calc.caravan.weeklyBonus')}:</span>
+              <button
+                type="button"
+                className={`cc-weekly-btn${weeklyActive ? ' active' : ''}`}
+                onClick={() => setWeeklyActive(v => !v)}
+              >
+                {FACTION_HERO[yourFaction].name} +10% {FACTION_HERO[yourFaction].buffKey}
+              </button>
+            </div>
           </div>
         )}
       </div>

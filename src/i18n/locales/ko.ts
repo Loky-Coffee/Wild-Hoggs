@@ -168,7 +168,7 @@ export default {
   'calc.caravan.factionBlue': 'Wings of Dawn',
   'calc.caravan.factionYellow': 'Guard of Order',
   'calc.caravan.matchingHeroes': '동일 세력 영웅 수',
-  'calc.caravan.weeklyBonus': '주간 영웅 버프',
+  'calc.caravan.weeklyBonus': '적 영웅',
   'calc.caravan.weeklyBonusOff': '비활성',
   'calc.caravan.effectivePower': '실효 전투력',
   'calc.caravan.matchingBonus': '편대 보너스',

@@ -168,7 +168,7 @@ export default {
   'calc.caravan.factionBlue': 'Wings of Dawn',
   'calc.caravan.factionYellow': 'Guard of Order',
   'calc.caravan.matchingHeroes': 'Aynı hizip kahramanları',
-  'calc.caravan.weeklyBonus': 'Haftalık kahraman bonusu',
+  'calc.caravan.weeklyBonus': 'Düşman kahraman',
   'calc.caravan.weeklyBonusOff': 'Kapalı',
   'calc.caravan.effectivePower': 'Efektif güç',
   'calc.caravan.matchingBonus': 'birlik',

@@ -168,7 +168,7 @@ export default {
   'calc.caravan.factionBlue': 'Wings of Dawn',
   'calc.caravan.factionYellow': 'Guard of Order',
   'calc.caravan.matchingHeroes': 'ฮีโร่กลุ่มเดียวกัน',
-  'calc.caravan.weeklyBonus': 'บัฟฮีโร่รายสัปดาห์',
+  'calc.caravan.weeklyBonus': 'ฮีโร่ศัตรู',
   'calc.caravan.weeklyBonusOff': 'ปิด',
   'calc.caravan.effectivePower': 'พลังที่มีประสิทธิผล',
   'calc.caravan.matchingBonus': 'การจัดทัพ',
