@@ -17,7 +17,7 @@
     "astro": "^5.17.1",
     "preact": "^10.28.3",
     "rangetouch": "^2.0.1",
-    "zod": "^3.25.76"
+    "zod": "^4.3.6"
   },
   "description": "Wild Hoggs - Last-Z Gilde Website",
   "keywords": [
