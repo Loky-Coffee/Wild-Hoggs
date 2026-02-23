@@ -179,8 +179,8 @@ const websiteSchema = {
     <meta property="twitter:image" content={ogImageURL} />
     <meta property="twitter:image:alt" content={imageAlt} />
 
-    <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
-    <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
+    <script type="application/ld+json" is:inline>{JSON.stringify(organizationSchema)}</script>
+    <script type="application/ld+json" is:inline>{JSON.stringify(websiteSchema)}</script>
   </head>
   <body>
     <slot />
