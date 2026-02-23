@@ -148,7 +148,7 @@ function HeroModal({ hero, onClose }: { hero: Hero; onClose: () => void }) {
                 {hero.rarity}
               </span>
               <span className="hg-tag">
-                <img src={factionIcon(hero.faction)} alt={hero.faction} className="hg-badge-icon" width={16} height={16} loading="lazy" />
+                <img src={factionIcon(hero.faction)} alt={FACTIONS[hero.faction].name} className="hg-badge-icon" width={16} height={16} loading="lazy" />
                 {FACTIONS[hero.faction].name}
               </span>
               <span className="hg-tag hg-tag-role">
@@ -376,7 +376,7 @@ export default function HeroGrid({ heroes, clearLabel = 'Reset all filters' }: {
             <img src={rarityIcon(hero.rarity)} alt={hero.rarity} className="hg-card-rarity" width={155} height={155} />
 
             <div className="hg-card-duo">
-              <img src={factionIcon(hero.faction)} alt={hero.faction} className="hg-card-duo-icon" width={40} height={40} />
+              <img src={factionIcon(hero.faction)} alt={FACTIONS[hero.faction].name} className="hg-card-duo-icon" width={40} height={40} />
               <div className="hg-card-duo-line" />
               <img src={roleIcon(hero.role)} alt={hero.role} className="hg-card-duo-icon" width={40} height={40} />
             </div>
