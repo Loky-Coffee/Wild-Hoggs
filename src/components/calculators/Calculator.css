@@ -1,3 +1,16 @@
+/* Accessibility utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .calculator-container {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 165, 0, 0.2);
@@ -50,22 +63,41 @@
   padding: 0.75rem 1rem;
   background: rgba(0, 0, 0, 0.4);
   border: 1px solid rgba(255, 165, 0, 0.3);
-  border-radius: 6px;
+  border-radius: 10px;
   color: #ffffff;
   font-size: 1rem;
-  transition: all 0.3s ease;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+}
+
+/* Custom select — nativen Pfeil entfernen, orangen Chevron einbauen */
+.form-group select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 2.75rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='M4 6L8 10L12 6' stroke='%23ffa500' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.875rem center;
+  background-size: 1rem;
+  cursor: pointer;
+}
+
+.form-group select option {
+  background: #1a1a1a;
+  color: #ffffff;
 }
 
 .form-group select:hover,
 .form-group input:hover {
-  border-color: rgba(255, 165, 0, 0.5);
+  border-color: rgba(255, 165, 0, 0.6);
+  background-color: rgba(255, 165, 0, 0.04);
 }
 
 .form-group select:focus,
 .form-group input:focus {
   outline: none;
   border-color: #ffa500;
-  box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.1);
+  box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.15);
 }
 
 .form-group input[type='number'] {

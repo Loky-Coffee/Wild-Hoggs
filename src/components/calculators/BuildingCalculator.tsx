@@ -104,6 +104,7 @@ export default function BuildingCalculator({ lang, translationData }: BuildingCa
         <div className="calc-step">
           <div className="calc-step-label">{t('calc.building.selectBuilding')}</div>
           <div className="form-group">
+            <label htmlFor="building-select" className="sr-only">{t('calc.building.selectBuilding')}</label>
             <select
               id="building-select"
               value={selectedBuilding}
