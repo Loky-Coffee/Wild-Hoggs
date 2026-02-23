@@ -58,8 +58,6 @@ export default function TankModificationTree({
 }: TankModificationTreeProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
-  const isDraggingRef = useRef(false);
-  const dragStartRef = useRef({ x: 0, y: 0, scrollLeft: 0, scrollTop: 0 });
 
   const { zoomLevel, setZoomLevel, handleZoomIn, handleZoomOut,
     handleScrollLeft, handleScrollRight, handleScrollUp, handleScrollDown,
@@ -198,62 +196,110 @@ export default function TankModificationTree({
     onSubLevelsChange(newMap);
   }, [modifications, subLevels, unlockedLevels, onUnlockedLevelsChange, onSubLevelsChange]);
 
-  // Drag-to-scroll (EXACT copy from ResearchTreeView)
-  const handleMouseDown = useCallback((e: MouseEvent) => {
-    const target = e.target as HTMLElement;
-    if (target.closest('[data-node-element="true"]') || target.tagName === 'INPUT') {
-      return;
-    }
-
-    isDraggingRef.current = true;
-    const container = scrollContainerRef.current;
-    if (container) {
-      dragStartRef.current = {
-        x: e.clientX,
-        y: e.clientY,
-        scrollLeft: container.scrollLeft,
-        scrollTop: container.scrollTop
-      };
-      container.style.cursor = 'grabbing';
-      container.style.userSelect = 'none';
-    }
-  }, []);
-
-  const handleMouseMove = useCallback((e: MouseEvent) => {
-    if (!isDraggingRef.current) return;
-
-    const container = scrollContainerRef.current;
-    if (container) {
-      const dx = (e.clientX - dragStartRef.current.x) * 1.5;
-      const dy = (e.clientY - dragStartRef.current.y) * 1.5;
-      container.scrollLeft = dragStartRef.current.scrollLeft - dx;
-      container.scrollTop = dragStartRef.current.scrollTop - dy;
-    }
-  }, []);
-
-  const handleMouseUp = useCallback(() => {
-    isDraggingRef.current = false;
-    const container = scrollContainerRef.current;
-    if (container) {
-      container.style.cursor = 'grab';
-      container.style.userSelect = '';
-    }
-  }, []);
-
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container) return;
 
-    container.addEventListener('mousedown', handleMouseDown as EventListener);
-    document.addEventListener('mousemove', handleMouseMove as EventListener);
-    document.addEventListener('mouseup', handleMouseUp);
+    let isDown = false;
+    let startX = 0;
+    let startY = 0;
+    let scrollLeft = 0;
+    let scrollTop = 0;
+    let touchStarted = false;
+
+    const shouldAllowScroll = (target: EventTarget | null): boolean => {
+      if (!target) return true;
+      const element = target as HTMLElement;
+      if (
+        element.tagName === 'INPUT' ||
+        element.tagName === 'BUTTON' ||
+        element.tagName === 'A' ||
+        element.closest('input') ||
+        element.closest('button') ||
+        element.closest('a')
+      ) return true;
+      if (element.closest('[data-clickable="true"]')) return true;
+      if (element.closest('[data-node-element="true"]')) return false;
+      if (element.closest('foreignObject')) return false;
+      return true;
+    };
+
+    const handleMouseDown = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.tagName === 'INPUT' || target.closest('input') || target.closest('foreignObject')) return;
+      if (!shouldAllowScroll(e.target)) return;
+      e.preventDefault();
+      isDown = true;
+      container.style.cursor = 'grabbing';
+      startX = e.pageX - container.offsetLeft;
+      startY = e.pageY - container.offsetTop;
+      scrollLeft = container.scrollLeft;
+      scrollTop = container.scrollTop;
+    };
+
+    const handleMouseLeave = () => {
+      isDown = false;
+      container.style.cursor = 'grab';
+    };
+
+    const handleMouseUp = () => {
+      isDown = false;
+      container.style.cursor = 'grab';
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - container.offsetLeft;
+      const y = e.pageY - container.offsetTop;
+      container.scrollLeft = scrollLeft - (x - startX) * 1.5;
+      container.scrollTop = scrollTop - (y - startY) * 1.5;
+    };
+
+    const handleTouchStart = (e: TouchEvent) => {
+      const target = e.target as HTMLElement;
+      if (e.touches.length > 1) { touchStarted = false; return; }
+      if (
+        target.tagName === 'INPUT' ||
+        (target instanceof HTMLInputElement && target.type === 'range') ||
+        target.closest('input[type="range"]') ||
+        target.closest('input') ||
+        target.closest('foreignObject')
+      ) return;
+      if (!shouldAllowScroll(e.target)) { e.preventDefault(); return; }
+      touchStarted = true;
+      const touch = e.touches[0];
+      startX = touch.pageX - container.offsetLeft;
+      startY = touch.pageY - container.offsetTop;
+      scrollLeft = container.scrollLeft;
+      scrollTop = container.scrollTop;
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 1) { touchStarted = false; return; }
+      if (!touchStarted) return;
+    };
+
+    const handleTouchEnd = () => { touchStarted = false; };
+
+    container.addEventListener('mousedown', handleMouseDown);
+    container.addEventListener('mouseleave', handleMouseLeave);
+    container.addEventListener('mouseup', handleMouseUp);
+    container.addEventListener('mousemove', handleMouseMove);
+    container.addEventListener('touchstart', handleTouchStart, { passive: false });
+    container.addEventListener('touchmove', handleTouchMove, { passive: true });
+    container.addEventListener('touchend', handleTouchEnd);
 
     return () => {
-      container.removeEventListener('mousedown', handleMouseDown as EventListener);
-      document.removeEventListener('mousemove', handleMouseMove as EventListener);
-      document.removeEventListener('mouseup', handleMouseUp);
+      container.removeEventListener('mousedown', handleMouseDown);
+      container.removeEventListener('mouseleave', handleMouseLeave);
+      container.removeEventListener('mouseup', handleMouseUp);
+      container.removeEventListener('mousemove', handleMouseMove);
+      container.removeEventListener('touchstart', handleTouchStart);
+      container.removeEventListener('touchmove', handleTouchMove);
+      container.removeEventListener('touchend', handleTouchEnd);
     };
-  }, [handleMouseDown, handleMouseMove, handleMouseUp]);
+  }, []);
 
   return (
     <div
