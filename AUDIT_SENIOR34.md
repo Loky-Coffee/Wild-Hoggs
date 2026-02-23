@@ -577,7 +577,7 @@ Content-Security-Policy: (siehe SEC-C02)
 | P2 | CQ-DUP04 | Zentrale `src/data/factions.ts` erstellen | ✅ BEHOBEN |
 | P2 | PERF-C01 | Kalkulatoren von `client:idle` zu `client:visible` | ✅ BEHOBEN |
 | P2 | PERF-H04 | `inlineStylesheets: 'never'` → `'auto'` | ✅ BEHOBEN |
-| P2 | PERF-M01 | Astro Image-Komponente für Hero-Portraits |
+| P2 | PERF-M01 | Astro Image-Komponente für Hero-Portraits | ❌ FALSE POSITIVE |
 | P2 | SEO-C01 | noindex + Sitemap-Ausschluss-Strategie vereinheitlichen |
 | P2 | SEO-C02 | Alt-Texte auf alle Bilder |
 | P2 | SEO-H02 | Seitenspezifische OG-Images |
