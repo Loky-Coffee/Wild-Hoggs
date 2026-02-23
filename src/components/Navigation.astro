@@ -9,11 +9,12 @@ const translationData = await loadTranslations(lang);
 const t = useTranslations(translationData);
 
 // Helper to generate paths: English without prefix, others with prefix
+// Always include trailing slash to avoid 308 redirects from Cloudflare Pages
 const getPath = (page: string) => {
   if (lang === 'en') {
-    return page === 'home' ? '/' : `/${page}`;
+    return page === 'home' ? '/' : `/${page}/`;
   }
-  return page === 'home' ? `/${lang}` : `/${lang}/${page}`;
+  return page === 'home' ? `/${lang}/` : `/${lang}/${page}/`;
 };
 
 const routes = [
@@ -28,7 +29,9 @@ const routes = [
   { key: 'nav.about', path: getPath('about') },
 ] as const;
 
-const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
+// Normalize to trailing slash for comparison (keeps '/' as-is)
+const rawPath = Astro.url.pathname;
+const currentPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : rawPath + '/');
 ---
 
 <nav class="navigation">
