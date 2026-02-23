@@ -54,7 +54,7 @@ export default defineConfig({
     })
   ],
   build: {
-    inlineStylesheets: 'never',
+    inlineStylesheets: 'auto',
   },
   vite: {
     build: {
