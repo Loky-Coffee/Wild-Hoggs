@@ -23,7 +23,7 @@ export default function ApocalypseTimeClock() {
       title="Last-Z Game Time (UTC-2)"
     >
       <span className="clock-label">Apocalypse Time</span>
-      <div className="clock-time">{time}</div>
+      <div className="clock-time" suppressHydrationWarning>{time}</div>
     </div>
   );
 }
