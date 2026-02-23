@@ -580,7 +580,7 @@ Content-Security-Policy: (siehe SEC-C02)
 | P2 | PERF-M01 | Astro Image-Komponente für Hero-Portraits | ❌ FALSE POSITIVE |
 | P2 | SEO-C01 | noindex + Sitemap-Ausschluss-Strategie vereinheitlichen | ✅ BEHOBEN |
 | P2 | SEO-C02 | Alt-Texte auf alle Bilder | ❌ FALSE POSITIVE |
-| P2 | SEO-H02 | Seitenspezifische OG-Images |
+| P2 | SEO-H02 | Seitenspezifische OG-Images | ✅ BEHOBEN |
 | P2 | BUG-H03 | Hydration-Mismatch in ApocalypseTimeClock | ✅ BEHOBEN |
 
 ### LANGFRISTIG (Roadmap)

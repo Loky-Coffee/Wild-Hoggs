@@ -13,12 +13,14 @@ interface Props {
   description?: string;
   robots?: string;
   breadcrumbs?: BreadcrumbItem[];
+  image?: string;
+  imageAlt?: string;
 }
 
-const { title, description, robots, breadcrumbs } = Astro.props;
+const { title, description, robots, breadcrumbs, image, imageAlt } = Astro.props;
 ---
 
-<Layout title={title} description={description} robots={robots}>
+<Layout title={title} description={description} robots={robots} image={image} imageAlt={imageAlt}>
   <a href="#main-content" class="skip-link">Skip to main content</a>
   <Navigation />
   {breadcrumbs && breadcrumbs.length > 0 && (
