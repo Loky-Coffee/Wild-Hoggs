@@ -535,6 +535,7 @@ export default {
   'tank.mod.light_rift_split': 'Phân Tách Vết Nứt Ánh Sáng',
   'tank.mod.rapid_rushfire': 'Bắn Nhanh Dồn Dập',
   'tank.mod.phase_ascend': 'Thăng Thiên Pha',
+  'tank.mod.ultimate_upgrade': 'Cải Tiến Cốp Xe Đặc Biệt',
   // Tank Vehicles (Milestones)
   'tank.vehicle.cheetah': 'Báo Gấm',
   'tank.vehicle.hercules': 'Hercules',

@@ -535,6 +535,7 @@ export default {
   'tank.mod.light_rift_split': 'Pemisahan Celah Cahaya',
   'tank.mod.rapid_rushfire': 'Tembakan Cepat Beruntun',
   'tank.mod.phase_ascend': 'Pendakian Fase',
+  'tank.mod.ultimate_upgrade': 'Modifikasi Bagasi Khusus',
   // Tank Vehicles (Milestones)
   'tank.vehicle.cheetah': 'Cheetah',
   'tank.vehicle.hercules': 'Hercules',

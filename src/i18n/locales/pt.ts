@@ -535,6 +535,7 @@ export default {
   'tank.mod.light_rift_split': 'Divisão de Fenda Luminosa',
   'tank.mod.rapid_rushfire': 'Tiro Rápido Acelerado',
   'tank.mod.phase_ascend': 'Ascensão de Fase',
+  'tank.mod.ultimate_upgrade': 'Modificação Especial do Porta-Malas',
   // Tank Vehicles (Milestones)
   'tank.vehicle.cheetah': 'Cheetah',
   'tank.vehicle.hercules': 'Hércules',

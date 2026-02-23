@@ -535,6 +535,7 @@ export default {
   'tank.mod.light_rift_split': 'انقسام صدع الضوء',
   'tank.mod.rapid_rushfire': 'إطلاق نار سريع متهور',
   'tank.mod.phase_ascend': 'صعود الطور',
+  'tank.mod.ultimate_upgrade': 'تعديل صندوق السيارة الخاص',
   // Tank Vehicles (Milestones)
   'tank.vehicle.cheetah': 'الفهد',
   'tank.vehicle.hercules': 'هرقل',

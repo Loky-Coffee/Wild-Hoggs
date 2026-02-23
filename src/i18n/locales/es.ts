@@ -535,6 +535,7 @@ export default {
   'tank.mod.light_rift_split': 'División de Grieta Luminosa',
   'tank.mod.rapid_rushfire': 'Fuego Rápido Apresurado',
   'tank.mod.phase_ascend': 'Ascensión de Fase',
+  'tank.mod.ultimate_upgrade': 'Modificación Especial del Maletero',
   // Tank Vehicles (Milestones)
   'tank.vehicle.cheetah': 'Cheetah',
   'tank.vehicle.hercules': 'Hércules',

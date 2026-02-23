@@ -535,6 +535,7 @@ export default {
   'tank.mod.light_rift_split': '빛의 균열 분열',
   'tank.mod.rapid_rushfire': '급속 연사',
   'tank.mod.phase_ascend': '위상 상승',
+  'tank.mod.ultimate_upgrade': '특수 트렁크 개조',
   // Tank Vehicles (Milestones)
   'tank.vehicle.cheetah': '치타',
   'tank.vehicle.hercules': '헤라클레스',

@@ -535,6 +535,7 @@ export default {
   'tank.mod.light_rift_split': 'Divisione Faglia Luminosa',
   'tank.mod.rapid_rushfire': 'Fuoco Rapido Precipitoso',
   'tank.mod.phase_ascend': 'Ascensione di Fase',
+  'tank.mod.ultimate_upgrade': 'Modifica Speciale del Bagagliaio',
   // Tank Vehicles (Milestones)
   'tank.vehicle.cheetah': 'Cheetah',
   'tank.vehicle.hercules': 'Ercole',

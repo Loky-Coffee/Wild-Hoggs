@@ -535,6 +535,7 @@ export default {
   'tank.mod.light_rift_split': '光裂分裂',
   'tank.mod.rapid_rushfire': '快速连射',
   'tank.mod.phase_ascend': '相位升华',
+  'tank.mod.ultimate_upgrade': '特殊后备箱改造',
   // Tank Vehicles (Milestones)
   'tank.vehicle.cheetah': '猎豹',
   'tank.vehicle.hercules': '赫拉克勒斯',

@@ -268,6 +268,7 @@ export default {
   'tank.mod.light_rift_split': 'Light Rift Split',
   'tank.mod.rapid_rushfire': 'Rapid Rushfire',
   'tank.mod.phase_ascend': 'Phase Ascend',
+  'tank.mod.ultimate_upgrade': 'Special Trunk Modification',
   // Tank Vehicles (Milestones)
   'tank.vehicle.cheetah': 'Cheetah',
   'tank.vehicle.hercules': 'Hercules',

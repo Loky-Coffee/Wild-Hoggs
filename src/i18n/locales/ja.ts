@@ -535,6 +535,7 @@ export default {
   'tank.mod.light_rift_split': 'ライトリフト分裂',
   'tank.mod.rapid_rushfire': '高速連射',
   'tank.mod.phase_ascend': 'フェーズ昇天',
+  'tank.mod.ultimate_upgrade': '特殊トランク改造',
   // Tank Vehicles (Milestones)
   'tank.vehicle.cheetah': 'チーター',
   'tank.vehicle.hercules': 'ヘラクレス',

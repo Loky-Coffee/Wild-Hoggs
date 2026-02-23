@@ -535,6 +535,7 @@ export default {
   'tank.mod.light_rift_split': 'Işık Yarığı Bölünmesi',
   'tank.mod.rapid_rushfire': 'Hızlı Atış Saldırısı',
   'tank.mod.phase_ascend': 'Faz Yükselişi',
+  'tank.mod.ultimate_upgrade': 'Özel Bagaj Modifikasyonu',
   // Tank Vehicles (Milestones)
   'tank.vehicle.cheetah': 'Cheetah',
   'tank.vehicle.hercules': 'Herkül',

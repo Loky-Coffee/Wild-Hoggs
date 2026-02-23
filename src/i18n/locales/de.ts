@@ -535,6 +535,7 @@ export default {
   'tank.mod.light_rift_split': 'Lichtriss-Spaltung',
   'tank.mod.rapid_rushfire': 'Schnelles Schnellfeuer',
   'tank.mod.phase_ascend': 'Phasen-Aufstieg',
+  'tank.mod.ultimate_upgrade': 'Spezielle Kofferraum-Modifizierung',
   // Tank Vehicles (Milestones)
   'tank.vehicle.cheetah': 'Cheetah',
   'tank.vehicle.hercules': 'Hercules',

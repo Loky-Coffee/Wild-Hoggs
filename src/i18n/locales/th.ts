@@ -535,6 +535,7 @@ export default {
   'tank.mod.light_rift_split': 'การแยกรอยแยกแสง',
   'tank.mod.rapid_rushfire': 'ยิงเร็วสุดขีด',
   'tank.mod.phase_ascend': 'การขึ้นสู่เฟส',
+  'tank.mod.ultimate_upgrade': 'การดัดแปลงท้ายรถพิเศษ',
   // Tank Vehicles (Milestones)
   'tank.vehicle.cheetah': 'ชีตาห์',
   'tank.vehicle.hercules': 'เฮอร์คิวลีส',
