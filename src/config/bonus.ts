@@ -17,3 +17,4 @@ export const ACTIVE_LUCKY_NUMBER = 10;
 // 8 = +20% Construction Speed (2h)
 // 9 = +20% Research Speed (2h)
 // 10 = +10% Troop ATK (2h) - Gold Rose
+
