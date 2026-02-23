@@ -33,13 +33,6 @@ const { title, description, robots, breadcrumbs, image, imageAlt } = Astro.props
   </main>
 </Layout>
 
-<style is:global>
-  /* Suppress body scroll — only .page-content scrolls */
-  body {
-    overflow: hidden;
-  }
-</style>
-
 <style>
   /* Skip Navigation Link - Accessibility */
   .skip-link {
@@ -61,10 +54,8 @@ const { title, description, robots, breadcrumbs, image, imageAlt } = Astro.props
   }
 
   .breadcrumbs-container {
-    position: fixed;
-    top: 80px;
-    left: 0;
-    right: 0;
+    position: sticky;
+    top: var(--nav-height);
     background: rgba(26, 26, 26, 0.95);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(255, 165, 0, 0.2);
@@ -76,36 +67,17 @@ const { title, description, robots, breadcrumbs, image, imageAlt } = Astro.props
     max-width: 100%;
     margin: 0 auto;
     padding: 0.5rem 2rem 2rem;
-    margin-top: 80px; /* Platz für fixierten Header */
-    min-height: calc(100dvh - 80px);
-    height: calc(100dvh - 80px);
-    overflow-y: auto; /* Content scrollt, nicht Body */
     overflow-x: hidden;
-  }
-
-  /* Wenn Breadcrumbs vorhanden, extra Platz */
-  .breadcrumbs-container + .page-content {
-    margin-top: 120px; /* 80px Header + ~40px Breadcrumbs */
-    height: calc(100dvh - 120px);
-    min-height: calc(100dvh - 120px);
   }
 
   @media (max-width: 768px) {
     .breadcrumbs-container {
-      top: 70px;
+      top: var(--nav-height-mobile);
       padding: 0.4rem 1rem;
     }
 
     .page-content {
       padding: 0.5rem 1rem 3rem;
-      margin-top: 70px; /* Kleinerer Header auf Mobile */
-      height: calc(100dvh - 70px); /* dvh berücksichtigt Browser-UI */
-      min-height: auto;
-    }
-
-    .breadcrumbs-container + .page-content {
-      margin-top: 105px; /* 70px Header + ~35px Breadcrumbs */
-      height: calc(100dvh - 105px);
     }
   }
 </style>

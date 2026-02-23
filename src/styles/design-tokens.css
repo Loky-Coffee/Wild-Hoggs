@@ -107,6 +107,10 @@
   --transition-base: 0.3s ease;
   --transition-slow: 0.5s ease;
 
+  /* ========== LAYOUT ========== */
+  --nav-height: 80px;
+  --nav-height-mobile: 70px;
+
   /* ========== Z-INDEX ========== */
   --z-dropdown: 1000;
   --z-sticky: 1020;

@@ -153,8 +153,7 @@ const breadcrumbItems = [
     overflow-y: hidden !important;
     overflow-x: hidden !important;
     padding: 0 !important;
-    margin-top: 80px;
-    height: calc(100vh - 80px);
+    height: calc(100dvh - var(--nav-height));
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
@@ -162,8 +161,7 @@ const breadcrumbItems = [
 
   @media (max-width: 768px) {
     body.page-research-calculator .page-content {
-      margin-top: 70px;
-      height: calc(100dvh - 70px);
+      height: calc(100dvh - var(--nav-height-mobile));
     }
   }
 </style>

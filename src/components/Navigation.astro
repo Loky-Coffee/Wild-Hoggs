@@ -75,10 +75,8 @@ const currentPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : r
     background: rgba(26, 26, 26, 0.9);
     backdrop-filter: blur(10px);
     border-bottom: 2px solid rgba(255, 165, 0, 0.3);
-    position: fixed;
+    position: sticky;
     top: 0;
-    left: 0;
-    right: 0;
     width: 100%;
     z-index: 1000;
   }
@@ -168,10 +166,8 @@ const currentPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : r
 
   @media (max-width: 768px) {
     .navigation {
-      position: fixed;
+      position: sticky;
       top: 0;
-      left: 0;
-      right: 0;
       width: 100%;
       z-index: 1000;
     }
