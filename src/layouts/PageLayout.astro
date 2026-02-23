@@ -67,7 +67,7 @@ const { title, description, robots, breadcrumbs, image, imageAlt } = Astro.props
     max-width: 100%;
     margin: 0 auto;
     padding: 0.5rem 2rem 2rem;
-    overflow-x: hidden;
+    overflow-x: clip; /* clip statt hidden: verhindert horizontalen Scroll ohne Scroll-Context zu erzeugen */
   }
 
   @media (max-width: 768px) {
