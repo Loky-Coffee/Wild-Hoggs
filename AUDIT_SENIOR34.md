@@ -564,7 +564,7 @@ Content-Security-Policy: (siehe SEC-C02)
 | P1 | SEC-H01 | Navigation.astro, LanguageDropdown.astro | `as any` Handler → WeakMap Pattern | ✅ BEHOBEN |
 | P1 | SEC-H03 | ErrorBoundary.tsx:90–92 | Stack Traces in Production verbergen | ❌ FALSE POSITIVE |
 | P1 | INF-C02 | package.json | `"engines": {"node": ">=18.0.0"}` hinzufügen | ❌ FALSE POSITIVE |
-| P1 | INF-C03 | format-sitemap.js | `process.exit(1)` → graceful degradation |
+| P1 | INF-C03 | format-sitemap.js | `process.exit(1)` → graceful degradation | ❌ FALSE POSITIVE |
 | P1 | CQ-C01–C03 | TankModificationTree.tsx, Navigation.astro | `as any` Typ-Casts eliminieren |
 | P1 | PERF-C02 | HeroGrid.tsx:136 | `loading="lazy"` auf Modal-Images |
 
