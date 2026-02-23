@@ -604,7 +604,7 @@ Minimalpadding könnte unter 44×44px (WCAG 2.5.5 Target Size) liegen.
 | ~~P02~~ | ~~Performance~~ | ~~Hardcodierte `calc(100dvh - 80px)` Höhen~~ | ✅ **RESOLVED** 2026-02-24 |
 | ~~P03~~ | ~~SEO + A11y~~ | ~~Fehlender `<h1>` auf Tank-Calculator~~ | ✅ **RESOLVED** 2026-02-24 |
 | ~~P04~~ | ~~SEO + A11y~~ | ~~Fehlender `<h1>` auf Research-Category-Seiten~~ | ✅ **RESOLVED** 2026-02-24 |
-| P05 | A11y | Animationen ohne `prefers-reduced-motion` | `HeroGrid.css:380`, `RewardCodes.css:18`, `WeeklyRoses.css:51` |
+| ~~P05~~ | ~~A11y~~ | ~~Animationen ohne `prefers-reduced-motion`~~ | ✅ **RESOLVED** 2026-02-24 |
 | P06 | A11y | Kontrast < 4.5:1 in HeroGrid + WeeklyRoses | `HeroGrid.css:33,98,116`, `WeeklyRoses.css:38` |
 | P07 | Code | Array-Bounds fehlt in HeroExpCalculator | `src/components/calculators/HeroExpCalculator.tsx:34` |
 | ~~P08~~ | ~~Security~~ | ~~`npm audit fix` (devalue)~~ | ✅ **RESOLVED** 2026-02-24 |
@@ -669,4 +669,5 @@ Alle Befunde wurden durch direktes Lesen der Quelldateien mit exakten Zeilennumm
 | 2026-02-24 | P12 RESOLVED: OG-Images für alle Research-Kategorien (commit 0999aea) |
 | 2026-02-24 | P14 RESOLVED: sr-only label + CustomSelect.tsx Dropdown-Komponente |
 | 2026-02-24 | EXTRA: Branded Custom Scrollbar (Body + Dropdowns) |
+| 2026-02-24 | P05 RESOLVED: prefers-reduced-motion in HeroGrid.css, RewardCodes.css, WeeklyRoses.css |
 | 2026-02-24 | EXTRA: Breakdown-Listen — keine fixed heights mehr, Body scrollt nativ |

@@ -224,3 +224,9 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .rose-card.active .rose-icon { animation: none; }
+  .rose-card.active::before { animation: none; opacity: 0.3; }
+  .rose-card.active:hover { transform: none; }
+}

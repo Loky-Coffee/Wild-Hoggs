@@ -234,3 +234,10 @@
     width: 100%;
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .loading-spinner,
+  .spinner { animation: none; border-top-color: #ffa500; }
+  .code-card:hover { transform: none; }
+  .copy-btn:hover { transform: none; }
+}

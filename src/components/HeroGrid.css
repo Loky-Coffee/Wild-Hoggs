@@ -851,3 +851,17 @@
     }
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .hg-card { transition: box-shadow 0.25s ease, border-color 0.25s ease; }
+  .hg-card.faction-wings-of-dawn:hover,
+  .hg-card.faction-wings-of-dawn.active,
+  .hg-card.faction-blood-rose:hover,
+  .hg-card.faction-blood-rose.active,
+  .hg-card.faction-guard-of-order:hover,
+  .hg-card.faction-guard-of-order.active { transform: none; }
+  .hg-card:hover .hg-card-img { transform: none; }
+  .hg-backdrop { animation: none; opacity: 1; }
+  .hg-split { animation: none; opacity: 1; transform: scale(1); }
+  .hg-skill-chevron { transition: color 0.15s; }
+}
