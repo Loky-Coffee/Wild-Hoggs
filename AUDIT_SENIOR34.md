@@ -366,24 +366,23 @@ const daysUntilSunday = ((7 - apocalypseTime.getDay()) % 7) || 7;
 ```
 `|| 7` stellt sicher, dass an Sonntagen korrekt 7 Tage addiert werden.
 
-**BUG-C03 · `src/components/calculators/HeroExpCalculator.tsx:32–35` — Potenzieller Array-Index-Fehler**
+**BUG-C03 · `src/components/calculators/HeroExpCalculator.tsx:32–35` — Potenzieller Array-Index-Fehler** ❌ FALSE POSITIVE
 ```typescript
 for (let level = currentLevel; level < targetLevel; level++) {
-  const expNeeded = heroExpTable[level];
+  const expNeeded = heroExpTable[level]; // heroExpTable[1] = 100 EXP (Upgrade 1→2) ✓
   breakdown.push({ level: level + 1, exp: expNeeded });
 }
 ```
-`{ level: level + 1 }` deutet darauf hin, dass die Tabelle 0-indexiert ist (Index 0 = Level 1). Aber `heroExpTable[level]` beim Start-Level `currentLevel=1` liest `heroExpTable[1]` (Level 2-Kosten). Off-by-one-Fehler bei der Experience-Berechnung.
-**Fix:** Entweder `heroExpTable[level - 1]` oder Tabellen-Semantik klar dokumentieren und konsistent anwenden.
+Verifiziert: `heroExpTable` ist so definiert dass Index 1 = EXP für Upgrade 1→2, Index 2 = EXP für 2→3 usw. Die Loop-Logik ist korrekt. Zod-Schema bestätigt: `z.array(z.number().nonnegative().int())`. **Kein Bug.**
 
-**BUG-C04 · `src/components/calculators/BuildingCalculator.tsx:63–64` — Potenzieller Off-By-One in Kosten-Loop**
+**BUG-C04 · `src/components/calculators/BuildingCalculator.tsx:63–64` — Potenzieller Off-By-One in Kosten-Loop** ❌ FALSE POSITIVE (funktional)
 ```typescript
 for (let level = currentLevel; level < targetLevel; level++) {
-  const cost = selectedBuildingData.costs[level];
+  const cost = selectedBuildingData.costs[level]; // costs[2] = Upgrade auf Level 3 ✓
 }
 ```
-Wenn `costs` 0-indexed ist (costs[0] = Upgrade von Level 0→1), dann berechnet `costs[currentLevel]` korrekt. Wenn 1-indexed: Off-by-one. Die Semantik ist aus dem Code nicht eindeutig.
-**Fix:** `buildings.json` prüfen: Wenn `costs[0]` = Upgrade auf Level 1, dann `costs[level - 1]` verwenden.
+Verifiziert: `costs[0].level=1`, `costs[1].level=2`, `costs[2].level=3` — also `costs[i]` = Kosten für Upgrade *auf* Level i+1. Bei `currentLevel=2`: `costs[2]` = Upgrade 2→3. Korrekt. Zod-Schema erzwingt `costs.length === maxLevel`. **Kein funktionaler Bug.**
+⚠️ **Code-Clarity-Issue:** Variable `level` repräsentiert semantisch einen Array-Index, nicht das aktuelle Level. Erschwert das Lesen und Warten des Codes, produziert aber keine falschen Ergebnisse.
 
 **BUG-C05 · `src/components/calculators/ResearchTreeNode.tsx:263` & `TankModificationNode.tsx:203` — Unleserliche Font-Größe**
 ResearchTreeNode: `fontSize="7"` für Target-Button-Text — praktisch unlesbar.
@@ -558,8 +557,8 @@ Content-Security-Policy: (siehe SEC-C02)
 
 | Priorität | ID | Datei | Problem |
 |-----------|-----|-------|---------|
-| P1 | BUG-C03 | HeroExpCalculator.tsx:32–35 | Off-by-one in Exp-Tabellen-Zugriff |
-| P1 | BUG-C04 | BuildingCalculator.tsx:63–64 | Off-by-one in Kosten-Loop verifizieren |
+| P1 | BUG-C03 | HeroExpCalculator.tsx:32–35 | Off-by-one in Exp-Tabellen-Zugriff | ❌ FALSE POSITIVE |
+| P1 | BUG-C04 | BuildingCalculator.tsx:63–64 | Off-by-one in Kosten-Loop | ❌ FALSE POSITIVE (Code-Clarity-Issue) |
 | P1 | BUG-C05 | ResearchTreeNode.tsx:263 | fontSize=7 unlesbar |
 | P1 | SEC-C02 | codes.astro:61, Layout.astro:163 | `set:html` → `<script type="application/ld+json">` |
 | P1 | SEC-H01 | Navigation.astro, LanguageDropdown.astro | `as any` Handler → WeakMap Pattern |
