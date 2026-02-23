@@ -32,6 +32,7 @@ const breadcrumbItems = [
   image="/og-garage.webp"
   imageAlt={t('tools.tank.title')}
 >
+  <h1 class="page-title-subtle">{t('tools.tank.title')}</h1>
   <div class="calculator-wrapper">
     <ErrorBoundary lang={lang} client:load>
       <TankCalculator lang={lang} translationData={translationData} client:load />
@@ -77,6 +78,16 @@ const breadcrumbItems = [
 </style>
 
 <style>
+  .page-title-subtle {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.3);
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 0;
+    padding: 0.4rem 1rem 0;
+  }
+
   .calculator-wrapper {
     display: flex;
     flex-direction: column;

@@ -110,6 +110,7 @@ const breadcrumbItems = [
 ---
 
 <PageLayout title={`Last Z ${t(category.nameKey as TranslationKey)}`} description={`Calculate Last Z badge costs for ${t(category.nameKey as TranslationKey)} research`} breadcrumbs={breadcrumbItems}>
+  <h1 class="page-title-subtle">{t(category.nameKey as TranslationKey)}</h1>
   <div class="calculator-wrapper">
     <ErrorBoundary lang={lang} client:load>
       <ResearchCategoryCalculator
@@ -161,6 +162,16 @@ const breadcrumbItems = [
 </style>
 
 <style>
+  .page-title-subtle {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.3);
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 0;
+    padding: 0.4rem 1rem 0;
+  }
+
   .calculator-wrapper {
     display: flex;
     flex-direction: column;
@@ -174,26 +185,5 @@ const breadcrumbItems = [
   .calculator-wrapper > :global(*:last-child) {
     flex: 1;
     min-height: 0;
-  }
-
-  h1 {
-    font-size: 2.5rem;
-    color: #ffa500;
-    margin-bottom: 0.5rem;
-  }
-
-  .subtitle {
-    font-size: 1.2rem;
-    color: rgba(255, 255, 255, 0.7);
-  }
-
-  @media (max-width: 768px) {
-    h1 {
-      font-size: 2rem;
-    }
-
-    .subtitle {
-      font-size: 1rem;
-    }
   }
 </style>
