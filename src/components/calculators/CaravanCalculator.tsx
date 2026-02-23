@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'preact/hooks';
 import caravanLevels from '../../data/caravan-levels.json';
+import { FACTIONS, type HeroFaction } from '../../data/heroes';
 import { useTranslations } from '../../i18n/utils';
 import type { TranslationData } from '../../i18n/index';
 import './Calculator.css';
@@ -10,21 +11,19 @@ interface CaravanCalculatorProps {
   readonly translationData: TranslationData;
 }
 
-type Faction = 'red' | 'blue' | 'yellow';
-
-const FACTION_HERO: Record<Faction, { name: string; buffKey: string }> = {
-  blue:   { name: 'Laura',   buffKey: 'ATK' },
-  red:    { name: 'Katrina', buffKey: 'DEF' },
-  yellow: { name: 'Chicha',  buffKey: 'DMG' },
+const FACTION_HERO: Record<HeroFaction, { name: string; buffKey: string }> = {
+  'wings-of-dawn':  { name: 'Laura',   buffKey: 'ATK' },
+  'blood-rose':     { name: 'Katrina', buffKey: 'DEF' },
+  'guard-of-order': { name: 'Chicha',  buffKey: 'DMG' },
 };
 
-const FACTION_ICON: Record<Faction, string> = {
-  red:    '/images/heroes/symbols/blood-rose.webp',
-  blue:   '/images/heroes/symbols/wings-of-dawn.webp',
-  yellow: '/images/heroes/symbols/guard-of-order.webp',
+const FACTION_ICON: Record<HeroFaction, string> = {
+  'blood-rose':     '/images/heroes/symbols/blood-rose.webp',
+  'wings-of-dawn':  '/images/heroes/symbols/wings-of-dawn.webp',
+  'guard-of-order': '/images/heroes/symbols/guard-of-order.webp',
 };
 
-const FACTIONS: Faction[] = ['red', 'blue', 'yellow'];
+const FACTION_LIST = Object.keys(FACTIONS) as HeroFaction[];
 
 function parsePower(input: string): number {
   let s = input.trim().toLowerCase().replace(/\s/g, '');
@@ -76,7 +75,7 @@ function getMatchingBonus(count: number): number {
 
 export default function CaravanCalculator({ lang, translationData }: CaravanCalculatorProps) {
   const [powerInput,    setPowerInput]    = useState('');
-  const [yourFaction,   setYourFaction]   = useState<Faction | null>(null);
+  const [yourFaction,   setYourFaction]   = useState<HeroFaction | null>(null);
   const [matchingCount, setMatchingCount] = useState(5);
   const [weeklyActive,  setWeeklyActive]  = useState(false);
   const [calculated,    setCalculated]    = useState(false);
@@ -116,10 +115,10 @@ export default function CaravanCalculator({ lang, translationData }: CaravanCalc
     return { maxFull, maxLevel, maxSub };
   }, [results]);
 
-  const fn: Record<Faction, string> = {
-    red:    t('calc.caravan.factionRed'),
-    blue:   t('calc.caravan.factionBlue'),
-    yellow: t('calc.caravan.factionYellow'),
+  const fn: Record<HeroFaction, string> = {
+    'blood-rose':     t('calc.caravan.factionRed'),
+    'wings-of-dawn':  t('calc.caravan.factionBlue'),
+    'guard-of-order': t('calc.caravan.factionYellow'),
   };
 
   return (
@@ -142,7 +141,7 @@ export default function CaravanCalculator({ lang, translationData }: CaravanCalc
       <div className="cc-step">
         <div className="cc-step-label">{t('calc.caravan.yourFaction')}</div>
         <div className="cc-faction-row">
-          {FACTIONS.map(f => (
+          {FACTION_LIST.map(f => (
             <button
               key={f}
               type="button"

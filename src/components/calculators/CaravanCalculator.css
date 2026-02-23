@@ -77,38 +77,38 @@
   line-height: 1.1;
 }
 
-/* Red */
-.cc-red              { border-color: rgba(220, 60, 60, 0.3);  color: rgba(230, 130, 130, 0.75); }
-.cc-red:hover        { border-color: rgba(220, 60, 60, 0.65); background: rgba(220, 60, 60, 0.1);  color: #ff8080; }
-.cc-red.selected     { background: rgba(220, 60, 60, 0.2);    border-color: rgba(220, 60, 60, 1);  color: #ff8080; box-shadow: 0 0 14px rgba(220, 60, 60, 0.35); }
+/* Blood Rose */
+.cc-blood-rose              { border-color: rgba(220, 60, 60, 0.3);  color: rgba(230, 130, 130, 0.75); }
+.cc-blood-rose:hover        { border-color: rgba(220, 60, 60, 0.65); background: rgba(220, 60, 60, 0.1);  color: #ff8080; }
+.cc-blood-rose.selected     { background: rgba(220, 60, 60, 0.2);    border-color: rgba(220, 60, 60, 1);  color: #ff8080; box-shadow: 0 0 14px rgba(220, 60, 60, 0.35); }
 
-/* Blue */
-.cc-blue             { border-color: rgba(60, 130, 220, 0.3);  color: rgba(130, 180, 230, 0.75); }
-.cc-blue:hover       { border-color: rgba(60, 130, 220, 0.65); background: rgba(60, 130, 220, 0.1);  color: #80b8ff; }
-.cc-blue.selected    { background: rgba(60, 130, 220, 0.2);    border-color: rgba(60, 130, 220, 1);  color: #80b8ff; box-shadow: 0 0 14px rgba(60, 130, 220, 0.35); }
+/* Wings of Dawn */
+.cc-wings-of-dawn             { border-color: rgba(60, 130, 220, 0.3);  color: rgba(130, 180, 230, 0.75); }
+.cc-wings-of-dawn:hover       { border-color: rgba(60, 130, 220, 0.65); background: rgba(60, 130, 220, 0.1);  color: #80b8ff; }
+.cc-wings-of-dawn.selected    { background: rgba(60, 130, 220, 0.2);    border-color: rgba(60, 130, 220, 1);  color: #80b8ff; box-shadow: 0 0 14px rgba(60, 130, 220, 0.35); }
 
-/* Yellow */
-.cc-yellow           { border-color: rgba(220, 180, 40, 0.3);  color: rgba(230, 200, 100, 0.75); }
-.cc-yellow:hover     { border-color: rgba(220, 180, 40, 0.65); background: rgba(220, 180, 40, 0.1);  color: #ffd966; }
-.cc-yellow.selected  { background: rgba(220, 180, 40, 0.2);    border-color: rgba(220, 180, 40, 1);  color: #ffd966; box-shadow: 0 0 14px rgba(220, 180, 40, 0.35); }
+/* Guard of Order */
+.cc-guard-of-order           { border-color: rgba(220, 180, 40, 0.3);  color: rgba(230, 200, 100, 0.75); }
+.cc-guard-of-order:hover     { border-color: rgba(220, 180, 40, 0.65); background: rgba(220, 180, 40, 0.1);  color: #ffd966; }
+.cc-guard-of-order.selected  { background: rgba(220, 180, 40, 0.2);    border-color: rgba(220, 180, 40, 1);  color: #ffd966; box-shadow: 0 0 14px rgba(220, 180, 40, 0.35); }
 
 /* ── Pulse animations (recommended faction blinks) ── */
-@keyframes pulse-red {
+@keyframes pulse-blood-rose {
   0%, 100% { box-shadow: 0 0 0 0 rgba(220, 60, 60, 0); }
   50%       { box-shadow: 0 0 0 5px rgba(220, 60, 60, 0.28), 0 0 18px rgba(220, 60, 60, 0.45); }
 }
-@keyframes pulse-blue {
+@keyframes pulse-wings-of-dawn {
   0%, 100% { box-shadow: 0 0 0 0 rgba(60, 130, 220, 0); }
   50%       { box-shadow: 0 0 0 5px rgba(60, 130, 220, 0.28), 0 0 18px rgba(60, 130, 220, 0.45); }
 }
-@keyframes pulse-yellow {
+@keyframes pulse-guard-of-order {
   0%, 100% { box-shadow: 0 0 0 0 rgba(220, 180, 40, 0); }
   50%       { box-shadow: 0 0 0 5px rgba(220, 180, 40, 0.28), 0 0 18px rgba(220, 180, 40, 0.45); }
 }
 
-.pulse-red    { animation: pulse-red    1.4s ease-in-out infinite; }
-.pulse-blue   { animation: pulse-blue   1.4s ease-in-out infinite; }
-.pulse-yellow { animation: pulse-yellow 1.4s ease-in-out infinite; }
+.pulse-blood-rose     { animation: pulse-blood-rose     1.4s ease-in-out infinite; }
+.pulse-wings-of-dawn  { animation: pulse-wings-of-dawn  1.4s ease-in-out infinite; }
+.pulse-guard-of-order { animation: pulse-guard-of-order 1.4s ease-in-out infinite; }
 
 .cc-rec-star {
   font-size: 0.72rem;

@@ -572,7 +572,7 @@ Content-Security-Policy: (siehe SEC-C02)
 
 | Priorität | ID | Problem |
 |-----------|-----|---------|
-| P2 | CQ-DUP01 | `useDragToScroll()` Hook extrahieren (~150 LOC Duplikat) |
+| P2 | CQ-DUP01 | `useDragToScroll()` Hook extrahieren (~150 LOC Duplikat) | ✅ BEHOBEN |
 | P2 | CQ-DUP02 | `<ZoomNavigationControls />` Komponente extrahieren | ✅ BEHOBEN |
 | P2 | CQ-DUP04 | Zentrale `src/data/factions.ts` erstellen |
 | P2 | PERF-C01 | Kalkulatoren von `client:idle` zu `client:visible` |

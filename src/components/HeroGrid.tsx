@@ -200,15 +200,10 @@ function toggle<T>(set: T[], val: T): T[] {
 
 const SESSIONS      = [0, 1, 2, 3, 4];
 const ROLES         = ['attack', 'support', 'defense'] as HeroRole[];
-const FACTIONS_LIST = ['blood-rose', 'wings-of-dawn', 'guard-of-order'] as HeroFaction[];
+const FACTIONS_LIST = Object.keys(FACTIONS) as HeroFaction[];
 const RARITIES      = ['B', 'A', 'S', 'S1', 'S2', 'S3', 'S4'] as HeroRarity[];
 
-const ROLE_LABEL: Record<HeroRole, string>       = { attack: 'Attack', support: 'Support', defense: 'Defense' };
-const FACTION_LABEL: Record<HeroFaction, string> = {
-  'blood-rose':     'Blood Rose',
-  'wings-of-dawn':  'Wings of Dawn',
-  'guard-of-order': 'Guard of Order',
-};
+const ROLE_LABEL: Record<HeroRole, string> = { attack: 'Attack', support: 'Support', defense: 'Defense' };
 
 /* ── Main grid ── */
 export default function HeroGrid({ heroes, clearLabel = 'Reset all filters' }: { heroes: Hero[]; clearLabel?: string }) {
@@ -331,9 +326,9 @@ export default function HeroGrid({ heroes, clearLabel = 'Reset all filters' }: {
                   type="button"
                   className={`hg-chip hg-chip-faction hg-chip-icon-only hg-chip-${f}${filterFaction.includes(f) ? ' active' : ''}`}
                   onClick={() => setFilterFaction(prev => toggle(prev, f))}
-                  aria-label={FACTION_LABEL[f]}
+                  aria-label={FACTIONS[f].name}
                 >
-                  <img src={factionIcon(f)} alt={FACTION_LABEL[f]} className="hg-chip-icon-lg" width={28} height={28} />
+                  <img src={factionIcon(f)} alt={FACTIONS[f].name} className="hg-chip-icon-lg" width={28} height={28} />
                 </button>
               ))}
             </div>
