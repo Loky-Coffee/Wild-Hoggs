@@ -110,6 +110,10 @@
   /* ========== LAYOUT ========== */
   --nav-height: 80px;
   --nav-height-mobile: 70px;
+  --breadcrumbs-height: 37px;
+  --breadcrumbs-height-mobile: 34px;
+  /* sticky-offset = Gesamthöhe aller sticky Header-Elemente */
+  --sticky-offset: var(--nav-height);
 
   /* ========== Z-INDEX ========== */
   --z-dropdown: 1000;

@@ -204,6 +204,17 @@ const websiteSchema = {
     scrollbar-color: var(--color-primary-alpha-40) rgba(255, 255, 255, 0.05);
   }
 
+  /* Wenn Breadcrumbs vorhanden: sticky-offset um Breadcrumbs-Höhe erhöhen */
+  body:has(.breadcrumbs-container) {
+    --sticky-offset: calc(var(--nav-height) + var(--breadcrumbs-height));
+  }
+
+  @media (max-width: 768px) {
+    body:has(.breadcrumbs-container) {
+      --sticky-offset: calc(var(--nav-height-mobile) + var(--breadcrumbs-height-mobile));
+    }
+  }
+
   /* Chromium & Safari */
   ::-webkit-scrollbar {
     width: 8px;

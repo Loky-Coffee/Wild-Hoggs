@@ -744,7 +744,7 @@ g[data-unlock-button="true"]:focus-visible .unlock-button-focus-indicator {
 
   .calc-split.has-results > .calc-controls {
     position: sticky;
-    top: calc(var(--nav-height) + 1.5rem);
+    top: calc(var(--sticky-offset) + 1.5rem);
   }
 
   .calc-split > .calc-results {
