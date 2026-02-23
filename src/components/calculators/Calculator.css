@@ -560,3 +560,209 @@ g[data-unlock-button="true"]:focus-visible .unlock-button-focus-indicator {
 .breakdown-item.vehicle-mod:hover {
   background: rgba(52, 152, 219, 0.2);
 }
+
+/* ============================================
+   Compact Meta Info Row (shared)
+   For small inline info items (Power Gain, Hero Cap, etc.)
+   ============================================ */
+
+.meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.meta-card {
+  flex: 1;
+  min-width: 100px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 165, 0, 0.15);
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.meta-card.highlight {
+  background: rgba(255, 165, 0, 0.07);
+  border-color: rgba(255, 165, 0, 0.28);
+}
+
+.meta-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.45);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.meta-value {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ffa500;
+  line-height: 1.2;
+}
+
+/* ============================================
+   Split Calculator Layout (shared)
+   Used by: Caravan, HeroExp, Building
+   ============================================ */
+
+.calc-split {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  max-width: 580px;
+  margin: 0 auto;
+}
+
+.calc-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.calc-results {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.calc-step {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 165, 0, 0.15);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.calc-step-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: rgba(255, 165, 0, 0.75);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Reset form-group spacing inside steps */
+.calc-step .form-group {
+  margin-bottom: 0;
+}
+
+.calc-step .form-row {
+  gap: 0.75rem;
+}
+
+.calc-btn {
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  border: 2px solid rgba(255, 165, 0, 0.6);
+  background: rgba(255, 165, 0, 0.12);
+  color: #ffa500;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.04em;
+}
+
+.calc-btn:hover:not(:disabled) {
+  background: rgba(255, 165, 0, 0.25);
+  border-color: #ffa500;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(255, 165, 0, 0.2);
+}
+
+.calc-btn.done {
+  border-color: rgba(39, 174, 96, 0.5);
+  background: rgba(39, 174, 96, 0.08);
+  color: #52be80;
+  cursor: default;
+  opacity: 0.75;
+}
+
+.calc-hint {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 0.9rem;
+  padding: 0.75rem 0;
+  margin: 0;
+}
+
+/* Headings and cards inside calc-results */
+.calc-results h3 {
+  color: #ffa500;
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  font-size: 1.25rem;
+}
+
+.calc-results h4 {
+  color: #ffa500;
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+}
+
+.calc-results .result-card {
+  margin-bottom: 0;
+}
+
+.calc-results .breakdown {
+  margin-top: 0;
+}
+
+@media (min-width: 769px) {
+  astro-island {
+    display: block;
+    width: 100%;
+  }
+
+  .calc-split {
+    display: grid;
+    grid-template-columns: 540px 1fr;
+    gap: 1.75rem;
+    align-items: start;
+    max-width: none;
+    margin: 0;
+    padding-left: max(0px, calc(50% - 270px));
+    transition: padding-left 1.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .calc-split.has-results {
+    padding-left: 0;
+  }
+
+  .calc-split > .calc-controls {
+    align-self: start;
+    min-width: 0;
+  }
+
+  .calc-split.has-results > .calc-controls {
+    position: sticky;
+    top: 1.5rem;
+  }
+
+  .calc-split > .calc-results {
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .calc-split.has-results > .calc-results {
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  /* Desktop sizing */
+  .calc-step { padding: 1.4rem 1.75rem; gap: 1rem; }
+  .calc-step-label { font-size: 0.82rem; }
+  .calc-btn { font-size: 1.05rem; padding: 0.85rem 1.5rem; }
+}
+
+@media (max-width: 480px) {
+  .calc-step { padding: 0.8rem 0.9rem; gap: 0.6rem; }
+}

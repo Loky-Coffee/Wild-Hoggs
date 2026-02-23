@@ -122,12 +122,12 @@ export default function CaravanCalculator({ lang, translationData }: CaravanCalc
   };
 
   return (
-    <div className={`caravan-calc${(results && calculated) ? ' has-results' : ''}`}>
-    <div className="cc-controls">
+    <div className={`calc-split${(results && calculated) ? ' has-results' : ''}`}>
+    <div className="calc-controls">
 
       {/* ── Step 1: Power Input ── */}
-      <div className="cc-step">
-        <div className="cc-step-label">{t('calc.caravan.formationPower')}</div>
+      <div className="calc-step">
+        <div className="calc-step-label">{t('calc.caravan.formationPower')}</div>
         <input
           type="text"
           className="cc-power-input"
@@ -138,8 +138,8 @@ export default function CaravanCalculator({ lang, translationData }: CaravanCalc
       </div>
 
       {/* ── Step 2: Your Faction + Bonuses ── */}
-      <div className="cc-step">
-        <div className="cc-step-label">{t('calc.caravan.yourFaction')}</div>
+      <div className="calc-step">
+        <div className="calc-step-label">{t('calc.caravan.yourFaction')}</div>
         <div className="cc-faction-row">
           {FACTION_LIST.map(f => (
             <button
@@ -200,15 +200,15 @@ export default function CaravanCalculator({ lang, translationData }: CaravanCalc
       {/* ── Calculate Button ── */}
       <button
         type="button"
-        className={`cc-calc-btn${calculated ? ' done' : ''}`}
+        className={`calc-btn${calculated ? ' done' : ''}`}
         onClick={() => setCalculated(true)}
         disabled={calculated}
       >
         {calculated ? `✓ ${t('calc.caravan.autoCalculate')}` : t('calc.caravan.calculate')}
       </button>
 
-    </div>{/* end cc-controls */}
-    <div className="cc-results">
+    </div>{/* end calc-controls */}
+    <div className="calc-results">
 
       {/* ── Results ── */}
       {summary && results && calculated ? (
@@ -261,10 +261,10 @@ export default function CaravanCalculator({ lang, translationData }: CaravanCalc
           </div>
         </>
       ) : calculated ? (
-        <p className="cc-hint">{t('calc.caravan.enterPower')}</p>
+        <p className="calc-hint">{t('calc.caravan.enterPower')}</p>
       ) : null}
 
-    </div>{/* end cc-results */}
+    </div>{/* end calc-results */}
     </div>
   );
 }

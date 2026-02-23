@@ -38,6 +38,7 @@ export default function BuildingCalculator({ lang, translationData }: BuildingCa
   const [selectedBuilding, setSelectedBuilding] = useState<string>(buildings[0].id);
   const [currentLevel, setCurrentLevel] = useState<number>(1);
   const [targetLevel, setTargetLevel] = useState<number>(5);
+  const [calculated, setCalculated] = useState(false);
 
   const t = useTranslations(translationData);
 
@@ -92,159 +93,179 @@ export default function BuildingCalculator({ lang, translationData }: BuildingCa
   const handleReset = () => {
     setCurrentLevel(1);
     setTargetLevel(5);
+    setCalculated(false);
   };
 
   return (
-    <div className="calculator-container">
-      <div className="calculator-form">
-        <div className="form-group">
-          <label htmlFor="building-select">{t('calc.building.selectBuilding')}:</label>
-          <select
-            id="building-select"
-            value={selectedBuilding}
-            onChange={(e) => setSelectedBuilding((e.target as HTMLSelectElement).value)}
-          >
-            {buildings.map((building) => (
-              <option key={building.id} value={building.id}>
-                {t(building.nameKey as TranslationKey)}
-              </option>
-            ))}
-          </select>
-        </div>
+    <div className={`calc-split${calculated ? ' has-results' : ''}`}>
+      <div className="calc-controls">
 
-        <div className="form-row">
+        {/* Step 1: Building Selection */}
+        <div className="calc-step">
+          <div className="calc-step-label">{t('calc.building.selectBuilding')}</div>
           <div className="form-group">
-            <label htmlFor="current-level">{t('calc.building.currentLevel')}:</label>
-            <input
-              id="current-level"
-              type="number"
-              min="1"
-              max={maxLevel - 1}
-              value={currentLevel}
-              onChange={(e) => setCurrentLevel(Number.parseInt((e.target as HTMLInputElement).value, 10) || 1)}
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="target-level">{t('calc.building.targetLevel')}:</label>
-            <input
-              id="target-level"
-              type="number"
-              min={currentLevel + 1}
-              max={maxLevel}
-              value={targetLevel}
-              onChange={(e) => setTargetLevel(Number.parseInt((e.target as HTMLInputElement).value, 10) || currentLevel + 1)}
-            />
+            <select
+              id="building-select"
+              value={selectedBuilding}
+              onChange={(e) => setSelectedBuilding((e.target as HTMLSelectElement).value)}
+            >
+              {buildings.map((building) => (
+                <option key={building.id} value={building.id}>
+                  {t(building.nameKey as TranslationKey)}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
 
-        <div className="button-group">
-          <button onClick={handleReset} className="btn-secondary">
-            {t('calc.building.reset')}
-          </button>
+        {/* Step 2: Level Range */}
+        <div className="calc-step">
+          <div className="calc-step-label">{t('calc.building.levelRange')}</div>
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="current-level">{t('calc.building.currentLevel')}:</label>
+              <input
+                id="current-level"
+                type="number"
+                min="1"
+                max={maxLevel - 1}
+                value={currentLevel}
+                onChange={(e) => setCurrentLevel(Number.parseInt((e.target as HTMLInputElement).value, 10) || 1)}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="target-level">{t('calc.building.targetLevel')}:</label>
+              <input
+                id="target-level"
+                type="number"
+                min={currentLevel + 1}
+                max={maxLevel}
+                value={targetLevel}
+                onChange={(e) => setTargetLevel(Number.parseInt((e.target as HTMLInputElement).value, 10) || currentLevel + 1)}
+              />
+            </div>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <button onClick={handleReset} className="btn-secondary">
+              {t('calc.building.reset')}
+            </button>
+          </div>
         </div>
+
+        {/* Calculate Button */}
+        <button
+          type="button"
+          className={`calc-btn${calculated ? ' done' : ''}`}
+          onClick={() => setCalculated(true)}
+          disabled={calculated}
+        >
+          {calculated ? `✓ ${t('calc.building.calculate')}` : t('calc.building.calculate')}
+        </button>
+
       </div>
 
-      {calculatedResults && (
-        <div className="calculator-results">
-          <h3>{t('calc.building.results')}</h3>
-
-          <div className="resource-grid">
-            {calculatedResults.totalWood > 0 && (
-              <div className="resource-card">
-                <div className="resource-label">{t('calc.building.wood')}</div>
-                <div className="resource-value">{formatNumber(calculatedResults.totalWood, lang)}</div>
-              </div>
-            )}
-            {calculatedResults.totalFood > 0 && (
-              <div className="resource-card">
-                <div className="resource-label">{t('calc.building.food')}</div>
-                <div className="resource-value">{formatNumber(calculatedResults.totalFood, lang)}</div>
-              </div>
-            )}
-            {calculatedResults.totalSteel > 0 && (
-              <div className="resource-card">
-                <div className="resource-label">{t('calc.building.steel')}</div>
-                <div className="resource-value">{formatNumber(calculatedResults.totalSteel, lang)}</div>
-              </div>
-            )}
-            {calculatedResults.totalZinc > 0 && (
-              <div className="resource-card">
-                <div className="resource-label">{t('calc.building.zinc')}</div>
-                <div className="resource-value">{formatNumber(calculatedResults.totalZinc, lang)}</div>
-              </div>
-            )}
-          </div>
-
-          {calculatedResults.totalPower > 0 && (
-            <div className="result-card highlight">
-              <div className="result-label">{t('calc.building.powerGain')}</div>
-              <div className="result-value">{formatNumber(calculatedResults.totalPower, lang)}</div>
-            </div>
-          )}
-
-          {calculatedResults.targetHeroLevelCap && (
-            <div className="result-card">
-              <div className="result-label">{t('calc.building.heroLevelCap')}</div>
-              <div className="result-value">{calculatedResults.targetHeroLevelCap}</div>
-            </div>
-          )}
-
-          {calculatedResults.targetRequiredBuildings && calculatedResults.targetRequiredBuildings !== 'None' && (
-            <div className="result-card">
-              <div className="result-label">{t('calc.building.requiredBuildings')}</div>
-              <div className="result-value" style={{ fontSize: '0.9rem' }}>{calculatedResults.targetRequiredBuildings}</div>
-            </div>
-          )}
-
-          <div className="breakdown">
-            <h4>{t('calc.building.perLevel')}</h4>
-            <div className="breakdown-list">
-              {calculatedResults.breakdown.map((item) => (
-                <div key={item.level} className="breakdown-item">
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                    <span className="breakdown-level">Level {item.level}</span>
-                    {item.power && (
-                      <span style={{ fontSize: '0.85rem', color: '#ffa500' }}>
-                        ⭐ +{formatNumber(item.power, lang)} Power
-                      </span>
-                    )}
-                    {item.heroLevelCap && (
-                      <span style={{ fontSize: '0.85rem', color: 'rgba(255, 255, 255, 0.5)' }}>
-                        Hero Cap: {item.heroLevelCap}
-                      </span>
-                    )}
+      <div className="calc-results">
+        {calculated && (
+          calculatedResults ? (
+            <>
+              <div className="resource-grid">
+                {calculatedResults.totalWood > 0 && (
+                  <div className="resource-card">
+                    <div className="resource-label">{t('calc.building.wood')}</div>
+                    <div className="resource-value">{formatNumber(calculatedResults.totalWood, lang)}</div>
                   </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', alignItems: 'flex-end' }}>
-                    <div style={{ display: 'flex', gap: '1rem', fontSize: '0.9rem' }}>
-                      {item.wood > 0 && <span>🪵 {formatNumber(item.wood, lang)}</span>}
-                      {item.food > 0 && <span>🌾 {formatNumber(item.food, lang)}</span>}
-                      {item.steel > 0 && <span>⚙️ {formatNumber(item.steel, lang)}</span>}
-                      {item.zinc > 0 && <span>⚡ {formatNumber(item.zinc, lang)}</span>}
+                )}
+                {calculatedResults.totalFood > 0 && (
+                  <div className="resource-card">
+                    <div className="resource-label">{t('calc.building.food')}</div>
+                    <div className="resource-value">{formatNumber(calculatedResults.totalFood, lang)}</div>
+                  </div>
+                )}
+                {calculatedResults.totalSteel > 0 && (
+                  <div className="resource-card">
+                    <div className="resource-label">{t('calc.building.steel')}</div>
+                    <div className="resource-value">{formatNumber(calculatedResults.totalSteel, lang)}</div>
+                  </div>
+                )}
+                {calculatedResults.totalZinc > 0 && (
+                  <div className="resource-card">
+                    <div className="resource-label">{t('calc.building.zinc')}</div>
+                    <div className="resource-value">{formatNumber(calculatedResults.totalZinc, lang)}</div>
+                  </div>
+                )}
+              </div>
+
+              {(calculatedResults.totalPower > 0 || calculatedResults.targetHeroLevelCap || (calculatedResults.targetRequiredBuildings && calculatedResults.targetRequiredBuildings !== 'None')) && (
+                <div className="meta-row">
+                  {calculatedResults.totalPower > 0 && (
+                    <div className="meta-card highlight">
+                      <span className="meta-label">{t('calc.building.powerGain')}</span>
+                      <span className="meta-value">{formatNumber(calculatedResults.totalPower, lang)}</span>
                     </div>
-                    {item.requiredBuildings && item.requiredBuildings !== 'None' && (
-                      <span style={{ fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.4)', textAlign: 'right' }}>
-                        {item.requiredBuildings}
-                      </span>
-                    )}
-                  </div>
+                  )}
+                  {calculatedResults.targetHeroLevelCap && (
+                    <div className="meta-card">
+                      <span className="meta-label">{t('calc.building.heroLevelCap')}</span>
+                      <span className="meta-value">{calculatedResults.targetHeroLevelCap}</span>
+                    </div>
+                  )}
+                  {calculatedResults.targetRequiredBuildings && calculatedResults.targetRequiredBuildings !== 'None' && (
+                    <div className="meta-card">
+                      <span className="meta-label">{t('calc.building.requiredBuildings')}</span>
+                      <span className="meta-value" style={{ fontSize: '0.85rem' }}>{calculatedResults.targetRequiredBuildings}</span>
+                    </div>
+                  )}
                 </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
+              )}
 
-      {!calculatedResults && currentLevel >= targetLevel && (
-        <div
-          className="calculator-error"
-          role="alert"
-          aria-live="assertive"
-          aria-atomic="true"
-        >
-          {t('calc.building.errorTargetLevel')}
-        </div>
-      )}
+              <div className="breakdown">
+                <h4>{t('calc.building.perLevel')}</h4>
+                <div className="breakdown-list">
+                  {calculatedResults.breakdown.map((item) => (
+                    <div key={item.level} className="breakdown-item">
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                        <span className="breakdown-level">Level {item.level}</span>
+                        {item.power && (
+                          <span style={{ fontSize: '0.85rem', color: '#ffa500' }}>
+                            ⭐ +{formatNumber(item.power, lang)} Power
+                          </span>
+                        )}
+                        {item.heroLevelCap && (
+                          <span style={{ fontSize: '0.85rem', color: 'rgba(255, 255, 255, 0.5)' }}>
+                            Hero Cap: {item.heroLevelCap}
+                          </span>
+                        )}
+                      </div>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', alignItems: 'flex-end' }}>
+                        <div style={{ display: 'flex', gap: '1rem', fontSize: '0.9rem' }}>
+                          {item.wood > 0 && <span>🪵 {formatNumber(item.wood, lang)}</span>}
+                          {item.food > 0 && <span>🌾 {formatNumber(item.food, lang)}</span>}
+                          {item.steel > 0 && <span>⚙️ {formatNumber(item.steel, lang)}</span>}
+                          {item.zinc > 0 && <span>⚡ {formatNumber(item.zinc, lang)}</span>}
+                        </div>
+                        {item.requiredBuildings && item.requiredBuildings !== 'None' && (
+                          <span style={{ fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.4)', textAlign: 'right' }}>
+                            {item.requiredBuildings}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </>
+          ) : (
+            <div
+              className="calculator-error"
+              role="alert"
+              aria-live="assertive"
+              aria-atomic="true"
+            >
+              {t('calc.building.errorTargetLevel')}
+            </div>
+          )
+        )}
+      </div>
     </div>
   );
 }
