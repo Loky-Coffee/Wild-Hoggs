@@ -560,10 +560,10 @@ Content-Security-Policy: (siehe SEC-C02)
 | P1 | BUG-C03 | HeroExpCalculator.tsx:32–35 | Off-by-one in Exp-Tabellen-Zugriff | ❌ FALSE POSITIVE |
 | P1 | BUG-C04 | BuildingCalculator.tsx:63–64 | Off-by-one in Kosten-Loop | ❌ FALSE POSITIVE (Code-Clarity-Issue) |
 | P1 | BUG-C05 | ResearchTreeNode.tsx:263 | fontSize=7 unlesbar |
-| P1 | SEC-C02 | codes.astro:61, Layout.astro:163 | `set:html` → `<script type="application/ld+json">` |
-| P1 | SEC-H01 | Navigation.astro, LanguageDropdown.astro | `as any` Handler → WeakMap Pattern |
-| P1 | SEC-H03 | ErrorBoundary.tsx:90–92 | Stack Traces in Production verbergen |
-| P1 | INF-C02 | package.json | `"engines": {"node": ">=18.0.0"}` hinzufügen |
+| P1 | SEC-C02 | codes.astro:61, Layout.astro:163 | `set:html` → `<script type="application/ld+json">` | ✅ BEHOBEN |
+| P1 | SEC-H01 | Navigation.astro, LanguageDropdown.astro | `as any` Handler → WeakMap Pattern | ✅ BEHOBEN |
+| P1 | SEC-H03 | ErrorBoundary.tsx:90–92 | Stack Traces in Production verbergen | ❌ FALSE POSITIVE |
+| P1 | INF-C02 | package.json | `"engines": {"node": ">=18.0.0"}` hinzufügen | ❌ FALSE POSITIVE |
 | P1 | INF-C03 | format-sitemap.js | `process.exit(1)` → graceful degradation |
 | P1 | CQ-C01–C03 | TankModificationTree.tsx, Navigation.astro | `as any` Typ-Casts eliminieren |
 | P1 | PERF-C02 | HeroGrid.tsx:136 | `loading="lazy"` auf Modal-Images |
@@ -573,7 +573,7 @@ Content-Security-Policy: (siehe SEC-C02)
 | Priorität | ID | Problem |
 |-----------|-----|---------|
 | P2 | CQ-DUP01 | `useDragToScroll()` Hook extrahieren (~150 LOC Duplikat) |
-| P2 | CQ-DUP02 | `<ZoomNavigationControls />` Komponente extrahieren |
+| P2 | CQ-DUP02 | `<ZoomNavigationControls />` Komponente extrahieren | ✅ BEHOBEN |
 | P2 | CQ-DUP04 | Zentrale `src/data/factions.ts` erstellen |
 | P2 | PERF-C01 | Kalkulatoren von `client:idle` zu `client:visible` |
 | P2 | PERF-H04 | `inlineStylesheets: 'never'` → `'auto'` |

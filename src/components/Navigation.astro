@@ -249,6 +249,9 @@ const currentPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : r
 </style>
 
 <script>
+  const navClickHandlers = new WeakMap<Element, EventListener>();
+  const navOutsideHandlers = new WeakMap<Element, EventListener>();
+
   function setupNavToggle() {
     const toggle = document.querySelector('.nav-toggle');
     const navLinks = document.querySelector('.nav-links');
@@ -256,7 +259,7 @@ const currentPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : r
     if (!toggle || !navLinks) return;
 
     // Remove old listener if exists (prevent duplicates)
-    const oldHandler = (toggle as any).__clickHandler;
+    const oldHandler = navClickHandlers.get(toggle);
     if (oldHandler) {
       toggle.removeEventListener('click', oldHandler);
     }
@@ -268,7 +271,7 @@ const currentPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : r
     };
 
     // Store handler reference for cleanup
-    (toggle as any).__clickHandler = clickHandler;
+    navClickHandlers.set(toggle, clickHandler);
 
     // Add new listener
     toggle.addEventListener('click', clickHandler);
@@ -294,13 +297,13 @@ const currentPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : r
     };
 
     // Remove old click-outside listener if exists
-    const oldOutsideHandler = (document as any).__navOutsideHandler;
+    const oldOutsideHandler = navOutsideHandlers.get(toggle);
     if (oldOutsideHandler) {
       document.removeEventListener('click', oldOutsideHandler);
     }
 
     // Store handler reference for cleanup
-    (document as any).__navOutsideHandler = closeMenuOnClickOutside;
+    navOutsideHandlers.set(toggle, closeMenuOnClickOutside as EventListener);
 
     // Add click-outside listener
     document.addEventListener('click', closeMenuOnClickOutside);

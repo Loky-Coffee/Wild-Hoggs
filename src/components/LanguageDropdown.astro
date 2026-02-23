@@ -224,6 +224,9 @@ const getLanguageUrl = (targetLang: string) => {
 </style>
 
 <script>
+  const dropdownClickHandlers = new WeakMap<Element, EventListener>();
+  const dropdownOutsideHandlers = new WeakMap<Element, EventListener>();
+
   function setupLanguageDropdown() {
     const dropdown = document.querySelector('.language-dropdown');
     const toggle = dropdown?.querySelector('.dropdown-toggle');
@@ -232,10 +235,13 @@ const getLanguageUrl = (targetLang: string) => {
     if (!dropdown || !toggle || !menu) return;
 
     // Remove old listeners if they exist
-    const oldHandler = (toggle as any).__clickHandler;
+    const oldHandler = dropdownClickHandlers.get(toggle);
     if (oldHandler) {
       toggle.removeEventListener('click', oldHandler);
-      document.removeEventListener('click', (toggle as any).__outsideHandler);
+      const oldOutsideHandler = dropdownOutsideHandlers.get(toggle);
+      if (oldOutsideHandler) {
+        document.removeEventListener('click', oldOutsideHandler);
+      }
     }
 
     // Toggle dropdown
@@ -254,8 +260,8 @@ const getLanguageUrl = (targetLang: string) => {
     };
 
     // Store handlers
-    (toggle as any).__clickHandler = clickHandler;
-    (toggle as any).__outsideHandler = outsideHandler;
+    dropdownClickHandlers.set(toggle, clickHandler);
+    dropdownOutsideHandlers.set(toggle, outsideHandler);
 
     // Add listeners
     toggle.addEventListener('click', clickHandler);
