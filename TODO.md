@@ -4,7 +4,7 @@ Jetzt habe ich ein vollständiges Bild. Hier sind alle gefundenen Probleme:
   Ergebnisse der vollständigen Untersuchung                                                                          
                                                                                                                      
   1. Hero-Daten — Skills fehlen                                                                                      
-
+a
   ┌──────────┬────────┬────────┬───────────────────────────────────────────────────┐                                 
   │   Hero   │ Rarity │ Skills │                      Problem                      │                                 
   ├──────────┼────────┼────────┼───────────────────────────────────────────────────┤                                 
@@ -66,3 +66,26 @@ Jetzt habe ich ein vollständiges Bild. Hier sind alle gefundenen Probleme:
   │ siege-to-seize        │ 0               │ 18           │ ❌ Alle fehlen │
   └───────────────────────┴─────────────────┴──────────────┴────────────────┘
 
+
+
+  CF-2 — Cloudflare Worker für 404
+
+  Wenn jemand eine falsche URL besucht (z.B. /xyz), zeigt deine 404-Seite eine Weiterleitung zur richtigen Sprache.
+  Das passiert aktuell mit JavaScript im Browser — also lädt erstmal die 404-Seite, dann läuft JS, dann wird
+  weitergeleitet.
+
+  Ein "Cloudflare Worker" ist ein kleines Skript das auf Cloudflares Servern läuft, bevor die Seite überhaupt geladen
+   wird. Das wäre schneller.
+
+  Risiko wenn nicht gemacht: Kein Problem. Die aktuelle Lösung funktioniert einwandfrei, ist nur minimal langsamer.
+
+  ---
+  CODE-4 — Sentry
+
+  Sentry ist ein Fehler-Tracking-Dienst. Wenn bei einem Nutzer irgendwo in deiner App ein JavaScript-Fehler auftritt,
+   bekommst du automatisch eine Benachrichtigung mit genauer Fehlermeldung, Browsertyp, Seite usw.
+
+  Aktuell weißt du nur von Fehlern, wenn dir ein Nutzer es schreibt. Mit Sentry siehst du Fehler sofort selbst.
+
+  Risiko wenn nicht gemacht: Du merkst Bugs nur, wenn Nutzer sie melden. Für eine kleine Community-Seite oft
+  ausreichend.

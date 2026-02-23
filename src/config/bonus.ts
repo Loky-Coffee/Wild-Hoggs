@@ -4,7 +4,7 @@
 
 // Hier kannst du die aktive Lucky Rose für diese Woche einstellen
 // Ändere einfach die Nummer von 1-10:
-export const ACTIVE_LUCKY_NUMBER = 8;
+export const ACTIVE_LUCKY_NUMBER = 10;
 
 // Lucky Rose Numbers (1-10):
 // 1 = +20% Construction Speed (2h)
