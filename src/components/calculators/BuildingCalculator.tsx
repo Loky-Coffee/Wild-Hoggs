@@ -3,6 +3,7 @@ import { validatedBuildings as buildingsData } from '../../data/validated/buildi
 import { useTranslations } from '../../i18n/utils';
 import { formatNumber } from '../../utils/formatters';
 import type { TranslationData, TranslationKey } from '../../i18n/index';
+import CustomSelect from './CustomSelect';
 import './Calculator.css';
 
 interface BuildingCost {
@@ -104,18 +105,13 @@ export default function BuildingCalculator({ lang, translationData }: BuildingCa
         <div className="calc-step">
           <div className="calc-step-label">{t('calc.building.selectBuilding')}</div>
           <div className="form-group">
-            <label htmlFor="building-select" className="sr-only">{t('calc.building.selectBuilding')}</label>
-            <select
+            <CustomSelect
               id="building-select"
               value={selectedBuilding}
-              onChange={(e) => setSelectedBuilding((e.target as HTMLSelectElement).value)}
-            >
-              {buildings.map((building) => (
-                <option key={building.id} value={building.id}>
-                  {t(building.nameKey as TranslationKey)}
-                </option>
-              ))}
-            </select>
+              options={buildings.map((b) => ({ value: b.id, label: t(b.nameKey as TranslationKey) }))}
+              onChange={setSelectedBuilding}
+              label={t('calc.building.selectBuilding')}
+            />
           </div>
         </div>
 
