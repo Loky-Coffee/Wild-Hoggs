@@ -133,7 +133,7 @@ function HeroModal({ hero, onClose }: { hero: Hero; onClose: () => void }) {
 
         {/* Left — portrait */}
         <div className="hg-split-img-col">
-          <img src={hero.image} alt={hero.name} className="hg-split-img" width={400} height={600} onError={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = '0'; }} />
+          <img src={hero.image} alt={hero.name} className="hg-split-img" width={400} height={600} loading="lazy" onError={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = '0'; }} />
         </div>
 
         {/* Right — info */}
@@ -144,15 +144,15 @@ function HeroModal({ hero, onClose }: { hero: Hero; onClose: () => void }) {
             <h2 className="hg-hero-name" id="hg-hero-modal-title">{hero.name}</h2>
             <div className="hg-hero-tags">
               <span className={`hg-rarity-badge hg-rarity-${RARITY_COLOR[hero.rarity]}`}>
-                <img src={rarityIcon(hero.rarity)} alt={hero.rarity} className="hg-badge-icon" width={16} height={16} />
+                <img src={rarityIcon(hero.rarity)} alt={hero.rarity} className="hg-badge-icon" width={16} height={16} loading="lazy" />
                 {hero.rarity}
               </span>
               <span className="hg-tag">
-                <img src={factionIcon(hero.faction)} alt={hero.faction} className="hg-badge-icon" width={16} height={16} />
+                <img src={factionIcon(hero.faction)} alt={hero.faction} className="hg-badge-icon" width={16} height={16} loading="lazy" />
                 {FACTIONS[hero.faction].name}
               </span>
               <span className="hg-tag hg-tag-role">
-                <img src={roleIcon(hero.role)} alt={hero.role} className="hg-badge-icon" width={16} height={16} />
+                <img src={roleIcon(hero.role)} alt={hero.role} className="hg-badge-icon" width={16} height={16} loading="lazy" />
                 {hero.role.charAt(0).toUpperCase() + hero.role.slice(1)}
               </span>
               {hero.globalPassive && (

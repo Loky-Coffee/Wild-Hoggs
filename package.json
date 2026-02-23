@@ -2,6 +2,9 @@
   "name": "wild-hoggs",
   "type": "module",
   "version": "0.0.1",
+  "engines": {
+    "node": "^20.3.0 || >=22.0.0"
+  },
   "scripts": {
     "dev": "astro dev",
     "build": "astro build && node format-sitemap.js",

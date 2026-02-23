@@ -75,7 +75,7 @@ export class ErrorBoundary extends Component<Props, State> {
           <p style={{ marginBottom: '1rem', opacity: 0.9 }}>
             {t.message}
           </p>
-          {this.state.error && (
+          {this.state.error && import.meta.env.DEV && (
             <details style={{ marginBottom: '1rem' }}>
               <summary style={{ cursor: 'pointer', marginBottom: '0.5rem' }}>
                 {t.details}

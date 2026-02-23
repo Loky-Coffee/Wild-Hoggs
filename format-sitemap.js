@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync, readdirSync } from 'fs';
+import { readFileSync, writeFileSync, readdirSync, existsSync } from 'fs';
 import { join } from 'path';
 
 /**
@@ -45,6 +45,11 @@ function formatXML(xml) {
 function formatSitemaps() {
   const distDir = './dist';
 
+  if (!existsSync(distDir)) {
+    console.warn('⚠️  ./dist not found — skipping sitemap formatting.');
+    return;
+  }
+
   try {
     const files = readdirSync(distDir);
     const sitemapFiles = files.filter(f => f.endsWith('.xml') && f.includes('sitemap'));
@@ -61,8 +66,8 @@ function formatSitemaps() {
 
     console.log('✅ Sitemap formatting complete!\n');
   } catch (error) {
-    console.error('❌ Error formatting sitemaps:', error.message);
-    process.exit(1);
+    console.warn('⚠️  Sitemap formatting failed — deployment continues with unformatted sitemaps.');
+    console.warn('   Reason:', error.message);
   }
 }
 
