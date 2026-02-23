@@ -553,7 +553,7 @@ export default {
   'tank.nextVehicle': 'المركبة التالية',
   'tank.target': 'الهدف',
   'tank.setTarget': 'هدف',
-  'tank.targetSet': 'هدف',
+  'tank.targetSet': '✓ هدف',
   'tank.maxAll': 'الكل للحد الأقصى',
   'tank.resetAll': 'إعادة تعيين الكل',
   'tank.unlock': 'فتح',

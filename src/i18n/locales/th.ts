@@ -553,7 +553,7 @@ export default {
   'tank.nextVehicle': 'ยานพาหนะถัดไป',
   'tank.target': 'เป้าหมาย',
   'tank.setTarget': 'เป้า',
-  'tank.targetSet': 'เป้า',
+  'tank.targetSet': '✓ เป้า',
   'tank.maxAll': 'ทั้งหมดสูงสุด',
   'tank.resetAll': 'รีเซ็ตทั้งหมด',
   'tank.unlock': 'ปลดล็อค',

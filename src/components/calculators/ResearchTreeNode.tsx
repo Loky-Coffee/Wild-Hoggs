@@ -229,7 +229,7 @@ function ResearchTreeNode({
             height={39}
             rx={6}
             fill="none"
-            stroke={isTarget ? 'rgba(231, 76, 60, 0.8)' : 'rgba(231, 76, 60, 0.8)'}
+            stroke="rgba(231, 76, 60, 0.8)"
             strokeWidth={2}
             opacity={0}
             className="target-button-focus-indicator"
@@ -261,7 +261,7 @@ function ResearchTreeNode({
             y={-NODE_HEIGHT / 2 + 33}
             textAnchor="middle"
             fontSize="7"
-            fill={isTarget ? '#e74c3c' : '#e74c3c'}
+            fill="#e74c3c"
             fontWeight="600"
             data-node-element="true"
           >

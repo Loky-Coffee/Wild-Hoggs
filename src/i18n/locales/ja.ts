@@ -553,7 +553,7 @@ export default {
   'tank.nextVehicle': '次の車両',
   'tank.target': '目標',
   'tank.setTarget': '目標',
-  'tank.targetSet': '目標',
+  'tank.targetSet': '✓ 目標',
   'tank.maxAll': 'すべて最大',
   'tank.resetAll': 'すべてリセット',
   'tank.unlock': 'アンロック',

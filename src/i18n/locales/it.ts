@@ -553,7 +553,7 @@ export default {
   'tank.nextVehicle': 'Veicolo Successivo',
   'tank.target': 'Obiettivo',
   'tank.setTarget': 'Target',
-  'tank.targetSet': 'Target',
+  'tank.targetSet': '✓ Target',
   'tank.maxAll': 'Tutto al Massimo',
   'tank.resetAll': 'Ripristina Tutto',
   'tank.unlock': 'Sblocca',

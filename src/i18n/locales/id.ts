@@ -553,7 +553,7 @@ export default {
   'tank.nextVehicle': 'Kendaraan Berikutnya',
   'tank.target': 'Target',
   'tank.setTarget': 'Target',
-  'tank.targetSet': 'Target',
+  'tank.targetSet': '✓ Target',
   'tank.maxAll': 'Maksimalkan Semua',
   'tank.resetAll': 'Reset Semua',
   'tank.unlock': 'Buka',

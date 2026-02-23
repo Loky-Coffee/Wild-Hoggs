@@ -553,7 +553,7 @@ export default {
   'tank.nextVehicle': 'Próximo Veículo',
   'tank.target': 'Alvo',
   'tank.setTarget': 'Meta',
-  'tank.targetSet': 'Meta',
+  'tank.targetSet': '✓ Meta',
   'tank.maxAll': 'Máximo em Tudo',
   'tank.resetAll': 'Redefinir Tudo',
   'tank.unlock': 'Desbloquear',

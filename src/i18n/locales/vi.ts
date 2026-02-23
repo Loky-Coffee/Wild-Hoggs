@@ -553,7 +553,7 @@ export default {
   'tank.nextVehicle': 'Phương Tiện Tiếp Theo',
   'tank.target': 'Mục Tiêu',
   'tank.setTarget': 'Mục Tiêu',
-  'tank.targetSet': 'Mục Tiêu',
+  'tank.targetSet': '✓ Mục Tiêu',
   'tank.maxAll': 'Tối Đa Tất Cả',
   'tank.resetAll': 'Đặt Lại Tất Cả',
   'tank.unlock': 'Mở Khóa',

@@ -32,7 +32,7 @@ export default function WeeklyRoses({ lang, roses, translationData }: WeeklyRose
 
     // Calculate this Sunday 23:59:59 in Apocalypse Time
     const nextSunday = new Date(apocalypseTime);
-    const daysUntilSunday = (7 - apocalypseTime.getDay()) % 7;
+    const daysUntilSunday = ((7 - apocalypseTime.getDay()) % 7) || 7;
     nextSunday.setDate(apocalypseTime.getDate() + daysUntilSunday);
     nextSunday.setHours(23, 59, 59, 999);
 

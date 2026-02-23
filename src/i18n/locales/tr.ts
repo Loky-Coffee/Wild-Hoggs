@@ -553,7 +553,7 @@ export default {
   'tank.nextVehicle': 'Sonraki Araç',
   'tank.target': 'Hedef',
   'tank.setTarget': 'Hedef',
-  'tank.targetSet': 'Hedef',
+  'tank.targetSet': '✓ Hedef',
   'tank.maxAll': 'Hepsini Maksimum Yap',
   'tank.resetAll': 'Hepsini Sıfırla',
   'tank.unlock': 'Kilidi Aç',

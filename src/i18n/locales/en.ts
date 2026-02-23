@@ -287,7 +287,7 @@ export default {
   'tank.nextVehicle': 'Next Vehicle',
   'tank.target': 'Target',
   'tank.setTarget': 'Target',
-  'tank.targetSet': 'Target',
+  'tank.targetSet': '✓ Target',
   'tank.maxAll': 'Max All',
   'tank.resetAll': 'Reset All',
   'tank.unlock': 'Unlock',

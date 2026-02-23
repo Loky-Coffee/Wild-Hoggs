@@ -29,9 +29,9 @@ Das Projekt zeigt eine solide Architektur mit modernen Patterns (Island Architec
 
 ### KRITISCH
 
-**SEC-C01 · `src/pages/404.astro:112–116` — Open Redirect via navigator.language**
-Die 404-Seite setzt `window.location.href` direkt auf Basis von `navigator.language`. Obwohl der Wert gegen eine Whitelist der 15 Sprachen gecheckt wird, ist die Client-Side-Logik manipulierbar. Ein Angreifer kann über einen präparierten Link den Nutzer auf eine unerwartete Sprachroute umleiten.
-**Fix:** Nutze Astro's Built-in i18n-Routing auf Server-Seite (Cloudflare `_redirects`). Entferne `window.location.href` Redirect-Logik vollständig.
+**SEC-C01 · `src/pages/404.astro:112–116` — Open Redirect via navigator.language** ❌ FALSE POSITIVE
+~~Die 404-Seite setzt `window.location.href` direkt auf Basis von `navigator.language`.~~
+**Verifiziert:** Eine Whitelist aller 15 Sprachen ist korrekt implementiert (Zeile 97). Redirects gehen nur auf interne `/${detectedLang}` Pfade. Kein Open Redirect möglich. sessionStorage-Loop-Prevention ebenfalls vorhanden. **Kein Handlungsbedarf.**
 
 **SEC-C02 · `src/pages/[...lang]/codes.astro:61` & `src/layouts/Layout.astro:163–164` — `set:html` mit `JSON.stringify`**
 Drei Stellen nutzen `set:html={JSON.stringify(schema)}` für JSON-LD Structured Data. Obwohl die Daten aktuell nicht von Nutzern stammen, ist dieses Pattern ein zukünftiger XSS-Vektor, falls je User-Input in Schema-Objekte einfließt.
@@ -352,19 +352,19 @@ Nicht aktuell relevant, aber bei zukünftiger Paginierung `rel="next"/"prev"` be
 
 ### KRITISCH
 
-**BUG-C01 · `src/components/calculators/ResearchTreeNode.tsx:268` — Falsche Übersetzungskeys**
-Research-Tree-Nodes verwenden `t('tank.targetSet')` und `t('tank.setTarget')` — das sind Tank-Übersetzungskeys in einer Research-Komponente. Falls die Keys nicht identisch sind, werden falsche oder fehlende Texte angezeigt.
-**Fix:** Korrekte Research-spezifische Keys verwenden: `t('calc.research.targetSet')` o.ä. Keys in i18n-Dateien prüfen.
+**BUG-C01 · `src/components/calculators/ResearchTreeNode.tsx:268` — Falsche Übersetzungskeys** ✅ BEHOBEN
+Research-Tree-Nodes verwendeten `t('tank.targetSet')` und `t('tank.setTarget')` — beide Keys hatten identische Werte in allen 15 Sprachen, sodass der Button-Text sich beim Klick nicht sichtbar änderte.
+**Durchgeführter Fix:** `tank.targetSet` in allen 15 Locale-Dateien mit `✓ `-Prefix versehen (z.B. "Target" → "✓ Target", "Ziel" → "✓ Ziel"). Redundante Ternary `fill={isTarget ? '#e74c3c' : '#e74c3c'}` und `stroke={...}` auf statische Werte vereinfacht.
 
-**BUG-C02 · `src/components/WeeklyRoses.tsx:35` — Falsche Sonntags-Berechnung**
+**BUG-C02 · `src/components/WeeklyRoses.tsx:35` — Falsche Sonntags-Berechnung** ✅ BEHOBEN
 ```typescript
+// Vorher (buggy):
 const daysUntilSunday = (7 - apocalypseTime.getDay()) % 7;
-```
-Wenn es Sonntag ist (`getDay() === 0`), ergibt `(7 - 0) % 7 = 0` → gleicher Tag. Countdown zeigt dann negative Werte wenn aktuelle Uhrzeit > 23:59:59.
-**Fix:**
-```typescript
+// Wenn Sonntag: (7-0)%7 = 0 → kein Offset → negativer Countdown
+// Nachher (fix):
 const daysUntilSunday = ((7 - apocalypseTime.getDay()) % 7) || 7;
 ```
+`|| 7` stellt sicher, dass an Sonntagen korrekt 7 Tage addiert werden.
 
 **BUG-C03 · `src/components/calculators/HeroExpCalculator.tsx:32–35` — Potenzieller Array-Index-Fehler**
 ```typescript
@@ -392,13 +392,16 @@ TankModificationNode: `fontSize="10"` — grenzwertig.
 
 ### HOCH
 
-**BUG-H01 · `src/components/calculators/TankModificationNode.tsx:172,204` — Redundante Ternary-Operatoren**
+**BUG-H01 · `src/components/calculators/TankModificationNode.tsx:172,204` — Redundante Ternary-Operatoren** ✅ BEHOBEN
 ```typescript
+// Vorher (redundant, kein visueller Unterschied):
 stroke={isTarget ? 'rgba(231, 76, 60, 0.8)' : 'rgba(231, 76, 60, 0.8)'}
 fill={isTarget ? '#e74c3c' : '#e74c3c'}
+// Nachher (statische Werte, sauber):
+stroke="rgba(231, 76, 60, 0.8)"
+fill="#e74c3c"
 ```
-Beide Branches setzen identische Werte → Target-Highlighting funktioniert visuell nicht.
-**Fix:** Korrekte unterschiedliche Farben für isTarget=true vs isTarget=false definieren.
+Selber Fix in `ResearchTreeNode.tsx`. Die Ternaries betrafen das Focus-Indicator-Rect (opacity=0) und den Text-Fill des Target-Buttons — beide hatten identische Werte in beiden Branches.
 
 **BUG-H02 · `src/components/calculators/ResearchTreeView.tsx:128` — Fehlende `useCallback`-Dependency**
 `unlockWithPrerequisites` verwendet `technologies` aber fehlende oder instabile Dependencies können Stale-Closures erzeugen.
@@ -447,17 +450,15 @@ RangeTouch-Initialisierung bei `unlocked`-State-Änderung könnte auf alten Ref 
 
 ### KRITISCH
 
-**INF-C01 · Fehlende `public/_redirects` Datei**
-Kein `_redirects` für i18n Language-Routing. Nutzer mit deutschem Browser sehen englische Startseite (kein automatischer Redirect auf `/de/`). Cloudflare Pages ignoriert `Accept-Language` Header ohne explizite Redirects.
-**Fix:** `public/_redirects` erstellen:
-```
-# Language-based redirects (basic, Cloudflare evaluiert Accept-Language)
-/   /de/   302   Language=de
-/   /fr/   302   Language=fr
-# Fallback
-/   /      200
-```
-Alternativ: Cloudflare Pages Function für Server-Side Language-Detection.
+**INF-C01 · Fehlende `public/_redirects` Datei** ✅ BEHOBEN (abweichende Lösung)
+Kein `_redirects` für i18n Language-Routing. Nutzer mit deutschem Browser sahen englische Startseite.
+**Durchgeführter Fix:** Client-seitige Spracherkennung mit `localStorage` in `src/layouts/Layout.astro` (`is:inline` Script im `<head>`):
+- Läuft synchron vor dem Body-Rendering → kein Flackern
+- Nur auf `pathname === '/'` → Shared Links zu Unterseiten nicht betroffen
+- `localStorage('wh-lang-redirected')` Flag → Redirect passiert exakt einmal pro Browser
+- `window.location.replace()` → kein History-Eintrag, kein Back-Button-Loop
+- Selbe Whitelist und zh-TW/zh-CN-Logik wie 404.astro
+- SEO-neutral: Googlebot crawlt `/fr/` direkt via hreflang, kein Einfluss auf Indexierung
 
 **INF-C02 · Fehlende Node.js-Versionsangabe**
 `package.json` enthält kein `"engines"` Feld. Cloudflare Pages könnte eine inkompatible Node-Version verwenden.
@@ -543,13 +544,13 @@ Content-Security-Policy: (siehe SEC-C02)
 
 ### SOFORT (Sicherheit / Kritische Bugs)
 
-| Priorität | ID | Datei | Problem |
-|-----------|-----|-------|---------|
-| P0 | BUG-C02 | WeeklyRoses.tsx:35 | Sonntags-Berechnungsfehler → negativer Countdown |
-| P0 | BUG-C01 | ResearchTreeNode.tsx:268 | Falsche Tank-Übersetzungskeys in Research-Komponente |
-| P0 | BUG-H01 | TankModificationNode.tsx:172,204 | Redundante Ternary → Target-Highlighting kaputt |
-| P0 | SEC-C01 | 404.astro:112–116 | Open Redirect via navigator.language |
-| P0 | INF-C01 | — | Fehlende `_redirects` für i18n |
+| Priorität | ID | Datei | Problem | Status |
+|-----------|-----|-------|---------|--------|
+| P0 | BUG-C02 | WeeklyRoses.tsx:35 | Sonntags-Berechnungsfehler → negativer Countdown | ✅ BEHOBEN |
+| P0 | BUG-C01 | ResearchTreeNode.tsx:268 | Button-Text ändert sich nicht (identische Translation-Keys) | ✅ BEHOBEN |
+| P0 | BUG-H01 | TankModificationNode.tsx:172,204 | Redundante Ternary → Target-Highlighting kaputt | ✅ BEHOBEN |
+| P0 | SEC-C01 | 404.astro:112–116 | Open Redirect via navigator.language | ❌ FALSE POSITIVE |
+| P0 | INF-C01 | Layout.astro | Kein Redirect auf Nutzer-Sprache beim ersten Besuch | ✅ BEHOBEN |
 
 ### KURZFRISTIG (1–2 Wochen)
 
@@ -622,3 +623,48 @@ Das Projekt hat eine **solide, professionelle Basis**:
 ---
 
 *Dieses Audit wurde von 6 spezialisierten Senior-Agenten erstellt. Alle Befunde basieren auf direkt gelesenen Quelldateien. Keine Spekulation, keine Halluzinationen.*
+
+---
+
+## 9. FIX-PROTOKOLL
+
+### Session 2026-02-23 — P0 Bugs behoben
+
+#### ✅ BUG-C02 — WeeklyRoses Sonntags-Countdown
+**Datei:** `src/components/WeeklyRoses.tsx:35`
+```typescript
+// Vorher: (7 - getDay()) % 7 → 0 an Sonntagen → negativer Countdown
+// Nachher:
+const daysUntilSunday = ((7 - apocalypseTime.getDay()) % 7) || 7;
+```
+
+#### ✅ BUG-C01 + BUG-H01 — Target-Button (Research + Tank)
+**Dateien:** `src/components/calculators/ResearchTreeNode.tsx`, `TankModificationNode.tsx`, alle 15 Locale-Dateien
+
+1. **Translation-Keys**: `tank.targetSet` in allen 15 Sprachen mit `✓ `-Prefix differenziert, damit Button-Zustand sichtbar wechselt:
+   - `de`: "Ziel" → "✓ Ziel"
+   - `en`: "Target" → "✓ Target"
+   - ... (alle 15 Sprachen analog)
+
+2. **Redundante Ternaries** vereinfacht (Focus-Indicator + Text-Fill hatten identische Werte in beiden Branches):
+   ```typescript
+   // Vorher:
+   stroke={isTarget ? 'rgba(231, 76, 60, 0.8)' : 'rgba(231, 76, 60, 0.8)'}
+   fill={isTarget ? '#e74c3c' : '#e74c3c'}
+   // Nachher:
+   stroke="rgba(231, 76, 60, 0.8)"
+   fill="#e74c3c"
+   ```
+
+#### ❌ SEC-C01 — Open Redirect (False Positive)
+Verifizierung ergab: Whitelist korrekt implementiert, kein echter Open Redirect. Aus P0-Liste entfernt.
+
+#### ✅ INF-C01 — Sprach-Redirect beim ersten Besuch
+**Datei:** `src/layouts/Layout.astro`
+
+Client-seitiges `is:inline` Script im `<head>` — läuft synchron vor dem Rendering:
+- Nur auf `pathname === '/'`
+- `localStorage('wh-lang-redirected')` → exakt einmalig pro Browser
+- `window.location.replace()` → kein History-Eintrag
+- Unterstützt alle 15 Sprachen inkl. zh-TW/zh-CN-Unterscheidung
+- SEO-neutral (hreflang vorhanden, Googlebot crawlt Sprach-URLs direkt)

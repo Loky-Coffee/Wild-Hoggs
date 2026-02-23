@@ -131,6 +131,25 @@ const websiteSchema = {
       }
     </style>
 
+    <script is:inline>
+      (function () {
+        if (window.location.pathname !== '/') return;
+        if (localStorage.getItem('wh-lang-redirected')) return;
+        var full = navigator.language;
+        var short = full.split('-')[0];
+        var lang = null;
+        if (short === 'zh') {
+          lang = (full === 'zh-TW' || full === 'zh-Hant') ? 'zh-TW' : 'zh-CN';
+        } else {
+          var supported = ['de', 'fr', 'ko', 'th', 'ja', 'pt', 'es', 'tr', 'id', 'it', 'ar', 'vi'];
+          if (short !== 'en' && supported.indexOf(short) !== -1) lang = short;
+        }
+        if (lang) {
+          localStorage.setItem('wh-lang-redirected', '1');
+          window.location.replace('/' + lang);
+        }
+      })();
+    </script>
     <ViewTransitions />
     <link rel="canonical" href={canonicalURL} />
     {hreflangTags.map(({ langCode, url }) => (
