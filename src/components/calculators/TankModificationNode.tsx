@@ -200,7 +200,7 @@ function TankModificationNode({
             x={-NODE_WIDTH / 2 + 25}
             y={-NODE_HEIGHT / 2 + 33}
             textAnchor="middle"
-            fontSize="10"
+            fontSize="11"
             fill="#e74c3c"
             fontWeight="600"
             data-node-element="true"
@@ -266,7 +266,7 @@ function TankModificationNode({
             x={NODE_WIDTH / 2 - 25}
             y={-NODE_HEIGHT / 2 + 33}
             textAnchor="middle"
-            fontSize="10"
+            fontSize="11"
             fill="#ffa500"
             fontWeight="600"
             data-node-element="true"
@@ -309,7 +309,7 @@ function TankModificationNode({
         x={0}
         y={-NODE_HEIGHT / 2 + (isVehicle ? 72 : 52)}
         textAnchor="middle"
-        fontSize="10"
+        fontSize="11"
         fill="rgba(255, 255, 255, 0.6)"
         data-node-element="true"
       >
@@ -321,7 +321,7 @@ function TankModificationNode({
         x={0}
         y={-NODE_HEIGHT / 2 + 90}
         textAnchor="middle"
-        fontSize="10"
+        fontSize="11"
         fill="rgba(255, 255, 255, 0.5)"
         data-node-element="true"
       >
@@ -424,7 +424,7 @@ function TankModificationNode({
         x={0}
         y={-NODE_HEIGHT / 2 + 170}
         textAnchor="middle"
-        fontSize="9"
+        fontSize="10"
         fill="rgba(255, 255, 255, 0.3)"
         data-node-element="true"
       >

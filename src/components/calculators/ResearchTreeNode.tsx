@@ -451,7 +451,7 @@ function ResearchTreeNode({
         x={0}
         y={NODE_HEIGHT / 2 - 25}
         textAnchor="middle"
-        fontSize="10"
+        fontSize="11"
         fill={isActive ? '#ffa500' : 'rgba(255, 255, 255, 0.5)'}
         fontWeight="600"
         data-node-element="true"
@@ -465,7 +465,7 @@ function ResearchTreeNode({
           x={0}
           y={NODE_HEIGHT / 2 - 10}
           textAnchor="middle"
-          fontSize="9"
+          fontSize="10"
           fill={unlocked ? 'rgba(255, 165, 0, 0.7)' : 'rgba(255, 255, 255, 0.4)'}
           fontWeight="500"
           data-node-element="true"
