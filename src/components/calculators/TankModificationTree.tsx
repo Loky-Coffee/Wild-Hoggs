@@ -244,13 +244,13 @@ export default function TankModificationTree({
     const container = scrollContainerRef.current;
     if (!container) return;
 
-    container.addEventListener('mousedown', handleMouseDown as any);
-    document.addEventListener('mousemove', handleMouseMove as any);
+    container.addEventListener('mousedown', handleMouseDown as EventListener);
+    document.addEventListener('mousemove', handleMouseMove as EventListener);
     document.addEventListener('mouseup', handleMouseUp);
 
     return () => {
-      container.removeEventListener('mousedown', handleMouseDown as any);
-      document.removeEventListener('mousemove', handleMouseMove as any);
+      container.removeEventListener('mousedown', handleMouseDown as EventListener);
+      document.removeEventListener('mousemove', handleMouseMove as EventListener);
       document.removeEventListener('mouseup', handleMouseUp);
     };
   }, [handleMouseDown, handleMouseMove, handleMouseUp]);
@@ -272,7 +272,7 @@ export default function TankModificationTree({
         borderRadius: '12px',
         padding: (mounted && isMobile) ? `${TREE_ZOOM_DEFAULTS.CONTAINER_PADDING_MOBILE}rem` : `${TREE_ZOOM_DEFAULTS.CONTAINER_PADDING_DESKTOP}rem`,
         paddingBottom: (mounted && isMobile) ? '120px' : '140px',
-        WebkitOverflowScrolling: 'touch' as any,
+        WebkitOverflowScrolling: 'touch' as const,
         touchAction: 'pan-x pan-y pinch-zoom',
         cursor: 'grab',
         userSelect: 'none',
