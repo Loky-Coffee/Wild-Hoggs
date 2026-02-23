@@ -31,6 +31,13 @@ const { title, description, robots, breadcrumbs } = Astro.props;
   </main>
 </Layout>
 
+<style is:global>
+  /* Suppress body scroll — only .page-content scrolls */
+  body {
+    overflow: hidden;
+  }
+</style>
+
 <style>
   /* Skip Navigation Link - Accessibility */
   .skip-link {
