@@ -551,6 +551,8 @@ Content-Security-Policy: (siehe SEC-C02)
 | P0 | BUG-H01 | TankModificationNode.tsx:172,204 | Redundante Ternary → Target-Highlighting kaputt | ✅ BEHOBEN |
 | P0 | SEC-C01 | 404.astro:112–116 | Open Redirect via navigator.language | ❌ FALSE POSITIVE |
 | P0 | INF-C01 | Layout.astro | Kein Redirect auf Nutzer-Sprache beim ersten Besuch | ✅ BEHOBEN |
+| P0 | NAV-B01 | Navigation.astro, LanguageDropdown.astro | 308 Trailing-Slash Redirect → Flackern bei View Transitions | ✅ BEHOBEN |
+| P0 | PERF-B01 | public/_headers | Favicon kein Cache → Reload bei jeder Navigation | ✅ BEHOBEN |
 
 ### KURZFRISTIG (1–2 Wochen)
 
@@ -613,12 +615,12 @@ Das Projekt hat eine **solide, professionelle Basis**:
 
 ### Was Aufmerksamkeit braucht
 
-1. **Bugs in Kalkulatoren**: Off-by-one in Exp/Kosten, kaputtes Target-Highlighting — diese betreffen den Kern des Produkts
+1. **Bugs in Kalkulatoren**: Off-by-one in Exp/Kosten — Kern des Produkts, vor nächstem Release verifizieren
 2. **Duplikate**: ~350+ LOC duplizierter Code (Drag-Scroll, Zoom-Controls)
-3. **Fehlende _redirects**: i18n funktioniert ohne Server-Side Language-Detection nicht vollständig
-4. **`as any` Type-Casts**: 8 Stellen underminen TypeScript strict mode
+3. **`as any` Type-Casts**: 8 Stellen underminen TypeScript strict mode
+4. **SEO**: Alt-Texte auf Bilder, seitenspezifische OG-Images, Placeholder-Pages-Strategie
 
-**Das Projekt ist produktionsreif, aber die Kalkulatoren sollten vor dem nächsten Major-Release auf Korrektheit verifiziert werden.**
+**Stand nach Session 2026-02-23: Alle P0-Bugs behoben. Projekt ist stabil produktionsreif.**
 
 ---
 
@@ -668,3 +670,41 @@ Client-seitiges `is:inline` Script im `<head>` — läuft synchron vor dem Rende
 - `window.location.replace()` → kein History-Eintrag
 - Unterstützt alle 15 Sprachen inkl. zh-TW/zh-CN-Unterscheidung
 - SEO-neutral (hreflang vorhanden, Googlebot crawlt Sprach-URLs direkt)
+
+---
+
+### Session 2026-02-23 — Post-Deploy Bugs behoben
+
+#### ✅ NAV-B01 — 308 Trailing-Slash Redirect (neu entdeckt nach Deploy)
+**Dateien:** `src/components/Navigation.astro`, `src/components/LanguageDropdown.astro`
+
+**Problem:** `getPath()` generierte `/members` (ohne Trailing Slash). Cloudflare Pages findet `members/index.html` und antwortet mit `308 Permanent Redirect → /members/`. Astro View Transitions macht einen Fetch auf `/members`, bekommt 308, fetcht `/members/` → 2 Requests, sichtbares Flackern.
+
+**Fix Navigation.astro:**
+```typescript
+// Vorher:
+return page === 'home' ? '/' : `/${page}`;
+// Nachher:
+return page === 'home' ? '/' : `/${page}/`;
+// currentPath-Normalisierung angepasst:
+const currentPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : rawPath + '/');
+```
+
+**Fix LanguageDropdown.astro** (Bonus-Bug: Sprachwechsel auf Home-Seiten generierte `/de` statt `/de/`):
+```typescript
+// Vorher:
+return `/${targetLang}${pathWithoutLang === '/' ? '' : pathWithoutLang}`;
+// Nachher:
+return `/${targetLang}${pathWithoutLang === '/' ? '/' : pathWithoutLang}`;
+```
+
+#### ✅ PERF-B01 — Favicon lädt bei jeder Navigation neu (neu entdeckt nach Deploy)
+**Datei:** `public/_headers`
+
+**Problem:** `/favicon.svg` hatte keine Cache-Control-Regel. Cloudflare lieferte kein `max-age` → Browser holt Favicon bei jedem View-Transition-Navigate neu.
+
+**Fix:**
+```
+/favicon.svg
+  Cache-Control: public, max-age=31536000, immutable
+```
