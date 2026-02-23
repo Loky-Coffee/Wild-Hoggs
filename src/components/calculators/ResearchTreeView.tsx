@@ -5,6 +5,7 @@ import { formatNumber as sharedFormatNumber } from '../../utils/formatters';
 import type { TranslationData } from '../../i18n/index';
 import ResearchTreeNode from './ResearchTreeNode';
 import ResearchTreeConnections from './ResearchTreeConnections';
+import TreeControls from './TreeControls';
 import {
   NODE_WIDTH,
   NODE_HEIGHT,
@@ -468,241 +469,19 @@ export default function ResearchTreeView({
             })}
           </svg>
 
-      <div
-        className="zoom-controls"
-        style={{
-          position: 'fixed',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '0.5rem',
-          zIndex: 1000
+      <TreeControls
+        zoomLevel={zoomLevel}
+        onZoomIn={handleZoomIn}
+        onZoomOut={handleZoomOut}
+        onResetView={() => {
+          const isMobile = window.innerWidth < BREAKPOINT_MOBILE;
+          resetView(isMobile ? () => layoutDirection === 'vertical' ? NODE_SPACING * 3 : svgDimensions.width * 0.95 : undefined);
         }}
-      >
-        <style>{`
-          .zoom-controls {
-            bottom: 1rem;
-            right: 1rem;
-          }
-          @media (min-width: 769px) {
-            .zoom-controls {
-              bottom: 2rem;
-              right: 2rem;
-            }
-          }
-          .research-tree-node:focus .node-focus-indicator {
-            opacity: 1 !important;
-          }
-          .research-tree-node:focus {
-            outline: none;
-          }
-        `}</style>
-        <button
-          onClick={handleZoomIn}
-          disabled={zoomLevel >= TREE_ZOOM_DEFAULTS.MAX_ZOOM}
-          style={{
-            background: 'rgba(0, 0, 0, 0.8)',
-            border: '1px solid rgba(255, 165, 0, 0.6)',
-            borderRadius: '4px',
-            padding: '0.25rem',
-            cursor: zoomLevel >= TREE_ZOOM_DEFAULTS.MAX_ZOOM ? 'not-allowed' : 'pointer',
-            fontSize: '1.2rem',
-            color: '#ffa500',
-            fontWeight: 'bold',
-            opacity: zoomLevel >= TREE_ZOOM_DEFAULTS.MAX_ZOOM ? 0.4 : 1,
-            transition: 'all 0.2s',
-            width: '32px',
-            height: '32px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-          aria-label="Zoom in"
-        >
-          +
-        </button>
-
-        <button
-          onClick={() => {
-            const isMobile = window.innerWidth < BREAKPOINT_MOBILE;
-            resetView(isMobile ? () => layoutDirection === 'vertical' ? NODE_SPACING * 3 : svgDimensions.width * 0.95 : undefined);
-          }}
-          style={{
-            background: 'rgba(0, 0, 0, 0.8)',
-            border: '1px solid rgba(255, 165, 0, 0.6)',
-            borderRadius: '4px',
-            padding: '0.25rem',
-            cursor: 'pointer',
-            fontSize: '1rem',
-            color: '#ffa500',
-            fontWeight: 'bold',
-            transition: 'all 0.2s',
-            width: '32px',
-            height: '32px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-          aria-label="Reset view"
-          title="Reset view"
-        >
-          ⊙
-        </button>
-
-        <button
-          onClick={handleZoomOut}
-          disabled={zoomLevel <= TREE_ZOOM_DEFAULTS.MIN_ZOOM}
-          style={{
-            background: 'rgba(0, 0, 0, 0.8)',
-            border: '1px solid rgba(255, 165, 0, 0.6)',
-            borderRadius: '4px',
-            padding: '0.25rem',
-            cursor: zoomLevel <= TREE_ZOOM_DEFAULTS.MIN_ZOOM ? 'not-allowed' : 'pointer',
-            fontSize: '1.2rem',
-            color: '#ffa500',
-            fontWeight: 'bold',
-            opacity: zoomLevel <= TREE_ZOOM_DEFAULTS.MIN_ZOOM ? 0.4 : 1,
-            transition: 'all 0.2s',
-            width: '32px',
-            height: '32px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-          aria-label="Zoom out"
-        >
-          −
-        </button>
-      </div>
-
-      {/* Navigation Controls */}
-      <div
-        className="navigation-controls"
-        style={{
-          position: 'fixed',
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 32px)',
-          gridTemplateRows: 'repeat(3, 32px)',
-          gap: '0.25rem',
-          zIndex: 1000
-        }}
-      >
-        <style>{`
-          .navigation-controls {
-            bottom: 1rem;
-            left: 1rem;
-          }
-          @media (min-width: 769px) {
-            .navigation-controls {
-              bottom: 2rem;
-              left: 2rem;
-            }
-          }
-        `}</style>
-
-        {/* Up arrow - top center */}
-        <button
-          onClick={handleScrollUp}
-          style={{
-            gridColumn: '2',
-            gridRow: '1',
-            background: 'rgba(0, 0, 0, 0.8)',
-            border: '1px solid rgba(255, 165, 0, 0.6)',
-            borderRadius: '4px',
-            padding: '0.25rem',
-            cursor: 'pointer',
-            fontSize: '1rem',
-            color: '#ffa500',
-            fontWeight: 'bold',
-            transition: 'all 0.2s',
-            width: '32px',
-            height: '32px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-          aria-label="Scroll up"
-        >
-          ▲
-        </button>
-
-        {/* Left arrow - middle left */}
-        <button
-          onClick={handleScrollLeft}
-          style={{
-            gridColumn: '1',
-            gridRow: '2',
-            background: 'rgba(0, 0, 0, 0.8)',
-            border: '1px solid rgba(255, 165, 0, 0.6)',
-            borderRadius: '4px',
-            padding: '0.25rem',
-            cursor: 'pointer',
-            fontSize: '1rem',
-            color: '#ffa500',
-            fontWeight: 'bold',
-            transition: 'all 0.2s',
-            width: '32px',
-            height: '32px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-          aria-label="Scroll left"
-        >
-          ◄
-        </button>
-
-        {/* Right arrow - middle right */}
-        <button
-          onClick={handleScrollRight}
-          style={{
-            gridColumn: '3',
-            gridRow: '2',
-            background: 'rgba(0, 0, 0, 0.8)',
-            border: '1px solid rgba(255, 165, 0, 0.6)',
-            borderRadius: '4px',
-            padding: '0.25rem',
-            cursor: 'pointer',
-            fontSize: '1rem',
-            color: '#ffa500',
-            fontWeight: 'bold',
-            transition: 'all 0.2s',
-            width: '32px',
-            height: '32px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-          aria-label="Scroll right"
-        >
-          ►
-        </button>
-
-        {/* Down arrow - bottom center */}
-        <button
-          onClick={handleScrollDown}
-          style={{
-            gridColumn: '2',
-            gridRow: '3',
-            background: 'rgba(0, 0, 0, 0.8)',
-            border: '1px solid rgba(255, 165, 0, 0.6)',
-            borderRadius: '4px',
-            padding: '0.25rem',
-            cursor: 'pointer',
-            fontSize: '1rem',
-            color: '#ffa500',
-            fontWeight: 'bold',
-            transition: 'all 0.2s',
-            width: '32px',
-            height: '32px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-          aria-label="Scroll down"
-        >
-          ▼
-        </button>
-      </div>
+        onScrollUp={handleScrollUp}
+        onScrollDown={handleScrollDown}
+        onScrollLeft={handleScrollLeft}
+        onScrollRight={handleScrollRight}
+      />
     </div>
   );
 }
