@@ -28,8 +28,8 @@ const breadcrumbItems = [
     <p class="subtitle">{t('tools.building.description')}</p>
   </div>
 
-  <ErrorBoundary lang={lang} client:idle>
-    <BuildingCalculator lang={lang} translationData={translationData} client:idle />
+  <ErrorBoundary lang={lang} client:visible>
+    <BuildingCalculator lang={lang} translationData={translationData} client:visible />
   </ErrorBoundary>
 </PageLayout>
 
