@@ -260,7 +260,7 @@ function ResearchTreeNode({
             x={-NODE_WIDTH / 2 + 25}
             y={-NODE_HEIGHT / 2 + 33}
             textAnchor="middle"
-            fontSize="7"
+            fontSize="11"
             fill="#e74c3c"
             fontWeight="600"
             data-node-element="true"
@@ -328,7 +328,7 @@ function ResearchTreeNode({
             x={NODE_WIDTH / 2 - 25}
             y={-NODE_HEIGHT / 2 + 33}
             textAnchor="middle"
-            fontSize="7"
+            fontSize="11"
             fill="rgba(255, 165, 0, 0.9)"
             fontWeight="600"
             data-node-element="true"
