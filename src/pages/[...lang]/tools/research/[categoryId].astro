@@ -110,7 +110,7 @@ const breadcrumbItems = [
 ---
 
 <PageLayout title={`Last Z ${t(category.nameKey as TranslationKey)}`} description={`Calculate Last Z badge costs for ${t(category.nameKey as TranslationKey)} research`} breadcrumbs={breadcrumbItems}>
-  <h1 class="page-title-subtle">{t(category.nameKey as TranslationKey)}</h1>
+  <h1 class="page-title-subtle">Last Z · {t(category.nameKey as TranslationKey)} · Badge Calculator</h1>
   <div class="calculator-wrapper">
     <ErrorBoundary lang={lang} client:load>
       <ResearchCategoryCalculator
@@ -168,6 +168,7 @@ const breadcrumbItems = [
     font-weight: 400;
     letter-spacing: 0.1em;
     text-transform: uppercase;
+    text-align: center;
     margin: 0;
     padding: 0.4rem 1rem 0;
   }

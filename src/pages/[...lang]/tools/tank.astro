@@ -33,6 +33,7 @@ const breadcrumbItems = [
   imageAlt={t('tools.tank.title')}
 >
   <h1 class="page-title-subtle">{t('tools.tank.title')}</h1>
+  <!-- H1 = "Last Z Tank Modification Calculator" — keyword-optimiert für SEO -->
   <div class="calculator-wrapper">
     <ErrorBoundary lang={lang} client:load>
       <TankCalculator lang={lang} translationData={translationData} client:load />
@@ -84,6 +85,7 @@ const breadcrumbItems = [
     font-weight: 400;
     letter-spacing: 0.1em;
     text-transform: uppercase;
+    text-align: center;
     margin: 0;
     padding: 0.4rem 1rem 0;
   }
