@@ -52,13 +52,13 @@ function TreeControls({
       >
         <style>{`
           .zoom-controls {
-            bottom: 1rem;
-            right: 1rem;
+            bottom: 1.75rem;
+            right: 1.75rem;
           }
           @media (min-width: 769px) {
             .zoom-controls {
-              bottom: 2rem;
-              right: 2rem;
+              bottom: 3rem;
+              right: 3rem;
             }
           }
         `}</style>
@@ -117,13 +117,13 @@ function TreeControls({
       >
         <style>{`
           .navigation-controls {
-            bottom: 1rem;
-            left: 1rem;
+            bottom: 1.75rem;
+            left: 1.75rem;
           }
           @media (min-width: 769px) {
             .navigation-controls {
-              bottom: 2rem;
-              left: 2rem;
+              bottom: 3rem;
+              left: 3rem;
             }
           }
         `}</style>
