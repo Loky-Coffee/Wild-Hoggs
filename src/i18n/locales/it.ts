@@ -121,6 +121,7 @@ export default {
   'calc.hero.reset': 'Reimposta',
   'calc.hero.infoText': 'Tutti gli eroi in Last-Z usano la stessa curva EXP. Calcola l’EXP richiesta per qualsiasi upgrade di livello.',
   'calc.hero.errorTargetLevel': 'Il livello obiettivo deve essere superiore al livello attuale.',
+  'calc.hero.errorMaxLevel': "Il livello massimo dell'eroe è 175.",
 
   'calc.tank.title': 'Calcolatore modifiche carro armato',
   'calc.tank.currentLevel': 'Livello attuale',

@@ -121,6 +121,7 @@ export default {
   'calc.hero.reset': 'Zurücksetzen',
   'calc.hero.infoText': 'Alle Heroes in Last-Z verwenden die gleiche EXP-Kurve. Berechne die benötigte EXP für jedes Level-Upgrade.',
   'calc.hero.errorTargetLevel': 'Das Ziel-Level muss höher sein als das aktuelle Level.',
+  'calc.hero.errorMaxLevel': 'Das maximale Helden-Level beträgt 175.',
   // Calculator: Tank
   'calc.tank.title': 'Tank Modifikations Rechner',
   'calc.tank.currentLevel': 'Aktuelles Level',

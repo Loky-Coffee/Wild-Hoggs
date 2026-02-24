@@ -121,6 +121,7 @@ export default {
   'calc.hero.reset': '重置',
   'calc.hero.infoText': 'Last-Z 所有英雄使用相同的 EXP 曲线。计算任意升级所需的 EXP。',
   'calc.hero.errorTargetLevel': '目标等级必须高于当前等级。',
+  'calc.hero.errorMaxLevel': '英雄最高等级为175。',
 
   'calc.tank.title': '坦克改造计算器',
   'calc.tank.currentLevel': '当前等级',

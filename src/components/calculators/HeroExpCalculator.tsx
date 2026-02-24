@@ -23,7 +23,10 @@ export default function HeroExpCalculator({ lang, translationData }: HeroExpCalc
   const maxLevel = 175; // Last-Z max hero level
 
   const calculatedResults = useMemo(() => {
-    if (currentLevel >= targetLevel || currentLevel < 1 || targetLevel > maxLevel) {
+    if (currentLevel > maxLevel || targetLevel > maxLevel) {
+      return { error: 'maxLevel' } as const;
+    }
+    if (currentLevel >= targetLevel || currentLevel < 1) {
       return null;
     }
 
@@ -103,7 +106,7 @@ export default function HeroExpCalculator({ lang, translationData }: HeroExpCalc
 
       <div className="calc-results">
         {calculated && (
-          calculatedResults ? (
+          calculatedResults && !('error' in calculatedResults) ? (
             <>
               <div className="result-card highlight">
                 <div className="result-label">{t('calc.hero.totalExp')}</div>
@@ -129,7 +132,9 @@ export default function HeroExpCalculator({ lang, translationData }: HeroExpCalc
               aria-live="assertive"
               aria-atomic="true"
             >
-              {t('calc.hero.errorTargetLevel')}
+              {calculatedResults?.error === 'maxLevel'
+                ? t('calc.hero.errorMaxLevel')
+                : t('calc.hero.errorTargetLevel')}
             </div>
           )
         )}

@@ -121,6 +121,7 @@ export default {
   'calc.hero.reset': 'Sıfırla',
   'calc.hero.infoText': 'Last-Z’de tüm kahramanlar aynı EXP eğrisini kullanır. Herhangi bir seviye yükseltmesi için gerekli EXP’yi hesaplayın.',
   'calc.hero.errorTargetLevel': 'Hedef seviye mevcut seviyeden yüksek olmalıdır.',
+  'calc.hero.errorMaxLevel': 'Kahraman maksimum seviyesi 175\'tir.',
 
   'calc.tank.title': 'Tank Modifikasyon Hesaplayıcı',
   'calc.tank.currentLevel': 'Mevcut Seviye',

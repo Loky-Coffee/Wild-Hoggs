@@ -121,6 +121,7 @@ export default {
   'calc.hero.reset': 'リセット',
   'calc.hero.infoText': 'Last-Z のヒーローは同じ EXP カーブを使用します。任意のレベルアップに必要な EXP を計算します。',
   'calc.hero.errorTargetLevel': '目標レベルは現在のレベルより高くなければなりません。',
+  'calc.hero.errorMaxLevel': 'ヒーローの最大レベルは175です。',
 
   'calc.tank.title': '戦車改造計算機',
   'calc.tank.currentLevel': '現在のレベル',

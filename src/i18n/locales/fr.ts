@@ -121,6 +121,7 @@ export default {
   'calc.hero.reset': 'Réinitialiser',
   'calc.hero.infoText': 'Tous les héros de Last-Z utilisent la même courbe d’EXP. Calculez l’EXP requise pour toute amélioration de niveau.',
   'calc.hero.errorTargetLevel': "Le niveau cible doit être supérieur au niveau actuel.",
+  'calc.hero.errorMaxLevel': 'Le niveau maximum du héros est 175.',
 
   'calc.tank.title': 'Calculateur de modifications de chars',
   'calc.tank.currentLevel': 'Niveau actuel',

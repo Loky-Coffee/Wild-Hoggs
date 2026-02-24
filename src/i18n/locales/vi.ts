@@ -121,6 +121,7 @@ export default {
   'calc.hero.reset': 'Đặt lại',
   'calc.hero.infoText': 'Tất cả anh hùng trong Last-Z dùng cùng đường cong EXP. Tính EXP cần cho bất kỳ nâng cấp cấp độ nào.',
   'calc.hero.errorTargetLevel': 'Cấp mục tiêu phải cao hơn cấp hiện tại.',
+  'calc.hero.errorMaxLevel': 'Cấp tối đa của anh hùng là 175.',
 
   'calc.tank.title': 'Máy tính cải tạo xe tăng',
   'calc.tank.currentLevel': 'Cấp độ hiện tại',

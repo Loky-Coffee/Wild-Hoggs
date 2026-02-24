@@ -121,6 +121,7 @@ export default {
   'calc.hero.reset': 'Redefinir',
   'calc.hero.infoText': 'Todos os heróis em Last-Z usam a mesma curva de EXP. Calcule a EXP necessária para qualquer melhoria de nível.',
   'calc.hero.errorTargetLevel': 'O nível alvo deve ser maior que o nível atual.',
+  'calc.hero.errorMaxLevel': 'O nível máximo do herói é 175.',
 
   'calc.tank.title': 'Calculadora de modificações de tanque',
   'calc.tank.currentLevel': 'Nível atual',

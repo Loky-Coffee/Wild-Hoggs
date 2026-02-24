@@ -121,6 +121,7 @@ export default {
   'calc.hero.reset': 'إعادة ضبط',
   'calc.hero.infoText': 'كل الأبطال في Last-Z يستخدمون نفس منحنى الخبرة. احسب الخبرة المطلوبة لأي ترقية مستوى.',
   'calc.hero.errorTargetLevel': 'يجب أن يكون المستوى المستهدف أعلى من المستوى الحالي.',
+  'calc.hero.errorMaxLevel': 'الحد الأقصى لمستوى البطل هو 175.',
 
   'calc.tank.title': 'حاسبة تعديلات الدبابة',
   'calc.tank.currentLevel': 'المستوى الحالي',

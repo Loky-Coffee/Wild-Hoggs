@@ -121,6 +121,7 @@ export default {
   'calc.hero.reset': 'Atur ulang',
   'calc.hero.infoText': 'Semua pahlawan di Last-Z menggunakan kurva EXP yang sama. Hitung EXP yang dibutuhkan untuk peningkatan level apa pun.',
   'calc.hero.errorTargetLevel': 'Level target harus lebih tinggi daripada level saat ini.',
+  'calc.hero.errorMaxLevel': 'Level maksimum hero adalah 175.',
 
   'calc.tank.title': 'Kalkulator Modifikasi Tank',
   'calc.tank.currentLevel': 'Level Saat Ini',

@@ -121,6 +121,7 @@ export default {
   'calc.hero.reset': 'รีเซ็ต',
   'calc.hero.infoText': 'ฮีโร่ทั้งหมดใน Last-Z ใช้เส้นโค้ง EXP เดียวกัน คำนวณ EXP ที่ต้องใช้สำหรับการอัปเลเวลใด ๆ',
   'calc.hero.errorTargetLevel': 'เลเวลเป้าหมายต้องมากกว่าเลเวลปัจจุบัน',
+  'calc.hero.errorMaxLevel': 'เลเวลสูงสุดของฮีโร่คือ 175',
 
   'calc.tank.title': 'เครื่องคิดเลขดัดแปลงรถถัง',
   'calc.tank.currentLevel': 'ระดับปัจจุบัน',

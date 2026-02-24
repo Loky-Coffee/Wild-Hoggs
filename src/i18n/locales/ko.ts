@@ -121,6 +121,7 @@ export default {
   'calc.hero.reset': '초기화',
   'calc.hero.infoText': 'Last-Z의 모든 영웅은 동일한 EXP 곡선을 사용합니다. 레벨 업에 필요한 EXP를 계산하세요.',
   'calc.hero.errorTargetLevel': '목표 레벨은 현재 레벨보다 높아야 합니다.',
+  'calc.hero.errorMaxLevel': '영웅의 최대 레벨은 175입니다.',
 
   'calc.tank.title': '전차 개조 계산기',
   'calc.tank.currentLevel': '현재 레벨',
