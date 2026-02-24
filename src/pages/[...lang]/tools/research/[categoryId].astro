@@ -112,6 +112,11 @@ const breadcrumbItems = [
 <PageLayout title={`Last Z ${t(category.nameKey as TranslationKey)}`} description={`Calculate Last Z badge costs for ${t(category.nameKey as TranslationKey)} research`} breadcrumbs={breadcrumbItems}>
   <h1 class="page-title-subtle">Last Z · {t(category.nameKey as TranslationKey)} · Badge Calculator</h1>
   <div class="calculator-wrapper">
+    <!-- client:load ist hier ABSICHTLICH (nicht client:visible):
+         .page-content hat overflow:hidden + height:100dvh für das Full-Viewport-Layout.
+         IntersectionObserver (genutzt von client:visible) kann nicht durch overflow:hidden schauen
+         → Komponente würde niemals als sichtbar erkannt → Hydration startet nie.
+         Commit 9aaeb6f dokumentiert diese Entscheidung. -->
     <ErrorBoundary lang={lang} client:load>
       <ResearchCategoryCalculator
         categoryData={category}

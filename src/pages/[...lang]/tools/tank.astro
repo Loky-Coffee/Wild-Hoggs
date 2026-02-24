@@ -35,6 +35,11 @@ const breadcrumbItems = [
   <h1 class="page-title-subtle">{t('tools.tank.title')}</h1>
   <!-- H1 = "Last Z Tank Modification Calculator" — keyword-optimiert für SEO -->
   <div class="calculator-wrapper">
+    <!-- client:load ist hier ABSICHTLICH (nicht client:visible):
+         .page-content hat overflow:hidden + height:100dvh für das Full-Viewport-Layout.
+         IntersectionObserver (genutzt von client:visible) kann nicht durch overflow:hidden schauen
+         → Komponente würde niemals als sichtbar erkannt → Hydration startet nie.
+         Commit 9aaeb6f dokumentiert diese Entscheidung. -->
     <ErrorBoundary lang={lang} client:load>
       <TankCalculator lang={lang} translationData={translationData} client:load />
     </ErrorBoundary>
