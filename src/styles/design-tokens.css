@@ -24,7 +24,7 @@
 
   /* Text Colors */
   --color-text: #ffffff;
-  --color-text-alpha-50: rgba(255, 255, 255, 0.7); /* Increased for WCAG AA */
+  --color-text-alpha-50: rgba(255, 255, 255, 0.85); /* Increased for WCAG AA */
   --color-text-alpha-60: rgba(255, 255, 255, 0.8); /* Increased for WCAG AA */
   --color-text-alpha-70: rgba(255, 255, 255, 0.85); /* Increased for WCAG AA */
   --color-text-alpha-80: rgba(255, 255, 255, 0.8);
