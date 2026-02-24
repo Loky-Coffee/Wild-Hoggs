@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'preact/hooks';
+import { useState, useEffect, useRef } from 'preact/hooks';
 import { useTranslations } from '../i18n/utils';
 import type { Language, TranslationData } from '../i18n/index';
 import rewardCodesData from '../data/reward-codes.json';
@@ -41,6 +41,8 @@ export default function RewardCodesLocal({ lang, translationData }: RewardCodesL
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
   const [errorCode, setErrorCode] = useState<string | null>(null);
   const [currentTime, setCurrentTime] = useState(Date.now());
+  const copiedTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const errorTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const t = useTranslations(translationData);
 
@@ -53,15 +55,25 @@ export default function RewardCodesLocal({ lang, translationData }: RewardCodesL
     return () => clearInterval(interval);
   }, []);
 
+  // Clear pending timeouts on unmount to prevent setState on unmounted component
+  useEffect(() => {
+    return () => {
+      if (copiedTimeoutRef.current) clearTimeout(copiedTimeoutRef.current);
+      if (errorTimeoutRef.current) clearTimeout(errorTimeoutRef.current);
+    };
+  }, []);
+
   const copyToClipboard = async (code: string) => {
     try {
       await navigator.clipboard.writeText(code);
       setCopiedCode(code);
-      setTimeout(() => setCopiedCode(null), 2000);
+      if (copiedTimeoutRef.current) clearTimeout(copiedTimeoutRef.current);
+      copiedTimeoutRef.current = setTimeout(() => setCopiedCode(null), 2000);
     } catch (err) {
       console.error('Failed to copy:', err);
       setErrorCode(code);
-      setTimeout(() => setErrorCode(null), 2000);
+      if (errorTimeoutRef.current) clearTimeout(errorTimeoutRef.current);
+      errorTimeoutRef.current = setTimeout(() => setErrorCode(null), 2000);
     }
   };
 
