@@ -50,7 +50,7 @@ export default function BuildingCalculator({ lang, translationData }: BuildingCa
   const maxLevel = selectedBuildingData.maxLevel;
 
   const calculatedResults = useMemo(() => {
-    if (currentLevel >= targetLevel || currentLevel < 1 || targetLevel > maxLevel) {
+    if (currentLevel >= targetLevel || currentLevel < 1 || currentLevel > maxLevel || targetLevel > maxLevel) {
       return null;
     }
 
@@ -63,7 +63,7 @@ export default function BuildingCalculator({ lang, translationData }: BuildingCa
     const breakdown: BuildingCost[] = [];
 
     for (let level = currentLevel; level < targetLevel; level++) {
-      const cost = selectedBuildingData.costs[level];
+      const cost = selectedBuildingData.costs[level - 1];
       if (cost) {
         totalWood += cost.wood;
         totalFood += cost.food;
