@@ -137,8 +137,8 @@ export default function TankCalculator({ lang, translationData }: TankCalculator
             <span style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
               🔧 {formatNumber(totalWrenchesUsed, lang)} / {formatNumber(remainingWrenches, lang)}
               {targetMod && (
-                <span style={{ marginLeft: '0.5rem', color: '#e74c3c' }}>
-                  🎯 L{targetMod.level}: {formatNumber(wrenchesToTarget, lang)}
+                <span style={{ marginLeft: '0.5rem', color: wrenchesToTarget <= 0 ? '#52be80' : '#e74c3c' }}>
+                  🎯 L{targetMod.level}: {wrenchesToTarget <= 0 ? '✓' : formatNumber(wrenchesToTarget, lang)}
                 </span>
               )}
               {!targetMod && nextMilestone && (
@@ -194,9 +194,9 @@ export default function TankCalculator({ lang, translationData }: TankCalculator
           {targetMod && (
             <div style={{ whiteSpace: 'nowrap' }}>
               <span style={{ color: 'rgba(255, 255, 255, 0.6)' }}>{t('tank.target')}:</span>{' '}
-              <span style={{ fontWeight: 'bold', color: '#e74c3c' }}>Level {targetMod.level}</span>
+              <span style={{ fontWeight: 'bold', color: wrenchesToTarget <= 0 ? '#52be80' : '#e74c3c' }}>Level {targetMod.level}</span>
               <span style={{ color: 'rgba(255, 255, 255, 0.5)', marginLeft: '0.25rem' }}>
-                (🔧 {formatNumber(wrenchesToTarget, lang)})
+                {wrenchesToTarget <= 0 ? ' ✓' : `(🔧 ${formatNumber(wrenchesToTarget, lang)})`}
               </span>
               <button
                 onClick={() => setTargetLevel(null)}
