@@ -75,8 +75,7 @@
   background-color: rgba(255, 165, 0, 0.04);
 }
 
-.form-group input:focus {
-  outline: none;
+.form-group input:focus-visible {
   border-color: #ffa500;
   box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.15);
 }
@@ -112,8 +111,7 @@
   background: rgba(255, 165, 0, 0.04);
 }
 
-.custom-select-trigger:focus {
-  outline: none;
+.custom-select-trigger:focus-visible {
   border-color: #ffa500;
   box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.15);
 }
@@ -543,7 +541,6 @@
 
 /* Make research tree nodes focusable */
 .research-tree-node {
-  outline: none;
   cursor: pointer;
 }
 
@@ -583,7 +580,7 @@
 
 /* Make SVG element focusable */
 g[data-unlock-button="true"] {
-  outline: none;
+  cursor: pointer;
 }
 
 /* Show focus indicator when keyboard-focused */
