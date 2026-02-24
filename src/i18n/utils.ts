@@ -24,7 +24,7 @@ export function useTranslations(translationData: TranslationData) {
     // Replace placeholders with params
     if (params) {
       Object.keys(params).forEach(paramKey => {
-        text = text.replace(new RegExp(`\\{${paramKey}\\}`, 'g'), params[paramKey]);
+        text = text.replaceAll(`{${paramKey}}`, params[paramKey]);
       });
     }
 
