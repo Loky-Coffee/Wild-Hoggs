@@ -48,8 +48,8 @@ export default function MembersList({ members, lang, translationData }: Props) {
           case 'name':       return a.name.localeCompare(b.name);
           case 'gender': {
             if (a.gender === b.gender) return a.name.localeCompare(b.name);
-            const order = { '♀': 0, '♂': 1, '–': 2 };
-            return order[a.gender] - order[b.gender];
+            const GENDER_ORDER: Record<string, number> = { '♀': 0, '♂': 1, '–': 2 };
+            return (GENDER_ORDER[a.gender] ?? 3) - (GENDER_ORDER[b.gender] ?? 3);
           }
           case 'level-high': return b.level - a.level || a.name.localeCompare(b.name);
           case 'level-low':  return a.level - b.level || a.name.localeCompare(b.name);
