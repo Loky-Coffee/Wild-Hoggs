@@ -617,7 +617,7 @@ Minimalpadding könnte unter 44×44px (WCAG 2.5.5 Target Size) liegen.
 | ~~P10~~ | ~~Performance~~ | ~~Inline `style` auf Tool-Cards → CSS-Klassen~~ | ✅ **RESOLVED** 2026-02-24 |
 | ~~P11~~ | ~~Performance~~ | ~~OG-Images auf < 60KB optimieren~~ | ✅ **RESOLVED** 2026-02-24 |
 | ~~P12~~ | ~~SEO~~ | ~~Category-spezifische OG-Images für Research-Seiten~~ | ✅ **RESOLVED** (commit `0999aea`) |
-| P13 | SEO | Heading-Hierarchie auf Startseite (H1→H3 Skip) | `index.astro:43` |
+| ~~P13~~ | ~~SEO~~ | ~~Heading-Hierarchie auf Startseite (H1→H3 Skip)~~ | ✅ **RESOLVED** 2026-02-24 |
 | ~~P14~~ | ~~A11y~~ | ~~Select ohne `<label>` in BuildingCalculator~~ | ✅ **RESOLVED** 2026-02-24 |
 | P15 | A11y | `outline: none` → `:focus-visible` ersetzen | `Calculator.css` |
 | P16 | A11y | Language Dropdown ARIA-Rollen korrigieren | `LanguageDropdown.astro:50–62` |
@@ -673,4 +673,5 @@ Alle Befunde wurden durch direktes Lesen der Quelldateien mit exakten Zeilennumm
 | 2026-02-24 | P06 RESOLVED: Kontrast-Fixes — opacity-Kaskade entfernt, filter:saturate() stattdessen |
 | 2026-02-24 | P07 RESOLVED: Array-Bounds-Guard in HeroExpCalculator Loop |
 | 2026-02-24 | P11 RESOLVED: OG-Images mit sharp WebP q30 komprimiert — 115–138KB → 33–57KB (-57–63%) |
+| 2026-02-24 | P13 RESOLVED: H3→H2 auf `.administrator-corner` — Heading-Hierarchie H1→H2→H2→H3 korrekt |
 | 2026-02-24 | EXTRA: Breakdown-Listen — keine fixed heights mehr, Body scrollt nativ |
