@@ -149,12 +149,27 @@
 }
 
 .code-card.expired {
-  opacity: 0.6;
-  border-color: rgba(255, 165, 0, 0.2);
+  border-color: rgba(255, 165, 0, 0.15);
+  background: rgba(255, 255, 255, 0.02);
+  filter: saturate(0.5);
 }
 
-.code-card.expired:hover {
-  opacity: 0.8;
+.code-card.expired .code-text {
+  color: rgba(255, 165, 0, 0.65);
+}
+
+.code-card.expired .code-description {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.code-card.expired .copy-btn {
+  background: rgba(255, 165, 0, 0.06);
+  color: rgba(255, 165, 0, 0.55);
+  border-color: rgba(255, 165, 0, 0.18);
+}
+
+.code-card.expired .expired-badge {
+  color: rgba(255, 255, 255, 0.65);
 }
 
 .code-header {

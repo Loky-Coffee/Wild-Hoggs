@@ -30,7 +30,7 @@
   position: absolute;
   left: 0.85rem;
   font-size: 1.2rem;
-  color: rgba(255,255,255,0.3);
+  color: rgba(255,255,255,0.6);
   pointer-events: none;
   line-height: 1;
 }
@@ -95,7 +95,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: rgba(255,255,255,0.28);
+  color: rgba(255,255,255,0.55);
 }
 
 .hg-chips {
@@ -113,7 +113,7 @@
   border-radius: 999px;
   border: 1px solid rgba(255,255,255,0.14);
   background: transparent;
-  color: rgba(255,255,255,0.45);
+  color: rgba(255,255,255,0.55);
   font-size: 0.78rem;
   font-weight: 600;
   cursor: pointer;
