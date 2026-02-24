@@ -20,7 +20,7 @@ export default function HeroExpCalculator({ lang, translationData }: HeroExpCalc
 
   const t = useTranslations(translationData);
 
-  const maxLevel = 175; // Last-Z max hero level
+  const maxLevel = heroExpTable.length; // derived from actual data, not hardcoded
 
   const calculatedResults = useMemo(() => {
     if (currentLevel > maxLevel || targetLevel > maxLevel) {
@@ -33,8 +33,7 @@ export default function HeroExpCalculator({ lang, translationData }: HeroExpCalc
     let totalExp = 0;
     const breakdown: { level: number; exp: number }[] = [];
 
-    for (let level = currentLevel; level < targetLevel; level++) {
-      if (level >= heroExpTable.length) break;
+    for (let level = currentLevel; level < targetLevel && level < heroExpTable.length; level++) {
       const expNeeded = heroExpTable[level];
       totalExp += expNeeded;
       breakdown.push({ level: level + 1, exp: expNeeded });
