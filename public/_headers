@@ -15,6 +15,10 @@
   # levelgeeks.org wurde entfernt - alle Bilder sind self-hosted
   Strict-Transport-Security: max-age=15552000; includeSubDomains; preload
 
+# OG Images - Cache 30 Tage (immutable)
+/og-*.webp
+  Cache-Control: public, max-age=2592000, immutable
+
 # Static Assets - Cache 1 Jahr (immutable)
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable
