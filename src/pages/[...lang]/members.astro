@@ -71,7 +71,7 @@ const breadcrumbItems = [
 ];
 ---
 
-<PageLayout title={`${t('members.title')} - Wild Hoggs`} description={t('seo.members.description')} breadcrumbs={breadcrumbItems}>
+<PageLayout title={t('seo.members.title')} description={t('seo.members.description')} breadcrumbs={breadcrumbItems}>
   <PageHeader
     title={t('members.title')}
     subtitle={`${t('members.count').replace('{count}', members.length.toString())} • ${lastUpdatedText}: ${lastUpdated}`}
