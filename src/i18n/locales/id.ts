@@ -448,6 +448,15 @@ export default {
   'seo.about.title': 'Wild Hoggs | Tentang Kami - Guild Last Z Server 395',
   'seo.about.description': 'Wild Hoggs adalah guild Last Z aktif di Server 395. Bergabunglah dengan komunitas kami untuk strategi aliansi, event, dan dukungan guild. R5: N0TNUTT.',
   'seo.about.h1': 'Tentang Wild Hoggs - Komunitas Guild Last Z',
+  // Tool Calculator SEO Pages
+  'seo.hero-exp.title': 'Wild Hoggs | Last Z Kalkulator EXP Pahlawan',
+  'seo.hero-exp.description': 'Hitung EXP dan pecahan yang dibutuhkan untuk upgrade pahlawan',
+  'seo.building.title': 'Wild Hoggs | Last Z Kalkulator Bangunan',
+  'seo.building.description': 'Hitung sumber daya untuk upgrade bangunan',
+  'seo.tank.title': 'Wild Hoggs | Last Z Kalkulator Modifikasi',
+  'seo.tank.description': 'Hitung kunci untuk modifikasi tank dan pembukaan kendaraan',
+  'seo.caravan.title': 'Wild Hoggs | Last Z Kalkulator Karavan',
+  'seo.caravan.description': 'Hitung sumber daya untuk jalur pasokan karavan',
   // Roses Page
   'roses.title': 'Mawar Mingguan',
   'roses.description': 'Buff Mawar Keberuntungan mingguan untuk Last Z. Periksa mawar mana yang aktif minggu ini!',

@@ -448,6 +448,15 @@ export default {
   'seo.about.title': 'Wild Hoggs | 私たちについて - Last Z ギルド サーバー 395',
   'seo.about.description': 'Wild Hoggs はサーバー395のアクティブな Last Z ギルドです。同盟戦略、イベント、ギルドサポートのためのコミュニティに参加。R5: N0TNUTT。',
   'seo.about.h1': 'Wild Hoggs について - Last Z ギルドコミュニティ',
+  // Tool Calculator SEO Pages
+  'seo.hero-exp.title': 'Wild Hoggs | Last Z ヒーロー EXP 計算機',
+  'seo.hero-exp.description': 'ヒーローの強化に必要な EXP と欠片を計算',
+  'seo.building.title': 'Wild Hoggs | Last Z 建築計算機',
+  'seo.building.description': '建物のアップグレードに必要な資源を計算',
+  'seo.tank.title': 'Wild Hoggs | Last Z 改造計算機',
+  'seo.tank.description': 'タンク改造と車両アンロックに必要なレンチを計算',
+  'seo.caravan.title': 'Wild Hoggs | Last Z キャラバン計算機',
+  'seo.caravan.description': 'キャラバン補給ルートのリソースを計算',
   // Roses Page
   'roses.title': '週間ローズ',
   'roses.description': 'Last Zの週間ラッキーローズバフ。今週アクティブなローズをチェック！',

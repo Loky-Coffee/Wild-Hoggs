@@ -448,6 +448,15 @@ export default {
   'seo.about.title': 'Wild Hoggs | À Propos - Guilde Last Z Serveur 395',
   'seo.about.description': 'Wild Hoggs est une guilde Last Z active sur le Serveur 395. Rejoignez notre communauté pour des stratégies d\'alliance, événements et support de guilde. R5: N0TNUTT.',
   'seo.about.h1': 'À Propos de Wild Hoggs - Communauté Guilde Last Z',
+  // Tool Calculator SEO Pages
+  'seo.hero-exp.title': 'Wild Hoggs | Last Z Calculateur EXP Héros',
+  'seo.hero-exp.description': 'Calculez l’EXP et les fragments requis pour améliorer un héros',
+  'seo.building.title': 'Wild Hoggs | Last Z Calculateur de bâtiments',
+  'seo.building.description': 'Calculez les ressources nécessaires pour les améliorations de bâtiments',
+  'seo.tank.title': 'Wild Hoggs | Last Z Calculateur de modification',
+  'seo.tank.description': 'Calculez les clés pour les modifications de tank et les déverrouillages de véhicules',
+  'seo.caravan.title': 'Wild Hoggs | Last Z Calculateur de Caravane',
+  'seo.caravan.description': 'Calculez les ressources pour les convois de ravitaillement',
   // Roses Page
   'roses.title': 'Roses Hebdomadaires',
   'roses.description': 'Buffs de roses porte-bonheur hebdomadaires pour Last Z. Vérifiez quelle rose est active cette semaine !',

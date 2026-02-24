@@ -448,6 +448,15 @@ export default {
   'seo.about.title': 'Wild Hoggs | معلومات عنا - نقابة Last Z الخادم 395',
   'seo.about.description': 'Wild Hoggs نقابة Last Z نشطة على الخادم 395. انضم إلى مجتمعنا للحصول على استراتيجيات التحالف والفعاليات ودعم النقابة. R5: N0TNUTT.',
   'seo.about.h1': 'معلومات عن Wild Hoggs - مجتمع نقابة Last Z',
+  // Tool Calculator SEO Pages
+  'seo.hero-exp.title': 'Wild Hoggs | Last Z حاسبة خبرة الأبطال',
+  'seo.hero-exp.description': 'احسب الخبرة والقطع المطلوبة لترقية الأبطال',
+  'seo.building.title': 'Wild Hoggs | Last Z حاسبة المباني',
+  'seo.building.description': 'احسب الموارد لترقيات المباني',
+  'seo.tank.title': 'Wild Hoggs | Last Z حاسبة التعديل',
+  'seo.tank.description': 'احسب المفاتيح لتعديلات الدبابة وفتح المركبات',
+  'seo.caravan.title': 'Wild Hoggs | Last Z حاسبة القافلة',
+  'seo.caravan.description': 'احسب الموارد لطرق إمداد القافلة',
   // Roses Page
   'roses.title': 'الورود الأسبوعية',
   'roses.description': 'تعزيزات الوردة المحظوظة الأسبوعية لـ Last Z. تحقق من الوردة النشطة هذا الأسبوع!',

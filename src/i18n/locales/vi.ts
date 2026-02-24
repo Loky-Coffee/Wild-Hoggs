@@ -448,6 +448,15 @@ export default {
   'seo.about.title': 'Wild Hoggs | Về Chúng Tôi - Bang Hội Last Z Máy Chủ 395',
   'seo.about.description': 'Wild Hoggs là bang hội Last Z năng động trên Máy chủ 395. Tham gia cộng đồng của chúng tôi để có chiến lược liên minh, sự kiện và hỗ trợ bang hội. R5: N0TNUTT.',
   'seo.about.h1': 'Về Wild Hoggs - Cộng Đồng Bang Hội Last Z',
+  // Tool Calculator SEO Pages
+  'seo.hero-exp.title': 'Wild Hoggs | Last Z Bộ tính EXP anh hùng',
+  'seo.hero-exp.description': 'Tính EXP và mảnh cần thiết để nâng cấp anh hùng',
+  'seo.building.title': 'Wild Hoggs | Last Z Bộ tính công trình',
+  'seo.building.description': 'Tính tài nguyên nâng cấp công trình',
+  'seo.tank.title': 'Wild Hoggs | Last Z Bộ tính sửa đổi',
+  'seo.tank.description': 'Tính cờ lê cho sửa đổi xe tăng và mở khóa phương tiện',
+  'seo.caravan.title': 'Wild Hoggs | Last Z Máy tính Đoàn Xe',
+  'seo.caravan.description': 'Tính toán tài nguyên cho các tuyến đường tiếp tế đoàn xe',
   // Roses Page
   'roses.title': 'Hoa Hồng Hàng Tuần',
   'roses.description': 'Buff Hoa Hồng May Mắn hàng tuần cho Last Z. Kiểm tra hoa hồng nào đang hoạt động tuần này!',

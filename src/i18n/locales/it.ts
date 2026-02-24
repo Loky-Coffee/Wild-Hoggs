@@ -448,6 +448,15 @@ export default {
   'seo.about.title': 'Wild Hoggs | Chi Siamo - Gilda Last Z Server 395',
   'seo.about.description': 'Wild Hoggs è una gilda Last Z attiva sul Server 395. Unisciti alla nostra comunità per strategie alleanza, eventi e supporto gilda. R5: N0TNUTT.',
   'seo.about.h1': 'Chi Siamo Wild Hoggs - Comunità Gilda Last Z',
+  // Tool Calculator SEO Pages
+  'seo.hero-exp.title': 'Wild Hoggs | Last Z Calcolatore EXP eroe',
+  'seo.hero-exp.description': 'Calcola EXP e frammenti necessari per migliorare gli eroi',
+  'seo.building.title': 'Wild Hoggs | Last Z Calcolatore edifici',
+  'seo.building.description': 'Calcola le risorse per gli upgrade degli edifici',
+  'seo.tank.title': 'Wild Hoggs | Last Z Calcolatore modifiche',
+  'seo.tank.description': 'Calcola le chiavi per le modifiche del tank e gli sblocchi dei veicoli',
+  'seo.caravan.title': 'Wild Hoggs | Last Z Calcolatore Carovana',
+  'seo.caravan.description': 'Calcola risorse per le rotte di rifornimento della carovana',
   // Roses Page
   'roses.title': 'Rose Settimanali',
   'roses.description': 'Buff settimanali delle rose fortunate per Last Z. Controlla quale rosa è attiva questa settimana!',

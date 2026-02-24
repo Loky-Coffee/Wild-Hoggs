@@ -448,6 +448,15 @@ export default {
   'seo.about.title': 'Wild Hoggs | 소개 - Last Z 길드 서버 395',
   'seo.about.description': 'Wild Hoggs는 서버 395의 활동적인 Last Z 길드입니다. 동맹 전략, 이벤트 및 길드 지원을 위한 커뮤니티에 참여하세요. R5: N0TNUTT.',
   'seo.about.h1': 'Wild Hoggs 소개 - Last Z 길드 커뮤니티',
+  // Tool Calculator SEO Pages
+  'seo.hero-exp.title': 'Wild Hoggs | Last Z 영웅 EXP 계산기',
+  'seo.hero-exp.description': '영웅 강화에 필요한 EXP와 조각 계산',
+  'seo.building.title': 'Wild Hoggs | Last Z 건물 계산기',
+  'seo.building.description': '건물 업그레이드에 필요한 자원 계산',
+  'seo.tank.title': 'Wild Hoggs | Last Z 개조 계산기',
+  'seo.tank.description': '탱크 개조 및 차량 잠금 해제에 필요한 렌치 계산',
+  'seo.caravan.title': 'Wild Hoggs | Last Z 카라반 계산기',
+  'seo.caravan.description': '카라반 보급로 자원 계산',
   // Roses Page
   'roses.title': '주간 로즈',
   'roses.description': 'Last Z의 주간 럭키 로즈 버프. 이번 주 활성 로즈를 확인하세요!',

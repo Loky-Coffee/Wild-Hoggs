@@ -448,6 +448,15 @@ export default {
   'seo.about.title': 'Wild Hoggs | Hakkımızda - Last Z Loncası Sunucu 395',
   'seo.about.description': 'Wild Hoggs, Sunucu 395\'te aktif bir Last Z loncasıdır. İttifak stratejileri, etkinlikler ve lonca desteği için topluluğumuza katılın. R5: N0TNUTT.',
   'seo.about.h1': 'Wild Hoggs Hakkında - Last Z Lonca Topluluğu',
+  // Tool Calculator SEO Pages
+  'seo.hero-exp.title': 'Wild Hoggs | Last Z Kahraman EXP Hesaplayıcı',
+  'seo.hero-exp.description': 'Kahraman yükseltmeleri için gereken EXP ve parçaları hesaplayın',
+  'seo.building.title': 'Wild Hoggs | Last Z Bina Hesaplayıcı',
+  'seo.building.description': 'Bina yükseltmeleri için kaynakları hesaplayın',
+  'seo.tank.title': 'Wild Hoggs | Last Z Modifikasyon Hesaplayıcı',
+  'seo.tank.description': 'Tank modifikasyonları ve araç kilidi açma için anahtar hesaplayın',
+  'seo.caravan.title': 'Wild Hoggs | Last Z Kervan Hesaplayıcı',
+  'seo.caravan.description': 'Kervan ikmal güzergahları için kaynakları hesaplayın',
   // Roses Page
   'roses.title': 'Haftalık Güller',
   'roses.description': 'Last Z için haftalık Şanslı Gül güçlendirmeleri. Bu hafta hangi gülün aktif olduğunu kontrol edin!',

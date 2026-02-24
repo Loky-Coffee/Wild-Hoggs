@@ -563,4 +563,13 @@ export default {
   'seo.about.title': 'Wild Hoggs | About Us - Last Z Guild Server 395',
   'seo.about.description': 'Wild Hoggs is an active Last Z guild on Server 395. Join our community for alliance strategies, events, and guild support. R5: N0TNUTT.',
   'seo.about.h1': 'About Wild Hoggs - Last Z Guild Community',
+  // Tool Calculator SEO Pages
+  'seo.hero-exp.title': 'Wild Hoggs | Last Z Hero EXP Calculator - Level Up Heroes',
+  'seo.hero-exp.description': 'Calculate exact EXP and shards needed to level up any Last Z hero to your target level. Free calculator by Wild Hoggs guild — Server 395.',
+  'seo.building.title': 'Wild Hoggs | Last Z Building Calculator - Resource Planner',
+  'seo.building.description': 'Plan your Last Z building upgrades with exact resource costs per level. Free building calculator by Wild Hoggs guild — Server 395.',
+  'seo.tank.title': 'Wild Hoggs | Last Z Tank Modification Calculator',
+  'seo.tank.description': 'Calculate wrenches needed for Last Z tank modifications and vehicle unlocks. Track progress to your target mod level. Free tool by Wild Hoggs — Server 395.',
+  'seo.caravan.title': 'Wild Hoggs | Last Z Caravan Calculator - Battle Planner',
+  'seo.caravan.description': 'Find which Last Z caravan levels you can beat with your formation power, faction bonuses and hero buffs. Free calculator by Wild Hoggs guild — Server 395.',
 } as const;

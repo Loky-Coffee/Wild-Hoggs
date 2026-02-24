@@ -448,6 +448,15 @@ export default {
   'seo.about.title': 'Wild Hoggs | 關於我們 - Last Z 公會伺服器 395',
   'seo.about.description': 'Wild Hoggs 是伺服器 395 上活躍的 Last Z 公會。加入我們的社群獲取聯盟策略、活動和公會支援。R5: N0TNUTT。',
   'seo.about.h1': '關於 Wild Hoggs - Last Z 公會社群',
+  // Tool Calculator SEO Pages
+  'seo.hero-exp.title': 'Wild Hoggs | Last Z 英雄 EXP 計算器',
+  'seo.hero-exp.description': '計算英雄升級所需 EXP 與碎片',
+  'seo.building.title': 'Wild Hoggs | Last Z 建築計算器',
+  'seo.building.description': '計算建築升級所需資源',
+  'seo.tank.title': 'Wild Hoggs | Last Z 改裝計算器',
+  'seo.tank.description': '計算坦克改裝和車輛解鎖所需扳手',
+  'seo.caravan.title': 'Wild Hoggs | Last Z 商隊計算器',
+  'seo.caravan.description': '計算商隊補給路線的資源',
   // Roses Page
   'roses.title': '每週玫瑰',
   'roses.description': 'Last Z 每週幸運玫瑰增益。查看本週激活的玫瑰！',
