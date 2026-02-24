@@ -33,7 +33,7 @@ const breadcrumbItems = [
   </div>
 
   <div class="tools-grid">
-    <a href={getLocalizedPath('tools/hero-exp', lang)} class="tool-card has-image" style="background-image: url('/images/hero.webp')" aria-label={t('tools.hero.title')}>
+    <a href={getLocalizedPath('tools/hero-exp', lang)} class="tool-card has-image tool-card--hero" aria-label={t('tools.hero.title')}>
       <div class="tool-card-body">
         <h2>{t('tools.hero.title')}</h2>
         <p>{t('tools.hero.description')}</p>
@@ -41,7 +41,7 @@ const breadcrumbItems = [
       </div>
     </a>
 
-    <a href={getLocalizedPath('tools/building', lang)} class="tool-card has-image" style="background-image: url('/images/hq.webp')" aria-label={t('tools.building.title')}>
+    <a href={getLocalizedPath('tools/building', lang)} class="tool-card has-image tool-card--building" aria-label={t('tools.building.title')}>
       <div class="tool-card-body">
         <h2>{t('tools.building.title')}</h2>
         <p>{t('tools.building.description')}</p>
@@ -49,7 +49,7 @@ const breadcrumbItems = [
       </div>
     </a>
 
-    <a href={getLocalizedPath('tools/tank', lang)} class="tool-card has-image" style="background-image: url('/images/garage.webp')" aria-label={t('tools.tank.title')}>
+    <a href={getLocalizedPath('tools/tank', lang)} class="tool-card has-image tool-card--tank" aria-label={t('tools.tank.title')}>
       <div class="tool-card-body">
         <h2>{t('tools.tank.title')}</h2>
         <p>{t('tools.tank.description')}</p>
@@ -57,7 +57,7 @@ const breadcrumbItems = [
       </div>
     </a>
 
-    <a href={getLocalizedPath('tools/research', lang)} class="tool-card has-image" style="background-image: url('/images/lab.webp')" aria-label={t('tools.research.title')}>
+    <a href={getLocalizedPath('tools/research', lang)} class="tool-card has-image tool-card--research" aria-label={t('tools.research.title')}>
       <div class="tool-card-body">
         <h2>{t('tools.research.title')}</h2>
         <p>{t('tools.research.description')}</p>
@@ -65,7 +65,7 @@ const breadcrumbItems = [
       </div>
     </a>
 
-    <a href={getLocalizedPath('tools/caravan', lang)} class="tool-card has-image" style="background-image: url('/images/caravan.webp')" aria-label={t('tools.caravan.title')}>
+    <a href={getLocalizedPath('tools/caravan', lang)} class="tool-card has-image tool-card--caravan" aria-label={t('tools.caravan.title')}>
       <div class="tool-card-body">
         <h2>{t('tools.caravan.title')}</h2>
         <p>{t('tools.caravan.description')}</p>
@@ -95,6 +95,12 @@ const breadcrumbItems = [
     overflow: hidden;
     min-height: 240px;
   }
+
+  .tool-card--hero     { background-image: url('/images/hero.webp'); }
+  .tool-card--building { background-image: url('/images/hq.webp'); }
+  .tool-card--tank     { background-image: url('/images/garage.webp'); }
+  .tool-card--research { background-image: url('/images/lab.webp'); }
+  .tool-card--caravan  { background-image: url('/images/caravan.webp'); }
 
   .tool-card.has-image {
     background-size: cover;
