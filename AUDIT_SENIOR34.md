@@ -613,7 +613,7 @@ Minimalpadding könnte unter 44×44px (WCAG 2.5.5 Target Size) liegen.
 
 | ID | Bereich | Problem | Datei(en) |
 |---|---|---|---|
-| P09 | Performance | `client:load` → `client:idle` auf Calculators | `hero-exp.astro:39`, `building.astro:32`, `caravan.astro:38`, `tank.astro:37` |
+| ~~P09~~ | ~~Performance~~ | ~~`client:load` → `client:idle` auf Calculators~~ | ✅ **FALSE POSITIVE** — Hero/Building/Caravan nutzen bereits `client:visible` (besser als idle). Tank/Research müssen `client:load` behalten (`overflow:hidden` blockt IntersectionObserver). |
 | P10 | Performance | Inline `style` auf Tool-Cards → CSS-Klassen | `src/pages/[...lang]/tools.astro:36–68` |
 | P11 | Performance | OG-Images auf < 60KB optimieren | `public/og-*.webp` |
 | ~~P12~~ | ~~SEO~~ | ~~Category-spezifische OG-Images für Research-Seiten~~ | ✅ **RESOLVED** (commit `0999aea`) |
