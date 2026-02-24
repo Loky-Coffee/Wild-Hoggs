@@ -4,6 +4,28 @@
 **Stack:** Astro 5.17, Preact 10.28, Zod 4.3, TypeScript 5.9, 15 Locales
 **Agenten:** 8 Senior-Spezialisten (Security, Performance, Code Quality, Dead Code, SEO, Bugs, Accessibility, Cloudflare)
 **Methodik:** Alle Befunde basieren ausschließlich auf verifizierten Datei-Inhalten — kein Raten, kein Halluzinieren.
+**Letztes Update:** 2026-02-24 — 13 von 22 Prioritäten abgearbeitet
+
+---
+
+## Fix-Log (chronologisch)
+
+| Fix | Commit | Beschreibung |
+|-----|--------|--------------|
+| P1 | `_redirects` | `public/_redirects` erstellt — www → non-www 301-Redirect |
+| P2 | `bd78294` | BuildingCalculator: `costs[level]` → `costs[level-1]` (Off-by-one) |
+| P3 | – | HeroExpCalculator: `maxLevel` aus Tabellenlänge, Guard in Loop-Bedingung |
+| P4 | – | TankCalculator: Negatives `wrenchesToTarget` → ✓-Anzeige wenn ≤ 0 |
+| P5 | – | CustomSelect: Crash bei leerem `options[]`-Array — `disabled`-Guard |
+| P6 | – | RewardCodesLocal: `clearTimeout`-Cleanup bei Unmount via `useRef` |
+| P7 | `9aaeb6f` | `client:load` intentional dokumentiert — Kommentare in 2 Astro-Seiten |
+| P8 | – | about.astro + members.astro: `seo.about.title` / `seo.members.title` korrekt |
+| P9 | `29400d9` | 4 Tool-Seiten: neue `seo.hero-exp.*`, `seo.building.*`, `seo.tank.*`, `seo.caravan.*` Keys in allen 15 Locales |
+| P11 | – | i18n/utils.ts: `new RegExp(paramKey)` → `replaceAll()` (ReDoS-Fix) |
+| P12 | – | MembersList: `GENDER_ORDER` mit `?? 3` Fallback — NaN im Sort verhindert |
+| P13 | – | design-tokens.css: `rgba(255,255,255,0.7)` → `0.85` (WCAG AA 6.7:1) |
+| P14 | `1bbcc75` | `public/_headers`: 30-Tage Cache für `og-*.webp` hinzugefügt |
+| P15 | `8ae4870` | 9 Research-Kategorien: `seo.research.{id}.title/description` in allen 15 Locales |
 
 ---
 
@@ -45,40 +67,40 @@
 
 ### 🔴 SOFORT (vor nächstem Deploy)
 
-| # | Bereich | Problem | Datei |
-|---|---------|---------|-------|
-| P1 | Cloudflare | Fehlende `_redirects` (www → non-www) | `public/_redirects` anlegen |
-| P2 | Bugs | BuildingCalculator: Array-Bounds-Fehler bei `costs[level]` | `BuildingCalculator.tsx:66` |
-| P3 | Bugs | HeroExpCalculator: Bounds-Check nach Array-Zugriff | `HeroExpCalculator.tsx:37` |
-| P4 | Bugs | TankCalculator: `wrenchesToTarget` kann negativ werden | `TankCalculator.tsx:102` |
-| P5 | Bugs | CustomSelect: Crash bei leerem `options[]`-Array | `CustomSelect.tsx:22` |
-| P6 | Bugs | RewardCodesLocal: `clearTimeout` fehlt bei Unmount | `RewardCodesLocal.tsx:60,64` |
+| # | Status | Bereich | Problem | Datei |
+|---|--------|---------|---------|-------|
+| P1 | ✅ ERLEDIGT | Cloudflare | Fehlende `_redirects` (www → non-www) | `public/_redirects` anlegen |
+| P2 | ✅ ERLEDIGT | Bugs | BuildingCalculator: Array-Bounds-Fehler bei `costs[level]` | `BuildingCalculator.tsx:66` |
+| P3 | ✅ ERLEDIGT | Bugs | HeroExpCalculator: Bounds-Check nach Array-Zugriff | `HeroExpCalculator.tsx:37` |
+| P4 | ✅ ERLEDIGT | Bugs | TankCalculator: `wrenchesToTarget` kann negativ werden | `TankCalculator.tsx:102` |
+| P5 | ✅ ERLEDIGT | Bugs | CustomSelect: Crash bei leerem `options[]`-Array | `CustomSelect.tsx:22` |
+| P6 | ✅ ERLEDIGT | Bugs | RewardCodesLocal: `clearTimeout` fehlt bei Unmount | `RewardCodesLocal.tsx:60,64` |
 
 ### 🟠 DIESE WOCHE (hohe Priorität)
 
-| # | Bereich | Problem | Datei |
-|---|---------|---------|-------|
-| P7 | Performance | `client:load` → `client:visible` auf allen Calculator-Seiten | `tools/*.astro` |
-| P8 | SEO | About-Seite: falsche Meta-Title-Quelle | `about.astro:23` |
-| P9 | SEO | Tool-Seiten: generische Descriptions statt SEO-optimierten | `tools/*.astro` |
-| P10 | SEO | Placeholder-Seiten (events, guides) aus Navigation entfernen | `Navigation.astro` |
-| P11 | Security | ReDoS-Pattern in i18n RegExp-Konstruktor absichern | `i18n/utils.ts:26-28` |
-| P12 | Bugs | MembersList: Gender-Sort-NaN bei unbekannten Werten | `MembersList.tsx:52` |
-| P13 | Accessibility | Kontrast: `rgba(255,255,255,0.7)` auf `#1a1a1a` unterschreitet WCAG AA | `design-tokens.css:27-31` |
-| P14 | Cloudflare | OG-Images Cache-Header fehlen | `public/_headers` |
+| # | Status | Bereich | Problem | Datei |
+|---|--------|---------|---------|-------|
+| P7 | ✅ ERLEDIGT (Kommentar) | Performance | `client:load` intentional — Kommentare dokumentiert | `tools/*.astro` |
+| P8 | ✅ ERLEDIGT | SEO | About-Seite: falsche Meta-Title-Quelle | `about.astro:23` |
+| P9 | ✅ ERLEDIGT | SEO | Tool-Seiten: generische Descriptions statt SEO-optimierten | `tools/*.astro` |
+| P10 | ⏳ OFFEN (Entscheidung ausstehend) | SEO | Placeholder-Seiten (events, guides) aus Navigation entfernen | `Navigation.astro` |
+| P11 | ✅ ERLEDIGT | Security | ReDoS-Pattern in i18n RegExp-Konstruktor absichern | `i18n/utils.ts:26-28` |
+| P12 | ✅ ERLEDIGT | Bugs | MembersList: Gender-Sort-NaN bei unbekannten Werten | `MembersList.tsx:52` |
+| P13 | ✅ ERLEDIGT | Accessibility | Kontrast: `rgba(255,255,255,0.7)` → `0.85` (WCAG AA) | `design-tokens.css:27-31` |
+| P14 | ✅ ERLEDIGT | Cloudflare | OG-Images Cache-Header — 30 Tage immutable | `public/_headers` |
 
 ### 🟡 NÄCHSTE WOCHE (mittlere Priorität)
 
-| # | Bereich | Problem | Datei |
-|---|---------|---------|-------|
-| P15 | SEO | Research-Kategorie-Seiten: fehlende unique SEO-Titel | `[categoryId].astro:112` |
-| P16 | SEO | OG-Images nicht page-spezifisch (members, roses, codes) | `members.astro`, `roses.astro`, `codes.astro` |
-| P17 | Performance | Hero-Bilder ohne `width`/`height` → CLS | `HeroGrid.tsx` |
-| P18 | Performance | Symbol-Bilder (500KB) ohne `loading="lazy"` | `HeroGrid.tsx:147-155` |
-| P19 | Accessibility | Externe Links ohne Hinweis auf neues Tab | `codes.astro:79` |
-| P20 | Code Quality | `BuildingCalculator.tsx` reimportiert Typen statt Schema zu nutzen | `BuildingCalculator.tsx:9-19` |
-| P21 | Bugs | ErrorBoundary: `error.message` kann undefined sein | `ErrorBoundary.tsx:90-92` |
-| P22 | Security | `window.location.replace()` ohne explizite Whitelist-Assertion | `Layout.astro:149`, `404.astro:114` |
+| # | Status | Bereich | Problem | Datei |
+|---|--------|---------|---------|-------|
+| P15 | ✅ ERLEDIGT | SEO | Research-Kategorie-Seiten: unique SEO-Titel für alle 9 Kategorien | `[categoryId].astro:112` |
+| P16 | ⏳ OFFEN | SEO | OG-Images nicht page-spezifisch (members, roses, codes) | `members.astro`, `roses.astro`, `codes.astro` |
+| P17 | ⏳ OFFEN | Performance | Hero-Bilder ohne `width`/`height` → CLS | `HeroGrid.tsx` |
+| P18 | ⏳ OFFEN | Performance | Symbol-Bilder (500KB) ohne `loading="lazy"` | `HeroGrid.tsx:147-155` |
+| P19 | ⏳ OFFEN | Accessibility | Externe Links ohne Hinweis auf neues Tab | `codes.astro:79` |
+| P20 | ⏳ OFFEN | Code Quality | `BuildingCalculator.tsx` reimportiert Typen statt Schema zu nutzen | `BuildingCalculator.tsx:9-19` |
+| P21 | ⏳ OFFEN | Bugs | ErrorBoundary: `error.message` kann undefined sein | `ErrorBoundary.tsx:90-92` |
+| P22 | ⏳ OFFEN | Security | `window.location.replace()` ohne explizite Whitelist-Assertion | `Layout.astro:149`, `404.astro:114` |
 
 ### 🟢 BACKLOG (niedrige Priorität)
 
