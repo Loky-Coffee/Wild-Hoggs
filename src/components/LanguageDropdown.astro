@@ -40,19 +40,19 @@ const getLanguageUrl = (targetLang: string) => {
 };
 ---
 
-<div class="language-dropdown">
+<nav class="language-dropdown" aria-label="Language selection">
   <button class="dropdown-toggle" aria-label="Select language" aria-haspopup="true" aria-expanded="false">
     <span class="flag">{flags[currentLang]}</span>
     <span class="lang-name">{languages[currentLang]}</span>
     <span class="arrow">▼</span>
   </button>
 
-  <div class="dropdown-menu" role="menu">
+  <div class="dropdown-menu">
     {Object.entries(languages).map(([code, name]) => (
       <a
         href={getLanguageUrl(code)}
         class:list={['dropdown-item', { active: currentLang === code }]}
-        role="menuitem"
+        aria-current={currentLang === code ? 'true' : undefined}
       >
         <span class="flag">{flags[code]}</span>
         <span class="lang-name">{name}</span>
@@ -60,7 +60,7 @@ const getLanguageUrl = (targetLang: string) => {
       </a>
     ))}
   </div>
-</div>
+</nav>
 
 <style>
   .language-dropdown {
