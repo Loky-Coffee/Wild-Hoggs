@@ -31,6 +31,7 @@ export default function HeroExpCalculator({ lang, translationData }: HeroExpCalc
     const breakdown: { level: number; exp: number }[] = [];
 
     for (let level = currentLevel; level < targetLevel; level++) {
+      if (level >= heroExpTable.length) break;
       const expNeeded = heroExpTable[level];
       totalExp += expNeeded;
       breakdown.push({ level: level + 1, exp: expNeeded });

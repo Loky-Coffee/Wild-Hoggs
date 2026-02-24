@@ -606,7 +606,7 @@ Minimalpadding könnte unter 44×44px (WCAG 2.5.5 Target Size) liegen.
 | ~~P04~~ | ~~SEO + A11y~~ | ~~Fehlender `<h1>` auf Research-Category-Seiten~~ | ✅ **RESOLVED** 2026-02-24 |
 | ~~P05~~ | ~~A11y~~ | ~~Animationen ohne `prefers-reduced-motion`~~ | ✅ **RESOLVED** 2026-02-24 |
 | ~~P06~~ | ~~A11y~~ | ~~Kontrast < 4.5:1 in HeroGrid + WeeklyRoses~~ | ✅ **RESOLVED** 2026-02-24 |
-| P07 | Code | Array-Bounds fehlt in HeroExpCalculator | `src/components/calculators/HeroExpCalculator.tsx:34` |
+| ~~P07~~ | ~~Code~~ | ~~Array-Bounds fehlt in HeroExpCalculator~~ | ✅ **RESOLVED** 2026-02-24 |
 | ~~P08~~ | ~~Security~~ | ~~`npm audit fix` (devalue)~~ | ✅ **RESOLVED** 2026-02-24 |
 
 ### 🟡 Bald beheben (Mittel)
@@ -671,4 +671,5 @@ Alle Befunde wurden durch direktes Lesen der Quelldateien mit exakten Zeilennumm
 | 2026-02-24 | EXTRA: Branded Custom Scrollbar (Body + Dropdowns) |
 | 2026-02-24 | P05 RESOLVED: prefers-reduced-motion in HeroGrid.css, RewardCodes.css, WeeklyRoses.css |
 | 2026-02-24 | P06 RESOLVED: Kontrast-Fixes — opacity-Kaskade entfernt, filter:saturate() stattdessen |
+| 2026-02-24 | P07 RESOLVED: Array-Bounds-Guard in HeroExpCalculator Loop |
 | 2026-02-24 | EXTRA: Breakdown-Listen — keine fixed heights mehr, Body scrollt nativ |
