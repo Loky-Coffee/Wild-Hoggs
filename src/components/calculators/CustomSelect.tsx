@@ -19,7 +19,7 @@ export default function CustomSelect({ id, value, options, onChange, label }: Cu
   const containerRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
 
-  const selectedOption = options.find((o) => o.value === value) ?? options[0];
+  const selectedOption = options.find((o) => o.value === value) ?? options[0] ?? undefined;
 
   // Close on outside click
   useEffect(() => {
@@ -109,6 +109,7 @@ export default function CustomSelect({ id, value, options, onChange, label }: Cu
         id={triggerId}
         class="custom-select-trigger"
         aria-controls={listboxId}
+        disabled={options.length === 0}
         onMouseDown={(e) => {
           e.preventDefault(); // prevent focus loss
           isOpen ? setIsOpen(false) : open();
