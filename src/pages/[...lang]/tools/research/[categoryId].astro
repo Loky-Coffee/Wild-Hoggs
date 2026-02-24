@@ -109,7 +109,7 @@ const breadcrumbItems = [
 ];
 ---
 
-<PageLayout title={`Last Z ${t(category.nameKey as TranslationKey)}`} description={`Calculate Last Z badge costs for ${t(category.nameKey as TranslationKey)} research`} breadcrumbs={breadcrumbItems}>
+<PageLayout title={t(`seo.research.${categoryId}.title` as TranslationKey)} description={t(`seo.research.${categoryId}.description` as TranslationKey)} breadcrumbs={breadcrumbItems}>
   <h1 class="page-title-subtle">Last Z · {t(category.nameKey as TranslationKey)} · Badge Calculator</h1>
   <div class="calculator-wrapper">
     <!-- client:load ist hier ABSICHTLICH (nicht client:visible):
