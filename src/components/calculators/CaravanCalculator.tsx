@@ -63,6 +63,7 @@ function formatCompact(value: number, lang: string): string {
 function getBeatableSubLevels(start: number, end: number, power: number): number {
   if (power < start) return 0;
   if (power >= end) return 20;
+  if (end === start) return 0;
   return Math.floor(1 + 19 * (power - start) / (end - start));
 }
 
