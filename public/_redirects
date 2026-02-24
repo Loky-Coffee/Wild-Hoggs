@@ -1,0 +1,9 @@
+# ============================================
+# WILD HOGGS - CLOUDFLARE PAGES REDIRECTS
+# ============================================
+
+# www → non-www (301 Permanent Redirect)
+# Verhindert Duplicate-Content für SEO.
+# Voraussetzung: www.wild-hoggs.com muss als Custom Domain
+# im Cloudflare Pages Dashboard eingetragen sein.
+https://www.wild-hoggs.com/* https://wild-hoggs.com/:splat 301
