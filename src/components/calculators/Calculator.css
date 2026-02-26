@@ -37,6 +37,10 @@
   width: 100%;
 }
 
+.tank-widget-desktop-stats {
+  display: none;
+}
+
 @media (min-width: 769px) {
   .tank-layout {
     flex-direction: row;
@@ -45,6 +49,13 @@
   .tank-widget-box {
     width: fit-content;
     align-self: flex-start;
+  }
+
+  .tank-widget-desktop-stats {
+    display: block;
+    border-top: 1px solid rgba(255, 165, 0, 0.1);
+    margin-top: 0.5rem;
+    padding-top: 0.4rem;
   }
 }
 

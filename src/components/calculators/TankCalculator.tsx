@@ -109,6 +109,31 @@ export default function TankCalculator({ lang, translationData }: TankCalculator
     return total;
   }, [subLevels]);
 
+  const remainingTotal  = maxWrenches - totalWrenchesUsed;
+  const completionPct   = maxWrenches > 0 ? Math.round((totalWrenchesUsed / maxWrenches) * 1000) / 10 : 0;
+  const totalMods       = modifications.length;
+
+  const unlockedCount = useMemo(() => unlockedLevels.size, [unlockedLevels]);
+
+  const maxedCount = useMemo(() =>
+    modifications.filter(m => (subLevels.get(m.level) || 0) >= m.subLevels).length,
+    [subLevels]
+  );
+
+  const completedTiers = useMemo(() =>
+    SUPER_UPGRADES.filter(t => totalWrenchesUsed >= t.maxKeys).length,
+    [totalWrenchesUsed]
+  );
+
+  const nextModToMax = useMemo(() => {
+    const mod = modifications.find(m =>
+      unlockedLevels.has(m.level) && (subLevels.get(m.level) || 0) < m.subLevels
+    );
+    if (!mod) return null;
+    const needed = (mod.subLevels - (subLevels.get(mod.level) || 0)) * mod.wrenchesPerSub;
+    return { mod, needed };
+  }, [unlockedLevels, subLevels]);
+
   const handleReset = () => {
     setStored(TANK_DEFAULT);
   };
@@ -128,18 +153,19 @@ export default function TankCalculator({ lang, translationData }: TankCalculator
 
       {/* ── Super Upgrade Widget + Buttons ── */}
       <div className="tank-widget-box">
-        {/* Header */}
-        <div style={{ fontSize: '0.62rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'rgba(255,165,0,0.55)', marginBottom: '0.3rem', borderBottom: '1px solid rgba(255,165,0,0.12)', paddingBottom: '0.22rem' }}>
+
+        {/* ── Header ── */}
+        <div style={{ fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'rgba(255,165,0,0.55)', marginBottom: '0.35rem', borderBottom: '1px solid rgba(255,165,0,0.12)', paddingBottom: '0.25rem' }}>
           🔧 Super Upgrades
         </div>
 
-        {/* Used / Total */}
-        <div style={{ fontSize: '0.8rem', marginBottom: '0.3rem' }}>
+        {/* ── Gesamt-Schlüssel ── */}
+        <div style={{ fontSize: '0.95rem', marginBottom: '0.4rem' }}>
           <span style={{ color: '#ffa500', fontWeight: 700 }}>{formatNumber(totalWrenchesUsed, lang)}</span>
           <span style={{ color: 'rgba(255,255,255,0.35)' }}> / {formatNumber(maxWrenches, lang)} 🔧</span>
         </div>
 
-        {/* Tier rows */}
+        {/* ── Tier-Zeilen ── */}
         {SUPER_UPGRADES.map((tier, i) => {
           const used      = Math.min(totalWrenchesUsed, tier.maxKeys);
           const remaining = tier.maxKeys - used;
@@ -147,14 +173,14 @@ export default function TankCalculator({ lang, translationData }: TankCalculator
           return (
             <div key={tier.nameKey} style={{
               display: 'flex', justifyContent: 'space-between', alignItems: 'baseline',
-              gap: '0.5rem', padding: '0.18rem 0',
-              borderBottom: i < SUPER_UPGRADES.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none',
+              gap: '0.5rem', padding: '0.22rem 0',
+              borderBottom: i < SUPER_UPGRADES.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none',
               opacity: done ? 0.5 : 1,
             }}>
-              <span style={{ fontSize: '0.68rem', color: done ? '#52be80' : 'rgba(255,255,255,0.8)', fontWeight: 600, flexShrink: 0 }}>
+              <span style={{ fontSize: '0.78rem', color: done ? '#52be80' : 'rgba(255,255,255,0.85)', fontWeight: 600, flexShrink: 0 }}>
                 {done ? '✓ ' : ''}{t(tier.nameKey)}
               </span>
-              <span style={{ fontSize: '0.68rem', textAlign: 'right', whiteSpace: 'nowrap', flexShrink: 0 }}>
+              <span style={{ fontSize: '0.78rem', textAlign: 'right', whiteSpace: 'nowrap', flexShrink: 0 }}>
                 {done ? (
                   <span style={{ color: '#52be80' }}>{formatNumber(tier.maxKeys, lang)}</span>
                 ) : (
@@ -169,22 +195,57 @@ export default function TankCalculator({ lang, translationData }: TankCalculator
           );
         })}
 
-        {/* Buttons */}
-        <div style={{ borderTop: '1px solid rgba(255,165,0,0.1)', marginTop: '0.5rem', paddingTop: '0.4rem', display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+        {/* ── Desktop-only Stats (in Gruppen) ── */}
+        <div className="tank-widget-desktop-stats">
+
+          {/* Gruppe: Gesamtfortschritt */}
+          <div style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: 'rgba(255,165,0,0.45)', margin: '0.6rem 0 0.2rem' }}>
+            Gesamtfortschritt
+          </div>
+          {[
+            { label: 'Abschluss',   value: `${completionPct}%` },
+            { label: 'Verbleibend', value: `${formatNumber(remainingTotal, lang)} 🔧` },
+            { label: 'Tiers fertig', value: `${completedTiers} / ${SUPER_UPGRADES.length}` },
+          ].map(({ label, value }) => (
+            <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '0.5rem', padding: '0.18rem 0', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+              <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.45)' }}>{label}</span>
+              <span style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.9)', fontWeight: 600, textAlign: 'right' }}>{value}</span>
+            </div>
+          ))}
+
+          {/* Gruppe: Modifikationen */}
+          <div style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: 'rgba(255,165,0,0.45)', margin: '0.6rem 0 0.2rem' }}>
+            Modifikationen
+          </div>
+          {[
+            { label: 'Freigeschaltet', value: `${unlockedCount} / ${totalMods}` },
+            { label: 'Maxiert',        value: `${maxedCount} / ${totalMods}` },
+            ...(nextModToMax ? [{ label: 'Nächste', value: `${t(nextModToMax.mod.nameKey as TranslationKey)} (${formatNumber(nextModToMax.needed, lang)} 🔧)` }] : []),
+          ].map(({ label, value }) => (
+            <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '0.5rem', padding: '0.18rem 0', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+              <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.45)' }}>{label}</span>
+              <span style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.9)', fontWeight: 600, textAlign: 'right' }}>{value}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* ── Buttons (immer ganz unten) ── */}
+        <div style={{ borderTop: '1px solid rgba(255,165,0,0.1)', marginTop: '0.6rem', paddingTop: '0.4rem', display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
           <button
             onClick={() => setViewMode(viewMode === 'tree' ? 'list' : 'tree')}
             className="btn-secondary"
-            style={{ padding: '0.4rem 0.6rem', fontSize: '0.8rem', whiteSpace: 'nowrap', textAlign: 'left' }}
+            style={{ padding: '0.4rem 0.6rem', fontSize: '0.85rem', whiteSpace: 'nowrap', textAlign: 'left' }}
           >
             {viewMode === 'tree' ? '📋 ' + t('tank.listView') : '🗺️ ' + t('tank.treeView')}
           </button>
-          <button onClick={handleMaxAll} className="btn-secondary" style={{ padding: '0.4rem 0.6rem', fontSize: '0.8rem', textAlign: 'left' }}>
+          <button onClick={handleMaxAll} className="btn-secondary" style={{ padding: '0.4rem 0.6rem', fontSize: '0.85rem', textAlign: 'left' }}>
             {t('tank.maxAll')}
           </button>
-          <button onClick={handleReset} className="btn-secondary" style={{ padding: '0.4rem 0.6rem', fontSize: '0.8rem', textAlign: 'left' }}>
+          <button onClick={handleReset} className="btn-secondary" style={{ padding: '0.4rem 0.6rem', fontSize: '0.85rem', textAlign: 'left' }}>
             {t('tank.resetAll')}
           </button>
         </div>
+
       </div>
 
       {/* View Container */}
