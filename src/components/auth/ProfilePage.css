@@ -30,19 +30,6 @@
   gap: 1.25rem;
 }
 
-.pp-avatar {
-  font-size: 2.5rem;
-  width: 60px;
-  height: 60px;
-  background: rgba(255, 165, 0, 0.12);
-  border: 2px solid rgba(255, 165, 0, 0.3);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
 .pp-user-info {
   min-width: 0;
 }

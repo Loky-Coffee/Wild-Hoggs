@@ -181,7 +181,6 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
 
       {/* ── User Card ── */}
       <div class="pp-card pp-user-card">
-        <div class="pp-avatar">⚔️</div>
         <div class="pp-user-info">
           <h1 class="pp-username">{user.username}</h1>
           <p class="pp-email">{user.email}</p>
@@ -225,8 +224,8 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
             <div>
               <div class="pp-stat-label">{t('profile.stat.tank')}</div>
               <div class="pp-stat-val">
-                {tankState
-                  ? t('profile.stat.tankLevels', { count: String(tankState.unlockedLevels.length) })
+                {tankState?.unlockedLevels?.length
+                  ? t('profile.stat.tankLevels', { level: String(Math.max(...tankState.unlockedLevels)) })
                   : '—'}
               </div>
             </div>

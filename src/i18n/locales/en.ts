@@ -614,7 +614,7 @@ export default {
   'profile.stat.building': 'Building',
   'profile.stat.caravan': 'Caravan',
   'profile.stat.heroExp': 'Hero EXP',
-  'profile.stat.tankLevels': '{count} Levels unlocked',
+  'profile.stat.tankLevels': 'Level {level}',
   'profile.stat.researchStats': '{categories} Categories · {technologies} Technologies',
   'profile.stat.buildingLevel': 'Level {current} → {target}',
   'profile.stat.heroLevel': 'Lvl {current} → {target}',
