@@ -479,20 +479,20 @@ Bei mehr Usern → Cloudflare Pro ($5/Mo): 50M Reads, 1M Writes.
 - [x] Rate Limit Logik in `functions/_lib/chat-ratelimit.ts`
 - [x] Build erfolgreich (361 Seiten, 0 Fehler)
 
-### Phase B — Frontend Komponenten ✅ TODO
+### Phase B — Frontend Komponenten ✅ ABGESCHLOSSEN (2026-02-27)
 
 **Ziel:** ChatWindow auf Community-Seite läuft mit Polling
 
-- [ ] `src/components/chat/ChatWindow.tsx` — Haupt-Komponente
-- [ ] `src/components/chat/MessageList.tsx` — Nachrichtenliste
-- [ ] `src/components/chat/MessageItem.tsx` — Einzelnachricht + Melde-Button
-- [ ] `src/components/chat/MessageInput.tsx` — Eingabe + Senden
-- [ ] `src/components/chat/ServerBadge.tsx` — Faction/Server-Badge
-- [ ] `src/components/chat/ChatWindow.css` — Styling (Dark Theme, Orange Akzent)
-- [ ] Polling alle 3 Sekunden (setInterval + clearInterval bei Unmount)
-- [ ] Auto-Scroll nach unten (neue Nachrichten)
-- [ ] Pause bei Tab-Wechsel (visibilitychange)
-- [ ] Build erfolgreich
+- [x] `src/components/chat/ChatWindow.tsx` — Haupt-Komponente
+- [x] `src/components/chat/MessageList.tsx` — Nachrichtenliste
+- [x] `src/components/chat/MessageItem.tsx` — Einzelnachricht + Melde-Button
+- [x] `src/components/chat/MessageInput.tsx` — Eingabe + Senden
+- [x] `src/components/chat/ServerBadge.tsx` — Faction/Server-Badge
+- [x] `src/components/chat/ChatWindow.css` — Styling (Dark Theme, Orange Akzent)
+- [x] Polling alle 5 Sekunden (setInterval + clearInterval bei Unmount)
+- [x] Auto-Scroll nach unten (neue Nachrichten)
+- [x] Pause bei Tab-Wechsel (visibilitychange)
+- [x] Build erfolgreich (361 Seiten, 0 Fehler)
 
 ### Phase C — Seite & Navigation ✅ TODO
 
