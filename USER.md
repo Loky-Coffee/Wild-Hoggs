@@ -950,7 +950,8 @@ Das ist der Kern der ganzen Strategie — so wenig DB-Requests wie absolut nöti
 
 **DB-Schreibvorgänge (nur wenn User etwas ändert):**
 ```
-User ändert Tank-State → 1.5s warten (debounce) → 1 PUT an Server
+User ändert Tank-State → 30s warten (debounce) → 1 PUT an Server
+User schließt Tab/Seite → sofort flush (keepalive:true) → kein Datenverlust
 User ändert nichts → 0 Schreibvorgänge → DB unberührt
 ```
 
@@ -1073,24 +1074,28 @@ Wenn User die Sprache wechselt (z.B. /de → /en) bleibt der State ebenfalls erh
 - [x] `/api/state/meta` — nur Timestamps, ~300 Bytes
 - [x] `/api/state/all` — alle States auf einmal (erster Gerätebesuch)
 - [x] `/api/state/[calcType]` — GET/PUT einzelner State
-- [x] `/api/user/profile` — PATCH Faction/Sprache
+- [x] `/api/user/profile` — PATCH Faction/Sprache/Username/Server
 - [x] `src/hooks/useAuth.ts` — Auth-State via localStorage + CustomEvents
 - [x] `src/hooks/useCalculatorState.ts` — Smart Cache Hook (Phase 1 Data migriert)
-- [x] `src/components/auth/AuthModal.tsx` — Login/Register Modal
+- [x] `src/components/auth/AuthModal.tsx` — Login/Register Modal (inkl. Server-Feld)
 - [x] `src/components/auth/UserMenu.tsx` — Nav-Integration
 - [x] Navigation.astro — UserMenu eingebunden
 - [x] Alle 5 Calculatoren auf `useCalculatorState` migriert
 - [x] Build erfolgreich (346 Seiten, 0 Fehler)
 
-**⚠️ NOCH OFFEN (manuelle Schritte durch User):**
-- [ ] Schema in D1 deployen: `wrangler d1 execute wild-hoggs-db --remote --file=./functions/schema.sql`
-- [ ] Code deployen: `git push` → Cloudflare Pages baut automatisch
-- [ ] Rate Limiting im Cloudflare Dashboard (optional, aber empfohlen)
+**✅ Manuelle Schritte erledigt:**
+- [x] Schema in D1 deployen: `wrangler d1 execute wild-hoggs-db --remote --file=./functions/schema.sql`
+- [x] Server-Feld Migration: `wrangler d1 execute wild-hoggs-db --remote --file=./functions/migrations/001_add_server.sql`
+- [x] Code deployen: `git push` → Cloudflare Pages baut automatisch
 
-**Passwort vergessen (Interim-Lösung ohne E-Mail):**
+**⚠️ Optional:**
+- [ ] Rate Limiting im Cloudflare Dashboard (empfohlen)
+
+**Passwort ändern:** User kann sein Passwort selbst im Profil ändern (`/profile/` → "Passwort ändern").
+
+**Passwort vergessen (Admin-Fallback ohne E-Mail):**
 ```sql
--- Admin setzt Passwort zurück (neues Hash manuell generieren nicht möglich via SQL)
--- Einfachste Lösung: User löschen, neu registrieren lassen
+-- User löschen, neu registrieren lassen
 wrangler d1 execute wild-hoggs-db --remote --command="DELETE FROM users WHERE email='user@example.com';"
 ```
 
@@ -1108,59 +1113,197 @@ wrangler d1 execute wild-hoggs-db --remote --command="DELETE FROM users WHERE em
 
 ---
 
-### Phase 4 — Optional (nach Phase 3)
-- [ ] Discord OAuth Login (sehr passend für Gaming-Community)
-- [ ] Guild-Features: Member-Stats vergleichen
-- [ ] Leaderboard: Höchster Tank-Level, meiste Research-Badges
-- [ ] Profil-Seite: Eigene Stats zusammengefasst
+### Phase 4a — Bugfix: AuthModal Portal ✅ ABGESCHLOSSEN (2026-02-26)
+**Problem:** AuthModal wurde am oberen Rand der Seite außerhalb des sichtbaren Bereichs gerendert.
+
+**Ursache:** Die Navigation hat `backdrop-filter: blur(10px)` gesetzt. Das erzeugt einen neuen Stacking Context — `position: fixed` Kinder werden relativ zu diesem Ancestor positioniert statt zum Viewport.
+
+**Fix:** `createPortal` aus `preact/compat` nutzen, um das Modal direkt in `document.body` zu rendern, außerhalb des Nav-Stacking-Contexts.
+
+```tsx
+// src/components/auth/UserMenu.tsx
+import { createPortal } from 'preact/compat';
+
+// Vorher:
+{showModal && <AuthModal onClose={() => setShowModal(false)} />}
+
+// Nachher:
+{showModal && createPortal(<AuthModal onClose={() => setShowModal(false)} />, document.body)}
+```
+
+- [x] `createPortal` Import in UserMenu.tsx
+- [x] AuthModal aus dem Nav-DOM herausgehoben → direkt in `document.body`
+- [x] Modal erscheint korrekt zentriert über dem gesamten Viewport
 
 ---
 
-## 14. NEUE DATEIEN / GEÄNDERTE DATEIEN
+### Phase 4b — Profil-Seite ✅ ABGESCHLOSSEN (2026-02-26)
+**Ziel:** User kann seinen Profil-Account einsehen und verwalten
 
-### Neue Dateien:
+- [x] `functions/api/auth/change-password.ts` — POST Endpoint (PBKDF2 verify + re-hash)
+- [x] `functions/api/user/profile.ts` — PATCH erweitert um `username` + `server`
+- [x] `src/components/auth/ProfilePage.tsx` — Preact Komponente mit:
+  - User Card (Avatar, Username, E-Mail, Server-Badge, Faction-Badge)
+  - Faction Selector (Blood Rose / Wings of Dawn / Guard of Order)
+  - Calculator-Fortschritt aus localStorage (Tank, Research, Building, Caravan, Hero EXP)
+  - Einstellungen: Server, Username, Passwort ändern
+  - Abmelden-Button mit Sprach-bewusstem Redirect
+- [x] `src/components/auth/ProfilePage.css` — Dark-Theme mit `.pp-*` Klassen, Faction-Farben, responsive Stats-Grid
+- [x] `src/pages/[...lang]/profile.astro` — Statische Seite (15 Sprachvarianten, `noindex`)
+- [x] Profile-Link im UserMenu Dropdown (Sprach-aware href aus `window.location.pathname`)
+- [x] `.user-dropdown-item` CSS angepasst (unterstützt `<a>` Tags als Menüpunkte)
+- [x] Alle 15 Locale-Dateien um `nav.profile`, `seo.profile.title`, `seo.profile.description` erweitert
+
+**Calculator-State Erkennung (Phase 1 + Phase 2 Format):**
+```typescript
+function readCalcState<T>(calcType: string, calcKey = 'main'): T | null {
+  const key = `wh-calc-${calcType}${calcKey !== 'main' ? `-${calcKey}` : ''}`;
+  const raw = localStorage.getItem(key);
+  const parsed = JSON.parse(raw);
+  // Phase 2 Format: { state: T, lastSyncedAt: string }
+  if (parsed && 'state' in parsed && 'lastSyncedAt' in parsed) return parsed.state;
+  // Phase 1 Format: direkt T
+  return parsed;
+}
+```
+
+---
+
+### Phase 4c — Server-Feld ✅ ABGESCHLOSSEN (2026-02-26)
+**Ziel:** User kann seine Spielserver-Nummer angeben (optional, beim Registrieren + im Profil)
+
+- [x] `functions/migrations/001_add_server.sql` — `ALTER TABLE users ADD COLUMN server TEXT`
+- [x] `functions/schema.sql` — `server TEXT` Spalte ergänzt
+- [x] `functions/_lib/auth.ts` — `validateSession` SQL + Return-Typ um `server` erweitert
+- [x] `functions/api/auth/register.ts` — `server` Feld annehmen, validieren (alphanumeric, ≤10), speichern
+- [x] `functions/api/auth/login.ts` — `server` in SELECT + Response
+- [x] `functions/api/auth/me.ts` — `server` in Response
+- [x] `functions/api/user/profile.ts` — PATCH `server` (null = löschen, alphanumeric-Validierung)
+- [x] `src/hooks/useAuth.ts` — `AuthUser` Interface um `server: string | null` erweitert
+- [x] `src/components/auth/AuthModal.tsx` — Server-Eingabefeld im Register-Tab (optional)
+- [x] `src/components/auth/ProfilePage.tsx` — Server anzeigen + bearbeiten
+
+**Migration (einmalig):**
+```bash
+wrangler d1 execute wild-hoggs-db --remote --file=./functions/migrations/001_add_server.sql
+```
+
+---
+
+### Phase 4d — DB-Request-Optimierung ✅ ABGESCHLOSSEN (2026-02-26)
+**Problem:** Bei Slider-Nutzung (Tank, Research) wurden kontinuierlich DB-Requests ausgelöst.
+
+**Root Causes:**
+1. **Debounce zu kurz (1500ms):** Jede Slider-Pause → DB-Write
+2. **Dirty-Push bei Re-Mount:** Astro View Transitions re-hydrieren Islands → `useEffect` lief erneut → sofortiger Push
+3. **Race Condition:** In-Flight-Edits überschrieben sich gegenseitig
+
+**Lösung in `src/hooks/useCalculatorState.ts`:**
+
+```typescript
+const DEBOUNCE_MS     = 30_000;   // 30s Idle vor Push (war 1500ms)
+const MIN_REMOUNT_GAP = 10_000;   // 10s Mindestabstand bei Re-Mount
+
+const pendingKeys = new Set<string>();       // Keys mit laufenden Timern
+const lastPushAt  = new Map<string, number>(); // Key → letzter Push-Timestamp
+
+// Flush bei Tab-Wechsel / Page-Leave (einmalig auf Modul-Level registriert)
+window.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden') flushAllPending();
+});
+window.addEventListener('pagehide', flushAllPending);
+
+// keepalive:true beim Flush → Request überlebt Tab-Schließen
+async function flushAllPending() {
+  for (const key of [...pendingKeys]) {
+    clearTimeout(syncTimers.get(key));
+    pushToServer(ct, ck, cached.state, token, /* keepalive= */ true);
+  }
+}
+
+// Re-Mount Guard: kein Push wenn letzter Push < 10s her
+const last = lastPushAt.get(key) ?? 0;
+if (Date.now() - last > MIN_REMOUNT_GAP) {
+  debouncedPush(...);
+}
+```
+
+**Ergebnis:** DB wird erst nach 30s Inaktivität beschrieben. Beim Schließen des Tabs / Verlassen der Seite wird sofort geflusht (keepalive:true). localStorage ist immer aktuell.
+
+---
+
+### Phase 5 — Optional (Zukunft)
+- [ ] Discord OAuth Login (sehr passend für Gaming-Community)
+- [ ] Guild-Features: Member-Stats vergleichen
+- [ ] Leaderboard: Höchster Tank-Level, meiste Research-Badges
+
+---
+
+## 14. DATEIEN-ÜBERSICHT (AKTUELLER STAND)
+
+### Neue Dateien (erstellt):
 ```
 wrangler.toml
+
 functions/
   schema.sql
-  lib/
-    auth.ts
-    db.ts
-    cors.ts
+  migrations/
+    001_add_server.sql            ← ALTER TABLE users ADD COLUMN server TEXT
+  _lib/
+    auth.ts                       ← PBKDF2, Token, validateSession
   api/
     auth/
       register.ts
       login.ts
       logout.ts
       me.ts
-      reset-request.ts         ← Phase 3
-      reset/[token].ts         ← Phase 3
+      change-password.ts          ← POST (verify + re-hash)
+      reset-request.ts            ← Phase 3 (noch nicht implementiert)
+      reset/[token].ts            ← Phase 3 (noch nicht implementiert)
     state/
-      [calcType].ts
-      sync.ts
+      meta.ts
+      all.ts
+      [calcType]/[calcKey].ts
     user/
-      profile.ts
+      profile.ts                  ← PATCH username, faction, server, language
 
 src/
   components/
     auth/
-      AuthModal.tsx
-      UserMenu.tsx
-      AuthProvider.tsx
+      AuthModal.tsx               ← Login/Register Modal
+      AuthModal.css
+      UserMenu.tsx                ← Nav-Integration + createPortal + Profile-Link
+      UserMenu.css
+      ProfilePage.tsx             ← Profil-Seite Komponente
+      ProfilePage.css
   hooks/
-    useCalculatorState.ts
-    useLocalCalculatorState.ts
+    useAuth.ts                    ← Auth-State (localStorage + CustomEvents)
+    useCalculatorState.ts         ← Smart Cache Hook
+    usePersistedState.ts          ← Phase 1 Hook (localStorage only)
+  pages/
+    [...lang]/
+      profile.astro               ← 15 Sprachvarianten (noindex)
 ```
 
 ### Geänderte Dateien:
 ```
-src/layouts/Layout.astro           — UserMenu einbinden
-src/components/calculators/TankCalculator.tsx
-src/components/calculators/BuildingCalculator.tsx
-src/components/calculators/CaravanCalculator.tsx
-src/components/calculators/HeroExpCalculator.tsx
-src/components/calculators/ResearchCategoryCalculator.tsx
-src/i18n/locales/*.ts              — Auth-Strings für alle 15 Sprachen
+src/components/Navigation.astro                    — UserMenu eingebunden
+src/layouts/Layout.astro                           — (kein Change)
+src/components/calculators/TankCalculator.tsx      — useCalculatorState
+src/components/calculators/BuildingCalculator.tsx  — useCalculatorState
+src/components/calculators/CaravanCalculator.tsx   — useCalculatorState
+src/components/calculators/HeroExpCalculator.tsx   — useCalculatorState
+src/components/calculators/ResearchCategoryCalculator.tsx — useCalculatorState
+src/i18n/locales/*.ts (15 Dateien)                — auth.*, nav.profile, seo.profile.*
+```
+
+### Git Commits (chronologisch):
+```
+c4c741e  feat(auth): Phase 2 — D1 Auth + Smart Cache + UserMenu
+7def5b6  fix(auth): render AuthModal via createPortal to escape nav backdrop-filter
+24684cc  feat(profile): add profile page + change-password endpoint
+d30d7d2  fix(sync): reduce DB writes — 30s debounce, remount guard, keepalive flush
+aac095e  feat(server): add server field to user model, registration + profile edit
 ```
 
 ---
@@ -1194,7 +1337,11 @@ src/i18n/locales/*.ts              — Auth-Strings für alle 15 Sprachen
 | **Wann wird die DB geschrieben?** | Nur wenn User tatsächlich Daten ändert |
 | **Reload auf gleichem Gerät?** | 0 DB-Requests (Freshness-Fenster 5 Min.) |
 | **Gerät nach 1 Tag?** | 1 leichter Meta-Request (~300 Bytes) → ggf. Nachladen |
-| **Empfohlene Reihenfolge?** | Phase 1 (localStorage) → Phase 2 (Auth + Smart Cache) → Phase 3 (E-Mail) |
+| **Profil-Seite?** | ✅ Fertig — `/profile/` (15 Sprachvarianten) |
+| **Passwort ändern?** | ✅ Fertig — direkt im Profil |
+| **Server-Nummer?** | ✅ Fertig — beim Registrieren + im Profil |
+| **Wann wird DB beschrieben?** | Nach 30s Inaktivität oder sofort bei Tab-Schließen |
+| **Empfohlene Reihenfolge?** | Phase 1 ✅ → Phase 2 ✅ → Phase 4a–d ✅ → Phase 3 (E-Mail, sobald CF GA) |
 
 ### Das Grundprinzip in einem Satz
 
@@ -1203,4 +1350,5 @@ src/i18n/locales/*.ts              — Auth-Strings für alle 15 Sprachen
 ---
 
 *USER.md — Wild Hoggs Auth & Persistence Audit*
-*Erstellt: 2026-02-26 | Stack: 100% Cloudflare (D1 + Pages Functions + Email Service)*
+*Erstellt: 2026-02-26 | Zuletzt aktualisiert: 2026-02-26 | Stack: 100% Cloudflare (D1 + Pages Functions + Email Service)*
+*Abgeschlossen: Phase 1 ✅, Phase 2 ✅, Phase 4a ✅, Phase 4b ✅, Phase 4c ✅, Phase 4d ✅*

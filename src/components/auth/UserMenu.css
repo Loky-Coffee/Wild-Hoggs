@@ -6,11 +6,11 @@
 
 .user-btn-login {
   background: rgba(255, 165, 0, 0.15);
-  border: 1px solid rgba(255, 165, 0, 0.4);
+  border: 2px solid rgba(255, 165, 0, 0.4);
   border-radius: 6px;
   color: #ffa500;
-  padding: 0.35rem 0.75rem;
-  font-size: 0.875rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s, border-color 0.2s;
@@ -23,11 +23,11 @@
 
 .user-btn-avatar {
   background: rgba(255, 165, 0, 0.15);
-  border: 1px solid rgba(255, 165, 0, 0.4);
+  border: 2px solid rgba(255, 165, 0, 0.4);
   border-radius: 6px;
   color: #ffa500;
-  padding: 0.35rem 0.65rem;
-  font-size: 0.875rem;
+  padding: 0.5rem 0.65rem;
+  font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s;

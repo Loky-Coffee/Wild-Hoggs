@@ -1,10 +1,17 @@
 import { useState, useEffect, useRef } from 'preact/hooks';
 import { createPortal } from 'preact/compat';
 import { useAuth, clearAuthState } from '../../hooks/useAuth';
+import { useTranslations } from '../../i18n/utils';
+import type { TranslationData } from '../../i18n/index';
 import AuthModal from './AuthModal';
 import './UserMenu.css';
 
-export default function UserMenu() {
+interface UserMenuProps {
+  translationData: TranslationData;
+}
+
+export default function UserMenu({ translationData }: UserMenuProps) {
+  const t = useTranslations(translationData);
   const { user, token, isLoggedIn } = useAuth();
   const [showModal, setShowModal] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -38,9 +45,12 @@ export default function UserMenu() {
     return (
       <div class="user-menu">
         <button class="user-btn-login" onClick={() => setShowModal(true)}>
-          Anmelden
+          {t('auth.login')}
         </button>
-        {showModal && createPortal(<AuthModal onClose={() => setShowModal(false)} />, document.body)}
+        {showModal && createPortal(
+          <AuthModal onClose={() => setShowModal(false)} translationData={translationData} />,
+          document.body
+        )}
       </div>
     );
   }
@@ -69,11 +79,11 @@ export default function UserMenu() {
           </div>
           <hr class="user-dropdown-divider" />
           <a href={profileHref} class="user-dropdown-item" onClick={() => setShowDropdown(false)}>
-            ⚔️ Mein Profil
+            {t('auth.myProfile')}
           </a>
           <hr class="user-dropdown-divider" />
           <button class="user-dropdown-item danger" onClick={handleLogout}>
-            Abmelden
+            {t('auth.logout')}
           </button>
         </div>
       )}

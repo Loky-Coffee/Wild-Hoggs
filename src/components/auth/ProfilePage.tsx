@@ -1,7 +1,13 @@
 import { useState, useEffect } from 'preact/hooks';
 import { useAuth, setAuthState, clearAuthState } from '../../hooks/useAuth';
 import type { AuthUser } from '../../hooks/useAuth';
+import { useTranslations } from '../../i18n/utils';
+import type { TranslationData } from '../../i18n/index';
 import './ProfilePage.css';
+
+interface ProfilePageProps {
+  translationData: TranslationData;
+}
 
 // ── Calculator state reader (Phase 1 + Phase 2 format) ──────────────────────
 function readCalcState<T>(calcType: string, calcKey = 'main'): T | null {
@@ -35,7 +41,8 @@ function getLangFromPath(): string {
   return langs.includes(first) ? first : 'en';
 }
 
-export default function ProfilePage() {
+export default function ProfilePage({ translationData }: ProfilePageProps) {
+  const t = useTranslations(translationData);
   const { user, token, isLoggedIn } = useAuth();
 
   // ── Form state ─────────────────────────────────────────────────────────────
@@ -92,7 +99,7 @@ export default function ProfilePage() {
       body: JSON.stringify(body),
     });
     const data = await res.json();
-    if (!res.ok) throw new Error(data.error ?? 'Fehler');
+    if (!res.ok) throw new Error(data.error ?? t('profile.errorGeneric'));
     setAuthState(data as AuthUser, token!);
     return data as AuthUser;
   };
@@ -102,7 +109,7 @@ export default function ProfilePage() {
     setServerSaving(true); setServerMsg(null);
     try {
       await patchProfile({ server: server.trim() || null });
-      setServerMsg({ type: 'ok', text: '✓ Gespeichert' });
+      setServerMsg({ type: 'ok', text: t('profile.saved') });
       setTimeout(() => setServerMsg(null), 3000);
     } catch (e: any) {
       setServerMsg({ type: 'error', text: e.message });
@@ -114,7 +121,7 @@ export default function ProfilePage() {
     setUsernameSaving(true); setUsernameMsg(null);
     try {
       await patchProfile({ username: username.trim() });
-      setUsernameMsg({ type: 'ok', text: '✓ Gespeichert' });
+      setUsernameMsg({ type: 'ok', text: t('profile.saved') });
       setTimeout(() => setUsernameMsg(null), 3000);
     } catch (e: any) {
       setUsernameMsg({ type: 'error', text: e.message });
@@ -132,7 +139,7 @@ export default function ProfilePage() {
   const handleChangePassword = async (e: Event) => {
     e.preventDefault();
     if (!token) return;
-    if (newPw !== confirmPw) { setPwMsg({ type: 'error', text: 'Passwörter stimmen nicht überein' }); return; }
+    if (newPw !== confirmPw) { setPwMsg({ type: 'error', text: t('profile.passwordMismatch') }); return; }
     setPwSaving(true); setPwMsg(null);
     try {
       const res = await fetch('/api/auth/change-password', {
@@ -141,11 +148,11 @@ export default function ProfilePage() {
         body: JSON.stringify({ currentPassword: currentPw, newPassword: newPw }),
       });
       const data = await res.json();
-      if (!res.ok) { setPwMsg({ type: 'error', text: data.error ?? 'Fehler' }); return; }
-      setPwMsg({ type: 'ok', text: '✓ Passwort geändert' });
+      if (!res.ok) { setPwMsg({ type: 'error', text: data.error ?? t('profile.errorGeneric') }); return; }
+      setPwMsg({ type: 'ok', text: t('profile.passwordChanged') });
       setCurrentPw(''); setNewPw(''); setConfirmPw('');
       setTimeout(() => setPwMsg(null), 4000);
-    } catch { setPwMsg({ type: 'error', text: 'Verbindungsfehler' }); }
+    } catch { setPwMsg({ type: 'error', text: t('profile.errorConnection') }); }
     finally { setPwSaving(false); }
   };
 
@@ -163,7 +170,7 @@ export default function ProfilePage() {
     return (
       <div class="pp-not-logged-in">
         <div class="pp-lock">🔒</div>
-        <p>Du bist nicht eingeloggt. Bitte melde dich an.</p>
+        <p>{t('auth.notLoggedIn')}</p>
       </div>
     );
   }
@@ -180,7 +187,7 @@ export default function ProfilePage() {
           <p class="pp-email">{user.email}</p>
           <div class="pp-user-tags">
             {user.server && (
-              <span class="pp-server-tag">🖥️ Server {user.server}</span>
+              <span class="pp-server-tag">🖥️ {t('profile.serverTag', { server: user.server })}</span>
             )}
             {user.faction && (
               <span class={`pp-faction-tag pp-faction-${user.faction}`}>
@@ -193,7 +200,7 @@ export default function ProfilePage() {
 
       {/* ── Faction ── */}
       <div class="pp-card">
-        <h2 class="pp-section-title">Faction</h2>
+        <h2 class="pp-section-title">{t('profile.faction')}</h2>
         <div class="pp-faction-row">
           {Object.entries(FACTION_LABELS).map(([key, { label, icon }]) => (
             <button
@@ -211,24 +218,29 @@ export default function ProfilePage() {
 
       {/* ── Calculator Progress ── */}
       <div class="pp-card">
-        <h2 class="pp-section-title">Calculator-Fortschritt</h2>
+        <h2 class="pp-section-title">{t('profile.progress')}</h2>
         <div class="pp-stats-grid">
           <div class="pp-stat">
             <span class="pp-stat-icon">🔧</span>
             <div>
-              <div class="pp-stat-label">Tank</div>
+              <div class="pp-stat-label">{t('profile.stat.tank')}</div>
               <div class="pp-stat-val">
-                {tankState ? `${tankState.unlockedLevels.length} Levels freigeschaltet` : '—'}
+                {tankState
+                  ? t('profile.stat.tankLevels', { count: String(tankState.unlockedLevels.length) })
+                  : '—'}
               </div>
             </div>
           </div>
           <div class="pp-stat">
             <span class="pp-stat-icon">🎖️</span>
             <div>
-              <div class="pp-stat-label">Research</div>
+              <div class="pp-stat-label">{t('profile.stat.research')}</div>
               <div class="pp-stat-val">
                 {researchStats.categories > 0
-                  ? `${researchStats.categories} Kategorien · ${researchStats.technologies} Technologien`
+                  ? t('profile.stat.researchStats', {
+                      categories: String(researchStats.categories),
+                      technologies: String(researchStats.technologies),
+                    })
                   : '—'}
               </div>
             </div>
@@ -236,10 +248,13 @@ export default function ProfilePage() {
           <div class="pp-stat">
             <span class="pp-stat-icon">🏗️</span>
             <div>
-              <div class="pp-stat-label">Building</div>
+              <div class="pp-stat-label">{t('profile.stat.building')}</div>
               <div class="pp-stat-val">
                 {buildingState?.selectedBuilding
-                  ? `Level ${buildingState.currentLevel} → ${buildingState.targetLevel}`
+                  ? t('profile.stat.buildingLevel', {
+                      current: String(buildingState.currentLevel),
+                      target: String(buildingState.targetLevel),
+                    })
                   : '—'}
               </div>
             </div>
@@ -247,7 +262,7 @@ export default function ProfilePage() {
           <div class="pp-stat">
             <span class="pp-stat-icon">🐪</span>
             <div>
-              <div class="pp-stat-label">Caravan</div>
+              <div class="pp-stat-label">{t('profile.stat.caravan')}</div>
               <div class="pp-stat-val">
                 {caravanState?.yourFaction
                   ? `${FACTION_LABELS[caravanState.yourFaction]?.icon ?? ''} ${caravanState.powerInput || '—'}`
@@ -258,10 +273,13 @@ export default function ProfilePage() {
           <div class="pp-stat">
             <span class="pp-stat-icon">🦸</span>
             <div>
-              <div class="pp-stat-label">Hero EXP</div>
+              <div class="pp-stat-label">{t('profile.stat.heroExp')}</div>
               <div class="pp-stat-val">
                 {heroExpState?.currentLevel
-                  ? `Lvl ${heroExpState.currentLevel} → ${heroExpState.targetLevel}`
+                  ? t('profile.stat.heroLevel', {
+                      current: String(heroExpState.currentLevel),
+                      target: String(heroExpState.targetLevel),
+                    })
                   : '—'}
               </div>
             </div>
@@ -271,16 +289,16 @@ export default function ProfilePage() {
 
       {/* ── Settings ── */}
       <div class="pp-card">
-        <h2 class="pp-section-title">Einstellungen</h2>
+        <h2 class="pp-section-title">{t('profile.settings')}</h2>
 
         {/* Server */}
         <div class="pp-setting-block">
-          <label class="pp-setting-label">Server</label>
+          <label class="pp-setting-label">{t('profile.serverLabel')}</label>
           <div class="pp-input-row">
             <input
               class="pp-input"
               type="text"
-              placeholder="z.B. 395"
+              placeholder={t('profile.serverPlaceholder')}
               value={server}
               onInput={e => setServer((e.target as HTMLInputElement).value)}
               maxLength={10}
@@ -291,7 +309,7 @@ export default function ProfilePage() {
               onClick={handleSaveServer}
               disabled={serverSaving || server.trim() === (user.server ?? '')}
             >
-              {serverSaving ? '…' : 'Speichern'}
+              {serverSaving ? t('profile.saving') : t('profile.save')}
             </button>
           </div>
           {serverMsg && <p class={`pp-msg pp-msg-${serverMsg.type}`}>{serverMsg.text}</p>}
@@ -299,7 +317,7 @@ export default function ProfilePage() {
 
         {/* Username */}
         <div class="pp-setting-block">
-          <label class="pp-setting-label">Username</label>
+          <label class="pp-setting-label">{t('profile.usernameLabel')}</label>
           <div class="pp-input-row">
             <input
               class="pp-input"
@@ -315,7 +333,7 @@ export default function ProfilePage() {
               onClick={handleSaveUsername}
               disabled={usernameSaving || username.trim() === user.username || username.trim().length < 3}
             >
-              {usernameSaving ? '…' : 'Speichern'}
+              {usernameSaving ? t('profile.saving') : t('profile.save')}
             </button>
           </div>
           {usernameMsg && <p class={`pp-msg pp-msg-${usernameMsg.type}`}>{usernameMsg.text}</p>}
@@ -323,12 +341,12 @@ export default function ProfilePage() {
 
         {/* Password */}
         <div class="pp-setting-block">
-          <label class="pp-setting-label">Passwort ändern</label>
+          <label class="pp-setting-label">{t('profile.changePassword')}</label>
           <form class="pp-pw-form" onSubmit={handleChangePassword}>
             <input
               class="pp-input"
               type="password"
-              placeholder="Aktuelles Passwort"
+              placeholder={t('profile.currentPassword')}
               value={currentPw}
               onInput={e => setCurrentPw((e.target as HTMLInputElement).value)}
               required
@@ -337,7 +355,7 @@ export default function ProfilePage() {
             <input
               class="pp-input"
               type="password"
-              placeholder="Neues Passwort (min. 8 Zeichen)"
+              placeholder={t('profile.newPassword')}
               value={newPw}
               onInput={e => setNewPw((e.target as HTMLInputElement).value)}
               required
@@ -347,7 +365,7 @@ export default function ProfilePage() {
             <input
               class="pp-input"
               type="password"
-              placeholder="Neues Passwort bestätigen"
+              placeholder={t('profile.confirmPassword')}
               value={confirmPw}
               onInput={e => setConfirmPw((e.target as HTMLInputElement).value)}
               required
@@ -355,7 +373,7 @@ export default function ProfilePage() {
             />
             {pwMsg && <p class={`pp-msg pp-msg-${pwMsg.type}`}>{pwMsg.text}</p>}
             <button class="pp-btn-save" type="submit" disabled={pwSaving}>
-              {pwSaving ? '…' : 'Passwort ändern'}
+              {pwSaving ? t('profile.saving') : t('profile.changePassword')}
             </button>
           </form>
         </div>
@@ -364,7 +382,7 @@ export default function ProfilePage() {
       {/* ── Logout ── */}
       <div class="pp-card pp-logout-card">
         <button class="pp-btn-logout" onClick={handleLogout}>
-          Abmelden
+          {t('auth.logout')}
         </button>
       </div>
 
