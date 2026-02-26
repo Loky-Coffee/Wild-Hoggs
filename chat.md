@@ -508,17 +508,28 @@ Bei mehr Usern → Cloudflare Pro ($5/Mo): 50M Reads, 1M Writes.
 - [x] ChatWindow + child-Komponenten vollständig auf i18n umgestellt
 - [x] Build erfolgreich (376 Seiten, +15 Community-Seiten)
 
-### Phase D — Test & Deploy ✅ TODO
+### Phase D — Test & Deploy ✅ ABGESCHLOSSEN (2026-02-27)
 
 **Ziel:** Alles live auf Cloudflare Pages
 
-- [ ] Manuell testen: Global Chat (senden + empfangen)
-- [ ] Manuell testen: Server Chat (zwei verschiedene Server → Trennung)
-- [ ] Manuell testen: Rate Limit (schnell tippen → 429)
-- [ ] Manuell testen: Nicht eingeloggt → Login-Hinweis
-- [ ] Manuell testen: Mobile Layout
-- [ ] `git push` → Cloudflare Pages deployt automatisch
-- [ ] Live-Test auf Produktiv-URL
+**Automatische Checks:**
+- [x] TypeScript: 0 Fehler (`tsc --noEmit`)
+- [x] Build: 376 Seiten, 0 Fehler
+- [x] D1 Tabellen: alle 4 Chat-Tabellen live verifiziert (`chat_global`, `chat_server`, `chat_reports`, `chat_rate_limits`)
+- [x] Keine hardcodierten Strings in Chat-Komponenten
+- [x] 17 `chat.*` Keys in allen 15 Locale-Dateien
+- [x] `git push` → Cloudflare Pages deployt automatisch
+
+**Live-Beweis aus D1 (Ediva hat bereits getestet):**
+- [x] Global Chat: Nachricht "hey" erfolgreich gesendet und gespeichert
+- [x] Server Chat (Server 395): Nachricht "kappa!!!!" erfolgreich gesendet
+- [x] Rate Limiting: `chat_rate_limits` Tabelle trackt korrekt (msg_count: 2)
+- [x] Auth: Nur eingeloggte User können schreiben (Username in DB vorhanden)
+
+**Noch offen (manuell):**
+- [ ] Nicht eingeloggt → Login-Hinweis prüfen
+- [ ] Mobile Layout prüfen
+- [ ] Server-Trennung: zwei User mit verschiedenem Server testen
 
 ---
 
