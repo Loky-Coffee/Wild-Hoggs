@@ -7,11 +7,17 @@ interface MessageInputProps {
   sending:      boolean;
   sendError:    string | null;
   onClearError: () => void;
+  placeholder:  string;
+  sendLabel:    string;
+  charsLeft:    string;
 }
 
-export default function MessageInput({ onSend, sending, sendError, onClearError }: MessageInputProps) {
-  const [text, setText] = useState('');
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+export default function MessageInput({
+  onSend, sending, sendError, onClearError,
+  placeholder, sendLabel, charsLeft,
+}: MessageInputProps) {
+  const [text, setText]     = useState('');
+  const textareaRef         = useRef<HTMLTextAreaElement>(null);
 
   const handleSubmit = async () => {
     const trimmed = text.trim();
@@ -37,8 +43,7 @@ export default function MessageInput({ onSend, sending, sendError, onClearError 
   };
 
   const remaining = MAX_LEN - text.length;
-  const isOverLimit = remaining < 0;
-  const canSend = text.trim().length > 0 && !isOverLimit && !sending;
+  const canSend   = text.trim().length > 0 && remaining >= 0 && !sending;
 
   return (
     <div class="chat-input-area">
@@ -49,7 +54,7 @@ export default function MessageInput({ onSend, sending, sendError, onClearError 
         <textarea
           ref={textareaRef}
           class="chat-textarea"
-          placeholder="Schreibe eine Nachricht... (Enter = Senden, Shift+Enter = Zeilenumbruch)"
+          placeholder={placeholder}
           value={text}
           onInput={handleInput}
           onKeyDown={handleKeyDown}
@@ -61,14 +66,14 @@ export default function MessageInput({ onSend, sending, sendError, onClearError 
           class="chat-send-btn"
           onClick={handleSubmit}
           disabled={!canSend}
-          title="Senden"
+          title={sendLabel}
         >
           {sending ? '⏳' : '➤'}
         </button>
       </div>
       <div class="chat-input-footer">
         <span class={`chat-char-count${remaining < 50 ? ' chat-char-warn' : ''}`}>
-          {remaining} / {MAX_LEN}
+          {remaining} {charsLeft}
         </span>
       </div>
     </div>

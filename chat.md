@@ -494,18 +494,19 @@ Bei mehr Usern → Cloudflare Pro ($5/Mo): 50M Reads, 1M Writes.
 - [x] Pause bei Tab-Wechsel (visibilitychange)
 - [x] Build erfolgreich (361 Seiten, 0 Fehler)
 
-### Phase C — Seite & Navigation ✅ TODO
+### Phase C — Seite & Navigation ✅ ABGESCHLOSSEN (2026-02-27)
 
 **Ziel:** `/community/` erreichbar in allen 15 Sprachen, Nav-Link vorhanden
 
-- [ ] `src/pages/[...lang]/community.astro` erstellen
-- [ ] `getStaticPaths()` für alle 15 Sprachen
-- [ ] `ChatWindow client:load` einbinden
-- [ ] `nav.community` i18n Key in alle 15 Locale-Dateien
-- [ ] SEO Keys (`seo.community.title`, `seo.community.description`) in alle 15 Locale-Dateien
-- [ ] Alle `chat.*` Keys in alle 15 Locale-Dateien (korrekte Übersetzungen)
-- [ ] `Navigation.astro` — Community-Route hinzufügen
-- [ ] Build erfolgreich (346+ Seiten)
+- [x] `src/pages/[...lang]/community.astro` erstellen
+- [x] `getStaticPaths()` für alle 15 Sprachen
+- [x] `ChatWindow client:load` einbinden (mit translationData prop)
+- [x] `nav.community` i18n Key in alle 15 Locale-Dateien
+- [x] SEO Keys (`seo.community.title`, `seo.community.description`) in alle 15 Locale-Dateien
+- [x] Alle `chat.*` Keys in alle 15 Locale-Dateien (korrekte Übersetzungen)
+- [x] `Navigation.astro` — Community-Route hinzugefügt
+- [x] ChatWindow + child-Komponenten vollständig auf i18n umgestellt
+- [x] Build erfolgreich (376 Seiten, +15 Community-Seiten)
 
 ### Phase D — Test & Deploy ✅ TODO
 

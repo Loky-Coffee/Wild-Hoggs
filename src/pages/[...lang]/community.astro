@@ -1,0 +1,39 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../i18n/utils';
+import { getLanguagePaths } from '../../i18n/static-paths';
+import { loadTranslations } from '../../i18n/index';
+import ChatWindow from '../../components/chat/ChatWindow';
+
+export function getStaticPaths() {
+  return getLanguagePaths();
+}
+
+const lang            = getLangFromUrl(Astro.url);
+const translationData = await loadTranslations(lang);
+const t               = useTranslations(translationData);
+
+const breadcrumbItems = [
+  { label: t('nav.home'),      href: getLocalizedPath('', lang) },
+  { label: t('nav.community') },
+];
+---
+
+<PageLayout
+  title={t('seo.community.title')}
+  description={t('seo.community.description')}
+  robots="noindex, follow"
+  breadcrumbs={breadcrumbItems}
+>
+  <div class="community-wrap">
+    <ChatWindow translationData={translationData} client:load />
+  </div>
+</PageLayout>
+
+<style>
+  .community-wrap {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+</style>

@@ -1,16 +1,23 @@
 import { useRef, useEffect } from 'preact/hooks';
-import MessageItem, { type Message } from './MessageItem';
+import MessageItem, { type Message, type AgoStrings } from './MessageItem';
 
 interface MessageListProps {
   messages:        Message[];
   currentUsername: string | null;
   onReport:        (id: string) => void;
   reportedIds:     Set<string>;
+  noMessages:      string;
+  reportLabel:     string;
+  reportedLabel:   string;
+  ago:             AgoStrings;
 }
 
-export default function MessageList({ messages, currentUsername, onReport, reportedIds }: MessageListProps) {
-  const listRef      = useRef<HTMLDivElement>(null);
-  const atBottomRef  = useRef(true);
+export default function MessageList({
+  messages, currentUsername, onReport, reportedIds,
+  noMessages, reportLabel, reportedLabel, ago,
+}: MessageListProps) {
+  const listRef     = useRef<HTMLDivElement>(null);
+  const atBottomRef = useRef(true);
 
   // Track whether user is scrolled to the bottom
   useEffect(() => {
@@ -23,14 +30,14 @@ export default function MessageList({ messages, currentUsername, onReport, repor
     return () => el.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Auto-scroll to bottom on new messages — only if already at bottom
+  // Auto-scroll on new messages — only if already at bottom
   useEffect(() => {
     if (atBottomRef.current && listRef.current) {
       listRef.current.scrollTop = listRef.current.scrollHeight;
     }
   }, [messages]);
 
-  // Scroll to bottom on initial mount
+  // Scroll to bottom on first mount
   useEffect(() => {
     if (listRef.current) {
       listRef.current.scrollTop = listRef.current.scrollHeight;
@@ -40,7 +47,7 @@ export default function MessageList({ messages, currentUsername, onReport, repor
   return (
     <div class="chat-messages" ref={listRef}>
       {messages.length === 0 ? (
-        <p class="chat-no-messages">Noch keine Nachrichten. Sei der Erste!</p>
+        <p class="chat-no-messages">{noMessages}</p>
       ) : (
         messages.map(msg => (
           <MessageItem
@@ -49,6 +56,9 @@ export default function MessageList({ messages, currentUsername, onReport, repor
             currentUsername={currentUsername}
             onReport={onReport}
             reportedIds={reportedIds}
+            reportLabel={reportLabel}
+            reportedLabel={reportedLabel}
+            ago={ago}
           />
         ))
       )}
