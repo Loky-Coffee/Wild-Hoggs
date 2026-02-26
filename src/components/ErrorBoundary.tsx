@@ -9,7 +9,7 @@ interface Props {
 
 interface State {
   hasError: boolean;
-  error?: Error;
+  error?: unknown;
 }
 
 // Inline translations for error boundary (loaded very rarely, only on errors)
@@ -33,11 +33,11 @@ const errorTranslations = {
 export class ErrorBoundary extends Component<Props, State> {
   state: State = { hasError: false };
 
-  static getDerivedStateFromError(error: Error): State {
+  static getDerivedStateFromError(error: unknown): State {
     return { hasError: true, error };
   }
 
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+  componentDidCatch(error: unknown, errorInfo: ErrorInfo) {
     console.error('[ErrorBoundary] Caught error:', error, errorInfo);
     // TODO: Send to error tracking service (Sentry, LogRocket, etc.)
   }
@@ -87,9 +87,9 @@ export class ErrorBoundary extends Component<Props, State> {
                 overflow: 'auto',
                 fontSize: '0.85rem'
               }}>
-                {this.state.error.message}
+                {(this.state.error instanceof Error ? this.state.error.message : String(this.state.error)) ?? 'Unknown error'}
                 {'\n\n'}
-                {this.state.error.stack}
+                {(this.state.error instanceof Error ? this.state.error.stack : undefined) ?? 'No stack available'}
               </pre>
             </details>
           )}
