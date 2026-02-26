@@ -110,9 +110,10 @@ const pageDescription = t('404.message');
 
         // If path starts with /lang/, redirect to that language's homepage
         const langMatch = currentPath.match(/^\/(de|fr|ko|th|ja|pt|es|tr|id|zh-TW|zh-CN|it|ar|vi)\//);
-        if (langMatch) {
+        const allSupported = [...supportedLangs, 'zh-TW', 'zh-CN'];
+        if (langMatch && allSupported.includes(langMatch[1])) {
           window.location.href = `/${langMatch[1]}`;
-        } else {
+        } else if (detectedLang && allSupported.includes(detectedLang)) {
           window.location.href = `/${detectedLang}`;
         }
       }
