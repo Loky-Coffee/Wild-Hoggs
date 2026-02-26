@@ -200,12 +200,12 @@ export default function TankCalculator({ lang, translationData }: TankCalculator
 
           {/* Gruppe: Gesamtfortschritt */}
           <div style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: 'rgba(255,165,0,0.45)', margin: '0.6rem 0 0.2rem' }}>
-            Gesamtfortschritt
+            {t('tank.widget.overall')}
           </div>
           {[
-            { label: 'Abschluss',   value: `${completionPct}%` },
-            { label: 'Verbleibend', value: `${formatNumber(remainingTotal, lang)} 🔧` },
-            { label: 'Tiers fertig', value: `${completedTiers} / ${SUPER_UPGRADES.length}` },
+            { label: t('tank.widget.completion'),  value: `${completionPct}%` },
+            { label: t('tank.widget.remaining'),    value: `${formatNumber(remainingTotal, lang)} 🔧` },
+            { label: t('tank.widget.tiers_done'),   value: `${completedTiers} / ${SUPER_UPGRADES.length}` },
           ].map(({ label, value }) => (
             <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '0.5rem', padding: '0.18rem 0', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
               <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.45)' }}>{label}</span>
@@ -215,12 +215,12 @@ export default function TankCalculator({ lang, translationData }: TankCalculator
 
           {/* Gruppe: Modifikationen */}
           <div style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: 'rgba(255,165,0,0.45)', margin: '0.6rem 0 0.2rem' }}>
-            Modifikationen
+            {t('tank.widget.mods')}
           </div>
           {[
-            { label: 'Freigeschaltet', value: `${unlockedCount} / ${totalMods}` },
-            { label: 'Maxiert',        value: `${maxedCount} / ${totalMods}` },
-            ...(nextModToMax ? [{ label: 'Nächste', value: `${t(nextModToMax.mod.nameKey as TranslationKey)} (${formatNumber(nextModToMax.needed, lang)} 🔧)` }] : []),
+            { label: t('tank.widget.unlocked'), value: `${unlockedCount} / ${totalMods}` },
+            { label: t('tank.widget.maxed'),    value: `${maxedCount} / ${totalMods}` },
+            ...(nextModToMax ? [{ label: t('tank.widget.next'), value: `${t(nextModToMax.mod.nameKey as TranslationKey)} (${formatNumber(nextModToMax.needed, lang)} 🔧)` }] : []),
           ].map(({ label, value }) => (
             <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '0.5rem', padding: '0.18rem 0', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
               <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.45)' }}>{label}</span>
