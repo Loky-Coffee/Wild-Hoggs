@@ -1,10 +1,11 @@
-import { useState, useMemo } from 'preact/hooks';
+import { useMemo } from 'preact/hooks';
 import { validatedBuildings as buildingsData } from '../../data/validated/buildings';
 import { useTranslations } from '../../i18n/utils';
 import { formatNumber } from '../../utils/formatters';
 import type { TranslationData, TranslationKey } from '../../i18n/index';
 import type { BuildingCost, Building } from '../../schemas/buildings';
 import CustomSelect from './CustomSelect';
+import { useCalculatorState } from '../../hooks/useCalculatorState';
 import './Calculator.css';
 
 interface BuildingCalculatorProps {
@@ -14,11 +15,32 @@ interface BuildingCalculatorProps {
 
 const buildings = buildingsData;
 
+interface BuildingState {
+  selectedBuilding: string;
+  currentLevel: number;
+  targetLevel: number;
+  calculated: boolean;
+}
+
+const BUILDING_DEFAULT: BuildingState = {
+  selectedBuilding: buildings[0].id,
+  currentLevel: 1,
+  targetLevel: 5,
+  calculated: false,
+};
+
 export default function BuildingCalculator({ lang, translationData }: BuildingCalculatorProps) {
-  const [selectedBuilding, setSelectedBuilding] = useState<string>(buildings[0].id);
-  const [currentLevel, setCurrentLevel] = useState<number>(1);
-  const [targetLevel, setTargetLevel] = useState<number>(5);
-  const [calculated, setCalculated] = useState(false);
+  const [stored, setStored] = useCalculatorState<BuildingState>('building', 'main', BUILDING_DEFAULT);
+
+  const selectedBuilding = stored.selectedBuilding;
+  const currentLevel = stored.currentLevel;
+  const targetLevel = stored.targetLevel;
+  const calculated = stored.calculated;
+
+  const setSelectedBuilding = (v: string) => setStored(s => ({ ...s, selectedBuilding: v, calculated: false }));
+  const setCurrentLevel = (v: number) => setStored(s => ({ ...s, currentLevel: v, calculated: false }));
+  const setTargetLevel = (v: number) => setStored(s => ({ ...s, targetLevel: v, calculated: false }));
+  const setCalculated = (v: boolean) => setStored(s => ({ ...s, calculated: v }));
 
   const t = useTranslations(translationData);
 
@@ -71,9 +93,7 @@ export default function BuildingCalculator({ lang, translationData }: BuildingCa
   }, [selectedBuilding, currentLevel, targetLevel, selectedBuildingData, maxLevel]);
 
   const handleReset = () => {
-    setCurrentLevel(1);
-    setTargetLevel(5);
-    setCalculated(false);
+    setStored(BUILDING_DEFAULT);
   };
 
   return (

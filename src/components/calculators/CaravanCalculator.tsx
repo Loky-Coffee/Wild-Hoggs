@@ -1,8 +1,9 @@
-import { useState, useMemo } from 'preact/hooks';
+import { useMemo } from 'preact/hooks';
 import caravanLevels from '../../data/caravan-levels.json';
 import { FACTIONS, type HeroFaction } from '../../data/heroes';
 import { useTranslations } from '../../i18n/utils';
 import type { TranslationData } from '../../i18n/index';
+import { useCalculatorState } from '../../hooks/useCalculatorState';
 import './Calculator.css';
 import './CaravanCalculator.css';
 
@@ -74,12 +75,37 @@ function getMatchingBonus(count: number): number {
   return 0;
 }
 
+interface CaravanState {
+  powerInput: string;
+  yourFaction: HeroFaction | null;
+  matchingCount: number;
+  weeklyActive: boolean;
+  calculated: boolean;
+}
+
+const CARAVAN_DEFAULT: CaravanState = {
+  powerInput: '',
+  yourFaction: null,
+  matchingCount: 5,
+  weeklyActive: false,
+  calculated: false,
+};
+
 export default function CaravanCalculator({ lang, translationData }: CaravanCalculatorProps) {
-  const [powerInput,    setPowerInput]    = useState('');
-  const [yourFaction,   setYourFaction]   = useState<HeroFaction | null>(null);
-  const [matchingCount, setMatchingCount] = useState(5);
-  const [weeklyActive,  setWeeklyActive]  = useState(false);
-  const [calculated,    setCalculated]    = useState(false);
+  const [stored, setStored] = useCalculatorState<CaravanState>('caravan', 'main', CARAVAN_DEFAULT);
+
+  const powerInput    = stored.powerInput;
+  const yourFaction   = stored.yourFaction;
+  const matchingCount = stored.matchingCount;
+  const weeklyActive  = stored.weeklyActive;
+  const calculated    = stored.calculated;
+
+  const setPowerInput    = (v: string)           => setStored(s => ({ ...s, powerInput: v, calculated: false }));
+  const setYourFaction   = (v: HeroFaction | null) => setStored(s => ({ ...s, yourFaction: v, calculated: false }));
+  const setMatchingCount = (v: number)           => setStored(s => ({ ...s, matchingCount: v, calculated: false }));
+  const setWeeklyActive  = (v: boolean | ((prev: boolean) => boolean)) =>
+    setStored(s => ({ ...s, weeklyActive: typeof v === 'function' ? v(s.weeklyActive) : v, calculated: false }));
+  const setCalculated    = (v: boolean)          => setStored(s => ({ ...s, calculated: v }));
 
   const t = useTranslations(translationData);
 

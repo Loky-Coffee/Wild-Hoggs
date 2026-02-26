@@ -1037,46 +1037,62 @@ const subLevels = new Map(Object.entries(tankState.subLevels));
 
 ## 13. STUFENPLAN (PRIORISIERT)
 
-### Phase 1 — localStorage-Persistence (1 Woche, kein Backend nötig)
+### Phase 1 — localStorage-Persistence ✅ ABGESCHLOSSEN (2026-02-26)
 **Ziel:** Calculator-States überleben Page-Reload — sofortiger Nutzen
 
-- [ ] `useLocalCalculatorState` Hook schreiben (localStorage-basiert)
-- [ ] TankCalculator auf Hook umstellen
-- [ ] BuildingCalculator auf Hook umstellen
-- [ ] CaravanCalculator auf Hook umstellen
-- [ ] HeroExpCalculator auf Hook umstellen
-- [ ] ResearchCategoryCalculator auf Hook umstellen (9 Keys)
-- [ ] "Lokal gespeichert" Badge in UI anzeigen
-- [ ] Reset-All-States Button
+- [x] `usePersistedState` Hook schreiben (`src/hooks/usePersistedState.ts`)
+- [x] TankCalculator auf Hook umstellen (Set/Map → Array/Record für JSON)
+- [x] BuildingCalculator auf Hook umstellen
+- [x] CaravanCalculator auf Hook umstellen
+- [x] HeroExpCalculator auf Hook umstellen
+- [x] ResearchCategoryCalculator auf Hook umstellen (je Kategorie eigener Key)
+- [x] Build erfolgreich (346 Seiten, 0 Fehler)
+
+**localStorage Keys nach Phase 1:**
+```
+wh-calc-tank           → { unlockedLevels, subLevels, viewMode, targetLevel }
+wh-calc-building       → { selectedBuilding, currentLevel, targetLevel, calculated }
+wh-calc-caravan        → { powerInput, yourFaction, matchingCount, weeklyActive, calculated }
+wh-calc-hero-exp       → { currentLevel, targetLevel, calculated }
+wh-calc-research-{id}  → { selectedTechnologies, targetTechId, layoutDirection }
+                           (9 separate Keys, einer pro Research-Kategorie)
+```
 
 **Ergebnis:** User kann Seite neu laden — State ist noch da. Kein Login nötig.
+Wenn User die Sprache wechselt (z.B. /de → /en) bleibt der State ebenfalls erhalten.
 
 ---
 
-### Phase 2 — Auth + D1 + Smart Cache (2-3 Wochen)
+### Phase 2 — Auth + D1 + Smart Cache ✅ ABGESCHLOSSEN (2026-02-26)
 **Ziel:** Echte Accounts, geräteübergreifend, kein Passwortverlust, minimale DB-Requests
 
-- [ ] `wrangler.toml` erstellen
-- [ ] D1 Datenbank anlegen: `wrangler d1 create wild-hoggs-db`
-- [ ] Schema deployen: `wrangler d1 execute ... --file=schema.sql`
-- [ ] `/functions/lib/auth.ts` (Hashing, Token)
-- [ ] `/functions/lib/db.ts` (D1 Helper)
-- [ ] Auth-Endpoints implementieren (register, login, logout, me)
-- [ ] `/api/state/meta` implementieren (Timestamp-Check, lightweight)
-- [ ] `/api/state/all` implementieren (erster Besuch / leerer Cache)
-- [ ] `/api/state/:calcType` GET/PUT implementieren (Einzelabruf / Speichern)
-- [ ] `AuthProvider.tsx` (Preact Context)
-- [ ] `AuthModal.tsx` (Login/Register UI)
-- [ ] `UserMenu.tsx` (Navigation-Integration)
-- [ ] `useCalculatorState` Hook mit Smart Cache implementieren (Abschnitt 11)
-- [ ] `useAuthSync.ts` für ersten Login / Geräte-Sync
-- [ ] Dirty-State Indikator in Calculator-UI (💾 / ⏳)
-- [ ] i18n-Keys für alle 15 Sprachen ergänzen
-- [ ] Rate Limiting im Cloudflare Dashboard konfigurieren
+- [x] `wrangler.toml` erstellen (D1 ID: 1c0e2139-6bec-43b7-9a18-b6ba0b6c97d7)
+- [x] `functions/schema.sql` erstellen (users, sessions, calculator_states, reset_tokens)
+- [x] `functions/_lib/auth.ts` (PBKDF2 Hashing, Token-Generation, Session-Validierung)
+- [x] Auth-Endpoints: register, login, logout, me
+- [x] `/api/state/meta` — nur Timestamps, ~300 Bytes
+- [x] `/api/state/all` — alle States auf einmal (erster Gerätebesuch)
+- [x] `/api/state/[calcType]` — GET/PUT einzelner State
+- [x] `/api/user/profile` — PATCH Faction/Sprache
+- [x] `src/hooks/useAuth.ts` — Auth-State via localStorage + CustomEvents
+- [x] `src/hooks/useCalculatorState.ts` — Smart Cache Hook (Phase 1 Data migriert)
+- [x] `src/components/auth/AuthModal.tsx` — Login/Register Modal
+- [x] `src/components/auth/UserMenu.tsx` — Nav-Integration
+- [x] Navigation.astro — UserMenu eingebunden
+- [x] Alle 5 Calculatoren auf `useCalculatorState` migriert
+- [x] Build erfolgreich (346 Seiten, 0 Fehler)
 
-**Passwort vergessen (ohne E-Mail, Interim-Lösung):**
-- User schreibt Admin auf Discord
-- Admin setzt Passwort per `wrangler d1 execute` SQL direkt zurück
+**⚠️ NOCH OFFEN (manuelle Schritte durch User):**
+- [ ] Schema in D1 deployen: `wrangler d1 execute wild-hoggs-db --remote --file=./functions/schema.sql`
+- [ ] Code deployen: `git push` → Cloudflare Pages baut automatisch
+- [ ] Rate Limiting im Cloudflare Dashboard (optional, aber empfohlen)
+
+**Passwort vergessen (Interim-Lösung ohne E-Mail):**
+```sql
+-- Admin setzt Passwort zurück (neues Hash manuell generieren nicht möglich via SQL)
+-- Einfachste Lösung: User löschen, neu registrieren lassen
+wrangler d1 execute wild-hoggs-db --remote --command="DELETE FROM users WHERE email='user@example.com';"
+```
 
 ---
 

@@ -1,0 +1,7 @@
+name = "wild-hoggs"
+compatibility_date = "2024-09-23"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "wild-hoggs-db"
+database_id = "1c0e2139-6bec-43b7-9a18-b6ba0b6c97d7"

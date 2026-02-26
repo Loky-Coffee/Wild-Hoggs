@@ -4,6 +4,7 @@ import ResearchTreeView from './ResearchTreeView';
 import { useTranslations } from '../../i18n/utils';
 import { formatNumber } from '../../utils/formatters';
 import type { TranslationData, TranslationKey } from '../../i18n/index';
+import { useCalculatorState } from '../../hooks/useCalculatorState';
 import './Calculator.css';
 
 interface ResearchCategoryCalculatorProps {
@@ -12,6 +13,18 @@ interface ResearchCategoryCalculatorProps {
   readonly lang: 'de' | 'en';
   readonly translationData: TranslationData;
 }
+
+interface ResearchState {
+  selectedTechnologies: Record<string, number>;
+  targetTechId: string | null;
+  layoutDirection: 'horizontal' | 'vertical';
+}
+
+const RESEARCH_DEFAULT: ResearchState = {
+  selectedTechnologies: {},
+  targetTechId: null,
+  layoutDirection: 'vertical',
+};
 
 function calculateTotalBadges(
   selectedTechnologies: Map<string, number>,
@@ -105,60 +118,58 @@ function calculateTotalBadges(
 }
 
 export default function ResearchCategoryCalculator({ categoryData, categoryImageSrc, lang, translationData }: ResearchCategoryCalculatorProps) {
-  const [selectedTechnologies, setSelectedTechnologies] = useState<Map<string, number>>(new Map());
-  const [targetTechId, setTargetTechId] = useState<string | null>(null);
-
   const category = categoryData;
+
+  // Jede Kategorie bekommt einen eigenen localStorage Key
+  const [stored, setStored] = useCalculatorState<ResearchState>('research', category.id, RESEARCH_DEFAULT);
+
+  // Runtime Map aus gespeichertem Record rekonstruieren
+  const selectedTechnologies = new Map(Object.entries(stored.selectedTechnologies));
+  const targetTechId         = stored.targetTechId;
 
   const t = useTranslations(translationData);
 
   const setTechnologyLevel = (techId: string, level: number) => {
-    // Use functional update to avoid race conditions when multiple sliders change quickly
-    setSelectedTechnologies((prev) => {
-      const newSelected = new Map(prev);
+    setStored(prev => {
+      const next = { ...prev.selectedTechnologies };
       if (level === 0) {
-        newSelected.delete(techId);
+        delete next[techId];
       } else {
-        newSelected.set(techId, level);
+        next[techId] = level;
       }
-      return newSelected;
+      return { ...prev, selectedTechnologies: next };
     });
   };
 
   const setMultipleTechnologyLevels = (updates: Map<string, number>) => {
-    // Use functional update to merge updates safely
-    setSelectedTechnologies((prev) => {
-      const newSelected = new Map(prev);
+    setStored(prev => {
+      const next = { ...prev.selectedTechnologies };
       updates.forEach((level, techId) => {
         if (level === 0) {
-          newSelected.delete(techId);
+          delete next[techId];
         } else {
-          newSelected.set(techId, level);
+          next[techId] = level;
         }
       });
-      return newSelected;
+      return { ...prev, selectedTechnologies: next };
     });
   };
 
   const selectAllToMax = () => {
     if (!category) return;
-    const newSelected = new Map<string, number>();
-    category.technologies.forEach((tech) => {
-      newSelected.set(tech.id, tech.maxLevel);
-    });
-    setSelectedTechnologies(newSelected);
+    const next: Record<string, number> = {};
+    category.technologies.forEach(tech => { next[tech.id] = tech.maxLevel; });
+    setStored(s => ({ ...s, selectedTechnologies: next }));
   };
 
   const handleReset = () => {
-    setSelectedTechnologies(new Map());
+    setStored(s => ({ ...s, selectedTechnologies: {}, targetTechId: null }));
   };
 
-  const getInfoBoxAriaLabel = (isCollapsed: boolean): string => {
-    if (isCollapsed) {
-      return t('calc.research.infoExpand');
-    }
-    return t('calc.research.infoCollapse');
-  };
+  const setTargetTechId = (id: string | null) => setStored(s => ({ ...s, targetTechId: id }));
+
+  const getInfoBoxAriaLabel = (collapsed: boolean): string =>
+    collapsed ? t('calc.research.infoExpand') : t('calc.research.infoCollapse');
 
   const calculatedResults = useMemo(
     () => calculateTotalBadges(selectedTechnologies, category),
@@ -239,7 +250,9 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
     );
   }
 
-  const [layoutDirection, setLayoutDirection] = useState<'horizontal' | 'vertical'>('vertical');
+  const layoutDirection    = stored.layoutDirection;
+  const setLayoutDirection = (v: 'horizontal' | 'vertical') => setStored(s => ({ ...s, layoutDirection: v }));
+
   const [isInfoBoxCollapsed, setIsInfoBoxCollapsed] = useState(false);
   const treeContainerRef = useRef<HTMLDivElement>(null);
   const isInfoBoxCollapsedRef = useRef(isInfoBoxCollapsed);

@@ -1,8 +1,9 @@
-import { useState, useMemo } from 'preact/hooks';
+import { useMemo } from 'preact/hooks';
 import { validatedHeroExpTable } from '../../data/validated/hero-exp';
 import { useTranslations } from '../../i18n/utils';
 import { formatNumber } from '../../utils/formatters';
 import type { TranslationData } from '../../i18n/index';
+import { useCalculatorState } from '../../hooks/useCalculatorState';
 import './Calculator.css';
 
 interface HeroExpCalculatorProps {
@@ -10,13 +11,30 @@ interface HeroExpCalculatorProps {
   readonly translationData: TranslationData;
 }
 
-// Hero exp table is already an array of exp values (index = level)
 const heroExpTable = validatedHeroExpTable;
 
+interface HeroExpState {
+  currentLevel: number;
+  targetLevel: number;
+  calculated: boolean;
+}
+
+const HERO_EXP_DEFAULT: HeroExpState = {
+  currentLevel: 1,
+  targetLevel: 10,
+  calculated: false,
+};
+
 export default function HeroExpCalculator({ lang, translationData }: HeroExpCalculatorProps) {
-  const [currentLevel, setCurrentLevel] = useState<number>(1);
-  const [targetLevel, setTargetLevel] = useState<number>(10);
-  const [calculated, setCalculated] = useState(false);
+  const [stored, setStored] = useCalculatorState<HeroExpState>('hero-exp', 'main', HERO_EXP_DEFAULT);
+
+  const currentLevel = stored.currentLevel;
+  const targetLevel = stored.targetLevel;
+  const calculated = stored.calculated;
+
+  const setCurrentLevel = (v: number) => setStored(s => ({ ...s, currentLevel: v, calculated: false }));
+  const setTargetLevel = (v: number) => setStored(s => ({ ...s, targetLevel: v, calculated: false }));
+  const setCalculated = (v: boolean) => setStored(s => ({ ...s, calculated: v }));
 
   const t = useTranslations(translationData);
 
@@ -43,9 +61,7 @@ export default function HeroExpCalculator({ lang, translationData }: HeroExpCalc
   }, [currentLevel, targetLevel]);
 
   const handleReset = () => {
-    setCurrentLevel(1);
-    setTargetLevel(10);
-    setCalculated(false);
+    setStored(HERO_EXP_DEFAULT);
   };
 
   return (

@@ -5,6 +5,7 @@ import tankData from '../../data/tank-modifications.json';
 import { useTranslations } from '../../i18n/utils';
 import { formatNumber } from '../../utils/formatters';
 import type { TranslationData, TranslationKey } from '../../i18n/index';
+import { useCalculatorState } from '../../hooks/useCalculatorState';
 import './Calculator.css';
 
 interface TankModification {
@@ -26,14 +27,66 @@ const modifications = tankData.modifications as TankModification[];
 const milestones = tankData.milestones;
 const maxWrenches = tankData.totalWrenches;
 
+// Persistierter State — Set/Map als Array/Record für JSON-Serialisierung
+interface TankState {
+  unlockedLevels: number[];
+  subLevels: Record<string, number>;
+  viewMode: 'tree' | 'list';
+  targetLevel: number | null;
+}
+
+const TANK_DEFAULT: TankState = {
+  unlockedLevels: [0],
+  subLevels: { '0': 0 },
+  viewMode: 'tree',
+  targetLevel: null,
+};
+
+// Hilfsfunktionen: JSON-typen ↔ Runtime-typen
+function toSet(arr: number[]): Set<number> {
+  return new Set(arr);
+}
+function fromSet(s: Set<number>): number[] {
+  return [...s];
+}
+function toMap(obj: Record<string, number>): Map<number, number> {
+  return new Map(Object.entries(obj).map(([k, v]) => [Number(k), v]));
+}
+function fromMap(m: Map<number, number>): Record<string, number> {
+  return Object.fromEntries([...m].map(([k, v]) => [String(k), v]));
+}
+
 export default function TankCalculator({ lang, translationData }: TankCalculatorProps) {
   const t = useTranslations(translationData);
 
-  const [unlockedLevels, setUnlockedLevels] = useState<Set<number>>(new Set([0]));
-  const [subLevels, setSubLevels] = useState<Map<number, number>>(new Map([[0, 0]]));
-  const [viewMode, setViewMode] = useState<'tree' | 'list'>('tree');
+  const [stored, setStored] = useCalculatorState<TankState>('tank', 'main', TANK_DEFAULT);
   const [isInfoBoxCollapsed, setIsInfoBoxCollapsed] = useState(false);
-  const [targetLevel, setTargetLevel] = useState<number | null>(null);
+
+  // Runtime-Typen aus gespeichertem State rekonstruieren
+  const unlockedLevels = toSet(stored.unlockedLevels);
+  const subLevels      = toMap(stored.subLevels);
+  const viewMode       = stored.viewMode;
+  const targetLevel    = stored.targetLevel;
+
+  // Wrapper-Setter die die ursprüngliche API nachbilden
+  const setUnlockedLevels = (updater: Set<number> | ((prev: Set<number>) => Set<number>)) => {
+    setStored(prev => {
+      const current = toSet(prev.unlockedLevels);
+      const next    = typeof updater === 'function' ? updater(current) : updater;
+      return { ...prev, unlockedLevels: fromSet(next) };
+    });
+  };
+
+  const setSubLevels = (updater: Map<number, number> | ((prev: Map<number, number>) => Map<number, number>)) => {
+    setStored(prev => {
+      const current = toMap(prev.subLevels);
+      const next    = typeof updater === 'function' ? updater(current) : updater;
+      return { ...prev, subLevels: fromMap(next) };
+    });
+  };
+
+  const setViewMode    = (v: 'tree' | 'list')   => setStored(s => ({ ...s, viewMode: v }));
+  const setTargetLevel = (v: number | null)      => setStored(s => ({ ...s, targetLevel: v }));
 
   const treeContainerRef = useRef<HTMLDivElement>(null);
   const isInfoBoxCollapsedRef = useRef(isInfoBoxCollapsed);
@@ -103,19 +156,17 @@ export default function TankCalculator({ lang, translationData }: TankCalculator
   }, [targetMod, totalWrenchesUsed]);
 
   const handleReset = () => {
-    setUnlockedLevels(new Set([0]));
-    setSubLevels(new Map([[0, 0]]));
+    setStored(TANK_DEFAULT);
   };
 
   const handleMaxAll = () => {
-    const newSubLevels = new Map<number, number>();
-    const newUnlocked = new Set<number>();
+    const newSubLevels: Record<string, number> = {};
+    const newUnlocked: number[] = [];
     modifications.forEach(mod => {
-      newUnlocked.add(mod.level);
-      newSubLevels.set(mod.level, mod.subLevels);
+      newUnlocked.push(mod.level);
+      newSubLevels[String(mod.level)] = mod.subLevels;
     });
-    setUnlockedLevels(newUnlocked);
-    setSubLevels(newSubLevels);
+    setStored(s => ({ ...s, unlockedLevels: newUnlocked, subLevels: newSubLevels }));
   };
 
   const getInfoBoxAriaLabel = (collapsed: boolean) => {
