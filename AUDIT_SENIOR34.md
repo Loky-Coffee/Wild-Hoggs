@@ -4,7 +4,7 @@
 **Stack:** Astro 5.17, Preact 10.28, Zod 4.3, TypeScript 5.9, 15 Locales
 **Agenten:** 8 Senior-Spezialisten (Security, Performance, Code Quality, Dead Code, SEO, Bugs, Accessibility, Cloudflare)
 **Methodik:** Alle Befunde basieren ausschließlich auf verifizierten Datei-Inhalten — kein Raten, kein Halluzinieren.
-**Letztes Update:** 2026-02-24 — 13 von 22 Prioritäten abgearbeitet
+**Letztes Update:** 2026-02-26 — 21 von 22 Prioritäten abgearbeitet (P10 ausstehend)
 
 ---
 
@@ -26,6 +26,13 @@
 | P13 | – | design-tokens.css: `rgba(255,255,255,0.7)` → `0.85` (WCAG AA 6.7:1) |
 | P14 | `1bbcc75` | `public/_headers`: 30-Tage Cache für `og-*.webp` hinzugefügt |
 | P15 | `8ae4870` | 9 Research-Kategorien: `seo.research.{id}.title/description` in allen 15 Locales |
+| P16 | `700ecbe` | 6 PNGs → WebP (kein Resize, ~90% kleiner), 4 Astro-Seiten mit `image=` Prop |
+| P17 | – | Bereits erledigt — `width`/`height` auf allen Grid-Card-Bildern vorhanden |
+| P18 | – | HeroGrid.tsx: `loading="lazy"` auf 3 Symbol-Bild-Tags (165 Requests deferred) |
+| P19 | `6869e3f` | codes.astro: `aria-label` lokalisiert in allen 15 Locales (WCAG 2.4.4) |
+| P20 | `f0e9780` | BuildingCalculator.tsx: lokale Interfaces durch Schema-Importe ersetzt |
+| P21 | – | ErrorBoundary.tsx: `error: unknown`, `instanceof Error` Guard, Fallback-Strings |
+| P22 | `5cca0fd` | Layout.astro + 404.astro: explizite Whitelist-Guards vor Sprach-Redirects |
 
 ---
 
@@ -94,27 +101,31 @@
 | # | Status | Bereich | Problem | Datei |
 |---|--------|---------|---------|-------|
 | P15 | ✅ ERLEDIGT | SEO | Research-Kategorie-Seiten: unique SEO-Titel für alle 9 Kategorien | `[categoryId].astro:112` |
-| P16 | ⏳ OFFEN | SEO | OG-Images nicht page-spezifisch (members, roses, codes) | `members.astro`, `roses.astro`, `codes.astro` |
-| P17 | ⏳ OFFEN | Performance | Hero-Bilder ohne `width`/`height` → CLS | `HeroGrid.tsx` |
-| P18 | ⏳ OFFEN | Performance | Symbol-Bilder (500KB) ohne `loading="lazy"` | `HeroGrid.tsx:147-155` |
-| P19 | ⏳ OFFEN | Accessibility | Externe Links ohne Hinweis auf neues Tab | `codes.astro:79` |
-| P20 | ⏳ OFFEN | Code Quality | `BuildingCalculator.tsx` reimportiert Typen statt Schema zu nutzen | `BuildingCalculator.tsx:9-19` |
-| P21 | ⏳ OFFEN | Bugs | ErrorBoundary: `error.message` kann undefined sein | `ErrorBoundary.tsx:90-92` |
-| P22 | ⏳ OFFEN | Security | `window.location.replace()` ohne explizite Whitelist-Assertion | `Layout.astro:149`, `404.astro:114` |
+| P16 | ✅ ERLEDIGT | SEO | OG-Images page-spezifisch — 6 WebP-Bilder erstellt, 4 Seiten aktualisiert | `members.astro`, `roses.astro`, `codes.astro`, `events.astro` |
+| P17 | ✅ ERLEDIGT (bereits vorhanden) | Performance | Hero-Bilder `width`/`height` waren bereits korrekt gesetzt | `HeroGrid.tsx` |
+| P18 | ✅ ERLEDIGT | Performance | Symbol-Bilder: `loading="lazy"` auf Rarity/Faction/Role-Icons | `HeroGrid.tsx:376-381` |
+| P19 | ✅ ERLEDIGT | Accessibility | Externer Link: `aria-label` in allen 15 Locales (WCAG 2.4.4) | `codes.astro:81` |
+| P20 | ✅ ERLEDIGT | Code Quality | `BuildingCalculator.tsx`: lokale Interfaces durch Schema-Importe ersetzt | `BuildingCalculator.tsx:9-29` |
+| P21 | ✅ ERLEDIGT | Bugs | ErrorBoundary: `error: unknown`, `instanceof` Guard, Fallback-Strings | `ErrorBoundary.tsx:90-92` |
+| P22 | ✅ ERLEDIGT | Security | Explizite Whitelist-Guards vor Sprach-Redirects (defence-in-depth) | `Layout.astro:147`, `404.astro:113` |
 
 ### 🟢 BACKLOG (niedrige Priorität)
 
-- SEO: Sitemap `<priority>`-Werte hinzufügen
-- SEO: Strukturierte Daten (Collection, SoftwareApplication) auf Inhaltsseiten
-- SEO: Meta-Description für Members-Seite auf 150+ Zeichen ausbauen
-- Performance: Hero-Daten aufteilen (60KB) — Details on demand
-- Accessibility: Haupt-Navigation `aria-label="Main navigation"` hinzufügen
-- Accessibility: Modal mit `role="alertdialog"` oder aria-live-Ankündigung
-- Code Quality: Inline-Styles in Calculator-Komponenten in CSS-Module auslagern
-- Code Quality: Magic Strings (Gender-Order, Faction-Keys) in typisierte Konstanten
-- Cloudflare: Cloudflare Web Analytics aktivieren
-- Cloudflare: Permissions-Policy um `fullscreen`, `picture-in-picture`, `document-domain` erweitern
-- Dead Code: Hero-Daten vervollständigen (Mia, Sakura, 34/36 Beschreibungen leer)
+Detailanalyse aller Backlog-Punkte in **`BACKLOG.md`** (separates Dokument mit Aufwand, Impact, Pros/Cons je Punkt).
+
+| # | Kategorie | Aufgabe | Aufwand | Impact |
+|---|-----------|---------|---------|--------|
+| B1 | SEO | Sitemap `<priority>`-Werte hinzufügen | Klein | Niedrig |
+| B2 | SEO | Strukturierte Daten (CollectionPage, SoftwareApplication) | Mittel | Mittel |
+| B3 | SEO | Members Meta-Description auf 150+ Zeichen ausbauen | Klein | Niedrig |
+| B4 | Performance | Hero-Daten aufteilen (57KB) — Details on demand | Groß | Mittel |
+| B5 | Accessibility | Haupt-Navigation `aria-label="Main navigation"` | Klein | Mittel |
+| B6 | Accessibility | Modal `aria-describedby` (nach Hero-Beschreibungen) | Klein | Niedrig |
+| B7 | Code Quality | Inline-Styles in Calculator-Komponenten auslagern | Mittel | Niedrig |
+| B8 | Code Quality | Magic Strings in typisierte Konstanten | Klein | Niedrig |
+| B9 | Cloudflare | Cloudflare Web Analytics aktivieren | Klein | Mittel |
+| B10 | Cloudflare | Permissions-Policy erweitern | Klein | Niedrig |
+| B11 | Dead Code | Hero-Daten vervollständigen (34/36 leer, Mia/Sakura) | Groß | Mittel |
 
 ---
 
