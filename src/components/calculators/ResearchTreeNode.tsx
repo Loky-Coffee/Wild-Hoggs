@@ -106,6 +106,21 @@ function ResearchTreeNode({
     };
   }, [unlocked]);
 
+  // Fix: Preact hydration sets the value *attribute* but not the value *property*
+  // for range inputs that exist in the SSR HTML. Nodes that are always-unlocked
+  // (prerequisites.length === 0 / first-line nodes) render an HTML <input> on
+  // the server with value=0 (no localStorage during SSR). On client hydration
+  // the state already has the correct level, but the DOM slider stays at 0.
+  // Explicitly syncing the property here fixes the visual mismatch.
+  useEffect(() => {
+    if (rangeInputRef.current && unlocked) {
+      const target = String(Math.min(selectedLevel, maxAvailable));
+      if (rangeInputRef.current.value !== target) {
+        rangeInputRef.current.value = target;
+      }
+    }
+  }, [selectedLevel, maxAvailable, unlocked]);
+
   const iconHref = getTechIconHref(tech, techName);
   const nodeStrokeColor = getNodeStrokeColor(isActive, unlocked);
 
