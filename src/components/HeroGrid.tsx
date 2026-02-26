@@ -373,12 +373,12 @@ export default function HeroGrid({ heroes, clearLabel = 'Reset all filters' }: {
           >
             <img src={hero.image} alt={hero.name} className="hg-card-img" loading="lazy" width={300} height={450} onError={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = '0'; }} />
 
-            <img src={rarityIcon(hero.rarity)} alt={hero.rarity} className="hg-card-rarity" width={155} height={155} />
+            <img src={rarityIcon(hero.rarity)} alt={hero.rarity} className="hg-card-rarity" width={155} height={155} loading="lazy" />
 
             <div className="hg-card-duo">
-              <img src={factionIcon(hero.faction)} alt={FACTIONS[hero.faction].name} className="hg-card-duo-icon" width={40} height={40} />
+              <img src={factionIcon(hero.faction)} alt={FACTIONS[hero.faction].name} className="hg-card-duo-icon" width={40} height={40} loading="lazy" />
               <div className="hg-card-duo-line" />
-              <img src={roleIcon(hero.role)} alt={hero.role} className="hg-card-duo-icon" width={40} height={40} />
+              <img src={roleIcon(hero.role)} alt={hero.role} className="hg-card-duo-icon" width={40} height={40} loading="lazy" />
             </div>
 
             {(!hero.skills || hero.skills.length === 0) && (
