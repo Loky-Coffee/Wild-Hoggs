@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'preact/hooks';
+import { createPortal } from 'preact/compat';
 import { useAuth, clearAuthState } from '../../hooks/useAuth';
 import AuthModal from './AuthModal';
 import './UserMenu.css';
@@ -39,7 +40,7 @@ export default function UserMenu() {
         <button class="user-btn-login" onClick={() => setShowModal(true)}>
           Anmelden
         </button>
-        {showModal && <AuthModal onClose={() => setShowModal(false)} />}
+        {showModal && createPortal(<AuthModal onClose={() => setShowModal(false)} />, document.body)}
       </div>
     );
   }
