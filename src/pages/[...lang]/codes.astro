@@ -60,7 +60,7 @@ const howToSchema = {
   description={t('seo.codes.description', { month: currentMonth, year: currentYear })}
   breadcrumbs={breadcrumbItems}
 >
-  <script type="application/ld+json" is:inline>{JSON.stringify(howToSchema)}</script>
+  <script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
 
   <div class="page-header">
     <h1>{t('seo.codes.h1', { month: currentMonth, year: currentYear })}</h1>
