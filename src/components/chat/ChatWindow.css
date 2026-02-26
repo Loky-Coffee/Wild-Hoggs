@@ -3,10 +3,10 @@
 .chat-window {
   display: flex;
   flex-direction: column;
-  height: 620px;
-  max-height: calc(100vh - 180px);
-  border: 1px solid rgba(255, 165, 0, 0.2);
-  border-radius: 12px;
+  /* Fill full viewport minus nav (80px) + breadcrumbs (37px) + page-content top (0.5rem) */
+  height: calc(100vh - var(--nav-height) - var(--breadcrumbs-height) - 0.5rem);
+  border-top: 1px solid rgba(255, 165, 0, 0.15);
+  border-bottom: none;
   background: rgba(255, 255, 255, 0.02);
   overflow: hidden;
 }
@@ -333,11 +333,9 @@
 
 /* ── Mobile ─────────────────────────────────────────────────────────────────── */
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .chat-window {
-    height: calc(100vh - 140px);
-    max-height: none;
-    border-radius: 8px;
+    height: calc(100vh - var(--nav-height-mobile) - var(--breadcrumbs-height-mobile) - 0.5rem);
   }
 
   .chat-msg-report {

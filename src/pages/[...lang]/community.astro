@@ -31,9 +31,16 @@ const breadcrumbItems = [
 </PageLayout>
 
 <style>
+  /* Cancel .page-content padding so the chat fills edge-to-edge */
   .community-wrap {
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 0 1rem;
+    margin: -0.5rem -2rem -2rem;
+    width: calc(100% + 4rem);
+  }
+
+  @media (max-width: 768px) {
+    .community-wrap {
+      margin: -0.5rem -1rem -3rem;
+      width: calc(100% + 2rem);
+    }
   }
 </style>
