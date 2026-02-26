@@ -229,6 +229,7 @@ export default {
   'codes.howto.step2': 'Tap Profile > Settings > Gift Code',
   'codes.howto.step3': 'Enter code and collect rewards',
   'codes.giftCenter': 'Open Gift Center',
+  'codes.giftCenter.ariaLabel': 'Open Gift Center (opens in new tab)',
   'codes.expiresIn': 'Expires in',
   'codes.expiredOn': 'Expired on',
   'codes.days': 'd',

@@ -524,6 +524,7 @@ export default {
   'codes.howto.step2': '点击个人资料 > 设置 > 礼品代码',
   'codes.howto.step3': '输入代码并领取奖励',
   'codes.giftCenter': '打开礼品中心',
+  'codes.giftCenter.ariaLabel': '打开礼品中心（在新标签页中打开）',
   'codes.expiresIn': '过期时间',
   'codes.expiredOn': '过期于',
   'codes.days': '天',

@@ -524,6 +524,7 @@ export default {
   'codes.howto.step2': '프로필 > 설정 > 선물 코드 터치',
   'codes.howto.step3': '코드를 입력하고 보상 수령',
   'codes.giftCenter': '선물 센터 열기',
+  'codes.giftCenter.ariaLabel': '선물 센터 열기 (새 탭에서 열림)',
   'codes.expiresIn': '만료까지',
   'codes.expiredOn': '만료일',
   'codes.days': '일',

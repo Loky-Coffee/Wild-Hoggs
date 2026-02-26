@@ -524,6 +524,7 @@ export default {
   'codes.howto.step2': 'Toucher Profil > Paramètres > Code Cadeau',
   'codes.howto.step3': 'Entrer le code et collecter les récompenses',
   'codes.giftCenter': 'Ouvrir le Centre de Cadeaux',
+  'codes.giftCenter.ariaLabel': 'Ouvrir le centre de cadeaux (s\'ouvre dans un nouvel onglet)',
   'codes.expiresIn': 'Expire dans',
   'codes.expiredOn': 'Expiré le',
   'codes.days': 'j',

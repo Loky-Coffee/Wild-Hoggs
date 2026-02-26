@@ -524,6 +524,7 @@ export default {
   'codes.howto.step2': 'Tocca Profilo > Impostazioni > Codice Regalo',
   'codes.howto.step3': 'Inserisci il codice e raccogli le ricompense',
   'codes.giftCenter': 'Apri Centro Regali',
+  'codes.giftCenter.ariaLabel': 'Apri il centro regali (si apre in una nuova scheda)',
   'codes.expiresIn': 'Scade tra',
   'codes.expiredOn': 'Scaduto il',
   'codes.days': 'g',

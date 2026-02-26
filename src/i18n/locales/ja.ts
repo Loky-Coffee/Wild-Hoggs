@@ -524,6 +524,7 @@ export default {
   'codes.howto.step2': 'プロフィール > 設定 > ギフトコードをタップ',
   'codes.howto.step3': 'コードを入力して報酬を受け取る',
   'codes.giftCenter': 'ギフトセンターを開く',
+  'codes.giftCenter.ariaLabel': 'ギフトセンターを開く（新しいタブで開く）',
   'codes.expiresIn': '有効期限',
   'codes.expiredOn': '期限切れ',
   'codes.days': '日',

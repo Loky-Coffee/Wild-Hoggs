@@ -524,6 +524,7 @@ export default {
   'codes.howto.step2': 'Toque em Perfil > Configurações > Código de Presente',
   'codes.howto.step3': 'Digite o código e colete as recompensas',
   'codes.giftCenter': 'Abrir Centro de Presentes',
+  'codes.giftCenter.ariaLabel': 'Abrir o centro de presentes (abre em nova aba)',
   'codes.expiresIn': 'Expira em',
   'codes.expiredOn': 'Expirou em',
   'codes.days': 'd',

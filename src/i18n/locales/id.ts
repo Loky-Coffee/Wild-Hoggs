@@ -524,6 +524,7 @@ export default {
   'codes.howto.step2': 'Ketuk Profil > Pengaturan > Kode Hadiah',
   'codes.howto.step3': 'Masukkan kode dan kumpulkan hadiah',
   'codes.giftCenter': 'Buka Pusat Hadiah',
+  'codes.giftCenter.ariaLabel': 'Buka pusat hadiah (dibuka di tab baru)',
   'codes.expiresIn': 'Kedaluwarsa dalam',
   'codes.expiredOn': 'Kedaluwarsa pada',
   'codes.days': 'h',

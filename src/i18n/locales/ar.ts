@@ -524,6 +524,7 @@ export default {
   'codes.howto.step2': 'اضغط على الملف الشخصي > الإعدادات > كود الهدية',
   'codes.howto.step3': 'أدخل الكود واجمع المكافآت',
   'codes.giftCenter': 'فتح مركز الهدايا',
+  'codes.giftCenter.ariaLabel': 'فتح مركز الهدايا (يفتح في علامة تبويب جديدة)',
   'codes.expiresIn': 'تنتهي في',
   'codes.expiredOn': 'انتهت في',
   'codes.days': 'ي',

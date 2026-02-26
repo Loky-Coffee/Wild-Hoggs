@@ -524,6 +524,7 @@ export default {
   'codes.howto.step2': 'Profil > Ayarlar > Hediye Kodu\'na dokunun',
   'codes.howto.step3': 'Kodu girin ve ödülleri toplayın',
   'codes.giftCenter': 'Hediye Merkezini Aç',
+  'codes.giftCenter.ariaLabel': 'Hediye merkezini aç (yeni sekmede açılır)',
   'codes.expiresIn': 'Sona erme',
   'codes.expiredOn': 'Sona erdi',
   'codes.days': 'g',

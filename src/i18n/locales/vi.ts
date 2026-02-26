@@ -524,6 +524,7 @@ export default {
   'codes.howto.step2': 'Nhấn Hồ sơ > Cài đặt > Mã Quà Tặng',
   'codes.howto.step3': 'Nhập mã và nhận phần thưởng',
   'codes.giftCenter': 'Mở Trung Tâm Quà Tặng',
+  'codes.giftCenter.ariaLabel': 'Mở trung tâm quà tặng (mở trong tab mới)',
   'codes.expiresIn': 'Hết hạn sau',
   'codes.expiredOn': 'Đã hết hạn vào',
   'codes.days': 'ng',

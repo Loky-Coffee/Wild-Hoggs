@@ -524,6 +524,7 @@ export default {
   'codes.howto.step2': 'แตะโปรไฟล์ > การตั้งค่า > รหัสของขวัญ',
   'codes.howto.step3': 'ป้อนรหัสและรับรางวัล',
   'codes.giftCenter': 'เปิดศูนย์ของขวัญ',
+  'codes.giftCenter.ariaLabel': 'เปิดศูนย์ของขวัญ (เปิดในแท็บใหม่)',
   'codes.expiresIn': 'หมดอายุใน',
   'codes.expiredOn': 'หมดอายุเมื่อ',
   'codes.days': 'ว',

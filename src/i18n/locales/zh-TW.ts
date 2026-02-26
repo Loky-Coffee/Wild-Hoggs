@@ -524,6 +524,7 @@ export default {
   'codes.howto.step2': '點擊個人資料 > 設定 > 禮品代碼',
   'codes.howto.step3': '輸入代碼並領取獎勵',
   'codes.giftCenter': '開啟禮品中心',
+  'codes.giftCenter.ariaLabel': '開啟禮品中心（在新分頁中開啟）',
   'codes.expiresIn': '過期時間',
   'codes.expiredOn': '過期於',
   'codes.days': '天',

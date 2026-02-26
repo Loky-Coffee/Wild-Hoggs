@@ -524,6 +524,7 @@ export default {
   'codes.howto.step2': 'Profil > Einstellungen > Geschenkcode antippen',
   'codes.howto.step3': 'Code eingeben und Belohnungen abholen',
   'codes.giftCenter': 'Geschenkcenter öffnen',
+  'codes.giftCenter.ariaLabel': 'Gift Center öffnen (öffnet in neuem Tab)',
   'codes.expiresIn': 'Läuft ab in',
   'codes.expiredOn': 'Abgelaufen am',
   'codes.days': 'T',
