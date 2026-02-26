@@ -35,6 +35,10 @@ const breadcrumbItems = [
     <p class="subtitle">{t('tools.hero.description')}</p>
   </div>
 
+  <!-- client:load ist hier ABSICHTLICH (nicht client:visible):
+       IntersectionObserver (genutzt von client:visible) erkennt die Komponente
+       im aktuellen Layout-Kontext nie als sichtbar → Hydration startet nie →
+       Calculate-Button funktioniert nicht. Gleiches Problem wie tank.astro (9aaeb6f). -->
   <ErrorBoundary lang={lang} client:load>
     <HeroExpCalculator lang={lang} translationData={translationData} client:load />
   </ErrorBoundary>

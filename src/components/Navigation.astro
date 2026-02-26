@@ -247,6 +247,7 @@ const currentPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : r
 <script>
   const navClickHandlers = new WeakMap<Element, EventListener>();
   const navOutsideHandlers = new WeakMap<Element, EventListener>();
+  const navLinkHandlers = new WeakMap<Element, EventListener>();
 
   function setupNavToggle() {
     const toggle = document.querySelector('.nav-toggle');
@@ -278,9 +279,14 @@ const currentPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : r
       toggle.setAttribute('aria-expanded', 'false');
     };
 
-    // H-BUG-1: Close menu when clicking a nav link
+    // Close menu when clicking a nav link
     document.querySelectorAll('.nav-link').forEach(link => {
+      const oldLinkHandler = navLinkHandlers.get(link);
+      if (oldLinkHandler) {
+        link.removeEventListener('click', oldLinkHandler);
+      }
       link.addEventListener('click', closeMenu);
+      navLinkHandlers.set(link, closeMenu as EventListener);
     });
 
     // Close menu when clicking outside

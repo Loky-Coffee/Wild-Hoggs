@@ -62,11 +62,14 @@ export default function ResearchTreeView({
 
       visited.add(techId);
       const tech = technologies.find(t => t.id === techId);
+      // Guard für leere Prerequisites (Root-Nodes im Baum) — verhindert Math.max(...[]) = -Infinity.
+      // Alle Technologies ohne Prerequisites erhalten tier=0 und kehren hier zurück.
       if (!tech || tech.prerequisites.length === 0) {
         tiersMap.set(techId, 0);
         return 0;
       }
 
+      // prerequisites.length > 0 ist hier garantiert (Guard oben) → Math.max(...map) ist sicher.
       const maxPrereqTier = Math.max(...tech.prerequisites.map(prereq => {
         const prereqId = typeof prereq === 'string' ? prereq : prereq.id;
         return calculateTier(prereqId);
@@ -89,6 +92,8 @@ export default function ResearchTreeView({
     const tierGroups = new Map<number, string[]>();
     tiers.forEach((tier, techId) => {
       if (!tierGroups.has(tier)) tierGroups.set(tier, []);
+      // Non-Null Assertion (!) ist sicher: Die if-Bedingung oben garantiert,
+      // dass der Key vor .get() immer im Map vorhanden ist.
       tierGroups.get(tier)!.push(techId);
     });
 

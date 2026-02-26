@@ -9,6 +9,8 @@ interface RewardCode {
   id: string;
   code: string;
   rewardImage: string;
+  imageWidth?: number;
+  imageHeight?: number;
   expiresAt: string;
   addedAt: string;
 }
@@ -63,6 +65,10 @@ export default function RewardCodesLocal({ lang, translationData }: RewardCodesL
     };
   }, []);
 
+  // clearTimeout steht bewusst NACH setCopiedCode — State-Updates in Preact sind asynchron
+  // (gebatcht), der Control-Flow erreicht clearTimeout sofort ohne auf ein Re-Render zu warten.
+  // clearTimeout vor setTimeout = Mutex: Ein vorheriger Timeout wird immer gekündigt bevor
+  // ein neuer gesetzt wird → kein doppeltes Feuern möglich, auch bei schnellen Mehrfachklicks.
   const copyToClipboard = async (code: string) => {
     try {
       await navigator.clipboard.writeText(code);
@@ -112,7 +118,13 @@ export default function RewardCodesLocal({ lang, translationData }: RewardCodesL
                 <div key={item.code} className="code-card active">
                   {item.rewardImage && (
                     <div className="code-image">
-                      <img src={item.rewardImage} alt={item.code} loading="lazy" />
+                      <img
+                        src={item.rewardImage}
+                        alt={item.code}
+                        loading="lazy"
+                        width={item.imageWidth}
+                        height={item.imageHeight}
+                      />
                     </div>
                   )}
                   <div className="code-header">
@@ -154,7 +166,13 @@ export default function RewardCodesLocal({ lang, translationData }: RewardCodesL
               <div key={item.code} className="code-card expired">
                 {item.rewardImage && (
                   <div className="code-image expired-image">
-                    <img src={item.rewardImage} alt={item.code} loading="lazy" />
+                    <img
+                      src={item.rewardImage}
+                      alt={item.code}
+                      loading="lazy"
+                      width={item.imageWidth}
+                      height={item.imageHeight}
+                    />
                   </div>
                 )}
                 <div className="code-header">

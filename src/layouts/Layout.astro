@@ -59,8 +59,10 @@ const organizationSchema = {
   name: 'Wild Hoggs',
   description: description,
   url: canonicalURL.toString(),
-  logo: new URL('/favicon.svg', siteUrl).toString(),
-  sameAs: []
+  logo: new URL('/favicon.svg', siteUrl).toString()
+  // sameAs weggelassen — kein Social-Profil vorhanden. Leeres Array []
+  // ist schlechter als gar kein sameAs (SEO-Tools melden "incomplete structured data").
+  // Wenn offizielle Social-URLs verfügbar: sameAs: ['https://discord.gg/...', ...]
 };
 
 const localeMap: Record<string, string> = {

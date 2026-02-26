@@ -226,6 +226,8 @@ const getLanguageUrl = (targetLang: string) => {
 <script>
   const dropdownClickHandlers = new WeakMap<Element, EventListener>();
   const dropdownOutsideHandlers = new WeakMap<Element, EventListener>();
+  const dropdownMenuKeydownHandlers = new WeakMap<Element, EventListener>();
+  const dropdownDocumentKeydownHandlers = new WeakMap<Element, EventListener>();
 
   function setupLanguageDropdown() {
     const dropdown = document.querySelector('.language-dropdown');
@@ -235,13 +237,21 @@ const getLanguageUrl = (targetLang: string) => {
     if (!dropdown || !toggle || !menu) return;
 
     // Remove old listeners if they exist
-    const oldHandler = dropdownClickHandlers.get(toggle);
-    if (oldHandler) {
-      toggle.removeEventListener('click', oldHandler);
-      const oldOutsideHandler = dropdownOutsideHandlers.get(toggle);
-      if (oldOutsideHandler) {
-        document.removeEventListener('click', oldOutsideHandler);
-      }
+    const oldClickHandler = dropdownClickHandlers.get(toggle);
+    if (oldClickHandler) {
+      toggle.removeEventListener('click', oldClickHandler);
+    }
+    const oldOutsideHandler = dropdownOutsideHandlers.get(toggle);
+    if (oldOutsideHandler) {
+      document.removeEventListener('click', oldOutsideHandler);
+    }
+    const oldMenuKeydownHandler = dropdownMenuKeydownHandlers.get(menu);
+    if (oldMenuKeydownHandler) {
+      menu.removeEventListener('keydown', oldMenuKeydownHandler);
+    }
+    const oldDocumentKeydownHandler = dropdownDocumentKeydownHandlers.get(dropdown);
+    if (oldDocumentKeydownHandler) {
+      document.removeEventListener('keydown', oldDocumentKeydownHandler);
     }
 
     // Toggle dropdown
@@ -259,47 +269,53 @@ const getLanguageUrl = (targetLang: string) => {
       }
     };
 
-    // Store handlers
-    dropdownClickHandlers.set(toggle, clickHandler);
-    dropdownOutsideHandlers.set(toggle, outsideHandler);
-
-    // Add listeners
-    toggle.addEventListener('click', clickHandler);
-    document.addEventListener('click', outsideHandler);
-
     // Keyboard navigation (Escape + ArrowUp/Down for ARIA menu pattern)
-    menu.addEventListener('keydown', (e: KeyboardEvent) => {
+    const menuKeydownHandler: EventListener = (e) => {
+      const ke = e as KeyboardEvent;
       const items = Array.from(menu.querySelectorAll<HTMLElement>('.dropdown-item'));
       const current = document.activeElement as HTMLElement;
       const idx = items.indexOf(current);
 
-      if (e.key === 'ArrowDown') {
-        e.preventDefault();
+      if (ke.key === 'ArrowDown') {
+        ke.preventDefault();
         items[(idx + 1) % items.length]?.focus();
-      } else if (e.key === 'ArrowUp') {
-        e.preventDefault();
+      } else if (ke.key === 'ArrowUp') {
+        ke.preventDefault();
         items[(idx - 1 + items.length) % items.length]?.focus();
-      } else if (e.key === 'Home') {
-        e.preventDefault();
+      } else if (ke.key === 'Home') {
+        ke.preventDefault();
         items[0]?.focus();
-      } else if (e.key === 'End') {
-        e.preventDefault();
+      } else if (ke.key === 'End') {
+        ke.preventDefault();
         items[items.length - 1]?.focus();
-      } else if (e.key === 'Escape') {
+      } else if (ke.key === 'Escape') {
         dropdown.classList.remove('open');
         toggle.setAttribute('aria-expanded', 'false');
         (toggle as HTMLElement).focus();
       }
-    });
+    };
 
     // Close on escape key (also when focus is outside menu)
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && dropdown.classList.contains('open')) {
+    const documentKeydownHandler: EventListener = (e) => {
+      const ke = e as KeyboardEvent;
+      if (ke.key === 'Escape' && dropdown.classList.contains('open')) {
         dropdown.classList.remove('open');
         toggle.setAttribute('aria-expanded', 'false');
         (toggle as HTMLElement).focus();
       }
-    });
+    };
+
+    // Store all handlers for cleanup on next call
+    dropdownClickHandlers.set(toggle, clickHandler);
+    dropdownOutsideHandlers.set(toggle, outsideHandler);
+    dropdownMenuKeydownHandlers.set(menu, menuKeydownHandler);
+    dropdownDocumentKeydownHandlers.set(dropdown, documentKeydownHandler);
+
+    // Add listeners
+    toggle.addEventListener('click', clickHandler);
+    document.addEventListener('click', outsideHandler);
+    menu.addEventListener('keydown', menuKeydownHandler);
+    document.addEventListener('keydown', documentKeydownHandler);
   }
 
   // Run on initial load
