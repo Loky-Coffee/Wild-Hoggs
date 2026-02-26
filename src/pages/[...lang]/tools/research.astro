@@ -128,15 +128,14 @@ const breadcrumbItems = [
           <h2>{t(category.nameKey)}</h2>
           <div class="category-stats">
             <div class="stat">
-              <span class="stat-value">{category.totalBadges.toLocaleString(lang === 'de' ? 'de-DE' : 'en-US')}</span>
-              <span class="stat-label">🎖️ Badges</span>
+              <span class="stat-value"><span data-used>0</span> / {category.totalBadges.toLocaleString(lang === 'de' ? 'de-DE' : 'en-US')}</span>
+              <span class="stat-label">🎖️ Badges · <span data-pct>0%</span></span>
             </div>
             <div class="stat">
               <span class="stat-value">{category.nodeCount}</span>
               <span class="stat-label">{t('research.technologies')}</span>
             </div>
           </div>
-          <div class="badge-progress" data-progress></div>
           {isEnabled ? (
             <span class="available">{t('research.available')}</span>
           ) : (
@@ -265,40 +264,8 @@ const breadcrumbItems = [
     }
   }
 
-  /* ── Badge Progress ── */
-  .badge-progress {
-    width: 100%;
-    margin-bottom: 1rem;
-    display: none;
-  }
-  .badge-progress.bp-active {
-    display: block;
-  }
-  .bp-bar-track {
-    width: 100%;
-    height: 4px;
-    background: rgba(255, 165, 0, 0.15);
-    border-radius: 2px;
-    overflow: hidden;
-    margin-bottom: 0.35rem;
-  }
-  .bp-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, rgba(255, 165, 0, 0.6), #ffa500);
-    border-radius: 2px;
-  }
-  .bp-text {
-    font-size: 0.78rem;
-    text-align: center;
-    color: rgba(255, 255, 255, 0.45);
-  }
-  .bp-used {
-    color: #ffa500;
-    font-weight: 700;
-  }
-  .bp-pct {
-    color: rgba(255, 165, 0, 0.85);
-    font-weight: 600;
+  [data-pct] {
+    color: rgba(255, 165, 0, 0.75);
   }
 </style>
 
@@ -311,42 +278,28 @@ const breadcrumbItems = [
       var badgeMap = {};
       try { badgeMap = JSON.parse(card.getAttribute('data-badge-map') || '{}'); } catch (e) { return; }
 
-      var key = 'wh-calc-research-' + id;
-      var raw = null;
-      try { raw = localStorage.getItem(key); } catch (e) { return; }
-      if (!raw) return;
-
-      var selected = {};
-      try {
-        var parsed = JSON.parse(raw);
-        var state = (parsed && parsed.state) ? parsed.state : parsed;
-        selected = (state && state.selectedTechnologies) ? state.selectedTechnologies : {};
-      } catch (e) { return; }
-
       var used = 0;
-      Object.keys(selected).forEach(function (techId) {
-        var level = selected[techId];
-        if (level > 0 && badgeMap[techId]) {
-          var costs = badgeMap[techId];
-          for (var i = 0; i < level && i < costs.length; i++) {
-            used += costs[i];
-          }
+      try {
+        var raw = localStorage.getItem('wh-calc-research-' + id);
+        if (raw) {
+          var parsed = JSON.parse(raw);
+          var state = (parsed && parsed.state) ? parsed.state : parsed;
+          var selected = (state && state.selectedTechnologies) ? state.selectedTechnologies : {};
+          Object.keys(selected).forEach(function (techId) {
+            var level = selected[techId];
+            if (level > 0 && badgeMap[techId]) {
+              var costs = badgeMap[techId];
+              for (var i = 0; i < level && i < costs.length; i++) { used += costs[i]; }
+            }
+          });
         }
-      });
+      } catch (e) { /* ignore */ }
 
-      if (used <= 0) return;
-
-      var pct = Math.round((used / totalBadges) * 100);
-      var progressEl = card.querySelector('[data-progress]');
-      if (!progressEl) return;
-
-      progressEl.innerHTML =
-        '<div class="bp-bar-track"><div class="bp-bar-fill" style="width:' + Math.min(pct, 100) + '%"></div></div>' +
-        '<div class="bp-text"><span class="bp-used">' + used.toLocaleString() + '</span>' +
-        '<span class="bp-sep"> / </span>' +
-        '<span class="bp-total">' + totalBadges.toLocaleString() + '</span>' +
-        '<span class="bp-pct"> (' + pct + '%)</span></div>';
-      progressEl.classList.add('bp-active');
+      var pct = totalBadges > 0 ? Math.round((used / totalBadges) * 100) : 0;
+      var usedEl = card.querySelector('[data-used]');
+      var pctEl = card.querySelector('[data-pct]');
+      if (usedEl) usedEl.textContent = used.toLocaleString();
+      if (pctEl) pctEl.textContent = pct + '%';
     });
   }
 
