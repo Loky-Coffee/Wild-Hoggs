@@ -5,6 +5,7 @@ export interface AuthUser {
   email: string;
   username: string;
   faction: string | null;
+  server: string | null;
   language: string;
 }
 

@@ -43,6 +43,10 @@ export default function ProfilePage() {
   const [usernameSaving, setUsernameSaving] = useState(false);
   const [usernameMsg, setUsernameMsg]     = useState<{ type: 'error' | 'ok'; text: string } | null>(null);
 
+  const [server, setServer]               = useState('');
+  const [serverSaving, setServerSaving]   = useState(false);
+  const [serverMsg, setServerMsg]         = useState<{ type: 'error' | 'ok'; text: string } | null>(null);
+
   const [currentPw, setCurrentPw]   = useState('');
   const [newPw, setNewPw]           = useState('');
   const [confirmPw, setConfirmPw]   = useState('');
@@ -53,7 +57,8 @@ export default function ProfilePage() {
 
   useEffect(() => {
     if (user?.username) setUsername(user.username);
-  }, [user?.username]);
+    if (user?.server !== undefined) setServer(user.server ?? '');
+  }, [user?.username, user?.server]);
 
   // ── Calculator stats ───────────────────────────────────────────────────────
   interface TankState   { unlockedLevels: number[]; subLevels: Record<string,number> }
@@ -90,6 +95,18 @@ export default function ProfilePage() {
     if (!res.ok) throw new Error(data.error ?? 'Fehler');
     setAuthState(data as AuthUser, token!);
     return data as AuthUser;
+  };
+
+  const handleSaveServer = async () => {
+    if (!token) return;
+    setServerSaving(true); setServerMsg(null);
+    try {
+      await patchProfile({ server: server.trim() || null });
+      setServerMsg({ type: 'ok', text: '✓ Gespeichert' });
+      setTimeout(() => setServerMsg(null), 3000);
+    } catch (e: any) {
+      setServerMsg({ type: 'error', text: e.message });
+    } finally { setServerSaving(false); }
   };
 
   const handleSaveUsername = async () => {
@@ -161,11 +178,16 @@ export default function ProfilePage() {
         <div class="pp-user-info">
           <h1 class="pp-username">{user.username}</h1>
           <p class="pp-email">{user.email}</p>
-          {user.faction && (
-            <span class={`pp-faction-tag pp-faction-${user.faction}`}>
-              {FACTION_LABELS[user.faction]?.icon} {FACTION_LABELS[user.faction]?.label}
-            </span>
-          )}
+          <div class="pp-user-tags">
+            {user.server && (
+              <span class="pp-server-tag">🖥️ Server {user.server}</span>
+            )}
+            {user.faction && (
+              <span class={`pp-faction-tag pp-faction-${user.faction}`}>
+                {FACTION_LABELS[user.faction]?.icon} {FACTION_LABELS[user.faction]?.label}
+              </span>
+            )}
+          </div>
         </div>
       </div>
 
@@ -250,6 +272,30 @@ export default function ProfilePage() {
       {/* ── Settings ── */}
       <div class="pp-card">
         <h2 class="pp-section-title">Einstellungen</h2>
+
+        {/* Server */}
+        <div class="pp-setting-block">
+          <label class="pp-setting-label">Server</label>
+          <div class="pp-input-row">
+            <input
+              class="pp-input"
+              type="text"
+              placeholder="z.B. 395"
+              value={server}
+              onInput={e => setServer((e.target as HTMLInputElement).value)}
+              maxLength={10}
+              autocomplete="off"
+            />
+            <button
+              class="pp-btn-save"
+              onClick={handleSaveServer}
+              disabled={serverSaving || server.trim() === (user.server ?? '')}
+            >
+              {serverSaving ? '…' : 'Speichern'}
+            </button>
+          </div>
+          {serverMsg && <p class={`pp-msg pp-msg-${serverMsg.type}`}>{serverMsg.text}</p>}
+        </div>
 
         {/* Username */}
         <div class="pp-setting-block">

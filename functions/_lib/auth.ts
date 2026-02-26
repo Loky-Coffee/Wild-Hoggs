@@ -55,7 +55,7 @@ export function getToken(request: Request): string | null {
 
 export async function validateSession(db: any, token: string) {
   return db.prepare(`
-    SELECT s.user_id, u.email, u.username, u.faction, u.language
+    SELECT s.user_id, u.email, u.username, u.faction, u.server, u.language
     FROM sessions s
     JOIN users u ON s.user_id = u.id
     WHERE s.token = ? AND s.expires_at > datetime('now')
@@ -64,6 +64,7 @@ export async function validateSession(db: any, token: string) {
     email: string;
     username: string;
     faction: string | null;
+    server: string | null;
     language: string;
   } | null>;
 }

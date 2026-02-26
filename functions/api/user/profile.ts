@@ -21,6 +21,15 @@ export async function onRequestPatch(ctx: any) {
   const updates: string[] = [];
   const values: unknown[] = [];
 
+  if (body.server !== undefined) {
+    const serverVal = body.server === null ? null : String(body.server).trim().slice(0, 10);
+    if (serverVal && !/^[a-zA-Z0-9]+$/.test(serverVal)) {
+      return Response.json({ error: 'Server: nur Zahlen/Buchstaben erlaubt' }, { status: 400 });
+    }
+    updates.push('server = ?');
+    values.push(serverVal);
+  }
+
   if (body.username !== undefined) {
     const trimmed = String(body.username).trim();
     if (trimmed.length < 3 || trimmed.length > 20 || !/^[a-zA-Z0-9_-]+$/.test(trimmed)) {
@@ -60,7 +69,7 @@ export async function onRequestPatch(ctx: any) {
   ).bind(...values).run();
 
   const updated = await DB.prepare(
-    'SELECT id, email, username, faction, language FROM users WHERE id = ?'
+    'SELECT id, email, username, faction, server, language FROM users WHERE id = ?'
   ).bind(user.user_id).first() as any;
 
   return Response.json({
@@ -68,6 +77,7 @@ export async function onRequestPatch(ctx: any) {
     email: updated.email,
     username: updated.username,
     faction: updated.faction,
+    server: updated.server,
     language: updated.language
   });
 }

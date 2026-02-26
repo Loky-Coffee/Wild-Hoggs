@@ -10,7 +10,7 @@ export async function onRequestPost(ctx: any) {
     return Response.json({ error: 'Invalid JSON' }, { status: 400 });
   }
 
-  const { email, username, password } = body ?? {};
+  const { email, username, password, server } = body ?? {};
 
   // Validation
   if (!email || !username || !password) {
@@ -42,13 +42,19 @@ export async function onRequestPost(ctx: any) {
     return Response.json({ error: 'Dieser Username ist bereits vergeben' }, { status: 400 });
   }
 
+  // Validate server (optional — 1–10 alphanumeric chars)
+  const serverVal = server ? String(server).trim().slice(0, 10) : null;
+  if (serverVal && !/^[a-zA-Z0-9]+$/.test(serverVal)) {
+    return Response.json({ error: 'Server: nur Zahlen/Buchstaben erlaubt' }, { status: 400 });
+  }
+
   // Create user
   const passwordHash = await hashPassword(password);
   await DB.prepare(
-    'INSERT INTO users (email, username, password_hash) VALUES (?, ?, ?)'
-  ).bind(email.toLowerCase(), username, passwordHash).run();
+    'INSERT INTO users (email, username, password_hash, server) VALUES (?, ?, ?, ?)'
+  ).bind(email.toLowerCase(), username, passwordHash, serverVal).run();
 
-  const user = await DB.prepare('SELECT id, email, username, faction, language FROM users WHERE email = ?')
+  const user = await DB.prepare('SELECT id, email, username, faction, server, language FROM users WHERE email = ?')
     .bind(email.toLowerCase()).first() as any;
 
   // Create session
@@ -58,7 +64,7 @@ export async function onRequestPost(ctx: any) {
   ).bind(user.id, token, expiresAt(30)).run();
 
   return Response.json({
-    user: { id: user.id, email: user.email, username: user.username, faction: user.faction, language: user.language },
+    user: { id: user.id, email: user.email, username: user.username, faction: user.faction, server: user.server, language: user.language },
     token
   });
 }

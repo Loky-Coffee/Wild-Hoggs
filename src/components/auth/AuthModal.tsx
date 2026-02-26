@@ -22,6 +22,7 @@ export default function AuthModal({ onClose, initialTab = 'login' }: AuthModalPr
   const [regEmail, setRegEmail] = useState('');
   const [regUsername, setRegUsername] = useState('');
   const [regPassword, setRegPassword] = useState('');
+  const [regServer, setRegServer] = useState('');
 
   const handleLogin = async (e: Event) => {
     e.preventDefault();
@@ -53,7 +54,7 @@ export default function AuthModal({ onClose, initialTab = 'login' }: AuthModalPr
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: regEmail, username: regUsername, password: regPassword })
+        body: JSON.stringify({ email: regEmail, username: regUsername, password: regPassword, server: regServer || undefined })
       });
       const data = await res.json();
       if (!res.ok) { setError(data.error ?? 'Registrierung fehlgeschlagen'); return; }
@@ -144,6 +145,18 @@ export default function AuthModal({ onClose, initialTab = 'login' }: AuthModalPr
                 required
                 minLength={3}
                 maxLength={20}
+              />
+            </div>
+            <div class="auth-field">
+              <label htmlFor="reg-server">Server <span style={{ opacity: 0.5, fontSize: '0.8em' }}>(optional)</span></label>
+              <input
+                id="reg-server"
+                type="text"
+                autocomplete="off"
+                placeholder="z.B. 395"
+                value={regServer}
+                onInput={e => setRegServer((e.target as HTMLInputElement).value)}
+                maxLength={10}
               />
             </div>
             <div class="auth-field">

@@ -63,6 +63,26 @@
   white-space: nowrap;
 }
 
+.pp-user-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.25rem;
+}
+
+.pp-server-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  background: rgba(0, 188, 212, 0.15);
+  color: #4dd0e1;
+  border: 1px solid rgba(0, 188, 212, 0.35);
+}
+
 .pp-faction-tag {
   display: inline-flex;
   align-items: center;

@@ -16,7 +16,7 @@ export async function onRequestPost(ctx: any) {
   }
 
   const user = await DB.prepare(
-    'SELECT id, email, username, password_hash, faction, language FROM users WHERE email = ?'
+    'SELECT id, email, username, password_hash, faction, server, language FROM users WHERE email = ?'
   ).bind(email.toLowerCase()).first() as any;
 
   if (!user || !(await verifyPassword(password, user.password_hash))) {
@@ -29,7 +29,7 @@ export async function onRequestPost(ctx: any) {
   ).bind(user.id, token, expiresAt(30)).run();
 
   return Response.json({
-    user: { id: user.id, email: user.email, username: user.username, faction: user.faction, language: user.language },
+    user: { id: user.id, email: user.email, username: user.username, faction: user.faction, server: user.server, language: user.language },
     token
   });
 }

@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS users (
   username      TEXT UNIQUE NOT NULL,
   password_hash TEXT NOT NULL,
   faction       TEXT,
+  server        TEXT,
   language      TEXT DEFAULT 'en',
   created_at    TEXT DEFAULT (datetime('now')),
   updated_at    TEXT DEFAULT (datetime('now'))

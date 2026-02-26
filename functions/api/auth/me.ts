@@ -14,6 +14,7 @@ export async function onRequestGet(ctx: any) {
     email: user.email,
     username: user.username,
     faction: user.faction,
+    server: user.server,
     language: user.language
   });
 }
