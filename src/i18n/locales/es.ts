@@ -7,6 +7,7 @@ export default {
   'nav.guides': 'Guías',
   'nav.roses': 'Rosas',
   'nav.codes': 'Códigos',
+  'nav.profile': 'Profile',
   'nav.about': 'Acerca de',
   'hero.title': 'Wild Hoggs',
   'hero.subtitle': 'Gremio Last-Z - Servidor 395',
@@ -448,6 +449,8 @@ export default {
   'seo.about.title': 'Wild Hoggs | Acerca de - Gremio Last Z Servidor 395',
   'seo.about.description': 'Wild Hoggs es un gremio activo de Last Z en el Servidor 395. Únete a nuestra comunidad para estrategias de alianza, eventos y apoyo de gremio. R5: N0TNUTT.',
   'seo.about.h1': 'Acerca de Wild Hoggs - Comunidad de Gremio Last Z',
+  'seo.profile.title': 'Wild Hoggs | My Profile',
+  'seo.profile.description': 'Manage your Wild Hoggs account, faction, and view your calculator progress.',
   // Tool Calculator SEO Pages
   'seo.hero-exp.title': 'Wild Hoggs | Last Z Calculadora de EXP de héroe',
   'seo.hero-exp.description': 'Calcula la EXP y fragmentos requeridos para mejorar héroes',

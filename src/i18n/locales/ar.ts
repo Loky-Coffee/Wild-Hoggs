@@ -7,6 +7,7 @@ export default {
   'nav.guides': 'الأدلة',
   'nav.roses': 'الورود',
   'nav.codes': 'الأكواد',
+  'nav.profile': 'Profile',
   'nav.about': 'معلومات عنا',
   'hero.title': 'Wild Hoggs',
   'hero.subtitle': 'نقابة Last-Z - الخادم 395',
@@ -448,6 +449,8 @@ export default {
   'seo.about.title': 'Wild Hoggs | معلومات عنا - نقابة Last Z الخادم 395',
   'seo.about.description': 'Wild Hoggs نقابة Last Z نشطة على الخادم 395. انضم إلى مجتمعنا للحصول على استراتيجيات التحالف والفعاليات ودعم النقابة. R5: N0TNUTT.',
   'seo.about.h1': 'معلومات عن Wild Hoggs - مجتمع نقابة Last Z',
+  'seo.profile.title': 'Wild Hoggs | My Profile',
+  'seo.profile.description': 'Manage your Wild Hoggs account, faction, and view your calculator progress.',
   // Tool Calculator SEO Pages
   'seo.hero-exp.title': 'Wild Hoggs | Last Z حاسبة خبرة الأبطال',
   'seo.hero-exp.description': 'احسب الخبرة والقطع المطلوبة لترقية الأبطال',

@@ -7,6 +7,7 @@ export default {
   'nav.guides': 'คู่มือ',
   'nav.roses': 'กุหลาบ',
   'nav.codes': 'รหัส',
+  'nav.profile': 'Profile',
   'nav.about': 'เกี่ยวกับเรา',
   'hero.title': 'Wild Hoggs',
   'hero.subtitle': 'กิลด์ Last-Z - เซิร์ฟเวอร์ 395',
@@ -448,6 +449,8 @@ export default {
   'seo.about.title': 'Wild Hoggs | เกี่ยวกับเรา - กิลด์ Last Z เซิร์ฟเวอร์ 395',
   'seo.about.description': 'Wild Hoggs เป็นกิลด์ Last Z ที่แอคทีฟบนเซิร์ฟเวอร์ 395 เข้าร่วมชุมชนของเราสำหรับกลยุทธ์พันธมิตร, อีเว้นท์ และการสนับสนุนกิลด์ R5: N0TNUTT',
   'seo.about.h1': 'เกี่ยวกับ Wild Hoggs - ชุมชนกิลด์ Last Z',
+  'seo.profile.title': 'Wild Hoggs | My Profile',
+  'seo.profile.description': 'Manage your Wild Hoggs account, faction, and view your calculator progress.',
   // Tool Calculator SEO Pages
   'seo.hero-exp.title': 'Wild Hoggs | Last Z ตัวคำนวณ EXP ฮีโร่',
   'seo.hero-exp.description': 'คำนวณ EXP และชิ้นส่วนที่ต้องใช้สำหรับอัปเกรดฮีโร่',

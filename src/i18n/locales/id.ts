@@ -7,6 +7,7 @@ export default {
   'nav.guides': 'Panduan',
   'nav.roses': 'Mawar',
   'nav.codes': 'Kode',
+  'nav.profile': 'Profile',
   'nav.about': 'Tentang kami',
   'hero.title': 'Wild Hoggs',
   'hero.subtitle': 'Guild Last-Z - Server 395',
@@ -448,6 +449,8 @@ export default {
   'seo.about.title': 'Wild Hoggs | Tentang Kami - Guild Last Z Server 395',
   'seo.about.description': 'Wild Hoggs adalah guild Last Z aktif di Server 395. Bergabunglah dengan komunitas kami untuk strategi aliansi, event, dan dukungan guild. R5: N0TNUTT.',
   'seo.about.h1': 'Tentang Wild Hoggs - Komunitas Guild Last Z',
+  'seo.profile.title': 'Wild Hoggs | My Profile',
+  'seo.profile.description': 'Manage your Wild Hoggs account, faction, and view your calculator progress.',
   // Tool Calculator SEO Pages
   'seo.hero-exp.title': 'Wild Hoggs | Last Z Kalkulator EXP Pahlawan',
   'seo.hero-exp.description': 'Hitung EXP dan pecahan yang dibutuhkan untuk upgrade pahlawan',

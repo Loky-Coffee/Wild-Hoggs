@@ -1,4 +1,4 @@
-// PATCH /api/user/profile — update faction or language
+// PATCH /api/user/profile — update username, faction or language
 
 import { getToken, validateSession } from '../../_lib/auth';
 
@@ -20,6 +20,17 @@ export async function onRequestPatch(ctx: any) {
 
   const updates: string[] = [];
   const values: unknown[] = [];
+
+  if (body.username !== undefined) {
+    const trimmed = String(body.username).trim();
+    if (trimmed.length < 3 || trimmed.length > 20 || !/^[a-zA-Z0-9_-]+$/.test(trimmed)) {
+      return Response.json({ error: 'Username: 3–20 Zeichen, nur Buchstaben/Zahlen/_ -' }, { status: 400 });
+    }
+    const taken = await DB.prepare('SELECT id FROM users WHERE username = ? AND id != ?').bind(trimmed, user.user_id).first();
+    if (taken) return Response.json({ error: 'Username bereits vergeben' }, { status: 400 });
+    updates.push('username = ?');
+    values.push(trimmed);
+  }
 
   if (body.faction !== undefined) {
     if (body.faction !== null && !VALID_FACTIONS.includes(body.faction)) {

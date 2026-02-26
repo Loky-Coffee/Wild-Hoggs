@@ -7,6 +7,7 @@ export default {
   'nav.guides': 'Hướng dẫn',
   'nav.roses': 'Hoa hồng',
   'nav.codes': 'Mã',
+  'nav.profile': 'Profile',
   'nav.about': 'Về chúng tôi',
   'hero.title': 'Wild Hoggs',
   'hero.subtitle': 'Bang hội Last-Z - Máy chủ 395',
@@ -448,6 +449,8 @@ export default {
   'seo.about.title': 'Wild Hoggs | Về Chúng Tôi - Bang Hội Last Z Máy Chủ 395',
   'seo.about.description': 'Wild Hoggs là bang hội Last Z năng động trên Máy chủ 395. Tham gia cộng đồng của chúng tôi để có chiến lược liên minh, sự kiện và hỗ trợ bang hội. R5: N0TNUTT.',
   'seo.about.h1': 'Về Wild Hoggs - Cộng Đồng Bang Hội Last Z',
+  'seo.profile.title': 'Wild Hoggs | My Profile',
+  'seo.profile.description': 'Manage your Wild Hoggs account, faction, and view your calculator progress.',
   // Tool Calculator SEO Pages
   'seo.hero-exp.title': 'Wild Hoggs | Last Z Bộ tính EXP anh hùng',
   'seo.hero-exp.description': 'Tính EXP và mảnh cần thiết để nâng cấp anh hùng',

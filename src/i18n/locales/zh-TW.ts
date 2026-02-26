@@ -7,6 +7,7 @@ export default {
   'nav.guides': '指南',
   'nav.roses': '玫瑰',
   'nav.codes': '代碼',
+  'nav.profile': 'Profile',
   'nav.about': '關於我們',
   'hero.title': 'Wild Hoggs',
   'hero.subtitle': 'Last-Z 公會 - 伺服器 395',
@@ -448,6 +449,8 @@ export default {
   'seo.about.title': 'Wild Hoggs | 關於我們 - Last Z 公會伺服器 395',
   'seo.about.description': 'Wild Hoggs 是伺服器 395 上活躍的 Last Z 公會。加入我們的社群獲取聯盟策略、活動和公會支援。R5: N0TNUTT。',
   'seo.about.h1': '關於 Wild Hoggs - Last Z 公會社群',
+  'seo.profile.title': 'Wild Hoggs | My Profile',
+  'seo.profile.description': 'Manage your Wild Hoggs account, faction, and view your calculator progress.',
   // Tool Calculator SEO Pages
   'seo.hero-exp.title': 'Wild Hoggs | Last Z 英雄 EXP 計算器',
   'seo.hero-exp.description': '計算英雄升級所需 EXP 與碎片',

@@ -7,6 +7,7 @@ export default {
   'nav.guides': '가이드',
   'nav.roses': '로즈',
   'nav.codes': '코드',
+  'nav.profile': 'Profile',
   'nav.about': '소개',
   'hero.title': 'Wild Hoggs',
   'hero.subtitle': 'Last-Z 길드 - 서버 395',
@@ -448,6 +449,8 @@ export default {
   'seo.about.title': 'Wild Hoggs | 소개 - Last Z 길드 서버 395',
   'seo.about.description': 'Wild Hoggs는 서버 395의 활동적인 Last Z 길드입니다. 동맹 전략, 이벤트 및 길드 지원을 위한 커뮤니티에 참여하세요. R5: N0TNUTT.',
   'seo.about.h1': 'Wild Hoggs 소개 - Last Z 길드 커뮤니티',
+  'seo.profile.title': 'Wild Hoggs | My Profile',
+  'seo.profile.description': 'Manage your Wild Hoggs account, faction, and view your calculator progress.',
   // Tool Calculator SEO Pages
   'seo.hero-exp.title': 'Wild Hoggs | Last Z 영웅 EXP 계산기',
   'seo.hero-exp.description': '영웅 강화에 필요한 EXP와 조각 계산',

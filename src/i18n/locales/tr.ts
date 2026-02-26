@@ -7,6 +7,7 @@ export default {
   'nav.guides': 'Kılavuzlar',
   'nav.roses': 'Güller',
   'nav.codes': 'Kodlar',
+  'nav.profile': 'Profile',
   'nav.about': 'Hakkımızda',
   'hero.title': 'Wild Hoggs',
   'hero.subtitle': 'Last-Z Loncası - Sunucu 395',
@@ -448,6 +449,8 @@ export default {
   'seo.about.title': 'Wild Hoggs | Hakkımızda - Last Z Loncası Sunucu 395',
   'seo.about.description': 'Wild Hoggs, Sunucu 395\'te aktif bir Last Z loncasıdır. İttifak stratejileri, etkinlikler ve lonca desteği için topluluğumuza katılın. R5: N0TNUTT.',
   'seo.about.h1': 'Wild Hoggs Hakkında - Last Z Lonca Topluluğu',
+  'seo.profile.title': 'Wild Hoggs | My Profile',
+  'seo.profile.description': 'Manage your Wild Hoggs account, faction, and view your calculator progress.',
   // Tool Calculator SEO Pages
   'seo.hero-exp.title': 'Wild Hoggs | Last Z Kahraman EXP Hesaplayıcı',
   'seo.hero-exp.description': 'Kahraman yükseltmeleri için gereken EXP ve parçaları hesaplayın',

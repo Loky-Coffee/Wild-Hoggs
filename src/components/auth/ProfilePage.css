@@ -1,0 +1,266 @@
+.pp-wrap {
+  max-width: 680px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* ── Cards ── */
+.pp-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 165, 0, 0.15);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.pp-section-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.4);
+  margin: 0 0 1rem 0;
+}
+
+/* ── User Card ── */
+.pp-user-card {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.pp-avatar {
+  font-size: 2.5rem;
+  width: 60px;
+  height: 60px;
+  background: rgba(255, 165, 0, 0.12);
+  border: 2px solid rgba(255, 165, 0, 0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.pp-user-info {
+  min-width: 0;
+}
+
+.pp-username {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #ffa500;
+  margin: 0 0 0.2rem 0;
+}
+
+.pp-email {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0 0 0.5rem 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pp-faction-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+}
+.pp-faction-tag.pp-faction-blood-rose     { background: rgba(180, 30, 30, 0.3); color: #e88; border: 1px solid rgba(180,30,30,0.5); }
+.pp-faction-tag.pp-faction-wings-of-dawn  { background: rgba(30, 90, 180, 0.3); color: #8af; border: 1px solid rgba(30,90,180,0.5); }
+.pp-faction-tag.pp-faction-guard-of-order { background: rgba(160, 120, 0, 0.3); color: #fd7; border: 1px solid rgba(160,120,0,0.5); }
+
+/* ── Faction selector ── */
+.pp-faction-row {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.pp-faction-btn {
+  flex: 1;
+  min-width: 130px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.2s;
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.6);
+}
+.pp-faction-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.pp-faction-btn.pp-faction-blood-rose     { border-color: rgba(180,30,30,0.3); }
+.pp-faction-btn.pp-faction-blood-rose:hover,
+.pp-faction-btn.pp-faction-blood-rose.active {
+  background: rgba(180,30,30,0.2); border-color: rgba(180,30,30,0.7); color: #e88;
+}
+.pp-faction-btn.pp-faction-wings-of-dawn  { border-color: rgba(30,90,180,0.3); }
+.pp-faction-btn.pp-faction-wings-of-dawn:hover,
+.pp-faction-btn.pp-faction-wings-of-dawn.active {
+  background: rgba(30,90,180,0.2); border-color: rgba(30,90,180,0.7); color: #8af;
+}
+.pp-faction-btn.pp-faction-guard-of-order { border-color: rgba(160,120,0,0.3); }
+.pp-faction-btn.pp-faction-guard-of-order:hover,
+.pp-faction-btn.pp-faction-guard-of-order.active {
+  background: rgba(160,120,0,0.2); border-color: rgba(160,120,0,0.7); color: #fd7;
+}
+
+.pp-faction-icon { font-size: 1.1rem; }
+.pp-faction-name { font-size: 0.875rem; }
+
+/* ── Stats grid ── */
+.pp-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.75rem;
+}
+
+.pp-stat {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+}
+
+.pp-stat-icon {
+  font-size: 1.25rem;
+  line-height: 1;
+  margin-top: 0.1rem;
+}
+
+.pp-stat-label {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.4);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.2rem;
+}
+
+.pp-stat-val {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+}
+
+/* ── Settings ── */
+.pp-setting-block {
+  margin-bottom: 1.5rem;
+}
+.pp-setting-block:last-child { margin-bottom: 0; }
+
+.pp-setting-label {
+  display: block;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.pp-input-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.pp-input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 165, 0, 0.2);
+  border-radius: 6px;
+  padding: 0.55rem 0.75rem;
+  color: #fff;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+}
+.pp-input:focus { border-color: rgba(255, 165, 0, 0.55); background: rgba(255,255,255,0.08); }
+.pp-input::placeholder { color: rgba(255,255,255,0.25); }
+
+.pp-pw-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.pp-btn-save {
+  background: rgba(255, 165, 0, 0.15);
+  border: 1px solid rgba(255, 165, 0, 0.4);
+  border-radius: 6px;
+  color: #ffa500;
+  padding: 0.55rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s, border-color 0.2s;
+  align-self: flex-start;
+  margin-top: 0.25rem;
+}
+.pp-btn-save:hover:not(:disabled) { background: rgba(255,165,0,0.25); border-color: rgba(255,165,0,0.7); }
+.pp-btn-save:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ── Messages ── */
+.pp-msg {
+  font-size: 0.875rem;
+  padding: 0.4rem 0.65rem;
+  border-radius: 5px;
+  margin: 0.35rem 0 0;
+}
+.pp-msg-ok    { color: #52be80; background: rgba(82,190,128,0.1); border: 1px solid rgba(82,190,128,0.3); }
+.pp-msg-error { color: #e74c3c; background: rgba(231,76,60,0.1);  border: 1px solid rgba(231,76,60,0.3); }
+
+/* ── Logout ── */
+.pp-logout-card {
+  display: flex;
+  justify-content: center;
+}
+
+.pp-btn-logout {
+  background: rgba(231, 76, 60, 0.12);
+  border: 1px solid rgba(231, 76, 60, 0.4);
+  border-radius: 8px;
+  color: #e74c3c;
+  padding: 0.65rem 2rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+.pp-btn-logout:hover { background: rgba(231,76,60,0.22); border-color: rgba(231,76,60,0.7); }
+
+/* ── Not logged in ── */
+.pp-not-logged-in {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+.pp-lock {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+/* ── Mobile ── */
+@media (max-width: 600px) {
+  .pp-user-card { flex-direction: column; text-align: center; }
+  .pp-faction-row { flex-direction: column; }
+  .pp-faction-btn { min-width: unset; width: 100%; }
+  .pp-stats-grid { grid-template-columns: 1fr; }
+  .pp-input-row { flex-direction: column; }
+  .pp-btn-save { align-self: stretch; text-align: center; }
+}

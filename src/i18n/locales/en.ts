@@ -8,6 +8,7 @@ export default {
   'nav.heroes': 'Heroes',
   'nav.guides': 'Guides',
   'nav.about': 'About Us',
+  'nav.profile': 'Profile',
   'hero.title': 'Wild Hoggs',
   'hero.subtitle': 'Last-Z Guild - Server 395',
   'welcome.title': 'Welcome to Wild Hoggs!',
@@ -564,6 +565,8 @@ export default {
   'seo.about.title': 'Wild Hoggs | About Us - Last Z Guild Server 395',
   'seo.about.description': 'Wild Hoggs is an active Last Z guild on Server 395. Join our community for alliance strategies, events, and guild support. R5: N0TNUTT.',
   'seo.about.h1': 'About Wild Hoggs - Last Z Guild Community',
+  'seo.profile.title': 'Wild Hoggs | My Profile',
+  'seo.profile.description': 'Manage your Wild Hoggs account, faction, and view your calculator progress.',
   // Tool Calculator SEO Pages
   'seo.hero-exp.title': 'Wild Hoggs | Last Z Hero EXP Calculator - Level Up Heroes',
   'seo.hero-exp.description': 'Calculate exact EXP and shards needed to level up any Last Z hero to your target level. Free calculator by Wild Hoggs guild — Server 395.',

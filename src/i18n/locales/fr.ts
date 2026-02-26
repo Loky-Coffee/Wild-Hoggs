@@ -7,6 +7,7 @@ export default {
   'nav.guides': 'Guides',
   'nav.roses': 'Roses',
   'nav.codes': 'Codes',
+  'nav.profile': 'Profile',
   'nav.about': 'À propos',
   'hero.title': 'Wild Hoggs',
   'hero.subtitle': 'Guilde Last-Z - Serveur 395',
@@ -448,6 +449,8 @@ export default {
   'seo.about.title': 'Wild Hoggs | À Propos - Guilde Last Z Serveur 395',
   'seo.about.description': 'Wild Hoggs est une guilde Last Z active sur le Serveur 395. Rejoignez notre communauté pour des stratégies d\'alliance, événements et support de guilde. R5: N0TNUTT.',
   'seo.about.h1': 'À Propos de Wild Hoggs - Communauté Guilde Last Z',
+  'seo.profile.title': 'Wild Hoggs | My Profile',
+  'seo.profile.description': 'Manage your Wild Hoggs account, faction, and view your calculator progress.',
   // Tool Calculator SEO Pages
   'seo.hero-exp.title': 'Wild Hoggs | Last Z Calculateur EXP Héros',
   'seo.hero-exp.description': 'Calculez l’EXP et les fragments requis pour améliorer un héros',

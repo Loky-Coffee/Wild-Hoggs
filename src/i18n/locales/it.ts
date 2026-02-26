@@ -7,6 +7,7 @@ export default {
   'nav.guides': 'Guide',
   'nav.roses': 'Rose',
   'nav.codes': 'Codici',
+  'nav.profile': 'Profile',
   'nav.about': 'Chi siamo',
   'hero.title': 'Wild Hoggs',
   'hero.subtitle': 'Gilda Last-Z - Server 395',
@@ -448,6 +449,8 @@ export default {
   'seo.about.title': 'Wild Hoggs | Chi Siamo - Gilda Last Z Server 395',
   'seo.about.description': 'Wild Hoggs è una gilda Last Z attiva sul Server 395. Unisciti alla nostra comunità per strategie alleanza, eventi e supporto gilda. R5: N0TNUTT.',
   'seo.about.h1': 'Chi Siamo Wild Hoggs - Comunità Gilda Last Z',
+  'seo.profile.title': 'Wild Hoggs | My Profile',
+  'seo.profile.description': 'Manage your Wild Hoggs account, faction, and view your calculator progress.',
   // Tool Calculator SEO Pages
   'seo.hero-exp.title': 'Wild Hoggs | Last Z Calcolatore EXP eroe',
   'seo.hero-exp.description': 'Calcola EXP e frammenti necessari per migliorare gli eroi',

@@ -45,6 +45,13 @@ export default function UserMenu() {
     );
   }
 
+  const profileHref = (() => {
+    const [, first] = window.location.pathname.split('/');
+    const langs = ['de','fr','ko','th','ja','pt','es','tr','id','zh-TW','zh-CN','it','ar','vi'];
+    const lang = langs.includes(first) ? first : 'en';
+    return lang === 'en' ? '/profile/' : `/${lang}/profile/`;
+  })();
+
   return (
     <div class="user-menu" ref={dropdownRef}>
       <button
@@ -60,6 +67,10 @@ export default function UserMenu() {
           <div style={{ padding: '0.5rem 1rem 0.25rem', fontSize: '0.75rem', color: 'rgba(255,255,255,0.4)' }}>
             {user?.email}
           </div>
+          <hr class="user-dropdown-divider" />
+          <a href={profileHref} class="user-dropdown-item" onClick={() => setShowDropdown(false)}>
+            ⚔️ Mein Profil
+          </a>
           <hr class="user-dropdown-divider" />
           <button class="user-dropdown-item danger" onClick={handleLogout}>
             Abmelden
