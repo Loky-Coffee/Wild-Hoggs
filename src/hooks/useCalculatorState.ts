@@ -3,8 +3,10 @@ import { useAuth } from './useAuth';
 import { AUTH_TOKEN_KEY } from './useAuth';
 
 // --- Cache constants ---
-const CACHE_VERSION       = 1;
-const FRESHNESS_MS        = 5 * 60 * 1000; // 5 minutes
+const CACHE_VERSION   = 1;
+const FRESHNESS_MS    = 5 * 60 * 1000;  // 5 min — background meta-check window
+const DEBOUNCE_MS     = 30_000;          // 30s  — wait 30s of inactivity before pushing
+const MIN_REMOUNT_GAP = 10_000;          // 10s  — ignore dirty-push on re-mount if last push < 10s ago
 
 interface CacheEntry<T> {
   state: T;
@@ -58,27 +60,67 @@ function writeCache<T>(
   return entry;
 }
 
-// --- Debounce registry (one timer per calcType+calcKey) ---
-const syncTimers = new Map<string, ReturnType<typeof setTimeout>>();
+// --- Debounce + flush registry ---
+const syncTimers  = new Map<string, ReturnType<typeof setTimeout>>();
+const pendingKeys = new Set<string>();   // keys with in-flight debounce timers
+const lastPushAt  = new Map<string, number>(); // key → ms timestamp of last push attempt
 
-async function pushToServer(calcType: string, calcKey: string, state: unknown, token: string) {
+async function pushToServer(
+  calcType: string, calcKey: string, state: unknown, token: string, keepalive = false
+) {
+  const key = `${calcType}:${calcKey}`;
+  lastPushAt.set(key, Date.now());
   try {
     const res = await fetch(`/api/state/${calcType}?key=${calcKey}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-      body: JSON.stringify({ state })
-    });
+      body: JSON.stringify({ state }),
+      keepalive, // true when called on page-hide, ensures request survives unload
+    } as RequestInit);
     if (res.ok) {
       const { updated_at } = await res.json();
       writeCache(calcType, calcKey, state, { sync: updated_at });
+      pendingKeys.delete(key);
     }
-  } catch { /* offline — stays dirty, retried next time */ }
+  } catch { /* offline — stays dirty, pushed on next mount */ }
 }
 
 function debouncedPush(calcType: string, calcKey: string, state: unknown, token: string) {
   const key = `${calcType}:${calcKey}`;
+  pendingKeys.add(key);
   clearTimeout(syncTimers.get(key));
-  syncTimers.set(key, setTimeout(() => pushToServer(calcType, calcKey, state, token), 1500));
+  syncTimers.set(key, setTimeout(() => {
+    syncTimers.delete(key);
+    pushToServer(calcType, calcKey, state, token);
+  }, DEBOUNCE_MS));
+}
+
+// Flush all pending writes immediately — called on tab hide / page leave
+function flushAllPending() {
+  const token = localStorage.getItem(AUTH_TOKEN_KEY);
+  if (!token || pendingKeys.size === 0) return;
+
+  for (const key of [...pendingKeys]) {
+    clearTimeout(syncTimers.get(key));
+    syncTimers.delete(key);
+
+    const [ct, ck] = key.split(':');
+    const cached = readCache(ct, ck);
+    if (cached && cached.lastModifiedAt > cached.lastSyncedAt) {
+      // keepalive: true ensures the request survives even after the page is hidden
+      pushToServer(ct, ck, cached.state, token, true);
+    } else {
+      pendingKeys.delete(key);
+    }
+  }
+}
+
+// Register page-hide listeners exactly once at module level
+if (typeof window !== 'undefined') {
+  window.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') flushAllPending();
+  });
+  window.addEventListener('pagehide', flushAllPending);
 }
 
 // --- Background validation (shared, runs once per 5-minute window) ---
@@ -108,7 +150,6 @@ async function runBackgroundValidation(token: string) {
       const cached = readCache(ct, ck);
 
       if (!cached) {
-        // Not in localStorage at all — fetch
         await fetchAndUpdate(ct, ck, token, key);
         continue;
       }
@@ -161,10 +202,15 @@ export function useCalculatorState<T>(
     const t = token ?? localStorage.getItem(AUTH_TOKEN_KEY);
     if (!t) return;
 
-    // Push any dirty state that wasn't synced (e.g. was offline)
+    // Push dirty state on mount — but only if last push was > 10s ago.
+    // Prevents double-push after Astro View Transition re-hydration.
     const cached = readCache<T>(calcType, calcKey);
     if (cached && cached.lastModifiedAt > cached.lastSyncedAt) {
-      debouncedPush(calcType, calcKey, cached.state, t);
+      const key = `${calcType}:${calcKey}`;
+      const last = lastPushAt.get(key) ?? 0;
+      if (Date.now() - last > MIN_REMOUNT_GAP) {
+        debouncedPush(calcType, calcKey, cached.state, t);
+      }
     }
 
     // Register as listener for background updates
