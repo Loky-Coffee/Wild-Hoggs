@@ -626,8 +626,10 @@ export default {
   // Tank Vehicles (Milestones)
   'tank.vehicle.cheetah': 'Báo Gấm',
   'tank.vehicle.hercules': 'Hercules',
+  'tank.vehicle.double_barrelled': 'Double Barrelled Tank',
   'tank.vehicle.destroyer': 'Kẻ Hủy Diệt',
   'tank.vehicle.destroyer_ex': 'Kẻ Hủy Diệt-EX',
+  'tank.vehicle.max_level': 'Max Level',
   'tank.subLevel': 'Cấp Phụ',
   'tank.total': 'Tổng Cộng',
   'tank.perSubLevel': 'mỗi Cấp Phụ',

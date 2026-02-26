@@ -43,7 +43,7 @@ function TreeControls({
       <div
         className="zoom-controls"
         style={{
-          position: 'fixed',
+          position: 'absolute',
           display: 'flex',
           flexDirection: 'column',
           gap: '0.5rem',
@@ -107,7 +107,7 @@ function TreeControls({
       <div
         className="navigation-controls"
         style={{
-          position: 'fixed',
+          position: 'absolute',
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 32px)',
           gridTemplateRows: 'repeat(3, 32px)',

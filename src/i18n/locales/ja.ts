@@ -626,8 +626,10 @@ export default {
   // Tank Vehicles (Milestones)
   'tank.vehicle.cheetah': 'チーター',
   'tank.vehicle.hercules': 'ヘラクレス',
+  'tank.vehicle.double_barrelled': 'Double Barrelled Tank',
   'tank.vehicle.destroyer': 'デストロイヤー',
   'tank.vehicle.destroyer_ex': 'デストロイヤーEX',
+  'tank.vehicle.max_level': 'Max Level',
   'tank.subLevel': 'サブレベル',
   'tank.total': '合計',
   'tank.perSubLevel': 'サブレベル毎',

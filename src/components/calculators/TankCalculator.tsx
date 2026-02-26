@@ -27,6 +27,17 @@ const modifications = tankData.modifications as TankModification[];
 const milestones = tankData.milestones;
 const maxWrenches = tankData.totalWrenches;
 
+// Super Upgrade Tiers — cumulative key thresholds per form
+// Destroyer EX uses the full calculator total (70,700) since upgrades continue past L195
+const SUPER_UPGRADES: Array<{ nameKey: TranslationKey; maxKeys: number }> = [
+  { nameKey: 'tank.vehicle.cheetah'         as TranslationKey, maxKeys: 150   },
+  { nameKey: 'tank.vehicle.hercules'         as TranslationKey, maxKeys: 1730  },
+  { nameKey: 'tank.vehicle.double_barrelled' as TranslationKey, maxKeys: 3730  },
+  { nameKey: 'tank.vehicle.destroyer'        as TranslationKey, maxKeys: 10440 },
+  { nameKey: 'tank.vehicle.destroyer_ex'     as TranslationKey, maxKeys: 35300 },
+  { nameKey: 'tank.vehicle.max_level'        as TranslationKey, maxKeys: 70700 },
+];
+
 // Persistierter State — Set/Map als Array/Record für JSON-Serialisierung
 interface TankState {
   unlockedLevels: number[];
@@ -60,7 +71,6 @@ export default function TankCalculator({ lang, translationData }: TankCalculator
   const t = useTranslations(translationData);
 
   const [stored, setStored] = useCalculatorState<TankState>('tank', 'main', TANK_DEFAULT);
-  const [isInfoBoxCollapsed, setIsInfoBoxCollapsed] = useState(false);
 
   // Runtime-Typen aus gespeichertem State rekonstruieren
   const unlockedLevels = toSet(stored.unlockedLevels);
@@ -89,7 +99,6 @@ export default function TankCalculator({ lang, translationData }: TankCalculator
   const setTargetLevel = (v: number | null)      => setStored(s => ({ ...s, targetLevel: v }));
 
   const treeContainerRef = useRef<HTMLDivElement>(null);
-  const isInfoBoxCollapsedRef = useRef(isInfoBoxCollapsed);
 
   const totalWrenchesUsed = useMemo(() => {
     let total = 0;
@@ -99,61 +108,6 @@ export default function TankCalculator({ lang, translationData }: TankCalculator
     });
     return total;
   }, [subLevels]);
-
-  const remainingWrenches = maxWrenches - totalWrenchesUsed;
-
-  // Sync ref with state to avoid event listener thrashing
-  useEffect(() => {
-    isInfoBoxCollapsedRef.current = isInfoBoxCollapsed;
-  }, [isInfoBoxCollapsed]);
-
-  // Auto-collapse info box when user interacts with tree (mobile only)
-  useEffect(() => {
-    const treeContainer = treeContainerRef.current;
-    if (!treeContainer) return;
-
-    const handleTreeInteraction = () => {
-      // Only auto-collapse on mobile screens
-      if (window.innerWidth <= 768 && !isInfoBoxCollapsedRef.current) {
-        setIsInfoBoxCollapsed(true);
-      }
-    };
-
-    // Listen for touch/click on tree
-    treeContainer.addEventListener('touchstart', handleTreeInteraction, { passive: true });
-    treeContainer.addEventListener('mousedown', handleTreeInteraction);
-
-    return () => {
-      treeContainer.removeEventListener('touchstart', handleTreeInteraction);
-      treeContainer.removeEventListener('mousedown', handleTreeInteraction);
-    };
-  }, []); // Empty dependency array - listeners only added once
-
-  const lastVehicle = useMemo(() => {
-    const unlocked = milestones.filter(ms => totalWrenchesUsed >= ms.cumulativeWrenches);
-    return unlocked.length > 0 ? unlocked[unlocked.length - 1] : null;
-  }, [totalWrenchesUsed]);
-
-  const nextMilestone = useMemo(() => {
-    const next = milestones.find(ms => totalWrenchesUsed < ms.cumulativeWrenches);
-    return next;
-  }, [totalWrenchesUsed]);
-
-  const wrenchesToNextMilestone = useMemo(() => {
-    if (!nextMilestone) return 0;
-    return nextMilestone.cumulativeWrenches - totalWrenchesUsed;
-  }, [nextMilestone, totalWrenchesUsed]);
-
-  const targetMod = useMemo(() => {
-    if (targetLevel === null) return null;
-    return modifications.find(m => m.level === targetLevel) || null;
-  }, [targetLevel]);
-
-  const wrenchesToTarget = useMemo(() => {
-    if (!targetMod) return 0;
-    // Calculate wrenches needed to fully complete target level
-    return targetMod.cumulativeTotal - totalWrenchesUsed;
-  }, [targetMod, totalWrenchesUsed]);
 
   const handleReset = () => {
     setStored(TANK_DEFAULT);
@@ -169,123 +123,73 @@ export default function TankCalculator({ lang, translationData }: TankCalculator
     setStored(s => ({ ...s, unlockedLevels: newUnlocked, subLevels: newSubLevels }));
   };
 
-  const getInfoBoxAriaLabel = (collapsed: boolean) => {
-    return collapsed ? t('calc.research.infoExpand') || 'Expand info' : t('calc.research.infoCollapse') || 'Collapse info';
-  };
-
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: '1rem', minHeight: 0 }}>
-      {/* INFO BOX - Mobile Responsive with Collapse */}
-      <div className={`info-box ${isInfoBoxCollapsed ? 'collapsed' : ''}`} style={{ flexShrink: 0 }}>
-        {/* Mobile Toggle Button */}
-        <button
-          className="info-box-toggle"
-          onClick={() => setIsInfoBoxCollapsed(!isInfoBoxCollapsed)}
-          aria-label={getInfoBoxAriaLabel(isInfoBoxCollapsed)}
-        >
-          {isInfoBoxCollapsed ? '▼' : '▲'}
-          {isInfoBoxCollapsed && (
-            <span style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
-              🔧 {formatNumber(totalWrenchesUsed, lang)} / {formatNumber(remainingWrenches, lang)}
-              {targetMod && (
-                <span style={{ marginLeft: '0.5rem', color: wrenchesToTarget <= 0 ? '#52be80' : '#e74c3c' }}>
-                  🎯 L{targetMod.level}: {wrenchesToTarget <= 0 ? '✓' : formatNumber(wrenchesToTarget, lang)}
-                </span>
-              )}
-              {!targetMod && nextMilestone && (
-                <span style={{ marginLeft: '0.5rem', color: '#9b59b6' }}>
-                  → {t(nextMilestone.nameKey as TranslationKey)}: {formatNumber(wrenchesToNextMilestone, lang)}
-                </span>
-              )}
-            </span>
-          )}
-        </button>
+    <div className="tank-layout">
 
-        {/* Main Info Content */}
-        <div
-          className="info-box-content"
-          style={{
-            display: isInfoBoxCollapsed ? 'none' : 'flex',
-            alignItems: 'center',
-            gap: '0.75rem',
-            flexWrap: 'wrap',
-            fontSize: '0.95rem'
-          }}
-        >
-          <div style={{ fontWeight: 'bold', color: '#ffa500', whiteSpace: 'nowrap' }}>
-            {t('calc.tank.title')}
-          </div>
-          <div style={{ whiteSpace: 'nowrap' }}>
-            <span style={{ color: 'rgba(255, 255, 255, 0.6)' }}>{t('tank.used')}:</span>{' '}
-            <span style={{ fontWeight: 'bold', color: '#ffa500' }}>🔧 {formatNumber(totalWrenchesUsed, lang)}</span>
-          </div>
-          <div style={{ whiteSpace: 'nowrap' }}>
-            <span style={{ color: 'rgba(255, 255, 255, 0.6)' }}>{t('tank.remaining')}:</span>{' '}
-            <span style={{ fontWeight: 'bold', color: remainingWrenches < 0 ? '#e74c3c' : '#52be80' }}>🔧 {formatNumber(remainingWrenches, lang)}</span>
-          </div>
-          <div style={{ whiteSpace: 'nowrap' }}>
-            <span style={{ color: 'rgba(255, 255, 255, 0.6)' }}>{t('tank.unlocked')}:</span>{' '}
-            <span style={{ fontWeight: 'bold', color: '#00bcd4' }}>{unlockedLevels.size}/{modifications.length}</span>
-          </div>
-          {lastVehicle && (
-            <div style={{ whiteSpace: 'nowrap' }}>
-              <span style={{ color: 'rgba(255, 255, 255, 0.6)' }}>{t('tank.vehicle')}:</span>{' '}
-              <span style={{ fontWeight: 'bold', color: '#3498db' }}>{t(lastVehicle.nameKey as TranslationKey)}</span>
-            </div>
-          )}
-          {nextMilestone && (
-            <div style={{ whiteSpace: 'nowrap' }}>
-              <span style={{ color: 'rgba(255, 255, 255, 0.6)' }}>{t('tank.nextVehicle')}:</span>{' '}
-              <span style={{ fontWeight: 'bold', color: '#9b59b6' }}>{t(nextMilestone.nameKey as TranslationKey)}</span>
-              <span style={{ color: 'rgba(255, 255, 255, 0.5)', marginLeft: '0.25rem' }}>
-                (🔧 {formatNumber(wrenchesToNextMilestone, lang)})
+      {/* ── Super Upgrade Widget + Buttons ── */}
+      <div className="tank-widget-box">
+        {/* Header */}
+        <div style={{ fontSize: '0.62rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'rgba(255,165,0,0.55)', marginBottom: '0.3rem', borderBottom: '1px solid rgba(255,165,0,0.12)', paddingBottom: '0.22rem' }}>
+          🔧 Super Upgrades
+        </div>
+
+        {/* Used / Total */}
+        <div style={{ fontSize: '0.8rem', marginBottom: '0.3rem' }}>
+          <span style={{ color: '#ffa500', fontWeight: 700 }}>{formatNumber(totalWrenchesUsed, lang)}</span>
+          <span style={{ color: 'rgba(255,255,255,0.35)' }}> / {formatNumber(maxWrenches, lang)} 🔧</span>
+        </div>
+
+        {/* Tier rows */}
+        {SUPER_UPGRADES.map((tier, i) => {
+          const used      = Math.min(totalWrenchesUsed, tier.maxKeys);
+          const remaining = tier.maxKeys - used;
+          const done      = remaining <= 0;
+          return (
+            <div key={tier.nameKey} style={{
+              display: 'flex', justifyContent: 'space-between', alignItems: 'baseline',
+              gap: '0.5rem', padding: '0.18rem 0',
+              borderBottom: i < SUPER_UPGRADES.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none',
+              opacity: done ? 0.5 : 1,
+            }}>
+              <span style={{ fontSize: '0.68rem', color: done ? '#52be80' : 'rgba(255,255,255,0.8)', fontWeight: 600, flexShrink: 0 }}>
+                {done ? '✓ ' : ''}{t(tier.nameKey)}
+              </span>
+              <span style={{ fontSize: '0.68rem', textAlign: 'right', whiteSpace: 'nowrap', flexShrink: 0 }}>
+                {done ? (
+                  <span style={{ color: '#52be80' }}>{formatNumber(tier.maxKeys, lang)}</span>
+                ) : (
+                  <>
+                    <span style={{ color: '#ffa500', fontWeight: 700 }}>{formatNumber(used, lang)}</span>
+                    <span style={{ color: 'rgba(255,255,255,0.3)' }}> / {formatNumber(tier.maxKeys, lang)}</span>
+                    <span style={{ color: 'rgba(231, 76, 60, 0.85)', marginLeft: '0.3rem' }}>-{formatNumber(remaining, lang)}</span>
+                  </>
+                )}
               </span>
             </div>
-          )}
-          {targetMod && (
-            <div style={{ whiteSpace: 'nowrap' }}>
-              <span style={{ color: 'rgba(255, 255, 255, 0.6)' }}>{t('tank.target')}:</span>{' '}
-              <span style={{ fontWeight: 'bold', color: wrenchesToTarget <= 0 ? '#52be80' : '#e74c3c' }}>Level {targetMod.level}</span>
-              <span style={{ color: 'rgba(255, 255, 255, 0.5)', marginLeft: '0.25rem' }}>
-                {wrenchesToTarget <= 0 ? ' ✓' : `(🔧 ${formatNumber(wrenchesToTarget, lang)})`}
-              </span>
-              <button
-                onClick={() => setTargetLevel(null)}
-                style={{
-                  marginLeft: '0.5rem',
-                  padding: '0.2rem 0.4rem',
-                  fontSize: '0.75rem',
-                  background: 'rgba(231, 76, 60, 0.2)',
-                  border: '1px solid rgba(231, 76, 60, 0.5)',
-                  borderRadius: '4px',
-                  color: '#e74c3c',
-                  cursor: 'pointer'
-                }}
-              >
-                ✕
-              </button>
-            </div>
-          )}
-          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginLeft: 'auto', minWidth: 'fit-content' }}>
-            <button
-              onClick={() => setViewMode(viewMode === 'tree' ? 'list' : 'tree')}
-              className="btn-secondary"
-              style={{ padding: '0.5rem 0.75rem', fontSize: '0.85rem', whiteSpace: 'nowrap' }}
-            >
-              {viewMode === 'tree' ? '📋 ' + t('tank.listView') : '🗺️ ' + t('tank.treeView')}
-            </button>
-            <button onClick={handleMaxAll} className="btn-secondary" style={{ padding: '0.5rem 0.75rem', fontSize: '0.85rem', whiteSpace: 'nowrap' }}>
-              {t('tank.maxAll')}
-            </button>
-            <button onClick={handleReset} className="btn-secondary" style={{ padding: '0.5rem 0.75rem', fontSize: '0.85rem', whiteSpace: 'nowrap' }}>
-              {t('tank.resetAll')}
-            </button>
-          </div>
+          );
+        })}
+
+        {/* Buttons */}
+        <div style={{ borderTop: '1px solid rgba(255,165,0,0.1)', marginTop: '0.5rem', paddingTop: '0.4rem', display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+          <button
+            onClick={() => setViewMode(viewMode === 'tree' ? 'list' : 'tree')}
+            className="btn-secondary"
+            style={{ padding: '0.4rem 0.6rem', fontSize: '0.8rem', whiteSpace: 'nowrap', textAlign: 'left' }}
+          >
+            {viewMode === 'tree' ? '📋 ' + t('tank.listView') : '🗺️ ' + t('tank.treeView')}
+          </button>
+          <button onClick={handleMaxAll} className="btn-secondary" style={{ padding: '0.4rem 0.6rem', fontSize: '0.8rem', textAlign: 'left' }}>
+            {t('tank.maxAll')}
+          </button>
+          <button onClick={handleReset} className="btn-secondary" style={{ padding: '0.4rem 0.6rem', fontSize: '0.8rem', textAlign: 'left' }}>
+            {t('tank.resetAll')}
+          </button>
         </div>
       </div>
 
       {/* View Container */}
       <div ref={treeContainerRef} style={{ flex: 1, minHeight: 0 }}>
+
         {viewMode === 'tree' ? (
           <TankModificationTree
             modifications={modifications}

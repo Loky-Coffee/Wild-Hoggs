@@ -626,8 +626,10 @@ export default {
   // Tank Vehicles (Milestones)
   'tank.vehicle.cheetah': '猎豹',
   'tank.vehicle.hercules': '赫拉克勒斯',
+  'tank.vehicle.double_barrelled': 'Double Barrelled Tank',
   'tank.vehicle.destroyer': '毁灭者',
   'tank.vehicle.destroyer_ex': '毁灭者-EX',
+  'tank.vehicle.max_level': 'Max Level',
   'tank.subLevel': '子级别',
   'tank.total': '总计',
   'tank.perSubLevel': '每个子级别',

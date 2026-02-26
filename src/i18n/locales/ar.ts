@@ -626,8 +626,10 @@ export default {
   // Tank Vehicles (Milestones)
   'tank.vehicle.cheetah': 'الفهد',
   'tank.vehicle.hercules': 'هرقل',
+  'tank.vehicle.double_barrelled': 'Double Barrelled Tank',
   'tank.vehicle.destroyer': 'المدمر',
   'tank.vehicle.destroyer_ex': 'المدمر-EX',
+  'tank.vehicle.max_level': 'Max Level',
   'tank.subLevel': 'المستوى الفرعي',
   'tank.total': 'الإجمالي',
   'tank.perSubLevel': 'لكل مستوى فرعي',

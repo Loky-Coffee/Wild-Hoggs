@@ -626,8 +626,10 @@ export default {
   // Tank Vehicles (Milestones)
   'tank.vehicle.cheetah': 'Cheetah',
   'tank.vehicle.hercules': 'Herkül',
+  'tank.vehicle.double_barrelled': 'Double Barrelled Tank',
   'tank.vehicle.destroyer': 'Yok Edici',
   'tank.vehicle.destroyer_ex': 'Yok Edici-EX',
+  'tank.vehicle.max_level': 'Max Level',
   'tank.subLevel': 'Alt Seviye',
   'tank.total': 'Toplam',
   'tank.perSubLevel': 'Alt Seviye başına',

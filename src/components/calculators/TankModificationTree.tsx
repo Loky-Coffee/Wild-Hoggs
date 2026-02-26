@@ -302,6 +302,7 @@ export default function TankModificationTree({
   }, []);
 
   return (
+    <div style={{ position: 'relative', width: '100%', height: '100%' }}>
     <div
       ref={scrollContainerRef}
       className="research-tree-container layout-vertical"
@@ -370,6 +371,7 @@ export default function TankModificationTree({
           })}
         </svg>
 
+    </div>
       <TreeControls
         zoomLevel={zoomLevel}
         onZoomIn={handleZoomIn}

@@ -403,6 +403,7 @@ export default function ResearchTreeView({
   }, []);
 
   return (
+    <div style={{ position: 'relative', width: '100%', height: '100%' }}>
     <div
       ref={scrollContainerRef}
       className={`research-tree-container ${layoutDirection === 'vertical' ? 'layout-vertical' : 'layout-horizontal'}`}
@@ -474,6 +475,7 @@ export default function ResearchTreeView({
             })}
           </svg>
 
+    </div>
       <TreeControls
         zoomLevel={zoomLevel}
         onZoomIn={handleZoomIn}

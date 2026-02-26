@@ -626,8 +626,10 @@ export default {
   // Tank Vehicles (Milestones)
   'tank.vehicle.cheetah': 'Cheetah',
   'tank.vehicle.hercules': 'Ercole',
+  'tank.vehicle.double_barrelled': 'Double Barrelled Tank',
   'tank.vehicle.destroyer': 'Distruttore',
   'tank.vehicle.destroyer_ex': 'Distruttore-EX',
+  'tank.vehicle.max_level': 'Max Level',
   'tank.subLevel': 'Sotto-Livello',
   'tank.total': 'Totale',
   'tank.perSubLevel': 'per Sotto-Livello',

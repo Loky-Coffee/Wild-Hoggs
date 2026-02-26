@@ -626,8 +626,10 @@ export default {
   // Tank Vehicles (Milestones)
   'tank.vehicle.cheetah': 'ชีตาห์',
   'tank.vehicle.hercules': 'เฮอร์คิวลีส',
+  'tank.vehicle.double_barrelled': 'Double Barrelled Tank',
   'tank.vehicle.destroyer': 'ดีสตรอยเยอร์',
   'tank.vehicle.destroyer_ex': 'ดีสตรอยเยอร์-EX',
+  'tank.vehicle.max_level': 'Max Level',
   'tank.subLevel': 'ระดับย่อย',
   'tank.total': 'ทั้งหมด',
   'tank.perSubLevel': 'ต่อระดับย่อย',

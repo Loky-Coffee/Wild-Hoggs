@@ -20,6 +20,34 @@
   margin: 0 auto;
 }
 
+.tank-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 1rem;
+  min-height: 0;
+}
+
+.tank-widget-box {
+  border: 1px solid rgba(255, 165, 0, 0.25);
+  border-radius: 8px;
+  padding: 0.5rem 0.7rem;
+  background: rgba(255, 255, 255, 0.03);
+  flex-shrink: 0;
+  width: 100%;
+}
+
+@media (min-width: 769px) {
+  .tank-layout {
+    flex-direction: row;
+  }
+
+  .tank-widget-box {
+    width: fit-content;
+    align-self: flex-start;
+  }
+}
+
 .info-box {
   background: rgba(52, 152, 219, 0.1);
   border: 1px solid rgba(52, 152, 219, 0.3);
