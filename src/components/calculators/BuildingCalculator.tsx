@@ -3,30 +3,9 @@ import { validatedBuildings as buildingsData } from '../../data/validated/buildi
 import { useTranslations } from '../../i18n/utils';
 import { formatNumber } from '../../utils/formatters';
 import type { TranslationData, TranslationKey } from '../../i18n/index';
+import type { BuildingCost, Building } from '../../schemas/buildings';
 import CustomSelect from './CustomSelect';
 import './Calculator.css';
-
-interface BuildingCost {
-  level: number;
-  wood: number;
-  food: number;
-  steel: number;
-  zinc: number;
-  time: number;
-  requiredBuildings?: string;
-  heroLevelCap?: number;
-  power?: number;
-}
-
-interface Building {
-  id: string;
-  name: {
-    de: string;
-    en: string;
-  };
-  maxLevel: number;
-  costs: BuildingCost[];
-}
 
 interface BuildingCalculatorProps {
   readonly lang: 'de' | 'en';
