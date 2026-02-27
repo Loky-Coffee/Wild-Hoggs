@@ -1,8 +1,29 @@
+/* App-Shell: body → flex column, main fills remaining height */
+body:has(.admin-panel) {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+body:has(.admin-panel) > main {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+body:has(.admin-panel) > main > astro-island {
+  display: contents;
+}
+
 .admin-panel {
   display: flex;
   flex-direction: row;
   align-items: stretch;
-  min-height: calc(100vh - 110px);
+  flex: 1;
+  min-height: 0;
   gap: 0;
 }
 
@@ -250,7 +271,6 @@
 @media (max-width: 768px) {
   .admin-panel {
     flex-direction: column;
-    min-height: unset;
   }
 
   .admin-sidebar {
