@@ -40,9 +40,31 @@ interface AdminUser {
   last_login: string | null;
 }
 
+interface RewardCode {
+  id: string;
+  code: string;
+  image_key: string | null;
+  expires_at: string | null;
+  added_at: string;
+}
+
+const ROSE_DESCRIPTIONS: Record<number, string> = {
+  1:  '+20% Construction Speed (2h)',
+  2:  '+15% Troop Load (24h)',
+  3:  '+30% Gathering Speed (24h)',
+  4:  'Allied Assist +120s (24h)',
+  5:  '+20% Research Speed (2h)',
+  6:  'Allied Assist +120s (24h) — Double',
+  7:  '+10% Troop ATK (2h)',
+  8:  '+20% Construction Speed (2h)',
+  9:  '+20% Research Speed (2h)',
+  10: '+10% Troop ATK (2h) — Gold',
+};
+
 const TABS = [
-  { id: 'reports', labelKey: 'admin.tab.reports' as const, icon: '⚑' },
-  { id: 'users',   labelKey: 'admin.tab.users'   as const, icon: '👥' },
+  { id: 'reports',  labelKey: 'admin.tab.reports'  as const, icon: '⚑' },
+  { id: 'users',    labelKey: 'admin.tab.users'    as const, icon: '👥' },
+  { id: 'settings', labelKey: 'admin.tab.settings' as const, icon: '⚙' },
 ] as const;
 
 type TabId = typeof TABS[number]['id'];
@@ -83,6 +105,21 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
   const [fRegFrom, setFRegFrom]   = useState('');
   const [fRegTo, setFRegTo]       = useState('');
 
+  // Settings state — Lucky Rose
+  const [luckyRose, setLuckyRose]         = useState(10);
+  const [luckyRoseSaved, setLuckyRoseSaved] = useState(false);
+  const [luckyRoseBusy, setLuckyRoseBusy]  = useState(false);
+
+  // Settings state — Reward Codes
+  const [codes, setCodes]             = useState<RewardCode[]>([]);
+  const [codesLoading, setCodesLoading] = useState(false);
+  const [newCode, setNewCode]         = useState('');
+  const [newExpires, setNewExpires]   = useState('');
+  const [uploadKey, setUploadKey]     = useState<string | null>(null);
+  const [uploading, setUploading]     = useState(false);
+  const [addingCode, setAddingCode]   = useState(false);
+  const [deletingCode, setDeletingCode] = useState<Set<string>>(new Set());
+
   // Load reports
   useEffect(() => {
     if (activeTab !== 'reports' || !isLoggedIn || (!isAdmin && !isMod) || !token) return;
@@ -112,6 +149,23 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
       .catch(() => setUError(t('admin.users.error')))
       .finally(() => setULoading(false));
   }, [activeTab, isLoggedIn]);
+
+  // Load settings
+  useEffect(() => {
+    if (activeTab !== 'settings' || !isAdmin) return;
+    // Lucky Rose
+    fetch('/api/settings/lucky-rose')
+      .then(r => r.json())
+      .then((data: any) => { if (typeof data.active === 'number') setLuckyRose(data.active); })
+      .catch(() => {});
+    // Codes
+    setCodesLoading(true);
+    fetch('/api/reward-codes')
+      .then(r => r.json())
+      .then((data: any) => { if (Array.isArray(data.codes)) setCodes(data.codes); })
+      .catch(() => {})
+      .finally(() => setCodesLoading(false));
+  }, [activeTab, isAdmin]);
 
   // Derived: reports
   const reportTypes     = Array.from(new Set(reports.map(r => r.chat_type))).sort();
@@ -202,10 +256,85 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
     }
   };
 
+  // Settings handlers
+  const handleSaveLuckyRose = async () => {
+    setLuckyRoseBusy(true);
+    try {
+      const res = await fetch('/api/settings/lucky-rose', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ active: luckyRose }),
+      });
+      if (res.ok) {
+        setLuckyRoseSaved(true);
+        setTimeout(() => setLuckyRoseSaved(false), 2000);
+      }
+    } finally {
+      setLuckyRoseBusy(false);
+    }
+  };
+
+  const handleUploadImage = async (file: File) => {
+    setUploading(true);
+    try {
+      const fd = new FormData();
+      fd.append('file', file);
+      const res = await fetch('/api/admin/upload', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` },
+        body: fd,
+      });
+      if (res.ok) {
+        const data = await res.json() as any;
+        setUploadKey(data.key);
+      }
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleAddCode = async () => {
+    if (!newCode.trim()) return;
+    setAddingCode(true);
+    try {
+      const res = await fetch('/api/reward-codes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({
+          code: newCode.trim(),
+          image_key: uploadKey ?? undefined,
+          expires_at: newExpires || undefined,
+        }),
+      });
+      if (res.ok) {
+        const data = await res.json() as any;
+        setCodes(prev => [data.code, ...prev]);
+        setNewCode('');
+        setNewExpires('');
+        setUploadKey(null);
+      }
+    } finally {
+      setAddingCode(false);
+    }
+  };
+
+  const handleDeleteCode = async (code: RewardCode) => {
+    setDeletingCode(prev => new Set(prev).add(code.id));
+    try {
+      const res = await fetch(`/api/reward-codes/${code.id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+      if (res.ok) setCodes(prev => prev.filter(c => c.id !== code.id));
+    } finally {
+      setDeletingCode(prev => { const n = new Set(prev); n.delete(code.id); return n; });
+    }
+  };
+
   return (
     <div class="admin-panel">
       <nav class="admin-sidebar">
-        {TABS.map(tab => (
+        {TABS.filter(tab => tab.id !== 'settings' || isAdmin).map(tab => (
           <button
             key={tab.id}
             class={['admin-sidebar-btn', activeTab === tab.id ? 'admin-sidebar-active' : ''].filter(Boolean).join(' ')}
@@ -472,6 +601,146 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
               </>
             )}
           </>
+        )}
+
+        {/* ── Settings Tab (admin only) ── */}
+        {activeTab === 'settings' && isAdmin && (
+          <div class="admin-settings">
+
+            {/* Lucky Rose Section */}
+            <section class="admin-settings-section">
+              <h2 class="admin-settings-title">🌹 {t('admin.settings.lucky_rose')}</h2>
+              <div class="admin-settings-row">
+                <label class="admin-filter-label">{t('admin.settings.lucky_rose_active')}</label>
+                <div class="admin-rose-select-row">
+                  <select
+                    class="admin-filter-input admin-rose-select"
+                    value={luckyRose}
+                    onChange={e => setLuckyRose(Number((e.target as HTMLSelectElement).value))}
+                  >
+                    {Array.from({ length: 10 }, (_, i) => i + 1).map(n => (
+                      <option key={n} value={n}>
+                        🌹 #{n} — {ROSE_DESCRIPTIONS[n]}
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    class="admin-btn-promote admin-settings-save-btn"
+                    onClick={handleSaveLuckyRose}
+                    disabled={luckyRoseBusy}
+                  >
+                    {luckyRoseSaved ? '✓ ' + t('admin.settings.saved') : t('admin.settings.save')}
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            {/* Reward Codes Section */}
+            <section class="admin-settings-section">
+              <h2 class="admin-settings-title">🎁 {t('admin.settings.codes')}</h2>
+
+              {/* Add code form */}
+              <div class="admin-code-form">
+                <div class="admin-code-form-row">
+                  <div class="admin-filter-field">
+                    <span class="admin-filter-label">{t('admin.settings.upload_img')}</span>
+                    <div class="admin-upload-row">
+                      <input
+                        class="admin-filter-input"
+                        type="file"
+                        accept="image/webp,image/jpeg,image/png"
+                        disabled={uploading}
+                        onChange={e => {
+                          const f = (e.target as HTMLInputElement).files?.[0];
+                          if (f) handleUploadImage(f);
+                        }}
+                      />
+                      {uploading && <span class="admin-upload-status">⏳</span>}
+                      {uploadKey && <span class="admin-upload-status admin-upload-ok">✓</span>}
+                    </div>
+                  </div>
+                  <label class="admin-filter-field">
+                    <span class="admin-filter-label">{t('admin.settings.code_input')}</span>
+                    <input
+                      class="admin-filter-input"
+                      type="text"
+                      placeholder="CODE123"
+                      value={newCode}
+                      onInput={e => setNewCode((e.target as HTMLInputElement).value)}
+                    />
+                  </label>
+                  <label class="admin-filter-field">
+                    <span class="admin-filter-label">{t('admin.settings.expires')}</span>
+                    <input
+                      class="admin-filter-input"
+                      type="datetime-local"
+                      value={newExpires}
+                      onChange={e => setNewExpires((e.target as HTMLInputElement).value)}
+                    />
+                  </label>
+                  <div class="admin-filter-field" style="justify-content: flex-end">
+                    <button
+                      class="admin-btn-promote admin-settings-save-btn"
+                      onClick={handleAddCode}
+                      disabled={addingCode || !newCode.trim()}
+                    >
+                      {t('admin.settings.add_code')}
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Codes table */}
+              {codesLoading ? (
+                <p class="admin-loading">{t('admin.users.loading')}</p>
+              ) : codes.length === 0 ? (
+                <p class="admin-empty">{t('admin.settings.no_codes')}</p>
+              ) : (
+                <div class="admin-table-wrap">
+                  <table class="admin-table">
+                    <thead>
+                      <tr>
+                        <th>{t('admin.settings.code_input')}</th>
+                        <th></th>
+                        <th>{t('admin.settings.expires')}</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {codes.map(c => (
+                        <tr key={c.id}>
+                          <td class="admin-table-muted" style="font-family: monospace">{c.code}</td>
+                          <td>
+                            {c.image_key && (
+                              <img
+                                src={`/api/files/${c.image_key}`}
+                                alt={c.code}
+                                class="admin-code-thumb"
+                                loading="lazy"
+                              />
+                            )}
+                          </td>
+                          <td class="admin-table-muted admin-nowrap">
+                            {c.expires_at ? new Date(c.expires_at).toLocaleString() : '—'}
+                          </td>
+                          <td class="admin-table-actions">
+                            <button
+                              class="admin-btn-delete admin-btn-sm"
+                              disabled={deletingCode.has(c.id)}
+                              onClick={() => handleDeleteCode(c)}
+                              title={t('admin.settings.delete')}
+                            >
+                              🗑 {t('admin.settings.delete')}
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </section>
+          </div>
         )}
 
       </div>

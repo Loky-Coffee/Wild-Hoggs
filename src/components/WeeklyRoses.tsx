@@ -1,4 +1,4 @@
-import { useState } from 'preact/hooks';
+import { useState, useEffect } from 'preact/hooks';
 import { useTranslations } from '../i18n/utils';
 import { useGlobalTimer } from '../hooks/useGlobalTimer';
 import { getApocalypseTime } from '../utils/time';
@@ -11,7 +11,6 @@ interface Rose {
   buff: string;
   duration: string;
   description: string;
-  isActive: boolean;
 }
 
 interface WeeklyRosesProps {
@@ -22,8 +21,19 @@ interface WeeklyRosesProps {
 
 export default function WeeklyRoses({ lang, roses, translationData }: WeeklyRosesProps) {
   const [timeLeft, setTimeLeft] = useState('');
+  const [activeNumber, setActiveNumber] = useState(10);
 
   const t = useTranslations(translationData);
+
+  // Fetch active lucky rose from API
+  useEffect(() => {
+    fetch('/api/settings/lucky-rose')
+      .then(r => r.json())
+      .then((data: any) => {
+        if (typeof data.active === 'number') setActiveNumber(data.active);
+      })
+      .catch(() => { /* keep fallback */ });
+  }, []);
 
   // Calculate time until next Sunday 23:59:59 in Apocalypse Time (UTC-2)
   useGlobalTimer(() => {
@@ -57,36 +67,39 @@ export default function WeeklyRoses({ lang, roses, translationData }: WeeklyRose
   return (
     <div className="roses-container">
       <div className="roses-grid">
-        {roses.map((rose) => (
-          <div key={rose.luckyNumber} className={`rose-card ${rose.isActive ? 'active' : 'inactive'}`}>
-            <div className="rose-icon">{rose.isActive ? '🌹' : '🥀'}</div>
+        {roses.map((rose) => {
+          const isActive = rose.luckyNumber === activeNumber;
+          return (
+            <div key={rose.luckyNumber} className={`rose-card ${isActive ? 'active' : 'inactive'}`}>
+              <div className="rose-icon">{isActive ? '🌹' : '🥀'}</div>
 
-            {rose.isActive && (
-              <div className="active-badge">{t('roses.activeThisWeek')}</div>
-            )}
+              {isActive && (
+                <div className="active-badge">{t('roses.activeThisWeek')}</div>
+              )}
 
-            <h3 className="rose-name">{rose.name}</h3>
-            <div className="rose-buff">{rose.buff}</div>
-            <div className="rose-duration">{t('roses.duration')}: {rose.duration}</div>
-            <p className="rose-description">{rose.description}</p>
+              <h3 className="rose-name">{rose.name}</h3>
+              <div className="rose-buff">{rose.buff}</div>
+              <div className="rose-duration">{t('roses.duration')}: {rose.duration}</div>
+              <p className="rose-description">{rose.description}</p>
 
-            {rose.isActive && (
-              <div
-                className="rose-countdown"
-                role="timer"
-                aria-label="Time remaining until next Sunday 23:59:59 UTC-2"
-                aria-atomic="true"
-              >
-                <div className="countdown-label">{t('roses.endsIn')}:</div>
-                <div className="countdown-timer">{timeLeft}</div>
-              </div>
-            )}
+              {isActive && (
+                <div
+                  className="rose-countdown"
+                  role="timer"
+                  aria-label="Time remaining until next Sunday 23:59:59 UTC-2"
+                  aria-atomic="true"
+                >
+                  <div className="countdown-label">{t('roses.endsIn')}:</div>
+                  <div className="countdown-timer">{timeLeft}</div>
+                </div>
+              )}
 
-            {!rose.isActive && (
-              <div className="inactive-badge">{t('roses.inactive')}</div>
-            )}
-          </div>
-        ))}
+              {!isActive && (
+                <div className="inactive-badge">{t('roses.inactive')}</div>
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

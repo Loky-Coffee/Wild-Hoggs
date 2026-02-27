@@ -380,6 +380,99 @@ select.admin-filter-input option {
   color: #ff6b6b;
 }
 
+/* ── Settings Tab ── */
+.admin-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.admin-settings-section {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 165, 0, 0.15);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.admin-settings-title {
+  color: #ffa500;
+  font-size: 1.1rem;
+  margin: 0 0 1.25rem 0;
+  font-weight: 600;
+}
+
+.admin-settings-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.admin-rose-select-row {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.admin-rose-select {
+  flex: 1;
+  min-width: 200px;
+}
+
+.admin-settings-save-btn {
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.admin-code-form {
+  margin-bottom: 1.25rem;
+}
+
+.admin-code-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  gap: 0.75rem;
+  align-items: end;
+}
+
+.admin-upload-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.admin-upload-status {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.admin-upload-ok {
+  color: #4ade80;
+}
+
+.admin-code-thumb {
+  height: 36px;
+  width: auto;
+  border-radius: 4px;
+  object-fit: contain;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .admin-code-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-rose-select-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-rose-select {
+    min-width: 0;
+  }
+}
+
 @media (max-width: 768px) {
   .admin-panel {
     flex-direction: column;

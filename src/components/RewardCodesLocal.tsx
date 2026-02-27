@@ -1,18 +1,15 @@
 import { useState, useEffect, useRef } from 'preact/hooks';
 import { useTranslations } from '../i18n/utils';
 import type { Language, TranslationData } from '../i18n/index';
-import rewardCodesData from '../data/reward-codes.json';
 import { getApocalypseTime } from '../utils/time';
 import './RewardCodes.css';
 
 interface RewardCode {
   id: string;
   code: string;
-  rewardImage: string;
-  imageWidth?: number;
-  imageHeight?: number;
-  expiresAt: string;
-  addedAt: string;
+  image_key: string | null;
+  expires_at: string | null;
+  added_at: string;
 }
 
 interface RewardCodesLocalProps {
@@ -20,7 +17,9 @@ interface RewardCodesLocalProps {
   translationData: TranslationData;
 }
 
-function getTimeRemaining(expiresAt: string) {
+function getTimeRemaining(expiresAt: string | null) {
+  if (!expiresAt) return { expired: false, days: 0, hours: 0, minutes: 0, noExpiry: true };
+
   // Get current time in UTC-2 (Apocalypse Time / Last-Z Time)
   const apocalypseTime = getApocalypseTime();
 
@@ -28,18 +27,18 @@ function getTimeRemaining(expiresAt: string) {
   const diff = expiry - apocalypseTime.getTime();
 
   if (diff <= 0) {
-    return { expired: true, days: 0, hours: 0, minutes: 0 };
+    return { expired: true, days: 0, hours: 0, minutes: 0, noExpiry: false };
   }
 
   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
   const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
   const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
 
-  return { expired: false, days, hours, minutes };
+  return { expired: false, days, hours, minutes, noExpiry: false };
 }
 
 export default function RewardCodesLocal({ lang, translationData }: RewardCodesLocalProps) {
-  const [codes, setCodes] = useState<RewardCode[]>(rewardCodesData.codes as RewardCode[]);
+  const [codes, setCodes] = useState<RewardCode[]>([]);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
   const [errorCode, setErrorCode] = useState<string | null>(null);
   const [currentTime, setCurrentTime] = useState(Date.now());
@@ -47,6 +46,16 @@ export default function RewardCodesLocal({ lang, translationData }: RewardCodesL
   const errorTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const t = useTranslations(translationData);
+
+  // Fetch codes from API on mount
+  useEffect(() => {
+    fetch('/api/reward-codes')
+      .then(r => r.json())
+      .then((data: any) => {
+        if (Array.isArray(data.codes)) setCodes(data.codes);
+      })
+      .catch(() => { /* keep empty state */ });
+  }, []);
 
   // Update time every minute for countdown
   useEffect(() => {
@@ -86,17 +95,21 @@ export default function RewardCodesLocal({ lang, translationData }: RewardCodesL
   // Filter and sort codes
   const activeCodes = codes
     .filter((c) => {
-      const timeRemaining = getTimeRemaining(c.expiresAt);
+      const timeRemaining = getTimeRemaining(c.expires_at);
       return !timeRemaining.expired;
     })
-    .sort((a, b) => new Date(b.addedAt).getTime() - new Date(a.addedAt).getTime());
+    .sort((a, b) => new Date(b.added_at).getTime() - new Date(a.added_at).getTime());
 
   const expiredCodes = codes
     .filter((c) => {
-      const timeRemaining = getTimeRemaining(c.expiresAt);
+      const timeRemaining = getTimeRemaining(c.expires_at);
       return timeRemaining.expired;
     })
-    .sort((a, b) => new Date(b.expiresAt).getTime() - new Date(a.expiresAt).getTime());
+    .sort((a, b) => {
+      const aExp = a.expires_at ? new Date(a.expires_at).getTime() : 0;
+      const bExp = b.expires_at ? new Date(b.expires_at).getTime() : 0;
+      return bExp - aExp;
+    });
 
   return (
     <div className="reward-codes-container">
@@ -113,17 +126,15 @@ export default function RewardCodesLocal({ lang, translationData }: RewardCodesL
           </h3>
           <div className="codes-grid">
             {activeCodes.map((item) => {
-              const timeRemaining = getTimeRemaining(item.expiresAt);
+              const timeRemaining = getTimeRemaining(item.expires_at);
               return (
                 <div key={item.code} className="code-card active">
-                  {item.rewardImage && (
+                  {item.image_key && (
                     <div className="code-image">
                       <img
-                        src={item.rewardImage}
+                        src={`/api/files/${item.image_key}`}
                         alt={item.code}
                         loading="lazy"
-                        width={item.imageWidth}
-                        height={item.imageHeight}
                       />
                     </div>
                   )}
@@ -137,7 +148,7 @@ export default function RewardCodesLocal({ lang, translationData }: RewardCodesL
                       {copiedCode === item.code ? '✓ ' + t('codes.copied') : errorCode === item.code ? '✗ ' + t('codes.copyError') : t('codes.copy')}
                     </button>
                   </div>
-                  {!timeRemaining.expired && (
+                  {!timeRemaining.expired && !timeRemaining.noExpiry && (
                     <div
                       className="code-timer"
                       role="timer"
@@ -164,14 +175,12 @@ export default function RewardCodesLocal({ lang, translationData }: RewardCodesL
           <div className="codes-grid">
             {expiredCodes.map((item) => (
               <div key={item.code} className="code-card expired">
-                {item.rewardImage && (
+                {item.image_key && (
                   <div className="code-image expired-image">
                     <img
-                      src={item.rewardImage}
+                      src={`/api/files/${item.image_key}`}
                       alt={item.code}
                       loading="lazy"
-                      width={item.imageWidth}
-                      height={item.imageHeight}
                     />
                   </div>
                 )}
@@ -179,9 +188,11 @@ export default function RewardCodesLocal({ lang, translationData }: RewardCodesL
                   <span className="code-text">{item.code}</span>
                   <span className="expired-badge">{t('codes.expired')}</span>
                 </div>
-                <div className="code-expired-date">
-                  {t('codes.expiredOn')}: {new Date(item.expiresAt).toLocaleDateString(lang)}
-                </div>
+                {item.expires_at && (
+                  <div className="code-expired-date">
+                    {t('codes.expiredOn')}: {new Date(item.expires_at).toLocaleDateString(lang)}
+                  </div>
+                )}
               </div>
             ))}
           </div>

@@ -4,7 +4,6 @@ import { getLangFromUrl, useTranslations, getCurrentMonth, getCurrentYear, getLo
 import { getLanguagePaths } from '../../i18n/static-paths';
 import { loadTranslations } from '../../i18n/index';
 import WeeklyRoses from '../../components/WeeklyRoses';
-import { ACTIVE_LUCKY_NUMBER } from '../../config/bonus';
 import '../../styles/shared-layouts.css';
 
 export function getStaticPaths() {
@@ -17,8 +16,7 @@ const t = useTranslations(translationData);
 const currentMonth = getCurrentMonth(lang);
 const currentYear = getCurrentYear();
 
-// Alle 10 Lucky Rose Buffs
-// Die aktive Rose wird in src/config/bonus.ts eingestellt
+// Alle 10 Lucky Rose Buffs — aktive Rose wird dynamisch über /api/settings/lucky-rose geladen
 const allRoses = [
   {
     luckyNumber: 1,
@@ -92,11 +90,7 @@ const allRoses = [
   },
 ];
 
-// Markiere die aktive Rose
-const roses = allRoses.map(rose => ({
-  ...rose,
-  isActive: rose.luckyNumber === ACTIVE_LUCKY_NUMBER
-}));
+const roses = allRoses;
 
 const breadcrumbItems = [
   { label: t('nav.home'), href: getLocalizedPath('', lang) },
