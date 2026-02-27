@@ -3,6 +3,9 @@
 
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /profile/
+Disallow: /community/
 
 # Sitemaps
 Sitemap: https://wild-hoggs.com/sitemap-index.xml

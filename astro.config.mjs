@@ -38,14 +38,14 @@ export default defineConfig({
       // SEO-Optimierung: <lastmod> Tag hinzufügen (wichtigster optionaler Tag)
       // Google, Bing, Yandex nutzen lastmod für intelligenteres Crawling
       serialize(item) {
-        // SEO: Exclude placeholder pages from sitemap
-        const placeholderPages = ['/events', '/guides'];
-        const isPlaceholder = placeholderPages.some(page =>
-          item.url.includes(page + '/') || item.url.endsWith(page)
+        // SEO: Exclude non-indexable pages from sitemap
+        const excludedPaths = ['/events', '/guides', '/admin', '/profile', '/community'];
+        const isExcluded = excludedPaths.some(path =>
+          item.url.includes(path + '/') || item.url.endsWith(path)
         );
 
-        if (isPlaceholder) {
-          return undefined; // Excludes URL from sitemap
+        if (isExcluded) {
+          return undefined;
         }
 
         item.lastmod = new Date().toISOString();
