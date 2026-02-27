@@ -12,12 +12,21 @@ interface Report {
   report_id: string;
   chat_type: string;
   message_id: string;
+  reason: string | null;
   report_date: string;
   reporter: string;
   msg_author: string | null;
   msg_text: string | null;
   msg_date: string | null;
 }
+
+const REASON_MAP: Record<string, { icon: string; key: string }> = {
+  spam:   { icon: '📢', key: 'chat.report.reason.spam'   },
+  porn:   { icon: '🔞', key: 'chat.report.reason.porn'   },
+  racism: { icon: '🚫', key: 'chat.report.reason.racism' },
+  hate:   { icon: '💢', key: 'chat.report.reason.hate'   },
+  other:  { icon: '⚠️', key: 'chat.report.reason.other'  },
+};
 
 interface AdminUser {
   id: string;
@@ -57,6 +66,11 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
   const [rError, setRError]       = useState<string | null>(null);
   const [rBusy, setRBusy]         = useState<Set<string>>(new Set());
 
+  // Report filter state
+  const [rfText,   setRfText]   = useState('');
+  const [rfReason, setRfReason] = useState('');
+  const [rfType,   setRfType]   = useState('');
+
   // Users state
   const [users, setUsers]         = useState<AdminUser[]>([]);
   const [uLoading, setULoading]   = useState(false);
@@ -69,7 +83,7 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
   const [fRegFrom, setFRegFrom]   = useState('');
   const [fRegTo, setFRegTo]       = useState('');
 
-  // Load reports — hooks must be called unconditionally (Rules of Hooks)
+  // Load reports
   useEffect(() => {
     if (activeTab !== 'reports' || !isLoggedIn || (!isAdmin && !isMod) || !token) return;
     setRLoading(true);
@@ -84,7 +98,7 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
       .finally(() => setRLoading(false));
   }, [activeTab, isLoggedIn]);
 
-  // Load users — same pattern
+  // Load users
   useEffect(() => {
     if (activeTab !== 'users' || !isLoggedIn || (!isAdmin && !isMod) || !token) return;
     setULoading(true);
@@ -99,8 +113,24 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
       .finally(() => setULoading(false));
   }, [activeTab, isLoggedIn]);
 
-  // Derived: unique server list + filtered users (client-side, no extra API call)
-  const serverOptions = Array.from(new Set(users.map(u => u.server).filter(Boolean))).sort() as string[];
+  // Derived: reports
+  const reportTypes     = Array.from(new Set(reports.map(r => r.chat_type))).sort();
+  const filteredReports = reports.filter(r => {
+    if (rfReason && r.reason !== rfReason) return false;
+    if (rfType   && r.chat_type !== rfType) return false;
+    if (rfText) {
+      const q = rfText.toLowerCase();
+      if (
+        !(r.msg_text  ?? '').toLowerCase().includes(q) &&
+        !(r.msg_author ?? '').toLowerCase().includes(q) &&
+        !r.reporter.toLowerCase().includes(q)
+      ) return false;
+    }
+    return true;
+  });
+  const hasRFilter = rfText || rfReason || rfType;
+
+  // Derived: users
   const filteredUsers = users.filter(u => {
     if (fServer && u.server !== fServer) return false;
     if (fText) {
@@ -193,36 +223,120 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
           <>
             {rLoading && <p class="admin-loading">{t('admin.reports.loading')}</p>}
             {rError && <p class="admin-error">{rError}</p>}
-            {!rLoading && !rError && reports.length === 0 && (
-              <p class="admin-empty">{t('admin.reports.empty')}</p>
-            )}
-            {!rLoading && !rError && reports.length > 0 && (
-              <div class="admin-reports-list">
-                {reports.map(report => {
-                  const isBusy = rBusy.has(report.report_id);
-                  return (
-                    <div key={report.report_id} class="admin-report-card">
-                      <p class={['admin-report-text', !report.msg_text ? 'deleted' : ''].filter(Boolean).join(' ')}>
-                        {report.msg_text ?? '[Nachricht gelöscht]'}
-                      </p>
-                      <div class="admin-report-meta">
-                        <span>✍ {report.msg_author ?? '—'}</span>
-                        <span>🚩 {report.reporter}</span>
-                        <span>💬 {report.chat_type}</span>
-                        <span>📅 {formatDate(report.report_date)}</span>
-                      </div>
-                      <div class="admin-report-actions">
-                        <button class="admin-btn-delete" onClick={() => handleDelete(report)} disabled={isBusy || !report.msg_text}>
-                          🗑 {t('admin.reports.delete')}
-                        </button>
-                        <button class="admin-btn-dismiss" onClick={() => handleDismiss(report)} disabled={isBusy}>
-                          ✓ {t('admin.reports.dismiss')}
-                        </button>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+            {!rLoading && !rError && (
+              <>
+                {/* Filter bar */}
+                <div class="admin-filter-bar admin-filter-bar-reports">
+                  <label class="admin-filter-field admin-filter-field-wide">
+                    <span class="admin-filter-label">{t('admin.reports.filter.search')}</span>
+                    <input
+                      class="admin-filter-input"
+                      type="search"
+                      placeholder={t('admin.reports.filter.search')}
+                      value={rfText}
+                      onInput={e => setRfText((e.target as HTMLInputElement).value)}
+                    />
+                  </label>
+                  <label class="admin-filter-field">
+                    <span class="admin-filter-label">{t('admin.reports.col.reason')}</span>
+                    <select
+                      class="admin-filter-input"
+                      value={rfReason}
+                      onChange={e => setRfReason((e.target as HTMLSelectElement).value)}
+                    >
+                      <option value="">{t('admin.reports.filter.reason.all')}</option>
+                      {Object.entries(REASON_MAP).map(([k, v]) => (
+                        <option key={k} value={k}>{v.icon} {t(v.key as any)}</option>
+                      ))}
+                    </select>
+                  </label>
+                  <label class="admin-filter-field">
+                    <span class="admin-filter-label">{t('admin.reports.col.type')}</span>
+                    <select
+                      class="admin-filter-input"
+                      value={rfType}
+                      onChange={e => setRfType((e.target as HTMLSelectElement).value)}
+                    >
+                      <option value="">{t('admin.reports.filter.type.all')}</option>
+                      {reportTypes.map(type => (
+                        <option key={type} value={type}>{type}</option>
+                      ))}
+                    </select>
+                  </label>
+                  <div class="admin-filter-actions">
+                    {hasRFilter && (
+                      <button class="admin-filter-reset" onClick={() => { setRfText(''); setRfReason(''); setRfType(''); }}>
+                        ✕ {t('admin.users.filter.reset')}
+                      </button>
+                    )}
+                    <span class="admin-filter-count">{filteredReports.length} / {reports.length}</span>
+                  </div>
+                </div>
+
+                {filteredReports.length === 0 ? (
+                  <p class="admin-empty">{t('admin.reports.empty')}</p>
+                ) : (
+                  <div class="admin-table-wrap">
+                    <table class="admin-table admin-reports-table">
+                      <thead>
+                        <tr>
+                          <th>{t('admin.reports.col.message')}</th>
+                          <th>{t('admin.reports.col.author')}</th>
+                          <th>{t('admin.reports.col.reporter')}</th>
+                          <th>{t('admin.reports.col.reason')}</th>
+                          <th>{t('admin.reports.col.type')}</th>
+                          <th>{t('admin.reports.col.date')}</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {filteredReports.map(report => {
+                          const isBusy = rBusy.has(report.report_id);
+                          const reason = report.reason ? REASON_MAP[report.reason] : null;
+                          return (
+                            <tr key={report.report_id}>
+                              <td class="admin-report-msg-cell">
+                                <span class={report.msg_text ? 'admin-report-msg-text' : 'admin-report-msg-deleted'}>
+                                  {report.msg_text ?? t('admin.reports.msg_deleted')}
+                                </span>
+                              </td>
+                              <td class="admin-table-muted">{report.msg_author ?? '—'}</td>
+                              <td class="admin-table-muted">{report.reporter}</td>
+                              <td>
+                                {reason ? (
+                                  <span class="admin-report-reason">
+                                    {reason.icon} {t(reason.key as any)}
+                                  </span>
+                                ) : '—'}
+                              </td>
+                              <td class="admin-table-muted">{report.chat_type}</td>
+                              <td class="admin-table-muted admin-nowrap">{formatDate(report.report_date)}</td>
+                              <td class="admin-table-actions">
+                                <button
+                                  class="admin-btn-delete admin-btn-sm"
+                                  onClick={() => handleDelete(report)}
+                                  disabled={isBusy || !report.msg_text}
+                                  title={t('admin.reports.delete')}
+                                >
+                                  🗑
+                                </button>
+                                <button
+                                  class="admin-btn-dismiss admin-btn-sm"
+                                  onClick={() => handleDismiss(report)}
+                                  disabled={isBusy}
+                                  title={t('admin.reports.dismiss')}
+                                >
+                                  ✓
+                                </button>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </>
             )}
           </>
         )}
@@ -237,27 +351,27 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
                 {/* Filter bar */}
                 <div class="admin-filter-bar">
                   <label class="admin-filter-field">
-                    <span class="admin-filter-label">Name / E-Mail</span>
+                    <span class="admin-filter-label">{t('admin.users.filter.name')}</span>
                     <input
                       class="admin-filter-input"
                       type="search"
-                      placeholder="Suchen…"
+                      placeholder={t('admin.users.filter.search')}
                       value={fText}
                       onInput={e => setFText((e.target as HTMLInputElement).value)}
                     />
                   </label>
                   <label class="admin-filter-field">
-                    <span class="admin-filter-label">Server</span>
+                    <span class="admin-filter-label">{t('admin.users.filter.server')}</span>
                     <input
                       class="admin-filter-input"
                       type="text"
-                      placeholder="z. B. 395"
+                      placeholder={t('admin.users.filter.server_ph')}
                       value={fServer}
                       onInput={e => setFServer((e.target as HTMLInputElement).value)}
                     />
                   </label>
                   <label class="admin-filter-field">
-                    <span class="admin-filter-label">Registriert ab</span>
+                    <span class="admin-filter-label">{t('admin.users.filter.from')}</span>
                     <input
                       class="admin-filter-input"
                       type="date"
@@ -266,7 +380,7 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
                     />
                   </label>
                   <label class="admin-filter-field">
-                    <span class="admin-filter-label">Registriert bis</span>
+                    <span class="admin-filter-label">{t('admin.users.filter.to')}</span>
                     <input
                       class="admin-filter-input"
                       type="date"
@@ -277,7 +391,7 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
                   <div class="admin-filter-actions">
                     {hasFilter && (
                       <button class="admin-filter-reset" onClick={() => { setFText(''); setFServer(''); setFRegFrom(''); setFRegTo(''); }}>
-                        ✕ Reset
+                        ✕ {t('admin.users.filter.reset')}
                       </button>
                     )}
                     <span class="admin-filter-count">{filteredUsers.length} / {users.length}</span>
@@ -292,11 +406,11 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
                       <table class="admin-table">
                         <thead>
                           <tr>
-                            <th>Name</th>
-                            {isAdmin && <th>E-Mail</th>}
-                            <th>Server</th>
-                            <th>Registriert</th>
-                            <th>Letzter Login</th>
+                            <th>{t('admin.users.col.name')}</th>
+                            {isAdmin && <th>{t('admin.users.col.email')}</th>}
+                            <th>{t('admin.users.col.server')}</th>
+                            <th>{t('admin.users.col.registered')}</th>
+                            <th>{t('admin.users.col.last_login')}</th>
                             {isAdmin && <th></th>}
                           </tr>
                         </thead>
@@ -312,34 +426,31 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
                                 <td>
                                   <span class="admin-user-name">
                                     {u.username}
-                                    {u.is_admin === 1     && <span class="admin-user-badge admin-badge-admin">⚙ Admin</span>}
-                                    {u.is_moderator === 1 && <span class="admin-user-badge admin-badge-mod">🛡 Mod</span>}
+                                    {u.is_admin === 1     && <span class="admin-user-badge admin-badge-admin">⚙ {t('chat.role.admin')}</span>}
+                                    {u.is_moderator === 1 && <span class="admin-user-badge admin-badge-mod">🛡 {t('chat.role.moderator')}</span>}
                                     {isYou && <span class="admin-user-you">{t('admin.users.you')}</span>}
                                   </span>
                                 </td>
                                 {isAdmin && <td class="admin-table-muted">{u.email ?? '—'}</td>}
                                 <td class="admin-table-muted">{u.server ?? '—'}</td>
-                                <td class="admin-table-muted">{formatDate(u.created_at)}</td>
-                                <td class="admin-table-muted">{u.last_login ? formatDate(u.last_login) : '—'}</td>
+                                <td class="admin-table-muted admin-nowrap">{formatDate(u.created_at)}</td>
+                                <td class="admin-table-muted admin-nowrap">{u.last_login ? formatDate(u.last_login) : '—'}</td>
                                 {isAdmin && (
                                   <td class="admin-table-actions">
                                     {!isYou && (
                                       <>
-                                        {/* Regular user → promote to mod or admin */}
                                         {u.is_admin === 0 && u.is_moderator === 0 && (
                                           <>
                                             <button class="admin-btn-promote admin-btn-sm" disabled={isBusy} onClick={() => handleSetRole(u, 'moderator')}>🛡 Mod</button>
                                             <button class="admin-btn-promote admin-btn-sm" disabled={isBusy} onClick={() => handleSetRole(u, 'admin')}>⚙ Admin</button>
                                           </>
                                         )}
-                                        {/* Moderator → promote to admin or remove role */}
                                         {u.is_moderator === 1 && (
                                           <>
                                             <button class="admin-btn-promote admin-btn-sm" disabled={isBusy} onClick={() => handleSetRole(u, 'admin')}>⚙ Admin</button>
                                             <button class="admin-btn-delete admin-btn-sm"  disabled={isBusy} onClick={() => handleSetRole(u, 'user')}>✕</button>
                                           </>
                                         )}
-                                        {/* Admin → demote to mod or remove */}
                                         {u.is_admin === 1 && (
                                           <>
                                             <button class="admin-btn-promote admin-btn-sm" disabled={isBusy} onClick={() => handleSetRole(u, 'moderator')}>🛡 Mod</button>

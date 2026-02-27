@@ -17,6 +17,7 @@ export async function onRequestGet(ctx: any) {
   const result = await DB.prepare(`
     SELECT
       r.id AS report_id, r.chat_type, r.message_id,
+      r.reason,
       r.created_at AS report_date,
       ur.username AS reporter,
       COALESCE(cg.username, cs.username) AS msg_author,

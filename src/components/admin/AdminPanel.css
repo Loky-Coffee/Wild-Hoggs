@@ -87,52 +87,39 @@ body:has(.admin-panel) > main > astro-island {
   color: #ff6b6b;
 }
 
-.admin-reports-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+/* ── Reports table ── */
+.admin-filter-bar-reports {
+  grid-template-columns: 2fr 1fr 1fr auto;
 }
 
-.admin-report-card {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 165, 0, 0.15);
-  border-radius: 8px;
-  padding: 1rem 1.25rem;
+.admin-reports-table .admin-report-msg-cell {
+  max-width: 280px;
 }
 
-.admin-report-text {
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 0.95rem;
-  line-height: 1.5;
-  margin: 0 0 0.5rem 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
+.admin-report-msg-text {
+  display: block;
   overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.88rem;
 }
 
-.admin-report-text.deleted {
-  color: rgba(255, 255, 255, 0.35);
+.admin-report-msg-deleted {
+  color: rgba(255, 255, 255, 0.3);
   font-style: italic;
+  font-size: 0.85rem;
 }
 
-.admin-report-meta {
-  font-size: 0.78rem;
-  color: rgba(255, 255, 255, 0.4);
-  margin-bottom: 0.75rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem 1rem;
-}
-
-.admin-report-meta span {
+.admin-report-reason {
+  color: rgba(255, 165, 0, 0.9);
+  font-weight: 600;
+  font-size: 0.82rem;
   white-space: nowrap;
 }
 
-.admin-report-actions {
-  display: flex;
-  gap: 0.6rem;
-  flex-wrap: wrap;
+.admin-nowrap {
+  white-space: nowrap;
 }
 
 .admin-btn-delete {
@@ -417,6 +404,10 @@ body:has(.admin-panel) > main > astro-island {
 
   .admin-filter-bar {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .admin-filter-bar-reports {
+    grid-template-columns: 1fr 1fr;
   }
 
   .admin-filter-actions {
