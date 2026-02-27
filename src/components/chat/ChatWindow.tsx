@@ -117,7 +117,7 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
         const params = pmInboxSince.current
           ? `?since=${encodeURIComponent(pmInboxSince.current)}`
           : '';
-        const res = await fetch(`/api/chat/pm/inbox${params}`, {
+        const res = await fetch(`/api/chat/pm-inbox${params}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) return;
@@ -126,14 +126,20 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
         if (data.server_time) pmInboxSince.current = data.server_time;
 
         if (data.senders.length > 0) {
-          // Add senders to contacts + mark unread if panel not open for them
           data.senders.forEach(({ sender_username }) => {
+            // Add to DM contacts list
             setPmContacts(prev => {
               const next = [sender_username, ...prev.filter(n => n !== sender_username)].slice(0, 10);
               localStorage.setItem('wh-pm-contacts', JSON.stringify(next));
               return next;
             });
-            if (openPMRef.current !== sender_username) {
+            if (openPMRef.current === sender_username) return; // already open, PMPanel polls itself
+            // Auto-open if no panel is currently open
+            if (openPMRef.current === null) {
+              setOpenPM(sender_username);
+              openPMRef.current = sender_username;
+            } else {
+              // Another panel is open — just show unread dot
               setPmUnread(prev => new Set([...prev, sender_username]));
             }
           });
