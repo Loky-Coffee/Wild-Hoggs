@@ -1,5 +1,7 @@
-// GET  /api/chat/global  — Read messages (requires auth)
-// POST /api/chat/global  — Send a message (requires auth)
+// GET  /api/chat/global         — global channel (lang IS NULL)
+// GET  /api/chat/global?lang=de — language channel (lang = 'de')
+// POST /api/chat/global         — send to global channel
+// POST /api/chat/global?lang=de — send to language channel
 
 import { getToken, validateSession } from '../../_lib/auth';
 import { checkRateLimit } from '../../_lib/chat-ratelimit';
@@ -22,30 +24,33 @@ export async function onRequestGet(ctx: any) {
   if (!user) return Response.json({ error: 'Sitzung abgelaufen' }, { status: 401 });
 
   const url    = new URL(ctx.request.url);
+  const lang   = url.searchParams.get('lang') ?? null;   // null = global (no lang filter)
   const since  = url.searchParams.get('since');
   const limit  = Math.min(parseInt(url.searchParams.get('limit') ?? String(DEFAULT_LIMIT)), MAX_LIMIT);
   const offset = parseInt(url.searchParams.get('offset') ?? '0');
 
+  // lang IS NULL → global channel;  lang = ? → language channel
+  const langFilter = lang ? 'lang = ?' : 'lang IS NULL';
+
   let messages: any[];
 
   if (since) {
-    // Polling: only messages strictly after the given created_at timestamp
     const { results } = await DB.prepare(
       `SELECT id, username, faction, server, message, created_at
        FROM chat_global
-       WHERE created_at > ?
+       WHERE ${langFilter} AND created_at > ?
        ORDER BY created_at ASC
        LIMIT ?`
-    ).bind(since, limit).all();
+    ).bind(...(lang ? [lang, since, limit] : [since, limit])).all();
     messages = results as any[];
   } else {
-    // Initial load: last N messages, returned oldest-first for display
     const { results } = await DB.prepare(
       `SELECT id, username, faction, server, message, created_at
        FROM chat_global
+       WHERE ${langFilter}
        ORDER BY created_at DESC
        LIMIT ? OFFSET ?`
-    ).bind(limit, offset).all();
+    ).bind(...(lang ? [lang, limit, offset] : [limit, offset])).all();
     messages = (results as any[]).reverse();
   }
 
@@ -62,6 +67,9 @@ export async function onRequestPost(ctx: any) {
 
   const user = await validateSession(DB, token);
   if (!user) return Response.json({ error: 'Sitzung abgelaufen' }, { status: 401 });
+
+  const url  = new URL(ctx.request.url);
+  const lang = url.searchParams.get('lang') ?? null;
 
   let body: any;
   try { body = await ctx.request.json(); }
@@ -80,9 +88,9 @@ export async function onRequestPost(ctx: any) {
 
   const id = genId();
   await DB.prepare(
-    `INSERT INTO chat_global (id, user_id, username, faction, server, message)
-     VALUES (?, ?, ?, ?, ?, ?)`
-  ).bind(id, user.user_id, user.username, user.faction, user.server, message).run();
+    `INSERT INTO chat_global (id, user_id, username, faction, server, lang, message)
+     VALUES (?, ?, ?, ?, ?, ?, ?)`
+  ).bind(id, user.user_id, user.username, user.faction, user.server, lang, message).run();
 
   const created = await DB.prepare(
     'SELECT id, username, faction, server, message, created_at FROM chat_global WHERE id = ?'

@@ -21,15 +21,16 @@ export async function onRequestPost(ctx: any) {
 
   const { chat_type, message_id, reason } = body ?? {};
 
-  if (!chat_type || !['global', 'server'].includes(chat_type)) {
-    return Response.json({ error: 'chat_type muss "global" oder "server" sein.' }, { status: 400 });
+  const validTypes = ['global', 'global-lang', 'server', 'server-lang'];
+  if (!chat_type || !validTypes.includes(chat_type)) {
+    return Response.json({ error: 'Ungültiger chat_type.' }, { status: 400 });
   }
   if (!message_id || typeof message_id !== 'string') {
     return Response.json({ error: 'message_id fehlt.' }, { status: 400 });
   }
 
-  // Verify the message exists
-  const table = chat_type === 'global' ? 'chat_global' : 'chat_server';
+  // global + global-lang → chat_global table; server + server-lang → chat_server table
+  const table = (chat_type === 'global' || chat_type === 'global-lang') ? 'chat_global' : 'chat_server';
   const msg = await DB.prepare(`SELECT id FROM ${table} WHERE id = ?`).bind(message_id).first();
   if (!msg) {
     return Response.json({ error: 'Nachricht nicht gefunden.' }, { status: 404 });

@@ -7,7 +7,7 @@ import MessageInput from './MessageInput';
 import type { Message } from './MessageItem';
 import './ChatWindow.css';
 
-type ChatType = 'global' | 'server';
+type ChatType = 'global' | 'global-lang' | 'server' | 'server-lang';
 
 const POLL_MS = 5_000;
 
@@ -31,18 +31,30 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
   const pollRef       = useRef<ReturnType<typeof setInterval> | null>(null);
   const chatTypeRef   = useRef<ChatType>(chatType);
 
-  // Keep ref in sync so poll callback always has the current chatType
   useEffect(() => { chatTypeRef.current = chatType; }, [chatType]);
 
-  const getEndpoint = useCallback((type: ChatType) =>
-    type === 'global' ? '/api/chat/global' : `/api/chat/server/${user?.server}`,
-  [user?.server]);
+  const hasLang   = !!(user?.language && user.language.trim());
+  const hasServer = !!user?.server;
+  const langCode  = user?.language?.toUpperCase() ?? '';
+
+  // Build the correct endpoint URL including lang param when needed
+  const buildUrl = useCallback((type: ChatType, extra: string = ''): string => {
+    const base = (type === 'global' || type === 'global-lang')
+      ? '/api/chat/global'
+      : `/api/chat/server/${user?.server}`;
+
+    const langParam = (type === 'global-lang' || type === 'server-lang') && user?.language
+      ? `lang=${user.language}`
+      : '';
+
+    const allParams = [langParam, extra].filter(Boolean).join('&');
+    return allParams ? `${base}?${allParams}` : base;
+  }, [user?.server, user?.language]);
 
   const stopPolling = useCallback(() => {
     if (pollRef.current) { clearInterval(pollRef.current); pollRef.current = null; }
   }, []);
 
-  // Load initial 50 messages when chat type or auth changes
   const loadInitial = useCallback(async (type: ChatType) => {
     if (!token) return;
     setLoading(true);
@@ -50,7 +62,7 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
     setMessages([]);
     lastCreatedAt.current = null;
     try {
-      const res = await fetch(`${getEndpoint(type)}?limit=50`, {
+      const res = await fetch(buildUrl(type, 'limit=50'), {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) {
@@ -68,14 +80,13 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
     } finally {
       setLoading(false);
     }
-  }, [token, getEndpoint]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [token, buildUrl]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Poll for new messages every POLL_MS, paused when tab is hidden
   const poll = useCallback(async () => {
     if (!token || !lastCreatedAt.current) return;
     try {
       const since = encodeURIComponent(lastCreatedAt.current);
-      const res = await fetch(`${getEndpoint(chatTypeRef.current)}?since=${since}&limit=50`, {
+      const res = await fetch(buildUrl(chatTypeRef.current, `since=${since}&limit=50`), {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) return;
@@ -89,7 +100,7 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
         lastCreatedAt.current = data.messages[data.messages.length - 1].created_at;
       }
     } catch { /* ignore transient errors */ }
-  }, [token, getEndpoint]);
+  }, [token, buildUrl]);
 
   useEffect(() => {
     if (!isLoggedIn || !token) return;
@@ -101,13 +112,12 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
     return stopPolling;
   }, [isLoggedIn, token, chatType]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Send a message
   const handleSend = useCallback(async (text: string) => {
     if (!token) return;
     setSending(true);
     setSendError(null);
     try {
-      const res = await fetch(getEndpoint(chatType), {
+      const res = await fetch(buildUrl(chatType), {
         method:  'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body:    JSON.stringify({ message: text }),
@@ -125,9 +135,8 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
     } finally {
       setSending(false);
     }
-  }, [token, chatType, getEndpoint]);
+  }, [token, chatType, buildUrl]);
 
-  // Report a message
   const handleReport = useCallback(async (msgId: string) => {
     if (!token) return;
     try {
@@ -140,7 +149,7 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
     } catch { /* ignore */ }
   }, [token, chatType]);
 
-  // ── Not logged in ────────────────────────────────────────────────────────────
+  // ── Not logged in ─────────────────────────────────────────────────────────
   if (!isLoggedIn || !user) {
     return (
       <div class="chat-login-wall">
@@ -151,8 +160,6 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
     );
   }
 
-  const canUseServer = !!user.server;
-
   const ago = {
     seconds: t('chat.ago_seconds'),
     minutes: t('chat.ago_minutes'),
@@ -160,30 +167,52 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
     days:    t('chat.ago_days'),
   };
 
-  // ── Chat UI ──────────────────────────────────────────────────────────────────
+  // ── Tab config ────────────────────────────────────────────────────────────
+  type TabDef = { type: ChatType; label: string; disabled?: boolean; title?: string };
+  const tabs: TabDef[] = [
+    {
+      type:  'global',
+      label: `🌍 ${t('chat.global')}`,
+    },
+    ...(hasLang ? [{
+      type:  'global-lang' as ChatType,
+      label: `🌍 ${t('chat.global')} ${langCode}`,
+    }] : []),
+    {
+      type:     'server',
+      label:    hasServer ? `🏠 ${t('chat.server')} ${user.server}` : `🏠 ${t('chat.server')}`,
+      disabled: !hasServer,
+      title:    !hasServer ? t('chat.no_server_hint') : undefined,
+    },
+    ...(hasServer && hasLang ? [{
+      type:  'server-lang' as ChatType,
+      label: `🏠 ${t('chat.server')} ${user.server} ${langCode}`,
+    }] : []),
+  ];
+
+  // ── Chat UI ───────────────────────────────────────────────────────────────
   return (
     <div class="chat-window">
 
       {/* Tab switcher */}
       <div class="chat-tabs" role="tablist">
-        <button
-          class={`chat-tab${chatType === 'global' ? ' chat-tab-active' : ''}`}
-          onClick={() => setChatType('global')}
-          role="tab"
-          aria-selected={chatType === 'global'}
-        >
-          🌍 {t('chat.global')}
-        </button>
-        <button
-          class={`chat-tab${chatType === 'server' ? ' chat-tab-active' : ''}${!canUseServer ? ' chat-tab-disabled' : ''}`}
-          onClick={() => canUseServer ? setChatType('server') : undefined}
-          role="tab"
-          aria-selected={chatType === 'server'}
-          disabled={!canUseServer}
-          title={!canUseServer ? t('chat.no_server_hint') : undefined}
-        >
-          🏠 {user.server ? `${t('chat.server')} ${user.server}` : t('chat.server')}
-        </button>
+        {tabs.map(tab => (
+          <button
+            key={tab.type}
+            class={[
+              'chat-tab',
+              chatType === tab.type ? 'chat-tab-active' : '',
+              tab.disabled ? 'chat-tab-disabled' : '',
+            ].filter(Boolean).join(' ')}
+            onClick={() => !tab.disabled && setChatType(tab.type)}
+            role="tab"
+            aria-selected={chatType === tab.type}
+            disabled={tab.disabled}
+            title={tab.title}
+          >
+            {tab.label}
+          </button>
+        ))}
       </div>
 
       {/* Message area */}

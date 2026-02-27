@@ -52,18 +52,23 @@ body:has(.chat-login-wall) > main > astro-island {
   width: 100%;
   border-bottom: 1px solid rgba(255, 165, 0, 0.15);
   background: rgba(255, 255, 255, 0.03);
+  overflow-x: auto;          /* horizontal scroll wenn 4 Tabs nicht passen */
+  scrollbar-width: none;     /* Firefox: kein Scrollbalken sichtbar */
 }
+.chat-tabs::-webkit-scrollbar { display: none; } /* Chrome: kein Scrollbalken sichtbar */
 
 .chat-tab {
   flex: 1;
+  min-width: max-content;    /* Tab wird nie schmaler als sein Text */
   padding: 0.75rem 1rem;
   background: none;
   border: none;
   border-bottom: 2px solid transparent;
   color: rgba(255, 255, 255, 0.45);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
+  white-space: nowrap;
   transition: color 0.15s, border-color 0.15s;
 }
 

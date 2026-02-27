@@ -1,5 +1,7 @@
-// GET  /api/chat/server/:serverName — Read server messages (requires auth + matching server)
-// POST /api/chat/server/:serverName — Send a message (requires auth + matching server)
+// GET  /api/chat/server/:name         — server channel (lang IS NULL)
+// GET  /api/chat/server/:name?lang=de — language server channel (lang = 'de')
+// POST /api/chat/server/:name         — send to server channel
+// POST /api/chat/server/:name?lang=de — send to language server channel
 
 import { getToken, validateSession } from '../../../_lib/auth';
 import { checkRateLimit } from '../../../_lib/chat-ratelimit';
@@ -27,9 +29,12 @@ export async function onRequestGet(ctx: any) {
   }
 
   const url    = new URL(ctx.request.url);
+  const lang   = url.searchParams.get('lang') ?? null;
   const since  = url.searchParams.get('since');
   const limit  = Math.min(parseInt(url.searchParams.get('limit') ?? String(DEFAULT_LIMIT)), MAX_LIMIT);
   const offset = parseInt(url.searchParams.get('offset') ?? '0');
+
+  const langFilter = lang ? 'lang = ?' : 'lang IS NULL';
 
   let messages: any[];
 
@@ -37,19 +42,19 @@ export async function onRequestGet(ctx: any) {
     const { results } = await DB.prepare(
       `SELECT id, username, faction, server, message, created_at
        FROM chat_server
-       WHERE server = ? AND created_at > ?
+       WHERE server = ? AND ${langFilter} AND created_at > ?
        ORDER BY created_at ASC
        LIMIT ?`
-    ).bind(serverName, since, limit).all();
+    ).bind(...(lang ? [serverName, lang, since, limit] : [serverName, since, limit])).all();
     messages = results as any[];
   } else {
     const { results } = await DB.prepare(
       `SELECT id, username, faction, server, message, created_at
        FROM chat_server
-       WHERE server = ?
+       WHERE server = ? AND ${langFilter}
        ORDER BY created_at DESC
        LIMIT ? OFFSET ?`
-    ).bind(serverName, limit, offset).all();
+    ).bind(...(lang ? [serverName, lang, limit, offset] : [serverName, limit, offset])).all();
     messages = (results as any[]).reverse();
   }
 
@@ -68,6 +73,8 @@ export async function onRequestPost(ctx: any) {
   if (!user) return Response.json({ error: 'Sitzung abgelaufen' }, { status: 401 });
 
   const serverName = ctx.params.serverName as string;
+  const url        = new URL(ctx.request.url);
+  const lang       = url.searchParams.get('lang') ?? null;
 
   if (!user.server) {
     return Response.json({ error: 'Kein Server-Feld in deinem Profil. Trage es unter /profile/ ein.' }, { status: 403 });
@@ -93,9 +100,9 @@ export async function onRequestPost(ctx: any) {
 
   const id = genId();
   await DB.prepare(
-    `INSERT INTO chat_server (id, server, user_id, username, faction, message)
-     VALUES (?, ?, ?, ?, ?, ?)`
-  ).bind(id, serverName, user.user_id, user.username, user.faction, message).run();
+    `INSERT INTO chat_server (id, server, user_id, username, faction, lang, message)
+     VALUES (?, ?, ?, ?, ?, ?, ?)`
+  ).bind(id, serverName, user.user_id, user.username, user.faction, lang, message).run();
 
   const created = await DB.prepare(
     'SELECT id, username, faction, server, message, created_at FROM chat_server WHERE id = ?'
