@@ -113,6 +113,7 @@ body:has(.chat-login-wall) > main > astro-island {
   display: flex;
   width: 100%;
   box-sizing: border-box;
+  align-items: stretch; /* actions + bubble always same height */
 }
 
 .chat-msg-row-own   { justify-content: flex-end; }
@@ -132,13 +133,15 @@ body:has(.chat-login-wall) > main > astro-island {
 .chat-bubble-own {
   background: rgba(255, 165, 0, 0.18);
   border: 1px solid rgba(255, 165, 0, 0.35);
-  border-radius: 16px 16px 4px 16px;
+  border-radius: 0 16px 4px 0; /* left side square — actions connect there */
+  border-left: none;
 }
 
 .chat-bubble-other {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.09);
-  border-radius: 16px 16px 16px 4px;
+  border-radius: 16px 0 0 4px; /* right side square — actions connect there */
+  border-right: none;
 }
 
 /* ── Bubble Header (Username + Badge, nur bei Fremden) ───────────────────── */
@@ -184,20 +187,31 @@ body:has(.chat-login-wall) > main > astro-island {
   white-space: nowrap;
 }
 
-/* ── Message Action Buttons (outside bubble) ─────────────────────────────── */
+/* ── Message Action Buttons (outside bubble, visually connected) ─────────── */
 
 .chat-msg-actions {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
-  gap: 0.2rem;
-  padding-bottom: 0.3rem;
+  justify-content: center;
+  gap: 0.15rem;
   flex-shrink: 0;
+  padding: 0.3rem 0.4rem;
 }
 
-.chat-msg-actions-own   { margin-right: 0.4rem; }
-.chat-msg-actions-other { margin-left:  0.4rem; }
+.chat-msg-actions-own {
+  background: rgba(255, 165, 0, 0.18);
+  border: 1px solid rgba(255, 165, 0, 0.35);
+  border-right: none; /* bubble handles the right border */
+  border-radius: 16px 0 0 16px;
+}
+
+.chat-msg-actions-other {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-left: none; /* bubble handles the left border */
+  border-radius: 0 16px 16px 0;
+}
 
 .chat-action-btn {
   background: none;
