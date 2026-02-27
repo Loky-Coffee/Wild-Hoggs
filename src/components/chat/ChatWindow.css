@@ -155,6 +155,85 @@ body:has(.chat-login-wall) > main > astro-island {
   font-size: 0.8rem;
 }
 
+/* ── Online user PM button ───────────────────────────────────────────────── */
+
+.chat-online-pm-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.0);
+  cursor: pointer;
+  padding: 0.1rem 0.25rem;
+  border-radius: 3px;
+  font-size: 0.7rem;
+  flex-shrink: 0;
+  transition: color 0.15s, opacity 0.15s;
+  line-height: 1;
+}
+
+.chat-online-user:hover .chat-online-pm-btn {
+  color: rgba(255, 165, 0, 0.55);
+}
+
+.chat-online-pm-btn:hover {
+  color: #ffa500 !important;
+}
+
+/* ── DM Contacts (bottom of sidebar) ────────────────────────────────────── */
+
+.chat-pm-contacts {
+  flex-shrink: 0;
+  border-top: 1px solid rgba(255, 165, 0, 0.1);
+  padding: 0.3rem 0;
+}
+
+.chat-pm-contacts-header {
+  padding: 0.5rem 0.75rem 0.3rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.chat-pm-contact {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.28rem 0.75rem;
+  background: none;
+  border: none;
+  border-left: 2px solid transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.12s;
+  box-sizing: border-box;
+}
+
+.chat-pm-contact:hover {
+  background: rgba(255, 165, 0, 0.07);
+}
+
+.chat-pm-contact-active {
+  background: rgba(255, 165, 0, 0.12);
+  border-left-color: #ffa500;
+}
+
+.chat-pm-contact-icon {
+  color: rgba(255, 165, 0, 0.5);
+  font-size: 0.7rem;
+  flex-shrink: 0;
+}
+
+.chat-pm-contact-name {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.7);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
 /* ── Main Chat Column ───────────────────────────────────────────────────────── */
 
 .chat-main {

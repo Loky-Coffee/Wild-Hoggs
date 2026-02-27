@@ -13,11 +13,12 @@ interface MessageListProps {
   isAdmin:         boolean;
   onDelete:        (id: string) => void;
   onReply:         (msg: Message) => void;
+  onPM:            (username: string) => void;
 }
 
 export default function MessageList({
   messages, currentUsername, onReport, reportedIds,
-  noMessages, reportLabel, reportedLabel, ago, isAdmin, onDelete, onReply,
+  noMessages, reportLabel, reportedLabel, ago, isAdmin, onDelete, onReply, onPM,
 }: MessageListProps) {
   const listRef     = useRef<HTMLDivElement>(null);
   const atBottomRef = useRef(true);
@@ -65,6 +66,7 @@ export default function MessageList({
             isAdmin={isAdmin}
             onDelete={onDelete}
             onReply={onReply}
+            onPM={onPM}
           />
         ))
       )}

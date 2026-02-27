@@ -5,6 +5,7 @@ import type { TranslationData } from '../../i18n/index';
 import MessageList from './MessageList';
 import MessageInput, { type ReplyTarget } from './MessageInput';
 import type { Message } from './MessageItem';
+import PMPanel from './PMPanel';
 import './ChatWindow.css';
 
 type ChatType = 'global' | 'global-lang' | 'server' | 'server-lang';
@@ -48,6 +49,11 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
   const [reportedIds,  setReportedIds]  = useState<Set<string>>(new Set());
   const [replyTo,      setReplyTo]      = useState<ReplyTarget | null>(null);
   const [onlineUsers,  setOnlineUsers]  = useState<OnlineUser[]>([]);
+  const [openPM,       setOpenPM]       = useState<string | null>(null);
+  const [pmContacts,   setPmContacts]   = useState<string[]>(() => {
+    try { return JSON.parse(localStorage.getItem('wh-pm-contacts') ?? '[]'); }
+    catch { return []; }
+  });
 
   const lastCreatedAt = useRef<string | null>(null);
   const pollRef       = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -220,6 +226,15 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
     });
   }, []);
 
+  const openPMWith = useCallback((username: string) => {
+    setOpenPM(username);
+    setPmContacts(prev => {
+      const next = [username, ...prev.filter(n => n !== username)].slice(0, 10);
+      localStorage.setItem('wh-pm-contacts', JSON.stringify(next));
+      return next;
+    });
+  }, []);
+
   const handleDelete = useCallback(async (msgId: string) => {
     if (!token) return;
     try {
@@ -311,11 +326,44 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
                     <span class="chat-online-server">{u.server}</span>
                   )}
                 </span>
+                {u.username !== user?.username && (
+                  <button
+                    class="chat-online-pm-btn"
+                    onClick={() => openPMWith(u.username)}
+                    title="PM"
+                  >✉</button>
+                )}
               </li>
             ))
           )}
         </ul>
+        {pmContacts.length > 0 && (
+          <div class="chat-pm-contacts">
+            <div class="chat-pm-contacts-header">DMs</div>
+            {pmContacts.map(name => (
+              <button
+                key={name}
+                class={`chat-pm-contact${openPM === name ? ' chat-pm-contact-active' : ''}`}
+                onClick={() => openPMWith(name)}
+              >
+                <span class="chat-pm-contact-icon">✉</span>
+                <span class="chat-pm-contact-name">{name}</span>
+              </button>
+            ))}
+          </div>
+        )}
       </div>
+
+      {/* ── PM Panel ── */}
+      {openPM && token && (
+        <PMPanel
+          username={openPM}
+          currentUsername={user.username}
+          token={token}
+          onClose={() => setOpenPM(null)}
+          ago={ago}
+        />
+      )}
 
       {/* ── Main Chat Area ── */}
       <div class="chat-main">
@@ -363,6 +411,7 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
             isAdmin={isAdmin}
             onDelete={handleDelete}
             onReply={handleReply}
+            onPM={openPMWith}
           />
         )}
 

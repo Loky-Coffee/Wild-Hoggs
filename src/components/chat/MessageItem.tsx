@@ -33,6 +33,7 @@ interface MessageItemProps {
   isAdmin:         boolean;
   onDelete:        (id: string) => void;
   onReply:         (msg: Message) => void;
+  onPM?:           (username: string) => void;
 }
 
 const FACTION_COLORS: Record<string, string> = {
@@ -58,7 +59,7 @@ function relativeTime(dateStr: string, ago: AgoStrings): string {
 
 export default function MessageItem({
   msg, currentUsername, onReport, reportedIds,
-  reportLabel, reportedLabel, ago, isAdmin, onDelete, onReply,
+  reportLabel, reportedLabel, ago, isAdmin, onDelete, onReply, onPM,
 }: MessageItemProps) {
   const [deleting, setDeleting] = useState(false);
 
@@ -79,6 +80,9 @@ export default function MessageItem({
   const actions = (
     <div class={`chat-msg-actions${isOwn ? ' chat-msg-actions-own' : ' chat-msg-actions-other'}`}>
       <button class="chat-action-btn" onClick={() => onReply(msg)} title="Antworten">↩</button>
+      {!isOwn && onPM && (
+        <button class="chat-action-btn" onClick={() => onPM(msg.username)} title="Private Nachricht">✉</button>
+      )}
       {!isOwn && (
         <button
           class={`chat-action-btn${isReported ? ' chat-action-reported' : ''}`}
