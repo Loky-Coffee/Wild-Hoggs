@@ -324,7 +324,21 @@ const getLanguageUrl = (targetLang: string) => {
         const lang = item.getAttribute('data-lang');
         const token = localStorage.getItem('wh-auth-token');
         if (!lang || !token) return;
-        // Fire-and-forget: save to DB, don't block navigation
+
+        // Update localStorage immediately so all islands react before navigation
+        const storedUser = localStorage.getItem('wh-auth-user');
+        if (storedUser) {
+          try {
+            const userObj = JSON.parse(storedUser);
+            userObj.language = lang;
+            localStorage.setItem('wh-auth-user', JSON.stringify(userObj));
+            window.dispatchEvent(new CustomEvent('wh-auth-change', {
+              detail: { user: userObj, token },
+            }));
+          } catch { /* ignore */ }
+        }
+
+        // Persist to DB in background
         fetch('/api/user/profile', {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
