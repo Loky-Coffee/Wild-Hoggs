@@ -1,7 +1,8 @@
 .admin-panel {
   display: flex;
   flex-direction: row;
-  min-height: 60vh;
+  align-items: stretch;
+  min-height: calc(100vh - 110px);
   gap: 0;
 }
 
@@ -9,8 +10,9 @@
   width: 200px;
   flex-shrink: 0;
   border-right: 1px solid rgba(255, 165, 0, 0.25);
-  padding: 1rem 0;
+  padding-top: 1rem;
   background: rgba(255, 255, 255, 0.02);
+  align-self: stretch;
 }
 
 .admin-sidebar-btn {
@@ -242,14 +244,14 @@
 }
 
 .admin-access-denied {
-  text-align: center;
-  padding: 3rem 1rem;
+  padding: 1rem;
   color: #ff6b6b;
 }
 
 @media (max-width: 768px) {
   .admin-panel {
     flex-direction: column;
+    min-height: unset;
   }
 
   .admin-sidebar {
