@@ -55,6 +55,7 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
     catch { return []; }
   });
   const [pmUnread,     setPmUnread]     = useState<Set<string>>(new Set());
+  const [confirmRemove, setConfirmRemove] = useState<string | null>(null);
 
   const pmInboxSince = useRef<string | null>(null);
   const inboxRef     = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -304,7 +305,11 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
 
   const removePMContact = useCallback((username: string, e: MouseEvent) => {
     e.stopPropagation();
-    if (!window.confirm(`Unterhaltung mit ${username} aus der DM-Liste entfernen?`)) return;
+    setConfirmRemove(username);
+  }, []);
+
+  const doRemovePMContact = useCallback((username: string) => {
+    setConfirmRemove(null);
     if (openPM === username) setOpenPM(null);
     setPmUnread(prev => { const next = new Set(prev); next.delete(username); return next; });
     setPmContacts(prev => {
@@ -519,6 +524,26 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
         />
 
       </div>
+
+      {/* ── Confirm Remove DM Dialog ── */}
+      {confirmRemove && (
+        <div class="chat-confirm-overlay" onClick={() => setConfirmRemove(null)}>
+          <div class="chat-confirm-dialog" onClick={(e) => e.stopPropagation()}>
+            <div class="chat-confirm-title">Unterhaltung entfernen</div>
+            <div class="chat-confirm-msg">
+              DM mit <strong>{confirmRemove}</strong> aus der Liste entfernen?
+            </div>
+            <div class="chat-confirm-actions">
+              <button class="chat-confirm-cancel" onClick={() => setConfirmRemove(null)}>
+                Abbrechen
+              </button>
+              <button class="chat-confirm-ok" onClick={() => doRemovePMContact(confirmRemove)}>
+                Entfernen
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
