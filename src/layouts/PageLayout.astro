@@ -74,6 +74,8 @@ const { title, description, robots, breadcrumbs, image, imageAlt, fullWidth = fa
   .page-content--full {
     padding: 0;
     overflow: hidden;
+    width: 100%;   /* überschreibt max-width:100% — explizit volle Breite */
+    margin: 0;     /* überschreibt margin:0 auto — auto-Margins würden in Flex zentrieren statt strecken */
   }
 
   @media (max-width: 768px) {
