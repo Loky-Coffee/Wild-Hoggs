@@ -852,8 +852,21 @@ body:has(.chat-login-wall) > main > astro-island {
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #06b6d4;
+  background: linear-gradient(
+    90deg,
+    #0ea5e9, #6366f1, #06b6d4, #3b82f6, #0ea5e9
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: mod-text-snake 2.5s linear infinite;
   margin-bottom: 0.15rem;
+}
+
+@keyframes mod-text-snake {
+  from { background-position: 0% 50%; }
+  to   { background-position: -200% 50%; }
 }
 
 .chat-mod-label-own { text-align: right; }
