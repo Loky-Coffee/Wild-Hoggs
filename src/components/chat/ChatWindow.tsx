@@ -520,6 +520,9 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
     }] : []),
   ];
 
+  // Total unread DM messages across all senders (for sidebar toggle badge)
+  const totalPmUnread = [...pmUnread.values()].reduce((a, b) => a + b, 0);
+
   // ── Chat UI ───────────────────────────────────────────────────────────────
   return (
     <div class="chat-window">
@@ -632,6 +635,11 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
             title={t('chat.online')}
           >
             👥 {visibleOnline.length}
+            {!sidebarOpen && totalPmUnread > 0 && (
+              <span class="chat-sidebar-badge">
+                {totalPmUnread > 99 ? '99+' : totalPmUnread}
+              </span>
+            )}
           </button>
           {tabs.map(tab => (
             <button
