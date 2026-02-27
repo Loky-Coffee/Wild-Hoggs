@@ -1,13 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'preact/hooks';
-import type { AgoStrings } from './MessageItem';
+import MessageList from './MessageList';
+import type { Message, AgoStrings } from './MessageItem';
 import './PMPanel.css';
-
-interface PMMessage {
-  id:              string;
-  sender_username: string;
-  message:         string;
-  created_at:      string;
-}
 
 interface PMPanelProps {
   username:        string;
@@ -15,53 +9,21 @@ interface PMPanelProps {
   token:           string;
   onClose:         () => void;
   ago:             AgoStrings;
-}
-
-function relativeTime(dateStr: string, ago: AgoStrings): string {
-  const iso     = dateStr.includes('T') ? dateStr : dateStr.replace(' ', 'T') + 'Z';
-  const diffMs  = Date.now() - new Date(iso).getTime();
-  const diffSec = Math.floor(diffMs / 1000);
-  const diffMin = Math.floor(diffSec / 60);
-  const diffHr  = Math.floor(diffMin / 60);
-  const diffDay = Math.floor(diffHr  / 24);
-
-  if (diffSec < 60) return ago.seconds;
-  if (diffMin < 60) return ago.minutes.replace('{n}', String(diffMin));
-  if (diffHr  < 24) return ago.hours.replace('{n}', String(diffHr));
-  return ago.days.replace('{n}', String(diffDay));
+  isAdmin:         boolean;
 }
 
 const POLL_MS = 5_000;
 
-export default function PMPanel({ username, currentUsername, token, onClose, ago }: PMPanelProps) {
-  const [messages,  setMessages]  = useState<PMMessage[]>([]);
-  const [text,      setText]      = useState('');
-  const [sending,   setSending]   = useState(false);
-  const [sendError, setSendError] = useState<string | null>(null);
-  const [loading,   setLoading]   = useState(true);
+export default function PMPanel({ username, currentUsername, token, onClose, ago, isAdmin }: PMPanelProps) {
+  const [messages,    setMessages]    = useState<Message[]>([]);
+  const [text,        setText]        = useState('');
+  const [sending,     setSending]     = useState(false);
+  const [sendError,   setSendError]   = useState<string | null>(null);
+  const [loading,     setLoading]     = useState(true);
+  const [reportedIds, setReportedIds] = useState<Set<string>>(new Set());
 
-  const listRef       = useRef<HTMLDivElement>(null);
-  const atBottomRef   = useRef(true);
   const lastCreatedAt = useRef<string | null>(null);
   const pollRef       = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  // Track scroll position
-  useEffect(() => {
-    const el = listRef.current;
-    if (!el) return;
-    const onScroll = () => {
-      atBottomRef.current = el.scrollHeight - el.scrollTop - el.clientHeight < 60;
-    };
-    el.addEventListener('scroll', onScroll, { passive: true });
-    return () => el.removeEventListener('scroll', onScroll);
-  }, []);
-
-  // Auto-scroll on new messages — only if already at bottom
-  useEffect(() => {
-    if (atBottomRef.current && listRef.current) {
-      listRef.current.scrollTop = listRef.current.scrollHeight;
-    }
-  }, [messages]);
 
   // Initial load
   const loadInitial = useCallback(async () => {
@@ -71,17 +33,13 @@ export default function PMPanel({ username, currentUsername, token, onClose, ago
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) return;
-      const data = await res.json() as { messages: PMMessage[] };
+      const data = await res.json() as { messages: Message[] };
       setMessages(data.messages);
       if (data.messages.length > 0) {
         lastCreatedAt.current = data.messages[data.messages.length - 1].created_at;
       }
     } catch { /* ignore */ } finally {
       setLoading(false);
-      // Scroll to bottom after initial load
-      requestAnimationFrame(() => {
-        if (listRef.current) listRef.current.scrollTop = listRef.current.scrollHeight;
-      });
     }
   }, [username, token]);
 
@@ -94,7 +52,7 @@ export default function PMPanel({ username, currentUsername, token, onClose, ago
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) return;
-      const data = await res.json() as { messages: PMMessage[] };
+      const data = await res.json() as { messages: Message[] };
       if (data.messages.length > 0) {
         setMessages(prev => {
           const known = new Set(prev.map(m => m.id));
@@ -108,15 +66,14 @@ export default function PMPanel({ username, currentUsername, token, onClose, ago
 
   useEffect(() => {
     setMessages([]);
+    setReportedIds(new Set());
     lastCreatedAt.current = null;
     loadInitial();
     if (pollRef.current) clearInterval(pollRef.current);
     pollRef.current = setInterval(() => {
       if (document.visibilityState !== 'hidden') poll();
     }, POLL_MS);
-    return () => {
-      if (pollRef.current) clearInterval(pollRef.current);
-    };
+    return () => { if (pollRef.current) clearInterval(pollRef.current); };
   }, [username, token]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSend = useCallback(async () => {
@@ -132,21 +89,30 @@ export default function PMPanel({ username, currentUsername, token, onClose, ago
       });
       const data = await res.json() as any;
       if (!res.ok) { setSendError(data.error ?? 'Senden fehlgeschlagen.'); return; }
-      const newMsg = data as PMMessage;
+      const newMsg = data as Message;
       setMessages(prev => {
         const known = new Set(prev.map(m => m.id));
         return known.has(newMsg.id) ? prev : [...prev, newMsg];
       });
       lastCreatedAt.current = newMsg.created_at;
       setText('');
-      // Force scroll to bottom after sending
-      atBottomRef.current = true;
     } catch {
       setSendError('Verbindungsfehler.');
     } finally {
       setSending(false);
     }
   }, [text, sending, username, token]);
+
+  const handleReport = useCallback(async (msgId: string) => {
+    try {
+      await fetch('/api/chat/report', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body:    JSON.stringify({ chat_type: 'pm', message_id: msgId }),
+      });
+      setReportedIds(prev => new Set([...prev, msgId]));
+    } catch { /* ignore */ }
+  }, [token]);
 
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -162,30 +128,28 @@ export default function PMPanel({ username, currentUsername, token, onClose, ago
         <button class="chat-pm-close" onClick={onClose} title="Schließen">×</button>
       </div>
 
-      <div class="chat-pm-messages" ref={listRef}>
-        {loading ? (
-          <div class="chat-pm-loading">…</div>
-        ) : messages.length === 0 ? (
-          <p class="chat-pm-empty">Noch keine Nachrichten</p>
-        ) : (
-          messages.map(m => {
-            const isOwn = m.sender_username === currentUsername;
-            return (
-              <div key={m.id} class={`chat-pm-msg-row${isOwn ? ' chat-pm-msg-own' : ' chat-pm-msg-other'}`}>
-                <div class={`chat-bubble${isOwn ? ' chat-bubble-own' : ' chat-bubble-other'} chat-pm-bubble`}>
-                  {!isOwn && (
-                    <div class="chat-pm-sender">{m.sender_username}</div>
-                  )}
-                  <p class="chat-msg-text">{m.message}</p>
-                  <div class={`chat-bubble-footer${isOwn ? ' chat-bubble-footer-own' : ''}`}>
-                    <span class="chat-msg-time">{relativeTime(m.created_at, ago)}</span>
-                  </div>
-                </div>
-              </div>
-            );
-          })
-        )}
-      </div>
+      {loading ? (
+        <div class="chat-pm-loading-wrap">
+          <span class="chat-loading-dot" />
+          <span class="chat-loading-dot" />
+          <span class="chat-loading-dot" />
+        </div>
+      ) : (
+        <MessageList
+          messages={messages}
+          currentUsername={currentUsername}
+          onReport={handleReport}
+          reportedIds={reportedIds}
+          noMessages="Noch keine Nachrichten"
+          reportLabel="Melden"
+          reportedLabel="Gemeldet"
+          ago={ago}
+          isAdmin={isAdmin}
+          onDelete={() => Promise.resolve()}
+          onReply={() => {}}
+          onPM={() => {}}
+        />
+      )}
 
       <div class="chat-pm-input-area">
         {sendError && <div class="chat-send-error">{sendError}</div>}

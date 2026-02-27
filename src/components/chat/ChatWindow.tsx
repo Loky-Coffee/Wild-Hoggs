@@ -451,6 +451,7 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
           token={token}
           onClose={() => setOpenPM(null)}
           ago={ago}
+          isAdmin={isAdmin}
         />
       )}
 

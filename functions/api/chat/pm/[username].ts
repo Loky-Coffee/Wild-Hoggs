@@ -36,7 +36,8 @@ export async function onRequestGet(ctx: any) {
 
   if (since) {
     const { results } = await DB.prepare(
-      `SELECT p.id, u.username AS sender_username, p.message, p.created_at
+      `SELECT p.id, u.username, u.faction, u.server, p.message, p.created_at,
+              COALESCE(u.is_admin, 0) AS is_admin, COALESCE(u.is_moderator, 0) AS is_moderator
        FROM chat_pm p
        JOIN users u ON p.sender_id = u.id
        WHERE ((p.sender_id = ? AND p.receiver_id = ?) OR (p.sender_id = ? AND p.receiver_id = ?))
@@ -47,7 +48,8 @@ export async function onRequestGet(ctx: any) {
     messages = results as any[];
   } else {
     const { results } = await DB.prepare(
-      `SELECT p.id, u.username AS sender_username, p.message, p.created_at
+      `SELECT p.id, u.username, u.faction, u.server, p.message, p.created_at,
+              COALESCE(u.is_admin, 0) AS is_admin, COALESCE(u.is_moderator, 0) AS is_moderator
        FROM chat_pm p
        JOIN users u ON p.sender_id = u.id
        WHERE (p.sender_id = ? AND p.receiver_id = ?) OR (p.sender_id = ? AND p.receiver_id = ?)
@@ -100,7 +102,8 @@ export async function onRequestPost(ctx: any) {
   ).bind(id, user.user_id, other.id, message).run();
 
   const created = await DB.prepare(
-    `SELECT p.id, u.username AS sender_username, p.message, p.created_at
+    `SELECT p.id, u.username, u.faction, u.server, p.message, p.created_at,
+            COALESCE(u.is_admin, 0) AS is_admin, COALESCE(u.is_moderator, 0) AS is_moderator
      FROM chat_pm p
      JOIN users u ON p.sender_id = u.id
      WHERE p.id = ?`

@@ -21,7 +21,7 @@ export async function onRequestPost(ctx: any) {
 
   const { chat_type, message_id, reason } = body ?? {};
 
-  const validTypes = ['global', 'global-lang', 'server', 'server-lang'];
+  const validTypes = ['global', 'global-lang', 'server', 'server-lang', 'pm'];
   if (!chat_type || !validTypes.includes(chat_type)) {
     return Response.json({ error: 'Ungültiger chat_type.' }, { status: 400 });
   }
@@ -29,8 +29,9 @@ export async function onRequestPost(ctx: any) {
     return Response.json({ error: 'message_id fehlt.' }, { status: 400 });
   }
 
-  // global + global-lang → chat_global table; server + server-lang → chat_server table
-  const table = (chat_type === 'global' || chat_type === 'global-lang') ? 'chat_global' : 'chat_server';
+  const table = chat_type === 'pm' ? 'chat_pm'
+    : (chat_type === 'global' || chat_type === 'global-lang') ? 'chat_global'
+    : 'chat_server';
   const msg = await DB.prepare(`SELECT id FROM ${table} WHERE id = ?`).bind(message_id).first();
   if (!msg) {
     return Response.json({ error: 'Nachricht nicht gefunden.' }, { status: 404 });
