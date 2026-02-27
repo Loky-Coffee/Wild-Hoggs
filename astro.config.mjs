@@ -5,6 +5,7 @@ import sitemap from '@astrojs/sitemap';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://wild-hoggs.com',
+  trailingSlash: 'always',
   i18n: {
     defaultLocale: 'en',
     locales: ['de', 'en', 'fr', 'ko', 'th', 'ja', 'pt', 'es', 'tr', 'id', 'zh-TW', 'zh-CN', 'it', 'ar', 'vi'],
