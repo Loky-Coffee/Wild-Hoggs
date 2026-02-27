@@ -396,6 +396,7 @@ body:has(.chat-login-wall) > main > astro-island {
   inset: -2px;
   border-radius: inherit;
   padding: 2px;
+  pointer-events: none;
   background: linear-gradient(
     90deg,
     #ff0000, #ff5500, #ffcc00, #aaff00,
@@ -456,6 +457,7 @@ body:has(.chat-login-wall) > main > astro-island {
   inset: -2px;
   border-radius: inherit;
   padding: 2px;
+  pointer-events: none;
   background: linear-gradient(90deg, #0ea5e9, #6366f1, #06b6d4, #3b82f6, #0ea5e9);
   background-size: 300% 100%;
   animation: mod-snake 3s linear infinite;
