@@ -84,11 +84,11 @@ export default function UserMenu({ translationData }: UserMenuProps) {
           <a href={profileHref} class="user-dropdown-item" onClick={() => setShowDropdown(false)}>
             {t('auth.myProfile')}
           </a>
-          {user?.is_admin === 1 && (
+          {(user?.is_admin === 1 || user?.is_moderator === 1) && (
             <>
               <hr class="user-dropdown-divider" />
               <a href={adminHref} class="user-dropdown-item user-dropdown-admin" onClick={() => setShowDropdown(false)}>
-                ⚙ Administration
+                {user?.is_admin === 1 ? '⚙' : '🛡'} Administration
               </a>
             </>
           )}

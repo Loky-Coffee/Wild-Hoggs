@@ -445,6 +445,44 @@ body:has(.chat-login-wall) > main > astro-island {
   to   { background-position: -200% 50%; }
 }
 
+/* ── Moderator Message — Blue Shimmer Border ─────────────────────────────── */
+
+.chat-bubble-mod {
+  position: relative;
+  border-color: transparent !important;
+}
+
+.chat-bubble-mod::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(90deg, #0ea5e9, #6366f1, #06b6d4, #3b82f6, #0ea5e9);
+  background-size: 300% 100%;
+  animation: mod-snake 3s linear infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+@keyframes mod-snake {
+  from { background-position: 0% 50%; }
+  to   { background-position: -300% 50%; }
+}
+
+.chat-mod-label {
+  display: block;
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #06b6d4;
+  margin-bottom: 0.15rem;
+}
+
+.chat-mod-label-own { text-align: right; }
+
 /* ── Mobile ──────────────────────────────────────────────────────────────── */
 
 @media (max-width: 768px) {

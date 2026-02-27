@@ -16,7 +16,7 @@ export async function onRequestPost(ctx: any) {
   }
 
   const user = await DB.prepare(
-    'SELECT id, email, username, password_hash, faction, server, language, formation_power_br, formation_power_wd, formation_power_go, is_admin FROM users WHERE email = ?'
+    'SELECT id, email, username, password_hash, faction, server, language, formation_power_br, formation_power_wd, formation_power_go, is_admin, COALESCE(is_moderator, 0) AS is_moderator FROM users WHERE email = ?'
   ).bind(email.toLowerCase()).first() as any;
 
   if (!user || !(await verifyPassword(password, user.password_hash))) {
@@ -36,6 +36,7 @@ export async function onRequestPost(ctx: any) {
       formation_power_wd: user.formation_power_wd ?? null,
       formation_power_go: user.formation_power_go ?? null,
       is_admin: user.is_admin ?? 0,
+      is_moderator: user.is_moderator ?? 0,
     },
     token
   });

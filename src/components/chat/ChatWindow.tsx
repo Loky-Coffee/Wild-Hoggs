@@ -33,7 +33,7 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
 
   useEffect(() => { chatTypeRef.current = chatType; }, [chatType]);
 
-  const isAdmin   = user?.is_admin === 1;
+  const isAdmin   = user?.is_admin === 1 || user?.is_moderator === 1;
   const hasLang   = !!(user?.language && user.language.trim());
   const hasServer = !!user?.server;
   const langCode  = user?.language?.toUpperCase() ?? '';

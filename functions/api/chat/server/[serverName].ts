@@ -42,7 +42,7 @@ export async function onRequestGet(ctx: any) {
   if (since) {
     const { results } = await DB.prepare(
       `SELECT cs.id, cs.username, cs.faction, cs.server, cs.message, cs.created_at,
-              COALESCE(u.is_admin, 0) AS is_admin
+              COALESCE(u.is_admin, 0) AS is_admin, COALESCE(u.is_moderator, 0) AS is_moderator
        FROM chat_server cs
        LEFT JOIN users u ON cs.user_id = u.id
        WHERE cs.server = ? AND ${langFilterCs} AND cs.created_at > ?
@@ -53,7 +53,7 @@ export async function onRequestGet(ctx: any) {
   } else {
     const { results } = await DB.prepare(
       `SELECT cs.id, cs.username, cs.faction, cs.server, cs.message, cs.created_at,
-              COALESCE(u.is_admin, 0) AS is_admin
+              COALESCE(u.is_admin, 0) AS is_admin, COALESCE(u.is_moderator, 0) AS is_moderator
        FROM chat_server cs
        LEFT JOIN users u ON cs.user_id = u.id
        WHERE cs.server = ? AND ${langFilterCs}
@@ -113,5 +113,5 @@ export async function onRequestPost(ctx: any) {
     'SELECT id, username, faction, server, message, created_at FROM chat_server WHERE id = ?'
   ).bind(id).first() as any;
 
-  return Response.json({ ...created, is_admin: user.is_admin }, { status: 201 });
+  return Response.json({ ...created, is_admin: user.is_admin, is_moderator: user.is_moderator }, { status: 201 });
 }

@@ -20,5 +20,6 @@ export async function onRequestGet(ctx: any) {
     formation_power_wd: user.formation_power_wd ?? null,
     formation_power_go: user.formation_power_go ?? null,
     is_admin: user.is_admin ?? 0,
+    is_moderator: user.is_moderator ?? 0,
   });
 }

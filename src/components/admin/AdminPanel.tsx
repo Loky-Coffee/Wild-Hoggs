@@ -22,10 +22,11 @@ interface Report {
 interface AdminUser {
   id: string;
   username: string;
-  email: string;
+  email: string | null;
   server: string | null;
   faction: string | null;
   is_admin: number;
+  is_moderator: number;
   created_at: string;
   last_login: string | null;
 }
@@ -45,6 +46,8 @@ function formatDate(iso: string | null): string {
 export default function AdminPanel({ translationData }: AdminPanelProps) {
   const t = useTranslations(translationData);
   const { user, token, isLoggedIn } = useAuth();
+  const isAdmin = user?.is_admin === 1;
+  const isMod   = user?.is_moderator === 1 && !isAdmin;
 
   const [activeTab, setActiveTab] = useState<TabId>('reports');
 
@@ -68,7 +71,7 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
 
   // Load reports — hooks must be called unconditionally (Rules of Hooks)
   useEffect(() => {
-    if (activeTab !== 'reports' || !isLoggedIn || user?.is_admin !== 1 || !token) return;
+    if (activeTab !== 'reports' || !isLoggedIn || (!isAdmin && !isMod) || !token) return;
     setRLoading(true);
     setRError(null);
     fetch('/api/admin/reports', { headers: { 'Authorization': `Bearer ${token}` } })
@@ -83,7 +86,7 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
 
   // Load users — same pattern
   useEffect(() => {
-    if (activeTab !== 'users' || !isLoggedIn || user?.is_admin !== 1 || !token) return;
+    if (activeTab !== 'users' || !isLoggedIn || (!isAdmin && !isMod) || !token) return;
     setULoading(true);
     setUError(null);
     fetch('/api/admin/users', { headers: { 'Authorization': `Bearer ${token}` } })
@@ -102,7 +105,7 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
     if (fServer && u.server !== fServer) return false;
     if (fText) {
       const q = fText.toLowerCase();
-      if (!u.username.toLowerCase().includes(q) && !u.email.toLowerCase().includes(q)) return false;
+      if (!u.username.toLowerCase().includes(q) && !(u.email ?? '').toLowerCase().includes(q)) return false;
     }
     if (fRegFrom && u.created_at < fRegFrom) return false;
     if (fRegTo   && u.created_at > fRegTo + 'T23:59:59') return false;
@@ -111,7 +114,7 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
   const hasFilter = fText || fServer || fRegFrom || fRegTo;
 
   // Access check — AFTER all hooks
-  if (!isLoggedIn || user?.is_admin !== 1) {
+  if (!isLoggedIn || (!isAdmin && !isMod)) {
     return (
       <div class="admin-access-denied">
         🔒 {t('admin.access_denied')}
@@ -148,18 +151,21 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
     }
   };
 
-  // User admin toggle
-  const handleToggleAdmin = async (u: AdminUser) => {
+  // Role management (admin only)
+  const handleSetRole = async (u: AdminUser, role: 'user' | 'moderator' | 'admin') => {
     setUBusy(prev => new Set(prev).add(u.id));
     try {
-      const newVal = u.is_admin === 1 ? 0 : 1;
       const res = await fetch('/api/admin/users', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-        body: JSON.stringify({ user_id: u.id, is_admin: newVal }),
+        body: JSON.stringify({ user_id: u.id, role }),
       });
       if (res.ok) {
-        setUsers(prev => prev.map(x => x.id === u.id ? { ...x, is_admin: newVal } : x));
+        setUsers(prev => prev.map(x => x.id === u.id ? {
+          ...x,
+          is_admin:     role === 'admin'     ? 1 : 0,
+          is_moderator: role === 'moderator' ? 1 : 0,
+        } : x));
       }
     } finally {
       setUBusy(prev => { const n = new Set(prev); n.delete(u.id); return n; });
@@ -287,40 +293,63 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
                         <thead>
                           <tr>
                             <th>Name</th>
-                            <th>E-Mail</th>
+                            {isAdmin && <th>E-Mail</th>}
                             <th>Server</th>
                             <th>Registriert</th>
                             <th>Letzter Login</th>
-                            <th></th>
+                            {isAdmin && <th></th>}
                           </tr>
                         </thead>
                         <tbody>
                           {filteredUsers.map(u => {
                             const isYou  = u.id === user?.id;
                             const isBusy = uBusy.has(u.id);
+                            const rowClass = u.is_admin === 1
+                              ? 'admin-table-row-admin'
+                              : u.is_moderator === 1 ? 'admin-table-row-mod' : '';
                             return (
-                              <tr key={u.id} class={u.is_admin === 1 ? 'admin-table-row-admin' : ''}>
+                              <tr key={u.id} class={rowClass}>
                                 <td>
                                   <span class="admin-user-name">
                                     {u.username}
-                                    {u.is_admin === 1 && <span class="admin-user-badge">⚙ Admin</span>}
+                                    {u.is_admin === 1     && <span class="admin-user-badge admin-badge-admin">⚙ Admin</span>}
+                                    {u.is_moderator === 1 && <span class="admin-user-badge admin-badge-mod">🛡 Mod</span>}
                                     {isYou && <span class="admin-user-you">{t('admin.users.you')}</span>}
                                   </span>
                                 </td>
-                                <td class="admin-table-muted">{u.email}</td>
+                                {isAdmin && <td class="admin-table-muted">{u.email ?? '—'}</td>}
                                 <td class="admin-table-muted">{u.server ?? '—'}</td>
                                 <td class="admin-table-muted">{formatDate(u.created_at)}</td>
                                 <td class="admin-table-muted">{u.last_login ? formatDate(u.last_login) : '—'}</td>
-                                <td>
-                                  <button
-                                    class={u.is_admin === 1 ? 'admin-btn-delete' : 'admin-btn-promote'}
-                                    onClick={() => handleToggleAdmin(u)}
-                                    disabled={isBusy || isYou}
-                                    title={isYou ? 'Eigenen Status nicht änderbar' : undefined}
-                                  >
-                                    {u.is_admin === 1 ? `✕ ${t('admin.users.removeAdmin')}` : `★ ${t('admin.users.makeAdmin')}`}
-                                  </button>
-                                </td>
+                                {isAdmin && (
+                                  <td class="admin-table-actions">
+                                    {!isYou && (
+                                      <>
+                                        {/* Regular user → promote to mod or admin */}
+                                        {u.is_admin === 0 && u.is_moderator === 0 && (
+                                          <>
+                                            <button class="admin-btn-promote admin-btn-sm" disabled={isBusy} onClick={() => handleSetRole(u, 'moderator')}>🛡 Mod</button>
+                                            <button class="admin-btn-promote admin-btn-sm" disabled={isBusy} onClick={() => handleSetRole(u, 'admin')}>⚙ Admin</button>
+                                          </>
+                                        )}
+                                        {/* Moderator → promote to admin or remove role */}
+                                        {u.is_moderator === 1 && (
+                                          <>
+                                            <button class="admin-btn-promote admin-btn-sm" disabled={isBusy} onClick={() => handleSetRole(u, 'admin')}>⚙ Admin</button>
+                                            <button class="admin-btn-delete admin-btn-sm"  disabled={isBusy} onClick={() => handleSetRole(u, 'user')}>✕</button>
+                                          </>
+                                        )}
+                                        {/* Admin → demote to mod or remove */}
+                                        {u.is_admin === 1 && (
+                                          <>
+                                            <button class="admin-btn-promote admin-btn-sm" disabled={isBusy} onClick={() => handleSetRole(u, 'moderator')}>🛡 Mod</button>
+                                            <button class="admin-btn-delete admin-btn-sm"  disabled={isBusy} onClick={() => handleSetRole(u, 'user')}>✕</button>
+                                          </>
+                                        )}
+                                      </>
+                                    )}
+                                  </td>
+                                )}
                               </tr>
                             );
                           })}

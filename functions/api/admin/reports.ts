@@ -10,7 +10,7 @@ export async function onRequestGet(ctx: any) {
   const user = await validateSession(DB, token);
   if (!user) return Response.json({ error: 'Sitzung abgelaufen' }, { status: 401 });
 
-  if (user.is_admin !== 1) {
+  if (user.is_admin !== 1 && user.is_moderator !== 1) {
     return Response.json({ error: 'Keine Berechtigung' }, { status: 403 });
   }
 
@@ -45,7 +45,7 @@ export async function onRequestPatch(ctx: any) {
   const user = await validateSession(DB, token);
   if (!user) return Response.json({ error: 'Sitzung abgelaufen' }, { status: 401 });
 
-  if (user.is_admin !== 1) {
+  if (user.is_admin !== 1 && user.is_moderator !== 1) {
     return Response.json({ error: 'Keine Berechtigung' }, { status: 403 });
   }
 
