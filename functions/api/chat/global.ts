@@ -30,25 +30,30 @@ export async function onRequestGet(ctx: any) {
   const offset = parseInt(url.searchParams.get('offset') ?? '0');
 
   // lang IS NULL → global channel;  lang = ? → language channel
-  const langFilter = lang ? 'lang = ?' : 'lang IS NULL';
+  const langFilter    = lang ? 'lang = ?' : 'lang IS NULL';
+  const langFilterCg  = lang ? 'cg.lang = ?' : 'cg.lang IS NULL';
 
   let messages: any[];
 
   if (since) {
     const { results } = await DB.prepare(
-      `SELECT id, username, faction, server, message, created_at
-       FROM chat_global
-       WHERE ${langFilter} AND created_at > ?
-       ORDER BY created_at ASC
+      `SELECT cg.id, cg.username, cg.faction, cg.server, cg.message, cg.created_at,
+              COALESCE(u.is_admin, 0) AS is_admin
+       FROM chat_global cg
+       LEFT JOIN users u ON cg.user_id = u.id
+       WHERE ${langFilterCg} AND cg.created_at > ?
+       ORDER BY cg.created_at ASC
        LIMIT ?`
     ).bind(...(lang ? [lang, since, limit] : [since, limit])).all();
     messages = results as any[];
   } else {
     const { results } = await DB.prepare(
-      `SELECT id, username, faction, server, message, created_at
-       FROM chat_global
-       WHERE ${langFilter}
-       ORDER BY created_at DESC
+      `SELECT cg.id, cg.username, cg.faction, cg.server, cg.message, cg.created_at,
+              COALESCE(u.is_admin, 0) AS is_admin
+       FROM chat_global cg
+       LEFT JOIN users u ON cg.user_id = u.id
+       WHERE ${langFilterCg}
+       ORDER BY cg.created_at DESC
        LIMIT ? OFFSET ?`
     ).bind(...(lang ? [lang, limit, offset] : [limit, offset])).all();
     messages = (results as any[]).reverse();
@@ -96,5 +101,5 @@ export async function onRequestPost(ctx: any) {
     'SELECT id, username, faction, server, message, created_at FROM chat_global WHERE id = ?'
   ).bind(id).first() as any;
 
-  return Response.json(created, { status: 201 });
+  return Response.json({ ...created, is_admin: user.is_admin }, { status: 201 });
 }

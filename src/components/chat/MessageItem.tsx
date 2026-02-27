@@ -8,6 +8,7 @@ export interface Message {
   server:     string | null;
   message:    string;
   created_at: string;
+  is_admin:   number;
 }
 
 export interface AgoStrings {
@@ -61,6 +62,7 @@ export default function MessageItem({
     : 'rgba(255,255,255,0.7)';
   const isOwn      = msg.username === currentUsername;
   const isReported = reportedIds.has(msg.id);
+  const isAdminMsg = msg.is_admin === 1;
 
   const handleDelete = async () => {
     setDeleting(true);
@@ -70,14 +72,22 @@ export default function MessageItem({
 
   return (
     <div class={`chat-msg-row${isOwn ? ' chat-msg-row-own' : ' chat-msg-row-other'}`}>
-      <div class={`chat-bubble${isOwn ? ' chat-bubble-own' : ' chat-bubble-other'}`}>
+      <div class={[
+        'chat-bubble',
+        isOwn ? 'chat-bubble-own' : 'chat-bubble-other',
+        isAdminMsg ? 'chat-bubble-admin' : '',
+      ].filter(Boolean).join(' ')}>
         {!isOwn && (
           <div class="chat-bubble-header">
+            {isAdminMsg && <span class="chat-admin-label">⚙ Administrator</span>}
             <span class="chat-msg-username" style={{ color: factionColor }}>
               {msg.username}
             </span>
             <ServerBadge faction={msg.faction} server={msg.server} />
           </div>
+        )}
+        {isOwn && isAdminMsg && (
+          <span class="chat-admin-label chat-admin-label-own">Administrator ⚙</span>
         )}
         <p class="chat-msg-text">{msg.message}</p>
         <div class={`chat-bubble-footer${isOwn ? ' chat-bubble-footer-own' : ''}`}>

@@ -385,6 +385,65 @@ body:has(.chat-login-wall) > main > astro-island {
 .chat-login-text { color: rgba(255, 255, 255, 0.7); font-size: 1rem; margin: 0; }
 .chat-login-hint { color: rgba(255, 255, 255, 0.35); font-size: 0.875rem; margin: 0; }
 
+/* ── Admin Message — Rainbow Snake Border ────────────────────────────────── */
+
+.chat-bubble-admin {
+  position: relative;
+  isolation: isolate;
+  background: rgba(10, 10, 20, 0.97) !important;
+  border-color: transparent !important;
+}
+
+.chat-bubble-admin::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    #ff0000, #ff5500, #ffcc00, #aaff00,
+    #00ffaa, #00ccff, #0055ff, #aa00ff,
+    #ff0088, #ff0000
+  );
+  background-size: 300% 100%;
+  animation: admin-snake 2.5s linear infinite;
+  z-index: -1;
+}
+
+@keyframes admin-snake {
+  from { background-position: 0% 50%; }
+  to   { background-position: -300% 50%; }
+}
+
+.chat-admin-label {
+  display: block;
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: linear-gradient(
+    90deg,
+    #ff0000, #ff5500, #ffcc00, #aaff00,
+    #00ffaa, #00ccff, #0055ff, #aa00ff,
+    #ff0088, #ff0000
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: admin-text-snake 2s linear infinite;
+  margin-bottom: 0.15rem;
+}
+
+.chat-admin-label-own {
+  text-align: right;
+}
+
+@keyframes admin-text-snake {
+  from { background-position: 0% 50%; }
+  to   { background-position: -200% 50%; }
+}
+
 /* ── Mobile ──────────────────────────────────────────────────────────────── */
 
 @media (max-width: 768px) {

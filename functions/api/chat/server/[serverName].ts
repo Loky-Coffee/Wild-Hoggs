@@ -34,25 +34,30 @@ export async function onRequestGet(ctx: any) {
   const limit  = Math.min(parseInt(url.searchParams.get('limit') ?? String(DEFAULT_LIMIT)), MAX_LIMIT);
   const offset = parseInt(url.searchParams.get('offset') ?? '0');
 
-  const langFilter = lang ? 'lang = ?' : 'lang IS NULL';
+  const langFilter   = lang ? 'lang = ?' : 'lang IS NULL';
+  const langFilterCs = lang ? 'cs.lang = ?' : 'cs.lang IS NULL';
 
   let messages: any[];
 
   if (since) {
     const { results } = await DB.prepare(
-      `SELECT id, username, faction, server, message, created_at
-       FROM chat_server
-       WHERE server = ? AND ${langFilter} AND created_at > ?
-       ORDER BY created_at ASC
+      `SELECT cs.id, cs.username, cs.faction, cs.server, cs.message, cs.created_at,
+              COALESCE(u.is_admin, 0) AS is_admin
+       FROM chat_server cs
+       LEFT JOIN users u ON cs.user_id = u.id
+       WHERE cs.server = ? AND ${langFilterCs} AND cs.created_at > ?
+       ORDER BY cs.created_at ASC
        LIMIT ?`
     ).bind(...(lang ? [serverName, lang, since, limit] : [serverName, since, limit])).all();
     messages = results as any[];
   } else {
     const { results } = await DB.prepare(
-      `SELECT id, username, faction, server, message, created_at
-       FROM chat_server
-       WHERE server = ? AND ${langFilter}
-       ORDER BY created_at DESC
+      `SELECT cs.id, cs.username, cs.faction, cs.server, cs.message, cs.created_at,
+              COALESCE(u.is_admin, 0) AS is_admin
+       FROM chat_server cs
+       LEFT JOIN users u ON cs.user_id = u.id
+       WHERE cs.server = ? AND ${langFilterCs}
+       ORDER BY cs.created_at DESC
        LIMIT ? OFFSET ?`
     ).bind(...(lang ? [serverName, lang, limit, offset] : [serverName, limit, offset])).all();
     messages = (results as any[]).reverse();
@@ -108,5 +113,5 @@ export async function onRequestPost(ctx: any) {
     'SELECT id, username, faction, server, message, created_at FROM chat_server WHERE id = ?'
   ).bind(id).first() as any;
 
-  return Response.json(created, { status: 201 });
+  return Response.json({ ...created, is_admin: user.is_admin }, { status: 201 });
 }
