@@ -451,9 +451,9 @@ export default {
   'seo.about.description': 'Wild Hoggs, Sunucu 395\'te aktif bir Last Z loncasıdır. İttifak stratejileri, etkinlikler ve lonca desteği için topluluğumuza katılın. R5: N0TNUTT.',
   'seo.about.h1': 'Wild Hoggs Hakkında - Last Z Lonca Topluluğu',
   'seo.profile.title': 'Wild Hoggs | My Profile',
-  'seo.profile.description': 'Manage your Wild Hoggs account, faction, and view your calculator progress.',
+  'seo.profile.description': 'Wild Hoggs profilini yönet: Blood Rose veya Wings of Dawn fraksiyonunu seç, Server 395 bilgilerini güncelle ve Last Z hesap makinesi ilerlemenizi takip et.',
   'seo.community.title': 'Wild Hoggs | Topluluk Sohbeti',
-  'seo.community.description': 'Wild Hoggs topluluğuyla sohbet et – küresel sohbet ve sunucuya özel kanallar.',
+  'seo.community.description': 'Wild Hoggs topluluk sohbetine katıl: Last Z Server 395 üyeleri için global ve sunucuya özel kanallar. Gerçek zamanlı mesajlaşma ve ittifak strateji tartışmaları.',
   // ── Chat / Community ──
   'chat.global': 'Global',
   'chat.server': 'Sunucu',

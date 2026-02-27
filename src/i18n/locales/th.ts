@@ -451,9 +451,9 @@ export default {
   'seo.about.description': 'Wild Hoggs เป็นกิลด์ Last Z ที่แอคทีฟบนเซิร์ฟเวอร์ 395 เข้าร่วมชุมชนของเราสำหรับกลยุทธ์พันธมิตร, อีเว้นท์ และการสนับสนุนกิลด์ R5: N0TNUTT',
   'seo.about.h1': 'เกี่ยวกับ Wild Hoggs - ชุมชนกิลด์ Last Z',
   'seo.profile.title': 'Wild Hoggs | My Profile',
-  'seo.profile.description': 'Manage your Wild Hoggs account, faction, and view your calculator progress.',
+  'seo.profile.description': 'จัดการโปรไฟล์ Wild Hoggs: เลือกฝ่าย Blood Rose หรือ Wings of Dawn อัปเดต Server 395 และติดตามความคืบหน้าใน Last Z ดูแลแดชบอร์ดกิลด์ของคุณ',
   'seo.community.title': 'Wild Hoggs | แชทชุมชน',
-  'seo.community.description': 'แชทกับชุมชน Wild Hoggs – แชทระดับโลกและช่องเฉพาะเซิร์ฟเวอร์',
+  'seo.community.description': 'แชทชุมชน Wild Hoggs: ช่องสนทนาระดับโลกและเฉพาะเซิร์ฟเวอร์สำหรับสมาชิกกิลด์ Last Z Server 395 แบบ real-time พร้อมกลยุทธ์ alliance',
   // ── Chat / Community ──
   'chat.global': 'ทั่วโลก',
   'chat.server': 'เซิร์ฟเวอร์',

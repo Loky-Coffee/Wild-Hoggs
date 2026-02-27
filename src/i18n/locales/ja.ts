@@ -451,9 +451,9 @@ export default {
   'seo.about.description': 'Wild Hoggs はサーバー395のアクティブな Last Z ギルドです。同盟戦略、イベント、ギルドサポートのためのコミュニティに参加。R5: N0TNUTT。',
   'seo.about.h1': 'Wild Hoggs について - Last Z ギルドコミュニティ',
   'seo.profile.title': 'Wild Hoggs | My Profile',
-  'seo.profile.description': 'Manage your Wild Hoggs account, faction, and view your calculator progress.',
+  'seo.profile.description': 'Wild Hoggsプロフィール管理: Blood RoseやWings of Dawnのフラクション設定、Server 395の統計追跡、Last Z計算ツール進捗確認。ギルドダッシュボード。',
   'seo.community.title': 'Wild Hoggs | コミュニティチャット',
-  'seo.community.description': 'Wild Hoggs コミュニティとチャット – グローバルチャットとサーバー別チャンネル。',
+  'seo.community.description': 'Wild Hoggsコミュニティチャット: Last Z Server 395ギルドのグローバル・サーバー別チャンネル。リアルタイムメッセージとアライアンス戦略ディスカッション。',
   // ── Chat / Community ──
   'chat.global': 'グローバル',
   'chat.server': 'サーバー',

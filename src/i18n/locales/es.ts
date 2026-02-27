@@ -451,9 +451,9 @@ export default {
   'seo.about.description': 'Wild Hoggs es un gremio activo de Last Z en el Servidor 395. Únete a nuestra comunidad para estrategias de alianza, eventos y apoyo de gremio. R5: N0TNUTT.',
   'seo.about.h1': 'Acerca de Wild Hoggs - Comunidad de Gremio Last Z',
   'seo.profile.title': 'Wild Hoggs | My Profile',
-  'seo.profile.description': 'Manage your Wild Hoggs account, faction, and view your calculator progress.',
+  'seo.profile.description': 'Administra tu perfil Wild Hoggs: elige facción Blood Rose o Wings of Dawn, actualiza Server 395 y rastrea tu progreso en las calculadoras de Last Z.',
   'seo.community.title': 'Wild Hoggs | Chat Comunitario',
-  'seo.community.description': 'Chatea con la comunidad Wild Hoggs – chat global y canales por servidor.',
+  'seo.community.description': 'Únete al chat Wild Hoggs: canales globales y de servidor para miembros de Last Z Server 395. Mensajes en tiempo real y discusiones de estrategia de alianza.',
   // ── Chat / Community ──
   'chat.global': 'Global',
   'chat.server': 'Servidor',

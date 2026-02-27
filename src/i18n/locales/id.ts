@@ -451,9 +451,9 @@ export default {
   'seo.about.description': 'Wild Hoggs adalah guild Last Z aktif di Server 395. Bergabunglah dengan komunitas kami untuk strategi aliansi, event, dan dukungan guild. R5: N0TNUTT.',
   'seo.about.h1': 'Tentang Wild Hoggs - Komunitas Guild Last Z',
   'seo.profile.title': 'Wild Hoggs | My Profile',
-  'seo.profile.description': 'Manage your Wild Hoggs account, faction, and view your calculator progress.',
+  'seo.profile.description': 'Kelola profil Wild Hoggs: pilih faksi Blood Rose atau Wings of Dawn, perbarui Server 395, dan pantau progres kalkulator Last Z. Dashboard guild pribadimu.',
   'seo.community.title': 'Wild Hoggs | Chat Komunitas',
-  'seo.community.description': 'Ngobrol dengan komunitas Wild Hoggs – obrolan global dan saluran per server.',
+  'seo.community.description': 'Gabung chat komunitas Wild Hoggs: saluran global & khusus server untuk anggota Last Z Server 395. Pesan real-time dan diskusi strategi aliansi.',
   // ── Chat / Community ──
   'chat.global': 'Global',
   'chat.server': 'Server',

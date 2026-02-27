@@ -451,9 +451,9 @@ export default {
   'seo.about.description': 'Wild Hoggs è una gilda Last Z attiva sul Server 395. Unisciti alla nostra comunità per strategie alleanza, eventi e supporto gilda. R5: N0TNUTT.',
   'seo.about.h1': 'Chi Siamo Wild Hoggs - Comunità Gilda Last Z',
   'seo.profile.title': 'Wild Hoggs | My Profile',
-  'seo.profile.description': 'Manage your Wild Hoggs account, faction, and view your calculator progress.',
+  'seo.profile.description': 'Gestisci il tuo profilo Wild Hoggs: scegli Blood Rose o Wings of Dawn, aggiorna Server 395 e monitora i progressi dei calcolatori Last Z. La tua dashboard.',
   'seo.community.title': 'Wild Hoggs | Chat della Comunità',
-  'seo.community.description': 'Chatta con la comunità Wild Hoggs – chat globale e canali per server.',
+  'seo.community.description': 'Unisciti alla chat Wild Hoggs: canali globali e specifici per server per i membri Last Z Server 395. Messaggi in tempo reale e strategie di alleanza.',
   // ── Chat / Community ──
   'chat.global': 'Globale',
   'chat.server': 'Server',

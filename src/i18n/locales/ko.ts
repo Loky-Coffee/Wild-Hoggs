@@ -451,9 +451,9 @@ export default {
   'seo.about.description': 'Wild Hoggs는 서버 395의 활동적인 Last Z 길드입니다. 동맹 전략, 이벤트 및 길드 지원을 위한 커뮤니티에 참여하세요. R5: N0TNUTT.',
   'seo.about.h1': 'Wild Hoggs 소개 - Last Z 길드 커뮤니티',
   'seo.profile.title': 'Wild Hoggs | My Profile',
-  'seo.profile.description': 'Manage your Wild Hoggs account, faction, and view your calculator progress.',
+  'seo.profile.description': 'Wild Hoggs 프로필 관리: Blood Rose, Wings of Dawn 세력 선택, Server 395 업데이트, Last Z 계산기 진행 상황 확인. 개인 길드 대시보드.',
   'seo.community.title': 'Wild Hoggs | 커뮤니티 채팅',
-  'seo.community.description': 'Wild Hoggs 커뮤니티와 채팅하세요 – 글로벌 채팅 및 서버별 채널.',
+  'seo.community.description': 'Wild Hoggs 커뮤니티 채팅: Last Z Server 395 길드 전용 글로벌 및 서버 채널. 실시간 메시지와 동맹 전략 토론.',
   // ── Chat / Community ──
   'chat.global': '글로벌',
   'chat.server': '서버',

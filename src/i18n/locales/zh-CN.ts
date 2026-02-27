@@ -451,9 +451,9 @@ export default {
   'seo.about.description': 'Wild Hoggs 是服务器 395 上活跃的 Last Z 公会。加入我们的社区获取联盟策略、活动和公会支持。R5: N0TNUTT。',
   'seo.about.h1': '关于 Wild Hoggs - Last Z 公会社区',
   'seo.profile.title': 'Wild Hoggs | My Profile',
-  'seo.profile.description': 'Manage your Wild Hoggs account, faction, and view your calculator progress.',
+  'seo.profile.description': '管理 Wild Hoggs 档案：选择 Blood Rose 或 Wings of Dawn 阵营，更新 Server 395，查看 Last Z 计算器进度。个人公会仪表板。',
   'seo.community.title': 'Wild Hoggs | 社区聊天',
-  'seo.community.description': '与 Wild Hoggs 社区聊天 – 全球聊天和服务器专属频道。',
+  'seo.community.description': 'Wild Hoggs 社区聊天：Last Z Server 395 公会成员专属全球与服务器频道，实时消息与联盟策略讨论。',
   // ── Chat / Community ──
   'chat.global': '全球',
   'chat.server': '服务器',

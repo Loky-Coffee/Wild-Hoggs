@@ -451,9 +451,9 @@ export default {
   'seo.about.description': 'Wild Hoggs نقابة Last Z نشطة على الخادم 395. انضم إلى مجتمعنا للحصول على استراتيجيات التحالف والفعاليات ودعم النقابة. R5: N0TNUTT.',
   'seo.about.h1': 'معلومات عن Wild Hoggs - مجتمع نقابة Last Z',
   'seo.profile.title': 'Wild Hoggs | My Profile',
-  'seo.profile.description': 'Manage your Wild Hoggs account, faction, and view your calculator progress.',
+  'seo.profile.description': 'أدر ملفك في Wild Hoggs: اختر فصيل Blood Rose أو Wings of Dawn، حدّث Server 395، وتابع تقدمك في حاسبات Last Z. لوحة التحكم الشخصية.',
   'seo.community.title': 'Wild Hoggs | دردشة المجتمع',
-  'seo.community.description': 'تحدث مع مجتمع Wild Hoggs – دردشة عالمية وقنوات خاصة بالخوادم.',
+  'seo.community.description': 'انضم لدردشة Wild Hoggs: قنوات عالمية وخاصة بالخادم لأعضاء Last Z Server 395. رسائل فورية ونقاشات استراتيجيات التحالف.',
   // ── Chat / Community ──
   'chat.global': 'عالمي',
   'chat.server': 'خادم',

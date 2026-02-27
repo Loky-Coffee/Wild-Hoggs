@@ -451,9 +451,9 @@ export default {
   'seo.about.description': 'Wild Hoggs là bang hội Last Z năng động trên Máy chủ 395. Tham gia cộng đồng của chúng tôi để có chiến lược liên minh, sự kiện và hỗ trợ bang hội. R5: N0TNUTT.',
   'seo.about.h1': 'Về Wild Hoggs - Cộng Đồng Bang Hội Last Z',
   'seo.profile.title': 'Wild Hoggs | My Profile',
-  'seo.profile.description': 'Manage your Wild Hoggs account, faction, and view your calculator progress.',
+  'seo.profile.description': 'Quản lý hồ sơ Wild Hoggs: chọn phe Blood Rose hoặc Wings of Dawn, cập nhật Server 395 và theo dõi tiến trình máy tính Last Z. Trang cá nhân của bạn.',
   'seo.community.title': 'Wild Hoggs | Chat Cộng đồng',
-  'seo.community.description': 'Trò chuyện với cộng đồng Wild Hoggs – chat toàn cầu và kênh theo máy chủ.',
+  'seo.community.description': 'Tham gia chat cộng đồng Wild Hoggs: kênh toàn cầu và theo máy chủ cho thành viên guild Last Z Server 395. Tin nhắn thời gian thực & chiến lược liên minh.',
   // ── Chat / Community ──
   'chat.global': 'Toàn cầu',
   'chat.server': 'Máy chủ',
