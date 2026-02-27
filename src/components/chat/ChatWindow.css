@@ -19,6 +19,15 @@ body:has(.chat-window) > main {
   flex-direction: column;
 }
 
+/* Astro rendert client:load Komponenten in <astro-island> — ein inline Custom-Element.
+   Ohne diese Regel bleibt der Chat auf Content-Breite zusammengequetscht. */
+body:has(.chat-window) > main > astro-island {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+}
+
 /* ── Chat Window ─────────────────────────────────────────────────────────────── */
 
 .chat-window {
