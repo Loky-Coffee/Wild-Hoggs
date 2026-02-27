@@ -351,12 +351,12 @@ body:has(.chat-login-wall) > main > astro-island {
   justify-content: center;
   gap: 0.75rem;
   padding: 3rem 2rem;
-  border: 1px solid rgba(255, 165, 0, 0.15);
-  border-radius: 12px;
   background: rgba(255, 255, 255, 0.02);
   text-align: center;
-  /* login wall braucht eigene Höhe — kein body:has override hier */
-  height: 100%;
+  /* Fill the full flex space of main — same pattern as .chat-window */
+  flex: 1;
+  min-height: 0;
+  width: 100%;
   box-sizing: border-box;
 }
 
