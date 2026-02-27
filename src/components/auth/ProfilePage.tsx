@@ -430,6 +430,8 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
         <div class="pp-setting-block">
           <label class="pp-setting-label">{t('profile.changePassword')}</label>
           <form class="pp-pw-form" onSubmit={handleChangePassword}>
+            {/* Hidden username — required by browsers/password managers for autocomplete */}
+            <input type="text" name="username" autocomplete="username" value={user.username} style="display:none" aria-hidden="true" readOnly />
             <input
               class="pp-input"
               type="password"
