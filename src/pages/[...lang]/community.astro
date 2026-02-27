@@ -26,5 +26,5 @@ const breadcrumbItems = [
   breadcrumbs={breadcrumbItems}
   fullWidth={true}
 >
-  <ChatWindow translationData={translationData} client:load />
+  <ChatWindow translationData={translationData} client:only="preact" />
 </PageLayout>

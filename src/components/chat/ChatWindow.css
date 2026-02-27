@@ -23,12 +23,16 @@ body:has(.chat-login-wall) > main {
   flex-direction: column;
 }
 
-/* Astro rendert client:load Komponenten in <astro-island> — ein inline Custom-Element.
-   display: contents macht es für den Layout-Engine unsichtbar: .chat-window wird
-   direkt zum Flex-Kind von main, ohne dass astro-island Breite oder Höhe stört. */
+/* Astro rendert client:load Komponenten in <astro-island> — ein Custom-Element.
+   display: contents funktioniert nicht zuverlässig auf Custom Elements.
+   Stattdessen: astro-island als Flex-Container, der den gesamten Platz einnimmt. */
 body:has(.chat-window) > main > astro-island,
 body:has(.chat-login-wall) > main > astro-island {
-  display: contents;
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  overflow: hidden;
 }
 
 /* ── Chat Window ─────────────────────────────────────────────────────────────── */
