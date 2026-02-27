@@ -496,6 +496,13 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
 
         {/* Tab switcher */}
         <div class="chat-tabs" role="tablist">
+          <button
+            class={`chat-sidebar-toggle${sidebarOpen ? ' chat-sidebar-toggle-active' : ''}`}
+            onClick={() => setSidebarOpen(s => !s)}
+            title={t('chat.online')}
+          >
+            👥 {visibleOnline.length}
+          </button>
           {tabs.map(tab => (
             <button
               key={tab.type}
@@ -513,13 +520,6 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
               {tab.label}
             </button>
           ))}
-          <button
-            class={`chat-sidebar-toggle${sidebarOpen ? ' chat-sidebar-toggle-active' : ''}`}
-            onClick={() => setSidebarOpen(s => !s)}
-            title={t('chat.online')}
-          >
-            👥 {visibleOnline.length}
-          </button>
         </div>
 
         {/* Message area */}

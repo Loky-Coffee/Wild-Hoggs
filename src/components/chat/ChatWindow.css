@@ -950,13 +950,13 @@ body:has(.chat-login-wall) > main > astro-island {
 /* ── Mobile ──────────────────────────────────────────────────────────────── */
 
 @media (max-width: 768px) {
-  /* Sidebar: slide in from right as overlay */
+  /* Sidebar: slide in from right as overlay, below the sticky nav */
   .chat-online-sidebar {
     position: fixed;
-    top: 0;
+    top: var(--nav-height-mobile, 70px);
     right: 0;
-    height: 100dvh;
-    z-index: 200;
+    height: calc(100dvh - var(--nav-height-mobile, 70px));
+    z-index: 1001;
     transform: translateX(100%);
     transition: transform 0.25s ease;
     background: #0a0a0a;
@@ -968,11 +968,11 @@ body:has(.chat-login-wall) > main > astro-island {
     transform: translateX(0);
   }
 
-  /* Semi-transparent backdrop */
+  /* Semi-transparent backdrop — same z-index layer as nav so it dims the page */
   .chat-sidebar-backdrop {
     position: fixed;
     inset: 0;
-    z-index: 199;
+    z-index: 1000;
     background: rgba(0, 0, 0, 0.5);
   }
 
@@ -981,7 +981,7 @@ body:has(.chat-login-wall) > main > astro-island {
     display: inline-flex;
     align-items: center;
     gap: 0.25rem;
-    margin-left: auto;
+    margin-right: auto;
     flex-shrink: 0;
     padding: 0.28rem 0.6rem;
     background: rgba(255, 165, 0, 0.07);
