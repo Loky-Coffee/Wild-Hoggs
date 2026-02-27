@@ -389,7 +389,6 @@ body:has(.chat-login-wall) > main > astro-island {
 
 .chat-bubble-admin {
   position: relative;
-  isolation: isolate;
   border-color: transparent !important;
 }
 
@@ -398,6 +397,7 @@ body:has(.chat-login-wall) > main > astro-island {
   position: absolute;
   inset: -2px;
   border-radius: inherit;
+  padding: 2px;
   background: linear-gradient(
     90deg,
     #ff0000, #ff5500, #ffcc00, #aaff00,
@@ -406,7 +406,9 @@ body:has(.chat-login-wall) > main > astro-island {
   );
   background-size: 300% 100%;
   animation: admin-snake 2.5s linear infinite;
-  z-index: -1;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
 }
 
 @keyframes admin-snake {
