@@ -15,9 +15,12 @@ export async function onRequestGet(ctx: any) {
   }
 
   const { results } = await DB.prepare(
-    `SELECT id, username, email, server, faction, is_admin, created_at
-     FROM users
-     ORDER BY is_admin DESC, username ASC`
+    `SELECT u.id, u.username, u.email, u.server, u.faction, u.is_admin, u.created_at,
+            datetime(MAX(s.expires_at), '-30 days') AS last_login
+     FROM users u
+     LEFT JOIN sessions s ON s.user_id = u.id
+     GROUP BY u.id
+     ORDER BY u.is_admin DESC, u.username ASC`
   ).all();
 
   return Response.json({ users: results ?? [] });

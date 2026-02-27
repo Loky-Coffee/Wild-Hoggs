@@ -27,6 +27,7 @@ interface AdminUser {
   faction: string | null;
   is_admin: number;
   created_at: string;
+  last_login: string | null;
 }
 
 const TABS = [
@@ -209,36 +210,50 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
               <p class="admin-empty">{t('admin.users.empty')}</p>
             )}
             {!uLoading && !uError && users.length > 0 && (
-              <div class="admin-user-list">
-                {users.map(u => {
-                  const isYou  = u.id === user?.id;
-                  const isBusy = uBusy.has(u.id);
-                  return (
-                    <div key={u.id} class={['admin-user-card', u.is_admin === 1 ? 'admin-user-card-admin' : ''].filter(Boolean).join(' ')}>
-                      <div class="admin-user-info">
-                        <span class="admin-user-name">
-                          {u.username}
-                          {u.is_admin === 1 && <span class="admin-user-badge">⚙ Admin</span>}
-                          {isYou && <span class="admin-user-you">{t('admin.users.you')}</span>}
-                        </span>
-                        <span class="admin-user-meta">{u.email}</span>
-                        <span class="admin-user-meta">
-                          {u.server ? `🖥 ${u.server}` : ''}
-                          {u.faction ? ` · ${u.faction}` : ''}
-                          {` · ${formatDate(u.created_at)}`}
-                        </span>
-                      </div>
-                      <button
-                        class={u.is_admin === 1 ? 'admin-btn-delete' : 'admin-btn-promote'}
-                        onClick={() => handleToggleAdmin(u)}
-                        disabled={isBusy || isYou}
-                        title={isYou ? 'Eigenen Status nicht änderbar' : undefined}
-                      >
-                        {u.is_admin === 1 ? `✕ ${t('admin.users.removeAdmin')}` : `★ ${t('admin.users.makeAdmin')}`}
-                      </button>
-                    </div>
-                  );
-                })}
+              <div class="admin-table-wrap">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>E-Mail</th>
+                      <th>Server</th>
+                      <th>Registriert</th>
+                      <th>Letzter Login</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {users.map(u => {
+                      const isYou  = u.id === user?.id;
+                      const isBusy = uBusy.has(u.id);
+                      return (
+                        <tr key={u.id} class={u.is_admin === 1 ? 'admin-table-row-admin' : ''}>
+                          <td>
+                            <span class="admin-user-name">
+                              {u.username}
+                              {u.is_admin === 1 && <span class="admin-user-badge">⚙ Admin</span>}
+                              {isYou && <span class="admin-user-you">{t('admin.users.you')}</span>}
+                            </span>
+                          </td>
+                          <td class="admin-table-muted">{u.email}</td>
+                          <td class="admin-table-muted">{u.server ?? '—'}</td>
+                          <td class="admin-table-muted">{formatDate(u.created_at)}</td>
+                          <td class="admin-table-muted">{u.last_login ? formatDate(u.last_login) : '—'}</td>
+                          <td>
+                            <button
+                              class={u.is_admin === 1 ? 'admin-btn-delete' : 'admin-btn-promote'}
+                              onClick={() => handleToggleAdmin(u)}
+                              disabled={isBusy || isYou}
+                              title={isYou ? 'Eigenen Status nicht änderbar' : undefined}
+                            >
+                              {u.is_admin === 1 ? `✕ ${t('admin.users.removeAdmin')}` : `★ ${t('admin.users.makeAdmin')}`}
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
               </div>
             )}
           </>

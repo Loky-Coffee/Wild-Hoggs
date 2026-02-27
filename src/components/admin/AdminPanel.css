@@ -179,33 +179,49 @@ body:has(.admin-panel) > main > astro-island {
   cursor: not-allowed;
 }
 
-.admin-user-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
+/* ── Users table ── */
+.admin-table-wrap {
+  overflow-x: auto;
 }
 
-.admin-user-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 8px;
-  padding: 0.75rem 1rem;
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.admin-table th {
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  white-space: nowrap;
+}
+
+.admin-table td {
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  vertical-align: middle;
+}
+
+.admin-table tbody tr:hover {
   background: rgba(255, 255, 255, 0.03);
 }
 
-.admin-user-card-admin {
-  border-color: rgba(255, 165, 0, 0.3);
+.admin-table-row-admin td {
   background: rgba(255, 165, 0, 0.04);
 }
 
-.admin-user-info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-  min-width: 0;
+.admin-table-row-admin:hover td {
+  background: rgba(255, 165, 0, 0.07);
+}
+
+.admin-table-muted {
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .admin-user-name {
