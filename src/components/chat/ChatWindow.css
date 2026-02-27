@@ -390,7 +390,6 @@ body:has(.chat-login-wall) > main > astro-island {
 .chat-bubble-admin {
   position: relative;
   isolation: isolate;
-  background: rgba(10, 10, 20, 0.97) !important;
   border-color: transparent !important;
 }
 
