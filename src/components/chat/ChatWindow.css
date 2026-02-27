@@ -941,10 +941,65 @@ body:has(.chat-login-wall) > main > astro-island {
   mask-composite: exclude;
 }
 
+/* ── Sidebar toggle button (hidden on desktop) ───────────────────────────── */
+
+.chat-sidebar-toggle {
+  display: none;
+}
+
 /* ── Mobile ──────────────────────────────────────────────────────────────── */
 
 @media (max-width: 768px) {
-  .chat-online-sidebar { display: none; }
+  /* Sidebar: slide in from right as overlay */
+  .chat-online-sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100dvh;
+    z-index: 200;
+    transform: translateX(100%);
+    transition: transform 0.25s ease;
+    background: #0a0a0a;
+    border-left: 1px solid rgba(255, 165, 0, 0.2);
+    box-shadow: -8px 0 32px rgba(0, 0, 0, 0.7);
+  }
+
+  .chat-online-sidebar.chat-sidebar-open {
+    transform: translateX(0);
+  }
+
+  /* Semi-transparent backdrop */
+  .chat-sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 199;
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  /* Toggle button in tab bar */
+  .chat-sidebar-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-left: auto;
+    flex-shrink: 0;
+    padding: 0.28rem 0.6rem;
+    background: rgba(255, 165, 0, 0.07);
+    border: 1px solid rgba(255, 165, 0, 0.2);
+    border-radius: 5px;
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+    white-space: nowrap;
+  }
+
+  .chat-sidebar-toggle:hover,
+  .chat-sidebar-toggle-active {
+    background: rgba(255, 165, 0, 0.15);
+    color: #ffa500;
+    border-color: rgba(255, 165, 0, 0.45);
+  }
 
   .chat-messages   { padding: 0.75rem 1rem; }
   .chat-input-area { padding: 0.6rem 1rem; }

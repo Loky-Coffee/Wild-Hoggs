@@ -220,6 +220,16 @@ body:has(.admin-panel) > main > astro-island {
   border-color: rgba(255, 165, 0, 0.5);
 }
 
+select.admin-filter-input {
+  background-color: #141414;
+  cursor: pointer;
+}
+
+select.admin-filter-input option {
+  background: #141414;
+  color: rgba(255, 255, 255, 0.85);
+}
+
 .admin-filter-actions {
   display: flex;
   flex-direction: column;

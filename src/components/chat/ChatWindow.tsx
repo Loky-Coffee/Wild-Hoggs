@@ -57,6 +57,7 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
   });
   const [pmUnread,     setPmUnread]     = useState<Set<string>>(new Set());
   const [confirmRemove, setConfirmRemove] = useState<string | null>(null);
+  const [sidebarOpen,  setSidebarOpen]  = useState(false);
 
   const pmInboxSince = useRef<string | null>(null);
   const inboxRef     = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -400,8 +401,13 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
   return (
     <div class="chat-window">
 
+      {/* ── Sidebar backdrop (mobile only) ── */}
+      {sidebarOpen && (
+        <div class="chat-sidebar-backdrop" onClick={() => setSidebarOpen(false)} />
+      )}
+
       {/* ── Online Users Sidebar ── */}
-      <div class="chat-online-sidebar">
+      <div class={`chat-online-sidebar${sidebarOpen ? ' chat-sidebar-open' : ''}`}>
 
         {/* DM Contacts — top section, always visible */}
         {pmContacts.length > 0 && (
@@ -507,6 +513,13 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
               {tab.label}
             </button>
           ))}
+          <button
+            class={`chat-sidebar-toggle${sidebarOpen ? ' chat-sidebar-toggle-active' : ''}`}
+            onClick={() => setSidebarOpen(s => !s)}
+            title={t('chat.online')}
+          >
+            👥 {visibleOnline.length}
+          </button>
         </div>
 
         {/* Message area */}
