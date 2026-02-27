@@ -52,31 +52,37 @@ export default function MessageItem({
   reportLabel, reportedLabel, ago,
 }: MessageItemProps) {
   const factionColor = msg.faction
-    ? (FACTION_COLORS[msg.faction] ?? 'rgba(255,255,255,0.15)')
-    : 'rgba(255,255,255,0.15)';
+    ? (FACTION_COLORS[msg.faction] ?? 'rgba(255,255,255,0.7)')
+    : 'rgba(255,255,255,0.7)';
   const isOwn      = msg.username === currentUsername;
   const isReported = reportedIds.has(msg.id);
 
   return (
-    <div class="chat-msg" style={{ borderLeftColor: factionColor }}>
-      <div class="chat-msg-header">
-        <span class="chat-msg-username" style={{ color: factionColor }}>
-          {msg.username}
-        </span>
-        <ServerBadge faction={msg.faction} server={msg.server} />
-        <span class="chat-msg-time">{relativeTime(msg.created_at, ago)}</span>
+    <div class={`chat-msg-row${isOwn ? ' chat-msg-row-own' : ' chat-msg-row-other'}`}>
+      <div class={`chat-bubble${isOwn ? ' chat-bubble-own' : ' chat-bubble-other'}`}>
         {!isOwn && (
-          <button
-            class={`chat-msg-report${isReported ? ' chat-msg-report-done' : ''}`}
-            onClick={() => !isReported && onReport(msg.id)}
-            title={isReported ? reportedLabel : reportLabel}
-            disabled={isReported}
-          >
-            {isReported ? '✓' : '⚑'}
-          </button>
+          <div class="chat-bubble-header">
+            <span class="chat-msg-username" style={{ color: factionColor }}>
+              {msg.username}
+            </span>
+            <ServerBadge faction={msg.faction} server={msg.server} />
+          </div>
         )}
+        <p class="chat-msg-text">{msg.message}</p>
+        <div class={`chat-bubble-footer${isOwn ? ' chat-bubble-footer-own' : ''}`}>
+          <span class="chat-msg-time">{relativeTime(msg.created_at, ago)}</span>
+          {!isOwn && (
+            <button
+              class={`chat-msg-report${isReported ? ' chat-msg-report-done' : ''}`}
+              onClick={() => !isReported && onReport(msg.id)}
+              title={isReported ? reportedLabel : reportLabel}
+              disabled={isReported}
+            >
+              {isReported ? '✓' : '⚑'}
+            </button>
+          )}
+        </div>
       </div>
-      <p class="chat-msg-text">{msg.message}</p>
     </div>
   );
 }
