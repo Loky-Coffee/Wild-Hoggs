@@ -33,6 +33,7 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
 
   useEffect(() => { chatTypeRef.current = chatType; }, [chatType]);
 
+  const isAdmin   = user?.is_admin === 1;
   const hasLang   = !!(user?.language && user.language.trim());
   const hasServer = !!user?.server;
   const langCode  = user?.language?.toUpperCase() ?? '';
@@ -149,6 +150,18 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
     } catch { /* ignore */ }
   }, [token, chatType]);
 
+  const handleDelete = useCallback(async (msgId: string) => {
+    if (!token) return;
+    try {
+      await fetch('/api/chat/admin/message', {
+        method:  'DELETE',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body:    JSON.stringify({ chat_type: chatType, message_id: msgId }),
+      });
+      setMessages(prev => prev.filter(m => m.id !== msgId));
+    } catch { /* ignore */ }
+  }, [token, chatType]);
+
   // ── Not logged in ─────────────────────────────────────────────────────────
   if (!isLoggedIn || !user) {
     return (
@@ -234,6 +247,8 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
           reportLabel={t('chat.report')}
           reportedLabel={t('chat.report_sent')}
           ago={ago}
+          isAdmin={isAdmin}
+          onDelete={handleDelete}
         />
       )}
 

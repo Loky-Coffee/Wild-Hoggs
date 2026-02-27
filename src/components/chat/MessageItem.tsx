@@ -1,3 +1,4 @@
+import { useState } from 'preact/hooks';
 import ServerBadge from './ServerBadge';
 
 export interface Message {
@@ -24,6 +25,8 @@ interface MessageItemProps {
   reportLabel:     string;
   reportedLabel:   string;
   ago:             AgoStrings;
+  isAdmin:         boolean;
+  onDelete:        (id: string) => void;
 }
 
 const FACTION_COLORS: Record<string, string> = {
@@ -49,13 +52,21 @@ function relativeTime(dateStr: string, ago: AgoStrings): string {
 
 export default function MessageItem({
   msg, currentUsername, onReport, reportedIds,
-  reportLabel, reportedLabel, ago,
+  reportLabel, reportedLabel, ago, isAdmin, onDelete,
 }: MessageItemProps) {
+  const [deleting, setDeleting] = useState(false);
+
   const factionColor = msg.faction
     ? (FACTION_COLORS[msg.faction] ?? 'rgba(255,255,255,0.7)')
     : 'rgba(255,255,255,0.7)';
   const isOwn      = msg.username === currentUsername;
   const isReported = reportedIds.has(msg.id);
+
+  const handleDelete = async () => {
+    setDeleting(true);
+    await onDelete(msg.id);
+    setDeleting(false);
+  };
 
   return (
     <div class={`chat-msg-row${isOwn ? ' chat-msg-row-own' : ' chat-msg-row-other'}`}>
@@ -79,6 +90,16 @@ export default function MessageItem({
               disabled={isReported}
             >
               {isReported ? '✓' : '⚑'}
+            </button>
+          )}
+          {isAdmin && (
+            <button
+              class="chat-msg-delete"
+              onClick={handleDelete}
+              title="Nachricht löschen"
+              disabled={deleting}
+            >
+              🗑️
             </button>
           )}
         </div>

@@ -10,11 +10,13 @@ interface MessageListProps {
   reportLabel:     string;
   reportedLabel:   string;
   ago:             AgoStrings;
+  isAdmin:         boolean;
+  onDelete:        (id: string) => void;
 }
 
 export default function MessageList({
   messages, currentUsername, onReport, reportedIds,
-  noMessages, reportLabel, reportedLabel, ago,
+  noMessages, reportLabel, reportedLabel, ago, isAdmin, onDelete,
 }: MessageListProps) {
   const listRef     = useRef<HTMLDivElement>(null);
   const atBottomRef = useRef(true);
@@ -59,6 +61,8 @@ export default function MessageList({
             reportLabel={reportLabel}
             reportedLabel={reportedLabel}
             ago={ago}
+            isAdmin={isAdmin}
+            onDelete={onDelete}
           />
         ))
       )}
