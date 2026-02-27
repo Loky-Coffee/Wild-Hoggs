@@ -184,58 +184,46 @@ body:has(.chat-login-wall) > main > astro-island {
   white-space: nowrap;
 }
 
-.chat-msg-reply {
-  background: none;
-  border: none;
-  color: rgba(255, 255, 255, 0.2);
-  font-size: 0.78rem;
-  cursor: pointer;
-  padding: 0 0.2rem;
-  line-height: 1;
-  opacity: 0;
-  transition: opacity 0.15s, color 0.15s;
-  margin-left: auto;
+/* ── Message Action Buttons (outside bubble) ─────────────────────────────── */
+
+.chat-msg-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.2rem;
+  padding-bottom: 0.3rem;
+  flex-shrink: 0;
 }
 
-.chat-bubble:hover .chat-msg-reply { opacity: 1; }
-.chat-msg-reply:hover { color: rgba(255, 255, 255, 0.7); }
+.chat-msg-actions-own   { margin-right: 0.4rem; }
+.chat-msg-actions-other { margin-left:  0.4rem; }
 
-.chat-msg-report {
+.chat-action-btn {
   background: none;
   border: none;
-  color: rgba(255, 255, 255, 0.2);
-  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 0.8rem;
   cursor: pointer;
-  padding: 0 0.2rem;
+  padding: 0.2rem 0.3rem;
   line-height: 1;
-  opacity: 0;
-  transition: opacity 0.15s, color 0.15s;
+  border-radius: 4px;
+  transition: color 0.15s, background 0.15s;
 }
 
-.chat-bubble-other:hover .chat-msg-report { opacity: 1; }
-.chat-msg-report:hover                    { color: #e74c3c; }
+.chat-action-btn:hover:not(:disabled) {
+  color: rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.07);
+}
 
-.chat-msg-report-done {
+.chat-action-btn:disabled { opacity: 0.3; cursor: default; }
+
+.chat-action-delete:hover:not(:disabled) { color: #e74c3c; }
+
+.chat-action-reported {
   color: #27ae60 !important;
-  opacity: 1 !important;
   cursor: default;
 }
-
-.chat-msg-delete {
-  background: none;
-  border: none;
-  color: rgba(231, 76, 60, 0.4);
-  font-size: 0.72rem;
-  cursor: pointer;
-  padding: 0 0.2rem;
-  line-height: 1;
-  opacity: 0;
-  transition: opacity 0.15s, color 0.15s;
-}
-
-.chat-bubble:hover .chat-msg-delete { opacity: 1; }
-.chat-msg-delete:hover:not(:disabled) { color: #e74c3c; }
-.chat-msg-delete:disabled { opacity: 0.3; cursor: not-allowed; }
 
 /* ── Reply Quote (inside bubble) ────────────────────────────────────────── */
 
@@ -585,11 +573,7 @@ body:has(.chat-login-wall) > main > astro-island {
   .chat-messages   { padding: 0.75rem 1rem; }
   .chat-input-area { padding: 0.6rem 1rem; }
 
-  .chat-bubble-other .chat-msg-report,
-  .chat-bubble .chat-msg-reply,
-  .chat-bubble .chat-msg-delete {
-    opacity: 0.6; /* Auf Mobile ohne Hover immer sichtbar */
-  }
+  .chat-action-btn { color: rgba(255, 255, 255, 0.4); }
 
   .chat-textarea::placeholder { font-size: 0.75rem; }
 }

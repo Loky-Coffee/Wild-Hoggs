@@ -76,8 +76,37 @@ export default function MessageItem({
     setDeleting(false);
   };
 
+  const actions = (
+    <div class={`chat-msg-actions${isOwn ? ' chat-msg-actions-own' : ' chat-msg-actions-other'}`}>
+      <button class="chat-action-btn" onClick={() => onReply(msg)} title="Antworten">↩</button>
+      {!isOwn && (
+        <button
+          class={`chat-action-btn${isReported ? ' chat-action-reported' : ''}`}
+          onClick={() => !isReported && onReport(msg.id)}
+          title={isReported ? reportedLabel : reportLabel}
+          disabled={isReported}
+        >
+          {isReported ? '✓' : '⚑'}
+        </button>
+      )}
+      {isAdmin && (
+        <button
+          class="chat-action-btn chat-action-delete"
+          onClick={handleDelete}
+          title="Nachricht löschen"
+          disabled={deleting}
+        >
+          🗑
+        </button>
+      )}
+    </div>
+  );
+
   return (
     <div class={`chat-msg-row${isOwn ? ' chat-msg-row-own' : ' chat-msg-row-other'}`}>
+      {/* For own messages: actions LEFT of bubble */}
+      {isOwn && actions}
+
       <div class={[
         'chat-bubble',
         isOwn ? 'chat-bubble-own' : 'chat-bubble-other',
@@ -109,35 +138,11 @@ export default function MessageItem({
         <p class="chat-msg-text">{msg.message}</p>
         <div class={`chat-bubble-footer${isOwn ? ' chat-bubble-footer-own' : ''}`}>
           <span class="chat-msg-time">{relativeTime(msg.created_at, ago)}</span>
-          <button
-            class="chat-msg-reply"
-            onClick={() => onReply(msg)}
-            title="Antworten"
-          >
-            ↩
-          </button>
-          {!isOwn && (
-            <button
-              class={`chat-msg-report${isReported ? ' chat-msg-report-done' : ''}`}
-              onClick={() => !isReported && onReport(msg.id)}
-              title={isReported ? reportedLabel : reportLabel}
-              disabled={isReported}
-            >
-              {isReported ? '✓' : '⚑'}
-            </button>
-          )}
-          {isAdmin && (
-            <button
-              class="chat-msg-delete"
-              onClick={handleDelete}
-              title="Nachricht löschen"
-              disabled={deleting}
-            >
-              🗑️
-            </button>
-          )}
         </div>
       </div>
+
+      {/* For other messages: actions RIGHT of bubble */}
+      {!isOwn && actions}
     </div>
   );
 }
