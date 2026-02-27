@@ -23,6 +23,17 @@ export function useAuth() {
     return stored ? JSON.parse(stored) : null;
   });
 
+  // On hard reload: Preact hydrates from SSR-built HTML (localStorage was undefined
+  // at build time → token = null). Explicitly sync from localStorage after mount
+  // so the component always shows the correct auth state without needing an event.
+  useEffect(() => {
+    const storedToken = localStorage.getItem(AUTH_TOKEN_KEY);
+    const storedUserStr = localStorage.getItem(AUTH_USER_KEY);
+    const storedUser: AuthUser | null = storedUserStr ? JSON.parse(storedUserStr) : null;
+    setToken(storedToken);
+    setUser(storedUser);
+  }, []);
+
   useEffect(() => {
     const handler = (e: Event) => {
       const { detail } = e as CustomEvent<{ user: AuthUser | null; token: string | null }>;

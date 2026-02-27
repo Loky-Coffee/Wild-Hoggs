@@ -3,15 +3,19 @@
    body → nav + breadcrumbs + main(flex:1) → chat-window(100%) → messages(scroll)
    ───────────────────────────────────────────────────────────────────────────── */
 
-body:has(.chat-window) {
+/* App-Shell Flex-Layout — aktiv wenn Chat-Window ODER Login-Wall im DOM ist.
+   Chat-Login-Wall erscheint kurz beim Hard Reload (SSR-Hydration Mismatch),
+   Chat-Window erscheint nach korrekter Hydration. Beide brauchen dieselbe Struktur. */
+body:has(.chat-window),
+body:has(.chat-login-wall) {
   display: flex;
   flex-direction: column;
   height: 100dvh;        /* exakte Viewport-Höhe inkl. Mobile-Browser-Chrome */
   overflow: hidden;      /* kein Seitenscrollbalken */
 }
 
-/* main.page-content--full füllt den gesamten Rest unterhalb von Nav + Breadcrumbs */
-body:has(.chat-window) > main {
+body:has(.chat-window) > main,
+body:has(.chat-login-wall) > main {
   flex: 1;
   min-height: 0;         /* Pflicht: erlaubt Flex-Kind kleiner als sein Content zu sein */
   overflow: hidden;
@@ -22,7 +26,8 @@ body:has(.chat-window) > main {
 /* Astro rendert client:load Komponenten in <astro-island> — ein inline Custom-Element.
    display: contents macht es für den Layout-Engine unsichtbar: .chat-window wird
    direkt zum Flex-Kind von main, ohne dass astro-island Breite oder Höhe stört. */
-body:has(.chat-window) > main > astro-island {
+body:has(.chat-window) > main > astro-island,
+body:has(.chat-login-wall) > main > astro-island {
   display: contents;
 }
 
