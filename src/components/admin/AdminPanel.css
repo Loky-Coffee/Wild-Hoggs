@@ -311,7 +311,7 @@ select.admin-filter-input option {
 }
 
 .admin-table-muted {
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 220, 160, 0.85);
 }
 
 .admin-user-name {

@@ -687,6 +687,8 @@ export default {
   'admin.users.empty': 'No users found.',
   'admin.users.makeAdmin': 'Make Admin',
   'admin.users.removeAdmin': 'Remove Admin',
+  'admin.users.makeMod': '設為版主',
+  'admin.users.removeMod': '撤銷版主',
   'admin.users.you': 'You',
   'nav.admin': 'Administration',
   'seo.admin.title': 'Wild Hoggs | Administration',

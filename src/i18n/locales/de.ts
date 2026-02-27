@@ -689,6 +689,8 @@ export default {
   'admin.users.empty': 'Keine Benutzer gefunden.',
   'admin.users.makeAdmin': 'Admin machen',
   'admin.users.removeAdmin': 'Admin entfernen',
+  'admin.users.makeMod': 'Moderator machen',
+  'admin.users.removeMod': 'Moderator entfernen',
   'admin.users.you': 'Du',
   'seo.admin.title': 'Wild Hoggs | Administration',
   'seo.admin.description': 'Admin-Panel.',
