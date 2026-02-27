@@ -13,7 +13,7 @@
   # Risiko gering: keine User-Inputs werden gerendert, alle Daten sind intern und Zod-validiert
   # cloudflareinsights.com: Cloudflare injiziert automatisch beacon.min.js auf allen CF Pages-Sites.
   # Das ist First-Party (eigener Hosting-Provider), kein Drittanbieter → sicher whitelisted.
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://static.cloudflareinsights.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' data: https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://static.cloudflareinsights.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
   # levelgeeks.org wurde entfernt - alle Bilder sind self-hosted
   Strict-Transport-Security: max-age=15552000; includeSubDomains; preload
 
