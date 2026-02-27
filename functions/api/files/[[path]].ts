@@ -1,7 +1,7 @@
 // GET /api/files/:key — public R2 proxy
 export async function onRequestGet(ctx: any) {
   const { FILES } = ctx.env;
-  const key = ctx.params.key;
+  const key = ctx.params.path;
 
   if (!key) return new Response('Not Found', { status: 404 });
 
