@@ -5,6 +5,7 @@ import LanguageDropdown from './LanguageDropdown.astro';
 import ApocalypseTimeClock from './ApocalypseTimeClock';
 import UserMenu from './auth/UserMenu';
 import PresenceHeartbeat from './chat/PresenceHeartbeat';
+import GlobalChatPoller from './chat/GlobalChatPoller';
 
 const lang = getLangFromUrl(Astro.url);
 const translationData = await loadTranslations(lang);
@@ -59,6 +60,9 @@ const currentPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : r
             class:list={['nav-link', { active: currentPath === path }]}
           >
             {t(key)}
+            {key === 'nav.community' && (
+              <span id="community-badge" class="nav-badge" style="display:none"></span>
+            )}
           </a>
         </li>
       ))}
@@ -68,6 +72,7 @@ const currentPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : r
       <ApocalypseTimeClock client:idle />
       <UserMenu translationData={translationData} client:only="preact" />
       <PresenceHeartbeat client:only="preact" />
+      <GlobalChatPoller client:only="preact" />
       <div class="lang-switcher">
         <LanguageDropdown />
       </div>
@@ -156,6 +161,27 @@ const currentPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : r
     color: #fff;
     background: rgba(255, 165, 0, 0.18);
     box-shadow: 0 0 0 1px rgba(255, 165, 0, 0.35), 0 2px 12px rgba(255, 165, 0, 0.15);
+  }
+
+  /* Notification badge on Community nav link */
+  .nav-badge {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    border-radius: 8px;
+    background: #e74c3c;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 16px;
+    text-align: center;
+    pointer-events: none;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
   }
 
   .nav-controls {

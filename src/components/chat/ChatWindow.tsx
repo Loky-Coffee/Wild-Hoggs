@@ -66,9 +66,31 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
   const lastCreatedAt = useRef<string | null>(null);
   const pollRef       = useRef<ReturnType<typeof setInterval> | null>(null);
   const presenceRef   = useRef<ReturnType<typeof setInterval> | null>(null);
+  const bgPollRef     = useRef<ReturnType<typeof setInterval> | null>(null);
   const chatTypeRef   = useRef<ChatType>(chatType);
+  const prevTypeRef   = useRef<ChatType>(chatType);
 
-  useEffect(() => { chatTypeRef.current = chatType; setReplyTo(null); }, [chatType]);
+  // Per-tab "last seen" timestamps for inactive-tab background polling
+  const tabSince = useRef<Partial<Record<ChatType, string>>>({});
+
+  const [unreadTabs, setUnreadTabs] = useState<Set<ChatType>>(new Set());
+
+  useEffect(() => {
+    // Save current position for the tab we're leaving
+    if (lastCreatedAt.current) {
+      tabSince.current[prevTypeRef.current] = lastCreatedAt.current;
+    }
+    prevTypeRef.current = chatType;
+    chatTypeRef.current = chatType;
+    setReplyTo(null);
+    // Clear unread indicator for the tab we just switched to
+    setUnreadTabs(prev => {
+      if (!prev.has(chatType)) return prev;
+      const next = new Set(prev);
+      next.delete(chatType);
+      return next;
+    });
+  }, [chatType]);
   useEffect(() => {
     openPMRef.current = openPM;
     if (openPM) {
@@ -243,6 +265,69 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
     }, POLL_MS);
     return stopPolling;
   }, [isLoggedIn, token, chatType]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ── Init baselines for inactive tabs ──────────────────────────────────────
+  useEffect(() => {
+    if (!isLoggedIn || !token) return;
+    const allTypes: ChatType[] = ['global', 'global-lang', 'server', 'server-lang'];
+    allTypes.forEach(type => {
+      if (type === chatType) return; // active tab handled by main poll
+      if (type === 'global-lang' && !hasLang) return;
+      if (type === 'server' && !hasServer) return;
+      if (type === 'server-lang' && (!hasServer || !hasLang)) return;
+      fetch(buildUrl(type, 'limit=1'), { headers: { Authorization: `Bearer ${token}` } })
+        .then(r => r.ok ? r.json() : null)
+        .then((data: { messages: { created_at: string }[] } | null) => {
+          if (data?.messages.length) {
+            tabSince.current[type] = data.messages[data.messages.length - 1].created_at;
+          }
+        })
+        .catch(() => {});
+    });
+  }, [isLoggedIn, token]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ── Background poll for inactive tabs (10 s) ──────────────────────────────
+  useEffect(() => {
+    if (!isLoggedIn || !token) return;
+
+    const bgPoll = async () => {
+      if (document.visibilityState === 'hidden') return;
+      const allTypes: ChatType[] = ['global', 'global-lang', 'server', 'server-lang'];
+      const inactive = allTypes.filter(t => {
+        if (t === chatTypeRef.current) return false;
+        if (t === 'global-lang' && !hasLang) return false;
+        if (t === 'server' && !hasServer) return false;
+        if (t === 'server-lang' && (!hasServer || !hasLang)) return false;
+        return true;
+      });
+      await Promise.all(inactive.map(async type => {
+        const since = tabSince.current[type];
+        if (!since) return;
+        try {
+          const res = await fetch(
+            buildUrl(type, `since=${encodeURIComponent(since)}&limit=1`),
+            { headers: { Authorization: `Bearer ${token}` } },
+          );
+          if (!res.ok) return;
+          const data = await res.json() as { messages: { created_at: string }[] };
+          if (data.messages.length > 0) {
+            tabSince.current[type] = data.messages[data.messages.length - 1].created_at;
+            setUnreadTabs(prev => prev.has(type) ? prev : new Set([...prev, type]));
+          }
+        } catch { /* ignore */ }
+      }));
+    };
+
+    bgPollRef.current = setInterval(bgPoll, 10_000);
+    return () => { if (bgPollRef.current) { clearInterval(bgPollRef.current); bgPollRef.current = null; } };
+  }, [isLoggedIn, token, buildUrl, hasLang, hasServer]);
+
+  // ── Dispatch global unread count to GlobalChatPoller ──────────────────────
+  useEffect(() => {
+    if (!isLoggedIn) return;
+    const total = pmUnread.size + unreadTabs.size;
+    window.dispatchEvent(new CustomEvent('wh:unread-count', { detail: { total } }));
+  }, [pmUnread, unreadTabs, isLoggedIn]);
 
   // ── Handlers ──────────────────────────────────────────────────────────────
   const handleSend = useCallback(async (text: string) => {
@@ -522,6 +607,7 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
               title={tab.title}
             >
               {tab.label}
+              {unreadTabs.has(tab.type) && <span class="chat-tab-dot" />}
             </button>
           ))}
         </div>
