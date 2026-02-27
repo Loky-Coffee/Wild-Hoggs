@@ -55,12 +55,15 @@ export default function UserMenu({ translationData }: UserMenuProps) {
     );
   }
 
-  const profileHref = (() => {
+  const getLocalizedHref = (page: string) => {
     const [, first] = window.location.pathname.split('/');
     const langs = ['de','fr','ko','th','ja','pt','es','tr','id','zh-TW','zh-CN','it','ar','vi'];
     const lang = langs.includes(first) ? first : 'en';
-    return lang === 'en' ? '/profile/' : `/${lang}/profile/`;
-  })();
+    return lang === 'en' ? `/${page}/` : `/${lang}/${page}/`;
+  };
+
+  const profileHref = getLocalizedHref('profile');
+  const adminHref   = getLocalizedHref('admin');
 
   return (
     <div class="user-menu" ref={dropdownRef}>
@@ -81,6 +84,14 @@ export default function UserMenu({ translationData }: UserMenuProps) {
           <a href={profileHref} class="user-dropdown-item" onClick={() => setShowDropdown(false)}>
             {t('auth.myProfile')}
           </a>
+          {user?.is_admin === 1 && (
+            <>
+              <hr class="user-dropdown-divider" />
+              <a href={adminHref} class="user-dropdown-item user-dropdown-admin" onClick={() => setShowDropdown(false)}>
+                ⚙ Administration
+              </a>
+            </>
+          )}
           <hr class="user-dropdown-divider" />
           <button class="user-dropdown-item danger" onClick={handleLogout}>
             {t('auth.logout')}

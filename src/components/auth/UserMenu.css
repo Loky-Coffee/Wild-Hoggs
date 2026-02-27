@@ -78,3 +78,27 @@
   border-top: 1px solid rgba(255,255,255,0.08);
   margin: 0;
 }
+
+.user-dropdown-admin {
+  color: #ffa500 !important;
+  position: relative;
+  border-left: 3px solid #ffa500;
+  padding-left: calc(1rem - 3px);
+  background: rgba(255, 165, 0, 0.06);
+  animation: admin-link-glow 2.4s ease-in-out infinite;
+}
+.user-dropdown-admin:hover {
+  background: rgba(255, 165, 0, 0.16) !important;
+  color: #ffbe44 !important;
+}
+
+@keyframes admin-link-glow {
+  0%, 100% {
+    border-left-color: rgba(255, 165, 0, 0.45);
+    box-shadow: inset 3px 0 8px rgba(255, 165, 0, 0);
+  }
+  50% {
+    border-left-color: #ffa500;
+    box-shadow: inset 3px 0 12px rgba(255, 165, 0, 0.18);
+  }
+}
