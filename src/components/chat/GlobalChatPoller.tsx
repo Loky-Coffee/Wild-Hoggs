@@ -7,7 +7,7 @@
 import { useEffect, useRef, useCallback } from 'preact/hooks';
 import { useAuth } from '../../hooks/useAuth';
 
-function playNotificationSound() {
+function playNotificationSound(volume: number) {
   try {
     const ctx = new AudioContext();
     const osc  = ctx.createOscillator();
@@ -17,7 +17,7 @@ function playNotificationSound() {
     osc.type = 'sine';
     osc.frequency.setValueAtTime(880,  ctx.currentTime);
     osc.frequency.setValueAtTime(1100, ctx.currentTime + 0.1);
-    gain.gain.setValueAtTime(1.5, ctx.currentTime);
+    gain.gain.setValueAtTime(volume, ctx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
     osc.start(ctx.currentTime);
     osc.stop(ctx.currentTime + 0.5);
@@ -47,8 +47,10 @@ function buildChannelUrls(user: { language?: string | null; server?: string | nu
 
 export default function GlobalChatPoller() {
   const { token, isLoggedIn, user } = useAuth();
-  const notifSoundRef = useRef(user?.notification_sound ?? 1);
-  useEffect(() => { notifSoundRef.current = user?.notification_sound ?? 1; }, [user?.notification_sound]);
+  const notifSoundRef   = useRef(user?.notification_sound ?? 1);
+  const notifVolumeRef  = useRef(user?.notification_volume ?? 1.5);
+  useEffect(() => { notifSoundRef.current  = user?.notification_sound  ?? 1;   }, [user?.notification_sound]);
+  useEffect(() => { notifVolumeRef.current = user?.notification_volume ?? 1.5; }, [user?.notification_volume]);
 
   const pmSince    = useRef<string | null>(null);
   // Per-channel since timestamps keyed by base URL (without since/limit params)
@@ -59,7 +61,7 @@ export default function GlobalChatPoller() {
   // ── Apply count to DOM + document.title ───────────────────────────────────
   const applyCount = useCallback((n: number) => {
     if (n > countRef.current && notifSoundRef.current === 1) {
-      playNotificationSound();
+      playNotificationSound(notifVolumeRef.current);
     }
     countRef.current = n;
 

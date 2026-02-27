@@ -1,0 +1,1 @@
+ALTER TABLE users ADD COLUMN notification_volume REAL NOT NULL DEFAULT 1.5;

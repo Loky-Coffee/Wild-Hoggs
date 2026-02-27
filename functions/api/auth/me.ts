@@ -22,5 +22,6 @@ export async function onRequestGet(ctx: any) {
     is_admin: user.is_admin ?? 0,
     is_moderator: user.is_moderator ?? 0,
     notification_sound: user.notification_sound ?? 1,
+    notification_volume: user.notification_volume ?? 1.5,
   });
 }

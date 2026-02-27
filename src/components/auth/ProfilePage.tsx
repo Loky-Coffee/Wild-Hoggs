@@ -79,6 +79,8 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
 
   const [notifSound,        setNotifSound]        = useState(1);
   const [notifSoundSaving,  setNotifSoundSaving]  = useState(false);
+  const [notifVolume,       setNotifVolume]       = useState(1.5);
+  const [notifVolumeSaving, setNotifVolumeSaving] = useState(false);
 
   const [selectedFaction, setSelectedFaction] = useState<string | null>(null);
   const [formationBr, setFormationBr] = useState('');
@@ -91,7 +93,8 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
     if (user?.username) setUsername(user.username);
     if (user?.server !== undefined) setServer(user.server ?? '');
     setNotifSound(user?.notification_sound ?? 1);
-  }, [user?.username, user?.server, user?.notification_sound]);
+    setNotifVolume(user?.notification_volume ?? 1.5);
+  }, [user?.username, user?.server, user?.notification_sound, user?.notification_volume]);
 
   useEffect(() => {
     setSelectedFaction(user?.faction ?? null);
@@ -157,6 +160,18 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
       await patchProfile({ notification_sound: next });
       setNotifSound(next);
     } catch { /* ignore */ } finally { setNotifSoundSaving(false); }
+  };
+
+  let _volumeTimer: ReturnType<typeof setTimeout> | null = null;
+  const handleVolumeChange = (val: number) => {
+    setNotifVolume(val);
+    if (_volumeTimer) clearTimeout(_volumeTimer);
+    _volumeTimer = setTimeout(async () => {
+      if (!token) return;
+      setNotifVolumeSaving(true);
+      try { await patchProfile({ notification_volume: val }); }
+      catch { /* ignore */ } finally { setNotifVolumeSaving(false); }
+    }, 500);
   };
 
   const handleSaveUsername = async () => {
@@ -454,6 +469,23 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
             </span>
           </button>
         </div>
+
+        {/* Notification Volume */}
+        {notifSound === 1 && (
+          <div class="pp-setting-block">
+            <label class="pp-setting-label">{t('profile.notificationVolume')} — {notifVolume.toFixed(1)}</label>
+            <input
+              type="range"
+              class="pp-notif-volume-slider"
+              min="0.1"
+              max="2.0"
+              step="0.1"
+              value={notifVolume}
+              onInput={e => handleVolumeChange(parseFloat((e.target as HTMLInputElement).value))}
+              disabled={notifVolumeSaving}
+            />
+          </div>
+        )}
 
         {/* Password */}
         <div class="pp-setting-block">

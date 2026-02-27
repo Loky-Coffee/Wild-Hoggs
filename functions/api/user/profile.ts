@@ -83,6 +83,15 @@ export async function onRequestPatch(ctx: any) {
     values.push(val);
   }
 
+  if (body.notification_volume !== undefined) {
+    const val = parseFloat(body.notification_volume);
+    if (isNaN(val) || val < 0.1 || val > 2.0) {
+      return Response.json({ error: 'notification_volume: 0.1–2.0 erwartet' }, { status: 400 });
+    }
+    updates.push('notification_volume = ?');
+    values.push(Math.round(val * 10) / 10);
+  }
+
   if (updates.length === 0) {
     return Response.json({ error: 'Nichts zum Aktualisieren' }, { status: 400 });
   }
@@ -95,7 +104,7 @@ export async function onRequestPatch(ctx: any) {
   ).bind(...values).run();
 
   const updated = await DB.prepare(
-    'SELECT id, email, username, faction, server, language, formation_power_br, formation_power_wd, formation_power_go, COALESCE(notification_sound, 1) AS notification_sound, is_admin, COALESCE(is_moderator, 0) AS is_moderator FROM users WHERE id = ?'
+    'SELECT id, email, username, faction, server, language, formation_power_br, formation_power_wd, formation_power_go, COALESCE(notification_sound, 1) AS notification_sound, COALESCE(notification_volume, 1.5) AS notification_volume, is_admin, COALESCE(is_moderator, 0) AS is_moderator FROM users WHERE id = ?'
   ).bind(user.user_id).first() as any;
 
   return Response.json({
@@ -111,5 +120,6 @@ export async function onRequestPatch(ctx: any) {
     is_admin: updated.is_admin ?? 0,
     is_moderator: updated.is_moderator ?? 0,
     notification_sound: updated.notification_sound ?? 1,
+    notification_volume: updated.notification_volume ?? 1.5,
   });
 }

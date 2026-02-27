@@ -511,6 +511,7 @@ export default {
   'profile.notificationSound': 'Son de notification',
   'profile.notificationSoundOn': 'Son activé',
   'profile.notificationSoundOff': 'Son désactivé',
+  'profile.notificationVolume': 'Volume',
   'profile.currentPassword': 'Current Password',
   'profile.newPassword': 'New Password (min. 8 characters)',
   'profile.confirmPassword': 'Confirm New Password',

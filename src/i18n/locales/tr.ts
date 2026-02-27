@@ -511,6 +511,7 @@ export default {
   'profile.notificationSound': 'Bildirim sesi',
   'profile.notificationSoundOn': 'Ses açık',
   'profile.notificationSoundOff': 'Ses kapalı',
+  'profile.notificationVolume': 'Ses seviyesi',
   'profile.currentPassword': 'Current Password',
   'profile.newPassword': 'New Password (min. 8 characters)',
   'profile.confirmPassword': 'Confirm New Password',

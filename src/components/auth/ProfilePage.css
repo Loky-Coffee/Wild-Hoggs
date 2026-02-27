@@ -333,6 +333,16 @@
   flex-shrink: 0;
 }
 
+/* ── Notification Volume Slider ── */
+.pp-notif-volume-slider {
+  width: 100%;
+  max-width: 220px;
+  accent-color: #ffa500;
+  cursor: pointer;
+  display: block;
+}
+.pp-notif-volume-slider:disabled { opacity: 0.4; cursor: not-allowed; }
+
 /* ── Messages ── */
 .pp-msg {
   font-size: 0.875rem;

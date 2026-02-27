@@ -511,6 +511,7 @@ export default {
   'profile.notificationSound': '通知提示音',
   'profile.notificationSoundOn': '開啟聲音',
   'profile.notificationSoundOff': '關閉聲音',
+  'profile.notificationVolume': '音量',
   'profile.currentPassword': 'Current Password',
   'profile.newPassword': 'New Password (min. 8 characters)',
   'profile.confirmPassword': 'Confirm New Password',

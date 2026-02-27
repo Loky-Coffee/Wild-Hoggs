@@ -13,6 +13,7 @@ export interface AuthUser {
   is_admin: number;
   is_moderator: number;
   notification_sound: number; // 1 = on (default), 0 = off
+  notification_volume: number; // 0.1–2.0, default 1.5
 }
 
 export const AUTH_TOKEN_KEY   = 'wh-auth-token';
