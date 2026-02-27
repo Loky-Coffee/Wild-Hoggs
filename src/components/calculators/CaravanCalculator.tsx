@@ -1,4 +1,4 @@
-import { useMemo } from 'preact/hooks';
+import { useMemo, useEffect } from 'preact/hooks';
 import caravanLevels from '../../data/caravan-levels.json';
 import { FACTIONS, type HeroFaction } from '../../data/heroes';
 import { useTranslations } from '../../i18n/utils';
@@ -113,6 +113,24 @@ export default function CaravanCalculator({ lang, translationData }: CaravanCalc
   const setWeeklyActive  = (v: boolean | ((prev: boolean) => boolean)) =>
     setStored(s => ({ ...s, weeklyActive: typeof v === 'function' ? v(s.weeklyActive) : v, calculated: false }));
   const setCalculated    = (v: boolean)          => setStored(s => ({ ...s, calculated: v }));
+
+  // On load: if calculator is still at defaults and user has profile data → auto-fill
+  useEffect(() => {
+    if (!user?.faction) return;
+    const faction = FACTION_LIST.includes(user.faction as HeroFaction)
+      ? (user.faction as HeroFaction) : null;
+    if (!faction) return;
+    setStored(s => {
+      if (s.yourFaction !== null || s.powerInput.trim()) return s; // don't override manual state
+      const savedPower = user[FACTION_POWER_FIELD[faction]] ?? null;
+      return {
+        ...s,
+        yourFaction: faction,
+        powerInput: savedPower ? String(savedPower) : s.powerInput,
+        calculated: false,
+      };
+    });
+  }, [user?.faction, user?.formation_power_br, user?.formation_power_wd, user?.formation_power_go]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // When selecting a faction: auto-fill power from profile if input is currently empty
   const handleFactionSelect = (f: HeroFaction) => {
