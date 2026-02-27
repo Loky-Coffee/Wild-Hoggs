@@ -4,6 +4,7 @@ import { loadTranslations } from '../i18n/index';
 import LanguageDropdown from './LanguageDropdown.astro';
 import ApocalypseTimeClock from './ApocalypseTimeClock';
 import UserMenu from './auth/UserMenu';
+import PresenceHeartbeat from './chat/PresenceHeartbeat';
 
 const lang = getLangFromUrl(Astro.url);
 const translationData = await loadTranslations(lang);
@@ -66,6 +67,7 @@ const currentPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : r
     <div class="nav-controls">
       <ApocalypseTimeClock client:idle />
       <UserMenu translationData={translationData} client:load />
+      <PresenceHeartbeat client:load />
       <div class="lang-switcher">
         <LanguageDropdown />
       </div>

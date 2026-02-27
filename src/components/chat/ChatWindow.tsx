@@ -9,27 +9,49 @@ import './ChatWindow.css';
 
 type ChatType = 'global' | 'global-lang' | 'server' | 'server-lang';
 
-const POLL_MS = 5_000;
+const POLL_MS     = 5_000;
+const PRESENCE_MS = 30_000;
 
 interface ChatWindowProps {
   translationData: TranslationData;
+}
+
+interface OnlineUser {
+  username:     string;
+  faction:      string | null;
+  server:       string | null;
+  language:     string | null;
+  is_admin:     number;
+  is_moderator: number;
+}
+
+const FACTION_COLORS: Record<string, string> = {
+  'blood-rose':     '#e74c3c',
+  'wings-of-dawn':  '#4a9eda',
+  'guard-of-order': '#27ae60',
+};
+
+function factionColor(faction: string | null): string {
+  return faction ? (FACTION_COLORS[faction] ?? 'rgba(255,255,255,0.6)') : 'rgba(255,255,255,0.6)';
 }
 
 export default function ChatWindow({ translationData }: ChatWindowProps) {
   const { user, token, isLoggedIn } = useAuth();
   const t = useTranslations(translationData);
 
-  const [chatType,    setChatType]    = useState<ChatType>('global');
-  const [messages,    setMessages]    = useState<Message[]>([]);
-  const [loading,     setLoading]     = useState(true);
-  const [loadError,   setLoadError]   = useState<string | null>(null);
-  const [sending,     setSending]     = useState(false);
-  const [sendError,   setSendError]   = useState<string | null>(null);
-  const [reportedIds, setReportedIds] = useState<Set<string>>(new Set());
-  const [replyTo,     setReplyTo]     = useState<ReplyTarget | null>(null);
+  const [chatType,     setChatType]     = useState<ChatType>('global');
+  const [messages,     setMessages]     = useState<Message[]>([]);
+  const [loading,      setLoading]      = useState(true);
+  const [loadError,    setLoadError]    = useState<string | null>(null);
+  const [sending,      setSending]      = useState(false);
+  const [sendError,    setSendError]    = useState<string | null>(null);
+  const [reportedIds,  setReportedIds]  = useState<Set<string>>(new Set());
+  const [replyTo,      setReplyTo]      = useState<ReplyTarget | null>(null);
+  const [onlineUsers,  setOnlineUsers]  = useState<OnlineUser[]>([]);
 
   const lastCreatedAt = useRef<string | null>(null);
   const pollRef       = useRef<ReturnType<typeof setInterval> | null>(null);
+  const presenceRef   = useRef<ReturnType<typeof setInterval> | null>(null);
   const chatTypeRef   = useRef<ChatType>(chatType);
 
   useEffect(() => { chatTypeRef.current = chatType; setReplyTo(null); }, [chatType]);
@@ -39,7 +61,43 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
   const hasServer = !!user?.server;
   const langCode  = user?.language?.toUpperCase() ?? '';
 
-  // Build the correct endpoint URL including lang param when needed
+  // ── Presence polling ─────────────────────────────────────────────────────
+  useEffect(() => {
+    if (!isLoggedIn || !token) return;
+
+    const fetchPresence = async () => {
+      try {
+        const res = await fetch('/api/presence', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (res.ok) {
+          const data = await res.json() as { users: OnlineUser[] };
+          setOnlineUsers(data.users);
+        }
+      } catch { /* ignore */ }
+    };
+
+    fetchPresence();
+    presenceRef.current = setInterval(fetchPresence, PRESENCE_MS);
+    return () => {
+      if (presenceRef.current) clearInterval(presenceRef.current);
+    };
+  }, [isLoggedIn, token]);
+
+  // Filter online users by currently visible channel
+  const visibleOnline = onlineUsers.filter(u => {
+    const lang = (u.language ?? '').trim().toLowerCase();
+    const myLang = (user?.language ?? '').trim().toLowerCase();
+    switch (chatType) {
+      case 'global':      return true;
+      case 'global-lang': return lang === myLang && !!lang;
+      case 'server':      return u.server === user?.server;
+      case 'server-lang': return u.server === user?.server && lang === myLang && !!lang;
+      default: return false;
+    }
+  });
+
+  // ── Chat polling ──────────────────────────────────────────────────────────
   const buildUrl = useCallback((type: ChatType, extra: string = ''): string => {
     const base = (type === 'global' || type === 'global-lang')
       ? '/api/chat/global'
@@ -114,6 +172,7 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
     return stopPolling;
   }, [isLoggedIn, token, chatType]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // ── Handlers ──────────────────────────────────────────────────────────────
   const handleSend = useCallback(async (text: string) => {
     if (!token) return;
     setSending(true);
@@ -218,64 +277,102 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
   return (
     <div class="chat-window">
 
-      {/* Tab switcher */}
-      <div class="chat-tabs" role="tablist">
-        {tabs.map(tab => (
-          <button
-            key={tab.type}
-            class={[
-              'chat-tab',
-              chatType === tab.type ? 'chat-tab-active' : '',
-              tab.disabled ? 'chat-tab-disabled' : '',
-            ].filter(Boolean).join(' ')}
-            onClick={() => !tab.disabled && setChatType(tab.type)}
-            role="tab"
-            aria-selected={chatType === tab.type}
-            disabled={tab.disabled}
-            title={tab.title}
-          >
-            {tab.label}
-          </button>
-        ))}
+      {/* ── Online Users Sidebar ── */}
+      <div class="chat-online-sidebar">
+        <div class="chat-online-header">
+          Online <span class="chat-online-count">{visibleOnline.length}</span>
+        </div>
+        <ul class="chat-online-list">
+          {visibleOnline.length === 0 ? (
+            <li class="chat-online-empty">—</li>
+          ) : (
+            visibleOnline.map(u => (
+              <li key={u.username} class="chat-online-user">
+                <span
+                  class="chat-online-dot"
+                  style={{ background: factionColor(u.faction) }}
+                />
+                <span
+                  class="chat-online-name"
+                  style={{ color: factionColor(u.faction) }}
+                >
+                  {u.username}
+                </span>
+                {u.is_admin === 1 && (
+                  <span class="chat-online-role">⚙</span>
+                )}
+                {u.is_moderator === 1 && (
+                  <span class="chat-online-role chat-online-role-mod">🛡</span>
+                )}
+              </li>
+            ))
+          )}
+        </ul>
       </div>
 
-      {/* Message area */}
-      {loading ? (
-        <div class="chat-loading">
-          <span class="chat-loading-dot" />
-          <span class="chat-loading-dot" />
-          <span class="chat-loading-dot" />
-        </div>
-      ) : loadError ? (
-        <div class="chat-error-box">{loadError}</div>
-      ) : (
-        <MessageList
-          messages={messages}
-          currentUsername={user.username}
-          onReport={handleReport}
-          reportedIds={reportedIds}
-          noMessages={t('chat.no_messages')}
-          reportLabel={t('chat.report')}
-          reportedLabel={t('chat.report_sent')}
-          ago={ago}
-          isAdmin={isAdmin}
-          onDelete={handleDelete}
-          onReply={handleReply}
-        />
-      )}
+      {/* ── Main Chat Area ── */}
+      <div class="chat-main">
 
-      {/* Input */}
-      <MessageInput
-        onSend={handleSend}
-        sending={sending}
-        sendError={sendError}
-        onClearError={() => setSendError(null)}
-        placeholder={t('chat.input_placeholder')}
-        sendLabel={t('chat.send')}
-        charsLeft={t('chat.chars_left')}
-        replyTo={replyTo}
-        onCancelReply={() => setReplyTo(null)}
-      />
+        {/* Tab switcher */}
+        <div class="chat-tabs" role="tablist">
+          {tabs.map(tab => (
+            <button
+              key={tab.type}
+              class={[
+                'chat-tab',
+                chatType === tab.type ? 'chat-tab-active' : '',
+                tab.disabled ? 'chat-tab-disabled' : '',
+              ].filter(Boolean).join(' ')}
+              onClick={() => !tab.disabled && setChatType(tab.type)}
+              role="tab"
+              aria-selected={chatType === tab.type}
+              disabled={tab.disabled}
+              title={tab.title}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Message area */}
+        {loading ? (
+          <div class="chat-loading">
+            <span class="chat-loading-dot" />
+            <span class="chat-loading-dot" />
+            <span class="chat-loading-dot" />
+          </div>
+        ) : loadError ? (
+          <div class="chat-error-box">{loadError}</div>
+        ) : (
+          <MessageList
+            messages={messages}
+            currentUsername={user.username}
+            onReport={handleReport}
+            reportedIds={reportedIds}
+            noMessages={t('chat.no_messages')}
+            reportLabel={t('chat.report')}
+            reportedLabel={t('chat.report_sent')}
+            ago={ago}
+            isAdmin={isAdmin}
+            onDelete={handleDelete}
+            onReply={handleReply}
+          />
+        )}
+
+        {/* Input */}
+        <MessageInput
+          onSend={handleSend}
+          sending={sending}
+          sendError={sendError}
+          onClearError={() => setSendError(null)}
+          placeholder={t('chat.input_placeholder')}
+          sendLabel={t('chat.send')}
+          charsLeft={t('chat.chars_left')}
+          replyTo={replyTo}
+          onCancelReply={() => setReplyTo(null)}
+        />
+
+      </div>
     </div>
   );
 }
