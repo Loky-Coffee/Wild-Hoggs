@@ -77,13 +77,12 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
   const [pwSaving, setPwSaving]     = useState(false);
   const [pwMsg, setPwMsg]           = useState<{ type: 'error' | 'ok'; text: string } | null>(null);
 
-  const [factionSaving, setFactionSaving] = useState(false);
-
+  const [selectedFaction, setSelectedFaction] = useState<string | null>(null);
   const [formationBr, setFormationBr] = useState('');
   const [formationWd, setFormationWd] = useState('');
   const [formationGo, setFormationGo] = useState('');
-  const [formationSaving, setFormationSaving] = useState(false);
-  const [formationMsg, setFormationMsg] = useState<{ type: 'error' | 'ok'; text: string } | null>(null);
+  const [factionSaving, setFactionSaving] = useState(false);
+  const [factionMsg, setFactionMsg] = useState<{ type: 'error' | 'ok'; text: string } | null>(null);
 
   useEffect(() => {
     if (user?.username) setUsername(user.username);
@@ -91,10 +90,11 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
   }, [user?.username, user?.server]);
 
   useEffect(() => {
+    setSelectedFaction(user?.faction ?? null);
     setFormationBr(user?.formation_power_br ? String(user.formation_power_br) : '');
     setFormationWd(user?.formation_power_wd ? String(user.formation_power_wd) : '');
     setFormationGo(user?.formation_power_go ? String(user.formation_power_go) : '');
-  }, [user?.formation_power_br, user?.formation_power_wd, user?.formation_power_go]);
+  }, [user?.faction, user?.formation_power_br, user?.formation_power_wd, user?.formation_power_go]);
 
   // ── Calculator stats ───────────────────────────────────────────────────────
   interface TankState   { unlockedLevels: number[]; subLevels: Record<string,number> }
@@ -157,17 +157,9 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
     } finally { setUsernameSaving(false); }
   };
 
-  const handleFactionChange = async (faction: string | null) => {
+  const handleSaveFactions = async () => {
     if (!token) return;
-    setFactionSaving(true);
-    try { await patchProfile({ faction }); }
-    catch { /* ignore */ }
-    finally { setFactionSaving(false); }
-  };
-
-  const handleSaveFormations = async () => {
-    if (!token) return;
-    setFormationSaving(true); setFormationMsg(null);
+    setFactionSaving(true); setFactionMsg(null);
     try {
       const parseField = (s: string): number | null => {
         if (!s.trim()) return null;
@@ -176,15 +168,16 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
         return n;
       };
       await patchProfile({
+        faction: selectedFaction,
         formation_power_br: parseField(formationBr),
         formation_power_wd: parseField(formationWd),
         formation_power_go: parseField(formationGo),
       });
-      setFormationMsg({ type: 'ok', text: t('profile.saved') });
-      setTimeout(() => setFormationMsg(null), 3000);
+      setFactionMsg({ type: 'ok', text: t('profile.saved') });
+      setTimeout(() => setFactionMsg(null), 3000);
     } catch (e: any) {
-      setFormationMsg({ type: 'error', text: e.message });
-    } finally { setFormationSaving(false); }
+      setFactionMsg({ type: 'error', text: e.message });
+    } finally { setFactionSaving(false); }
   };
 
   const handleChangePassword = async (e: Event) => {
@@ -241,50 +234,47 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
             )}
             {user.faction && (
               <span class={`pp-faction-tag pp-faction-${user.faction}`}>
-                {FACTION_LABELS[user.faction]?.icon} {FACTION_LABELS[user.faction]?.label}
+                <img src={FACTION_IMG[user.faction]} alt="" class="pp-faction-tag-img" />
+                {FACTION_LABELS[user.faction]?.label}
               </span>
             )}
           </div>
         </div>
       </div>
 
-      {/* ── Faction ── */}
+      {/* ── Faction & Formation Power (merged) ── */}
       <div class="pp-card">
         <h2 class="pp-section-title">{t('profile.faction')}</h2>
-        <div class="pp-faction-row">
-          {Object.entries(FACTION_LABELS).map(([key, { label, icon }]) => (
-            <button
-              key={key}
-              class={`pp-faction-btn pp-faction-${key}${user.faction === key ? ' active' : ''}`}
-              onClick={() => handleFactionChange(user.faction === key ? null : key)}
-              disabled={factionSaving}
-            >
-              <span class="pp-faction-icon">{icon}</span>
-              <span class="pp-faction-name">{label}</span>
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* ── Formation Power ── */}
-      <div class="pp-card">
-        <h2 class="pp-section-title">{t('profile.formations')}</h2>
         <p class="pp-formations-hint">{t('profile.formations.hint')}</p>
-        <div class="pp-formations-grid">
+        <div class="pp-factions-list">
           {([
-            { key: 'blood-rose',     field: formationBr, setter: setFormationBr     },
-            { key: 'wings-of-dawn',  field: formationWd, setter: setFormationWd     },
-            { key: 'guard-of-order', field: formationGo, setter: setFormationGo     },
+            { key: 'blood-rose',     field: formationBr, setter: setFormationBr },
+            { key: 'wings-of-dawn',  field: formationWd, setter: setFormationWd },
+            { key: 'guard-of-order', field: formationGo, setter: setFormationGo },
           ] as const).map(({ key, field, setter }) => (
-            <div key={key} class="pp-formation-row">
+            <div
+              key={key}
+              class={[
+                'pp-faction-item',
+                `pp-faction-item-${key}`,
+                selectedFaction === key ? 'pp-faction-item-active' : '',
+              ].filter(Boolean).join(' ')}
+            >
+              <button
+                type="button"
+                class={`pp-faction-radio${selectedFaction === key ? ' active' : ''}`}
+                onClick={() => setSelectedFaction(selectedFaction === key ? null : key)}
+                disabled={factionSaving}
+                title={FACTION_LABELS[key].label}
+              />
               <img
                 src={FACTION_IMG[key]}
                 alt={FACTION_LABELS[key].label}
-                class="pp-formation-img"
+                class="pp-faction-item-img"
               />
-              <span class="pp-formation-name">{FACTION_LABELS[key].label}</span>
+              <span class="pp-faction-item-name">{FACTION_LABELS[key].label}</span>
               <input
-                class="pp-input pp-formation-input"
+                class="pp-input pp-faction-power-input"
                 type="text"
                 placeholder={t('profile.formations.placeholder')}
                 value={field}
@@ -294,13 +284,13 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
           ))}
         </div>
         <div class="pp-formations-footer">
-          {formationMsg && <p class={`pp-msg pp-msg-${formationMsg.type}`}>{formationMsg.text}</p>}
+          {factionMsg && <p class={`pp-msg pp-msg-${factionMsg.type}`}>{factionMsg.text}</p>}
           <button
             class="pp-btn-save"
-            onClick={handleSaveFormations}
-            disabled={formationSaving}
+            onClick={handleSaveFactions}
+            disabled={factionSaving}
           >
-            {formationSaving ? t('profile.saving') : t('profile.save')}
+            {factionSaving ? t('profile.saving') : t('profile.save')}
           </button>
         </div>
       </div>
