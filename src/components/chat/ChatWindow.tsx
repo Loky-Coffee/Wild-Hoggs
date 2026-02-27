@@ -6,6 +6,7 @@ import MessageList from './MessageList';
 import MessageInput, { type ReplyTarget } from './MessageInput';
 import type { Message } from './MessageItem';
 import PMPanel from './PMPanel';
+import ConfirmDialog from './ConfirmDialog';
 import './ChatWindow.css';
 
 type ChatType = 'global' | 'global-lang' | 'server' | 'server-lang';
@@ -270,13 +271,13 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
     }
   }, [token, chatType, buildUrl, replyTo]);
 
-  const handleReport = useCallback(async (msgId: string) => {
+  const handleReport = useCallback(async (msgId: string, reason: string) => {
     if (!token) return;
     try {
       await fetch('/api/chat/report', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body:    JSON.stringify({ chat_type: chatType, message_id: msgId }),
+        body:    JSON.stringify({ chat_type: chatType, message_id: msgId, reason }),
       });
       setReportedIds(prev => new Set([...prev, msgId]));
     } catch { /* ignore */ }
@@ -527,22 +528,14 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
 
       {/* ── Confirm Remove DM Dialog ── */}
       {confirmRemove && (
-        <div class="chat-confirm-overlay" onClick={() => setConfirmRemove(null)}>
-          <div class="chat-confirm-dialog" onClick={(e) => e.stopPropagation()}>
-            <div class="chat-confirm-title">Unterhaltung entfernen</div>
-            <div class="chat-confirm-msg">
-              DM mit <strong>{confirmRemove}</strong> aus der Liste entfernen?
-            </div>
-            <div class="chat-confirm-actions">
-              <button class="chat-confirm-cancel" onClick={() => setConfirmRemove(null)}>
-                Abbrechen
-              </button>
-              <button class="chat-confirm-ok" onClick={() => doRemovePMContact(confirmRemove)}>
-                Entfernen
-              </button>
-            </div>
-          </div>
-        </div>
+        <ConfirmDialog
+          title="Unterhaltung entfernen"
+          message={<>DM mit <strong>{confirmRemove}</strong> aus der Liste entfernen?</>}
+          confirmLabel="Entfernen"
+          variant="danger"
+          onConfirm={() => doRemovePMContact(confirmRemove)}
+          onCancel={() => setConfirmRemove(null)}
+        />
       )}
     </div>
   );

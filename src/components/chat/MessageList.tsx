@@ -4,7 +4,7 @@ import MessageItem, { type Message, type AgoStrings } from './MessageItem';
 interface MessageListProps {
   messages:        Message[];
   currentUsername: string | null;
-  onReport:        (id: string) => void;
+  onReport:        (id: string, reason: string) => void;
   reportedIds:     Set<string>;
   noMessages:      string;
   reportLabel:     string;

@@ -103,12 +103,12 @@ export default function PMPanel({ username, currentUsername, token, onClose, ago
     }
   }, [text, sending, username, token]);
 
-  const handleReport = useCallback(async (msgId: string) => {
+  const handleReport = useCallback(async (msgId: string, reason: string) => {
     try {
       await fetch('/api/chat/report', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body:    JSON.stringify({ chat_type: 'pm', message_id: msgId }),
+        body:    JSON.stringify({ chat_type: 'pm', message_id: msgId, reason }),
       });
       setReportedIds(prev => new Set([...prev, msgId]));
     } catch { /* ignore */ }

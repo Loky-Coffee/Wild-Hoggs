@@ -1,5 +1,6 @@
 import { useState } from 'preact/hooks';
 import ServerBadge from './ServerBadge';
+import ConfirmDialog from './ConfirmDialog';
 
 export interface Message {
   id:         string;
@@ -16,22 +17,22 @@ export interface Message {
 }
 
 export interface AgoStrings {
-  seconds: string; // e.g. "just now"
-  minutes: string; // e.g. "{n} min ago"
-  hours:   string; // e.g. "{n} hr ago"
-  days:    string; // e.g. "{n} day(s) ago"
+  seconds: string;
+  minutes: string;
+  hours:   string;
+  days:    string;
 }
 
 interface MessageItemProps {
   msg:             Message;
   currentUsername: string | null;
-  onReport:        (id: string) => void;
+  onReport:        (id: string, reason: string) => void;
   reportedIds:     Set<string>;
   reportLabel:     string;
   reportedLabel:   string;
   ago:             AgoStrings;
   isAdmin:         boolean;
-  onDelete:        (id: string) => void;
+  onDelete:        (id: string) => Promise<void>;
   onReply:         (msg: Message) => void;
   onPM?:           (username: string) => void;
 }
@@ -42,8 +43,15 @@ const FACTION_COLORS: Record<string, string> = {
   'guard-of-order': '#27ae60',
 };
 
+const REPORT_REASONS = [
+  { value: 'spam',    icon: '📢', label: 'Spam / Werbung' },
+  { value: 'porn',    icon: '🔞', label: 'Pornografische Inhalte' },
+  { value: 'racism',  icon: '🚫', label: 'Rassismus / Diskriminierung' },
+  { value: 'hate',    icon: '💢', label: 'Beleidigung / Hassrede' },
+  { value: 'other',   icon: '⚠️', label: 'Sonstiges' },
+] as const;
+
 function relativeTime(dateStr: string, ago: AgoStrings): string {
-  // SQLite returns "YYYY-MM-DD HH:MM:SS" (UTC) — append Z for correct parsing
   const iso     = dateStr.includes('T') ? dateStr : dateStr.replace(' ', 'T') + 'Z';
   const diffMs  = Date.now() - new Date(iso).getTime();
   const diffSec = Math.floor(diffMs / 1000);
@@ -61,7 +69,10 @@ export default function MessageItem({
   msg, currentUsername, onReport, reportedIds,
   reportLabel, reportedLabel, ago, isAdmin, onDelete, onReply, onPM,
 }: MessageItemProps) {
-  const [deleting, setDeleting] = useState(false);
+  const [deleting,          setDeleting]          = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [showReportDialog,  setShowReportDialog]  = useState(false);
+  const [reportReason,      setReportReason]      = useState<string>(REPORT_REASONS[0].value);
 
   const factionColor = msg.faction
     ? (FACTION_COLORS[msg.faction] ?? 'rgba(255,255,255,0.7)')
@@ -71,10 +82,16 @@ export default function MessageItem({
   const isAdminMsg = msg.is_admin === 1;
   const isModMsg   = msg.is_moderator === 1 && !isAdminMsg;
 
-  const handleDelete = async () => {
+  const handleDeleteConfirmed = async () => {
+    setShowDeleteConfirm(false);
     setDeleting(true);
     await onDelete(msg.id);
     setDeleting(false);
+  };
+
+  const handleReportConfirmed = () => {
+    setShowReportDialog(false);
+    onReport(msg.id, reportReason);
   };
 
   const actions = (
@@ -86,7 +103,7 @@ export default function MessageItem({
       {!isOwn && (
         <button
           class={`chat-action-btn${isReported ? ' chat-action-reported' : ''}`}
-          onClick={() => !isReported && onReport(msg.id)}
+          onClick={() => !isReported && setShowReportDialog(true)}
           title={isReported ? reportedLabel : reportLabel}
           disabled={isReported}
         >
@@ -96,7 +113,7 @@ export default function MessageItem({
       {isAdmin && (
         <button
           class="chat-action-btn chat-action-delete"
-          onClick={handleDelete}
+          onClick={() => setShowDeleteConfirm(true)}
           title="Nachricht löschen"
           disabled={deleting}
         >
@@ -108,7 +125,6 @@ export default function MessageItem({
 
   return (
     <div class={`chat-msg-row${isOwn ? ' chat-msg-row-own' : ' chat-msg-row-other'}`}>
-      {/* For own messages: actions LEFT of bubble */}
       {isOwn && actions}
 
       <div class={[
@@ -145,8 +161,50 @@ export default function MessageItem({
         </div>
       </div>
 
-      {/* For other messages: actions RIGHT of bubble */}
       {!isOwn && actions}
+
+      {/* ── Delete Confirm ── */}
+      {showDeleteConfirm && (
+        <ConfirmDialog
+          title="Nachricht löschen"
+          message="Diese Nachricht wirklich löschen?"
+          confirmLabel="Löschen"
+          variant="danger"
+          onConfirm={handleDeleteConfirmed}
+          onCancel={() => setShowDeleteConfirm(false)}
+        />
+      )}
+
+      {/* ── Report Dialog ── */}
+      {showReportDialog && (
+        <ConfirmDialog
+          title="Nachricht melden"
+          message="Wähle einen Grund für die Meldung:"
+          confirmLabel="Melden"
+          variant="primary"
+          onConfirm={handleReportConfirmed}
+          onCancel={() => setShowReportDialog(false)}
+        >
+          <div class="cd-report-reasons">
+            {REPORT_REASONS.map(r => (
+              <label
+                key={r.value}
+                class={`cd-report-reason${reportReason === r.value ? ' cd-report-reason-active' : ''}`}
+              >
+                <input
+                  type="radio"
+                  name={`report-reason-${msg.id}`}
+                  value={r.value}
+                  checked={reportReason === r.value}
+                  onChange={() => setReportReason(r.value)}
+                />
+                <span class="cd-report-reason-icon">{r.icon}</span>
+                <span class="cd-report-reason-label">{r.label}</span>
+              </label>
+            ))}
+          </div>
+        </ConfirmDialog>
+      )}
     </div>
   );
 }
