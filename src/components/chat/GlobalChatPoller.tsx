@@ -160,10 +160,10 @@ export default function GlobalChatPoller() {
               headers: { Authorization: `Bearer ${token}` },
             });
             if (res.ok) {
-              const data = await res.json() as { messages: { created_at: string }[] };
+              const data = await res.json() as { messages: { created_at: string }[]; server_time?: string };
               chanSince.current[baseUrl] = data.messages.length > 0
                 ? data.messages[data.messages.length - 1].created_at
-                : new Date().toISOString();
+                : (data.server_time ?? new Date().toISOString().replace('T', ' ').slice(0, 19));
             }
           } else {
             const sep = baseUrl.includes('?') ? '&' : '?';

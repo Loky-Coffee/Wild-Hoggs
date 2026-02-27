@@ -286,10 +286,11 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
       if (type === 'server-lang' && (!hasServer || !hasLang)) return;
       fetch(buildUrl(type, 'limit=1'), { headers: { Authorization: `Bearer ${token}` } })
         .then(r => r.ok ? r.json() : null)
-        .then((data: { messages: { created_at: string }[] } | null) => {
-          if (data?.messages.length) {
-            tabSince.current[type] = data.messages[data.messages.length - 1].created_at;
-          }
+        .then((data: { messages: { created_at: string }[]; server_time?: string } | null) => {
+          if (!data) return;
+          tabSince.current[type] = data.messages.length > 0
+            ? data.messages[data.messages.length - 1].created_at
+            : (data.server_time ?? new Date().toISOString().replace('T', ' ').slice(0, 19));
         })
         .catch(() => {});
     });

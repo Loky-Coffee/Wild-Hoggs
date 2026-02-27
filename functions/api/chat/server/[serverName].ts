@@ -67,8 +67,9 @@ export async function onRequestGet(ctx: any) {
     messages = (results as any[]).reverse();
   }
 
+  const serverTime = new Date().toISOString().replace('T', ' ').slice(0, 19);
   return Response.json(
-    { messages, hasMore: messages.length === limit },
+    { messages, hasMore: messages.length === limit, server_time: serverTime },
     { headers: { 'Cache-Control': 'no-store' } }
   );
 }
