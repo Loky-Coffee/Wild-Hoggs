@@ -1,0 +1,194 @@
+.admin-panel {
+  display: flex;
+  flex-direction: row;
+  min-height: 60vh;
+  gap: 0;
+}
+
+.admin-sidebar {
+  width: 200px;
+  flex-shrink: 0;
+  border-right: 1px solid rgba(255, 165, 0, 0.25);
+  padding: 1rem 0;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.admin-sidebar-btn {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1.25rem;
+  background: none;
+  border: none;
+  border-left: 3px solid transparent;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.9rem;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.admin-sidebar-btn:hover {
+  background: rgba(255, 165, 0, 0.08);
+  color: #ffa500;
+}
+
+.admin-sidebar-btn.admin-sidebar-active {
+  background: rgba(255, 165, 0, 0.12);
+  border-left-color: #ffa500;
+  color: #ffa500;
+  font-weight: 600;
+}
+
+.admin-content {
+  flex: 1;
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
+.admin-empty {
+  color: rgba(255, 255, 255, 0.45);
+  text-align: center;
+  padding: 3rem 1rem;
+  font-size: 0.95rem;
+}
+
+.admin-loading,
+.admin-error {
+  text-align: center;
+  padding: 2rem 1rem;
+  font-size: 0.95rem;
+}
+
+.admin-error {
+  color: #ff6b6b;
+}
+
+.admin-reports-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.admin-report-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 165, 0, 0.15);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+}
+
+.admin-report-text {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0 0 0.5rem 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.admin-report-text.deleted {
+  color: rgba(255, 255, 255, 0.35);
+  font-style: italic;
+}
+
+.admin-report-meta {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+}
+
+.admin-report-meta span {
+  white-space: nowrap;
+}
+
+.admin-report-actions {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.admin-btn-delete {
+  padding: 0.4rem 0.9rem;
+  border: 1px solid rgba(220, 53, 69, 0.6);
+  border-radius: 5px;
+  background: rgba(220, 53, 69, 0.12);
+  color: #ff6b6b;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.admin-btn-delete:hover:not(:disabled) {
+  background: rgba(220, 53, 69, 0.25);
+  border-color: rgba(220, 53, 69, 0.9);
+}
+
+.admin-btn-delete:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.admin-btn-dismiss {
+  padding: 0.4rem 0.9rem;
+  border: 1px solid rgba(100, 180, 120, 0.5);
+  border-radius: 5px;
+  background: rgba(100, 180, 120, 0.1);
+  color: rgba(120, 200, 140, 0.9);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.admin-btn-dismiss:hover:not(:disabled) {
+  background: rgba(100, 180, 120, 0.22);
+  border-color: rgba(100, 180, 120, 0.8);
+}
+
+.admin-btn-dismiss:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.admin-access-denied {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #ff6b6b;
+}
+
+@media (max-width: 768px) {
+  .admin-panel {
+    flex-direction: column;
+  }
+
+  .admin-sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 165, 0, 0.25);
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+  }
+
+  .admin-sidebar-btn {
+    border-left: none;
+    border-bottom: 3px solid transparent;
+    white-space: nowrap;
+    padding: 0.65rem 1rem;
+    flex-shrink: 0;
+  }
+
+  .admin-sidebar-btn.admin-sidebar-active {
+    border-left-color: transparent;
+    border-bottom-color: #ffa500;
+  }
+
+  .admin-content {
+    padding: 1rem;
+  }
+}

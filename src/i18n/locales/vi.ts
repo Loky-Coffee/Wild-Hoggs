@@ -680,4 +680,15 @@ export default {
   'tank.maxAll': 'Tối Đa Tất Cả',
   'tank.resetAll': 'Đặt Lại Tất Cả',
   'tank.unlock': 'Mở Khóa',
+  // Admin Panel
+  'nav.admin': 'Administration',
+  'seo.admin.title': 'Wild Hoggs | Administration',
+  'seo.admin.description': 'Admin panel.',
+  'admin.tab.reports': 'Chat Reports',
+  'admin.reports.empty': 'No open reports.',
+  'admin.reports.delete': 'Delete',
+  'admin.reports.dismiss': 'Dismiss',
+  'admin.reports.loading': 'Loading…',
+  'admin.reports.error': 'Error loading reports.',
+  'admin.access_denied': 'Access denied.',
 } as const;

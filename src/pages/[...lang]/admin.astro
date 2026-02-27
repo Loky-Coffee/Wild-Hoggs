@@ -1,0 +1,29 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../i18n/utils';
+import { getLanguagePaths } from '../../i18n/static-paths';
+import { loadTranslations } from '../../i18n/index';
+import AdminPanel from '../../components/admin/AdminPanel';
+
+export function getStaticPaths() {
+  return getLanguagePaths();
+}
+
+const lang = getLangFromUrl(Astro.url);
+const translationData = await loadTranslations(lang);
+const t = useTranslations(translationData);
+
+const breadcrumbItems = [
+  { label: t('nav.home'), href: getLocalizedPath('', lang) },
+  { label: 'Administration' },
+];
+---
+
+<PageLayout
+  title={t('seo.admin.title')}
+  description={t('seo.admin.description')}
+  robots="noindex, nofollow"
+  breadcrumbs={breadcrumbItems}
+>
+  <AdminPanel translationData={translationData} client:load />
+</PageLayout>

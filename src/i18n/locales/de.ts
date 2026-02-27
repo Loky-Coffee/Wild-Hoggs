@@ -681,4 +681,15 @@ export default {
   'tank.maxAll': 'Alle auf Maximum',
   'tank.resetAll': 'Alle Zurücksetzen',
   'tank.unlock': 'Freischalten',
+  // Admin Panel
+  'nav.admin': 'Administration',
+  'seo.admin.title': 'Wild Hoggs | Administration',
+  'seo.admin.description': 'Admin-Panel.',
+  'admin.tab.reports': 'Chat-Meldungen',
+  'admin.reports.empty': 'Keine offenen Meldungen.',
+  'admin.reports.delete': 'Löschen',
+  'admin.reports.dismiss': 'Ignorieren',
+  'admin.reports.loading': 'Lädt…',
+  'admin.reports.error': 'Fehler beim Laden.',
+  'admin.access_denied': 'Kein Zugriff.',
 } as const;

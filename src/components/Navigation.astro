@@ -4,6 +4,7 @@ import { loadTranslations } from '../i18n/index';
 import LanguageDropdown from './LanguageDropdown.astro';
 import ApocalypseTimeClock from './ApocalypseTimeClock';
 import UserMenu from './auth/UserMenu';
+import AdminNavLink from './admin/AdminNavLink';
 
 const lang = getLangFromUrl(Astro.url);
 const translationData = await loadTranslations(lang);
@@ -61,6 +62,9 @@ const currentPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : r
           </a>
         </li>
       ))}
+      <li>
+        <AdminNavLink client:load />
+      </li>
     </ul>
 
     <div class="nav-controls">
