@@ -59,18 +59,9 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
   const [uError, setUError]       = useState<string | null>(null);
   const [uBusy, setUBusy]         = useState<Set<string>>(new Set());
 
-  // Access check
-  if (!isLoggedIn || user?.is_admin !== 1) {
-    return (
-      <div class="admin-access-denied">
-        🔒 {t('admin.access_denied')}
-      </div>
-    );
-  }
-
-  // Load reports
+  // Load reports — hooks must be called unconditionally (Rules of Hooks)
   useEffect(() => {
-    if (activeTab !== 'reports') return;
+    if (activeTab !== 'reports' || !isLoggedIn || user?.is_admin !== 1 || !token) return;
     setRLoading(true);
     setRError(null);
     fetch('/api/admin/reports', { headers: { 'Authorization': `Bearer ${token}` } })
@@ -81,11 +72,11 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
       })
       .catch(() => setRError(t('admin.reports.error')))
       .finally(() => setRLoading(false));
-  }, [activeTab]);
+  }, [activeTab, isLoggedIn]);
 
-  // Load users
+  // Load users — same pattern
   useEffect(() => {
-    if (activeTab !== 'users') return;
+    if (activeTab !== 'users' || !isLoggedIn || user?.is_admin !== 1 || !token) return;
     setULoading(true);
     setUError(null);
     fetch('/api/admin/users', { headers: { 'Authorization': `Bearer ${token}` } })
@@ -96,7 +87,16 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
       })
       .catch(() => setUError(t('admin.users.error')))
       .finally(() => setULoading(false));
-  }, [activeTab]);
+  }, [activeTab, isLoggedIn]);
+
+  // Access check — AFTER all hooks
+  if (!isLoggedIn || user?.is_admin !== 1) {
+    return (
+      <div class="admin-access-denied">
+        🔒 {t('admin.access_denied')}
+      </div>
+    );
+  }
 
   // Report handlers
   const handleDelete = async (report: Report) => {
