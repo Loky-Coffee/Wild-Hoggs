@@ -91,7 +91,16 @@ export default function GlobalChatPoller() {
           };
           if (data.server_time) pmSince.current = data.server_time;
           // First call (no params) = baseline only, don't count
-          if (params) added += data.senders.length;
+          if (params && data.senders.length > 0) {
+            // Persist sender names so ChatWindow can show unread dots on mount
+            try {
+              const existing: string[] = JSON.parse(localStorage.getItem('wh-pending-dm-unreads') ?? '[]');
+              const toAdd = data.senders.map(s => s.sender_username);
+              const updated = [...new Set([...existing, ...toAdd])];
+              localStorage.setItem('wh-pending-dm-unreads', JSON.stringify(updated));
+            } catch { /* ignore */ }
+            added += data.senders.length;
+          }
         }
       } catch { /* ignore */ }
 

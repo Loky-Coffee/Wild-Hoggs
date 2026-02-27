@@ -55,7 +55,12 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
     try { return JSON.parse(localStorage.getItem('wh-pm-contacts') ?? '[]'); }
     catch { return []; }
   });
-  const [pmUnread,     setPmUnread]     = useState<Set<string>>(new Set());
+  const [pmUnread,     setPmUnread]     = useState<Set<string>>(() => {
+    try {
+      const pending: string[] = JSON.parse(localStorage.getItem('wh-pending-dm-unreads') ?? '[]');
+      return new Set(pending);
+    } catch { return new Set<string>(); }
+  });
   const [confirmRemove, setConfirmRemove] = useState<string | null>(null);
   const [sidebarOpen,  setSidebarOpen]  = useState(false);
 
@@ -321,6 +326,34 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
     bgPollRef.current = setInterval(bgPoll, 10_000);
     return () => { if (bgPollRef.current) { clearInterval(bgPollRef.current); bgPollRef.current = null; } };
   }, [isLoggedIn, token, buildUrl, hasLang, hasServer]);
+
+  // ── On mount: ensure pending DM contacts are visible in the sidebar ─────────
+  useEffect(() => {
+    if (!isLoggedIn) return;
+    try {
+      const pending: string[] = JSON.parse(localStorage.getItem('wh-pending-dm-unreads') ?? '[]');
+      if (pending.length === 0) return;
+      // Add any new senders to the contacts list so the unread dot has something to show on
+      pending.forEach(username => {
+        setPmContacts(prev => {
+          if (prev.includes(username)) return prev;
+          const next = [username, ...prev].slice(0, 10);
+          localStorage.setItem('wh-pm-contacts', JSON.stringify(next));
+          return next;
+        });
+      });
+    } catch { /* ignore */ }
+  }, [isLoggedIn]); // eslint-disable-line
+
+  // ── Keep wh-pending-dm-unreads in sync so navigation away preserves unreads ─
+  useEffect(() => {
+    const pending = [...pmUnread];
+    if (pending.length > 0) {
+      localStorage.setItem('wh-pending-dm-unreads', JSON.stringify(pending));
+    } else {
+      localStorage.removeItem('wh-pending-dm-unreads');
+    }
+  }, [pmUnread]);
 
   // ── Dispatch global unread count to GlobalChatPoller ──────────────────────
   useEffect(() => {
