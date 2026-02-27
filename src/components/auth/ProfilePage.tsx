@@ -471,21 +471,19 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
         </div>
 
         {/* Notification Volume */}
-        {notifSound === 1 && (
-          <div class="pp-setting-block">
-            <label class="pp-setting-label">{t('profile.notificationVolume')} — {notifVolume.toFixed(1)}</label>
-            <input
-              type="range"
-              class="pp-notif-volume-slider"
-              min="0.1"
-              max="2.0"
-              step="0.1"
-              value={notifVolume}
-              onInput={e => handleVolumeChange(parseFloat((e.target as HTMLInputElement).value))}
-              disabled={notifVolumeSaving}
-            />
-          </div>
-        )}
+        <div class={`pp-setting-block${notifSound === 0 ? ' pp-setting-block-muted' : ''}`}>
+          <label class="pp-setting-label">{t('profile.notificationVolume')} — {notifVolume.toFixed(1)}</label>
+          <input
+            type="range"
+            class="pp-notif-volume-slider"
+            min="0.1"
+            max="2.0"
+            step="0.1"
+            value={notifVolume}
+            onInput={e => handleVolumeChange(parseFloat((e.target as HTMLInputElement).value))}
+            disabled={notifVolumeSaving}
+          />
+        </div>
 
         {/* Password */}
         <div class="pp-setting-block">

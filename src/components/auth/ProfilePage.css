@@ -251,6 +251,7 @@
   margin-bottom: 1.5rem;
 }
 .pp-setting-block:last-child { margin-bottom: 0; }
+.pp-setting-block-muted { opacity: 0.4; pointer-events: none; }
 
 .pp-setting-label {
   display: block;
