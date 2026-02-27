@@ -27,6 +27,13 @@ export function useAuth() {
     return stored ? JSON.parse(stored) : null;
   });
 
+  // True while /api/auth/me is in flight — prevents premature "access denied" flashes.
+  // Starts as true if a token exists (we need to confirm is_admin server-side).
+  const [isAuthRefreshing, setIsAuthRefreshing] = useState(() => {
+    if (typeof localStorage === 'undefined') return false;
+    return !!localStorage.getItem(AUTH_TOKEN_KEY);
+  });
+
   // On hard reload: sync from localStorage, then refresh user data from server
   // so stale cached data (e.g. missing is_admin) is always corrected automatically.
   useEffect(() => {
@@ -36,7 +43,10 @@ export function useAuth() {
     setToken(storedToken);
     setUser(storedUser);
 
-    if (!storedToken) return;
+    if (!storedToken) {
+      setIsAuthRefreshing(false);
+      return;
+    }
     fetch('/api/auth/me', { headers: { Authorization: `Bearer ${storedToken}` } })
       .then(r => {
         if (r.status === 401) {
@@ -54,7 +64,8 @@ export function useAuth() {
         localStorage.setItem(AUTH_USER_KEY, JSON.stringify(freshUser));
         setUser(freshUser);
       })
-      .catch(() => {}); // ignore network errors — stored state remains
+      .catch(() => {}) // ignore network errors — stored state remains
+      .finally(() => setIsAuthRefreshing(false));
   }, []);
 
   useEffect(() => {
@@ -62,12 +73,13 @@ export function useAuth() {
       const { detail } = e as CustomEvent<{ user: AuthUser | null; token: string | null }>;
       setToken(detail.token);
       setUser(detail.user);
+      setIsAuthRefreshing(false);
     };
     window.addEventListener('wh-auth-change', handler);
     return () => window.removeEventListener('wh-auth-change', handler);
   }, []);
 
-  return { token, user, isLoggedIn: !!token };
+  return { token, user, isLoggedIn: !!token, isAuthRefreshing };
 }
 
 /** Saves auth state to localStorage and notifies all islands. */
