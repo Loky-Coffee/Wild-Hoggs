@@ -53,6 +53,7 @@ const getLanguageUrl = (targetLang: string) => {
         href={getLanguageUrl(code)}
         class:list={['dropdown-item', { active: currentLang === code }]}
         aria-current={currentLang === code ? 'true' : undefined}
+        data-lang={code}
       >
         <span class="flag">{flags[code]}</span>
         <span class="lang-name">{name}</span>
@@ -316,6 +317,21 @@ const getLanguageUrl = (targetLang: string) => {
     document.addEventListener('click', outsideHandler);
     menu.addEventListener('keydown', menuKeydownHandler);
     document.addEventListener('keydown', documentKeydownHandler);
+
+    // Save language preference when user clicks a language item
+    menu.querySelectorAll<HTMLElement>('.dropdown-item[data-lang]').forEach(item => {
+      item.addEventListener('click', () => {
+        const lang = item.getAttribute('data-lang');
+        const token = localStorage.getItem('wh-auth-token');
+        if (!lang || !token) return;
+        // Fire-and-forget: save to DB, don't block navigation
+        fetch('/api/user/profile', {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+          body: JSON.stringify({ language: lang }),
+        }).catch(() => { /* ignore */ });
+      });
+    });
   }
 
   // Run on initial load
