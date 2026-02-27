@@ -488,12 +488,34 @@ body:has(.chat-login-wall) > main > astro-island {
   border-color: transparent !important;
 }
 
-.chat-bubble-admin::before {
+/* own bubble: actions sit on the LEFT → suppress border on bubble's left side */
+.chat-bubble-admin.chat-bubble-own::before {
   content: '';
   position: absolute;
-  inset: -2px;
+  inset: -2px -2px -2px 0;
   border-radius: inherit;
-  padding: 2px;
+  padding: 2px 2px 2px 0;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    #ff0000, #ff5500, #ffcc00, #aaff00,
+    #00ffaa, #00ccff, #0055ff, #aa00ff,
+    #ff0088, #ff0000
+  );
+  background-size: 300% 100%;
+  animation: admin-snake 2.5s linear infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+/* other bubble: actions sit on the RIGHT → suppress border on bubble's right side */
+.chat-bubble-admin.chat-bubble-other::before {
+  content: '';
+  position: absolute;
+  inset: -2px 0 -2px -2px;
+  border-radius: inherit;
+  padding: 2px 0 2px 2px;
   pointer-events: none;
   background: linear-gradient(
     90deg,
@@ -549,12 +571,29 @@ body:has(.chat-login-wall) > main > astro-island {
   border-color: transparent !important;
 }
 
-.chat-bubble-mod::before {
+/* own bubble: actions sit on the LEFT → suppress border on bubble's left side */
+.chat-bubble-mod.chat-bubble-own::before {
   content: '';
   position: absolute;
-  inset: -2px;
+  inset: -2px -2px -2px 0;
   border-radius: inherit;
-  padding: 2px;
+  padding: 2px 2px 2px 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, #0ea5e9, #6366f1, #06b6d4, #3b82f6, #0ea5e9);
+  background-size: 300% 100%;
+  animation: mod-snake 3s linear infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+/* other bubble: actions sit on the RIGHT → suppress border on bubble's right side */
+.chat-bubble-mod.chat-bubble-other::before {
+  content: '';
+  position: absolute;
+  inset: -2px 0 -2px -2px;
+  border-radius: inherit;
+  padding: 2px 0 2px 2px;
   pointer-events: none;
   background: linear-gradient(90deg, #0ea5e9, #6366f1, #06b6d4, #3b82f6, #0ea5e9);
   background-size: 300% 100%;
@@ -580,6 +619,89 @@ body:has(.chat-login-wall) > main > astro-island {
 }
 
 .chat-mod-label-own { text-align: right; }
+
+/* ── Admin / Mod border effect extended to action buttons ────────────────── */
+
+/* Make actions a positioning context + hide normal border */
+.chat-msg-row:has(.chat-bubble-admin) .chat-msg-actions,
+.chat-msg-row:has(.chat-bubble-mod)   .chat-msg-actions {
+  position: relative;
+  border-color: transparent !important;
+}
+
+/* Admin — own: actions sit on LEFT → border on top, left, bottom only */
+.chat-msg-row:has(.chat-bubble-admin) .chat-msg-actions-own::before {
+  content: '';
+  position: absolute;
+  inset: -2px 0 -2px -2px;
+  border-radius: inherit;
+  padding: 2px 0 2px 2px;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    #ff0000, #ff5500, #ffcc00, #aaff00,
+    #00ffaa, #00ccff, #0055ff, #aa00ff,
+    #ff0088, #ff0000
+  );
+  background-size: 300% 100%;
+  animation: admin-snake 2.5s linear infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+/* Admin — other: actions sit on RIGHT → border on top, right, bottom only */
+.chat-msg-row:has(.chat-bubble-admin) .chat-msg-actions-other::before {
+  content: '';
+  position: absolute;
+  inset: -2px -2px -2px 0;
+  border-radius: inherit;
+  padding: 2px 2px 2px 0;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    #ff0000, #ff5500, #ffcc00, #aaff00,
+    #00ffaa, #00ccff, #0055ff, #aa00ff,
+    #ff0088, #ff0000
+  );
+  background-size: 300% 100%;
+  animation: admin-snake 2.5s linear infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+/* Mod — own: actions sit on LEFT */
+.chat-msg-row:has(.chat-bubble-mod) .chat-msg-actions-own::before {
+  content: '';
+  position: absolute;
+  inset: -2px 0 -2px -2px;
+  border-radius: inherit;
+  padding: 2px 0 2px 2px;
+  pointer-events: none;
+  background: linear-gradient(90deg, #0ea5e9, #6366f1, #06b6d4, #3b82f6, #0ea5e9);
+  background-size: 300% 100%;
+  animation: mod-snake 3s linear infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+/* Mod — other: actions sit on RIGHT */
+.chat-msg-row:has(.chat-bubble-mod) .chat-msg-actions-other::before {
+  content: '';
+  position: absolute;
+  inset: -2px -2px -2px 0;
+  border-radius: inherit;
+  padding: 2px 2px 2px 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, #0ea5e9, #6366f1, #06b6d4, #3b82f6, #0ea5e9);
+  background-size: 300% 100%;
+  animation: mod-snake 3s linear infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
 
 /* ── Mobile ──────────────────────────────────────────────────────────────── */
 
