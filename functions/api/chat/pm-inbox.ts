@@ -2,7 +2,7 @@
 // Returns new incoming PMs (receiver = me) since the given timestamp,
 // grouped by sender. Used for unread-notification polling.
 
-import { getToken, validateSession } from '../../../_lib/auth';
+import { getToken, validateSession } from '../../_lib/auth';
 
 export async function onRequestGet(ctx: any) {
   const { DB } = ctx.env;
