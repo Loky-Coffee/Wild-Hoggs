@@ -132,7 +132,7 @@ export default function CaravanCalculator({ lang, translationData }: CaravanCalc
     });
   }, [user?.faction, user?.formation_power_br, user?.formation_power_wd, user?.formation_power_go]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // When selecting a faction: auto-fill power from profile if input is currently empty
+  // When selecting a faction: always fill power from profile if available, else keep current
   const handleFactionSelect = (f: HeroFaction) => {
     const newFaction = f === yourFaction ? null : f;
     setStored(s => {
@@ -140,7 +140,7 @@ export default function CaravanCalculator({ lang, translationData }: CaravanCalc
       return {
         ...s,
         yourFaction: newFaction,
-        powerInput: (!s.powerInput.trim() && savedPower) ? String(savedPower) : s.powerInput,
+        powerInput: savedPower ? String(savedPower) : s.powerInput,
         calculated: false,
       };
     });
