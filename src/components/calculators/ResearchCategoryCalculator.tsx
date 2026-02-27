@@ -326,7 +326,9 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
               <img
                 src={categoryImageSrc}
                 alt={t(category.nameKey as TranslationKey)}
-                style={{ width: '60px', height: '60px', objectFit: 'contain' }}
+                width={60}
+                height={60}
+                style={{ objectFit: 'contain' }}
               />
             )}
             <div>
