@@ -262,13 +262,19 @@ body:has(.chat-login-wall) > main > astro-island {
   flex: 1;
 }
 
-.chat-pm-unread-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #ffa500;
+.chat-pm-unread-count {
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 9px;
+  background: #e74c3c;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
   flex-shrink: 0;
-  box-shadow: 0 0 5px rgba(255, 165, 0, 0.6);
+  box-sizing: border-box;
 }
 
 /* ── Main Chat Column ───────────────────────────────────────────────────────── */

@@ -1,6 +1,6 @@
 // Invisible component — runs on every page via Navigation.astro.
-// When NOT on the community page: polls PM inbox + global chat every 20 s and
-// updates the nav badge (#community-badge) + document.title.
+// When NOT on the community page: polls PM inbox + ALL accessible chat channels
+// every 20 s and updates the nav badge (#community-badge) + document.title.
 // When ON the community page: ChatWindow handles polling and dispatches
 // 'wh:unread-count' events — this component just applies those counts.
 
@@ -14,13 +14,26 @@ function isOnCommunity(): boolean {
   return p === '/community/' || p.endsWith('/community/');
 }
 
-export default function GlobalChatPoller() {
-  const { token, isLoggedIn } = useAuth();
+// All channel URLs the current user has access to
+function buildChannelUrls(user: { language?: string | null; server?: string | null } | null): string[] {
+  if (!user) return [];
+  const lang   = user.language?.trim() || null;
+  const server = user.server?.trim()   || null;
+  const urls: string[] = ['/api/chat/global'];
+  if (lang)          urls.push(`/api/chat/global?lang=${encodeURIComponent(lang)}`);
+  if (server)        urls.push(`/api/chat/server/${encodeURIComponent(server)}`);
+  if (server && lang) urls.push(`/api/chat/server/${encodeURIComponent(server)}?lang=${encodeURIComponent(lang)}`);
+  return urls;
+}
 
-  const pmSince   = useRef<string | null>(null);
-  const chatSince = useRef<string | null>(null);
-  const countRef  = useRef(0);
-  const pollRef   = useRef<ReturnType<typeof setInterval> | null>(null);
+export default function GlobalChatPoller() {
+  const { token, isLoggedIn, user } = useAuth();
+
+  const pmSince    = useRef<string | null>(null);
+  // Per-channel since timestamps keyed by base URL (without since/limit params)
+  const chanSince  = useRef<Record<string, string>>({});
+  const countRef   = useRef(0);
+  const pollRef    = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // ── Apply count to DOM + document.title ───────────────────────────────────
   const applyCount = useCallback((n: number) => {
@@ -38,10 +51,11 @@ export default function GlobalChatPoller() {
       }
     }
 
-    // Mobile hamburger dot
-    const toggleBadge = document.getElementById('nav-toggle-badge') as HTMLElement | null;
-    if (toggleBadge) {
-      toggleBadge.style.display = n > 0 ? 'block' : 'none';
+    // Mobile hamburger dot — data attribute drives ::after pseudo-element
+    const toggle = document.querySelector('.nav-toggle') as HTMLElement | null;
+    if (toggle) {
+      if (n > 0) toggle.setAttribute('data-badge', '1');
+      else toggle.removeAttribute('data-badge');
     }
 
     // Browser tab title — strip any existing badge prefix first
@@ -63,9 +77,8 @@ export default function GlobalChatPoller() {
     const onNav = () => {
       if (isOnCommunity()) {
         applyCount(0);
-        // Reset since refs so GlobalChatPoller re-baselines after leaving
-        pmSince.current   = null;
-        chatSince.current = null;
+        pmSince.current  = null;
+        chanSince.current = {};
       }
     };
     onNav(); // check on mount
@@ -92,51 +105,56 @@ export default function GlobalChatPoller() {
         });
         if (res.ok) {
           const data = await res.json() as {
-            senders: { sender_username: string }[];
+            senders: { sender_username: string; count?: number }[];
             server_time: string;
           };
           if (data.server_time) pmSince.current = data.server_time;
-          // First call (no params) = baseline only, don't count
           if (params && data.senders.length > 0) {
-            // Persist sender names so ChatWindow can show unread dots on mount
             try {
-              const existing: string[] = JSON.parse(localStorage.getItem('wh-pending-dm-unreads') ?? '[]');
-              const toAdd = data.senders.map(s => s.sender_username);
-              const updated = [...new Set([...existing, ...toAdd])];
-              localStorage.setItem('wh-pending-dm-unreads', JSON.stringify(updated));
+              const existing: Record<string, number> = JSON.parse(localStorage.getItem('wh-pending-dm-unreads') ?? '{}');
+              data.senders.forEach(s => {
+                existing[s.sender_username] = (existing[s.sender_username] ?? 0) + (s.count ?? 1);
+              });
+              localStorage.setItem('wh-pending-dm-unreads', JSON.stringify(existing));
             } catch { /* ignore */ }
             added += data.senders.length;
           }
         }
       } catch { /* ignore */ }
 
-      // ── Global Chat ────────────────────────────────────────────────────────
-      try {
-        if (!chatSince.current) {
-          // First call: get latest message as baseline
-          const res = await fetch('/api/chat/global?limit=1', {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          if (res.ok) {
-            const data = await res.json() as { messages: { created_at: string }[] };
-            chatSince.current = data.messages.length > 0
-              ? data.messages[data.messages.length - 1].created_at
-              : new Date().toISOString();
-          }
-        } else {
-          const since = encodeURIComponent(chatSince.current);
-          const res = await fetch(`/api/chat/global?since=${since}&limit=50`, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          if (res.ok) {
-            const data = await res.json() as { messages: { created_at: string }[] };
-            if (data.messages.length > 0) {
-              chatSince.current = data.messages[data.messages.length - 1].created_at;
-              added += data.messages.length;
+      // ── All accessible chat channels ────────────────────────────────────────
+      const channelUrls = buildChannelUrls(user);
+      await Promise.all(channelUrls.map(async baseUrl => {
+        try {
+          const since = chanSince.current[baseUrl];
+          if (!since) {
+            // First call: establish baseline (don't count)
+            const sep = baseUrl.includes('?') ? '&' : '?';
+            const res = await fetch(`${baseUrl}${sep}limit=1`, {
+              headers: { Authorization: `Bearer ${token}` },
+            });
+            if (res.ok) {
+              const data = await res.json() as { messages: { created_at: string }[] };
+              chanSince.current[baseUrl] = data.messages.length > 0
+                ? data.messages[data.messages.length - 1].created_at
+                : new Date().toISOString();
+            }
+          } else {
+            const sep = baseUrl.includes('?') ? '&' : '?';
+            const res = await fetch(
+              `${baseUrl}${sep}since=${encodeURIComponent(since)}&limit=50`,
+              { headers: { Authorization: `Bearer ${token}` } },
+            );
+            if (res.ok) {
+              const data = await res.json() as { messages: { created_at: string }[] };
+              if (data.messages.length > 0) {
+                chanSince.current[baseUrl] = data.messages[data.messages.length - 1].created_at;
+                added += data.messages.length;
+              }
             }
           }
-        }
-      } catch { /* ignore */ }
+        } catch { /* ignore */ }
+      }));
 
       if (added > 0) applyCount(countRef.current + added);
     };
@@ -146,7 +164,7 @@ export default function GlobalChatPoller() {
     return () => {
       if (pollRef.current) { clearInterval(pollRef.current); pollRef.current = null; }
     };
-  }, [isLoggedIn, token, applyCount]);
+  }, [isLoggedIn, token, user, applyCount]);
 
   return null;
 }

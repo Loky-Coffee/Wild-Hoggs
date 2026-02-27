@@ -50,7 +50,6 @@ const currentPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : r
       <span></span>
       <span></span>
       <span></span>
-      <span id="nav-toggle-badge" class="nav-toggle-badge" style="display:none"></span>
     </button>
 
     <ul class="nav-links">
@@ -164,21 +163,21 @@ const currentPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : r
     box-shadow: 0 0 0 1px rgba(255, 165, 0, 0.35), 0 2px 12px rgba(255, 165, 0, 0.15);
   }
 
-  /* Notification dot on mobile hamburger toggle */
+  /* Notification dot on mobile hamburger toggle via ::after — avoids CSS conflict with .nav-toggle span */
   .nav-toggle {
     position: relative;
   }
 
-  .nav-toggle-badge {
+  .nav-toggle[data-badge]::after {
+    content: '';
     position: absolute;
-    top: 4px;
-    right: 4px;
+    top: 5px;
+    right: 5px;
     width: 9px;
     height: 9px;
     border-radius: 50%;
     background: #e74c3c;
     pointer-events: none;
-    display: none;
   }
 
   /* Notification badge on Community nav link */

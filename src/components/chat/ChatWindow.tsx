@@ -55,11 +55,11 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
     try { return JSON.parse(localStorage.getItem('wh-pm-contacts') ?? '[]'); }
     catch { return []; }
   });
-  const [pmUnread,     setPmUnread]     = useState<Set<string>>(() => {
+  const [pmUnread,     setPmUnread]     = useState<Map<string, number>>(() => {
     try {
-      const pending: string[] = JSON.parse(localStorage.getItem('wh-pending-dm-unreads') ?? '[]');
-      return new Set(pending);
-    } catch { return new Set<string>(); }
+      const pending: Record<string, number> = JSON.parse(localStorage.getItem('wh-pending-dm-unreads') ?? '{}');
+      return new Map(Object.entries(pending));
+    } catch { return new Map<string, number>(); }
   });
   const [confirmRemove, setConfirmRemove] = useState<string | null>(null);
   const [sidebarOpen,  setSidebarOpen]  = useState(false);
@@ -102,7 +102,7 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
       // Clear unread for the now-open conversation
       setPmUnread(prev => {
         if (!prev.has(openPM)) return prev;
-        const next = new Set(prev);
+        const next = new Map(prev);
         next.delete(openPM);
         return next;
       });
@@ -151,12 +151,12 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) return;
-        const data = await res.json() as { senders: { sender_username: string; last_created_at: string }[]; server_time: string };
+        const data = await res.json() as { senders: { sender_username: string; last_created_at: string; count: number }[]; server_time: string };
 
         if (data.server_time) pmInboxSince.current = data.server_time;
 
         if (data.senders.length > 0) {
-          data.senders.forEach(({ sender_username }) => {
+          data.senders.forEach(({ sender_username, count }) => {
             // Add to DM contacts list
             setPmContacts(prev => {
               const next = [sender_username, ...prev.filter(n => n !== sender_username)].slice(0, 10);
@@ -169,8 +169,12 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
               setOpenPM(sender_username);
               openPMRef.current = sender_username;
             } else {
-              // Another panel is open — just show unread dot
-              setPmUnread(prev => new Set([...prev, sender_username]));
+              // Another panel is open — show unread count badge
+              setPmUnread(prev => {
+                const next = new Map(prev);
+                next.set(sender_username, (prev.get(sender_username) ?? 0) + (count ?? 1));
+                return next;
+              });
             }
           });
         }
@@ -331,10 +335,11 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
   useEffect(() => {
     if (!isLoggedIn) return;
     try {
-      const pending: string[] = JSON.parse(localStorage.getItem('wh-pending-dm-unreads') ?? '[]');
-      if (pending.length === 0) return;
-      // Add any new senders to the contacts list so the unread dot has something to show on
-      pending.forEach(username => {
+      const pending: Record<string, number> = JSON.parse(localStorage.getItem('wh-pending-dm-unreads') ?? '{}');
+      const usernames = Object.keys(pending);
+      if (usernames.length === 0) return;
+      // Add any new senders to the contacts list so the unread badge has something to show on
+      usernames.forEach(username => {
         setPmContacts(prev => {
           if (prev.includes(username)) return prev;
           const next = [username, ...prev].slice(0, 10);
@@ -347,9 +352,8 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
 
   // ── Keep wh-pending-dm-unreads in sync so navigation away preserves unreads ─
   useEffect(() => {
-    const pending = [...pmUnread];
-    if (pending.length > 0) {
-      localStorage.setItem('wh-pending-dm-unreads', JSON.stringify(pending));
+    if (pmUnread.size > 0) {
+      localStorage.setItem('wh-pending-dm-unreads', JSON.stringify(Object.fromEntries(pmUnread)));
     } else {
       localStorage.removeItem('wh-pending-dm-unreads');
     }
@@ -414,7 +418,7 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
     setOpenPM(username);
     setPmUnread(prev => {
       if (!prev.has(username)) return prev;
-      const next = new Set(prev); next.delete(username); return next;
+      const next = new Map(prev); next.delete(username); return next;
     });
     setPmContacts(prev => {
       const next = [username, ...prev.filter(n => n !== username)].slice(0, 10);
@@ -431,7 +435,7 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
   const doRemovePMContact = useCallback((username: string) => {
     setConfirmRemove(null);
     if (openPM === username) setOpenPM(null);
-    setPmUnread(prev => { const next = new Set(prev); next.delete(username); return next; });
+    setPmUnread(prev => { const next = new Map(prev); next.delete(username); return next; });
     setPmContacts(prev => {
       const next = prev.filter(n => n !== username);
       localStorage.setItem('wh-pm-contacts', JSON.stringify(next));
@@ -540,7 +544,11 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
                 >
                   <span class="chat-pm-contact-icon">✉</span>
                   <span class="chat-pm-contact-name">{name}</span>
-                  {pmUnread.has(name) && <span class="chat-pm-unread-dot" />}
+                  {pmUnread.has(name) && (
+                    <span class="chat-pm-unread-count">
+                      {(pmUnread.get(name) ?? 0) > 99 ? '99+' : pmUnread.get(name)}
+                    </span>
+                  )}
                 </button>
                 <button
                   class="chat-pm-contact-remove"
