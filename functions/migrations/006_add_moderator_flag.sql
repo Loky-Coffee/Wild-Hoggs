@@ -1,0 +1,1 @@
+ALTER TABLE users ADD COLUMN is_moderator INTEGER DEFAULT 0;
