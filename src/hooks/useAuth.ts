@@ -13,8 +13,9 @@ export interface AuthUser {
   is_admin: number;
 }
 
-export const AUTH_TOKEN_KEY = 'wh-auth-token';
-export const AUTH_USER_KEY  = 'wh-auth-user';
+export const AUTH_TOKEN_KEY   = 'wh-auth-token';
+export const AUTH_USER_KEY    = 'wh-auth-user';
+const        AUTH_SESSION_KEY = 'wh-ok'; // sessionStorage flag — validated this browser session
 
 /** Reads auth state from localStorage. Listens for cross-island auth changes. */
 export function useAuth() {
@@ -27,15 +28,8 @@ export function useAuth() {
     return stored ? JSON.parse(stored) : null;
   });
 
-  // True while /api/auth/me is in flight — prevents premature "access denied" flashes.
-  // Starts as true if a token exists (we need to confirm is_admin server-side).
-  const [isAuthRefreshing, setIsAuthRefreshing] = useState(() => {
-    if (typeof localStorage === 'undefined') return false;
-    return !!localStorage.getItem(AUTH_TOKEN_KEY);
-  });
-
-  // On hard reload: sync from localStorage, then refresh user data from server
-  // so stale cached data (e.g. missing is_admin) is always corrected automatically.
+  // Sync from localStorage on mount; call /api/auth/me once per browser session
+  // to refresh stale data (e.g. is_admin) and detect expired tokens.
   useEffect(() => {
     const storedToken = localStorage.getItem(AUTH_TOKEN_KEY);
     const storedUserStr = localStorage.getItem(AUTH_USER_KEY);
@@ -43,16 +37,17 @@ export function useAuth() {
     setToken(storedToken);
     setUser(storedUser);
 
-    if (!storedToken) {
-      setIsAuthRefreshing(false);
-      return;
-    }
+    if (!storedToken) return;
+
+    // Already verified this browser session — skip the round-trip
+    if (sessionStorage.getItem(AUTH_SESSION_KEY) === '1') return;
+
     fetch('/api/auth/me', { headers: { Authorization: `Bearer ${storedToken}` } })
       .then(r => {
         if (r.status === 401) {
-          // Session expired server-side — clear stale local state
           localStorage.removeItem(AUTH_TOKEN_KEY);
           localStorage.removeItem(AUTH_USER_KEY);
+          sessionStorage.removeItem(AUTH_SESSION_KEY);
           setToken(null);
           setUser(null);
           return null;
@@ -63,9 +58,9 @@ export function useAuth() {
         if (!freshUser) return;
         localStorage.setItem(AUTH_USER_KEY, JSON.stringify(freshUser));
         setUser(freshUser);
+        sessionStorage.setItem(AUTH_SESSION_KEY, '1');
       })
-      .catch(() => {}) // ignore network errors — stored state remains
-      .finally(() => setIsAuthRefreshing(false));
+      .catch(() => {}); // network error — stored state remains, try again next session
   }, []);
 
   useEffect(() => {
@@ -73,13 +68,12 @@ export function useAuth() {
       const { detail } = e as CustomEvent<{ user: AuthUser | null; token: string | null }>;
       setToken(detail.token);
       setUser(detail.user);
-      setIsAuthRefreshing(false);
     };
     window.addEventListener('wh-auth-change', handler);
     return () => window.removeEventListener('wh-auth-change', handler);
   }, []);
 
-  return { token, user, isLoggedIn: !!token, isAuthRefreshing };
+  return { token, user, isLoggedIn: !!token };
 }
 
 /** Saves auth state to localStorage and notifies all islands. */
@@ -94,5 +88,6 @@ export function clearAuthState() {
   localStorage.removeItem(AUTH_TOKEN_KEY);
   localStorage.removeItem(AUTH_USER_KEY);
   localStorage.removeItem('wh-meta-checked-at');
+  sessionStorage.removeItem(AUTH_SESSION_KEY);
   window.dispatchEvent(new CustomEvent('wh-auth-change', { detail: { user: null, token: null } }));
 }

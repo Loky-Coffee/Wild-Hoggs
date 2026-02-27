@@ -26,5 +26,5 @@ const breadcrumbItems = [
   breadcrumbs={breadcrumbItems}
   fullWidth={true}
 >
-  <AdminPanel translationData={translationData} client:load />
+  <AdminPanel translationData={translationData} client:only="preact" />
 </PageLayout>

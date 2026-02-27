@@ -43,7 +43,7 @@ function formatDate(iso: string | null): string {
 
 export default function AdminPanel({ translationData }: AdminPanelProps) {
   const t = useTranslations(translationData);
-  const { user, token, isLoggedIn, isAuthRefreshing } = useAuth();
+  const { user, token, isLoggedIn } = useAuth();
 
   const [activeTab, setActiveTab] = useState<TabId>('reports');
 
@@ -89,13 +89,7 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
       .finally(() => setULoading(false));
   }, [activeTab, isLoggedIn]);
 
-  // While /api/auth/me is in flight, show a spinner — never flash "Kein Zugriff"
-  // for users who ARE admins but have stale localStorage data.
-  if (isAuthRefreshing) {
-    return <p class="admin-loading">{t('admin.reports.loading')}</p>;
-  }
-
-  // Access check — AFTER all hooks and after auth is confirmed
+  // Access check — AFTER all hooks
   if (!isLoggedIn || user?.is_admin !== 1) {
     return (
       <div class="admin-access-denied">
