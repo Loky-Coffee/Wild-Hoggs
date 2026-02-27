@@ -129,6 +129,11 @@
 /* ── Mobile: slide in from right as overlay ──────────────────────────────── */
 
 @media (max-width: 768px) {
+  /* Prevent iOS Safari auto-zoom on focus (triggers below 16px) */
+  .chat-pm-textarea {
+    font-size: 16px;
+  }
+
   .chat-pm-panel {
     position: fixed;
     top: var(--nav-height-mobile, 70px);

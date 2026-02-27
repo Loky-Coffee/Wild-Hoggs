@@ -1022,5 +1022,7 @@ body:has(.chat-login-wall) > main > astro-island {
 
   .chat-action-btn { color: rgba(255, 255, 255, 0.4); }
 
+  /* Prevent iOS Safari auto-zoom on focus (triggers below 16px) */
+  .chat-textarea { font-size: 16px; }
   .chat-textarea::placeholder { font-size: 0.75rem; }
 }
