@@ -1,23 +1,45 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   APP-SHELL LAYOUT  (nur wenn Chat aktiv ist)
+   body → nav + breadcrumbs + main(flex:1) → chat-window(100%) → messages(scroll)
+   ───────────────────────────────────────────────────────────────────────────── */
+
+body:has(.chat-window) {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;        /* exakte Viewport-Höhe inkl. Mobile-Browser-Chrome */
+  overflow: hidden;      /* kein Seitenscrollbalken */
+}
+
+/* main.page-content--full füllt den gesamten Rest unterhalb von Nav + Breadcrumbs */
+body:has(.chat-window) > main {
+  flex: 1;
+  min-height: 0;         /* Pflicht: erlaubt Flex-Kind kleiner als sein Content zu sein */
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
 /* ── Chat Window ─────────────────────────────────────────────────────────────── */
 
 .chat-window {
   display: flex;
   flex-direction: column;
+  flex: 1;               /* wächst um main vollständig zu füllen */
   width: 100%;
-  /* Fill full viewport minus nav + breadcrumbs (page-content has padding: 0) */
-  height: calc(100vh - var(--nav-height) - var(--breadcrumbs-height));
-  background: rgba(255, 255, 255, 0.02);
+  height: 100%;          /* Fallback für nicht-flex-Kontexte */
+  min-height: 0;
   overflow: hidden;
+  background: rgba(255, 255, 255, 0.02);
 }
 
-/* ── Tabs ─────────────────────────────────────────────────────────────────── */
+/* ── Tabs  (immer oben, niemals scrollend) ────────────────────────────────── */
 
 .chat-tabs {
   display: flex;
-  border-bottom: 1px solid rgba(255, 165, 0, 0.15);
-  background: rgba(255, 255, 255, 0.03);
   flex-shrink: 0;
   width: 100%;
+  border-bottom: 1px solid rgba(255, 165, 0, 0.15);
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .chat-tab {
@@ -47,12 +69,14 @@
   cursor: not-allowed;
 }
 
-/* ── Message List ─────────────────────────────────────────────────────────── */
+/* ── Message List  (scrollt, füllt gesamte Mitte) ────────────────────────── */
 
 .chat-messages {
   flex: 1;
+  min-height: 0;          /* Pflicht für korrektes overflow-y: auto in Flex */
   width: 100%;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 1rem 1.5rem;
   display: flex;
   flex-direction: column;
@@ -61,21 +85,12 @@
   box-sizing: border-box;
 }
 
-.chat-messages::-webkit-scrollbar {
-  width: 5px;
-}
-.chat-messages::-webkit-scrollbar-track {
-  background: transparent;
-}
-.chat-messages::-webkit-scrollbar-thumb {
-  background: rgba(255, 165, 0, 0.2);
-  border-radius: 3px;
-}
-.chat-messages::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 165, 0, 0.4);
-}
+.chat-messages::-webkit-scrollbar       { width: 5px; }
+.chat-messages::-webkit-scrollbar-track { background: transparent; }
+.chat-messages::-webkit-scrollbar-thumb { background: rgba(255, 165, 0, 0.2); border-radius: 3px; }
+.chat-messages::-webkit-scrollbar-thumb:hover { background: rgba(255, 165, 0, 0.4); }
 
-/* ── Message Row (bubble wrapper) ──────────────────────────────────────────── */
+/* ── Message Row (Bubble-Wrapper) ────────────────────────────────────────── */
 
 .chat-msg-row {
   display: flex;
@@ -83,15 +98,10 @@
   box-sizing: border-box;
 }
 
-.chat-msg-row-own {
-  justify-content: flex-end;
-}
+.chat-msg-row-own   { justify-content: flex-end; }
+.chat-msg-row-other { justify-content: flex-start; }
 
-.chat-msg-row-other {
-  justify-content: flex-start;
-}
-
-/* ── Bubble ────────────────────────────────────────────────────────────────── */
+/* ── Bubble ──────────────────────────────────────────────────────────────── */
 
 .chat-bubble {
   max-width: 75%;
@@ -99,7 +109,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
-  padding: 0.5rem 0.75rem 0.4rem;
+  padding: 0.55rem 0.85rem 0.45rem;
 }
 
 .chat-bubble-own {
@@ -114,7 +124,7 @@
   border-radius: 16px 16px 16px 4px;
 }
 
-/* ── Bubble header (username + badge, other only) ──────────────────────────── */
+/* ── Bubble Header (Username + Badge, nur bei Fremden) ───────────────────── */
 
 .chat-bubble-header {
   display: flex;
@@ -138,7 +148,7 @@
   opacity: 0.75;
 }
 
-/* ── Bubble footer (time + report) ─────────────────────────────────────────── */
+/* ── Bubble Footer (Zeit + Report) ──────────────────────────────────────── */
 
 .chat-bubble-footer {
   display: flex;
@@ -170,13 +180,8 @@
   margin-left: auto;
 }
 
-.chat-bubble-other:hover .chat-msg-report {
-  opacity: 1;
-}
-
-.chat-msg-report:hover {
-  color: #e74c3c;
-}
+.chat-bubble-other:hover .chat-msg-report { opacity: 1; }
+.chat-msg-report:hover                    { color: #e74c3c; }
 
 .chat-msg-report-done {
   color: #27ae60 !important;
@@ -184,7 +189,7 @@
   cursor: default;
 }
 
-/* ── Message text ──────────────────────────────────────────────────────────── */
+/* ── Message Text ────────────────────────────────────────────────────────── */
 
 .chat-msg-text {
   font-size: 0.88rem;
@@ -195,7 +200,7 @@
   white-space: pre-wrap;
 }
 
-/* ── Loading & Empty ──────────────────────────────────────────────────────── */
+/* ── Loading & Empty ─────────────────────────────────────────────────────── */
 
 .chat-loading {
   flex: 1;
@@ -239,15 +244,15 @@
   font-style: italic;
 }
 
-/* ── Input Area ────────────────────────────────────────────────────────────── */
+/* ── Input Area  (immer unten, niemals scrollend) ────────────────────────── */
 
 .chat-input-area {
-  border-top: 1px solid rgba(255, 165, 0, 0.15);
-  padding: 0.75rem 1.5rem 0.75rem;
   flex-shrink: 0;
-  background: rgba(255, 255, 255, 0.02);
   width: 100%;
   box-sizing: border-box;
+  border-top: 1px solid rgba(255, 165, 0, 0.15);
+  padding: 0.75rem 1.5rem;
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .chat-send-error {
@@ -312,18 +317,9 @@
   flex-shrink: 0;
 }
 
-.chat-send-btn:hover:not(:disabled) {
-  background: rgba(255, 165, 0, 0.28);
-}
-
-.chat-send-btn:active:not(:disabled) {
-  transform: scale(0.94);
-}
-
-.chat-send-btn:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
+.chat-send-btn:hover:not(:disabled) { background: rgba(255, 165, 0, 0.28); }
+.chat-send-btn:active:not(:disabled) { transform: scale(0.94); }
+.chat-send-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
 .chat-input-footer {
   display: flex;
@@ -331,16 +327,10 @@
   margin-top: 0.25rem;
 }
 
-.chat-char-count {
-  font-size: 0.7rem;
-  color: rgba(255, 255, 255, 0.25);
-}
+.chat-char-count { font-size: 0.7rem; color: rgba(255, 255, 255, 0.25); }
+.chat-char-warn  { color: rgba(255, 165, 0, 0.7); }
 
-.chat-char-warn {
-  color: rgba(255, 165, 0, 0.7);
-}
-
-/* ── Login Wall ─────────────────────────────────────────────────────────────── */
+/* ── Login Wall ──────────────────────────────────────────────────────────── */
 
 .chat-login-wall {
   display: flex;
@@ -353,45 +343,24 @@
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.02);
   text-align: center;
+  /* login wall braucht eigene Höhe — kein body:has override hier */
+  height: 100%;
+  box-sizing: border-box;
 }
 
-.chat-login-icon {
-  font-size: 2.5rem;
-  opacity: 0.4;
-}
+.chat-login-icon { font-size: 2.5rem; opacity: 0.4; }
+.chat-login-text { color: rgba(255, 255, 255, 0.7); font-size: 1rem; margin: 0; }
+.chat-login-hint { color: rgba(255, 255, 255, 0.35); font-size: 0.875rem; margin: 0; }
 
-.chat-login-text {
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 1rem;
-  margin: 0;
-}
-
-.chat-login-hint {
-  color: rgba(255, 255, 255, 0.35);
-  font-size: 0.875rem;
-  margin: 0;
-}
-
-/* ── Mobile ─────────────────────────────────────────────────────────────────── */
+/* ── Mobile ──────────────────────────────────────────────────────────────── */
 
 @media (max-width: 768px) {
-  .chat-window {
-    height: calc(100vh - var(--nav-height-mobile) - var(--breadcrumbs-height-mobile));
-  }
-
-  .chat-messages {
-    padding: 0.75rem 1rem;
-  }
-
-  .chat-input-area {
-    padding: 0.6rem 1rem 0.6rem;
-  }
+  .chat-messages   { padding: 0.75rem 1rem; }
+  .chat-input-area { padding: 0.6rem 1rem; }
 
   .chat-bubble-other .chat-msg-report {
-    opacity: 0.6; /* Always visible on mobile (no hover) */
+    opacity: 0.6; /* Auf Mobile ohne Hover immer sichtbar */
   }
 
-  .chat-textarea::placeholder {
-    font-size: 0.75rem;
-  }
+  .chat-textarea::placeholder { font-size: 0.75rem; }
 }
