@@ -38,6 +38,12 @@ export default function GlobalChatPoller() {
       }
     }
 
+    // Mobile hamburger dot
+    const toggleBadge = document.getElementById('nav-toggle-badge') as HTMLElement | null;
+    if (toggleBadge) {
+      toggleBadge.style.display = n > 0 ? 'block' : 'none';
+    }
+
     // Browser tab title — strip any existing badge prefix first
     const clean = document.title.replace(/^\(\d+\+?\)\s*/, '');
     document.title = n > 0 ? `(${n > 99 ? '99+' : n}) ${clean}` : clean;

@@ -50,6 +50,7 @@ const currentPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : r
       <span></span>
       <span></span>
       <span></span>
+      <span id="nav-toggle-badge" class="nav-toggle-badge" style="display:none"></span>
     </button>
 
     <ul class="nav-links">
@@ -161,6 +162,23 @@ const currentPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : r
     color: #fff;
     background: rgba(255, 165, 0, 0.18);
     box-shadow: 0 0 0 1px rgba(255, 165, 0, 0.35), 0 2px 12px rgba(255, 165, 0, 0.15);
+  }
+
+  /* Notification dot on mobile hamburger toggle */
+  .nav-toggle {
+    position: relative;
+  }
+
+  .nav-toggle-badge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #e74c3c;
+    pointer-events: none;
+    display: none;
   }
 
   /* Notification badge on Community nav link */
