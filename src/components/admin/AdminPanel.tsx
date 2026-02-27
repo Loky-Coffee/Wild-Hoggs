@@ -60,6 +60,12 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
   const [uError, setUError]       = useState<string | null>(null);
   const [uBusy, setUBusy]         = useState<Set<string>>(new Set());
 
+  // User filter state
+  const [fText, setFText]         = useState('');
+  const [fServer, setFServer]     = useState('');
+  const [fRegFrom, setFRegFrom]   = useState('');
+  const [fRegTo, setFRegTo]       = useState('');
+
   // Load reports — hooks must be called unconditionally (Rules of Hooks)
   useEffect(() => {
     if (activeTab !== 'reports' || !isLoggedIn || user?.is_admin !== 1 || !token) return;
@@ -89,6 +95,20 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
       .catch(() => setUError(t('admin.users.error')))
       .finally(() => setULoading(false));
   }, [activeTab, isLoggedIn]);
+
+  // Derived: unique server list + filtered users (client-side, no extra API call)
+  const serverOptions = Array.from(new Set(users.map(u => u.server).filter(Boolean))).sort() as string[];
+  const filteredUsers = users.filter(u => {
+    if (fServer && u.server !== fServer) return false;
+    if (fText) {
+      const q = fText.toLowerCase();
+      if (!u.username.toLowerCase().includes(q) && !u.email.toLowerCase().includes(q)) return false;
+    }
+    if (fRegFrom && u.created_at < fRegFrom) return false;
+    if (fRegTo   && u.created_at > fRegTo + 'T23:59:59') return false;
+    return true;
+  });
+  const hasFilter = fText || fServer || fRegFrom || fRegTo;
 
   // Access check — AFTER all hooks
   if (!isLoggedIn || user?.is_admin !== 1) {
@@ -206,55 +226,104 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
           <>
             {uLoading && <p class="admin-loading">{t('admin.users.loading')}</p>}
             {uError && <p class="admin-error">{uError}</p>}
-            {!uLoading && !uError && users.length === 0 && (
-              <p class="admin-empty">{t('admin.users.empty')}</p>
-            )}
-            {!uLoading && !uError && users.length > 0 && (
-              <div class="admin-table-wrap">
-                <table class="admin-table">
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>E-Mail</th>
-                      <th>Server</th>
-                      <th>Registriert</th>
-                      <th>Letzter Login</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {users.map(u => {
-                      const isYou  = u.id === user?.id;
-                      const isBusy = uBusy.has(u.id);
-                      return (
-                        <tr key={u.id} class={u.is_admin === 1 ? 'admin-table-row-admin' : ''}>
-                          <td>
-                            <span class="admin-user-name">
-                              {u.username}
-                              {u.is_admin === 1 && <span class="admin-user-badge">⚙ Admin</span>}
-                              {isYou && <span class="admin-user-you">{t('admin.users.you')}</span>}
-                            </span>
-                          </td>
-                          <td class="admin-table-muted">{u.email}</td>
-                          <td class="admin-table-muted">{u.server ?? '—'}</td>
-                          <td class="admin-table-muted">{formatDate(u.created_at)}</td>
-                          <td class="admin-table-muted">{u.last_login ? formatDate(u.last_login) : '—'}</td>
-                          <td>
-                            <button
-                              class={u.is_admin === 1 ? 'admin-btn-delete' : 'admin-btn-promote'}
-                              onClick={() => handleToggleAdmin(u)}
-                              disabled={isBusy || isYou}
-                              title={isYou ? 'Eigenen Status nicht änderbar' : undefined}
-                            >
-                              {u.is_admin === 1 ? `✕ ${t('admin.users.removeAdmin')}` : `★ ${t('admin.users.makeAdmin')}`}
-                            </button>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
+            {!uLoading && !uError && (
+              <>
+                {/* Filter bar */}
+                <div class="admin-filter-bar">
+                  <input
+                    class="admin-filter-input"
+                    type="search"
+                    placeholder="Name oder E-Mail…"
+                    value={fText}
+                    onInput={e => setFText((e.target as HTMLInputElement).value)}
+                  />
+                  <select
+                    class="admin-filter-select"
+                    value={fServer}
+                    onChange={e => setFServer((e.target as HTMLSelectElement).value)}
+                  >
+                    <option value="">Alle Server</option>
+                    {serverOptions.map(s => <option key={s} value={s}>{s}</option>)}
+                  </select>
+                  <div class="admin-filter-dates">
+                    <input
+                      class="admin-filter-date"
+                      type="date"
+                      title="Registriert ab"
+                      value={fRegFrom}
+                      onChange={e => setFRegFrom((e.target as HTMLInputElement).value)}
+                    />
+                    <span class="admin-filter-sep">–</span>
+                    <input
+                      class="admin-filter-date"
+                      type="date"
+                      title="Registriert bis"
+                      value={fRegTo}
+                      onChange={e => setFRegTo((e.target as HTMLInputElement).value)}
+                    />
+                  </div>
+                  {hasFilter && (
+                    <button class="admin-filter-reset" onClick={() => { setFText(''); setFServer(''); setFRegFrom(''); setFRegTo(''); }}>
+                      ✕ Reset
+                    </button>
+                  )}
+                  <span class="admin-filter-count">
+                    {filteredUsers.length} / {users.length}
+                  </span>
+                </div>
+
+                {/* Table */}
+                {filteredUsers.length === 0
+                  ? <p class="admin-empty">{t('admin.users.empty')}</p>
+                  : (
+                    <div class="admin-table-wrap">
+                      <table class="admin-table">
+                        <thead>
+                          <tr>
+                            <th>Name</th>
+                            <th>E-Mail</th>
+                            <th>Server</th>
+                            <th>Registriert</th>
+                            <th>Letzter Login</th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {filteredUsers.map(u => {
+                            const isYou  = u.id === user?.id;
+                            const isBusy = uBusy.has(u.id);
+                            return (
+                              <tr key={u.id} class={u.is_admin === 1 ? 'admin-table-row-admin' : ''}>
+                                <td>
+                                  <span class="admin-user-name">
+                                    {u.username}
+                                    {u.is_admin === 1 && <span class="admin-user-badge">⚙ Admin</span>}
+                                    {isYou && <span class="admin-user-you">{t('admin.users.you')}</span>}
+                                  </span>
+                                </td>
+                                <td class="admin-table-muted">{u.email}</td>
+                                <td class="admin-table-muted">{u.server ?? '—'}</td>
+                                <td class="admin-table-muted">{formatDate(u.created_at)}</td>
+                                <td class="admin-table-muted">{u.last_login ? formatDate(u.last_login) : '—'}</td>
+                                <td>
+                                  <button
+                                    class={u.is_admin === 1 ? 'admin-btn-delete' : 'admin-btn-promote'}
+                                    onClick={() => handleToggleAdmin(u)}
+                                    disabled={isBusy || isYou}
+                                    title={isYou ? 'Eigenen Status nicht änderbar' : undefined}
+                                  >
+                                    {u.is_admin === 1 ? `✕ ${t('admin.users.removeAdmin')}` : `★ ${t('admin.users.makeAdmin')}`}
+                                  </button>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                  )
+                }
+              </>
             )}
           </>
         )}

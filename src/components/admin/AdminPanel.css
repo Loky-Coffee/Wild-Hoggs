@@ -179,6 +179,87 @@ body:has(.admin-panel) > main > astro-island {
   cursor: not-allowed;
 }
 
+/* ── User filter bar ── */
+.admin-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.admin-filter-input,
+.admin-filter-select,
+.admin-filter-date {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 5px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.85rem;
+  padding: 0.4rem 0.65rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.admin-filter-input:focus,
+.admin-filter-select:focus,
+.admin-filter-date:focus {
+  border-color: rgba(255, 165, 0, 0.5);
+}
+
+.admin-filter-input {
+  flex: 1;
+  min-width: 160px;
+}
+
+.admin-filter-select {
+  cursor: pointer;
+}
+
+.admin-filter-select option {
+  background: #1a1a2e;
+}
+
+.admin-filter-dates {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.admin-filter-sep {
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 0.8rem;
+}
+
+.admin-filter-date {
+  width: 130px;
+  color-scheme: dark;
+}
+
+.admin-filter-reset {
+  padding: 0.4rem 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  white-space: nowrap;
+}
+
+.admin-filter-reset:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.admin-filter-count {
+  margin-left: auto;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.3);
+  white-space: nowrap;
+}
+
 /* ── Users table ── */
 .admin-table-wrap {
   overflow-x: auto;
