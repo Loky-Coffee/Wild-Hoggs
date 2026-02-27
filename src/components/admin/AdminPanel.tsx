@@ -230,46 +230,52 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
               <>
                 {/* Filter bar */}
                 <div class="admin-filter-bar">
-                  <input
-                    class="admin-filter-input"
-                    type="search"
-                    placeholder="Name oder E-Mail…"
-                    value={fText}
-                    onInput={e => setFText((e.target as HTMLInputElement).value)}
-                  />
-                  <select
-                    class="admin-filter-select"
-                    value={fServer}
-                    onChange={e => setFServer((e.target as HTMLSelectElement).value)}
-                  >
-                    <option value="">Alle Server</option>
-                    {serverOptions.map(s => <option key={s} value={s}>{s}</option>)}
-                  </select>
-                  <div class="admin-filter-dates">
+                  <label class="admin-filter-field">
+                    <span class="admin-filter-label">Name / E-Mail</span>
                     <input
-                      class="admin-filter-date"
+                      class="admin-filter-input"
+                      type="search"
+                      placeholder="Suchen…"
+                      value={fText}
+                      onInput={e => setFText((e.target as HTMLInputElement).value)}
+                    />
+                  </label>
+                  <label class="admin-filter-field">
+                    <span class="admin-filter-label">Server</span>
+                    <input
+                      class="admin-filter-input"
+                      type="text"
+                      placeholder="z. B. 395"
+                      value={fServer}
+                      onInput={e => setFServer((e.target as HTMLInputElement).value)}
+                    />
+                  </label>
+                  <label class="admin-filter-field">
+                    <span class="admin-filter-label">Registriert ab</span>
+                    <input
+                      class="admin-filter-input"
                       type="date"
-                      title="Registriert ab"
                       value={fRegFrom}
                       onChange={e => setFRegFrom((e.target as HTMLInputElement).value)}
                     />
-                    <span class="admin-filter-sep">–</span>
+                  </label>
+                  <label class="admin-filter-field">
+                    <span class="admin-filter-label">Registriert bis</span>
                     <input
-                      class="admin-filter-date"
+                      class="admin-filter-input"
                       type="date"
-                      title="Registriert bis"
                       value={fRegTo}
                       onChange={e => setFRegTo((e.target as HTMLInputElement).value)}
                     />
+                  </label>
+                  <div class="admin-filter-actions">
+                    {hasFilter && (
+                      <button class="admin-filter-reset" onClick={() => { setFText(''); setFServer(''); setFRegFrom(''); setFRegTo(''); }}>
+                        ✕ Reset
+                      </button>
+                    )}
+                    <span class="admin-filter-count">{filteredUsers.length} / {users.length}</span>
                   </div>
-                  {hasFilter && (
-                    <button class="admin-filter-reset" onClick={() => { setFText(''); setFServer(''); setFRegFrom(''); setFRegTo(''); }}>
-                      ✕ Reset
-                    </button>
-                  )}
-                  <span class="admin-filter-count">
-                    {filteredUsers.length} / {users.length}
-                  </span>
                 </div>
 
                 {/* Table */}
