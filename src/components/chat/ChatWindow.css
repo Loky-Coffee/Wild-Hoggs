@@ -51,7 +51,7 @@ body:has(.chat-login-wall) > main > astro-island {
 /* ── Online Users Sidebar ───────────────────────────────────────────────────── */
 
 .chat-online-sidebar {
-  width: 160px;
+  width: 200px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -97,7 +97,7 @@ body:has(.chat-login-wall) > main > astro-island {
   display: flex;
   align-items: center;
   gap: 0.35rem;
-  padding: 0.28rem 0.75rem;
+  padding: 0.3rem 0.75rem;
   min-width: 0;
 }
 
@@ -107,6 +107,23 @@ body:has(.chat-login-wall) > main > astro-island {
   border-radius: 50%;
   flex-shrink: 0;
   opacity: 0.85;
+  align-self: flex-start;
+  margin-top: 0.3rem;
+}
+
+.chat-online-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+  gap: 0.05rem;
+}
+
+.chat-online-name-row {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  min-width: 0;
 }
 
 .chat-online-name {
@@ -115,8 +132,15 @@ body:has(.chat-login-wall) > main > astro-island {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  flex: 1;
   min-width: 0;
+}
+
+.chat-online-server {
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .chat-online-role {

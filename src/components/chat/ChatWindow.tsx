@@ -10,7 +10,7 @@ import './ChatWindow.css';
 type ChatType = 'global' | 'global-lang' | 'server' | 'server-lang';
 
 const POLL_MS     = 5_000;
-const PRESENCE_MS = 30_000;
+const PRESENCE_MS = 5_000;
 
 interface ChatWindowProps {
   translationData: TranslationData;
@@ -292,18 +292,25 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
                   class="chat-online-dot"
                   style={{ background: factionColor(u.faction) }}
                 />
-                <span
-                  class="chat-online-name"
-                  style={{ color: factionColor(u.faction) }}
-                >
-                  {u.username}
+                <span class="chat-online-info">
+                  <span class="chat-online-name-row">
+                    <span
+                      class="chat-online-name"
+                      style={{ color: factionColor(u.faction) }}
+                    >
+                      {u.username}
+                    </span>
+                    {u.is_admin === 1 && (
+                      <span class="chat-online-role">⚙</span>
+                    )}
+                    {u.is_moderator === 1 && (
+                      <span class="chat-online-role chat-online-role-mod">🛡</span>
+                    )}
+                  </span>
+                  {u.server && (
+                    <span class="chat-online-server">{u.server}</span>
+                  )}
                 </span>
-                {u.is_admin === 1 && (
-                  <span class="chat-online-role">⚙</span>
-                )}
-                {u.is_moderator === 1 && (
-                  <span class="chat-online-role chat-online-role-mod">🛡</span>
-                )}
               </li>
             ))
           )}
