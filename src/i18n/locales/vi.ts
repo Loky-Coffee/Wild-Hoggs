@@ -681,6 +681,13 @@ export default {
   'tank.resetAll': 'Đặt Lại Tất Cả',
   'tank.unlock': 'Mở Khóa',
   // Admin Panel
+  'admin.tab.users': 'Users',
+  'admin.users.loading': 'Loading…',
+  'admin.users.error': 'Error loading users.',
+  'admin.users.empty': 'No users found.',
+  'admin.users.makeAdmin': 'Make Admin',
+  'admin.users.removeAdmin': 'Remove Admin',
+  'admin.users.you': 'You',
   'nav.admin': 'Administration',
   'seo.admin.title': 'Wild Hoggs | Administration',
   'seo.admin.description': 'Admin panel.',

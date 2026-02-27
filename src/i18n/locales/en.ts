@@ -683,6 +683,13 @@ export default {
   'seo.research.army_building.description': 'Calculate badge costs for Last Z Army Building research. Build the ultimate Last Z army. Free tool by Wild Hoggs — Server 395.',
   // Admin Panel
   'nav.admin': 'Administration',
+  'admin.tab.users': 'Users',
+  'admin.users.loading': 'Loading…',
+  'admin.users.error': 'Error loading users.',
+  'admin.users.empty': 'No users found.',
+  'admin.users.makeAdmin': 'Make Admin',
+  'admin.users.removeAdmin': 'Remove Admin',
+  'admin.users.you': 'You',
   'seo.admin.title': 'Wild Hoggs | Administration',
   'seo.admin.description': 'Admin panel.',
   'admin.tab.reports': 'Chat Reports',

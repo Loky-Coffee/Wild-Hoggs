@@ -683,6 +683,13 @@ export default {
   'tank.unlock': 'Freischalten',
   // Admin Panel
   'nav.admin': 'Administration',
+  'admin.tab.users': 'Benutzer',
+  'admin.users.loading': 'Lädt…',
+  'admin.users.error': 'Fehler beim Laden der Benutzer.',
+  'admin.users.empty': 'Keine Benutzer gefunden.',
+  'admin.users.makeAdmin': 'Admin machen',
+  'admin.users.removeAdmin': 'Admin entfernen',
+  'admin.users.you': 'Du',
   'seo.admin.title': 'Wild Hoggs | Administration',
   'seo.admin.description': 'Admin-Panel.',
   'admin.tab.reports': 'Chat-Meldungen',

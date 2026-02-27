@@ -133,6 +133,93 @@
   cursor: not-allowed;
 }
 
+.admin-btn-promote {
+  padding: 0.4rem 0.9rem;
+  border: 1px solid rgba(255, 165, 0, 0.5);
+  border-radius: 5px;
+  background: rgba(255, 165, 0, 0.1);
+  color: #ffa500;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.admin-btn-promote:hover:not(:disabled) {
+  background: rgba(255, 165, 0, 0.22);
+  border-color: rgba(255, 165, 0, 0.9);
+}
+
+.admin-btn-promote:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.admin-user-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.admin-user-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.admin-user-card-admin {
+  border-color: rgba(255, 165, 0, 0.3);
+  background: rgba(255, 165, 0, 0.04);
+}
+
+.admin-user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.admin-user-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.admin-user-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #ffa500;
+  background: rgba(255, 165, 0, 0.12);
+  border: 1px solid rgba(255, 165, 0, 0.35);
+  border-radius: 4px;
+  padding: 0.05rem 0.4rem;
+  letter-spacing: 0.04em;
+}
+
+.admin-user-you {
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.35);
+  font-weight: 400;
+}
+
+.admin-user-meta {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.35);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .admin-btn-dismiss {
   padding: 0.4rem 0.9rem;
   border: 1px solid rgba(100, 180, 120, 0.5);

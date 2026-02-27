@@ -681,6 +681,13 @@ export default {
   'tank.resetAll': '모두 초기화',
   'tank.unlock': '잠금 해제',
   // Admin Panel
+  'admin.tab.users': 'Users',
+  'admin.users.loading': 'Loading…',
+  'admin.users.error': 'Error loading users.',
+  'admin.users.empty': 'No users found.',
+  'admin.users.makeAdmin': 'Make Admin',
+  'admin.users.removeAdmin': 'Remove Admin',
+  'admin.users.you': 'You',
   'nav.admin': 'Administration',
   'seo.admin.title': 'Wild Hoggs | Administration',
   'seo.admin.description': 'Admin panel.',
