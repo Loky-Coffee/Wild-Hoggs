@@ -54,6 +54,11 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
     try { return JSON.parse(localStorage.getItem('wh-pm-contacts') ?? '[]'); }
     catch { return []; }
   });
+  const [pmUnread,     setPmUnread]     = useState<Set<string>>(new Set());
+
+  const pmInboxSince = useRef<string | null>(null);
+  const inboxRef     = useRef<ReturnType<typeof setInterval> | null>(null);
+  const openPMRef    = useRef<string | null>(null);
 
   const lastCreatedAt = useRef<string | null>(null);
   const pollRef       = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -61,6 +66,18 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
   const chatTypeRef   = useRef<ChatType>(chatType);
 
   useEffect(() => { chatTypeRef.current = chatType; setReplyTo(null); }, [chatType]);
+  useEffect(() => {
+    openPMRef.current = openPM;
+    if (openPM) {
+      // Clear unread for the now-open conversation
+      setPmUnread(prev => {
+        if (!prev.has(openPM)) return prev;
+        const next = new Set(prev);
+        next.delete(openPM);
+        return next;
+      });
+    }
+  }, [openPM]);
 
   const isAdmin   = user?.is_admin === 1 || user?.is_moderator === 1;
   const hasLang   = !!(user?.language && user.language.trim());
@@ -88,6 +105,46 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
     return () => {
       if (presenceRef.current) clearInterval(presenceRef.current);
     };
+  }, [isLoggedIn, token]);
+
+  // ── PM Inbox polling (detect incoming PMs) ───────────────────────────────
+  useEffect(() => {
+    if (!isLoggedIn || !token) return;
+
+    const pollInbox = async () => {
+      if (document.visibilityState === 'hidden') return;
+      try {
+        const params = pmInboxSince.current
+          ? `?since=${encodeURIComponent(pmInboxSince.current)}`
+          : '';
+        const res = await fetch(`/api/chat/pm/inbox${params}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (!res.ok) return;
+        const data = await res.json() as { senders: { sender_username: string; last_created_at: string }[]; server_time: string };
+
+        if (data.server_time) pmInboxSince.current = data.server_time;
+
+        if (data.senders.length > 0) {
+          // Add senders to contacts + mark unread if panel not open for them
+          data.senders.forEach(({ sender_username }) => {
+            setPmContacts(prev => {
+              const next = [sender_username, ...prev.filter(n => n !== sender_username)].slice(0, 10);
+              localStorage.setItem('wh-pm-contacts', JSON.stringify(next));
+              return next;
+            });
+            if (openPMRef.current !== sender_username) {
+              setPmUnread(prev => new Set([...prev, sender_username]));
+            }
+          });
+        }
+      } catch { /* ignore */ }
+    };
+
+    // Kick off immediately to get server_time baseline, then poll
+    pollInbox();
+    inboxRef.current = setInterval(pollInbox, POLL_MS);
+    return () => { if (inboxRef.current) clearInterval(inboxRef.current); };
   }, [isLoggedIn, token]);
 
   // Filter online users by currently visible channel
@@ -228,6 +285,10 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
 
   const openPMWith = useCallback((username: string) => {
     setOpenPM(username);
+    setPmUnread(prev => {
+      if (!prev.has(username)) return prev;
+      const next = new Set(prev); next.delete(username); return next;
+    });
     setPmContacts(prev => {
       const next = [username, ...prev.filter(n => n !== username)].slice(0, 10);
       localStorage.setItem('wh-pm-contacts', JSON.stringify(next));
@@ -294,6 +355,25 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
 
       {/* ── Online Users Sidebar ── */}
       <div class="chat-online-sidebar">
+
+        {/* DM Contacts — top section, always visible */}
+        {pmContacts.length > 0 && (
+          <div class="chat-pm-contacts">
+            <div class="chat-pm-contacts-header">DMs</div>
+            {pmContacts.map(name => (
+              <button
+                key={name}
+                class={`chat-pm-contact${openPM === name ? ' chat-pm-contact-active' : ''}`}
+                onClick={() => openPMWith(name)}
+              >
+                <span class="chat-pm-contact-icon">✉</span>
+                <span class="chat-pm-contact-name">{name}</span>
+                {pmUnread.has(name) && <span class="chat-pm-unread-dot" />}
+              </button>
+            ))}
+          </div>
+        )}
+
         <div class="chat-online-header">
           Online <span class="chat-online-count">{visibleOnline.length}</span>
         </div>
@@ -337,21 +417,6 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
             ))
           )}
         </ul>
-        {pmContacts.length > 0 && (
-          <div class="chat-pm-contacts">
-            <div class="chat-pm-contacts-header">DMs</div>
-            {pmContacts.map(name => (
-              <button
-                key={name}
-                class={`chat-pm-contact${openPM === name ? ' chat-pm-contact-active' : ''}`}
-                onClick={() => openPMWith(name)}
-              >
-                <span class="chat-pm-contact-icon">✉</span>
-                <span class="chat-pm-contact-name">{name}</span>
-              </button>
-            ))}
-          </div>
-        )}
       </div>
 
       {/* ── PM Panel ── */}

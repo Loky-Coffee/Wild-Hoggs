@@ -178,11 +178,11 @@ body:has(.chat-login-wall) > main > astro-island {
   color: #ffa500 !important;
 }
 
-/* ── DM Contacts (bottom of sidebar) ────────────────────────────────────── */
+/* ── DM Contacts (top of sidebar, above online list) ────────────────────── */
 
 .chat-pm-contacts {
   flex-shrink: 0;
-  border-top: 1px solid rgba(255, 165, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 165, 0, 0.1);
   padding: 0.3rem 0;
 }
 
@@ -232,6 +232,16 @@ body:has(.chat-login-wall) > main > astro-island {
   overflow: hidden;
   text-overflow: ellipsis;
   min-width: 0;
+  flex: 1;
+}
+
+.chat-pm-unread-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ffa500;
+  flex-shrink: 0;
+  box-shadow: 0 0 5px rgba(255, 165, 0, 0.6);
 }
 
 /* ── Main Chat Column ───────────────────────────────────────────────────────── */
