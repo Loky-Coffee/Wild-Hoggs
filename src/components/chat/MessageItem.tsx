@@ -10,6 +10,9 @@ export interface Message {
   created_at: string;
   is_admin:     number;
   is_moderator: number;
+  reply_to_id?:       string | null;
+  reply_to_username?: string | null;
+  reply_to_text?:     string | null;
 }
 
 export interface AgoStrings {
@@ -29,6 +32,7 @@ interface MessageItemProps {
   ago:             AgoStrings;
   isAdmin:         boolean;
   onDelete:        (id: string) => void;
+  onReply:         (msg: Message) => void;
 }
 
 const FACTION_COLORS: Record<string, string> = {
@@ -54,7 +58,7 @@ function relativeTime(dateStr: string, ago: AgoStrings): string {
 
 export default function MessageItem({
   msg, currentUsername, onReport, reportedIds,
-  reportLabel, reportedLabel, ago, isAdmin, onDelete,
+  reportLabel, reportedLabel, ago, isAdmin, onDelete, onReply,
 }: MessageItemProps) {
   const [deleting, setDeleting] = useState(false);
 
@@ -96,9 +100,22 @@ export default function MessageItem({
         {isOwn && isModMsg && (
           <span class="chat-mod-label chat-mod-label-own">Moderator 🛡</span>
         )}
+        {msg.reply_to_id && (
+          <div class={`chat-reply-quote${isOwn ? ' chat-reply-quote-own' : ''}`}>
+            <span class="chat-reply-author">{msg.reply_to_username ?? '—'}</span>
+            <span class="chat-reply-text">{msg.reply_to_text ?? '…'}</span>
+          </div>
+        )}
         <p class="chat-msg-text">{msg.message}</p>
         <div class={`chat-bubble-footer${isOwn ? ' chat-bubble-footer-own' : ''}`}>
           <span class="chat-msg-time">{relativeTime(msg.created_at, ago)}</span>
+          <button
+            class="chat-msg-reply"
+            onClick={() => onReply(msg)}
+            title="Antworten"
+          >
+            ↩
+          </button>
           {!isOwn && (
             <button
               class={`chat-msg-report${isReported ? ' chat-msg-report-done' : ''}`}

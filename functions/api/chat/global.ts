@@ -38,9 +38,11 @@ export async function onRequestGet(ctx: any) {
   if (since) {
     const { results } = await DB.prepare(
       `SELECT cg.id, cg.username, cg.faction, cg.server, cg.message, cg.created_at,
-              COALESCE(u.is_admin, 0) AS is_admin, COALESCE(u.is_moderator, 0) AS is_moderator
+              COALESCE(u.is_admin, 0) AS is_admin, COALESCE(u.is_moderator, 0) AS is_moderator,
+              cg.reply_to_id, rg.username AS reply_to_username, SUBSTR(rg.message, 1, 120) AS reply_to_text
        FROM chat_global cg
        LEFT JOIN users u ON cg.user_id = u.id
+       LEFT JOIN chat_global rg ON cg.reply_to_id = rg.id
        WHERE ${langFilterCg} AND cg.created_at > ?
        ORDER BY cg.created_at ASC
        LIMIT ?`
@@ -49,9 +51,11 @@ export async function onRequestGet(ctx: any) {
   } else {
     const { results } = await DB.prepare(
       `SELECT cg.id, cg.username, cg.faction, cg.server, cg.message, cg.created_at,
-              COALESCE(u.is_admin, 0) AS is_admin, COALESCE(u.is_moderator, 0) AS is_moderator
+              COALESCE(u.is_admin, 0) AS is_admin, COALESCE(u.is_moderator, 0) AS is_moderator,
+              cg.reply_to_id, rg.username AS reply_to_username, SUBSTR(rg.message, 1, 120) AS reply_to_text
        FROM chat_global cg
        LEFT JOIN users u ON cg.user_id = u.id
+       LEFT JOIN chat_global rg ON cg.reply_to_id = rg.id
        WHERE ${langFilterCg}
        ORDER BY cg.created_at DESC
        LIMIT ? OFFSET ?`
@@ -80,7 +84,9 @@ export async function onRequestPost(ctx: any) {
   try { body = await ctx.request.json(); }
   catch { return Response.json({ error: 'Ungültiges JSON' }, { status: 400 }); }
 
-  const message = typeof body?.message === 'string' ? body.message.trim() : '';
+  const message    = typeof body?.message     === 'string' ? body.message.trim() : '';
+  const replyToId  = typeof body?.reply_to_id === 'string' ? body.reply_to_id   : null;
+
   if (!message) {
     return Response.json({ error: 'Nachricht darf nicht leer sein.' }, { status: 400 });
   }
@@ -93,12 +99,16 @@ export async function onRequestPost(ctx: any) {
 
   const id = genId();
   await DB.prepare(
-    `INSERT INTO chat_global (id, user_id, username, faction, server, lang, message)
-     VALUES (?, ?, ?, ?, ?, ?, ?)`
-  ).bind(id, user.user_id, user.username, user.faction, user.server, lang, message).run();
+    `INSERT INTO chat_global (id, user_id, username, faction, server, lang, message, reply_to_id)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+  ).bind(id, user.user_id, user.username, user.faction, user.server, lang, message, replyToId).run();
 
   const created = await DB.prepare(
-    'SELECT id, username, faction, server, message, created_at FROM chat_global WHERE id = ?'
+    `SELECT cg.id, cg.username, cg.faction, cg.server, cg.message, cg.created_at,
+            cg.reply_to_id, rg.username AS reply_to_username, SUBSTR(rg.message, 1, 120) AS reply_to_text
+     FROM chat_global cg
+     LEFT JOIN chat_global rg ON cg.reply_to_id = rg.id
+     WHERE cg.id = ?`
   ).bind(id).first() as any;
 
   return Response.json({ ...created, is_admin: user.is_admin, is_moderator: user.is_moderator }, { status: 201 });

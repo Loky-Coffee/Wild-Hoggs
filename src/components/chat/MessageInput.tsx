@@ -1,23 +1,36 @@
-import { useState, useRef } from 'preact/hooks';
+import { useState, useRef, useEffect } from 'preact/hooks';
 
 const MAX_LEN = 500;
 
+export interface ReplyTarget {
+  id:       string;
+  username: string;
+  text:     string;
+}
+
 interface MessageInputProps {
-  onSend:       (text: string) => Promise<void>;
-  sending:      boolean;
-  sendError:    string | null;
-  onClearError: () => void;
-  placeholder:  string;
-  sendLabel:    string;
-  charsLeft:    string;
+  onSend:         (text: string) => Promise<void>;
+  sending:        boolean;
+  sendError:      string | null;
+  onClearError:   () => void;
+  placeholder:    string;
+  sendLabel:      string;
+  charsLeft:      string;
+  replyTo?:       ReplyTarget | null;
+  onCancelReply?: () => void;
 }
 
 export default function MessageInput({
   onSend, sending, sendError, onClearError,
-  placeholder, sendLabel, charsLeft,
+  placeholder, sendLabel, charsLeft, replyTo, onCancelReply,
 }: MessageInputProps) {
   const [text, setText]     = useState('');
   const textareaRef         = useRef<HTMLTextAreaElement>(null);
+
+  // Focus textarea whenever a reply is selected
+  useEffect(() => {
+    if (replyTo) textareaRef.current?.focus();
+  }, [replyTo?.id]);
 
   const handleSubmit = async () => {
     const trimmed = text.trim();
@@ -47,6 +60,15 @@ export default function MessageInput({
 
   return (
     <div class="chat-input-area">
+      {replyTo && (
+        <div class="chat-reply-bar">
+          <div class="chat-reply-bar-content">
+            <span class="chat-reply-bar-author">↩ {replyTo.username}</span>
+            <span class="chat-reply-bar-text">{replyTo.text}</span>
+          </div>
+          <button class="chat-reply-bar-cancel" onClick={onCancelReply} title="Antwort abbrechen">✕</button>
+        </div>
+      )}
       {sendError && (
         <div class="chat-send-error">{sendError}</div>
       )}

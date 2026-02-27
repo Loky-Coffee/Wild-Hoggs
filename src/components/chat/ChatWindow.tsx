@@ -3,7 +3,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { useTranslations } from '../../i18n/utils';
 import type { TranslationData } from '../../i18n/index';
 import MessageList from './MessageList';
-import MessageInput from './MessageInput';
+import MessageInput, { type ReplyTarget } from './MessageInput';
 import type { Message } from './MessageItem';
 import './ChatWindow.css';
 
@@ -26,12 +26,13 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
   const [sending,     setSending]     = useState(false);
   const [sendError,   setSendError]   = useState<string | null>(null);
   const [reportedIds, setReportedIds] = useState<Set<string>>(new Set());
+  const [replyTo,     setReplyTo]     = useState<ReplyTarget | null>(null);
 
   const lastCreatedAt = useRef<string | null>(null);
   const pollRef       = useRef<ReturnType<typeof setInterval> | null>(null);
   const chatTypeRef   = useRef<ChatType>(chatType);
 
-  useEffect(() => { chatTypeRef.current = chatType; }, [chatType]);
+  useEffect(() => { chatTypeRef.current = chatType; setReplyTo(null); }, [chatType]);
 
   const isAdmin   = user?.is_admin === 1 || user?.is_moderator === 1;
   const hasLang   = !!(user?.language && user.language.trim());
@@ -117,11 +118,12 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
     if (!token) return;
     setSending(true);
     setSendError(null);
+    const currentReplyId = replyTo?.id ?? null;
     try {
       const res = await fetch(buildUrl(chatType), {
         method:  'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body:    JSON.stringify({ message: text }),
+        body:    JSON.stringify({ message: text, reply_to_id: currentReplyId }),
       });
       const data = await res.json() as any;
       if (!res.ok) { setSendError(data.error ?? 'Senden fehlgeschlagen.'); return; }
@@ -131,12 +133,13 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
         return known.has(newMsg.id) ? prev : [...prev, newMsg];
       });
       lastCreatedAt.current = newMsg.created_at;
+      setReplyTo(null);
     } catch {
       setSendError('Verbindungsfehler. Bitte versuche es erneut.');
     } finally {
       setSending(false);
     }
-  }, [token, chatType, buildUrl]);
+  }, [token, chatType, buildUrl, replyTo]);
 
   const handleReport = useCallback(async (msgId: string) => {
     if (!token) return;
@@ -149,6 +152,14 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
       setReportedIds(prev => new Set([...prev, msgId]));
     } catch { /* ignore */ }
   }, [token, chatType]);
+
+  const handleReply = useCallback((msg: Message) => {
+    setReplyTo({
+      id:       msg.id,
+      username: msg.username,
+      text:     msg.message.length > 80 ? msg.message.slice(0, 80) + '…' : msg.message,
+    });
+  }, []);
 
   const handleDelete = useCallback(async (msgId: string) => {
     if (!token) return;
@@ -249,6 +260,7 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
           ago={ago}
           isAdmin={isAdmin}
           onDelete={handleDelete}
+          onReply={handleReply}
         />
       )}
 
@@ -261,6 +273,8 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
         placeholder={t('chat.input_placeholder')}
         sendLabel={t('chat.send')}
         charsLeft={t('chat.chars_left')}
+        replyTo={replyTo}
+        onCancelReply={() => setReplyTo(null)}
       />
     </div>
   );
