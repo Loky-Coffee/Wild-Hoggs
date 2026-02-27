@@ -35,6 +35,23 @@ const FACTION_LABELS: Record<string, { label: string; icon: string }> = {
   'guard-of-order': { label: 'Guard of Order', icon: '⚖️' },
 };
 
+function parseFormationPower(input: string): number | null {
+  let s = input.trim().toLowerCase().replace(/\s/g, '');
+  if (!s) return null;
+  let multiplier = 1;
+  if (s.endsWith('m')) { multiplier = 1_000_000; s = s.slice(0, -1); }
+  else if (s.endsWith('k')) { multiplier = 1_000; s = s.slice(0, -1); }
+  const n = parseFloat(s.replace(',', '.'));
+  if (isNaN(n) || n <= 0) return null;
+  return Math.round(n * multiplier);
+}
+
+const FACTION_IMG: Record<string, string> = {
+  'blood-rose':     '/images/heroes/symbols/blood-rose.webp',
+  'wings-of-dawn':  '/images/heroes/symbols/wings-of-dawn.webp',
+  'guard-of-order': '/images/heroes/symbols/guard-of-order.webp',
+};
+
 function getLangFromPath(): string {
   const [, first] = window.location.pathname.split('/');
   const langs = ['de','fr','ko','th','ja','pt','es','tr','id','zh-TW','zh-CN','it','ar','vi'];
@@ -62,10 +79,22 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
 
   const [factionSaving, setFactionSaving] = useState(false);
 
+  const [formationBr, setFormationBr] = useState('');
+  const [formationWd, setFormationWd] = useState('');
+  const [formationGo, setFormationGo] = useState('');
+  const [formationSaving, setFormationSaving] = useState(false);
+  const [formationMsg, setFormationMsg] = useState<{ type: 'error' | 'ok'; text: string } | null>(null);
+
   useEffect(() => {
     if (user?.username) setUsername(user.username);
     if (user?.server !== undefined) setServer(user.server ?? '');
   }, [user?.username, user?.server]);
+
+  useEffect(() => {
+    setFormationBr(user?.formation_power_br ? String(user.formation_power_br) : '');
+    setFormationWd(user?.formation_power_wd ? String(user.formation_power_wd) : '');
+    setFormationGo(user?.formation_power_go ? String(user.formation_power_go) : '');
+  }, [user?.formation_power_br, user?.formation_power_wd, user?.formation_power_go]);
 
   // ── Calculator stats ───────────────────────────────────────────────────────
   interface TankState   { unlockedLevels: number[]; subLevels: Record<string,number> }
@@ -134,6 +163,28 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
     try { await patchProfile({ faction }); }
     catch { /* ignore */ }
     finally { setFactionSaving(false); }
+  };
+
+  const handleSaveFormations = async () => {
+    if (!token) return;
+    setFormationSaving(true); setFormationMsg(null);
+    try {
+      const parseField = (s: string): number | null => {
+        if (!s.trim()) return null;
+        const n = parseFormationPower(s);
+        if (n === null) throw new Error('Ungültiger Wert: ' + s.trim());
+        return n;
+      };
+      await patchProfile({
+        formation_power_br: parseField(formationBr),
+        formation_power_wd: parseField(formationWd),
+        formation_power_go: parseField(formationGo),
+      });
+      setFormationMsg({ type: 'ok', text: t('profile.saved') });
+      setTimeout(() => setFormationMsg(null), 3000);
+    } catch (e: any) {
+      setFormationMsg({ type: 'error', text: e.message });
+    } finally { setFormationSaving(false); }
   };
 
   const handleChangePassword = async (e: Event) => {
@@ -212,6 +263,45 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
               <span class="pp-faction-name">{label}</span>
             </button>
           ))}
+        </div>
+      </div>
+
+      {/* ── Formation Power ── */}
+      <div class="pp-card">
+        <h2 class="pp-section-title">{t('profile.formations')}</h2>
+        <p class="pp-formations-hint">{t('profile.formations.hint')}</p>
+        <div class="pp-formations-grid">
+          {([
+            { key: 'blood-rose',     field: formationBr, setter: setFormationBr     },
+            { key: 'wings-of-dawn',  field: formationWd, setter: setFormationWd     },
+            { key: 'guard-of-order', field: formationGo, setter: setFormationGo     },
+          ] as const).map(({ key, field, setter }) => (
+            <div key={key} class="pp-formation-row">
+              <img
+                src={FACTION_IMG[key]}
+                alt={FACTION_LABELS[key].label}
+                class="pp-formation-img"
+              />
+              <span class="pp-formation-name">{FACTION_LABELS[key].label}</span>
+              <input
+                class="pp-input pp-formation-input"
+                type="text"
+                placeholder={t('profile.formations.placeholder')}
+                value={field}
+                onInput={e => setter((e.target as HTMLInputElement).value)}
+              />
+            </div>
+          ))}
+        </div>
+        <div class="pp-formations-footer">
+          {formationMsg && <p class={`pp-msg pp-msg-${formationMsg.type}`}>{formationMsg.text}</p>}
+          <button
+            class="pp-btn-save"
+            onClick={handleSaveFormations}
+            disabled={formationSaving}
+          >
+            {formationSaving ? t('profile.saving') : t('profile.save')}
+          </button>
         </div>
       </div>
 

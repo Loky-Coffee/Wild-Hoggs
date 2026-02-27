@@ -7,6 +7,9 @@ export interface AuthUser {
   faction: string | null;
   server: string | null;
   language: string;
+  formation_power_br: number | null;
+  formation_power_wd: number | null;
+  formation_power_go: number | null;
 }
 
 export const AUTH_TOKEN_KEY = 'wh-auth-token';

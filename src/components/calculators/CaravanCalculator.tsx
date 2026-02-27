@@ -4,6 +4,7 @@ import { FACTIONS, type HeroFaction } from '../../data/heroes';
 import { useTranslations } from '../../i18n/utils';
 import type { TranslationData } from '../../i18n/index';
 import { useCalculatorState } from '../../hooks/useCalculatorState';
+import { useAuth } from '../../hooks/useAuth';
 import './Calculator.css';
 import './CaravanCalculator.css';
 
@@ -25,6 +26,12 @@ const FACTION_ICON: Record<HeroFaction, string> = {
 };
 
 const FACTION_LIST = Object.keys(FACTIONS) as HeroFaction[];
+
+const FACTION_POWER_FIELD: Record<HeroFaction, 'formation_power_br' | 'formation_power_wd' | 'formation_power_go'> = {
+  'blood-rose':     'formation_power_br',
+  'wings-of-dawn':  'formation_power_wd',
+  'guard-of-order': 'formation_power_go',
+};
 
 function parsePower(input: string): number {
   let s = input.trim().toLowerCase().replace(/\s/g, '');
@@ -93,6 +100,7 @@ const CARAVAN_DEFAULT: CaravanState = {
 
 export default function CaravanCalculator({ lang, translationData }: CaravanCalculatorProps) {
   const [stored, setStored] = useCalculatorState<CaravanState>('caravan', 'main', CARAVAN_DEFAULT);
+  const { user } = useAuth();
 
   const powerInput    = stored.powerInput;
   const yourFaction   = stored.yourFaction;
@@ -101,11 +109,24 @@ export default function CaravanCalculator({ lang, translationData }: CaravanCalc
   const calculated    = stored.calculated;
 
   const setPowerInput    = (v: string)           => setStored(s => ({ ...s, powerInput: v, calculated: false }));
-  const setYourFaction   = (v: HeroFaction | null) => setStored(s => ({ ...s, yourFaction: v, calculated: false }));
   const setMatchingCount = (v: number)           => setStored(s => ({ ...s, matchingCount: v, calculated: false }));
   const setWeeklyActive  = (v: boolean | ((prev: boolean) => boolean)) =>
     setStored(s => ({ ...s, weeklyActive: typeof v === 'function' ? v(s.weeklyActive) : v, calculated: false }));
   const setCalculated    = (v: boolean)          => setStored(s => ({ ...s, calculated: v }));
+
+  // When selecting a faction: auto-fill power from profile if input is currently empty
+  const handleFactionSelect = (f: HeroFaction) => {
+    const newFaction = f === yourFaction ? null : f;
+    setStored(s => {
+      const savedPower = newFaction ? (user?.[FACTION_POWER_FIELD[newFaction]] ?? null) : null;
+      return {
+        ...s,
+        yourFaction: newFaction,
+        powerInput: (!s.powerInput.trim() && savedPower) ? String(savedPower) : s.powerInput,
+        calculated: false,
+      };
+    });
+  };
 
   const t = useTranslations(translationData);
 
@@ -168,18 +189,24 @@ export default function CaravanCalculator({ lang, translationData }: CaravanCalc
       <div className="calc-step">
         <div className="calc-step-label">{t('calc.caravan.yourFaction')}</div>
         <div className="cc-faction-row">
-          {FACTION_LIST.map(f => (
-            <button
-              key={f}
-              type="button"
-              className={`cc-faction-card cc-${f}${yourFaction === f ? ' selected' : ''}`}
-              onClick={() => setYourFaction(f === yourFaction ? null : f)}
-              aria-label={fn[f]}
-            >
-              <img src={FACTION_ICON[f]} alt={fn[f]} className="cc-faction-icon" />
-              <span className="cc-faction-name">{fn[f]}</span>
-            </button>
-          ))}
+          {FACTION_LIST.map(f => {
+            const savedPower = user?.[FACTION_POWER_FIELD[f]] ?? null;
+            return (
+              <button
+                key={f}
+                type="button"
+                className={`cc-faction-card cc-${f}${yourFaction === f ? ' selected' : ''}`}
+                onClick={() => handleFactionSelect(f)}
+                aria-label={fn[f]}
+              >
+                <img src={FACTION_ICON[f]} alt={fn[f]} className="cc-faction-icon" />
+                <span className="cc-faction-name">{fn[f]}</span>
+                {savedPower && (
+                  <span className="cc-faction-saved">💾 {formatCompact(savedPower, lang)}</span>
+                )}
+              </button>
+            );
+          })}
         </div>
 
         {yourFaction && (

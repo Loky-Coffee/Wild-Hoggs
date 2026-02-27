@@ -15,6 +15,9 @@ export async function onRequestGet(ctx: any) {
     username: user.username,
     faction: user.faction,
     server: user.server,
-    language: user.language
+    language: user.language,
+    formation_power_br: user.formation_power_br ?? null,
+    formation_power_wd: user.formation_power_wd ?? null,
+    formation_power_go: user.formation_power_go ?? null,
   });
 }

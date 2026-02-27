@@ -649,6 +649,9 @@ export default {
   'profile.stat.researchStats': '{categories} Categories · {technologies} Technologies',
   'profile.stat.buildingLevel': 'Level {current} → {target}',
   'profile.stat.heroLevel': 'Lvl {current} → {target}',
+  'profile.formations': 'Formation Power',
+  'profile.formations.hint': 'Your best 5-item set power per faction',
+  'profile.formations.placeholder': 'e.g. 15m',
   // Tool Calculator SEO Pages
   'seo.hero-exp.title': 'Wild Hoggs | Last Z Hero EXP Calculator - Level Up Heroes',
   'seo.hero-exp.description': 'Calculate exact EXP and shards needed to level up any Last Z hero to your target level. Free calculator by Wild Hoggs guild — Server 395.',

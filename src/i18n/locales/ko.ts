@@ -523,6 +523,9 @@ export default {
   'profile.stat.researchStats': '{categories} Categories · {technologies} Technologies',
   'profile.stat.buildingLevel': 'Level {current} → {target}',
   'profile.stat.heroLevel': 'Lvl {current} → {target}',
+  'profile.formations': 'Formation Power',
+  'profile.formations.hint': 'Your best 5-item set power per faction',
+  'profile.formations.placeholder': 'e.g. 15m',
   // Tool Calculator SEO Pages
   'seo.hero-exp.title': 'Wild Hoggs | Last Z 영웅 EXP 계산기',
   'seo.hero-exp.description': '영웅 강화에 필요한 EXP와 조각 계산',

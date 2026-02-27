@@ -57,6 +57,23 @@ export async function onRequestPatch(ctx: any) {
     values.push(body.language);
   }
 
+  const FP_FIELDS = ['formation_power_br', 'formation_power_wd', 'formation_power_go'] as const;
+  for (const field of FP_FIELDS) {
+    if (body[field] !== undefined) {
+      if (body[field] === null) {
+        updates.push(`${field} = ?`);
+        values.push(null);
+      } else {
+        const val = Math.round(Number(body[field]));
+        if (!Number.isFinite(val) || val <= 0 || val > 10_000_000_000) {
+          return Response.json({ error: `${field}: ungültiger Wert` }, { status: 400 });
+        }
+        updates.push(`${field} = ?`);
+        values.push(val);
+      }
+    }
+  }
+
   if (updates.length === 0) {
     return Response.json({ error: 'Nichts zum Aktualisieren' }, { status: 400 });
   }
@@ -69,7 +86,7 @@ export async function onRequestPatch(ctx: any) {
   ).bind(...values).run();
 
   const updated = await DB.prepare(
-    'SELECT id, email, username, faction, server, language FROM users WHERE id = ?'
+    'SELECT id, email, username, faction, server, language, formation_power_br, formation_power_wd, formation_power_go FROM users WHERE id = ?'
   ).bind(user.user_id).first() as any;
 
   return Response.json({
@@ -78,6 +95,9 @@ export async function onRequestPatch(ctx: any) {
     username: updated.username,
     faction: updated.faction,
     server: updated.server,
-    language: updated.language
+    language: updated.language,
+    formation_power_br: updated.formation_power_br ?? null,
+    formation_power_wd: updated.formation_power_wd ?? null,
+    formation_power_go: updated.formation_power_go ?? null,
   });
 }

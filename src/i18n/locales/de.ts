@@ -523,6 +523,9 @@ export default {
   'profile.stat.researchStats': '{categories} Kategorien · {technologies} Technologien',
   'profile.stat.buildingLevel': 'Level {current} → {target}',
   'profile.stat.heroLevel': 'Lvl {current} → {target}',
+  'profile.formations': 'Formations-Power',
+  'profile.formations.hint': 'Deine beste 5-Item-Set Power pro Fraktion',
+  'profile.formations.placeholder': 'z.B. 15m',
   // Tool Calculator SEO Pages
   'seo.hero-exp.title': 'Wild Hoggs | Last Z Hero EXP Rechner',
   'seo.hero-exp.description': 'Berechne benötigte EXP und Shards für Last Z Hero-Upgrades',
