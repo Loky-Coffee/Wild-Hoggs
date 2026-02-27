@@ -23,18 +23,34 @@ export interface AgoStrings {
   days:    string;
 }
 
+export interface MessageStrings {
+  reply:         string;
+  pm:            string;
+  delete:        string;
+  admin:         string;
+  mod:           string;
+  deleteTitle:   string;
+  deleteConfirm: string;
+  deleteButton:  string;
+  reportTitle:   string;
+  reportPrompt:  string;
+  report:        string;
+  reported:      string;
+  cancel:        string;
+  reasons: Array<{ value: string; icon: string; label: string }>;
+}
+
 interface MessageItemProps {
   msg:             Message;
   currentUsername: string | null;
   onReport:        (id: string, reason: string) => void;
   reportedIds:     Set<string>;
-  reportLabel:     string;
-  reportedLabel:   string;
   ago:             AgoStrings;
   isAdmin:         boolean;
   onDelete:        (id: string) => Promise<void>;
   onReply:         (msg: Message) => void;
   onPM?:           (username: string) => void;
+  strings:         MessageStrings;
 }
 
 const FACTION_COLORS: Record<string, string> = {
@@ -42,14 +58,6 @@ const FACTION_COLORS: Record<string, string> = {
   'wings-of-dawn':  '#4a9eda',
   'guard-of-order': '#27ae60',
 };
-
-const REPORT_REASONS = [
-  { value: 'spam',    icon: '📢', label: 'Spam / Werbung' },
-  { value: 'porn',    icon: '🔞', label: 'Pornografische Inhalte' },
-  { value: 'racism',  icon: '🚫', label: 'Rassismus / Diskriminierung' },
-  { value: 'hate',    icon: '💢', label: 'Beleidigung / Hassrede' },
-  { value: 'other',   icon: '⚠️', label: 'Sonstiges' },
-] as const;
 
 function relativeTime(dateStr: string, ago: AgoStrings): string {
   const iso     = dateStr.includes('T') ? dateStr : dateStr.replace(' ', 'T') + 'Z';
@@ -67,12 +75,12 @@ function relativeTime(dateStr: string, ago: AgoStrings): string {
 
 export default function MessageItem({
   msg, currentUsername, onReport, reportedIds,
-  reportLabel, reportedLabel, ago, isAdmin, onDelete, onReply, onPM,
+  ago, isAdmin, onDelete, onReply, onPM, strings,
 }: MessageItemProps) {
   const [deleting,          setDeleting]          = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [showReportDialog,  setShowReportDialog]  = useState(false);
-  const [reportReason,      setReportReason]      = useState<string>(REPORT_REASONS[0].value);
+  const [reportReason,      setReportReason]      = useState<string>(strings.reasons[0]?.value ?? 'spam');
 
   const factionColor = msg.faction
     ? (FACTION_COLORS[msg.faction] ?? 'rgba(255,255,255,0.7)')
@@ -96,15 +104,15 @@ export default function MessageItem({
 
   const actions = (
     <div class={`chat-msg-actions${isOwn ? ' chat-msg-actions-own' : ' chat-msg-actions-other'}`}>
-      <button class="chat-action-btn" onClick={() => onReply(msg)} title="Antworten">↩</button>
+      <button class="chat-action-btn" onClick={() => onReply(msg)} title={strings.reply}>↩</button>
       {!isOwn && onPM && (
-        <button class="chat-action-btn" onClick={() => onPM(msg.username)} title="Private Nachricht">✉</button>
+        <button class="chat-action-btn" onClick={() => onPM(msg.username)} title={strings.pm}>✉</button>
       )}
       {!isOwn && (
         <button
           class={`chat-action-btn${isReported ? ' chat-action-reported' : ''}`}
           onClick={() => !isReported && setShowReportDialog(true)}
-          title={isReported ? reportedLabel : reportLabel}
+          title={isReported ? strings.reported : strings.report}
           disabled={isReported}
         >
           {isReported ? '✓' : '⚑'}
@@ -114,7 +122,7 @@ export default function MessageItem({
         <button
           class="chat-action-btn chat-action-delete"
           onClick={() => setShowDeleteConfirm(true)}
-          title="Nachricht löschen"
+          title={strings.delete}
           disabled={deleting}
         >
           🗑
@@ -135,8 +143,8 @@ export default function MessageItem({
       ].filter(Boolean).join(' ')}>
         {!isOwn && (
           <div class="chat-bubble-header">
-            {isAdminMsg && <span class="chat-admin-label">⚙ Administrator</span>}
-            {isModMsg   && <span class="chat-mod-label">🛡 Moderator</span>}
+            {isAdminMsg && <span class="chat-admin-label">⚙ {strings.admin}</span>}
+            {isModMsg   && <span class="chat-mod-label">🛡 {strings.mod}</span>}
             <span class="chat-msg-username" style={{ color: factionColor }}>
               {msg.username}
             </span>
@@ -144,10 +152,10 @@ export default function MessageItem({
           </div>
         )}
         {isOwn && isAdminMsg && (
-          <span class="chat-admin-label chat-admin-label-own">Administrator ⚙</span>
+          <span class="chat-admin-label chat-admin-label-own">{strings.admin} ⚙</span>
         )}
         {isOwn && isModMsg && (
-          <span class="chat-mod-label chat-mod-label-own">Moderator 🛡</span>
+          <span class="chat-mod-label chat-mod-label-own">{strings.mod} 🛡</span>
         )}
         {msg.reply_to_id && (
           <div class={`chat-reply-quote${isOwn ? ' chat-reply-quote-own' : ''}`}>
@@ -166,9 +174,10 @@ export default function MessageItem({
       {/* ── Delete Confirm ── */}
       {showDeleteConfirm && (
         <ConfirmDialog
-          title="Nachricht löschen"
-          message="Diese Nachricht wirklich löschen?"
-          confirmLabel="Löschen"
+          title={strings.deleteTitle}
+          message={strings.deleteConfirm}
+          confirmLabel={strings.deleteButton}
+          cancelLabel={strings.cancel}
           variant="danger"
           onConfirm={handleDeleteConfirmed}
           onCancel={() => setShowDeleteConfirm(false)}
@@ -178,15 +187,16 @@ export default function MessageItem({
       {/* ── Report Dialog ── */}
       {showReportDialog && (
         <ConfirmDialog
-          title="Nachricht melden"
-          message="Wähle einen Grund für die Meldung:"
-          confirmLabel="Melden"
+          title={strings.reportTitle}
+          message={strings.reportPrompt}
+          confirmLabel={strings.report}
+          cancelLabel={strings.cancel}
           variant="primary"
           onConfirm={handleReportConfirmed}
           onCancel={() => setShowReportDialog(false)}
         >
           <div class="cd-report-reasons">
-            {REPORT_REASONS.map(r => (
+            {strings.reasons.map(r => (
               <label
                 key={r.value}
                 class={`cd-report-reason${reportReason === r.value ? ' cd-report-reason-active' : ''}`}

@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from 'preact/hooks';
+import { useTranslations } from '../../i18n/utils';
+import type { TranslationData } from '../../i18n/index';
 import MessageList from './MessageList';
-import type { Message, AgoStrings } from './MessageItem';
+import type { Message, AgoStrings, MessageStrings } from './MessageItem';
 import './PMPanel.css';
 
 interface PMPanelProps {
@@ -10,11 +12,14 @@ interface PMPanelProps {
   onClose:         () => void;
   ago:             AgoStrings;
   isAdmin:         boolean;
+  translationData: TranslationData;
 }
 
 const POLL_MS = 5_000;
 
-export default function PMPanel({ username, currentUsername, token, onClose, ago, isAdmin }: PMPanelProps) {
+export default function PMPanel({ username, currentUsername, token, onClose, ago, isAdmin, translationData }: PMPanelProps) {
+  const t = useTranslations(translationData);
+
   const [messages,    setMessages]    = useState<Message[]>([]);
   const [text,        setText]        = useState('');
   const [sending,     setSending]     = useState(false);
@@ -25,7 +30,29 @@ export default function PMPanel({ username, currentUsername, token, onClose, ago
   const lastCreatedAt = useRef<string | null>(null);
   const pollRef       = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Initial load
+  const strings: MessageStrings = {
+    reply:         t('chat.action.reply'),
+    pm:            t('chat.action.pm'),
+    delete:        t('chat.action.delete'),
+    admin:         t('chat.role.admin'),
+    mod:           t('chat.role.moderator'),
+    deleteTitle:   t('chat.delete.title'),
+    deleteConfirm: t('chat.delete.confirm'),
+    deleteButton:  t('chat.delete.button'),
+    reportTitle:   t('chat.report.title'),
+    reportPrompt:  t('chat.report.choose_reason'),
+    report:        t('chat.report'),
+    reported:      t('chat.report_sent'),
+    cancel:        t('dialog.cancel'),
+    reasons: [
+      { value: 'spam',   icon: '📢', label: t('chat.report.reason.spam') },
+      { value: 'porn',   icon: '🔞', label: t('chat.report.reason.porn') },
+      { value: 'racism', icon: '🚫', label: t('chat.report.reason.racism') },
+      { value: 'hate',   icon: '💢', label: t('chat.report.reason.hate') },
+      { value: 'other',  icon: '⚠️', label: t('chat.report.reason.other') },
+    ],
+  };
+
   const loadInitial = useCallback(async () => {
     setLoading(true);
     try {
@@ -43,7 +70,6 @@ export default function PMPanel({ username, currentUsername, token, onClose, ago
     }
   }, [username, token]);
 
-  // Polling
   const poll = useCallback(async () => {
     if (!lastCreatedAt.current) return;
     try {
@@ -88,7 +114,7 @@ export default function PMPanel({ username, currentUsername, token, onClose, ago
         body:    JSON.stringify({ message: msg }),
       });
       const data = await res.json() as any;
-      if (!res.ok) { setSendError(data.error ?? 'Senden fehlgeschlagen.'); return; }
+      if (!res.ok) { setSendError(data.error ?? t('chat.error.send_failed')); return; }
       const newMsg = data as Message;
       setMessages(prev => {
         const known = new Set(prev.map(m => m.id));
@@ -97,11 +123,11 @@ export default function PMPanel({ username, currentUsername, token, onClose, ago
       lastCreatedAt.current = newMsg.created_at;
       setText('');
     } catch {
-      setSendError('Verbindungsfehler.');
+      setSendError(t('chat.error.connection'));
     } finally {
       setSending(false);
     }
-  }, [text, sending, username, token]);
+  }, [text, sending, username, token]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleReport = useCallback(async (msgId: string, reason: string) => {
     try {
@@ -125,7 +151,7 @@ export default function PMPanel({ username, currentUsername, token, onClose, ago
     <div class="chat-pm-panel">
       <div class="chat-pm-header">
         <span class="chat-pm-title">✉ {username}</span>
-        <button class="chat-pm-close" onClick={onClose} title="Schließen">×</button>
+        <button class="chat-pm-close" onClick={onClose} title={t('chat.action.close')}>×</button>
       </div>
 
       {loading ? (
@@ -140,14 +166,13 @@ export default function PMPanel({ username, currentUsername, token, onClose, ago
           currentUsername={currentUsername}
           onReport={handleReport}
           reportedIds={reportedIds}
-          noMessages="Noch keine Nachrichten"
-          reportLabel="Melden"
-          reportedLabel="Gemeldet"
+          noMessages={t('chat.pm.no_messages')}
           ago={ago}
           isAdmin={isAdmin}
           onDelete={() => Promise.resolve()}
           onReply={() => {}}
           onPM={() => {}}
+          strings={strings}
         />
       )}
 
@@ -159,7 +184,7 @@ export default function PMPanel({ username, currentUsername, token, onClose, ago
             value={text}
             onInput={(e) => setText((e.target as HTMLTextAreaElement).value)}
             onKeyDown={handleKeyDown}
-            placeholder={`Nachricht an ${username}…`}
+            placeholder={t('chat.pm.placeholder', { username })}
             maxLength={500}
             disabled={sending}
             rows={1}
@@ -168,7 +193,7 @@ export default function PMPanel({ username, currentUsername, token, onClose, ago
             class="chat-pm-send-btn"
             onClick={handleSend}
             disabled={sending || !text.trim()}
-            title="Senden"
+            title={t('chat.action.send')}
           >
             ➤
           </button>

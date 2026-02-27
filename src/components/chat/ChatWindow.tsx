@@ -4,7 +4,7 @@ import { useTranslations } from '../../i18n/utils';
 import type { TranslationData } from '../../i18n/index';
 import MessageList from './MessageList';
 import MessageInput, { type ReplyTarget } from './MessageInput';
-import type { Message } from './MessageItem';
+import type { Message, MessageStrings } from './MessageItem';
 import PMPanel from './PMPanel';
 import ConfirmDialog from './ConfirmDialog';
 import './ChatWindow.css';
@@ -207,7 +207,7 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
         lastCreatedAt.current = data.messages[data.messages.length - 1].created_at;
       }
     } catch {
-      setLoadError('Verbindungsfehler. Bitte Seite neu laden.');
+      setLoadError(t('chat.error.connection_reload'));
     } finally {
       setLoading(false);
     }
@@ -256,7 +256,7 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
         body:    JSON.stringify({ message: text, reply_to_id: currentReplyId }),
       });
       const data = await res.json() as any;
-      if (!res.ok) { setSendError(data.error ?? 'Senden fehlgeschlagen.'); return; }
+      if (!res.ok) { setSendError(data.error ?? t('chat.error.send_failed')); return; }
       const newMsg = data as Message;
       setMessages(prev => {
         const known = new Set(prev.map(m => m.id));
@@ -265,7 +265,7 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
       lastCreatedAt.current = newMsg.created_at;
       setReplyTo(null);
     } catch {
-      setSendError('Verbindungsfehler. Bitte versuche es erneut.');
+      setSendError(t('chat.error.connection_retry'));
     } finally {
       setSending(false);
     }
@@ -350,6 +350,29 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
     days:    t('chat.ago_days'),
   };
 
+  const messageStrings: MessageStrings = {
+    reply:         t('chat.action.reply'),
+    pm:            t('chat.action.pm'),
+    delete:        t('chat.action.delete'),
+    admin:         t('chat.role.admin'),
+    mod:           t('chat.role.moderator'),
+    deleteTitle:   t('chat.delete.title'),
+    deleteConfirm: t('chat.delete.confirm'),
+    deleteButton:  t('chat.delete.button'),
+    reportTitle:   t('chat.report.title'),
+    reportPrompt:  t('chat.report.choose_reason'),
+    report:        t('chat.report'),
+    reported:      t('chat.report_sent'),
+    cancel:        t('dialog.cancel'),
+    reasons: [
+      { value: 'spam',   icon: '📢', label: t('chat.report.reason.spam') },
+      { value: 'porn',   icon: '🔞', label: t('chat.report.reason.porn') },
+      { value: 'racism', icon: '🚫', label: t('chat.report.reason.racism') },
+      { value: 'hate',   icon: '💢', label: t('chat.report.reason.hate') },
+      { value: 'other',  icon: '⚠️', label: t('chat.report.reason.other') },
+    ],
+  };
+
   // ── Tab config ────────────────────────────────────────────────────────────
   type TabDef = { type: ChatType; label: string; disabled?: boolean; title?: string };
   const tabs: TabDef[] = [
@@ -383,7 +406,7 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
         {/* DM Contacts — top section, always visible */}
         {pmContacts.length > 0 && (
           <div class="chat-pm-contacts">
-            <div class="chat-pm-contacts-header">DMs</div>
+            <div class="chat-pm-contacts-header">{t('chat.dms')}</div>
             {pmContacts.map(name => (
               <div key={name} class="chat-pm-contact-row">
                 <button
@@ -397,7 +420,7 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
                 <button
                   class="chat-pm-contact-remove"
                   onClick={(e) => removePMContact(name, e as unknown as MouseEvent)}
-                  title="Entfernen"
+                  title={t('chat.action.remove')}
                 >×</button>
               </div>
             ))}
@@ -405,7 +428,7 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
         )}
 
         <div class="chat-online-header">
-          Online <span class="chat-online-count">{visibleOnline.length}</span>
+          {t('chat.online')} <span class="chat-online-count">{visibleOnline.length}</span>
         </div>
         <ul class="chat-online-list">
           {visibleOnline.length === 0 ? (
@@ -458,6 +481,7 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
           onClose={() => setOpenPM(null)}
           ago={ago}
           isAdmin={isAdmin}
+          translationData={translationData}
         />
       )}
 
@@ -501,13 +525,12 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
             onReport={handleReport}
             reportedIds={reportedIds}
             noMessages={t('chat.no_messages')}
-            reportLabel={t('chat.report')}
-            reportedLabel={t('chat.report_sent')}
             ago={ago}
             isAdmin={isAdmin}
             onDelete={handleDelete}
             onReply={handleReply}
             onPM={openPMWith}
+            strings={messageStrings}
           />
         )}
 
@@ -529,9 +552,10 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
       {/* ── Confirm Remove DM Dialog ── */}
       {confirmRemove && (
         <ConfirmDialog
-          title="Unterhaltung entfernen"
-          message={<>DM mit <strong>{confirmRemove}</strong> aus der Liste entfernen?</>}
-          confirmLabel="Entfernen"
+          title={t('chat.pm.remove_title')}
+          message={t('chat.pm.remove_confirm', { username: confirmRemove })}
+          confirmLabel={t('chat.action.remove')}
+          cancelLabel={t('dialog.cancel')}
           variant="danger"
           onConfirm={() => doRemovePMContact(confirmRemove)}
           onCancel={() => setConfirmRemove(null)}

@@ -4,8 +4,8 @@ import './ConfirmDialog.css';
 interface ConfirmDialogProps {
   title:         string;
   message?:      ComponentChildren;
-  confirmLabel?: string;
-  cancelLabel?:  string;
+  confirmLabel: string;
+  cancelLabel:  string;
   variant?:      'danger' | 'primary';
   onConfirm:     () => void;
   onCancel:      () => void;
@@ -13,7 +13,7 @@ interface ConfirmDialogProps {
 }
 
 export default function ConfirmDialog({
-  title, message, confirmLabel = 'OK', cancelLabel = 'Abbrechen',
+  title, message, confirmLabel, cancelLabel,
   variant = 'danger', onConfirm, onCancel, children,
 }: ConfirmDialogProps) {
   return (

@@ -1,5 +1,5 @@
 import { useRef, useEffect } from 'preact/hooks';
-import MessageItem, { type Message, type AgoStrings } from './MessageItem';
+import MessageItem, { type Message, type AgoStrings, type MessageStrings } from './MessageItem';
 
 interface MessageListProps {
   messages:        Message[];
@@ -7,23 +7,21 @@ interface MessageListProps {
   onReport:        (id: string, reason: string) => void;
   reportedIds:     Set<string>;
   noMessages:      string;
-  reportLabel:     string;
-  reportedLabel:   string;
   ago:             AgoStrings;
   isAdmin:         boolean;
-  onDelete:        (id: string) => void;
+  onDelete:        (id: string) => Promise<void>;
   onReply:         (msg: Message) => void;
   onPM:            (username: string) => void;
+  strings:         MessageStrings;
 }
 
 export default function MessageList({
   messages, currentUsername, onReport, reportedIds,
-  noMessages, reportLabel, reportedLabel, ago, isAdmin, onDelete, onReply, onPM,
+  noMessages, ago, isAdmin, onDelete, onReply, onPM, strings,
 }: MessageListProps) {
   const listRef     = useRef<HTMLDivElement>(null);
   const atBottomRef = useRef(true);
 
-  // Track whether user is scrolled to the bottom
   useEffect(() => {
     const el = listRef.current;
     if (!el) return;
@@ -34,14 +32,12 @@ export default function MessageList({
     return () => el.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Auto-scroll on new messages — only if already at bottom
   useEffect(() => {
     if (atBottomRef.current && listRef.current) {
       listRef.current.scrollTop = listRef.current.scrollHeight;
     }
   }, [messages]);
 
-  // Scroll to bottom on first mount
   useEffect(() => {
     if (listRef.current) {
       listRef.current.scrollTop = listRef.current.scrollHeight;
@@ -60,13 +56,12 @@ export default function MessageList({
             currentUsername={currentUsername}
             onReport={onReport}
             reportedIds={reportedIds}
-            reportLabel={reportLabel}
-            reportedLabel={reportedLabel}
             ago={ago}
             isAdmin={isAdmin}
             onDelete={onDelete}
             onReply={onReply}
             onPM={onPM}
+            strings={strings}
           />
         ))
       )}
