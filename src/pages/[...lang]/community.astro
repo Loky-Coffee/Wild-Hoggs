@@ -24,23 +24,7 @@ const breadcrumbItems = [
   description={t('seo.community.description')}
   robots="noindex, follow"
   breadcrumbs={breadcrumbItems}
+  fullWidth={true}
 >
-  <div class="community-wrap">
-    <ChatWindow translationData={translationData} client:load />
-  </div>
+  <ChatWindow translationData={translationData} client:load />
 </PageLayout>
-
-<style>
-  /* Cancel .page-content padding so the chat fills edge-to-edge */
-  .community-wrap {
-    margin: -0.5rem -2rem -2rem;
-    width: calc(100% + 4rem);
-  }
-
-  @media (max-width: 768px) {
-    .community-wrap {
-      margin: -0.5rem -1rem -3rem;
-      width: calc(100% + 2rem);
-    }
-  }
-</style>

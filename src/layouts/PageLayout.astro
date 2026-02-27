@@ -15,9 +15,10 @@ interface Props {
   breadcrumbs?: BreadcrumbItem[];
   image?: string;
   imageAlt?: string;
+  fullWidth?: boolean;
 }
 
-const { title, description, robots, breadcrumbs, image, imageAlt } = Astro.props;
+const { title, description, robots, breadcrumbs, image, imageAlt, fullWidth = false } = Astro.props;
 ---
 
 <Layout title={title} description={description} robots={robots} image={image} imageAlt={imageAlt}>
@@ -28,7 +29,7 @@ const { title, description, robots, breadcrumbs, image, imageAlt } = Astro.props
       <Breadcrumbs items={breadcrumbs} />
     </div>
   )}
-  <main id="main-content" class="page-content">
+  <main id="main-content" class:list={['page-content', { 'page-content--full': fullWidth }]}>
     <slot />
   </main>
 </Layout>
@@ -68,6 +69,11 @@ const { title, description, robots, breadcrumbs, image, imageAlt } = Astro.props
     margin: 0 auto;
     padding: 0.5rem 2rem 2rem;
     overflow-x: clip; /* clip statt hidden: verhindert horizontalen Scroll ohne Scroll-Context zu erzeugen */
+  }
+
+  .page-content--full {
+    padding: 0;
+    overflow: hidden;
   }
 
   @media (max-width: 768px) {
