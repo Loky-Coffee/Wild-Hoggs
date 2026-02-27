@@ -108,10 +108,10 @@ export default function CaravanCalculator({ lang, translationData }: CaravanCalc
   const weeklyActive  = stored.weeklyActive;
   const calculated    = stored.calculated;
 
-  const setPowerInput    = (v: string)           => setStored(s => ({ ...s, powerInput: v, calculated: false }));
-  const setMatchingCount = (v: number)           => setStored(s => ({ ...s, matchingCount: v, calculated: false }));
+  const setPowerInput    = (v: string)           => setStored(s => ({ ...s, powerInput: v }));
+  const setMatchingCount = (v: number)           => setStored(s => ({ ...s, matchingCount: v }));
   const setWeeklyActive  = (v: boolean | ((prev: boolean) => boolean)) =>
-    setStored(s => ({ ...s, weeklyActive: typeof v === 'function' ? v(s.weeklyActive) : v, calculated: false }));
+    setStored(s => ({ ...s, weeklyActive: typeof v === 'function' ? v(s.weeklyActive) : v }));
   const setCalculated    = (v: boolean)          => setStored(s => ({ ...s, calculated: v }));
 
   // On load: if calculator is still at defaults and user has profile data → auto-fill
@@ -141,7 +141,6 @@ export default function CaravanCalculator({ lang, translationData }: CaravanCalc
         ...s,
         yourFaction: newFaction,
         powerInput: savedPower ? String(savedPower) : s.powerInput,
-        calculated: false,
       };
     });
   };
