@@ -66,8 +66,8 @@ const currentPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : r
 
     <div class="nav-controls">
       <ApocalypseTimeClock client:idle />
-      <UserMenu translationData={translationData} client:load />
-      <PresenceHeartbeat client:load />
+      <UserMenu translationData={translationData} client:only="preact" />
+      <PresenceHeartbeat client:only="preact" />
       <div class="lang-switcher">
         <LanguageDropdown />
       </div>

@@ -25,5 +25,5 @@ const breadcrumbItems = [
   robots="noindex, nofollow"
   breadcrumbs={breadcrumbItems}
 >
-  <ProfilePage translationData={translationData} client:load />
+  <ProfilePage translationData={translationData} client:only="preact" />
 </PageLayout>
