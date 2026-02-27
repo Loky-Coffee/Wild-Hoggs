@@ -3,6 +3,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
 import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../i18n/utils';
 import { getLanguagePaths } from '../../i18n/static-paths';
 import { loadTranslations } from '../../i18n/index';
+import { members } from '../../data/members';
 import '../../styles/shared-layouts.css';
 
 export function getStaticPaths() {
@@ -17,7 +18,24 @@ const breadcrumbItems = [
   { label: t('nav.home'), href: getLocalizedPath('', lang) },
   { label: t('about.title') }
 ];
+
+const siteUrl = Astro.site || new URL('https://wild-hoggs.com/');
+const aboutOrgSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Wild Hoggs',
+  description: t('seo.about.description'),
+  url: siteUrl.toString(),
+  logo: new URL('/favicon.svg', siteUrl).toString(),
+  foundingDate: '2020',
+  numberOfEmployees: {
+    '@type': 'QuantitativeValue',
+    value: members.length,
+  },
+};
 ---
+
+<script type="application/ld+json" set:html={JSON.stringify(aboutOrgSchema)} />
 
 <PageLayout
   title={t('seo.about.title')}

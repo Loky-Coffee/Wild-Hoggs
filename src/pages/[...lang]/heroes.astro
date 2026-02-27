@@ -19,7 +19,29 @@ const breadcrumbItems = [
   { label: t('nav.home'), href: getLocalizedPath('', lang) },
   { label: t('nav.heroes') }
 ];
+
+const siteUrl = Astro.site || new URL('https://wild-hoggs.com/');
+const heroesSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: t('seo.heroes.h1'),
+  description: t('seo.heroes.description'),
+  numberOfItems: heroes.length,
+  itemListElement: heroes.map((hero, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: hero.name,
+    item: {
+      '@type': 'Thing',
+      name: hero.name,
+      description: hero.description,
+      image: new URL(hero.image, siteUrl).toString(),
+    }
+  }))
+};
 ---
+
+<script type="application/ld+json" set:html={JSON.stringify(heroesSchema)} />
 
 <PageLayout
   title={t('seo.heroes.title')}

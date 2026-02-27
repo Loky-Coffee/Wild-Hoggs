@@ -96,7 +96,32 @@ const breadcrumbItems = [
   { label: t('nav.home'), href: getLocalizedPath('', lang) },
   { label: t('nav.roses') }
 ];
+
+const siteUrl = Astro.site || new URL('https://wild-hoggs.com/');
+const rosesArticleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: t('seo.roses.h1', { year: currentYear }),
+  description: t('seo.roses.description'),
+  image: new URL('/og-roses.webp', siteUrl).toString(),
+  dateModified: new Date().toISOString(),
+  author: {
+    '@type': 'Organization',
+    name: 'Wild Hoggs',
+    url: siteUrl.toString(),
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Wild Hoggs',
+    logo: {
+      '@type': 'ImageObject',
+      url: new URL('/favicon.svg', siteUrl).toString(),
+    }
+  }
+};
 ---
+
+<script type="application/ld+json" set:html={JSON.stringify(rosesArticleSchema)} />
 
 <PageLayout
   image="/og-roses.webp"
