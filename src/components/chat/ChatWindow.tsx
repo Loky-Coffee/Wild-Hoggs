@@ -302,6 +302,18 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
     });
   }, []);
 
+  const removePMContact = useCallback((username: string, e: MouseEvent) => {
+    e.stopPropagation();
+    if (!window.confirm(`Unterhaltung mit ${username} aus der DM-Liste entfernen?`)) return;
+    if (openPM === username) setOpenPM(null);
+    setPmUnread(prev => { const next = new Set(prev); next.delete(username); return next; });
+    setPmContacts(prev => {
+      const next = prev.filter(n => n !== username);
+      localStorage.setItem('wh-pm-contacts', JSON.stringify(next));
+      return next;
+    });
+  }, [openPM]);
+
   const handleDelete = useCallback(async (msgId: string) => {
     if (!token) return;
     try {
@@ -367,15 +379,21 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
           <div class="chat-pm-contacts">
             <div class="chat-pm-contacts-header">DMs</div>
             {pmContacts.map(name => (
-              <button
-                key={name}
-                class={`chat-pm-contact${openPM === name ? ' chat-pm-contact-active' : ''}`}
-                onClick={() => openPMWith(name)}
-              >
-                <span class="chat-pm-contact-icon">✉</span>
-                <span class="chat-pm-contact-name">{name}</span>
-                {pmUnread.has(name) && <span class="chat-pm-unread-dot" />}
-              </button>
+              <div key={name} class="chat-pm-contact-row">
+                <button
+                  class={`chat-pm-contact${openPM === name ? ' chat-pm-contact-active' : ''}`}
+                  onClick={() => openPMWith(name)}
+                >
+                  <span class="chat-pm-contact-icon">✉</span>
+                  <span class="chat-pm-contact-name">{name}</span>
+                  {pmUnread.has(name) && <span class="chat-pm-unread-dot" />}
+                </button>
+                <button
+                  class="chat-pm-contact-remove"
+                  onClick={(e) => removePMContact(name, e as unknown as MouseEvent)}
+                  title="Entfernen"
+                >×</button>
+              </div>
             ))}
           </div>
         )}
