@@ -126,8 +126,25 @@
 .chat-pm-send-btn:active:not(:disabled) { transform: scale(0.94); }
 .chat-pm-send-btn:disabled              { opacity: 0.3; cursor: not-allowed; }
 
-/* ── Mobile: hide PM panel ───────────────────────────────────────────────── */
+/* ── Mobile: slide in from right as overlay ──────────────────────────────── */
 
 @media (max-width: 768px) {
-  .chat-pm-panel { display: none; }
+  .chat-pm-panel {
+    position: fixed;
+    top: var(--nav-height-mobile, 70px);
+    right: 0;
+    width: 100%;
+    height: calc(100dvh - var(--nav-height-mobile, 70px));
+    z-index: 1002;
+    background: #0a0a0a;
+    border-left: none;
+    border-right: none;
+    box-shadow: -8px 0 32px rgba(0, 0, 0, 0.7);
+    animation: pm-slide-in 0.25s ease forwards;
+  }
+
+  @keyframes pm-slide-in {
+    from { transform: translateX(100%); }
+    to   { transform: translateX(0); }
+  }
 }

@@ -478,7 +478,10 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
         </ul>
       </div>
 
-      {/* ── PM Panel ── */}
+      {/* ── PM Panel + mobile backdrop ── */}
+      {openPM && token && (
+        <div class="chat-pm-backdrop" onClick={() => setOpenPM(null)} />
+      )}
       {openPM && token && (
         <PMPanel
           username={openPM}
