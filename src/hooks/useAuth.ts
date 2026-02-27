@@ -27,15 +27,34 @@ export function useAuth() {
     return stored ? JSON.parse(stored) : null;
   });
 
-  // On hard reload: Preact hydrates from SSR-built HTML (localStorage was undefined
-  // at build time → token = null). Explicitly sync from localStorage after mount
-  // so the component always shows the correct auth state without needing an event.
+  // On hard reload: sync from localStorage, then refresh user data from server
+  // so stale cached data (e.g. missing is_admin) is always corrected automatically.
   useEffect(() => {
     const storedToken = localStorage.getItem(AUTH_TOKEN_KEY);
     const storedUserStr = localStorage.getItem(AUTH_USER_KEY);
     const storedUser: AuthUser | null = storedUserStr ? JSON.parse(storedUserStr) : null;
     setToken(storedToken);
     setUser(storedUser);
+
+    if (!storedToken) return;
+    fetch('/api/auth/me', { headers: { Authorization: `Bearer ${storedToken}` } })
+      .then(r => {
+        if (r.status === 401) {
+          // Session expired server-side — clear stale local state
+          localStorage.removeItem(AUTH_TOKEN_KEY);
+          localStorage.removeItem(AUTH_USER_KEY);
+          setToken(null);
+          setUser(null);
+          return null;
+        }
+        return r.ok ? (r.json() as Promise<AuthUser>) : null;
+      })
+      .then(freshUser => {
+        if (!freshUser) return;
+        localStorage.setItem(AUTH_USER_KEY, JSON.stringify(freshUser));
+        setUser(freshUser);
+      })
+      .catch(() => {}); // ignore network errors — stored state remains
   }, []);
 
   useEffect(() => {
