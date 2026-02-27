@@ -500,6 +500,7 @@ export default {
   'profile.saved': '✓ Saved',
   'profile.saving': '…',
   'profile.faction': 'Faction',
+  'profile.faction.setMain': '주 팩션으로 설정',
   'profile.progress': 'Calculator Progress',
   'profile.settings': 'Settings',
   'profile.serverLabel': 'Server',

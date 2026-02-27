@@ -500,6 +500,7 @@ export default {
   'profile.saved': '✓ Gespeichert',
   'profile.saving': '…',
   'profile.faction': 'Faction',
+  'profile.faction.setMain': 'Als Hauptfraktion',
   'profile.progress': 'Calculator-Fortschritt',
   'profile.settings': 'Einstellungen',
   'profile.serverLabel': 'Server',

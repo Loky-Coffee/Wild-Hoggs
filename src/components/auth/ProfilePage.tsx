@@ -242,46 +242,54 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
         </div>
       </div>
 
-      {/* ── Faction & Formation Power (merged) ── */}
+      {/* ── Faction & Formation Power — 3 cards ── */}
       <div class="pp-card">
         <h2 class="pp-section-title">{t('profile.faction')}</h2>
-        <p class="pp-formations-hint">{t('profile.formations.hint')}</p>
-        <div class="pp-factions-list">
+        <div class="pp-faction-cards">
           {([
             { key: 'blood-rose',     field: formationBr, setter: setFormationBr },
             { key: 'wings-of-dawn',  field: formationWd, setter: setFormationWd },
             { key: 'guard-of-order', field: formationGo, setter: setFormationGo },
-          ] as const).map(({ key, field, setter }) => (
-            <div
-              key={key}
-              class={[
-                'pp-faction-item',
-                `pp-faction-item-${key}`,
-                selectedFaction === key ? 'pp-faction-item-active' : '',
-              ].filter(Boolean).join(' ')}
-            >
-              <button
-                type="button"
-                class={`pp-faction-radio${selectedFaction === key ? ' active' : ''}`}
-                onClick={() => setSelectedFaction(selectedFaction === key ? null : key)}
-                disabled={factionSaving}
-                title={FACTION_LABELS[key].label}
-              />
-              <img
-                src={FACTION_IMG[key]}
-                alt={FACTION_LABELS[key].label}
-                class="pp-faction-item-img"
-              />
-              <span class="pp-faction-item-name">{FACTION_LABELS[key].label}</span>
-              <input
-                class="pp-input pp-faction-power-input"
-                type="text"
-                placeholder={t('profile.formations.placeholder')}
-                value={field}
-                onInput={e => setter((e.target as HTMLInputElement).value)}
-              />
-            </div>
-          ))}
+          ] as const).map(({ key, field, setter }) => {
+            const isActive = selectedFaction === key;
+            return (
+              <div
+                key={key}
+                class={[
+                  'pp-fcard',
+                  `pp-fcard-${key}`,
+                  isActive ? 'pp-fcard-active' : '',
+                ].filter(Boolean).join(' ')}
+              >
+                <img
+                  src={FACTION_IMG[key]}
+                  alt={FACTION_LABELS[key].label}
+                  class="pp-fcard-img"
+                />
+                <span class="pp-fcard-name">{FACTION_LABELS[key].label}</span>
+
+                <div class="pp-fcard-input-wrap">
+                  <span class="pp-fcard-input-label">{t('profile.formations')}</span>
+                  <input
+                    class="pp-input"
+                    type="text"
+                    placeholder={t('profile.formations.placeholder')}
+                    value={field}
+                    onInput={e => setter((e.target as HTMLInputElement).value)}
+                  />
+                </div>
+
+                <button
+                  type="button"
+                  class={`pp-fcard-main-btn${isActive ? ' active' : ''}`}
+                  onClick={() => setSelectedFaction(isActive ? null : key)}
+                  disabled={factionSaving}
+                >
+                  {isActive ? `✓ ${t('profile.faction')}` : t('profile.faction.setMain')}
+                </button>
+              </div>
+            );
+          })}
         </div>
         <div class="pp-formations-footer">
           {factionMsg && <p class={`pp-msg pp-msg-${factionMsg.type}`}>{factionMsg.text}</p>}

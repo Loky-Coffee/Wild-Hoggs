@@ -500,6 +500,7 @@ export default {
   'profile.saved': '✓ Saved',
   'profile.saving': '…',
   'profile.faction': 'Faction',
+  'profile.faction.setMain': 'Jadikan Utama',
   'profile.progress': 'Calculator Progress',
   'profile.settings': 'Settings',
   'profile.serverLabel': 'Server',
