@@ -733,6 +733,7 @@ export default {
   'chat.action.send': 'ส่ง',
   'chat.role.admin': 'ผู้ดูแลระบบ',
   'chat.role.moderator': 'ผู้ดูแล',
+  'chat.role.survivor': 'ผู้รอดชีวิต',
   'chat.pm.no_messages': 'ยังไม่มีข้อความ',
   'chat.pm.placeholder': 'ข้อความถึง {username}…',
   'chat.pm.remove_title': 'ลบการสนทนา',

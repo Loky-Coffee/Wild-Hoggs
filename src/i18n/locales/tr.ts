@@ -733,6 +733,7 @@ export default {
   'chat.action.send': 'Gönder',
   'chat.role.admin': 'Yönetici',
   'chat.role.moderator': 'Moderatör',
+  'chat.role.survivor': 'Hayatta Kalan',
   'chat.pm.no_messages': 'Henüz mesaj yok',
   'chat.pm.placeholder': '{username} kullanıcısına mesaj…',
   'chat.pm.remove_title': 'Konuşmayı kaldır',

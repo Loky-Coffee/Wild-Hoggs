@@ -29,6 +29,7 @@ export interface MessageStrings {
   delete:        string;
   admin:         string;
   mod:           string;
+  survivor:      string;
   deleteTitle:   string;
   deleteConfirm: string;
   deleteButton:  string;
@@ -89,6 +90,7 @@ export default function MessageItem({
   const isReported = reportedIds.has(msg.id);
   const isAdminMsg = msg.is_admin === 1;
   const isModMsg   = msg.is_moderator === 1 && !isAdminMsg;
+  const isUserMsg  = !isAdminMsg && !isModMsg;
 
   const handleDeleteConfirmed = async () => {
     setShowDeleteConfirm(false);
@@ -140,11 +142,13 @@ export default function MessageItem({
         isOwn ? 'chat-bubble-own' : 'chat-bubble-other',
         isAdminMsg ? 'chat-bubble-admin' : '',
         isModMsg   ? 'chat-bubble-mod'   : '',
+        isUserMsg  ? 'chat-bubble-user'  : '',
       ].filter(Boolean).join(' ')}>
         {!isOwn && (
           <div class="chat-bubble-header">
             {isAdminMsg && <span class="chat-admin-label">⚙ {strings.admin}</span>}
             {isModMsg   && <span class="chat-mod-label">🛡 {strings.mod}</span>}
+            {isUserMsg  && <span class="chat-user-label">⚔ {strings.survivor}</span>}
             <span class="chat-msg-username" style={{ color: factionColor }}>
               {msg.username}
             </span>
@@ -156,6 +160,9 @@ export default function MessageItem({
         )}
         {isOwn && isModMsg && (
           <span class="chat-mod-label chat-mod-label-own">{strings.mod} 🛡</span>
+        )}
+        {isOwn && isUserMsg && (
+          <span class="chat-user-label chat-user-label-own">{strings.survivor} ⚔</span>
         )}
         {msg.reply_to_id && (
           <div class={`chat-reply-quote${isOwn ? ' chat-reply-quote-own' : ''}`}>

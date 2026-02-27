@@ -733,6 +733,7 @@ export default {
   'chat.action.send': '보내기',
   'chat.role.admin': '관리자',
   'chat.role.moderator': '모더레이터',
+  'chat.role.survivor': '생존자',
   'chat.pm.no_messages': '아직 메시지가 없습니다',
   'chat.pm.placeholder': '{username}에게 메시지…',
   'chat.pm.remove_title': '대화 삭제',

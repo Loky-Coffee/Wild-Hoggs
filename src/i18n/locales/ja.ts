@@ -733,6 +733,7 @@ export default {
   'chat.action.send': '送信',
   'chat.role.admin': '管理者',
   'chat.role.moderator': 'モデレーター',
+  'chat.role.survivor': '生存者',
   'chat.pm.no_messages': 'まだメッセージはありません',
   'chat.pm.placeholder': '{username}へのメッセージ…',
   'chat.pm.remove_title': '会話を削除',

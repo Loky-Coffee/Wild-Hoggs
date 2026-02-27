@@ -733,6 +733,7 @@ export default {
   'chat.action.send': '发送',
   'chat.role.admin': '管理员',
   'chat.role.moderator': '版主',
+  'chat.role.survivor': '幸存者',
   'chat.pm.no_messages': '暂无消息',
   'chat.pm.placeholder': '发消息给 {username}…',
   'chat.pm.remove_title': '删除对话',

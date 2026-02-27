@@ -734,6 +734,7 @@ export default {
   'chat.action.send': 'Send',
   'chat.role.admin': 'Administrator',
   'chat.role.moderator': 'Moderator',
+  'chat.role.survivor': 'Survivor',
   'chat.pm.no_messages': 'No messages yet',
   'chat.pm.placeholder': 'Message {username}…',
   'chat.pm.remove_title': 'Remove conversation',

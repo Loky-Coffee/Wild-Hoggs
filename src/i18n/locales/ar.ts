@@ -733,6 +733,7 @@ export default {
   'chat.action.send': 'إرسال',
   'chat.role.admin': 'مدير',
   'chat.role.moderator': 'مشرف',
+  'chat.role.survivor': 'ناجٍ',
   'chat.pm.no_messages': 'لا توجد رسائل بعد',
   'chat.pm.placeholder': 'رسالة إلى {username}…',
   'chat.pm.remove_title': 'إزالة المحادثة',

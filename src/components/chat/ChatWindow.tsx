@@ -357,6 +357,7 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
     delete:        t('chat.action.delete'),
     admin:         t('chat.role.admin'),
     mod:           t('chat.role.moderator'),
+    survivor:      t('chat.role.survivor'),
     deleteTitle:   t('chat.delete.title'),
     deleteConfirm: t('chat.delete.confirm'),
     deleteButton:  t('chat.delete.button'),

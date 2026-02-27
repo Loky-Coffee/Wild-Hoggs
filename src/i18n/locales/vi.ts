@@ -733,6 +733,7 @@ export default {
   'chat.action.send': 'Gửi',
   'chat.role.admin': 'Quản trị viên',
   'chat.role.moderator': 'Người kiểm duyệt',
+  'chat.role.survivor': 'Người sống sót',
   'chat.pm.no_messages': 'Chưa có tin nhắn',
   'chat.pm.placeholder': 'Tin nhắn tới {username}…',
   'chat.pm.remove_title': 'Xóa cuộc trò chuyện',

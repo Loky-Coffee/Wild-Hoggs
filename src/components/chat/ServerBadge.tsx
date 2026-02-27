@@ -10,7 +10,7 @@ interface ServerBadgeProps {
 }
 
 export default function ServerBadge({ faction, server }: ServerBadgeProps) {
-  const color = faction ? (FACTION_COLORS[faction] ?? 'rgba(255,255,255,0.25)') : 'rgba(255,255,255,0.25)';
+  const color = faction ? (FACTION_COLORS[faction] ?? 'rgba(255,165,0,0.7)') : 'rgba(255,165,0,0.7)';
   if (!server) return null;
   return (
     <span class="chat-server-badge" style={{ borderColor: color, color }}>

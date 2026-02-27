@@ -733,6 +733,7 @@ export default {
   'chat.action.send': 'Kirim',
   'chat.role.admin': 'Administrator',
   'chat.role.moderator': 'Moderator',
+  'chat.role.survivor': 'Penyintas',
   'chat.pm.no_messages': 'Belum ada pesan',
   'chat.pm.placeholder': 'Pesan ke {username}…',
   'chat.pm.remove_title': 'Hapus percakapan',

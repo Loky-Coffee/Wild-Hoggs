@@ -871,11 +871,76 @@ body:has(.chat-login-wall) > main > astro-island {
 
 .chat-mod-label-own { text-align: right; }
 
+/* ── User (Survivor) bubble border ──────────────────────────────────────── */
+
+.chat-bubble-user {
+  position: relative;
+  border-color: transparent !important;
+}
+
+.chat-bubble-user.chat-bubble-own::before {
+  content: '';
+  position: absolute;
+  inset: -2px -2px -2px 0;
+  border-radius: inherit;
+  padding: 2px 2px 2px 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, #22c55e, #4ade80, #16a34a, #86efac, #22c55e);
+  background-size: 300% 100%;
+  animation: user-snake 3.5s linear infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.chat-bubble-user.chat-bubble-other::before {
+  content: '';
+  position: absolute;
+  inset: -2px 0 -2px -2px;
+  border-radius: inherit;
+  padding: 2px 0 2px 2px;
+  pointer-events: none;
+  background: linear-gradient(90deg, #22c55e, #4ade80, #16a34a, #86efac, #22c55e);
+  background-size: 300% 100%;
+  animation: user-snake 3.5s linear infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+@keyframes user-snake {
+  from { background-position: 0% 50%; }
+  to   { background-position: -300% 50%; }
+}
+
+.chat-user-label {
+  display: block;
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, #22c55e, #4ade80, #86efac, #22c55e);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: user-text-snake 3s linear infinite;
+  margin-bottom: 0.15rem;
+}
+
+@keyframes user-text-snake {
+  from { background-position: 0% 50%; }
+  to   { background-position: -200% 50%; }
+}
+
+.chat-user-label-own { text-align: right; }
+
 /* ── Admin / Mod border effect extended to action buttons ────────────────── */
 
 /* Make actions a positioning context + hide normal border */
 .chat-msg-row:has(.chat-bubble-admin) .chat-msg-actions,
-.chat-msg-row:has(.chat-bubble-mod)   .chat-msg-actions {
+.chat-msg-row:has(.chat-bubble-mod)   .chat-msg-actions,
+.chat-msg-row:has(.chat-bubble-user)  .chat-msg-actions {
   position: relative;
   border-color: transparent !important;
 }
@@ -949,6 +1014,38 @@ body:has(.chat-login-wall) > main > astro-island {
   background: linear-gradient(90deg, #0ea5e9, #6366f1, #06b6d4, #3b82f6, #0ea5e9);
   background-size: 300% 100%;
   animation: mod-snake 3s linear infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+/* User — own: actions sit on LEFT */
+.chat-msg-row:has(.chat-bubble-user) .chat-msg-actions-own::before {
+  content: '';
+  position: absolute;
+  inset: -2px 0 -2px -2px;
+  border-radius: inherit;
+  padding: 2px 0 2px 2px;
+  pointer-events: none;
+  background: linear-gradient(90deg, #22c55e, #4ade80, #16a34a, #86efac, #22c55e);
+  background-size: 300% 100%;
+  animation: user-snake 3.5s linear infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+/* User — other: actions sit on RIGHT */
+.chat-msg-row:has(.chat-bubble-user) .chat-msg-actions-other::before {
+  content: '';
+  position: absolute;
+  inset: -2px -2px -2px 0;
+  border-radius: inherit;
+  padding: 2px 2px 2px 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, #22c55e, #4ade80, #16a34a, #86efac, #22c55e);
+  background-size: 300% 100%;
+  animation: user-snake 3.5s linear infinite;
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
