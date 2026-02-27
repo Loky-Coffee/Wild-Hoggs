@@ -234,7 +234,7 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
             )}
             {user.faction && (
               <span class={`pp-faction-tag pp-faction-${user.faction}`}>
-                <img src={FACTION_IMG[user.faction]} alt="" class="pp-faction-tag-img" />
+                <img src={FACTION_IMG[user.faction]} alt={`${FACTION_LABELS[user.faction]?.label} faction`} class="pp-faction-tag-img" />
                 {FACTION_LABELS[user.faction]?.label}
               </span>
             )}
