@@ -57,7 +57,8 @@ export async function validateSession(db: any, token: string) {
   return db.prepare(`
     SELECT s.user_id, u.email, u.username, u.faction, u.server, u.language,
            u.formation_power_br, u.formation_power_wd, u.formation_power_go,
-           u.is_admin, COALESCE(u.is_moderator, 0) AS is_moderator
+           u.is_admin, COALESCE(u.is_moderator, 0) AS is_moderator,
+           COALESCE(u.notification_sound, 1) AS notification_sound
     FROM sessions s
     JOIN users u ON s.user_id = u.id
     WHERE s.token = ? AND s.expires_at > datetime('now')
@@ -73,6 +74,7 @@ export async function validateSession(db: any, token: string) {
     formation_power_go: number | null;
     is_admin: number;
     is_moderator: number;
+    notification_sound: number;
   } | null>;
 }
 

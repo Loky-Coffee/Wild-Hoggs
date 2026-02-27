@@ -303,6 +303,36 @@
 .pp-btn-save:hover:not(:disabled) { background: rgba(255,165,0,0.25); border-color: rgba(255,165,0,0.7); }
 .pp-btn-save:disabled { opacity: 0.4; cursor: not-allowed; }
 
+/* ── Notification Sound Toggle ── */
+.pp-notif-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 0.9rem 0.4rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+  align-self: flex-start;
+}
+.pp-notif-toggle:disabled { opacity: 0.4; cursor: not-allowed; }
+.pp-notif-toggle-on {
+  border-color: rgba(46, 204, 113, 0.5);
+  background: rgba(46, 204, 113, 0.12);
+  color: #2ecc71;
+}
+.pp-notif-toggle-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
 /* ── Messages ── */
 .pp-msg {
   font-size: 0.875rem;

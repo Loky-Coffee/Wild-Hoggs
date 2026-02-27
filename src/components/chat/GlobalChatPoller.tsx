@@ -7,6 +7,25 @@
 import { useEffect, useRef, useCallback } from 'preact/hooks';
 import { useAuth } from '../../hooks/useAuth';
 
+function playNotificationSound() {
+  try {
+    const ctx = new AudioContext();
+    const osc  = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(880,  ctx.currentTime);
+    osc.frequency.setValueAtTime(1100, ctx.currentTime + 0.1);
+    gain.gain.setValueAtTime(0.25, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 0.5);
+    // AudioContext auto-closes after sound ends (no leak)
+    osc.onended = () => ctx.close();
+  } catch { /* browser may block autoplay */ }
+}
+
 const POLL_MS = 20_000; // 20 s when not on community page
 
 function isOnCommunity(): boolean {
@@ -28,6 +47,8 @@ function buildChannelUrls(user: { language?: string | null; server?: string | nu
 
 export default function GlobalChatPoller() {
   const { token, isLoggedIn, user } = useAuth();
+  const notifSoundRef = useRef(user?.notification_sound ?? 1);
+  useEffect(() => { notifSoundRef.current = user?.notification_sound ?? 1; }, [user?.notification_sound]);
 
   const pmSince    = useRef<string | null>(null);
   // Per-channel since timestamps keyed by base URL (without since/limit params)
@@ -37,6 +58,9 @@ export default function GlobalChatPoller() {
 
   // ── Apply count to DOM + document.title ───────────────────────────────────
   const applyCount = useCallback((n: number) => {
+    if (n > countRef.current && notifSoundRef.current === 1) {
+      playNotificationSound();
+    }
     countRef.current = n;
 
     // Nav badge

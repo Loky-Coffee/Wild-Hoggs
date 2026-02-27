@@ -74,6 +74,15 @@ export async function onRequestPatch(ctx: any) {
     }
   }
 
+  if (body.notification_sound !== undefined) {
+    const val = Number(body.notification_sound);
+    if (val !== 0 && val !== 1) {
+      return Response.json({ error: 'notification_sound: 0 oder 1 erwartet' }, { status: 400 });
+    }
+    updates.push('notification_sound = ?');
+    values.push(val);
+  }
+
   if (updates.length === 0) {
     return Response.json({ error: 'Nichts zum Aktualisieren' }, { status: 400 });
   }
@@ -86,7 +95,7 @@ export async function onRequestPatch(ctx: any) {
   ).bind(...values).run();
 
   const updated = await DB.prepare(
-    'SELECT id, email, username, faction, server, language, formation_power_br, formation_power_wd, formation_power_go FROM users WHERE id = ?'
+    'SELECT id, email, username, faction, server, language, formation_power_br, formation_power_wd, formation_power_go, COALESCE(notification_sound, 1) AS notification_sound, is_admin, COALESCE(is_moderator, 0) AS is_moderator FROM users WHERE id = ?'
   ).bind(user.user_id).first() as any;
 
   return Response.json({
@@ -99,5 +108,8 @@ export async function onRequestPatch(ctx: any) {
     formation_power_br: updated.formation_power_br ?? null,
     formation_power_wd: updated.formation_power_wd ?? null,
     formation_power_go: updated.formation_power_go ?? null,
+    is_admin: updated.is_admin ?? 0,
+    is_moderator: updated.is_moderator ?? 0,
+    notification_sound: updated.notification_sound ?? 1,
   });
 }

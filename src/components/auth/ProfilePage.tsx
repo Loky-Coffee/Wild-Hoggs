@@ -77,6 +77,9 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
   const [pwSaving, setPwSaving]     = useState(false);
   const [pwMsg, setPwMsg]           = useState<{ type: 'error' | 'ok'; text: string } | null>(null);
 
+  const [notifSound,        setNotifSound]        = useState(1);
+  const [notifSoundSaving,  setNotifSoundSaving]  = useState(false);
+
   const [selectedFaction, setSelectedFaction] = useState<string | null>(null);
   const [formationBr, setFormationBr] = useState('');
   const [formationWd, setFormationWd] = useState('');
@@ -87,7 +90,8 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
   useEffect(() => {
     if (user?.username) setUsername(user.username);
     if (user?.server !== undefined) setServer(user.server ?? '');
-  }, [user?.username, user?.server]);
+    setNotifSound(user?.notification_sound ?? 1);
+  }, [user?.username, user?.server, user?.notification_sound]);
 
   useEffect(() => {
     setSelectedFaction(user?.faction ?? null);
@@ -143,6 +147,16 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
     } catch (e: any) {
       setServerMsg({ type: 'error', text: e.message });
     } finally { setServerSaving(false); }
+  };
+
+  const handleToggleNotifSound = async () => {
+    if (!token) return;
+    const next = notifSound === 1 ? 0 : 1;
+    setNotifSoundSaving(true);
+    try {
+      await patchProfile({ notification_sound: next });
+      setNotifSound(next);
+    } catch { /* ignore */ } finally { setNotifSoundSaving(false); }
   };
 
   const handleSaveUsername = async () => {
@@ -424,6 +438,21 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
             </button>
           </div>
           {usernameMsg && <p class={`pp-msg pp-msg-${usernameMsg.type}`}>{usernameMsg.text}</p>}
+        </div>
+
+        {/* Notification Sound */}
+        <div class="pp-setting-block">
+          <label class="pp-setting-label">{t('profile.notificationSound')}</label>
+          <button
+            class={`pp-notif-toggle${notifSound === 1 ? ' pp-notif-toggle-on' : ''}`}
+            onClick={handleToggleNotifSound}
+            disabled={notifSoundSaving}
+          >
+            <span class="pp-notif-toggle-dot" />
+            <span class="pp-notif-toggle-label">
+              {notifSound === 1 ? t('profile.notificationSoundOn') : t('profile.notificationSoundOff')}
+            </span>
+          </button>
         </div>
 
         {/* Password */}

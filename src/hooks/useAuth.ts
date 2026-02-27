@@ -12,6 +12,7 @@ export interface AuthUser {
   formation_power_go: number | null;
   is_admin: number;
   is_moderator: number;
+  notification_sound: number; // 1 = on (default), 0 = off
 }
 
 export const AUTH_TOKEN_KEY   = 'wh-auth-token';
