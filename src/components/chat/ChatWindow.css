@@ -376,7 +376,7 @@ body:has(.chat-login-wall) > main > astro-island {
   display: flex;
   width: 100%;
   box-sizing: border-box;
-  align-items: stretch; /* actions + bubble always same height */
+  align-items: center;
 }
 
 .chat-msg-row-own   { justify-content: flex-end; }
@@ -396,15 +396,13 @@ body:has(.chat-login-wall) > main > astro-island {
 .chat-bubble-own {
   background: rgba(255, 165, 0, 0.18);
   border: 1px solid rgba(255, 165, 0, 0.35);
-  border-radius: 0 16px 4px 0; /* left side square — actions connect there */
-  border-left: none;
+  border-radius: 16px 4px 16px 16px;
 }
 
 .chat-bubble-other {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.09);
-  border-radius: 16px 0 0 4px; /* right side square — actions connect there */
-  border-right: none;
+  border-radius: 4px 16px 16px 16px;
 }
 
 /* ── Bubble Header (Username + Badge, nur bei Fremden) ───────────────────── */
@@ -450,55 +448,99 @@ body:has(.chat-login-wall) > main > astro-island {
   white-space: nowrap;
 }
 
-/* ── Message Action Buttons (outside bubble, visually connected) ─────────── */
+/* ── Radial Action Menu ───────────────────────────────────────────────────── */
 
-.chat-msg-actions {
+.chat-radial-menu {
+  position: relative;
+  flex-shrink: 0;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.15rem;
-  flex-shrink: 0;
-  padding: 0.3rem 0.4rem;
+  width: 28px;
+  z-index: 10;
 }
 
-.chat-msg-actions-own {
-  background: rgba(255, 165, 0, 0.18);
-  border: 1px solid rgba(255, 165, 0, 0.35);
-  border-right: none; /* bubble handles the right border */
-  border-radius: 16px 0 0 16px;
-}
-
-.chat-msg-actions-other {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  border-left: none; /* bubble handles the left border */
-  border-radius: 0 16px 16px 0;
-}
-
-.chat-action-btn {
-  background: none;
-  border: none;
-  color: rgba(255, 255, 255, 0.3);
-  font-size: 0.8rem;
+.chat-radial-toggle {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 1rem;
   cursor: pointer;
-  padding: 0.2rem 0.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
   line-height: 1;
-  border-radius: 4px;
-  transition: color 0.15s, background 0.15s;
+  position: relative;
+  z-index: 2;
+  transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.25s;
+  flex-shrink: 0;
 }
 
-.chat-action-btn:hover:not(:disabled) {
-  color: rgba(255, 255, 255, 0.75);
-  background: rgba(255, 255, 255, 0.07);
+.chat-radial-toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.65);
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
-.chat-action-btn:disabled { opacity: 0.3; cursor: default; }
+.chat-radial-toggle-open {
+  background: rgba(255, 165, 0, 0.18) !important;
+  border-color: rgba(255, 165, 0, 0.5) !important;
+  color: #ffa500 !important;
+  transform: rotate(90deg);
+}
 
-.chat-action-delete:hover:not(:disabled) { color: #e74c3c; }
+.chat-radial-btn {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(18, 18, 18, 0.95);
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.88rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+  /* closed: collapsed at center */
+  transform: translate(0, 0) scale(0);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity   0.2s ease;
+  z-index: 1;
+}
 
-.chat-action-reported {
+.chat-radial-btn.open {
+  transform: translate(var(--tx), var(--ty)) scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.chat-radial-btn:hover:not(:disabled) {
+  background: rgba(50, 50, 50, 0.98);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translate(var(--tx), var(--ty)) scale(1.12);
+}
+
+.chat-radial-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+.chat-radial-delete:hover:not(:disabled) {
+  color: #e74c3c;
+  border-color: rgba(231, 76, 60, 0.5);
+}
+
+.chat-radial-reported {
   color: #27ae60 !important;
+  border-color: rgba(39, 174, 96, 0.35) !important;
   cursor: default;
 }
 
@@ -751,34 +793,13 @@ body:has(.chat-login-wall) > main > astro-island {
   border-color: transparent !important;
 }
 
-/* own bubble: actions sit on the LEFT → suppress border on bubble's left side */
-.chat-bubble-admin.chat-bubble-own::before {
-  content: '';
-  position: absolute;
-  inset: -2px -2px -2px 0;
-  border-radius: inherit;
-  padding: 2px 2px 2px 0;
-  pointer-events: none;
-  background: linear-gradient(
-    90deg,
-    #ff0000, #ff5500, #ffcc00, #aaff00,
-    #00ffaa, #00ccff, #0055ff, #aa00ff,
-    #ff0088, #ff0000
-  );
-  background-size: 300% 100%;
-  animation: admin-snake 2.5s linear infinite;
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-}
-
-/* other bubble: actions sit on the RIGHT → suppress border on bubble's right side */
+.chat-bubble-admin.chat-bubble-own::before,
 .chat-bubble-admin.chat-bubble-other::before {
   content: '';
   position: absolute;
-  inset: -2px 0 -2px -2px;
+  inset: -2px;
   border-radius: inherit;
-  padding: 2px 0 2px 2px;
+  padding: 2px;
   pointer-events: none;
   background: linear-gradient(
     90deg,
@@ -834,29 +855,13 @@ body:has(.chat-login-wall) > main > astro-island {
   border-color: transparent !important;
 }
 
-/* own bubble: actions sit on the LEFT → suppress border on bubble's left side */
-.chat-bubble-mod.chat-bubble-own::before {
-  content: '';
-  position: absolute;
-  inset: -2px -2px -2px 0;
-  border-radius: inherit;
-  padding: 2px 2px 2px 0;
-  pointer-events: none;
-  background: linear-gradient(90deg, #0ea5e9, #6366f1, #06b6d4, #3b82f6, #0ea5e9);
-  background-size: 300% 100%;
-  animation: mod-snake 3s linear infinite;
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-}
-
-/* other bubble: actions sit on the RIGHT → suppress border on bubble's right side */
+.chat-bubble-mod.chat-bubble-own::before,
 .chat-bubble-mod.chat-bubble-other::before {
   content: '';
   position: absolute;
-  inset: -2px 0 -2px -2px;
+  inset: -2px;
   border-radius: inherit;
-  padding: 2px 0 2px 2px;
+  padding: 2px;
   pointer-events: none;
   background: linear-gradient(90deg, #0ea5e9, #6366f1, #06b6d4, #3b82f6, #0ea5e9);
   background-size: 300% 100%;
@@ -903,27 +908,13 @@ body:has(.chat-login-wall) > main > astro-island {
   border-color: transparent !important;
 }
 
-.chat-bubble-user.chat-bubble-own::before {
-  content: '';
-  position: absolute;
-  inset: -2px -2px -2px 0;
-  border-radius: inherit;
-  padding: 2px 2px 2px 0;
-  pointer-events: none;
-  background: linear-gradient(90deg, #22c55e, #4ade80, #16a34a, #86efac, #22c55e);
-  background-size: 300% 100%;
-  animation: user-snake 3.5s linear infinite;
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-}
-
+.chat-bubble-user.chat-bubble-own::before,
 .chat-bubble-user.chat-bubble-other::before {
   content: '';
   position: absolute;
-  inset: -2px 0 -2px -2px;
+  inset: -2px;
   border-radius: inherit;
-  padding: 2px 0 2px 2px;
+  padding: 2px;
   pointer-events: none;
   background: linear-gradient(90deg, #22c55e, #4ade80, #16a34a, #86efac, #22c55e);
   background-size: 300% 100%;
@@ -959,122 +950,6 @@ body:has(.chat-login-wall) > main > astro-island {
 }
 
 .chat-user-label-own { text-align: right; }
-
-/* ── Admin / Mod border effect extended to action buttons ────────────────── */
-
-/* Make actions a positioning context + hide normal border */
-.chat-msg-row:has(.chat-bubble-admin) .chat-msg-actions,
-.chat-msg-row:has(.chat-bubble-mod)   .chat-msg-actions,
-.chat-msg-row:has(.chat-bubble-user)  .chat-msg-actions {
-  position: relative;
-  border-color: transparent !important;
-}
-
-/* Admin — own: actions sit on LEFT → border on top, left, bottom only */
-.chat-msg-row:has(.chat-bubble-admin) .chat-msg-actions-own::before {
-  content: '';
-  position: absolute;
-  inset: -2px 0 -2px -2px;
-  border-radius: inherit;
-  padding: 2px 0 2px 2px;
-  pointer-events: none;
-  background: linear-gradient(
-    90deg,
-    #ff0000, #ff5500, #ffcc00, #aaff00,
-    #00ffaa, #00ccff, #0055ff, #aa00ff,
-    #ff0088, #ff0000
-  );
-  background-size: 300% 100%;
-  animation: admin-snake 2.5s linear infinite;
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-}
-
-/* Admin — other: actions sit on RIGHT → border on top, right, bottom only */
-.chat-msg-row:has(.chat-bubble-admin) .chat-msg-actions-other::before {
-  content: '';
-  position: absolute;
-  inset: -2px -2px -2px 0;
-  border-radius: inherit;
-  padding: 2px 2px 2px 0;
-  pointer-events: none;
-  background: linear-gradient(
-    90deg,
-    #ff0000, #ff5500, #ffcc00, #aaff00,
-    #00ffaa, #00ccff, #0055ff, #aa00ff,
-    #ff0088, #ff0000
-  );
-  background-size: 300% 100%;
-  animation: admin-snake 2.5s linear infinite;
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-}
-
-/* Mod — own: actions sit on LEFT */
-.chat-msg-row:has(.chat-bubble-mod) .chat-msg-actions-own::before {
-  content: '';
-  position: absolute;
-  inset: -2px 0 -2px -2px;
-  border-radius: inherit;
-  padding: 2px 0 2px 2px;
-  pointer-events: none;
-  background: linear-gradient(90deg, #0ea5e9, #6366f1, #06b6d4, #3b82f6, #0ea5e9);
-  background-size: 300% 100%;
-  animation: mod-snake 3s linear infinite;
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-}
-
-/* Mod — other: actions sit on RIGHT */
-.chat-msg-row:has(.chat-bubble-mod) .chat-msg-actions-other::before {
-  content: '';
-  position: absolute;
-  inset: -2px -2px -2px 0;
-  border-radius: inherit;
-  padding: 2px 2px 2px 0;
-  pointer-events: none;
-  background: linear-gradient(90deg, #0ea5e9, #6366f1, #06b6d4, #3b82f6, #0ea5e9);
-  background-size: 300% 100%;
-  animation: mod-snake 3s linear infinite;
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-}
-
-/* User — own: actions sit on LEFT */
-.chat-msg-row:has(.chat-bubble-user) .chat-msg-actions-own::before {
-  content: '';
-  position: absolute;
-  inset: -2px 0 -2px -2px;
-  border-radius: inherit;
-  padding: 2px 0 2px 2px;
-  pointer-events: none;
-  background: linear-gradient(90deg, #22c55e, #4ade80, #16a34a, #86efac, #22c55e);
-  background-size: 300% 100%;
-  animation: user-snake 3.5s linear infinite;
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-}
-
-/* User — other: actions sit on RIGHT */
-.chat-msg-row:has(.chat-bubble-user) .chat-msg-actions-other::before {
-  content: '';
-  position: absolute;
-  inset: -2px -2px -2px 0;
-  border-radius: inherit;
-  padding: 2px 2px 2px 0;
-  pointer-events: none;
-  background: linear-gradient(90deg, #22c55e, #4ade80, #16a34a, #86efac, #22c55e);
-  background-size: 300% 100%;
-  animation: user-snake 3.5s linear infinite;
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-}
 
 /* ── Sidebar toggle button (hidden on desktop) ───────────────────────────── */
 
@@ -1170,8 +1045,6 @@ body:has(.chat-login-wall) > main > astro-island {
 
   .chat-messages   { padding: 0.75rem 1rem; }
   .chat-input-area { padding: 0.6rem 1rem; }
-
-  .chat-action-btn { color: rgba(255, 255, 255, 0.4); }
 
   /* Prevent iOS Safari auto-zoom on focus (triggers below 16px) */
   .chat-textarea { font-size: 16px; }

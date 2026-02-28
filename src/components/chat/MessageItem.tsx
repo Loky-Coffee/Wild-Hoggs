@@ -1,4 +1,4 @@
-import { useState } from 'preact/hooks';
+import { useState, useEffect, useRef } from 'preact/hooks';
 import ServerBadge from './ServerBadge';
 import ConfirmDialog from './ConfirmDialog';
 
@@ -74,6 +74,24 @@ function relativeTime(dateStr: string, ago: AgoStrings): string {
   return ago.days.replace('{n}', String(diffDay));
 }
 
+// Radial positions: angles (degrees) per button count, right-side origin
+const RADIAL_R = 50;
+const RADIAL_ANGLES: Record<number, number[]> = {
+  1: [0],
+  2: [-40, 40],
+  3: [-60, 0, 60],
+  4: [-70, -23, 23, 70],
+};
+function radialPos(side: 'left' | 'right', idx: number, total: number) {
+  const angles = RADIAL_ANGLES[Math.min(total, 4)] ?? RADIAL_ANGLES[4];
+  const deg    = angles[idx] ?? 0;
+  const rad    = deg * Math.PI / 180;
+  const x      = Math.round(RADIAL_R * Math.cos(rad));
+  const y      = Math.round(RADIAL_R * Math.sin(rad));
+  // Mirror x for left side so arc opens in the correct direction
+  return { x: side === 'right' ? x : -x, y };
+}
+
 export default function MessageItem({
   msg, currentUsername, onReport, reportedIds,
   ago, isAdmin, onDelete, onReply, onPM, strings,
@@ -82,6 +100,20 @@ export default function MessageItem({
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [showReportDialog,  setShowReportDialog]  = useState(false);
   const [reportReason,      setReportReason]      = useState<string>(strings.reasons[0]?.value ?? 'spam');
+  const [menuOpen,          setMenuOpen]          = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  // Close on outside click
+  useEffect(() => {
+    if (!menuOpen) return;
+    const close = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener('click', close);
+    return () => document.removeEventListener('click', close);
+  }, [menuOpen]);
 
   const factionColor = msg.faction
     ? (FACTION_COLORS[msg.faction] ?? 'rgba(255,255,255,0.7)')
@@ -104,38 +136,63 @@ export default function MessageItem({
     onReport(msg.id, reportReason);
   };
 
-  const actions = (
-    <div class={`chat-msg-actions${isOwn ? ' chat-msg-actions-own' : ' chat-msg-actions-other'}`}>
-      <button class="chat-action-btn" onClick={() => onReply(msg)} title={strings.reply}>↩</button>
-      {!isOwn && onPM && (
-        <button class="chat-action-btn" onClick={() => onPM(msg.username)} title={strings.pm}>✉</button>
-      )}
-      {!isOwn && (
-        <button
-          class={`chat-action-btn${isReported ? ' chat-action-reported' : ''}`}
-          onClick={() => !isReported && setShowReportDialog(true)}
-          title={isReported ? strings.reported : strings.report}
-          disabled={isReported}
-        >
-          {isReported ? '✓' : '⚑'}
-        </button>
-      )}
-      {isAdmin && (
-        <button
-          class="chat-action-btn chat-action-delete"
-          onClick={() => setShowDeleteConfirm(true)}
-          title={strings.delete}
-          disabled={deleting}
-        >
-          🗑
-        </button>
-      )}
+  const side = isOwn ? 'left' : 'right';
+
+  // Build the list of radial action buttons
+  type RBtn = { key: string; icon: string; title: string; cls?: string; disabled?: boolean; action: () => void };
+  const btns: RBtn[] = [];
+  btns.push({ key: 'reply', icon: '↩', title: strings.reply, action: () => onReply(msg) });
+  if (!isOwn && onPM)
+    btns.push({ key: 'pm', icon: '✉', title: strings.pm, action: () => onPM(msg.username) });
+  if (!isOwn)
+    btns.push({
+      key:      'report',
+      icon:     isReported ? '✓' : '⚑',
+      title:    isReported ? strings.reported : strings.report,
+      cls:      isReported ? 'chat-radial-reported' : '',
+      disabled: isReported,
+      action:   () => { if (!isReported) setShowReportDialog(true); },
+    });
+  if (isAdmin)
+    btns.push({ key: 'delete', icon: '🗑', title: strings.delete, cls: 'chat-radial-delete', disabled: deleting, action: () => setShowDeleteConfirm(true) });
+
+  const actionMenu = (
+    <div ref={menuRef} class="chat-radial-menu">
+      <button
+        class={`chat-radial-toggle${menuOpen ? ' chat-radial-toggle-open' : ''}`}
+        onClick={e => { e.stopPropagation(); setMenuOpen(v => !v); }}
+        title="Actions"
+        aria-label="Actions"
+      >
+        ···
+      </button>
+      {btns.map((btn, i) => {
+        const pos = radialPos(side, i, btns.length);
+        return (
+          <button
+            key={btn.key}
+            class={`chat-radial-btn${menuOpen ? ' open' : ''}${btn.cls ? ' ' + btn.cls : ''}`}
+            style={{
+              '--tx': `${pos.x}px`,
+              '--ty': `${pos.y}px`,
+              transitionDelay: menuOpen
+                ? `${i * 0.045}s`
+                : `${(btns.length - 1 - i) * 0.03}s`,
+            } as any}
+            onClick={e => { e.stopPropagation(); btn.action(); setMenuOpen(false); }}
+            title={btn.title}
+            disabled={btn.disabled}
+          >
+            {btn.icon}
+          </button>
+        );
+      })}
     </div>
   );
 
   return (
     <div class={`chat-msg-row${isOwn ? ' chat-msg-row-own' : ' chat-msg-row-other'}`}>
-      {isOwn && actions}
+      {isOwn && actionMenu}
 
       <div class={[
         'chat-bubble',
@@ -176,7 +233,7 @@ export default function MessageItem({
         </div>
       </div>
 
-      {!isOwn && actions}
+      {!isOwn && actionMenu}
 
       {/* ── Delete Confirm ── */}
       {showDeleteConfirm && (
