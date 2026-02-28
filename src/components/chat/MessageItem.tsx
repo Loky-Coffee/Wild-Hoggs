@@ -75,12 +75,13 @@ function relativeTime(dateStr: string, ago: AgoStrings): string {
 }
 
 // Radial positions: angles (degrees) per button count, right-side origin
-const RADIAL_R = 50;
+// R=68, 40° spacing → arc gap ≈ button diameter → buttons nearly touch
+const RADIAL_R = 68;
 const RADIAL_ANGLES: Record<number, number[]> = {
   1: [0],
-  2: [-40, 40],
-  3: [-60, 0, 60],
-  4: [-70, -23, 23, 70],
+  2: [-20, 20],
+  3: [-40,  0, 40],
+  4: [-60, -20, 20, 60],
 };
 function radialPos(side: 'left' | 'right', idx: number, total: number) {
   const angles = RADIAL_ANGLES[Math.min(total, 4)] ?? RADIAL_ANGLES[4];
