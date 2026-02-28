@@ -1,4 +1,4 @@
-import { useMemo } from 'preact/hooks';
+import { useState, useMemo } from 'preact/hooks';
 import { validatedHeroExpTable } from '../../data/validated/hero-exp';
 import { useTranslations } from '../../i18n/utils';
 import { formatNumber } from '../../utils/formatters';
@@ -16,25 +16,22 @@ const heroExpTable = validatedHeroExpTable;
 interface HeroExpState {
   currentLevel: number;
   targetLevel: number;
-  calculated: boolean;
 }
 
 const HERO_EXP_DEFAULT: HeroExpState = {
   currentLevel: 1,
   targetLevel: 10,
-  calculated: false,
 };
 
 export default function HeroExpCalculator({ lang, translationData }: HeroExpCalculatorProps) {
   const [stored, setStored] = useCalculatorState<HeroExpState>('hero-exp', 'main', HERO_EXP_DEFAULT);
+  const [calculated, setCalculated] = useState(false);
 
   const currentLevel = stored.currentLevel;
   const targetLevel = stored.targetLevel;
-  const calculated = stored.calculated;
 
-  const setCurrentLevel = (v: number) => setStored(s => ({ ...s, currentLevel: v, calculated: false }));
-  const setTargetLevel = (v: number) => setStored(s => ({ ...s, targetLevel: v, calculated: false }));
-  const setCalculated = (v: boolean) => setStored(s => ({ ...s, calculated: v }));
+  const setCurrentLevel = (v: number) => { setStored(s => ({ ...s, currentLevel: v })); setCalculated(false); };
+  const setTargetLevel  = (v: number) => { setStored(s => ({ ...s, targetLevel:  v })); setCalculated(false); };
 
   const t = useTranslations(translationData);
 
@@ -62,6 +59,7 @@ export default function HeroExpCalculator({ lang, translationData }: HeroExpCalc
 
   const handleReset = () => {
     setStored(HERO_EXP_DEFAULT);
+    setCalculated(false);
   };
 
   return (

@@ -1,4 +1,4 @@
-import { useMemo } from 'preact/hooks';
+import { useState, useMemo } from 'preact/hooks';
 import { validatedBuildings as buildingsData } from '../../data/validated/buildings';
 import { useTranslations } from '../../i18n/utils';
 import { formatNumber } from '../../utils/formatters';
@@ -19,28 +19,25 @@ interface BuildingState {
   selectedBuilding: string;
   currentLevel: number;
   targetLevel: number;
-  calculated: boolean;
 }
 
 const BUILDING_DEFAULT: BuildingState = {
   selectedBuilding: buildings[0].id,
   currentLevel: 1,
   targetLevel: 5,
-  calculated: false,
 };
 
 export default function BuildingCalculator({ lang, translationData }: BuildingCalculatorProps) {
   const [stored, setStored] = useCalculatorState<BuildingState>('building', 'main', BUILDING_DEFAULT);
+  const [calculated, setCalculated] = useState(false);
 
   const selectedBuilding = stored.selectedBuilding;
   const currentLevel = stored.currentLevel;
   const targetLevel = stored.targetLevel;
-  const calculated = stored.calculated;
 
-  const setSelectedBuilding = (v: string) => setStored(s => ({ ...s, selectedBuilding: v, calculated: false }));
-  const setCurrentLevel = (v: number) => setStored(s => ({ ...s, currentLevel: v, calculated: false }));
-  const setTargetLevel = (v: number) => setStored(s => ({ ...s, targetLevel: v, calculated: false }));
-  const setCalculated = (v: boolean) => setStored(s => ({ ...s, calculated: v }));
+  const setSelectedBuilding = (v: string) => { setStored(s => ({ ...s, selectedBuilding: v })); setCalculated(false); };
+  const setCurrentLevel     = (v: number) => { setStored(s => ({ ...s, currentLevel: v }));     setCalculated(false); };
+  const setTargetLevel      = (v: number) => { setStored(s => ({ ...s, targetLevel:  v }));     setCalculated(false); };
 
   const t = useTranslations(translationData);
 
@@ -94,6 +91,7 @@ export default function BuildingCalculator({ lang, translationData }: BuildingCa
 
   const handleReset = () => {
     setStored(BUILDING_DEFAULT);
+    setCalculated(false);
   };
 
   return (
