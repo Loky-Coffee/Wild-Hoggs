@@ -49,6 +49,13 @@ export default function ResearchTreeView({
     resetView } = useTreeZoom(scrollContainerRef);
 
   const [focusedNodeId, setFocusedNodeId] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    setIsMobile(window.innerWidth < BREAKPOINT_MOBILE);
+  }, []);
 
   const tiers = useMemo((): Map<string, number> => {
     const tiersMap = new Map<string, number>();
@@ -122,15 +129,14 @@ export default function ResearchTreeView({
 
   // Calculate initial zoom to fit content perfectly on mobile
   useEffect(() => {
-    if (!scrollContainerRef.current) return;
-    const isMobile = window.innerWidth < BREAKPOINT_MOBILE;
+    if (!scrollContainerRef.current || !mounted) return;
     if (isMobile) {
       const targetContentWidth = layoutDirection === 'vertical' ? NODE_SPACING * 3 : svgDimensions.width * 0.95;
       setZoomLevel(calculateMobileZoom(scrollContainerRef.current, targetContentWidth));
     } else {
       setZoomLevel(1);
     }
-  }, [svgDimensions, layoutDirection]);
+  }, [svgDimensions, layoutDirection, mounted, isMobile]);
 
   const isUnlocked = (tech: Technology): boolean => {
     if (tech.prerequisites.length === 0) return true;
@@ -418,8 +424,8 @@ export default function ResearchTreeView({
         `,
         backgroundSize: '30px 30px',
         borderRadius: '12px',
-        padding: typeof window !== 'undefined' && window.innerWidth < BREAKPOINT_MOBILE ? `${TREE_ZOOM_DEFAULTS.CONTAINER_PADDING_MOBILE}rem` : `${TREE_ZOOM_DEFAULTS.CONTAINER_PADDING_DESKTOP}rem`,
-        paddingBottom: typeof window !== 'undefined' && window.innerWidth < BREAKPOINT_MOBILE ? '120px' : '140px',
+        padding: (mounted && isMobile) ? `${TREE_ZOOM_DEFAULTS.CONTAINER_PADDING_MOBILE}rem` : `${TREE_ZOOM_DEFAULTS.CONTAINER_PADDING_DESKTOP}rem`,
+        paddingBottom: (mounted && isMobile) ? '120px' : '140px',
         WebkitOverflowScrolling: 'touch' as const,
         touchAction: 'pan-x pan-y pinch-zoom',
         cursor: 'grab',
@@ -481,7 +487,6 @@ export default function ResearchTreeView({
         onZoomIn={handleZoomIn}
         onZoomOut={handleZoomOut}
         onResetView={() => {
-          const isMobile = window.innerWidth < BREAKPOINT_MOBILE;
           resetView(isMobile ? () => layoutDirection === 'vertical' ? NODE_SPACING * 3 : svgDimensions.width * 0.95 : undefined);
         }}
         onScrollUp={handleScrollUp}
