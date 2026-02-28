@@ -35,9 +35,9 @@ export default function BuildingCalculator({ lang, translationData }: BuildingCa
   const currentLevel = stored.currentLevel;
   const targetLevel = stored.targetLevel;
 
-  const setSelectedBuilding = (v: string) => { setStored(s => ({ ...s, selectedBuilding: v })); setCalculated(false); };
-  const setCurrentLevel     = (v: number) => { setStored(s => ({ ...s, currentLevel: v }));     setCalculated(false); };
-  const setTargetLevel      = (v: number) => { setStored(s => ({ ...s, targetLevel:  v }));     setCalculated(false); };
+  const setSelectedBuilding = (v: string) => setStored(s => ({ ...s, selectedBuilding: v }));
+  const setCurrentLevel     = (v: number) => setStored(s => ({ ...s, currentLevel: v }));
+  const setTargetLevel      = (v: number) => setStored(s => ({ ...s, targetLevel:  v }));
 
   const t = useTranslations(translationData);
 
@@ -153,7 +153,7 @@ export default function BuildingCalculator({ lang, translationData }: BuildingCa
           onClick={() => setCalculated(true)}
           disabled={calculated}
         >
-          {calculated ? `✓ ${t('calc.building.calculate')}` : t('calc.building.calculate')}
+          {calculated ? `✓ ${t('calc.building.autoCalculate')}` : t('calc.building.calculate')}
         </button>
 
       </div>

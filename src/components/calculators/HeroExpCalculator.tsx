@@ -30,8 +30,8 @@ export default function HeroExpCalculator({ lang, translationData }: HeroExpCalc
   const currentLevel = stored.currentLevel;
   const targetLevel = stored.targetLevel;
 
-  const setCurrentLevel = (v: number) => { setStored(s => ({ ...s, currentLevel: v })); setCalculated(false); };
-  const setTargetLevel  = (v: number) => { setStored(s => ({ ...s, targetLevel:  v })); setCalculated(false); };
+  const setCurrentLevel = (v: number) => setStored(s => ({ ...s, currentLevel: v }));
+  const setTargetLevel  = (v: number) => setStored(s => ({ ...s, targetLevel:  v }));
 
   const t = useTranslations(translationData);
 
@@ -112,7 +112,7 @@ export default function HeroExpCalculator({ lang, translationData }: HeroExpCalc
           onClick={() => setCalculated(true)}
           disabled={calculated}
         >
-          {calculated ? `✓ ${t('calc.hero.calculate')}` : t('calc.hero.calculate')}
+          {calculated ? `✓ ${t('calc.hero.autoCalculate')}` : t('calc.hero.calculate')}
         </button>
 
       </div>
