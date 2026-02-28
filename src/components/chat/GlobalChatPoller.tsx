@@ -176,6 +176,12 @@ export default function GlobalChatPoller() {
               if (data.messages.length > 0) {
                 chanSince.current[baseUrl] = data.messages[data.messages.length - 1].created_at;
                 added += data.messages.length;
+                // Record which channel has unread so ChatWindow can show the right tab dot
+                try {
+                  const unreads: Record<string, number> = JSON.parse(localStorage.getItem('wh-unread-channels') ?? '{}');
+                  unreads[baseUrl] = (unreads[baseUrl] ?? 0) + data.messages.length;
+                  localStorage.setItem('wh-unread-channels', JSON.stringify(unreads));
+                } catch { /* ignore */ }
               }
             }
           }

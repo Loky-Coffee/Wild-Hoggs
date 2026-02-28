@@ -78,7 +78,7 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
   // Per-tab "last seen" timestamps for inactive-tab background polling
   const tabSince = useRef<Partial<Record<ChatType, string>>>({});
 
-  const [unreadTabs, setUnreadTabs] = useState<Set<ChatType>>(new Set());
+  const [unreadCounts, setUnreadCounts] = useState<Map<ChatType, number>>(new Map());
 
   useEffect(() => {
     // Save current position for the tab we're leaving
@@ -89,9 +89,9 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
     chatTypeRef.current = chatType;
     setReplyTo(null);
     // Clear unread indicator for the tab we just switched to
-    setUnreadTabs(prev => {
+    setUnreadCounts(prev => {
       if (!prev.has(chatType)) return prev;
-      const next = new Set(prev);
+      const next = new Map(prev);
       next.delete(chatType);
       return next;
     });
@@ -315,14 +315,18 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
         if (!since) return;
         try {
           const res = await fetch(
-            buildUrl(type, `since=${encodeURIComponent(since)}&limit=1`),
+            buildUrl(type, `since=${encodeURIComponent(since)}&limit=50`),
             { headers: { Authorization: `Bearer ${token}` } },
           );
           if (!res.ok) return;
           const data = await res.json() as { messages: { created_at: string }[] };
           if (data.messages.length > 0) {
             tabSince.current[type] = data.messages[data.messages.length - 1].created_at;
-            setUnreadTabs(prev => prev.has(type) ? prev : new Set([...prev, type]));
+            setUnreadCounts(prev => {
+              const next = new Map(prev);
+              next.set(type, (next.get(type) ?? 0) + data.messages.length);
+              return next;
+            });
           }
         } catch { /* ignore */ }
       }));
@@ -331,6 +335,32 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
     bgPollRef.current = setInterval(bgPoll, 10_000);
     return () => { if (bgPollRef.current) { clearInterval(bgPollRef.current); bgPollRef.current = null; } };
   }, [isLoggedIn, token, buildUrl, hasLang, hasServer]);
+
+  // ── On mount: restore unread-tab state from GlobalChatPoller (cross-page nav) ─
+  useEffect(() => {
+    if (!isLoggedIn) return;
+    try {
+      const stored: Record<string, number> = JSON.parse(localStorage.getItem('wh-unread-channels') ?? '{}');
+      const urls = Object.keys(stored);
+      if (urls.length === 0) return;
+      localStorage.removeItem('wh-unread-channels');
+      const initial = new Map<ChatType, number>();
+      urls.forEach(url => {
+        const isServer = url.includes('/api/chat/server/');
+        const hasLang  = url.includes('lang=');
+        const type: ChatType = !isServer && !hasLang ? 'global'
+          : !isServer && hasLang  ? 'global-lang'
+          : isServer  && !hasLang ? 'server'
+          : 'server-lang';
+        if (type !== chatType) initial.set(type, (initial.get(type) ?? 0) + (typeof stored[url] === 'number' ? stored[url] : 1));
+      });
+      if (initial.size > 0) setUnreadCounts(prev => {
+        const next = new Map(prev);
+        initial.forEach((count, t) => next.set(t, (next.get(t) ?? 0) + count));
+        return next;
+      });
+    } catch { /* ignore */ }
+  }, [isLoggedIn]); // eslint-disable-line
 
   // ── On mount: ensure pending DM contacts are visible in the sidebar ─────────
   useEffect(() => {
@@ -363,9 +393,9 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
   // ── Dispatch global unread count to GlobalChatPoller ──────────────────────
   useEffect(() => {
     if (!isLoggedIn) return;
-    const total = pmUnread.size + unreadTabs.size;
+    const total = pmUnread.size + unreadCounts.size;
     window.dispatchEvent(new CustomEvent('wh:unread-count', { detail: { total } }));
-  }, [pmUnread, unreadTabs, isLoggedIn]);
+  }, [pmUnread, unreadCounts, isLoggedIn]);
 
   // ── Handlers ──────────────────────────────────────────────────────────────
   const handleSend = useCallback(async (text: string) => {
@@ -657,7 +687,11 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
               title={tab.title}
             >
               {tab.label}
-              {unreadTabs.has(tab.type) && <span class="chat-tab-dot" />}
+              {(unreadCounts.get(tab.type) ?? 0) > 0 && (
+                <span class="chat-tab-unread-badge">
+                  {(unreadCounts.get(tab.type) ?? 0) > 99 ? '99+' : unreadCounts.get(tab.type)}
+                </span>
+              )}
             </button>
           ))}
         </div>
