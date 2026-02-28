@@ -801,59 +801,7 @@ body:has(.chat-login-wall) > main > astro-island {
 .chat-login-text { color: rgba(255, 255, 255, 0.7); font-size: 1rem; margin: 0; }
 .chat-login-hint { color: rgba(255, 255, 255, 0.35); font-size: 0.875rem; margin: 0; }
 
-/* ── Admin Message — Rainbow Snake Border ────────────────────────────────── */
-
-.chat-bubble-admin {
-  position: relative;
-  border-color: transparent !important;
-}
-
-/* own: toggle on left → skip left side */
-.chat-bubble-admin.chat-bubble-own::before {
-  content: '';
-  position: absolute;
-  inset: -2px -2px -2px 0;
-  border-radius: inherit;
-  padding: 2px 2px 2px 0;
-  pointer-events: none;
-  background: linear-gradient(
-    90deg,
-    #ff0000, #ff5500, #ffcc00, #aaff00,
-    #00ffaa, #00ccff, #0055ff, #aa00ff,
-    #ff0088, #ff0000
-  );
-  background-size: 300% 100%;
-  animation: admin-snake 2.5s linear infinite;
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-}
-
-/* other: toggle on right → skip right side */
-.chat-bubble-admin.chat-bubble-other::before {
-  content: '';
-  position: absolute;
-  inset: -2px 0 -2px -2px;
-  border-radius: inherit;
-  padding: 2px 0 2px 2px;
-  pointer-events: none;
-  background: linear-gradient(
-    90deg,
-    #ff0000, #ff5500, #ffcc00, #aaff00,
-    #00ffaa, #00ccff, #0055ff, #aa00ff,
-    #ff0088, #ff0000
-  );
-  background-size: 300% 100%;
-  animation: admin-snake 2.5s linear infinite;
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-}
-
-@keyframes admin-snake {
-  from { background-position: 0% 50%; }
-  to   { background-position: -300% 50%; }
-}
+/* ── Admin Message Label ─────────────────────────────────────────────────── */
 
 .chat-admin-label {
   display: block;
@@ -884,49 +832,7 @@ body:has(.chat-login-wall) > main > astro-island {
   to   { background-position: -200% 50%; }
 }
 
-/* ── Moderator Message — Blue Shimmer Border ─────────────────────────────── */
-
-.chat-bubble-mod {
-  position: relative;
-  border-color: transparent !important;
-}
-
-/* own: toggle on left → skip left side */
-.chat-bubble-mod.chat-bubble-own::before {
-  content: '';
-  position: absolute;
-  inset: -2px -2px -2px 0;
-  border-radius: inherit;
-  padding: 2px 2px 2px 0;
-  pointer-events: none;
-  background: linear-gradient(90deg, #0ea5e9, #6366f1, #06b6d4, #3b82f6, #0ea5e9);
-  background-size: 300% 100%;
-  animation: mod-snake 3s linear infinite;
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-}
-
-/* other: toggle on right → skip right side */
-.chat-bubble-mod.chat-bubble-other::before {
-  content: '';
-  position: absolute;
-  inset: -2px 0 -2px -2px;
-  border-radius: inherit;
-  padding: 2px 0 2px 2px;
-  pointer-events: none;
-  background: linear-gradient(90deg, #0ea5e9, #6366f1, #06b6d4, #3b82f6, #0ea5e9);
-  background-size: 300% 100%;
-  animation: mod-snake 3s linear infinite;
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-}
-
-@keyframes mod-snake {
-  from { background-position: 0% 50%; }
-  to   { background-position: -300% 50%; }
-}
+/* ── Moderator Message Label ─────────────────────────────────────────────── */
 
 .chat-mod-label {
   display: block;
@@ -953,49 +859,7 @@ body:has(.chat-login-wall) > main > astro-island {
 
 .chat-mod-label-own { text-align: right; }
 
-/* ── User (Survivor) bubble border ──────────────────────────────────────── */
-
-.chat-bubble-user {
-  position: relative;
-  border-color: transparent !important;
-}
-
-/* own: toggle on left → skip left side */
-.chat-bubble-user.chat-bubble-own::before {
-  content: '';
-  position: absolute;
-  inset: -2px -2px -2px 0;
-  border-radius: inherit;
-  padding: 2px 2px 2px 0;
-  pointer-events: none;
-  background: linear-gradient(90deg, #22c55e, #4ade80, #16a34a, #86efac, #22c55e);
-  background-size: 300% 100%;
-  animation: user-snake 3.5s linear infinite;
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-}
-
-/* other: toggle on right → skip right side */
-.chat-bubble-user.chat-bubble-other::before {
-  content: '';
-  position: absolute;
-  inset: -2px 0 -2px -2px;
-  border-radius: inherit;
-  padding: 2px 0 2px 2px;
-  pointer-events: none;
-  background: linear-gradient(90deg, #22c55e, #4ade80, #16a34a, #86efac, #22c55e);
-  background-size: 300% 100%;
-  animation: user-snake 3.5s linear infinite;
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-}
-
-@keyframes user-snake {
-  from { background-position: 0% 50%; }
-  to   { background-position: -300% 50%; }
-}
+/* ── User (Survivor) Message Label ──────────────────────────────────────── */
 
 .chat-user-label {
   display: block;
