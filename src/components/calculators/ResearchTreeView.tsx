@@ -128,15 +128,15 @@ export default function ResearchTreeView({
   }, [nodePositions]);
 
   // Calculate initial zoom to fit content perfectly on mobile
+  // Use NODE_SPACING * 3 as target for both layouts — avoids tiny zoom on deep horizontal trees
   useEffect(() => {
     if (!scrollContainerRef.current || !mounted) return;
     if (isMobile) {
-      const targetContentWidth = layoutDirection === 'vertical' ? NODE_SPACING * 3 : svgDimensions.width * 0.95;
-      setZoomLevel(calculateMobileZoom(scrollContainerRef.current, targetContentWidth));
+      setZoomLevel(calculateMobileZoom(scrollContainerRef.current, NODE_SPACING * 3));
     } else {
       setZoomLevel(1);
     }
-  }, [svgDimensions, layoutDirection, mounted, isMobile]);
+  }, [mounted, isMobile]);
 
   const isUnlocked = (tech: Technology): boolean => {
     if (tech.prerequisites.length === 0) return true;
@@ -487,7 +487,7 @@ export default function ResearchTreeView({
         onZoomIn={handleZoomIn}
         onZoomOut={handleZoomOut}
         onResetView={() => {
-          resetView(isMobile ? () => layoutDirection === 'vertical' ? NODE_SPACING * 3 : svgDimensions.width * 0.95 : undefined);
+          resetView(isMobile ? () => NODE_SPACING * 3 : undefined);
         }}
         onScrollUp={handleScrollUp}
         onScrollDown={handleScrollDown}
