@@ -136,12 +136,21 @@ export default function ResearchTreeView({
     if (isMobile) {
       const container = scrollContainerRef.current;
       if (layoutDirection === 'horizontal') {
-        const computedStyle = window.getComputedStyle(container);
-        const paddingTop = parseFloat(computedStyle.paddingTop);
-        const paddingBottom = parseFloat(computedStyle.paddingBottom);
-        const availableHeight = container.clientHeight - paddingTop - paddingBottom;
-        const zoom = Math.max(Math.min(availableHeight / svgDimensions.height, 1), TREE_ZOOM_DEFAULTS.MIN_ZOOM);
-        setZoomLevel(zoom);
+        // Use rAF so iOS Safari has time to finish the flex layout pass
+        // before we read clientHeight. Without this, clientHeight = 0 on real
+        // devices → zoom clamps to MIN_ZOOM (tree appears tiny).
+        const svgH = svgDimensions.height;
+        const rafId = requestAnimationFrame(() => {
+          const computedStyle = window.getComputedStyle(container);
+          const paddingTop = parseFloat(computedStyle.paddingTop);
+          const paddingBottom = parseFloat(computedStyle.paddingBottom);
+          const availableHeight = container.clientHeight - paddingTop - paddingBottom;
+          if (availableHeight > 0) {
+            const zoom = Math.max(Math.min(availableHeight / svgH, 1), TREE_ZOOM_DEFAULTS.MIN_ZOOM);
+            setZoomLevel(zoom);
+          }
+        });
+        return () => cancelAnimationFrame(rafId);
       } else {
         setZoomLevel(calculateMobileZoom(container, NODE_SPACING * 3));
       }
