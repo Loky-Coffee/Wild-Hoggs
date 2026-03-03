@@ -127,16 +127,28 @@ export default function ResearchTreeView({
     return calculateSVGDimensions(nodePositions, TREE_ZOOM_DEFAULTS.SVG_PADDING);
   }, [nodePositions]);
 
-  // Calculate initial zoom to fit content perfectly on mobile
-  // Use NODE_SPACING * 3 as target for both layouts — avoids tiny zoom on deep horizontal trees
+  // Calculate initial zoom to fit content perfectly on mobile.
+  // Vertical mode: fit 3 nodes horizontally (NODE_SPACING * 3).
+  // Horizontal mode: fit the tree HEIGHT into the container — avoids tiny/empty tree
+  //   because the horizontal SVG is tall-but-narrow in container perspective.
   useEffect(() => {
     if (!scrollContainerRef.current || !mounted) return;
     if (isMobile) {
-      setZoomLevel(calculateMobileZoom(scrollContainerRef.current, NODE_SPACING * 3));
+      const container = scrollContainerRef.current;
+      if (layoutDirection === 'horizontal') {
+        const computedStyle = window.getComputedStyle(container);
+        const paddingTop = parseFloat(computedStyle.paddingTop);
+        const paddingBottom = parseFloat(computedStyle.paddingBottom);
+        const availableHeight = container.clientHeight - paddingTop - paddingBottom;
+        const zoom = Math.max(Math.min(availableHeight / svgDimensions.height, 1), TREE_ZOOM_DEFAULTS.MIN_ZOOM);
+        setZoomLevel(zoom);
+      } else {
+        setZoomLevel(calculateMobileZoom(container, NODE_SPACING * 3));
+      }
     } else {
       setZoomLevel(1);
     }
-  }, [mounted, isMobile]);
+  }, [mounted, isMobile, layoutDirection, svgDimensions.height]);
 
   const isUnlocked = (tech: Technology): boolean => {
     if (tech.prerequisites.length === 0) return true;
@@ -487,7 +499,18 @@ export default function ResearchTreeView({
         onZoomIn={handleZoomIn}
         onZoomOut={handleZoomOut}
         onResetView={() => {
-          resetView(isMobile ? () => NODE_SPACING * 3 : undefined);
+          if (isMobile && layoutDirection === 'horizontal' && scrollContainerRef.current) {
+            const container = scrollContainerRef.current;
+            const computedStyle = window.getComputedStyle(container);
+            const paddingTop = parseFloat(computedStyle.paddingTop);
+            const paddingBottom = parseFloat(computedStyle.paddingBottom);
+            const availableHeight = container.clientHeight - paddingTop - paddingBottom;
+            const zoom = Math.max(Math.min(availableHeight / svgDimensions.height, 1), TREE_ZOOM_DEFAULTS.MIN_ZOOM);
+            setZoomLevel(zoom);
+            container.scrollTo({ left: 0, top: 0, behavior: 'smooth' });
+          } else {
+            resetView(isMobile ? () => NODE_SPACING * 3 : undefined);
+          }
         }}
         onScrollUp={handleScrollUp}
         onScrollDown={handleScrollDown}
