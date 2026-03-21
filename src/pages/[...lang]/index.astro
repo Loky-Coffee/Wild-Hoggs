@@ -30,7 +30,7 @@ const t = useTranslations(translationData);
   title={t('seo.home.title')}
   description={t('seo.home.description')}
 >
-  <main>
+  <main class="home-page">
     <div class="container">
       <div class="hero">
         <h1>
@@ -55,7 +55,7 @@ const t = useTranslations(translationData);
           <h2>{t('changelog.title')}</h2>
           <p class="changelog-subtitle">{t('changelog.subtitle')}</p>
           <ul class="changelog-list">
-            {changelog.slice(0, 10).map(entry => (
+            {changelog.map(entry => (
               <li class="changelog-entry">
                 <time class="changelog-date" datetime={entry.date}>
                   {entry.date} — {entry.time}
@@ -78,16 +78,18 @@ const t = useTranslations(translationData);
 </PageLayout>
 
 <style>
+  /* ── Base (all screen sizes) ── */
   main {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
+    flex-direction: column;
+    padding: 1.5rem 2rem 1rem;
   }
 
   .container {
     width: 100%;
     position: relative;
+    display: flex;
+    flex-direction: column;
   }
 
   .administrator-corner {
@@ -102,7 +104,8 @@ const t = useTranslations(translationData);
     backdrop-filter: blur(10px);
     font-size: 0.85rem;
     opacity: 0.7;
-    transition: all 0.3s ease;
+    transition: opacity 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+    z-index: 1;
   }
 
   .administrator-corner:hover {
@@ -126,20 +129,20 @@ const t = useTranslations(translationData);
 
   .hero {
     text-align: center;
-    margin-bottom: 4rem;
     padding-right: 300px;
+    flex-shrink: 0;
   }
 
   .hero h1 {
     font-size: 4rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
     background: linear-gradient(135deg, #ff6b35 0%, #ffa500 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.4rem;
   }
 
   .hero h1 .brand-name {
@@ -160,35 +163,24 @@ const t = useTranslations(translationData);
   }
 
   .info {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
   }
 
   .card {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 165, 0, 0.2);
     border-radius: 12px;
-    padding: 2rem;
+    padding: 1.25rem 1.5rem;
     backdrop-filter: blur(10px);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(255, 165, 0, 0.2);
   }
 
   .card h2 {
     color: #ffa500;
-    margin-bottom: 1rem;
-    font-size: 1.8rem;
-  }
-
-  .card h3 {
-    color: #ffa500;
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
+    margin-bottom: 0.6rem;
+    font-size: 1.4rem;
   }
 
   .card p {
@@ -196,56 +188,65 @@ const t = useTranslations(translationData);
     color: rgba(255, 255, 255, 0.8);
   }
 
-  .card ul {
-    list-style: none;
-  }
-
-  .card li {
-    padding: 0.5rem 0;
-    color: rgba(255, 255, 255, 0.8);
-    border-bottom: 1px solid rgba(255, 165, 0, 0.1);
-  }
-
-  .card li:last-child {
-    border-bottom: none;
-  }
-
-  .card strong {
-    color: #ffa500;
-  }
-
+  /* Welcome card — compact, no grow */
   .welcome-card {
-    grid-column: 1 / -1;
+    flex-shrink: 0;
   }
 
-  /* Changelog */
+  .welcome-card p {
+    font-size: 0.95rem;
+    margin: 0;
+  }
+
+  /* Changelog card — fills remaining space */
   .changelog-card {
-    grid-column: 1 / -1;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
   }
 
   .changelog-subtitle {
-    color: rgba(255, 255, 255, 0.45);
-    font-size: 0.85rem;
-    margin: -0.5rem 0 1.25rem;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.78rem;
+    margin: -0.25rem 0 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
+    flex-shrink: 0;
   }
 
   .changelog-list {
     list-style: none;
     margin: 0;
     padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+    /* custom scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 165, 0, 0.3) transparent;
+  }
+
+  .changelog-list::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  .changelog-list::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .changelog-list::-webkit-scrollbar-thumb {
+    background: rgba(255, 165, 0, 0.3);
+    border-radius: 3px;
   }
 
   .changelog-entry {
     display: grid;
-    grid-template-columns: 160px 1fr;
+    grid-template-columns: 155px 1fr;
     gap: 1rem;
-    padding: 0.65rem 0;
-    border-bottom: 1px solid rgba(255, 165, 0, 0.08);
+    padding: 0.5rem 0.25rem;
+    border-bottom: 1px solid rgba(255, 165, 0, 0.07);
     align-items: baseline;
   }
 
@@ -254,58 +255,74 @@ const t = useTranslations(translationData);
   }
 
   .changelog-date {
-    color: rgba(255, 165, 0, 0.6);
-    font-size: 0.78rem;
+    color: rgba(255, 165, 0, 0.55);
+    font-size: 0.75rem;
     font-family: monospace;
     white-space: nowrap;
     flex-shrink: 0;
   }
 
   .changelog-text {
-    color: rgba(255, 255, 255, 0.75);
-    font-size: 0.9rem;
-    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.875rem;
+    line-height: 1.4;
   }
 
-  /* Support / Buy me a coffee */
+  /* Support / Buy me a coffee — compact, no grow */
   .support-card {
-    grid-column: 1 / -1;
+    flex-shrink: 0;
     background: rgba(255, 165, 0, 0.04);
     border-color: rgba(255, 165, 0, 0.2);
     text-align: center;
   }
 
-  .support-card h2 {
-    font-size: 1.4rem;
-  }
-
   .support-card p {
     max-width: 560px;
     margin: 0 auto;
-    font-size: 0.95rem;
-    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
   }
 
   .support-coming-soon {
-    margin-top: 1rem !important;
-    font-size: 0.8rem !important;
-    color: rgba(255, 165, 0, 0.5) !important;
+    margin-top: 0.5rem !important;
+    font-size: 0.78rem !important;
+    color: rgba(255, 165, 0, 0.45) !important;
     font-style: italic;
   }
 
+  /* ── Desktop: fixed viewport height, no page scroll ── */
+  @media (min-width: 769px) {
+    main {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .container {
+      height: 100%;
+      overflow: hidden;
+    }
+  }
+
+  /* ── Tablet: administrator-corner goes static ── */
   @media (max-width: 1024px) {
     .hero {
       padding-right: 0;
+      margin-bottom: 0;
     }
 
     .administrator-corner {
       position: static;
       max-width: 100%;
-      margin-bottom: 2rem;
+      margin-bottom: 0.75rem;
     }
   }
 
+  /* ── Mobile: normal page scroll, date stacks above text ── */
   @media (max-width: 768px) {
+    main {
+      padding: 1rem 1rem 2rem;
+    }
+
     .hero h1 {
       font-size: 2.5rem;
     }
@@ -314,13 +331,35 @@ const t = useTranslations(translationData);
       font-size: 1.2rem;
     }
 
-    .info {
-      grid-template-columns: 1fr;
+    .changelog-card {
+      flex: none;
+    }
+
+    .changelog-list {
+      overflow-y: visible;
     }
 
     .changelog-entry {
       grid-template-columns: 1fr;
-      gap: 0.2rem;
+      gap: 0.15rem;
+    }
+  }
+</style>
+
+<style is:global>
+  /* Homepage only: lock body to viewport height on desktop */
+  @media (min-width: 769px) {
+    body:has(.home-page) {
+      height: 100dvh;
+      overflow: hidden;
+    }
+
+    body:has(.home-page) .page-content {
+      height: calc(100dvh - var(--nav-height));
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 0;
     }
   }
 </style>
