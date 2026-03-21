@@ -20,15 +20,18 @@ export async function onRequestGet(ctx: any) {
       r.reason,
       r.created_at AS report_date,
       ur.username AS reporter,
-      COALESCE(cg.username, cs.username) AS msg_author,
-      COALESCE(cg.message, cs.message)   AS msg_text,
-      COALESCE(cg.created_at, cs.created_at) AS msg_date
+      COALESCE(cg.username, cs.username, upm.username) AS msg_author,
+      COALESCE(cg.message, cs.message, cp.message)     AS msg_text,
+      COALESCE(cg.created_at, cs.created_at, cp.created_at) AS msg_date
     FROM chat_reports r
     JOIN users ur ON r.reported_by = ur.id
     LEFT JOIN chat_global cg
       ON r.message_id = cg.id AND (r.chat_type = 'global' OR r.chat_type = 'global-lang')
     LEFT JOIN chat_server cs
       ON r.message_id = cs.id AND (r.chat_type = 'server' OR r.chat_type = 'server-lang')
+    LEFT JOIN chat_pm cp
+      ON r.message_id = cp.id AND r.chat_type = 'pm'
+    LEFT JOIN users upm ON cp.sender_id = upm.id
     WHERE r.status = 'open'
     ORDER BY r.created_at DESC LIMIT 100
   `).all();

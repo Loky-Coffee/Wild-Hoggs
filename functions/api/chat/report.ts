@@ -28,6 +28,9 @@ export async function onRequestPost(ctx: any) {
   if (!message_id || typeof message_id !== 'string') {
     return Response.json({ error: 'message_id fehlt.' }, { status: 400 });
   }
+  if (reason !== undefined && (typeof reason !== 'string' || reason.length > 500)) {
+    return Response.json({ error: 'reason muss ein String mit max. 500 Zeichen sein.' }, { status: 400 });
+  }
 
   const table = chat_type === 'pm' ? 'chat_pm'
     : (chat_type === 'global' || chat_type === 'global-lang') ? 'chat_global'

@@ -41,14 +41,3 @@ export function getResearchImage(category: string, techId: string): ImageMetadat
   return imageMap.get(key) || null;
 }
 
-/**
- * Check if a research image exists
- *
- * @example
- * if (hasResearchImage('field', 'arms-assembly')) {
- *   // Image is available
- * }
- */
-export function hasResearchImage(category: string, techId: string): boolean {
-  return imageMap.has(`${category}/${techId}`);
-}

@@ -54,8 +54,9 @@ export async function onRequestPost(ctx: any) {
     'INSERT INTO users (email, username, password_hash, server) VALUES (?, ?, ?, ?)'
   ).bind(email.toLowerCase(), username, passwordHash, serverVal).run();
 
-  const user = await DB.prepare('SELECT id, email, username, faction, server, language FROM users WHERE email = ?')
-    .bind(email.toLowerCase()).first() as any;
+  const user = await DB.prepare(
+    'SELECT id, email, username, faction, server, language, formation_power_br, formation_power_wd, formation_power_go, is_admin, COALESCE(is_moderator, 0) AS is_moderator, notification_sound, notification_volume FROM users WHERE email = ?'
+  ).bind(email.toLowerCase()).first() as any;
 
   // Create session
   const token = generateToken();
@@ -64,7 +65,17 @@ export async function onRequestPost(ctx: any) {
   ).bind(user.id, token, expiresAt(30)).run();
 
   return Response.json({
-    user: { id: user.id, email: user.email, username: user.username, faction: user.faction, server: user.server, language: user.language },
+    user: {
+      id: user.id, email: user.email, username: user.username,
+      faction: user.faction, server: user.server, language: user.language,
+      formation_power_br: user.formation_power_br ?? null,
+      formation_power_wd: user.formation_power_wd ?? null,
+      formation_power_go: user.formation_power_go ?? null,
+      is_admin: user.is_admin ?? 0,
+      is_moderator: user.is_moderator ?? 0,
+      notification_sound: user.notification_sound ?? 1,
+      notification_volume: user.notification_volume ?? 1.5,
+    },
     token
   });
 }

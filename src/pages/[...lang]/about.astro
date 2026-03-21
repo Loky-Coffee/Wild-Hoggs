@@ -3,7 +3,6 @@ import PageLayout from '../../layouts/PageLayout.astro';
 import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../i18n/utils';
 import { getLanguagePaths } from '../../i18n/static-paths';
 import { loadTranslations } from '../../i18n/index';
-import { members } from '../../data/members';
 import '../../styles/shared-layouts.css';
 
 export function getStaticPaths() {
@@ -20,22 +19,16 @@ const breadcrumbItems = [
 ];
 
 const siteUrl = Astro.site || new URL('https://wild-hoggs.com/');
-const aboutOrgSchema = {
+const personSchema = {
   '@context': 'https://schema.org',
-  '@type': 'Organization',
-  name: 'Wild Hoggs',
+  '@type': 'Person',
+  name: 'Ediva',
   description: t('seo.about.description'),
   url: siteUrl.toString(),
-  logo: new URL('/favicon.svg', siteUrl).toString(),
-  foundingDate: '2020',
-  numberOfEmployees: {
-    '@type': 'QuantitativeValue',
-    value: members.length,
-  },
 };
 ---
 
-<script type="application/ld+json" set:html={JSON.stringify(aboutOrgSchema)} />
+<script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
 
 <PageLayout
   title={t('seo.about.title')}
@@ -43,44 +36,55 @@ const aboutOrgSchema = {
   breadcrumbs={breadcrumbItems}
 >
   <div class="page-header">
-    <h1>{t('about.title')}</h1>
-    <p class="subtitle">Wild Hoggs - Server 395</p>
+    <h1>{t('seo.about.h1')}</h1>
   </div>
 
   <div class="content-container">
-    <section class="about-section">
-      <div class="section-icon">🏰</div>
-      <h2>{t('about.who.title')}</h2>
-      <p>{t('about.who.text')}</p>
+
+    <!-- Profile Card -->
+    <section class="profile-card">
+      <div class="profile-avatar">E</div>
+      <div class="profile-info">
+        <h2 class="profile-name">Ediva</h2>
+        <p class="profile-tagline">{t('about.hero.tagline')}</p>
+      </div>
     </section>
 
+    <!-- Personal Intro -->
     <section class="about-section">
-      <div class="section-icon">🎯</div>
-      <h2>{t('about.mission.title')}</h2>
-      <p>{t('about.mission.text')}</p>
+      <h2>{t('about.intro.title')}</h2>
+      <p>{t('about.intro.text')}</p>
     </section>
 
-    <section class="values-section">
-      <h2>{t('about.values.title')}</h2>
-      <div class="values-grid">
-        <div class="value-card">
-          <div class="value-icon">🤝</div>
-          <h3>{t('about.values.teamwork')}</h3>
-          <p>{t('about.values.teamwork.text')}</p>
+    <!-- About This Site -->
+    <section class="about-section">
+      <h2>{t('about.site.title')}</h2>
+      <p>{t('about.site.text')}</p>
+    </section>
+
+    <!-- What You'll Find -->
+    <section class="features-section">
+      <h2>{t('about.what.title')}</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🧮</div>
+          <h3>{t('about.what.tools')}</h3>
+          <p>{t('about.what.tools.text')}</p>
         </div>
-        <div class="value-card">
-          <div class="value-icon">⭐</div>
-          <h3>{t('about.values.respect')}</h3>
-          <p>{t('about.values.respect.text')}</p>
+        <div class="feature-card">
+          <div class="feature-icon">📅</div>
+          <h3>{t('about.what.guides')}</h3>
+          <p>{t('about.what.guides.text')}</p>
         </div>
-        <div class="value-card">
-          <div class="value-icon">📈</div>
-          <h3>{t('about.values.growth')}</h3>
-          <p>{t('about.values.growth.text')}</p>
+        <div class="feature-card">
+          <div class="feature-icon">🎁</div>
+          <h3>{t('about.what.codes')}</h3>
+          <p>{t('about.what.codes.text')}</p>
         </div>
       </div>
     </section>
 
+    <!-- Info Strip -->
     <section class="info-section">
       <div class="info-grid">
         <div class="info-card">
@@ -97,144 +101,213 @@ const aboutOrgSchema = {
         </div>
       </div>
     </section>
+
+    <!-- Support (Buy me a coffee placeholder) -->
+    <section class="support-section">
+      <h2>{t('about.support.title')}</h2>
+      <p>{t('about.support.text')}</p>
+      <!-- BUY_ME_A_COFFEE_LINK_PLACEHOLDER -->
+    </section>
+
   </div>
 </PageLayout>
 
 <style>
   .content-container {
-    max-width: 1000px;
+    max-width: 900px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 3rem;
+    gap: 2.5rem;
   }
 
-  .about-section {
+  /* Profile Card */
+  .profile-card {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
     background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 165, 0, 0.2);
+    border: 1px solid rgba(255, 165, 0, 0.3);
+    border-radius: 16px;
+    padding: 2rem 2.5rem;
+  }
+
+  .profile-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ffa500, #ff6a00);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    flex-shrink: 0;
+    box-shadow: 0 0 24px rgba(255, 165, 0, 0.35);
+  }
+
+  .profile-name {
+    color: #ffa500;
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 0.25rem;
+  }
+
+  .profile-tagline {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1rem;
+    margin: 0;
+  }
+
+  /* Text Sections */
+  .about-section {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 165, 0, 0.15);
     border-radius: 12px;
     padding: 2rem;
-    text-align: center;
-  }
-
-  .section-icon {
-    font-size: 3rem;
-    margin-bottom: 1rem;
   }
 
   .about-section h2 {
     color: #ffa500;
-    margin-bottom: 1rem;
-    font-size: 1.8rem;
+    font-size: 1.5rem;
+    margin: 0 0 1rem;
   }
 
   .about-section p {
     color: rgba(255, 255, 255, 0.8);
-    font-size: 1.1rem;
-    line-height: 1.6;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin: 0;
   }
 
-  .values-section {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 165, 0, 0.2);
+  /* Features Grid */
+  .features-section {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 165, 0, 0.15);
     border-radius: 12px;
     padding: 2rem;
   }
 
-  .values-section h2 {
+  .features-section h2 {
     color: #ffa500;
+    font-size: 1.5rem;
+    margin: 0 0 1.5rem;
     text-align: center;
-    margin-bottom: 2rem;
-    font-size: 1.8rem;
   }
 
-  .values-grid {
+  .features-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
+    gap: 1.25rem;
   }
 
-  .value-card {
+  .feature-card {
     background: rgba(255, 165, 0, 0.05);
     border: 1px solid rgba(255, 165, 0, 0.2);
-    border-radius: 8px;
+    border-radius: 10px;
     padding: 1.5rem;
     text-align: center;
-    transition: all 0.3s ease;
+    transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
   }
 
-  .value-card:hover {
+  .feature-card:hover {
     border-color: rgba(255, 165, 0, 0.5);
-    transform: translateY(-4px);
-    box-shadow: 0 8px 16px rgba(255, 165, 0, 0.2);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(255, 165, 0, 0.15);
   }
 
-  .value-icon {
-    font-size: 2.5rem;
-    margin-bottom: 0.5rem;
+  .feature-icon {
+    font-size: 2.2rem;
+    margin-bottom: 0.75rem;
   }
 
-  .value-card h3 {
+  .feature-card h3 {
     color: #ffa500;
-    margin-bottom: 0.5rem;
-    font-size: 1.2rem;
+    font-size: 1.05rem;
+    margin: 0 0 0.5rem;
   }
 
-  .value-card p {
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 0.95rem;
+  .feature-card p {
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.9rem;
     line-height: 1.5;
+    margin: 0;
   }
 
+  /* Info Strip */
   .info-section {
-    margin: 1rem 0;
+    margin: 0;
   }
 
   .info-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
+    gap: 1.25rem;
   }
 
   .info-card {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 165, 0, 0.2);
-    border-radius: 8px;
-    padding: 1.5rem;
+    border-radius: 10px;
+    padding: 1.25rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
+    gap: 0.4rem;
   }
 
   .info-label {
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
 
   .info-value {
     color: #ffa500;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     font-weight: 700;
   }
 
+  /* Support Section */
+  .support-section {
+    background: rgba(255, 165, 0, 0.06);
+    border: 1px solid rgba(255, 165, 0, 0.25);
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .support-section h2 {
+    color: #ffa500;
+    font-size: 1.5rem;
+    margin: 0 0 0.75rem;
+  }
+
+  .support-section p {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+
   @media (max-width: 768px) {
-    .values-grid {
-      grid-template-columns: 1fr;
+    .profile-card {
+      flex-direction: column;
+      text-align: center;
+      padding: 1.5rem;
+      gap: 1rem;
     }
 
+    .features-grid,
     .info-grid {
       grid-template-columns: 1fr;
     }
 
-    h1 {
-      font-size: 2rem;
-    }
-
-    .about-section h2,
-    .values-section h2 {
-      font-size: 1.5rem;
+    .profile-name {
+      font-size: 1.6rem;
     }
   }
 </style>

@@ -44,7 +44,7 @@ export async function onRequestPut(ctx: any) {
 
   if (!body?.state) return Response.json({ error: 'Kein State übermittelt' }, { status: 400 });
 
-  const now = new Date().toISOString().replace('T', ' ').slice(0, 23);
+  const now = new Date().toISOString().replace('T', ' ').slice(0, 19);
   const stateJson = JSON.stringify(body.state);
 
   await DB.prepare(`

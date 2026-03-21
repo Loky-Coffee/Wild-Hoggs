@@ -5,7 +5,12 @@ export async function onRequestGet(ctx: any) {
 
   if (!key) return new Response('Not Found', { status: 404 });
 
-  const object = await FILES.get(Array.isArray(key) ? key.join('/') : key);
+  const validKey = Array.isArray(key) ? key.join('/') : key;
+  if (!validKey.startsWith('rewards/')) {
+    return new Response('Not Found', { status: 404 });
+  }
+
+  const object = await FILES.get(validKey);
   if (!object) return new Response('Not Found', { status: 404 });
 
   const headers = new Headers();

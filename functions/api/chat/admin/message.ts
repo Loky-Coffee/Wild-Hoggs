@@ -32,6 +32,8 @@ export async function onRequestDelete(ctx: any) {
     return Response.json({ error: 'Ungültiger chat_type' }, { status: 400 });
   }
 
+  // NOTE: No SQL injection risk — chat_type is validated against VALID_CHAT_TYPES above.
+  // The table name is hardcoded ('chat_global'/'chat_server'), never derived from user input.
   const table = (chat_type === 'global' || chat_type === 'global-lang')
     ? 'chat_global'
     : 'chat_server';
