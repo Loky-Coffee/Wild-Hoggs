@@ -69,14 +69,19 @@ const t = useTranslations(translationData);
         <div class="card support-card">
           <h2>{t('support.title')}</h2>
           <p>{t('support.text')}</p>
-          <a
-            href="https://www.buymeacoffee.com/ediva"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="bmc-button"
-          >
-            ☕ Buy me a coffee
-          </a>
+          <div class="bmc-row">
+            <a
+              href="https://www.buymeacoffee.com/ediva"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="bmc-button"
+            >
+              ☕ Buy me a coffee
+            </a>
+            <a href="https://www.buymeacoffee.com/ediva" target="_blank" rel="noopener noreferrer" class="bmc-qr-wrap">
+              <img src="/bmc_qr.webp" alt="Buy me a coffee QR code" width="80" height="80" class="bmc-qr" />
+            </a>
+          </div>
         </div>
       </section>
     </div>
@@ -289,9 +294,17 @@ const t = useTranslations(translationData);
     color: rgba(255, 255, 255, 0.6);
   }
 
+  .bmc-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 0.75rem;
+    flex-wrap: wrap;
+  }
+
   .bmc-button {
     display: inline-block;
-    margin-top: 0.75rem;
     padding: 0.55rem 1.4rem;
     background: #ffa500;
     color: #1a1a1a;
@@ -305,6 +318,25 @@ const t = useTranslations(translationData);
   .bmc-button:hover {
     background: #ff8c00;
     transform: translateY(-2px);
+  }
+
+  .bmc-qr-wrap {
+    display: inline-flex;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+    padding: 4px;
+    line-height: 0;
+    transition: transform 0.2s ease;
+  }
+
+  .bmc-qr-wrap:hover {
+    transform: translateY(-2px);
+  }
+
+  .bmc-qr {
+    display: block;
+    border-radius: 4px;
   }
 
   /* ── Desktop: fixed viewport height, no page scroll ── */

@@ -106,14 +106,19 @@ const personSchema = {
     <section class="support-section">
       <h2>{t('about.support.title')}</h2>
       <p>{t('about.support.text')}</p>
-      <a
-        href="https://www.buymeacoffee.com/ediva"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="bmc-button"
-      >
-        ☕ Buy me a coffee
-      </a>
+      <div class="bmc-row">
+        <a
+          href="https://www.buymeacoffee.com/ediva"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="bmc-button"
+        >
+          ☕ Buy me a coffee
+        </a>
+        <a href="https://www.buymeacoffee.com/ediva" target="_blank" rel="noopener noreferrer" class="bmc-qr-wrap">
+          <img src="/bmc_qr.webp" alt="Buy me a coffee QR code" width="90" height="90" class="bmc-qr" />
+        </a>
+      </div>
     </section>
 
   </div>
@@ -300,9 +305,17 @@ const personSchema = {
     margin: 0;
   }
 
+  .bmc-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.25rem;
+    margin-top: 1.25rem;
+    flex-wrap: wrap;
+  }
+
   .bmc-button {
     display: inline-block;
-    margin-top: 1.25rem;
     padding: 0.65rem 1.6rem;
     background: #ffa500;
     color: #1a1a1a;
@@ -316,6 +329,25 @@ const personSchema = {
   .bmc-button:hover {
     background: #ff8c00;
     transform: translateY(-2px);
+  }
+
+  .bmc-qr-wrap {
+    display: inline-flex;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+    padding: 5px;
+    line-height: 0;
+    transition: transform 0.2s ease;
+  }
+
+  .bmc-qr-wrap:hover {
+    transform: translateY(-2px);
+  }
+
+  .bmc-qr {
+    display: block;
+    border-radius: 4px;
   }
 
   @media (max-width: 768px) {
