@@ -3,6 +3,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
 import { useTranslations } from '../../i18n/utils';
 import { languages, loadTranslations } from '../../i18n/index';
 import type { Language } from '../../i18n/index';
+import { changelog } from '../../data/changelog';
 
 export function getStaticPaths() {
   const languagePaths = Object.keys(languages)
@@ -48,6 +49,28 @@ const t = useTranslations(translationData);
         <div class="card welcome-card">
           <h2>{t('welcome.title')}</h2>
           <p>{t('welcome.description')}</p>
+        </div>
+
+        <div class="card changelog-card">
+          <h2>{t('changelog.title')}</h2>
+          <p class="changelog-subtitle">{t('changelog.subtitle')}</p>
+          <ul class="changelog-list">
+            {changelog.slice(0, 10).map(entry => (
+              <li class="changelog-entry">
+                <time class="changelog-date" datetime={entry.date}>
+                  {entry.date} — {entry.time}
+                </time>
+                <span class="changelog-text">{entry.text}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="card support-card">
+          <h2>{t('support.title')}</h2>
+          <p>{t('support.text')}</p>
+          <!-- BUY_ME_A_COFFEE_LINK_PLACEHOLDER -->
+          <p class="support-coming-soon">{t('support.comingSoon')}</p>
         </div>
       </section>
     </div>
@@ -195,6 +218,81 @@ const t = useTranslations(translationData);
     grid-column: 1 / -1;
   }
 
+  /* Changelog */
+  .changelog-card {
+    grid-column: 1 / -1;
+  }
+
+  .changelog-subtitle {
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 0.85rem;
+    margin: -0.5rem 0 1.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .changelog-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .changelog-entry {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 1rem;
+    padding: 0.65rem 0;
+    border-bottom: 1px solid rgba(255, 165, 0, 0.08);
+    align-items: baseline;
+  }
+
+  .changelog-entry:last-child {
+    border-bottom: none;
+  }
+
+  .changelog-date {
+    color: rgba(255, 165, 0, 0.6);
+    font-size: 0.78rem;
+    font-family: monospace;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .changelog-text {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  /* Support / Buy me a coffee */
+  .support-card {
+    grid-column: 1 / -1;
+    background: rgba(255, 165, 0, 0.04);
+    border-color: rgba(255, 165, 0, 0.2);
+    text-align: center;
+  }
+
+  .support-card h2 {
+    font-size: 1.4rem;
+  }
+
+  .support-card p {
+    max-width: 560px;
+    margin: 0 auto;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.65);
+  }
+
+  .support-coming-soon {
+    margin-top: 1rem !important;
+    font-size: 0.8rem !important;
+    color: rgba(255, 165, 0, 0.5) !important;
+    font-style: italic;
+  }
+
   @media (max-width: 1024px) {
     .hero {
       padding-right: 0;
@@ -218,6 +316,11 @@ const t = useTranslations(translationData);
 
     .info {
       grid-template-columns: 1fr;
+    }
+
+    .changelog-entry {
+      grid-template-columns: 1fr;
+      gap: 0.2rem;
     }
   }
 </style>
