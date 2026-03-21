@@ -293,12 +293,20 @@ const t = useTranslations(translationData);
   /* ── Desktop: fixed viewport height, no page scroll ── */
   @media (min-width: 769px) {
     main {
-      height: 100%;
+      flex: 1;        /* grow inside .page-content flex column */
+      min-height: 0;  /* allow shrinking below content size */
       overflow: hidden;
     }
 
     .container {
-      height: 100%;
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .info {
+      flex: 1;
+      min-height: 0;
       overflow: hidden;
     }
   }
