@@ -69,8 +69,14 @@ const t = useTranslations(translationData);
         <div class="card support-card">
           <h2>{t('support.title')}</h2>
           <p>{t('support.text')}</p>
-          <!-- BUY_ME_A_COFFEE_LINK_PLACEHOLDER -->
-          <p class="support-coming-soon">{t('support.comingSoon')}</p>
+          <a
+            href="https://www.buymeacoffee.com/ediva"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="bmc-button"
+          >
+            ☕ Buy me a coffee
+          </a>
         </div>
       </section>
     </div>
@@ -283,11 +289,22 @@ const t = useTranslations(translationData);
     color: rgba(255, 255, 255, 0.6);
   }
 
-  .support-coming-soon {
-    margin-top: 0.5rem !important;
-    font-size: 0.78rem !important;
-    color: rgba(255, 165, 0, 0.45) !important;
-    font-style: italic;
+  .bmc-button {
+    display: inline-block;
+    margin-top: 0.75rem;
+    padding: 0.55rem 1.4rem;
+    background: #ffa500;
+    color: #1a1a1a;
+    font-weight: 700;
+    font-size: 0.95rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+
+  .bmc-button:hover {
+    background: #ff8c00;
+    transform: translateY(-2px);
   }
 
   /* ── Desktop: fixed viewport height, no page scroll ── */

@@ -17,7 +17,6 @@ export default {
   'changelog.subtitle': 'Latest updates to this site',
   'support.title': 'Support This Project',
   'support.text': 'If you find this site useful, consider buying me a coffee — it helps keep everything free and up to date.',
-  'support.comingSoon': 'Support link coming soon',
   'info.title': '公会信息',
   'info.name': '名称',
   'info.game': '游戏',

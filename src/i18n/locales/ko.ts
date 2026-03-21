@@ -17,7 +17,6 @@ export default {
   'changelog.subtitle': 'Latest updates to this site',
   'support.title': 'Support This Project',
   'support.text': 'If you find this site useful, consider buying me a coffee — it helps keep everything free and up to date.',
-  'support.comingSoon': 'Support link coming soon',
   'info.title': '길드 정보',
   'info.name': '이름',
   'info.game': '게임',

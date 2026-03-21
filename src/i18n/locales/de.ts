@@ -17,7 +17,6 @@ export default {
   'changelog.subtitle': 'Neueste Änderungen an dieser Seite',
   'support.title': 'Dieses Projekt unterstützen',
   'support.text': 'Wenn dir diese Seite hilft, kannst du mir einen Kaffee kaufen — das hält alles kostenlos und aktuell.',
-  'support.comingSoon': 'Support-Link folgt in Kürze',
   'info.title': 'Gilde Information',
   'info.name': 'Name',
   'info.game': 'Spiel',

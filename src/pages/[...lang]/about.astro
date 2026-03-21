@@ -106,7 +106,14 @@ const personSchema = {
     <section class="support-section">
       <h2>{t('about.support.title')}</h2>
       <p>{t('about.support.text')}</p>
-      <!-- BUY_ME_A_COFFEE_LINK_PLACEHOLDER -->
+      <a
+        href="https://www.buymeacoffee.com/ediva"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="bmc-button"
+      >
+        ☕ Buy me a coffee
+      </a>
     </section>
 
   </div>
@@ -291,6 +298,24 @@ const personSchema = {
     font-size: 1rem;
     line-height: 1.6;
     margin: 0;
+  }
+
+  .bmc-button {
+    display: inline-block;
+    margin-top: 1.25rem;
+    padding: 0.65rem 1.6rem;
+    background: #ffa500;
+    color: #1a1a1a;
+    font-weight: 700;
+    font-size: 1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+
+  .bmc-button:hover {
+    background: #ff8c00;
+    transform: translateY(-2px);
   }
 
   @media (max-width: 768px) {
