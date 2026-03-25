@@ -458,7 +458,7 @@ export default function ResearchTreeView({
             width={svgDimensions.width * zoomLevel}
             height={svgDimensions.height * zoomLevel}
             viewBox={`0 0 ${svgDimensions.width} ${svgDimensions.height}`}
-            style={{ display: 'block' }}
+            style={{ display: 'block', margin: (layoutDirection === 'vertical' && !(mounted && isMobile)) ? '0 auto' : undefined }}
           >
             {/* Connection lines - extracted to separate component */}
             <ResearchTreeConnections
