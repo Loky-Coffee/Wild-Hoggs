@@ -76,8 +76,10 @@ const t = useTranslations(translationData);
         </div>
 
         <div class="card support-card">
-          <h2>{t('support.title')}</h2>
-          <p>{t('support.text')}</p>
+          <div class="support-card-text">
+            <h2>{t('support.title')}</h2>
+            <p>{t('support.text')}</p>
+          </div>
           <div class="bmc-row">
             <a
               href="https://www.buymeacoffee.com/ediva"
@@ -410,6 +412,43 @@ const t = useTranslations(translationData);
   .bmc-qr {
     display: block;
     border-radius: 4px;
+  }
+
+  /* Desktop: text left, bmc-row right */
+  @media (min-width: 769px) {
+    .support-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      text-align: left;
+    }
+
+    .support-card-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .support-card p {
+      margin: 0;
+      max-width: none;
+    }
+
+    .bmc-row {
+      margin-top: 0;
+      flex-wrap: nowrap;
+      flex-shrink: 0;
+    }
+
+    .bmc-button {
+      padding: 0.7rem 1.8rem;
+      font-size: 1.05rem;
+    }
+
+    .bmc-qr {
+      width: 60px;
+      height: 60px;
+    }
   }
 
   /* ── Desktop: fixed viewport height, no page scroll ── */
