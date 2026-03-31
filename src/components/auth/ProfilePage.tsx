@@ -13,7 +13,9 @@ interface ProfilePageProps {
 // ── Calculator state reader — profile-aware ──────────────────────────────────
 function readCalcState<T>(profileId: string, calcType: string, calcKey = 'main'): T | null {
   try {
-    const key = `wh-calc-${profileId}-${calcType}-${calcKey}`;
+    // Key format must match useCalculatorState's cacheKey():
+    // wh-calc-{profileId}-{calcType}[-{calcKey}]  (calcKey omitted when === 'main')
+    const key = `wh-calc-${profileId}-${calcType}${calcKey !== 'main' ? `-${calcKey}` : ''}`;
     const raw = localStorage.getItem(key);
     if (!raw) return null;
     const parsed = JSON.parse(raw);
