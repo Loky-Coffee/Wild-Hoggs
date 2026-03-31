@@ -34,7 +34,7 @@
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  max-width: 140px;
+  max-width: 200px;
   white-space: nowrap;
   overflow: hidden;
 }
@@ -63,10 +63,16 @@
 }
 
 @media (max-width: 768px) {
+  .user-btn-avatar {
+    max-width: none;
+    width: 100%;
+  }
   .user-menu {
-    position: static;
+    flex: 1;
   }
   .user-dropdown {
+    position: fixed;
+    top: var(--mobile-nav-height, 62px);
     left: 0;
     right: 0;
     min-width: unset;
