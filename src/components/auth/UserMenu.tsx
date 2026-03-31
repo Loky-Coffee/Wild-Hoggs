@@ -132,7 +132,11 @@ export default function UserMenu({ translationData }: UserMenuProps) {
         onClick={() => setShowDropdown(v => !v)}
         title={user?.username}
       >
-        ⚔️ <span>{user?.username}</span> ▾
+        ⚔️ <span>{user?.username}</span>
+        {activeProfile.id !== 'local' && activeProfile.name !== user?.username && (
+          <span class="user-btn-profile-name"> ({activeProfile.name})</span>
+        )}
+        {' '}▾
       </button>
 
       {showDropdown && (
