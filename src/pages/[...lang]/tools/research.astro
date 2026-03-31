@@ -152,6 +152,35 @@ const breadcrumbItems = [
     gap: 1rem;
   }
 
+  @media (min-width: 768px) {
+    .categories-grid {
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .category-card {
+      padding: 1.75rem;
+    }
+
+    .category-image {
+      width: 80px;
+      height: 80px;
+    }
+
+    .category-icon {
+      font-size: 3rem;
+    }
+
+    .category-card h2 {
+      font-size: 1.2rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .stat-value {
+      font-size: 1.1rem;
+    }
+  }
+
   .category-card {
     position: relative;
     background: rgba(255, 255, 255, 0.05);
