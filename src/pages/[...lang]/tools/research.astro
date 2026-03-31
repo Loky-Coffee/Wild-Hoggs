@@ -112,6 +112,7 @@ const breadcrumbItems = [
           data-total-levels={String(category.totalLevels)}
           data-badge-map={JSON.stringify(Object.fromEntries((category.technologies as {id:string;badgeCosts:number[]}[]).map(t => [t.id, t.badgeCosts])))}>
 
+          <span class="max-badge" data-max-badge style="display:none">MAX</span>
           <div class="category-icon-wrapper">
             {imageMap[id] ? (
               <Image
@@ -268,6 +269,20 @@ const breadcrumbItems = [
   [data-pct], [data-tree-pct] {
     color: rgba(255, 165, 0, 0.75);
   }
+
+  .max-badge {
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    background: #27ae60;
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    padding: 0.25rem 0.55rem;
+    border-radius: 0 12px 0 8px;
+    line-height: 1;
+  }
 </style>
 
 <script is:inline>
@@ -307,10 +322,12 @@ const breadcrumbItems = [
       var pctEl = card.querySelector('[data-pct]');
       var levelsUsedEl = card.querySelector('[data-levels-used]');
       var treePctEl = card.querySelector('[data-tree-pct]');
+      var maxBadgeEl = card.querySelector('[data-max-badge]');
       if (usedEl) usedEl.textContent = usedBadges.toLocaleString();
       if (pctEl) pctEl.textContent = badgePct + '%';
       if (levelsUsedEl) levelsUsedEl.textContent = usedLevels.toString();
       if (treePctEl) treePctEl.textContent = treePct + '%';
+      if (maxBadgeEl) maxBadgeEl.style.display = badgePct >= 100 ? '' : 'none';
     });
   }
 
