@@ -112,7 +112,7 @@ const breadcrumbItems = [
           data-total-levels={String(category.totalLevels)}
           data-badge-map={JSON.stringify(Object.fromEntries((category.technologies as {id:string;badgeCosts:number[]}[]).map(t => [t.id, t.badgeCosts])))}>
 
-          <span class="max-badge" data-max-badge style="display:none">MAX</span>
+          <span class="max-badge" data-max-badge>0%</span>
           <div class="category-icon-wrapper">
             {imageMap[id] ? (
               <Image
@@ -132,10 +132,6 @@ const breadcrumbItems = [
             <div class="stat">
               <span class="stat-value"><span data-used>0</span> / {category.totalBadges.toLocaleString(lang === 'de' ? 'de-DE' : 'en-US')}</span>
               <span class="stat-label">🎖️ Badges · <span data-pct>0%</span></span>
-            </div>
-            <div class="stat">
-              <span class="stat-value"><span data-levels-used>0</span> / {category.totalLevels}</span>
-              <span class="stat-label">🌿 {t('research.treeProgress')} · <span data-tree-pct>0%</span></span>
             </div>
           </div>
           {isEnabled ? (
@@ -276,14 +272,19 @@ const breadcrumbItems = [
     position: absolute;
     top: 0;
     right: 0;
-    background: #27ae60;
-    color: #fff;
-    font-size: 0.85rem;
+    background: rgba(255, 165, 0, 0.15);
+    color: rgba(255, 165, 0, 0.9);
+    font-size: 1rem;
     font-weight: 800;
-    letter-spacing: 0.08em;
-    padding: 0.35rem 0.75rem;
+    letter-spacing: 0.05em;
+    padding: 0.4rem 0.85rem;
     border-radius: 0 12px 0 10px;
     line-height: 1;
+  }
+
+  .max-badge.is-max {
+    background: rgba(39, 174, 96, 0.2);
+    color: #52be80;
   }
 </style>
 
@@ -327,9 +328,10 @@ const breadcrumbItems = [
       var maxBadgeEl = card.querySelector('[data-max-badge]');
       if (usedEl) usedEl.textContent = usedBadges.toLocaleString();
       if (pctEl) pctEl.textContent = badgePct + '%';
-      if (levelsUsedEl) levelsUsedEl.textContent = usedLevels.toString();
-      if (treePctEl) treePctEl.textContent = treePct + '%';
-      if (maxBadgeEl) maxBadgeEl.style.display = badgePct >= 100 ? '' : 'none';
+      if (maxBadgeEl) {
+        maxBadgeEl.textContent = treePct >= 100 ? 'MAX' : treePct + '%';
+        maxBadgeEl.classList.toggle('is-max', treePct >= 100);
+      }
     });
   }
 
