@@ -461,6 +461,7 @@ export default {
   'auth.createAccount': 'إنشاء حساب',
   'auth.logout': 'تسجيل الخروج',
   'auth.myProfile': '⚔️ ملفي الشخصي',
+  'auth.myAccount': '👤 حسابي',
   'auth.close': 'إغلاق',
   'auth.email': 'البريد الإلكتروني',
   'auth.password': 'كلمة المرور',

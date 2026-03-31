@@ -461,6 +461,7 @@ export default {
   'auth.createAccount': 'Crea account',
   'auth.logout': 'Disconnetti',
   'auth.myProfile': '⚔️ Il mio profilo',
+  'auth.myAccount': '👤 Il Mio Account',
   'auth.close': 'Chiudi',
   'auth.email': 'Email',
   'auth.password': 'Password',

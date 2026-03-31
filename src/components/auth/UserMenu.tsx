@@ -230,7 +230,7 @@ export default function UserMenu({ translationData }: UserMenuProps) {
 
           <hr class="user-dropdown-divider" />
           <a href={profileHref} class="user-dropdown-item" onClick={() => setShowDropdown(false)}>
-            {t('auth.myProfile')}
+            {t('auth.myAccount')}
           </a>
           {(user?.is_admin === 1 || user?.is_moderator === 1) && (
             <>

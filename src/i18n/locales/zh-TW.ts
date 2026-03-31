@@ -461,6 +461,7 @@ export default {
   'auth.createAccount': '建立帳號',
   'auth.logout': '登出',
   'auth.myProfile': '⚔️ 我的資料',
+  'auth.myAccount': '👤 我的帳戶',
   'auth.close': '關閉',
   'auth.email': '電子郵件',
   'auth.password': '密碼',

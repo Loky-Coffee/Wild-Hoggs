@@ -587,6 +587,7 @@ export default {
   'auth.createAccount': 'Create Account',
   'auth.logout': 'Sign Out',
   'auth.myProfile': '⚔️ My Profile',
+  'auth.myAccount': '👤 My Account',
   'auth.close': 'Close',
   'auth.email': 'Email',
   'auth.password': 'Password',

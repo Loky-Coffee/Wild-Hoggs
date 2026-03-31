@@ -461,6 +461,7 @@ export default {
   'auth.createAccount': 'Buat Akun',
   'auth.logout': 'Keluar',
   'auth.myProfile': '⚔️ Profil Saya',
+  'auth.myAccount': '👤 Akun Saya',
   'auth.close': 'Tutup',
   'auth.email': 'Email',
   'auth.password': 'Kata sandi',

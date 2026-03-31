@@ -5,7 +5,6 @@ import { useTranslations } from '../../i18n/utils';
 import type { TranslationData } from '../../i18n/index';
 import { useCalculatorState } from '../../hooks/useCalculatorState';
 import { useProfile } from '../../hooks/useProfile';
-import { useAuth } from '../../hooks/useAuth';
 import './Calculator.css';
 import './CaravanCalculator.css';
 
@@ -101,7 +100,6 @@ export default function CaravanCalculator({ lang, translationData }: CaravanCalc
   const { activeProfile } = useProfile();
 
   const [stored, setStored] = useCalculatorState<CaravanState>('caravan', 'main', CARAVAN_DEFAULT, activeProfile.id);
-  const { user } = useAuth();
 
   // calculated is pure UI state — never persisted, resets to false on every page load
   const [calculated, setCalculated] = useState(false);
@@ -116,28 +114,28 @@ export default function CaravanCalculator({ lang, translationData }: CaravanCalc
   const setWeeklyActive  = (v: boolean | ((prev: boolean) => boolean)) =>
     setStored(s => ({ ...s, weeklyActive: typeof v === 'function' ? v(s.weeklyActive) : v }));
 
-  // On load: if calculator is still at defaults and user has profile data → auto-fill
+  // On load: if calculator is still at defaults and active profile has faction data → auto-fill
   useEffect(() => {
-    if (!user?.faction) return;
-    const faction = FACTION_LIST.includes(user.faction as HeroFaction)
-      ? (user.faction as HeroFaction) : null;
+    if (!activeProfile.faction) return;
+    const faction = FACTION_LIST.includes(activeProfile.faction as HeroFaction)
+      ? (activeProfile.faction as HeroFaction) : null;
     if (!faction) return;
     setStored(s => {
       if (s.yourFaction !== null || s.powerInput.trim()) return s; // don't override manual state
-      const savedPower = user[FACTION_POWER_FIELD[faction]] ?? null;
+      const savedPower = activeProfile[FACTION_POWER_FIELD[faction]] ?? null;
       return {
         ...s,
         yourFaction: faction,
         powerInput: savedPower ? String(savedPower) : s.powerInput,
       };
     });
-  }, [user?.faction, user?.formation_power_br, user?.formation_power_wd, user?.formation_power_go]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [activeProfile.faction, activeProfile.formation_power_br, activeProfile.formation_power_wd, activeProfile.formation_power_go]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // When selecting a faction: always fill power from profile if available, else keep current
+  // When selecting a faction: always fill power from active profile if available, else keep current
   const handleFactionSelect = (f: HeroFaction) => {
     const newFaction = f === yourFaction ? null : f;
     setStored(s => {
-      const savedPower = newFaction ? (user?.[FACTION_POWER_FIELD[newFaction]] ?? null) : null;
+      const savedPower = newFaction ? (activeProfile[FACTION_POWER_FIELD[newFaction]] ?? null) : null;
       return {
         ...s,
         yourFaction: newFaction,
@@ -208,7 +206,7 @@ export default function CaravanCalculator({ lang, translationData }: CaravanCalc
         <div className="calc-step-label">{t('calc.caravan.yourFaction')}</div>
         <div className="cc-faction-row">
           {FACTION_LIST.map(f => {
-            const savedPower = user?.[FACTION_POWER_FIELD[f]] ?? null;
+            const savedPower = activeProfile[FACTION_POWER_FIELD[f]] ?? null;
             return (
               <button
                 key={f}

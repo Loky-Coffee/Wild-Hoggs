@@ -461,6 +461,7 @@ export default {
   'auth.createAccount': 'アカウント作成',
   'auth.logout': 'ログアウト',
   'auth.myProfile': '⚔️ マイプロフィール',
+  'auth.myAccount': '👤 マイアカウント',
   'auth.close': '閉じる',
   'auth.email': 'メールアドレス',
   'auth.password': 'パスワード',

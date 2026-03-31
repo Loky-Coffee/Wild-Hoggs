@@ -461,6 +461,7 @@ export default {
   'auth.createAccount': '创建账户',
   'auth.logout': '退出登录',
   'auth.myProfile': '⚔️ 我的资料',
+  'auth.myAccount': '👤 我的账户',
   'auth.close': '关闭',
   'auth.email': '电子邮件',
   'auth.password': '密码',

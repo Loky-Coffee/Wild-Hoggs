@@ -461,6 +461,7 @@ export default {
   'auth.createAccount': 'Hesap Oluştur',
   'auth.logout': 'Çıkış Yap',
   'auth.myProfile': '⚔️ Profilim',
+  'auth.myAccount': '👤 Hesabım',
   'auth.close': 'Kapat',
   'auth.email': 'E-posta',
   'auth.password': 'Şifre',

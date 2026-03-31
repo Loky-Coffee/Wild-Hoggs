@@ -41,6 +41,18 @@ export async function onRequestPatch(ctx: any) {
     fields.push('faction = ?');
     values.push(body.faction ? String(body.faction).trim().slice(0, 30) : null);
   }
+  if (body?.formation_power_br !== undefined) {
+    fields.push('formation_power_br = ?');
+    values.push(body.formation_power_br != null ? Number(body.formation_power_br) || null : null);
+  }
+  if (body?.formation_power_wd !== undefined) {
+    fields.push('formation_power_wd = ?');
+    values.push(body.formation_power_wd != null ? Number(body.formation_power_wd) || null : null);
+  }
+  if (body?.formation_power_go !== undefined) {
+    fields.push('formation_power_go = ?');
+    values.push(body.formation_power_go != null ? Number(body.formation_power_go) || null : null);
+  }
 
   if (fields.length === 0) return Response.json({ error: 'Keine Änderungen' }, { status: 400 });
 

@@ -7,12 +7,15 @@ export interface GameProfile {
   name: string;
   server: string | null;
   faction: string | null;
+  formation_power_br: number | null;
+  formation_power_wd: number | null;
+  formation_power_go: number | null;
 }
 
 const ACTIVE_PROFILE_KEY = 'wh-active-profile';
 
 // Local (non-logged-in) default profile
-const LOCAL_PROFILE: GameProfile = { id: 'local', name: 'Standard', server: null, faction: null };
+const LOCAL_PROFILE: GameProfile = { id: 'local', name: 'Standard', server: null, faction: null, formation_power_br: null, formation_power_wd: null, formation_power_go: null };
 
 // --- Module-level reactive active profile ---
 // Shared across all hook instances via custom event

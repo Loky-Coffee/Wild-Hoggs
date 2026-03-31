@@ -461,6 +461,7 @@ export default {
   'auth.createAccount': 'Tạo tài khoản',
   'auth.logout': 'Đăng xuất',
   'auth.myProfile': '⚔️ Hồ sơ của tôi',
+  'auth.myAccount': '👤 Tài khoản của tôi',
   'auth.close': 'Đóng',
   'auth.email': 'Email',
   'auth.password': 'Mật khẩu',

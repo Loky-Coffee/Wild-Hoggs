@@ -461,6 +461,7 @@ export default {
   'auth.createAccount': '계정 만들기',
   'auth.logout': '로그아웃',
   'auth.myProfile': '⚔️ 내 프로필',
+  'auth.myAccount': '👤 내 계정',
   'auth.close': '닫기',
   'auth.email': '이메일',
   'auth.password': '비밀번호',

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'preact/hooks';
 import { useAuth, setAuthState, clearAuthState } from '../../hooks/useAuth';
 import type { AuthUser } from '../../hooks/useAuth';
+import { useProfile } from '../../hooks/useProfile';
 import { useTranslations } from '../../i18n/utils';
 import type { TranslationData } from '../../i18n/index';
 import './ProfilePage.css';
@@ -9,14 +10,14 @@ interface ProfilePageProps {
   translationData: TranslationData;
 }
 
-// ── Calculator state reader (Phase 1 + Phase 2 format) ──────────────────────
-function readCalcState<T>(calcType: string, calcKey = 'main'): T | null {
+// ── Calculator state reader — profile-aware ──────────────────────────────────
+function readCalcState<T>(profileId: string, calcType: string, calcKey = 'main'): T | null {
   try {
-    const key = `wh-calc-${calcType}${calcKey !== 'main' ? `-${calcKey}` : ''}`;
+    const key = `wh-calc-${profileId}-${calcType}-${calcKey}`;
     const raw = localStorage.getItem(key);
     if (!raw) return null;
     const parsed = JSON.parse(raw);
-    if (parsed && typeof parsed === 'object' && 'state' in parsed && 'lastSyncedAt' in parsed) {
+    if (parsed && typeof parsed === 'object' && 'state' in parsed) {
       return parsed.state as T;
     }
     return parsed as T;
@@ -61,15 +62,12 @@ function getLangFromPath(): string {
 export default function ProfilePage({ translationData }: ProfilePageProps) {
   const t = useTranslations(translationData);
   const { user, token, isLoggedIn } = useAuth();
+  const { activeProfile, updateProfile } = useProfile();
 
-  // ── Form state ─────────────────────────────────────────────────────────────
+  // ── Account form state ─────────────────────────────────────────────────────
   const [username, setUsername]           = useState('');
   const [usernameSaving, setUsernameSaving] = useState(false);
   const [usernameMsg, setUsernameMsg]     = useState<{ type: 'error' | 'ok'; text: string } | null>(null);
-
-  const [server, setServer]               = useState('');
-  const [serverSaving, setServerSaving]   = useState(false);
-  const [serverMsg, setServerMsg]         = useState<{ type: 'error' | 'ok'; text: string } | null>(null);
 
   const [currentPw, setCurrentPw]   = useState('');
   const [newPw, setNewPw]           = useState('');
@@ -82,6 +80,11 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
   const [notifVolume,       setNotifVolume]       = useState(1.5);
   const [notifVolumeSaving, setNotifVolumeSaving] = useState(false);
 
+  // ── Profile form state (per active profile) ────────────────────────────────
+  const [server, setServer]           = useState('');
+  const [serverSaving, setServerSaving] = useState(false);
+  const [serverMsg, setServerMsg]     = useState<{ type: 'error' | 'ok'; text: string } | null>(null);
+
   const [selectedFaction, setSelectedFaction] = useState<string | null>(null);
   const [formationBr, setFormationBr] = useState('');
   const [formationWd, setFormationWd] = useState('');
@@ -89,35 +92,38 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
   const [factionSaving, setFactionSaving] = useState(false);
   const [factionMsg, setFactionMsg] = useState<{ type: 'error' | 'ok'; text: string } | null>(null);
 
+  // Sync account fields from user
   useEffect(() => {
     if (user?.username) setUsername(user.username);
-    if (user?.server !== undefined) setServer(user.server ?? '');
     setNotifSound(user?.notification_sound ?? 1);
     setNotifVolume(user?.notification_volume ?? 1.5);
-  }, [user?.username, user?.server, user?.notification_sound, user?.notification_volume]);
+  }, [user?.username, user?.notification_sound, user?.notification_volume]);
 
+  // Sync profile fields from active profile
   useEffect(() => {
-    setSelectedFaction(user?.faction ?? null);
-    setFormationBr(user?.formation_power_br ? String(user.formation_power_br) : '');
-    setFormationWd(user?.formation_power_wd ? String(user.formation_power_wd) : '');
-    setFormationGo(user?.formation_power_go ? String(user.formation_power_go) : '');
-  }, [user?.faction, user?.formation_power_br, user?.formation_power_wd, user?.formation_power_go]);
+    setServer(activeProfile.server ?? '');
+    setSelectedFaction(activeProfile.faction ?? null);
+    setFormationBr(activeProfile.formation_power_br ? String(activeProfile.formation_power_br) : '');
+    setFormationWd(activeProfile.formation_power_wd ? String(activeProfile.formation_power_wd) : '');
+    setFormationGo(activeProfile.formation_power_go ? String(activeProfile.formation_power_go) : '');
+  }, [activeProfile.id, activeProfile.server, activeProfile.faction, activeProfile.formation_power_br, activeProfile.formation_power_wd, activeProfile.formation_power_go]);
 
-  // ── Calculator stats ───────────────────────────────────────────────────────
+  // ── Calculator stats — read from active profile's localStorage ─────────────
   interface TankState   { unlockedLevels: number[]; subLevels: Record<string,number> }
   interface BuildState  { selectedBuilding: string | null; currentLevel: number; targetLevel: number }
   interface CaravanSt   { powerInput: string; yourFaction: string | null }
   interface HeroExpSt   { currentLevel: number; targetLevel: number }
   interface ResearchSt  { selectedTechnologies: Record<string, number> }
 
-  const tankState     = readCalcState<TankState>('tank');
-  const buildingState = readCalcState<BuildState>('building');
-  const caravanState  = readCalcState<CaravanSt>('caravan');
-  const heroExpState  = readCalcState<HeroExpSt>('hero-exp');
+  const pid = activeProfile.id;
+  const tankState     = readCalcState<TankState>(pid, 'tank');
+  const buildingState = readCalcState<BuildState>(pid, 'building');
+  const caravanState  = readCalcState<CaravanSt>(pid, 'caravan');
+  const heroExpState  = readCalcState<HeroExpSt>(pid, 'hero-exp');
 
   const researchStats = RESEARCH_IDS.reduce(
     (acc, id) => {
-      const s = readCalcState<ResearchSt>('research', id);
+      const s = readCalcState<ResearchSt>(pid, 'research', id);
       if (s?.selectedTechnologies) {
         const count = Object.values(s.selectedTechnologies).filter(v => v > 0).length;
         if (count > 0) { acc.categories++; acc.technologies += count; }
@@ -128,7 +134,7 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
   );
 
   // ── Handlers ───────────────────────────────────────────────────────────────
-  const patchProfile = async (body: Record<string, unknown>) => {
+  const patchAccount = async (body: Record<string, unknown>) => {
     const res = await fetch('/api/user/profile', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
@@ -141,15 +147,15 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
   };
 
   const handleSaveServer = async () => {
-    if (!token) return;
     setServerSaving(true); setServerMsg(null);
-    try {
-      await patchProfile({ server: server.trim() || null });
+    const ok = await updateProfile(activeProfile.id, { server: server.trim() || null });
+    if (ok) {
       setServerMsg({ type: 'ok', text: t('profile.saved') });
       setTimeout(() => setServerMsg(null), 3000);
-    } catch (e: any) {
-      setServerMsg({ type: 'error', text: e.message });
-    } finally { setServerSaving(false); }
+    } else {
+      setServerMsg({ type: 'error', text: t('profile.errorGeneric') });
+    }
+    setServerSaving(false);
   };
 
   const handleToggleNotifSound = async () => {
@@ -157,7 +163,7 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
     const next = notifSound === 1 ? 0 : 1;
     setNotifSoundSaving(true);
     try {
-      await patchProfile({ notification_sound: next });
+      await patchAccount({ notification_sound: next });
       setNotifSound(next);
     } catch { /* ignore */ } finally { setNotifSoundSaving(false); }
   };
@@ -169,7 +175,7 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
     _volumeTimer = setTimeout(async () => {
       if (!token) return;
       setNotifVolumeSaving(true);
-      try { await patchProfile({ notification_volume: val }); }
+      try { await patchAccount({ notification_volume: val }); }
       catch { /* ignore */ } finally { setNotifVolumeSaving(false); }
     }, 500);
   };
@@ -178,7 +184,7 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
     if (!token || username.trim() === user?.username) return;
     setUsernameSaving(true); setUsernameMsg(null);
     try {
-      await patchProfile({ username: username.trim() });
+      await patchAccount({ username: username.trim() });
       setUsernameMsg({ type: 'ok', text: t('profile.saved') });
       setTimeout(() => setUsernameMsg(null), 3000);
     } catch (e: any) {
@@ -187,7 +193,6 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
   };
 
   const handleSaveFactions = async () => {
-    if (!token) return;
     setFactionSaving(true); setFactionMsg(null);
     try {
       const parseField = (s: string): number | null => {
@@ -196,14 +201,18 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
         if (n === null) throw new Error('Ungültiger Wert: ' + s.trim());
         return n;
       };
-      await patchProfile({
+      const ok = await updateProfile(activeProfile.id, {
         faction: selectedFaction,
         formation_power_br: parseField(formationBr),
         formation_power_wd: parseField(formationWd),
         formation_power_go: parseField(formationGo),
       });
-      setFactionMsg({ type: 'ok', text: t('profile.saved') });
-      setTimeout(() => setFactionMsg(null), 3000);
+      if (ok) {
+        setFactionMsg({ type: 'ok', text: t('profile.saved') });
+        setTimeout(() => setFactionMsg(null), 3000);
+      } else {
+        setFactionMsg({ type: 'error', text: t('profile.errorGeneric') });
+      }
     } catch (e: any) {
       setFactionMsg({ type: 'error', text: e.message });
     } finally { setFactionSaving(false); }
@@ -258,13 +267,13 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
           <h1 class="pp-username">{user.username}</h1>
           <p class="pp-email">{user.email}</p>
           <div class="pp-user-tags">
-            {user.server && (
-              <span class="pp-server-tag">🖥️ {t('profile.serverTag', { server: user.server })}</span>
+            {activeProfile.server && (
+              <span class="pp-server-tag">🖥️ {t('profile.serverTag', { server: activeProfile.server })}</span>
             )}
-            {user.faction && (
-              <span class={`pp-faction-tag pp-faction-${user.faction}`}>
-                <img src={FACTION_IMG[user.faction]} alt={`${FACTION_LABELS[user.faction]?.label} faction`} class="pp-faction-tag-img" />
-                {FACTION_LABELS[user.faction]?.label}
+            {activeProfile.faction && (
+              <span class={`pp-faction-tag pp-faction-${activeProfile.faction}`}>
+                <img src={FACTION_IMG[activeProfile.faction]} alt={`${FACTION_LABELS[activeProfile.faction]?.label} faction`} class="pp-faction-tag-img" />
+                {FACTION_LABELS[activeProfile.faction]?.label}
               </span>
             )}
           </div>

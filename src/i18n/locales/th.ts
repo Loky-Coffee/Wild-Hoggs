@@ -461,6 +461,7 @@ export default {
   'auth.createAccount': 'สร้างบัญชี',
   'auth.logout': 'ออกจากระบบ',
   'auth.myProfile': '⚔️ โปรไฟล์ของฉัน',
+  'auth.myAccount': '👤 บัญชีของฉัน',
   'auth.close': 'ปิด',
   'auth.email': 'อีเมล',
   'auth.password': 'รหัสผ่าน',
