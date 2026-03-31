@@ -78,7 +78,7 @@ export default {
   'guides.subtitle': 'Guides utiles pour Last-Z',
   'research.subtitle': 'Catégories de recherche Last-Z',
   'research.technologies': 'Technologies',
-  'research.treeProgress': 'Progression de l'arbre',
+  'research.treeProgress': "Progression de l'arbre",
   'research.available': 'Disponible →',
   'research.comingSoon': 'Bientôt disponible',
   // Calculator: Building
