@@ -15,6 +15,8 @@ export default {
   'welcome.description': 'I\'m Ediva, a Last-Z player on Server 395. I built this site to give players a reliable hub for tools, calculators, event info, and guides — everything I wished existed when I started playing.',
   'changelog.title': 'Changelog',
   'changelog.subtitle': 'Latest updates to this site',
+  'changelog.showAll': 'Show all entries',
+  'changelog.showLess': 'Show less',
   'support.title': 'Support This Project',
   'support.text': 'If you find this site useful, consider buying me a coffee — it helps keep everything free and up to date.',
   'info.title': 'Guild Information',

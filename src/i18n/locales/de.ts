@@ -14,6 +14,8 @@ export default {
   'welcome.title': 'Willkommen bei Edivas Last-Z Guide',
   'welcome.description': 'Ich bin Ediva, ein Last-Z Spieler auf Server 395. Diese Seite habe ich gebaut, um anderen Spielern eine zentrale Anlaufstelle für Tools, Rechner, Event-Infos und Guides zu bieten — alles, was ich mir selbst am Anfang gewünscht hätte.',
   'changelog.title': 'Changelog',
+  'changelog.showAll': 'Alle Einträge anzeigen',
+  'changelog.showLess': 'Weniger anzeigen',
   'changelog.subtitle': 'Neueste Änderungen an dieser Seite',
   'support.title': 'Dieses Projekt unterstützen',
   'support.text': 'Wenn dir diese Seite hilft, kannst du mir einen Kaffee kaufen — das hält alles kostenlos und aktuell.',

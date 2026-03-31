@@ -54,9 +54,9 @@ const t = useTranslations(translationData);
         <div class="card changelog-card">
           <h2>{t('changelog.title')}</h2>
           <p class="changelog-subtitle">{t('changelog.subtitle')}</p>
-          <ul class="changelog-list">
-            {changelog.map(entry => (
-              <li class="changelog-entry">
+          <ul class="changelog-list" id="changelog-list">
+            {changelog.map((entry, i) => (
+              <li class="changelog-entry" data-index={i}>
                 <time class="changelog-date" datetime={entry.date}>
                   {entry.date} — {entry.time}
                 </time>
@@ -64,6 +64,15 @@ const t = useTranslations(translationData);
               </li>
             ))}
           </ul>
+          <button
+            class="changelog-show-btn"
+            id="changelog-toggle"
+            aria-expanded="false"
+            data-label-show={t('changelog.showAll')}
+            data-label-hide={t('changelog.showLess')}
+          >
+            {t('changelog.showAll')}
+          </button>
         </div>
 
         <div class="card support-card">
@@ -87,6 +96,70 @@ const t = useTranslations(translationData);
     </div>
   </main>
 </PageLayout>
+
+<script is:inline>
+(function () {
+  var SHOW_COUNT = 5;
+
+  function init() {
+    var isMobile = window.innerWidth <= 768;
+    var btn = document.getElementById('changelog-toggle');
+    var entries = document.querySelectorAll('.changelog-entry');
+
+    if (!btn || !entries.length) return;
+
+    if (isMobile) {
+      // Show button, apply initial hidden state
+      btn.style.display = '';
+      var expanded = btn.getAttribute('aria-expanded') === 'true';
+      entries.forEach(function (el) {
+        var idx = parseInt(el.getAttribute('data-index') || '0', 10);
+        if (idx >= SHOW_COUNT) {
+          el.classList.toggle('cl-hidden', !expanded);
+        } else {
+          el.classList.remove('cl-hidden');
+        }
+      });
+    } else {
+      // Desktop: show all, hide button
+      btn.style.display = 'none';
+      entries.forEach(function (el) { el.classList.remove('cl-hidden'); });
+    }
+  }
+
+  function setupToggle() {
+    var btn = document.getElementById('changelog-toggle');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      var expanded = btn.getAttribute('aria-expanded') === 'true';
+      var next = !expanded;
+      btn.setAttribute('aria-expanded', String(next));
+      btn.textContent = next
+        ? (btn.getAttribute('data-label-hide') || btn.textContent)
+        : (btn.getAttribute('data-label-show') || btn.textContent);
+      var entries = document.querySelectorAll('.changelog-entry');
+      entries.forEach(function (el) {
+        var idx = parseInt(el.getAttribute('data-index') || '0', 10);
+        if (idx >= SHOW_COUNT) {
+          el.classList.toggle('cl-hidden', !next);
+        }
+      });
+    });
+  }
+
+  function setup() {
+    init();
+    setupToggle();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setup);
+  } else {
+    setup();
+  }
+  document.addEventListener('astro:after-swap', setup);
+})();
+</script>
 
 <style>
   /* ── Base (all screen sizes) ── */
@@ -399,6 +472,28 @@ const t = useTranslations(translationData);
     .changelog-entry {
       grid-template-columns: 1fr;
       gap: 0.15rem;
+    }
+
+    .changelog-entry.cl-hidden {
+      display: none;
+    }
+
+    .changelog-show-btn {
+      display: block;
+      width: 100%;
+      margin-top: 0.75rem;
+      padding: 0.5rem;
+      background: none;
+      border: 1px solid rgba(255, 165, 0, 0.3);
+      border-radius: 6px;
+      color: rgba(255, 165, 0, 0.8);
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .changelog-show-btn:hover {
+      background: rgba(255, 165, 0, 0.08);
+      border-color: rgba(255, 165, 0, 0.55);
     }
   }
 </style>
