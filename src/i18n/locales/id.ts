@@ -78,6 +78,7 @@ export default {
   'guides.subtitle': 'Panduan bermanfaat untuk Last-Z',
   'research.subtitle': 'Kategori riset Last-Z',
   'research.technologies': 'Teknologi',
+  'research.treeProgress': 'Progres Pohon',
   'research.available': 'Tersedia →',
   'research.comingSoon': 'Segera hadir',
   // Calculator: Building

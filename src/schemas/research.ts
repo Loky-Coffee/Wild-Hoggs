@@ -25,6 +25,7 @@ export const ResearchTreeSchema = z.object({
   id: z.string(),
   nameKey: z.string(),
   totalBadges: z.number().nonnegative().int(),
+  totalLevels: z.number().nonnegative().int(),
   nodeCount: z.number().nonnegative().int(),
   image: z.string().optional(),
   technologies: z.array(TechnologySchema),

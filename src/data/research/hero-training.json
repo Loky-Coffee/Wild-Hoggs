@@ -2,6 +2,7 @@
   "id": "hero_training",
   "nameKey": "research.hero_training.name",
   "totalBadges": 39590,
+  "totalLevels": 67,
   "nodeCount": 13,
   "image": "/images/research/hero-training.png",
   "technologies": [

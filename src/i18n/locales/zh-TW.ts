@@ -78,6 +78,7 @@ export default {
   'guides.subtitle': 'Last-Z 實用指南',
   'research.subtitle': 'Last-Z 研究分類',
   'research.technologies': '科技',
+  'research.treeProgress': '科技樹進度',
   'research.available': '可用 →',
   'research.comingSoon': '敬請期待',
   // Calculator: Building

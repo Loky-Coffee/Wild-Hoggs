@@ -78,6 +78,7 @@ export default {
   'guides.subtitle': 'Hướng dẫn hữu ích cho Last-Z',
   'research.subtitle': 'Danh mục nghiên cứu Last-Z',
   'research.technologies': 'Công nghệ',
+  'research.treeProgress': 'Tiến độ cây',
   'research.available': 'Có sẵn →',
   'research.comingSoon': 'Sắp ra mắt',
   // Calculator: Building

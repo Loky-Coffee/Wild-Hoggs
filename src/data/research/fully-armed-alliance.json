@@ -2,6 +2,7 @@
   "id": "fully_armed_alliance",
   "nameKey": "research.fully_armed_alliance.name",
   "totalBadges": 512480,
+  "totalLevels": 200,
   "nodeCount": 18,
   "image": "/images/research/fully-armed-alliance.png",
   "technologies": [

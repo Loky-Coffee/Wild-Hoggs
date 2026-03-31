@@ -78,6 +78,7 @@ export default {
   'guides.subtitle': 'Last-Z の役立つガイド',
   'research.subtitle': 'Last-Z 研究カテゴリ',
   'research.technologies': 'テクノロジー',
+  'research.treeProgress': 'ツリー進捗',
   'research.available': '利用可能 →',
   'research.comingSoon': '近日公開',
   // Calculator: Building

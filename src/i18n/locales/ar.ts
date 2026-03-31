@@ -78,6 +78,7 @@ export default {
   'guides.subtitle': 'أدلة مفيدة لـ Last-Z',
   'research.subtitle': 'فئات البحث في Last-Z',
   'research.technologies': 'التقنيات',
+  'research.treeProgress': 'تقدم الشجرة',
   'research.available': 'متاح →',
   'research.comingSoon': 'قريبًا',
   // Calculator: Building

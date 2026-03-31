@@ -78,6 +78,7 @@ export default {
   'guides.subtitle': 'คู่มือที่มีประโยชน์สำหรับ Last-Z',
   'research.subtitle': 'หมวดหมู่งานวิจัยของ Last-Z',
   'research.technologies': 'เทคโนโลยี',
+  'research.treeProgress': 'ความคืบหน้าต้นไม้',
   'research.available': 'พร้อมใช้งาน →',
   'research.comingSoon': 'เร็ว ๆ นี้',
   // Calculator: Building

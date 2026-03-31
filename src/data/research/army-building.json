@@ -2,6 +2,7 @@
   "id": "army_building",
   "nameKey": "research.army_building.name",
   "totalBadges": 604530,
+  "totalLevels": 227,
   "nodeCount": 23,
   "image": "/images/research/army-building.png",
   "technologies": [

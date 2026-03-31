@@ -2,6 +2,7 @@
   "id": "alliance_recognition",
   "nameKey": "research.alliance_recognition.name",
   "totalBadges": 356770,
+  "totalLevels": 183,
   "nodeCount": 19,
   "image": "/images/research/alliance-recognition.png",
   "technologies": [

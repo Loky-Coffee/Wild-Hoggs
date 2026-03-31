@@ -2,6 +2,7 @@
   "id": "peace_shield",
   "nameKey": "research.peace_shield.name",
   "totalBadges": 268930,
+  "totalLevels": 165,
   "nodeCount": 16,
   "image": "/images/research/peace-shield.png",
   "technologies": [

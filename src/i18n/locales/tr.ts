@@ -78,6 +78,7 @@ export default {
   'guides.subtitle': 'Last-Z için yararlı rehberler',
   'research.subtitle': 'Last-Z araştırma kategorileri',
   'research.technologies': 'Teknolojiler',
+  'research.treeProgress': 'Ağaç İlerlemesi',
   'research.available': 'Mevcut →',
   'research.comingSoon': 'Çok yakında',
   // Calculator: Building

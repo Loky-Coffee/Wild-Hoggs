@@ -109,6 +109,7 @@ const breadcrumbItems = [
           class={`category-card ${!isEnabled ? 'disabled' : ''}`}
           data-category-id={id}
           data-total-badges={String(category.totalBadges)}
+          data-total-levels={String(category.totalLevels)}
           data-badge-map={JSON.stringify(Object.fromEntries((category.technologies as {id:string;badgeCosts:number[]}[]).map(t => [t.id, t.badgeCosts])))}>
 
           <div class="category-icon-wrapper">
@@ -130,6 +131,10 @@ const breadcrumbItems = [
             <div class="stat">
               <span class="stat-value"><span data-used>0</span> / {category.totalBadges.toLocaleString(lang === 'de' ? 'de-DE' : 'en-US')}</span>
               <span class="stat-label">🎖️ Badges · <span data-pct>0%</span></span>
+            </div>
+            <div class="stat">
+              <span class="stat-value"><span data-levels-used>0</span> / {category.totalLevels}</span>
+              <span class="stat-label">🌿 {t('research.treeProgress')} · <span data-tree-pct>0%</span></span>
             </div>
             <div class="stat">
               <span class="stat-value">{category.nodeCount}</span>
@@ -264,7 +269,7 @@ const breadcrumbItems = [
     }
   }
 
-  [data-pct] {
+  [data-pct], [data-tree-pct] {
     color: rgba(255, 165, 0, 0.75);
   }
 </style>
@@ -275,10 +280,12 @@ const breadcrumbItems = [
     document.querySelectorAll('[data-category-id]').forEach(function (card) {
       var id = card.getAttribute('data-category-id');
       var totalBadges = parseInt(card.getAttribute('data-total-badges') || '0', 10);
+      var totalLevels = parseInt(card.getAttribute('data-total-levels') || '0', 10);
       var badgeMap = {};
       try { badgeMap = JSON.parse(card.getAttribute('data-badge-map') || '{}'); } catch (e) { return; }
 
-      var used = 0;
+      var usedBadges = 0;
+      var usedLevels = 0;
       try {
         var raw = localStorage.getItem('wh-calc-research-' + id);
         if (raw) {
@@ -287,19 +294,27 @@ const breadcrumbItems = [
           var selected = (state && state.selectedTechnologies) ? state.selectedTechnologies : {};
           Object.keys(selected).forEach(function (techId) {
             var level = selected[techId];
-            if (level > 0 && badgeMap[techId]) {
-              var costs = badgeMap[techId];
-              for (var i = 0; i < level && i < costs.length; i++) { used += costs[i]; }
+            if (level > 0) {
+              usedLevels += level;
+              if (badgeMap[techId]) {
+                var costs = badgeMap[techId];
+                for (var i = 0; i < level && i < costs.length; i++) { usedBadges += costs[i]; }
+              }
             }
           });
         }
       } catch (e) { /* ignore */ }
 
-      var pct = totalBadges > 0 ? Math.round((used / totalBadges) * 100) : 0;
+      var badgePct = totalBadges > 0 ? Math.round((usedBadges / totalBadges) * 100) : 0;
+      var treePct = totalLevels > 0 ? Math.round((usedLevels / totalLevels) * 100) : 0;
       var usedEl = card.querySelector('[data-used]');
       var pctEl = card.querySelector('[data-pct]');
-      if (usedEl) usedEl.textContent = used.toLocaleString();
-      if (pctEl) pctEl.textContent = pct + '%';
+      var levelsUsedEl = card.querySelector('[data-levels-used]');
+      var treePctEl = card.querySelector('[data-tree-pct]');
+      if (usedEl) usedEl.textContent = usedBadges.toLocaleString();
+      if (pctEl) pctEl.textContent = badgePct + '%';
+      if (levelsUsedEl) levelsUsedEl.textContent = usedLevels.toString();
+      if (treePctEl) treePctEl.textContent = treePct + '%';
     });
   }
 

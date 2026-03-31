@@ -78,6 +78,7 @@ export default {
   'guides.subtitle': 'Last-Z 유용한 가이드',
   'research.subtitle': 'Last-Z 연구 카테고리',
   'research.technologies': '기술',
+  'research.treeProgress': '트리 진행도',
   'research.available': '사용 가능 →',
   'research.comingSoon': '곧 제공',
   // Calculator: Building

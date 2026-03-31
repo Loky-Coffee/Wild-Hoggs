@@ -2,6 +2,7 @@
   "id": "siege_to_seize",
   "nameKey": "research.siege_to_seize.name",
   "totalBadges": 267375,
+  "totalLevels": 180,
   "nodeCount": 18,
   "image": "/images/research/siege-to-seize.png",
   "technologies": [

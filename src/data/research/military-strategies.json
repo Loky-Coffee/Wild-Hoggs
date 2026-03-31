@@ -2,6 +2,7 @@
   "id": "military_strategies",
   "nameKey": "research.military_strategies.name",
   "totalBadges": 79816,
+  "totalLevels": 149,
   "nodeCount": 18,
   "image": "/images/research/military-strategies.png",
   "technologies": [
