@@ -308,5 +308,6 @@ const breadcrumbItems = [
   } else {
     init();
   }
+  document.addEventListener('astro:after-swap', init);
 })();
 </script>
