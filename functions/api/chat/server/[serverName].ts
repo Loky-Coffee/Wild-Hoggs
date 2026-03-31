@@ -24,7 +24,13 @@ export async function onRequestGet(ctx: any) {
   if (!user) return Response.json({ error: 'Sitzung abgelaufen' }, { status: 401 });
 
   const serverName = ctx.params.serverName as string;
-  if (!user.server || user.server !== serverName) {
+
+  // Check if the user has a game profile with this server (multi-profile support)
+  const profileMatch = await DB.prepare(
+    `SELECT COUNT(*) AS cnt FROM game_profiles WHERE user_id = ? AND server = ?`
+  ).bind(user.user_id, serverName).first() as { cnt: number } | null;
+  const hasAccess = (profileMatch?.cnt ?? 0) > 0 || user.server === serverName;
+  if (!hasAccess) {
     return Response.json({ error: 'Kein Zugriff auf diesen Server-Chat.' }, { status: 403 });
   }
 
@@ -86,11 +92,13 @@ export async function onRequestPost(ctx: any) {
   const url        = new URL(ctx.request.url);
   const lang       = url.searchParams.get('lang') ?? null;
 
-  if (!user.server) {
-    return Response.json({ error: 'Kein Server-Feld in deinem Profil. Trage es unter /profile/ ein.' }, { status: 403 });
-  }
-  if (user.server !== serverName) {
-    return Response.json({ error: 'Kein Zugriff auf diesen Server-Chat.' }, { status: 403 });
+  // Check if the user has a game profile with this server (multi-profile support)
+  const profileMatchPost = await DB.prepare(
+    `SELECT COUNT(*) AS cnt FROM game_profiles WHERE user_id = ? AND server = ?`
+  ).bind(user.user_id, serverName).first() as { cnt: number } | null;
+  const hasAccessPost = (profileMatchPost?.cnt ?? 0) > 0 || user.server === serverName;
+  if (!hasAccessPost) {
+    return Response.json({ error: 'Kein Zugriff auf diesen Server-Chat. Trage einen Server in deinem Profil ein.' }, { status: 403 });
   }
 
   let body: any;

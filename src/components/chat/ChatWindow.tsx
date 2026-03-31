@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'preact/hooks';
 import { useAuth } from '../../hooks/useAuth';
+import { useProfile } from '../../hooks/useProfile';
 import { useTranslations } from '../../i18n/utils';
 import type { TranslationData } from '../../i18n/index';
 import MessageList from './MessageList';
@@ -39,6 +40,7 @@ function factionColor(faction: string | null): string {
 
 export default function ChatWindow({ translationData }: ChatWindowProps) {
   const { user, token, isLoggedIn } = useAuth();
+  const { activeProfile } = useProfile();
   const t = useTranslations(translationData);
 
   const [chatType,     setChatType]     = useState<ChatType>('global');
@@ -111,8 +113,9 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
 
   const isAdmin   = user?.is_admin === 1 || user?.is_moderator === 1;
   const hasLang   = !!(user?.language && user.language.trim());
-  const hasServer = !!user?.server;
+  const hasServer = !!(isLoggedIn && activeProfile.server);
   const langCode  = user?.language?.toUpperCase() ?? '';
+  const serverName = activeProfile.server;
 
   // ── Presence polling ─────────────────────────────────────────────────────
   useEffect(() => {
@@ -194,8 +197,8 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
     switch (chatType) {
       case 'global':      return true;
       case 'global-lang': return lang === myLang && !!lang;
-      case 'server':      return u.server === user?.server;
-      case 'server-lang': return u.server === user?.server && lang === myLang && !!lang;
+      case 'server':      return u.server === serverName;
+      case 'server-lang': return u.server === serverName && lang === myLang && !!lang;
       default: return false;
     }
   });
@@ -204,7 +207,7 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
   const buildUrl = useCallback((type: ChatType, extra: string = ''): string => {
     const base = (type === 'global' || type === 'global-lang')
       ? '/api/chat/global'
-      : `/api/chat/server/${user?.server}`;
+      : `/api/chat/server/${serverName}`;
 
     const langParam = (type === 'global-lang' || type === 'server-lang') && user?.language
       ? `lang=${user.language}`
@@ -212,7 +215,7 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
 
     const allParams = [langParam, extra].filter(Boolean).join('&');
     return allParams ? `${base}?${allParams}` : base;
-  }, [user?.server, user?.language]);
+  }, [serverName, user?.language]);
 
   const stopPolling = useCallback(() => {
     if (pollRef.current) { clearInterval(pollRef.current); pollRef.current = null; }
@@ -541,13 +544,13 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
     }] : []),
     {
       type:     'server',
-      label:    hasServer ? `🏠 ${t('chat.server')} ${user.server}` : `🏠 ${t('chat.server')}`,
+      label:    hasServer ? `🏠 ${t('chat.server')} ${serverName}` : `🏠 ${t('chat.server')}`,
       disabled: !hasServer,
       title:    !hasServer ? t('chat.no_server_hint') : undefined,
     },
     ...(hasServer && hasLang ? [{
       type:  'server-lang' as ChatType,
-      label: `🏠 ${t('chat.server')} ${user.server} ${langCode}`,
+      label: `🏠 ${t('chat.server')} ${serverName} ${langCode}`,
     }] : []),
   ];
 

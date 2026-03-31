@@ -6,6 +6,7 @@
 
 import { useEffect, useRef, useCallback } from 'preact/hooks';
 import { useAuth } from '../../hooks/useAuth';
+import { useProfile } from '../../hooks/useProfile';
 
 function playNotificationSound(volume: number) {
   try {
@@ -34,10 +35,12 @@ function isOnCommunity(): boolean {
 }
 
 // All channel URLs the current user has access to
-function buildChannelUrls(user: { language?: string | null; server?: string | null } | null): string[] {
+function buildChannelUrls(
+  user: { language?: string | null } | null,
+  server: string | null,
+): string[] {
   if (!user) return [];
-  const lang   = user.language?.trim() || null;
-  const server = user.server?.trim()   || null;
+  const lang = user.language?.trim() || null;
   const urls: string[] = ['/api/chat/global'];
   if (lang)          urls.push(`/api/chat/global?lang=${encodeURIComponent(lang)}`);
   if (server)        urls.push(`/api/chat/server/${encodeURIComponent(server)}`);
@@ -47,6 +50,7 @@ function buildChannelUrls(user: { language?: string | null; server?: string | nu
 
 export default function GlobalChatPoller() {
   const { token, isLoggedIn, user } = useAuth();
+  const { activeProfile } = useProfile();
   const notifSoundRef   = useRef(user?.notification_sound ?? 1);
   const notifVolumeRef  = useRef(user?.notification_volume ?? 1.5);
   useEffect(() => { notifSoundRef.current  = user?.notification_sound  ?? 1;   }, [user?.notification_sound]);
@@ -149,7 +153,7 @@ export default function GlobalChatPoller() {
       } catch { /* ignore */ }
 
       // ── All accessible chat channels ────────────────────────────────────────
-      const channelUrls = buildChannelUrls(user);
+      const channelUrls = buildChannelUrls(user, activeProfile.server ?? null);
       await Promise.all(channelUrls.map(async baseUrl => {
         try {
           const since = chanSince.current[baseUrl];
@@ -196,7 +200,7 @@ export default function GlobalChatPoller() {
     return () => {
       if (pollRef.current) { clearInterval(pollRef.current); pollRef.current = null; }
     };
-  }, [isLoggedIn, token, user, applyCount]);
+  }, [isLoggedIn, token, user, activeProfile.server, applyCount]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return null;
 }
