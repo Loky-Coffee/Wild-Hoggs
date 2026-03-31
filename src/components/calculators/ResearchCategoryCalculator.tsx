@@ -5,6 +5,7 @@ import { useTranslations } from '../../i18n/utils';
 import { formatNumber } from '../../utils/formatters';
 import type { TranslationData, TranslationKey } from '../../i18n/index';
 import { useCalculatorState } from '../../hooks/useCalculatorState';
+import { useProfile } from '../../hooks/useProfile';
 import './Calculator.css';
 
 interface ResearchCategoryCalculatorProps {
@@ -120,8 +121,10 @@ function calculateTotalBadges(
 export default function ResearchCategoryCalculator({ categoryData, categoryImageSrc, lang, translationData }: ResearchCategoryCalculatorProps) {
   const category = categoryData;
 
+  const { activeProfile } = useProfile();
+
   // Jede Kategorie bekommt einen eigenen localStorage Key
-  const [stored, setStored] = useCalculatorState<ResearchState>('research', category.id, RESEARCH_DEFAULT);
+  const [stored, setStored] = useCalculatorState<ResearchState>('research', category.id, RESEARCH_DEFAULT, activeProfile.id);
 
   // Runtime Map aus gespeichertem Record rekonstruieren
   const selectedTechnologies = new Map(Object.entries(stored.selectedTechnologies));

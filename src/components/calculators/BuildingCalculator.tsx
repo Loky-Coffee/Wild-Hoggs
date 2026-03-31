@@ -6,6 +6,7 @@ import type { TranslationData, TranslationKey } from '../../i18n/index';
 import type { BuildingCost, Building } from '../../schemas/buildings';
 import CustomSelect from './CustomSelect';
 import { useCalculatorState } from '../../hooks/useCalculatorState';
+import { useProfile } from '../../hooks/useProfile';
 import './Calculator.css';
 
 interface BuildingCalculatorProps {
@@ -28,7 +29,9 @@ const BUILDING_DEFAULT: BuildingState = {
 };
 
 export default function BuildingCalculator({ lang, translationData }: BuildingCalculatorProps) {
-  const [stored, setStored] = useCalculatorState<BuildingState>('building', 'main', BUILDING_DEFAULT);
+  const { activeProfile } = useProfile();
+
+  const [stored, setStored] = useCalculatorState<BuildingState>('building', 'main', BUILDING_DEFAULT, activeProfile.id);
   const [calculated, setCalculated] = useState(false);
 
   const selectedBuilding = stored.selectedBuilding;

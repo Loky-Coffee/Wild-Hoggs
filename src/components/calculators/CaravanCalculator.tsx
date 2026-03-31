@@ -4,6 +4,7 @@ import { FACTIONS, type HeroFaction } from '../../data/heroes';
 import { useTranslations } from '../../i18n/utils';
 import type { TranslationData } from '../../i18n/index';
 import { useCalculatorState } from '../../hooks/useCalculatorState';
+import { useProfile } from '../../hooks/useProfile';
 import { useAuth } from '../../hooks/useAuth';
 import './Calculator.css';
 import './CaravanCalculator.css';
@@ -97,7 +98,9 @@ const CARAVAN_DEFAULT: CaravanState = {
 };
 
 export default function CaravanCalculator({ lang, translationData }: CaravanCalculatorProps) {
-  const [stored, setStored] = useCalculatorState<CaravanState>('caravan', 'main', CARAVAN_DEFAULT);
+  const { activeProfile } = useProfile();
+
+  const [stored, setStored] = useCalculatorState<CaravanState>('caravan', 'main', CARAVAN_DEFAULT, activeProfile.id);
   const { user } = useAuth();
 
   // calculated is pure UI state — never persisted, resets to false on every page load

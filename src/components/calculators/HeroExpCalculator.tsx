@@ -4,6 +4,7 @@ import { useTranslations } from '../../i18n/utils';
 import { formatNumber } from '../../utils/formatters';
 import type { TranslationData } from '../../i18n/index';
 import { useCalculatorState } from '../../hooks/useCalculatorState';
+import { useProfile } from '../../hooks/useProfile';
 import './Calculator.css';
 
 interface HeroExpCalculatorProps {
@@ -24,7 +25,9 @@ const HERO_EXP_DEFAULT: HeroExpState = {
 };
 
 export default function HeroExpCalculator({ lang, translationData }: HeroExpCalculatorProps) {
-  const [stored, setStored] = useCalculatorState<HeroExpState>('hero-exp', 'main', HERO_EXP_DEFAULT);
+  const { activeProfile } = useProfile();
+
+  const [stored, setStored] = useCalculatorState<HeroExpState>('hero-exp', 'main', HERO_EXP_DEFAULT, activeProfile.id);
   const [calculated, setCalculated] = useState(false);
 
   const currentLevel = stored.currentLevel;

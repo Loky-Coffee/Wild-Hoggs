@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'preact/hooks';
 import { createPortal } from 'preact/compat';
 import { useAuth, clearAuthState } from '../../hooks/useAuth';
+import { useProfile } from '../../hooks/useProfile';
+import type { GameProfile } from '../../hooks/useProfile';
 import { useTranslations } from '../../i18n/utils';
 import type { TranslationData } from '../../i18n/index';
 import AuthModal from './AuthModal';
@@ -13,15 +15,29 @@ interface UserMenuProps {
 export default function UserMenu({ translationData }: UserMenuProps) {
   const t = useTranslations(translationData);
   const { user, token, isLoggedIn } = useAuth();
+  const { profiles, activeProfile, switchProfile, createProfile, updateProfile, deleteProfile } = useProfile();
+
   const [showModal, setShowModal] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Close dropdown when clicking outside
+  // Profile editing state
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editName, setEditName] = useState('');
+  const [editServer, setEditServer] = useState('');
+  const [editFaction, setEditFaction] = useState('');
+  const [showNewForm, setShowNewForm] = useState(false);
+  const [newName, setNewName] = useState('');
+  const [newServer, setNewServer] = useState('');
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
         setShowDropdown(false);
+        setEditingId(null);
+        setShowNewForm(false);
+        setConfirmDeleteId(null);
       }
     };
     document.addEventListener('mousedown', handler);
@@ -39,6 +55,45 @@ export default function UserMenu({ translationData }: UserMenuProps) {
       }
     } catch { /* ignore */ }
     clearAuthState();
+  };
+
+  const startEdit = (p: GameProfile) => {
+    setEditingId(p.id);
+    setEditName(p.name);
+    setEditServer(p.server ?? '');
+    setEditFaction(p.faction ?? '');
+    setShowNewForm(false);
+    setConfirmDeleteId(null);
+  };
+
+  const saveEdit = async () => {
+    if (!editingId || !editName.trim()) return;
+    await updateProfile(editingId, {
+      name: editName.trim(),
+      server: editServer.trim() || null,
+      faction: editFaction.trim() || null,
+    });
+    setEditingId(null);
+  };
+
+  const handleCreate = async () => {
+    if (!newName.trim()) return;
+    const created = await createProfile(newName.trim(), newServer.trim() || undefined);
+    if (created) {
+      setShowNewForm(false);
+      setNewName('');
+      setNewServer('');
+      switchProfile(created.id);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (confirmDeleteId !== id) {
+      setConfirmDeleteId(id);
+      return;
+    }
+    await deleteProfile(id);
+    setConfirmDeleteId(null);
   };
 
   if (!isLoggedIn) {
@@ -80,6 +135,90 @@ export default function UserMenu({ translationData }: UserMenuProps) {
           <div style={{ padding: '0.5rem 1rem 0.25rem', fontSize: '0.75rem', color: 'rgba(255,255,255,0.4)' }}>
             {user?.email}
           </div>
+
+          <hr class="user-dropdown-divider" />
+
+          {/* Profile switcher */}
+          <div class="profile-section-label">{t('profile.myProfiles')}</div>
+
+          {profiles.map(p => (
+            <div key={p.id} class={`profile-item ${p.id === activeProfile.id ? 'active' : ''}`}>
+              {editingId === p.id ? (
+                <div class="profile-edit-form">
+                  <input
+                    class="profile-input"
+                    value={editName}
+                    onInput={e => setEditName((e.target as HTMLInputElement).value)}
+                    placeholder={t('profile.namePlaceholder')}
+                    maxLength={40}
+                  />
+                  <input
+                    class="profile-input"
+                    value={editServer}
+                    onInput={e => setEditServer((e.target as HTMLInputElement).value)}
+                    placeholder={t('profile.server')}
+                    maxLength={20}
+                  />
+                  <div class="profile-edit-actions">
+                    <button class="profile-btn-save" onClick={saveEdit}>{t('profile.save')}</button>
+                    <button class="profile-btn-cancel" onClick={() => setEditingId(null)}>{t('profile.cancel') ?? '✕'}</button>
+                  </div>
+                </div>
+              ) : (
+                <div class="profile-row">
+                  <button
+                    class="profile-name-btn"
+                    onClick={() => { switchProfile(p.id); setShowDropdown(false); }}
+                  >
+                    <span class="profile-dot">{p.id === activeProfile.id ? '●' : '○'}</span>
+                    <span class="profile-name">{p.name}</span>
+                    {p.server && <span class="profile-server">S.{p.server}</span>}
+                  </button>
+                  <div class="profile-actions">
+                    <button class="profile-action-btn" onClick={() => startEdit(p)} title={t('profile.rename')}>✎</button>
+                    {profiles.length > 1 && (
+                      <button
+                        class={`profile-action-btn ${confirmDeleteId === p.id ? 'danger' : ''}`}
+                        onClick={() => handleDelete(p.id)}
+                        title={confirmDeleteId === p.id ? t('profile.deleteConfirm') : t('profile.delete')}
+                      >
+                        {confirmDeleteId === p.id ? '✓?' : '✕'}
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+
+          {showNewForm ? (
+            <div class="profile-new-form">
+              <input
+                class="profile-input"
+                value={newName}
+                onInput={e => setNewName((e.target as HTMLInputElement).value)}
+                placeholder={t('profile.namePlaceholder')}
+                maxLength={40}
+                autoFocus
+              />
+              <input
+                class="profile-input"
+                value={newServer}
+                onInput={e => setNewServer((e.target as HTMLInputElement).value)}
+                placeholder={t('profile.server')}
+                maxLength={20}
+              />
+              <div class="profile-edit-actions">
+                <button class="profile-btn-save" onClick={handleCreate}>{t('profile.save')}</button>
+                <button class="profile-btn-cancel" onClick={() => { setShowNewForm(false); setNewName(''); setNewServer(''); }}>✕</button>
+              </div>
+            </div>
+          ) : (
+            <button class="profile-add-btn" onClick={() => { setShowNewForm(true); setEditingId(null); }}>
+              + {t('profile.addProfile')}
+            </button>
+          )}
+
           <hr class="user-dropdown-divider" />
           <a href={profileHref} class="user-dropdown-item" onClick={() => setShowDropdown(false)}>
             {t('auth.myProfile')}

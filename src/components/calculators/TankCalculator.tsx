@@ -6,6 +6,7 @@ import { useTranslations } from '../../i18n/utils';
 import { formatNumber } from '../../utils/formatters';
 import type { TranslationData, TranslationKey } from '../../i18n/index';
 import { useCalculatorState } from '../../hooks/useCalculatorState';
+import { useProfile } from '../../hooks/useProfile';
 import './Calculator.css';
 
 interface TankModification {
@@ -70,7 +71,9 @@ function fromMap(m: Map<number, number>): Record<string, number> {
 export default function TankCalculator({ lang, translationData }: TankCalculatorProps) {
   const t = useTranslations(translationData);
 
-  const [stored, setStored] = useCalculatorState<TankState>('tank', 'main', TANK_DEFAULT);
+  const { activeProfile } = useProfile();
+
+  const [stored, setStored] = useCalculatorState<TankState>('tank', 'main', TANK_DEFAULT, activeProfile.id);
 
   // Runtime-Typen aus gespeichertem State rekonstruieren
   const unlockedLevels = toSet(stored.unlockedLevels);
