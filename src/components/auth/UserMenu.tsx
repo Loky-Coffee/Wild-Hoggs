@@ -30,6 +30,7 @@ export default function UserMenu({ translationData }: UserMenuProps) {
   const [newName, setNewName] = useState('');
   const [newServer, setNewServer] = useState('');
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+  const [profileError, setProfileError] = useState<string | null>(null);
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -68,22 +69,26 @@ export default function UserMenu({ translationData }: UserMenuProps) {
 
   const saveEdit = async () => {
     if (!editingId || !editName.trim()) return;
-    await updateProfile(editingId, {
+    setProfileError(null);
+    const ok = await updateProfile(editingId, {
       name: editName.trim(),
       server: editServer.trim() || null,
       faction: editFaction.trim() || null,
     });
-    setEditingId(null);
+    if (ok) { setEditingId(null); } else { setProfileError('❌ Fehler beim Speichern'); }
   };
 
   const handleCreate = async () => {
     if (!newName.trim()) return;
+    setProfileError(null);
     const created = await createProfile(newName.trim(), newServer.trim() || undefined);
     if (created) {
       setShowNewForm(false);
       setNewName('');
       setNewServer('');
       switchProfile(created.id);
+    } else {
+      setProfileError('❌ Fehler beim Erstellen');
     }
   };
 
@@ -190,6 +195,10 @@ export default function UserMenu({ translationData }: UserMenuProps) {
               )}
             </div>
           ))}
+
+          {profileError && (
+            <div style={{ padding: '0.25rem 0.75rem', fontSize: '0.78rem', color: '#e74c3c' }}>{profileError}</div>
+          )}
 
           {showNewForm ? (
             <div class="profile-new-form">
