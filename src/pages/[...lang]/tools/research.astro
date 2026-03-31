@@ -314,6 +314,8 @@ const breadcrumbItems = [
 <script is:inline>
 (function () {
   function init() {
+    var profileId = localStorage.getItem('wh-active-profile') || 'local';
+
     document.querySelectorAll('[data-category-id]').forEach(function (card) {
       var id = card.getAttribute('data-category-id');
       var totalBadges = parseInt(card.getAttribute('data-total-badges') || '0', 10);
@@ -324,7 +326,7 @@ const breadcrumbItems = [
       var usedBadges = 0;
       var usedLevels = 0;
       try {
-        var raw = localStorage.getItem('wh-calc-research-' + id);
+        var raw = localStorage.getItem('wh-calc-' + profileId + '-research-' + id);
         if (raw) {
           var parsed = JSON.parse(raw);
           var state = (parsed && parsed.state) ? parsed.state : parsed;
@@ -364,5 +366,6 @@ const breadcrumbItems = [
     init();
   }
   document.addEventListener('astro:after-swap', init);
+  window.addEventListener('wh-profile-change', init);
 })();
 </script>
