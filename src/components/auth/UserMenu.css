@@ -62,6 +62,18 @@
   z-index: 1500;
 }
 
+@media (max-width: 768px) {
+  .user-menu {
+    position: static;
+  }
+  .user-dropdown {
+    left: 0;
+    right: 0;
+    min-width: unset;
+    border-radius: 0 0 10px 10px;
+  }
+}
+
 .user-dropdown-item {
   display: block;
   width: 100%;

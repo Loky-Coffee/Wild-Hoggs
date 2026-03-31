@@ -233,24 +233,23 @@ const currentPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : r
       display: none;
     }
 
-    /* Mobile: [UserMenu] --- [≡] --- [flag] */
+    /* Mobile: [UserMenu (flex:1)] [≡] [flag] */
     .nav-controls {
       order: 1;
-      flex: 0 0 auto;
+      flex: 1;
       gap: 0.5rem;
     }
 
     .nav-toggle {
       display: flex;
       order: 2;
-      flex: 1;
-      justify-content: center;
+      flex: 0 0 auto;
     }
 
     .lang-switcher {
       order: 3;
       flex: 0 0 auto;
-      margin-left: 0;
+      margin-left: 0.5rem;
     }
 
     /* Uhr auf Mobile ausblenden — zu breit für kleine Screens */
