@@ -7,6 +7,21 @@ export interface ChangelogEntry {
 export const changelog: ChangelogEntry[] = [
   // ── March 2026 ──────────────────────────────────────────────────────────
   {
+    date: '2026-03-31',
+    time: '21:10',
+    text: 'Profiles: multi-profile system launched — each account can have multiple in-game profiles with independent calculator state, server, faction, and formation power; profile switcher in the navigation header',
+  },
+  {
+    date: '2026-03-31',
+    time: '17:09',
+    text: 'Research: category cards redesigned — responsive auto-fill grid, tree progress % badge in the corner (shows MAX in green when fully completed)',
+  },
+  {
+    date: '2026-03-25',
+    time: '19:24',
+    text: 'Research tree: fixed horizontal centering in vertical layout on desktop',
+  },
+  {
     date: '2026-03-21',
     time: '20:16',
     text: 'Site rebranded as personal guide by Ediva — Members tab removed, About page redesigned, homepage updated',
