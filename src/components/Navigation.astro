@@ -72,9 +72,10 @@ const currentPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : r
       <UserMenu translationData={translationData} client:only="preact" />
       <PresenceHeartbeat client:only="preact" />
       <GlobalChatPoller client:only="preact" />
-      <div class="lang-switcher">
-        <LanguageDropdown />
-      </div>
+    </div>
+
+    <div class="lang-switcher">
+      <LanguageDropdown />
     </div>
   </div>
 </nav>
@@ -209,6 +210,7 @@ const currentPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : r
   .lang-switcher {
     display: flex;
     align-items: center;
+    margin-left: 0.5rem;
   }
 
   @media (max-width: 768px) {
@@ -220,27 +222,34 @@ const currentPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : r
     }
 
     .nav-container {
-      padding: 1rem;
-      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      gap: 0;
       flex-wrap: nowrap;
       position: relative;
+      justify-content: space-between;
     }
 
     .nav-brand {
       display: none;
     }
 
+    /* Mobile: [UserMenu] --- [≡] --- [flag] */
     .nav-controls {
-      order: 2;
+      order: 1;
+      flex: 0 0 auto;
       gap: 0.5rem;
     }
 
     .nav-toggle {
       display: flex;
-      order: 3;
+      order: 2;
+      flex: 1;
+      justify-content: center;
     }
 
     .lang-switcher {
+      order: 3;
+      flex: 0 0 auto;
       margin-left: 0;
     }
 
