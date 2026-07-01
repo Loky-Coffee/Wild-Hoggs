@@ -131,6 +131,17 @@ const categories = [
   { id: 'hq_management', icon: '🏢' },
 ];
 
+// Gesamtsummen über ALLE Bäume (für die Übersichts-Leiste oben)
+const grandTotals = categories.reduce((acc, { id }) => {
+  const c = researchDataMap[id];
+  if (c) {
+    acc.strom  += c.totalStrom  || 0;
+    acc.zent   += c.totalZent   || 0;
+    acc.badges += c.totalBadges || 0;
+  }
+  return acc;
+}, { strom: 0, zent: 0, badges: 0 });
+
 const breadcrumbItems = [
   { label: t('nav.home'), href: getLocalizedPath('', lang) },
   { label: t('nav.tools'), href: getLocalizedPath('tools', lang) },
@@ -151,6 +162,25 @@ const breadcrumbItems = [
     <a class="compare-link" href={getLocalizedPath('tools/research/compare', lang)}>
       ⚖️ {lang === 'de' ? 'Bäume vergleichen' : 'Compare Trees'}
     </a>
+
+    <div class="research-totals">
+      <span class="rt-label">{lang === 'de' ? 'Alle Bäume gesamt:' : 'All trees total:'}</span>
+      <span class="rt-item">
+        <img src={stromIcon.src} class="res-ico" width="18" height="18" alt="Strom" />
+        <b><span data-total-used-strom>0</span> / {fmtCompact(grandTotals.strom)}</b>
+        <span class="stat-pct" data-total-pct-strom>0%</span>
+      </span>
+      <span class="rt-item">
+        <img src={zentIcon.src} class="res-ico" width="18" height="18" alt="Zent" />
+        <b><span data-total-used-zent>0</span> / {fmtCompact(grandTotals.zent)}</b>
+        <span class="stat-pct" data-total-pct-zent>0%</span>
+      </span>
+      <span class="rt-item">
+        <img src={badgeIcon.src} class="res-ico" width="18" height="18" alt="Badges" />
+        <b><span data-total-used-badges>0</span> / {fmtCompact(grandTotals.badges)}</b>
+        <span class="stat-pct" data-total-pct-badges>0%</span>
+      </span>
+    </div>
   </div>
 
   <div class="categories-grid">
@@ -226,6 +256,38 @@ const breadcrumbItems = [
   .compare-link:hover {
     background: rgba(255, 165, 0, 0.22);
   }
+
+  .research-totals {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem 1.1rem;
+    margin: 0.8rem auto 0;
+    max-width: 720px;
+    padding: 0.6rem 0.9rem;
+    background: rgba(255, 165, 0, 0.06);
+    border: 1px solid rgba(255, 165, 0, 0.25);
+    border-radius: 10px;
+    font-variant-numeric: tabular-nums;
+  }
+  .rt-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.55);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .rt-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.95rem;
+    color: #fff;
+  }
+  .rt-item b { color: #ffa500; font-weight: 700; }
+  .rt-item .stat-pct { color: rgba(255, 255, 255, 0.5); font-size: 0.82rem; }
+  .research-totals .res-ico { flex-shrink: 0; }
 
   .categories-grid {
     display: grid;
@@ -453,6 +515,10 @@ const breadcrumbItems = [
   function init() {
     var profileId = localStorage.getItem('wh-active-profile') || 'local';
 
+    // Gesamtsummen über ALLE Bäume (für die Übersichts-Leiste oben)
+    var gUsedStrom = 0, gUsedZent = 0, gUsedBadges = 0;
+    var gTotStrom = 0, gTotZent = 0, gTotBadges = 0;
+
     document.querySelectorAll('[data-category-id]').forEach(function (card) {
       var id = card.getAttribute('data-category-id');
       var totalBadges = parseInt(card.getAttribute('data-total-badges') || '0', 10);
@@ -504,6 +570,8 @@ const breadcrumbItems = [
       var zentPct = totalZent > 0 ? Math.round((usedZent / totalZent) * 100) : 0;
       var treePct = totalLevels > 0 ? Math.round((usedLevels / totalLevels) * 100) : 0;
       card.__treePct = treePct;
+      gUsedStrom += usedStrom; gUsedZent += usedZent; gUsedBadges += usedBadges;
+      gTotStrom += totalStrom; gTotZent += totalZent; gTotBadges += totalBadges;
       var fc = function (n) {
         try { return new Intl.NumberFormat(undefined, { notation: 'compact', maximumFractionDigits: 1 }).format(n); }
         catch (e) { return String(n); }
@@ -536,6 +604,20 @@ const breadcrumbItems = [
       cards.sort(function (a, b) { return rank(a.__treePct || 0) - rank(b.__treePct || 0); });
       cards.forEach(function (c) { grid.appendChild(c); });
     }
+
+    // Gesamt-Leiste oben aktualisieren (Summe aller Bäume)
+    var fmtG = function (n) {
+      try { return new Intl.NumberFormat(undefined, { notation: 'compact', maximumFractionDigits: 1 }).format(n); }
+      catch (e) { return String(n); }
+    };
+    var setG = function (usedSel, pctSel, used, total) {
+      var u = document.querySelector(usedSel), p = document.querySelector(pctSel);
+      if (u) u.textContent = fmtG(used);
+      if (p) p.textContent = (total > 0 ? Math.round(used / total * 100) : 0) + '%';
+    };
+    setG('[data-total-used-strom]', '[data-total-pct-strom]', gUsedStrom, gTotStrom);
+    setG('[data-total-used-zent]', '[data-total-pct-zent]', gUsedZent, gTotZent);
+    setG('[data-total-used-badges]', '[data-total-pct-badges]', gUsedBadges, gTotBadges);
   }
 
   if (document.readyState === 'loading') {

@@ -8,6 +8,11 @@ export const changelog: ChangelogEntry[] = [
   // ── July 2026 ───────────────────────────────────────────────────────────
   {
     date: '2026-07-01',
+    time: '19:45',
+    text: 'Research overview: added a summary bar in the header showing how much Strom, Zent and Badges you have already spent across ALL trees vs the grand total needed to complete every tree',
+  },
+  {
+    date: '2026-07-01',
     time: '19:30',
     text: 'Research calculator: fixed the red target outline staying on the old node when you pick a new target — it now moves to the selected node',
   },
