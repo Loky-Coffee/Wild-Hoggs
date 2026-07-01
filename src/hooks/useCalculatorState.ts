@@ -207,12 +207,14 @@ export function useCalculatorState<T>(
 ): [T, (updater: T | ((prev: T) => T)) => void] {
   const { token } = useAuth();
 
-  const [state, setStateRaw] = useState<T>(() => {
-    const cached = readCache<T>(profileId, calcType, calcKey);
-    return cached?.state ?? defaultState;
-  });
+  // WICHTIG: Mit defaultState starten, damit SSR und der ERSTE Client-Render
+  // übereinstimmen (kein Hydration-Mismatch). Der gespeicherte State wird direkt
+  // nach dem Mount im Effect unten geladen -> sauberer leer->echt-Übergang, sodass
+  // memoisierte Kinder korrekt neu rendern (fixt: gemaxte Knoten bleiben nach Reload
+  // gedimmt, weil ohne Übergang kein Re-render ausgelöst wird).
+  const [state, setStateRaw] = useState<T>(defaultState);
 
-  // Re-read from localStorage when profileId changes (profile switch)
+  // Persistierten State nach dem Mount laden + bei Profilwechsel neu lesen.
   useEffect(() => {
     const cached = readCache<T>(profileId, calcType, calcKey);
     setStateRaw(cached?.state ?? defaultState);

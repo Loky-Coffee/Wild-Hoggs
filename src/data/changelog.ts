@@ -8,6 +8,11 @@ export const changelog: ChangelogEntry[] = [
   // ── July 2026 ───────────────────────────────────────────────────────────
   {
     date: '2026-07-01',
+    time: '19:15',
+    text: 'All calculators: fixed leveled/maxed nodes appearing dimmed after reloading the page — saved state is now applied right after load, so nodes reliably show as active',
+  },
+  {
+    date: '2026-07-01',
     time: '19:00',
     text: 'Research calculator: fixed levels not saving for logged-in users and maxed nodes appearing dimmed — your levels are never auto-cleared now, a node with a level always shows as active, and only its direct dependents deselect when you lower a prerequisite',
   },
