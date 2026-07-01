@@ -1,10 +1,9 @@
 import { memo } from 'preact/compat';
-import { useRef, useEffect, useState } from 'preact/hooks';
+import { useRef, useState } from 'preact/hooks';
 import type { Technology } from '../../schemas/research';
 import { getResearchImage } from '../../utils/researchImages';
 import { useTranslations } from '../../i18n/utils';
 import type { TranslationData, TranslationKey } from '../../i18n/index';
-import RangeTouch from 'rangetouch';
 import { NODE_WIDTH, NODE_HEIGHT } from '../../utils/treeNodeConfig';
 
 interface ResearchTreeNodeProps {
@@ -17,6 +16,7 @@ interface ResearchTreeNodeProps {
   readonly isTarget?: boolean;
   readonly formatNumber: (num: number) => string;
   readonly onLevelChange: (techId: string, level: number) => void;
+  readonly onOpenSheet?: (tech: Technology) => void;
   readonly onUnlockClick: (tech: Technology) => void;
   readonly onSetTarget?: () => void;
   readonly onFocus?: () => void;
@@ -60,6 +60,7 @@ function ResearchTreeNode({
   isTarget = false,
   formatNumber,
   onLevelChange,
+  onOpenSheet,
   onUnlockClick,
   onSetTarget,
   onFocus,
@@ -72,54 +73,11 @@ function ResearchTreeNode({
   const maxBadges = tech.badgeCosts.reduce((a, b) => a + b, 0);
   const isActive = selectedLevel > 0;
 
-  // RangeTouch for iOS touch support
-  const rangeInputRef = useRef<HTMLInputElement>(null);
-  const rangeTouchInstanceRef = useRef<RangeTouch | null>(null);
   // Ref for the node group element to programmatically focus it
   const nodeGroupRef = useRef<SVGGElement>(null);
 
   // State to control focus indicator visibility (React state for reliable SVG styling)
   const [isFocused, setIsFocused] = useState(false);
-
-  useEffect(() => {
-    // Clean up any existing instance first to prevent memory leaks
-    if (rangeTouchInstanceRef.current) {
-      rangeTouchInstanceRef.current.destroy();
-      rangeTouchInstanceRef.current = null;
-    }
-
-    // Initialize RangeTouch only for unlocked nodes
-    if (rangeInputRef.current && unlocked) {
-      rangeTouchInstanceRef.current = new RangeTouch(rangeInputRef.current, {
-        addCSS: true,
-        thumbWidth: 15,
-        watch: true
-      });
-    }
-
-    return () => {
-      // Cleanup on unmount or when unlocked changes
-      if (rangeTouchInstanceRef.current) {
-        rangeTouchInstanceRef.current.destroy();
-        rangeTouchInstanceRef.current = null;
-      }
-    };
-  }, [unlocked]);
-
-  // Fix: Preact hydration sets the value *attribute* but not the value *property*
-  // for range inputs that exist in the SSR HTML. Nodes that are always-unlocked
-  // (prerequisites.length === 0 / first-line nodes) render an HTML <input> on
-  // the server with value=0 (no localStorage during SSR). On client hydration
-  // the state already has the correct level, but the DOM slider stays at 0.
-  // Explicitly syncing the property here fixes the visual mismatch.
-  useEffect(() => {
-    if (rangeInputRef.current && unlocked) {
-      const target = String(Math.min(selectedLevel, maxAvailable));
-      if (rangeInputRef.current.value !== target) {
-        rangeInputRef.current.value = target;
-      }
-    }
-  }, [selectedLevel, maxAvailable, unlocked]);
 
   const iconHref = getTechIconHref(tech, techName);
   const nodeStrokeColor = getNodeStrokeColor(isActive, unlocked);
@@ -130,18 +88,13 @@ function ResearchTreeNode({
   // We instead clamp on user change only to preserve the displayed state.
 
   const handleNodeKeyDown = (e: React.KeyboardEvent<Element>) => {
-    // When node is focused and Enter/Space pressed
+    // Enter/Space opens the level bottom-sheet
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-
-      // If locked, trigger unlock
-      if (!unlocked) {
+      if (onOpenSheet) {
+        onOpenSheet(tech);
+      } else if (!unlocked) {
         onUnlockClick(tech);
-      } else {
-        // If unlocked and has slider, focus the slider input
-        if (rangeInputRef.current) {
-          rangeInputRef.current.focus();
-        }
       }
     }
   };
@@ -167,13 +120,14 @@ function ResearchTreeNode({
       }}
       onClick={(e) => {
         const target = e.target as any;
-        if (!target.closest('input') && !target.closest('[data-clickable="true"]')) {
+        if (!target.closest('[data-clickable="true"]')) {
           setIsFocused(true);
           onFocus?.();
           // Programmatically focus the node element to trigger :focus CSS
           if (nodeGroupRef.current) {
             nodeGroupRef.current.focus();
           }
+          if (onOpenSheet) onOpenSheet(tech);
         }
       }}
     >
@@ -286,72 +240,10 @@ function ResearchTreeNode({
       )}
 
       {/* Unlock button in top-right corner - KEYBOARD ACCESSIBLE */}
-      {!unlocked && (
-        <g
-          onClick={() => onUnlockClick(tech)}
-          onKeyDown={(e: React.KeyboardEvent<Element>) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              onUnlockClick(tech);
-            }
-          }}
-          tabIndex={0}
-          role="button"
-          aria-label={`Unlock ${techName}`}
-          style={{ cursor: 'pointer', outline: 'none' }}
-          data-node-element="true"
-          data-clickable="true"
-          data-unlock-button="true"
-        >
-          {/* Focus indicator rectangle */}
-          <rect
-            x={NODE_WIDTH / 2 - 47}
-            y={-NODE_HEIGHT / 2 + 3}
-            width={44}
-            height={39}
-            rx={6}
-            fill="none"
-            stroke="rgba(255, 165, 0, 0.8)"
-            strokeWidth={2}
-            opacity={0}
-            className="unlock-button-focus-indicator"
-            data-node-element="true"
-          />
-          {/* Main unlock button background */}
-          <rect
-            x={NODE_WIDTH / 2 - 45}
-            y={-NODE_HEIGHT / 2 + 5}
-            width={40}
-            height={35}
-            rx={6}
-            fill="rgba(255, 165, 0, 0.2)"
-            stroke="rgba(255, 165, 0, 0.5)"
-            strokeWidth={1}
-            className="unlock-button-bg"
-            data-node-element="true"
-          />
-          <text
-            x={NODE_WIDTH / 2 - 25}
-            y={-NODE_HEIGHT / 2 + 20}
-            textAnchor="middle"
-            fontSize="16"
-            data-node-element="true"
-          >
-            🔒
-          </text>
-          <text
-            x={NODE_WIDTH / 2 - 25}
-            y={-NODE_HEIGHT / 2 + 33}
-            textAnchor="middle"
-            fontSize="11"
-            fill="rgba(255, 165, 0, 0.9)"
-            fontWeight="600"
-            data-node-element="true"
-          >
-            Unlock
-          </text>
-        </g>
-      )}
+      {/* Unlock-Button entfernt: Knoten sind read-only. Gesperrte Knoten sind nur
+          gedimmt; das Entsperren passiert automatisch beim Level-Wählen im Bottom-Sheet
+          (Tippen auf den Knoten öffnet das Sheet). Kein Top-Right-Element mehr -> keine
+          Geist-Box mehr beim Umschalten gesperrt/entsperrt. */}
 
       {/* Technology icon - NOW WITH OPTIMIZED IMAGE */}
       <image
@@ -392,74 +284,31 @@ function ResearchTreeNode({
         Level: {selectedLevel} / {tech.maxLevel}
       </text>
 
-      {/* Slider - Conditional rendering based on unlock status */}
-      {unlocked ? (
-        // Interactive HTML slider for unlocked nodes
-        <foreignObject
+      {/* Read-only Fortschrittsbalken — Stufe wählt man im Bottom-Sheet */}
+      <g data-node-element="true">
+        <rect
           x={-NODE_WIDTH / 2 + 15}
-          y={-NODE_HEIGHT / 2 + 110}
+          y={-NODE_HEIGHT / 2 + 122}
           width={NODE_WIDTH - 30}
-          height={40}
-        >
-          <div style={{ width: '100%', height: '100%' }}>
-            <input
-              ref={rangeInputRef}
-              type="range"
-              min="0"
-              max={maxAvailable}
-              value={Math.min(selectedLevel, maxAvailable)}
-              onChange={(e) => {
-                const newValue = Number.parseInt((e.target as HTMLInputElement).value, 10);
-                onLevelChange(tech.id, newValue);
-              }}
-              aria-label={`${techName} level`}
-              aria-valuemin={0}
-              aria-valuemax={maxAvailable}
-              aria-valuenow={Math.min(selectedLevel, maxAvailable)}
-              aria-valuetext={`Level ${Math.min(selectedLevel, maxAvailable)} of ${maxAvailable}`}
-              style={{
-                width: '100%',
-                height: '8px',
-                cursor: 'pointer',
-                accentColor: '#ffa500',
-                touchAction: 'manipulation'
-              }}
-            />
-          </div>
-        </foreignObject>
-      ) : (
-        // Pure SVG slider visualization for locked nodes (fixes iOS bug)
-        <g data-node-element="true">
-          {/* Slider track */}
+          height={8}
+          rx={4}
+          fill="rgba(255, 255, 255, 0.12)"
+          opacity={unlocked ? 1 : 0.4}
+          data-node-element="true"
+        />
+        {tech.maxLevel > 0 && selectedLevel > 0 && (
           <rect
             x={-NODE_WIDTH / 2 + 15}
-            y={-NODE_HEIGHT / 2 + 120}
-            width={NODE_WIDTH - 30}
+            y={-NODE_HEIGHT / 2 + 122}
+            width={(Math.min(selectedLevel, tech.maxLevel) / tech.maxLevel) * (NODE_WIDTH - 30)}
             height={8}
             rx={4}
-            fill="rgba(255, 255, 255, 0.15)"
-            stroke="rgba(255, 255, 255, 0.2)"
-            strokeWidth={1}
-            opacity={0.3}
+            fill={isActive ? '#ffa500' : 'rgba(255, 165, 0, 0.4)'}
+            opacity={unlocked ? 1 : 0.4}
             data-node-element="true"
           />
-          {/* Slider thumb - positioned based on current level */}
-          {tech.maxLevel > 0 && (
-            <rect
-              x={-NODE_WIDTH / 2 + 15 + (selectedLevel / tech.maxLevel) * (NODE_WIDTH - 30) - 6}
-              y={-NODE_HEIGHT / 2 + 116}
-              width={12}
-              height={16}
-              rx={3}
-              fill="rgba(255, 165, 0, 0.4)"
-              stroke="rgba(255, 165, 0, 0.5)"
-              strokeWidth={1}
-              opacity={0.3}
-              data-node-element="true"
-            />
-          )}
-        </g>
-      )}
+        )}
+      </g>
 
       {/* Badge cost - Current / Total */}
       <text

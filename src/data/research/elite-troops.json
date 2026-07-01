@@ -1,0 +1,981 @@
+{
+  "id": "elite_troops",
+  "nameKey": "research.elite_troops.name",
+  "name": "Elite Troops",
+  "tabId": 7,
+  "nodeCount": 21,
+  "totalLevels": 115,
+  "totalBadges": 0,
+  "totalStrom": 260000120,
+  "totalZent": 192000070,
+  "labLevelMin": 8,
+  "onlyResourcesNoBadges": true,
+  "image": "/images/research/elite-troops.png",
+  "technologies": [
+    {
+      "id": "fire-up",
+      "nameKey": "research.elite_troops.fire-up",
+      "name": "Fire Up",
+      "maxLevel": 3,
+      "labLevel": 8,
+      "badgeCosts": [
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        372060,
+        632500,
+        1116170
+      ],
+      "zentCosts": [
+        274750,
+        467070,
+        824250
+      ],
+      "combatPower": [
+        4608,
+        10459,
+        18014
+      ],
+      "icon": "elite-troops/fire-up",
+      "prerequisites": []
+    },
+    {
+      "id": "armor-upgrade",
+      "nameKey": "research.elite_troops.armor-upgrade",
+      "name": "Armor Upgrade",
+      "maxLevel": 3,
+      "labLevel": 8,
+      "badgeCosts": [
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        372060,
+        632500,
+        1116170
+      ],
+      "zentCosts": [
+        274750,
+        467070,
+        824250
+      ],
+      "combatPower": [
+        4608,
+        10459,
+        18014
+      ],
+      "icon": "elite-troops/armor-upgrade",
+      "prerequisites": []
+    },
+    {
+      "id": "quick-assembly",
+      "nameKey": "research.elite_troops.quick-assembly",
+      "name": "Quick Assembly",
+      "maxLevel": 3,
+      "labLevel": 8,
+      "badgeCosts": [
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        744110,
+        1264990,
+        2232340
+      ],
+      "zentCosts": [
+        549500,
+        934150,
+        1648490
+      ],
+      "combatPower": [
+        6295,
+        14288,
+        24609
+      ],
+      "icon": "elite-troops/quick-assembly",
+      "prerequisites": [
+        {
+          "id": "fire-up"
+        },
+        {
+          "id": "armor-upgrade"
+        }
+      ]
+    },
+    {
+      "id": "arms-assembly",
+      "nameKey": "research.elite_troops.arms-assembly",
+      "name": "Arms Assembly",
+      "maxLevel": 3,
+      "labLevel": 8,
+      "badgeCosts": [
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        744110,
+        1264990,
+        2232340
+      ],
+      "zentCosts": [
+        549500,
+        934150,
+        1648490
+      ],
+      "combatPower": [
+        6295,
+        14288,
+        24609
+      ],
+      "icon": "elite-troops/arms-assembly",
+      "prerequisites": [
+        {
+          "id": "fire-up"
+        },
+        {
+          "id": "armor-upgrade"
+        }
+      ]
+    },
+    {
+      "id": "target-training",
+      "nameKey": "research.elite_troops.target-training",
+      "name": "Target Training",
+      "maxLevel": 3,
+      "labLevel": 8,
+      "badgeCosts": [
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        744110,
+        1264990,
+        2232340
+      ],
+      "zentCosts": [
+        549500,
+        934150,
+        1648490
+      ],
+      "combatPower": [
+        6295,
+        14288,
+        24609
+      ],
+      "icon": "elite-troops/target-training",
+      "prerequisites": [
+        {
+          "id": "fire-up"
+        },
+        {
+          "id": "armor-upgrade"
+        }
+      ]
+    },
+    {
+      "id": "field-training",
+      "nameKey": "research.elite_troops.field-training",
+      "name": "Field Training",
+      "maxLevel": 5,
+      "labLevel": 8,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        573170,
+        745120,
+        1031700,
+        1547550,
+        2464620
+      ],
+      "zentCosts": [
+        423260,
+        550240,
+        761870,
+        1142810,
+        1820030
+      ],
+      "combatPower": [
+        5597,
+        11896,
+        19188,
+        27940,
+        38731
+      ],
+      "icon": "elite-troops/field-training",
+      "prerequisites": [
+        {
+          "id": "quick-assembly"
+        },
+        {
+          "id": "arms-assembly"
+        },
+        {
+          "id": "target-training"
+        }
+      ]
+    },
+    {
+      "id": "camo-coating",
+      "nameKey": "research.elite_troops.camo-coating",
+      "name": "Camo Coating",
+      "maxLevel": 5,
+      "labLevel": 8,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        573170,
+        745120,
+        1031700,
+        1547550,
+        2464620
+      ],
+      "zentCosts": [
+        423260,
+        550240,
+        761870,
+        1142810,
+        1820030
+      ],
+      "combatPower": [
+        5597,
+        11896,
+        19188,
+        27940,
+        38731
+      ],
+      "icon": "elite-troops/camo-coating",
+      "prerequisites": [
+        {
+          "id": "quick-assembly"
+        },
+        {
+          "id": "arms-assembly"
+        },
+        {
+          "id": "target-training"
+        }
+      ]
+    },
+    {
+      "id": "mobility-enhancement",
+      "nameKey": "research.elite_troops.mobility-enhancement",
+      "name": "Mobility Enhancement",
+      "maxLevel": 10,
+      "labLevel": 8,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        382800,
+        459360,
+        535920,
+        650760,
+        765600,
+        957000,
+        1186680,
+        1492930,
+        1875730,
+        2296810
+      ],
+      "zentCosts": [
+        282680,
+        339220,
+        395760,
+        480560,
+        565370,
+        706710,
+        876320,
+        1102470,
+        1385150,
+        1696100
+      ],
+      "combatPower": [
+        4668,
+        9735,
+        15166,
+        21093,
+        27469,
+        34519,
+        42286,
+        50898,
+        60442,
+        70896
+      ],
+      "icon": "elite-troops/mobility-enhancement",
+      "prerequisites": [
+        {
+          "id": "field-training"
+        },
+        {
+          "id": "camo-coating"
+        }
+      ]
+    },
+    {
+      "id": "melee-combat",
+      "nameKey": "research.elite_troops.melee-combat",
+      "name": "Melee Combat",
+      "maxLevel": 10,
+      "labLevel": 8,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        382800,
+        459360,
+        535920,
+        650760,
+        765600,
+        957000,
+        1186680,
+        1492930,
+        1875730,
+        2296810
+      ],
+      "zentCosts": [
+        282680,
+        339220,
+        395760,
+        480560,
+        565370,
+        706710,
+        876320,
+        1102470,
+        1385150,
+        1696100
+      ],
+      "combatPower": [
+        4668,
+        9735,
+        15166,
+        21093,
+        27469,
+        34519,
+        42286,
+        50898,
+        60442,
+        70896
+      ],
+      "icon": "elite-troops/melee-combat",
+      "prerequisites": [
+        {
+          "id": "field-training"
+        },
+        {
+          "id": "camo-coating"
+        }
+      ]
+    },
+    {
+      "id": "weapon-upgrading",
+      "nameKey": "research.elite_troops.weapon-upgrading",
+      "name": "Weapon Upgrading",
+      "maxLevel": 10,
+      "labLevel": 8,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        382800,
+        459360,
+        535920,
+        650760,
+        765600,
+        957000,
+        1186680,
+        1492930,
+        1875730,
+        2296810
+      ],
+      "zentCosts": [
+        282680,
+        339220,
+        395760,
+        480560,
+        565370,
+        706710,
+        876320,
+        1102470,
+        1385150,
+        1696100
+      ],
+      "combatPower": [
+        4668,
+        9735,
+        15166,
+        21093,
+        27469,
+        34519,
+        42286,
+        50898,
+        60442,
+        70896
+      ],
+      "icon": "elite-troops/weapon-upgrading",
+      "prerequisites": [
+        {
+          "id": "field-training"
+        },
+        {
+          "id": "camo-coating"
+        }
+      ]
+    },
+    {
+      "id": "stronger-armor",
+      "nameKey": "research.elite_troops.stronger-armor",
+      "name": "Stronger Armor",
+      "maxLevel": 10,
+      "labLevel": 9,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        535920,
+        643110,
+        750290,
+        911070,
+        1071840,
+        1339800,
+        1661360,
+        2090090,
+        2626020,
+        3215530
+      ],
+      "zentCosts": [
+        395760,
+        474910,
+        554060,
+        672790,
+        791520,
+        989390,
+        1226850,
+        1543450,
+        1939210,
+        2374550
+      ],
+      "combatPower": [
+        5431,
+        11326,
+        17645,
+        24541,
+        31960,
+        40162,
+        49198,
+        59218,
+        70322,
+        82485
+      ],
+      "icon": "elite-troops/stronger-armor",
+      "prerequisites": [
+        {
+          "id": "mobility-enhancement"
+        },
+        {
+          "id": "melee-combat"
+        },
+        {
+          "id": "weapon-upgrading"
+        }
+      ]
+    },
+    {
+      "id": "shield-upgrade",
+      "nameKey": "research.elite_troops.shield-upgrade",
+      "name": "Shield Upgrade",
+      "maxLevel": 10,
+      "labLevel": 9,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        535920,
+        643110,
+        750290,
+        911070,
+        1071840,
+        1339800,
+        1661360,
+        2090090,
+        2626020,
+        3215530
+      ],
+      "zentCosts": [
+        395760,
+        474910,
+        554060,
+        672790,
+        791520,
+        989390,
+        1226850,
+        1543450,
+        1939210,
+        2374550
+      ],
+      "combatPower": [
+        5431,
+        11326,
+        17645,
+        24541,
+        31960,
+        40162,
+        49198,
+        59218,
+        70322,
+        82485
+      ],
+      "icon": "elite-troops/shield-upgrade",
+      "prerequisites": [
+        {
+          "id": "mobility-enhancement"
+        },
+        {
+          "id": "melee-combat"
+        },
+        {
+          "id": "weapon-upgrading"
+        }
+      ]
+    },
+    {
+      "id": "tactical-cover",
+      "nameKey": "research.elite_troops.tactical-cover",
+      "name": "Tactical Cover",
+      "maxLevel": 10,
+      "labLevel": 9,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        535920,
+        643110,
+        750290,
+        911070,
+        1071840,
+        1339800,
+        1661360,
+        2090090,
+        2626020,
+        3215530
+      ],
+      "zentCosts": [
+        395760,
+        474910,
+        554060,
+        672790,
+        791520,
+        989390,
+        1226850,
+        1543450,
+        1939210,
+        2374550
+      ],
+      "combatPower": [
+        5431,
+        11326,
+        17645,
+        24541,
+        31960,
+        40162,
+        49198,
+        59218,
+        70322,
+        82485
+      ],
+      "icon": "elite-troops/tactical-cover",
+      "prerequisites": [
+        {
+          "id": "mobility-enhancement"
+        },
+        {
+          "id": "melee-combat"
+        },
+        {
+          "id": "weapon-upgrading"
+        }
+      ]
+    },
+    {
+      "id": "demolition-crew",
+      "nameKey": "research.elite_troops.demolition-crew",
+      "name": "Demolition Crew",
+      "maxLevel": 1,
+      "labLevel": 9,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        1272430
+      ],
+      "zentCosts": [
+        939640
+      ],
+      "combatPower": [
+        8014
+      ],
+      "icon": "elite-troops/demolition-crew",
+      "prerequisites": [
+        {
+          "id": "stronger-armor"
+        },
+        {
+          "id": "shield-upgrade"
+        },
+        {
+          "id": "tactical-cover"
+        }
+      ]
+    },
+    {
+      "id": "quick-assembly-2",
+      "nameKey": "research.elite_troops.quick-assembly",
+      "name": "Quick Assembly",
+      "maxLevel": 3,
+      "labLevel": 10,
+      "badgeCosts": [
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        1488220,
+        2529980,
+        4464670
+      ],
+      "zentCosts": [
+        1099000,
+        1868290,
+        3296990
+      ],
+      "combatPower": [
+        8600,
+        19519,
+        33618
+      ],
+      "icon": "elite-troops/quick-assembly",
+      "prerequisites": [
+        {
+          "id": "demolition-crew"
+        }
+      ]
+    },
+    {
+      "id": "arms-assembly-2",
+      "nameKey": "research.elite_troops.arms-assembly",
+      "name": "Arms Assembly",
+      "maxLevel": 3,
+      "labLevel": 10,
+      "badgeCosts": [
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        1488220,
+        2529980,
+        4464670
+      ],
+      "zentCosts": [
+        1099000,
+        1868290,
+        3296990
+      ],
+      "combatPower": [
+        8600,
+        19519,
+        33618
+      ],
+      "icon": "elite-troops/arms-assembly",
+      "prerequisites": [
+        {
+          "id": "demolition-crew"
+        }
+      ]
+    },
+    {
+      "id": "target-training-2",
+      "nameKey": "research.elite_troops.target-training",
+      "name": "Target Training",
+      "maxLevel": 3,
+      "labLevel": 10,
+      "badgeCosts": [
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        1488220,
+        2529980,
+        4464670
+      ],
+      "zentCosts": [
+        1099000,
+        1868290,
+        3296990
+      ],
+      "combatPower": [
+        8600,
+        19519,
+        33618
+      ],
+      "icon": "elite-troops/target-training",
+      "prerequisites": [
+        {
+          "id": "demolition-crew"
+        }
+      ]
+    },
+    {
+      "id": "joint-operation",
+      "nameKey": "research.elite_troops.joint-operation",
+      "name": "Joint Operation",
+      "maxLevel": 5,
+      "labLevel": 10,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        2865840,
+        3725590,
+        5158500,
+        7737760,
+        12323090
+      ],
+      "zentCosts": [
+        2116310,
+        2751200,
+        3809360,
+        5714030,
+        9100130
+      ],
+      "combatPower": [
+        11549,
+        24545,
+        39591,
+        57649,
+        79914
+      ],
+      "icon": "elite-troops/joint-operation",
+      "prerequisites": [
+        {
+          "id": "quick-assembly-2"
+        },
+        {
+          "id": "arms-assembly-2"
+        },
+        {
+          "id": "target-training-2"
+        }
+      ]
+    },
+    {
+      "id": "mobile-defense",
+      "nameKey": "research.elite_troops.mobile-defense",
+      "name": "Mobile Defense",
+      "maxLevel": 5,
+      "labLevel": 10,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        2865840,
+        3725590,
+        5158500,
+        7737760,
+        12323090
+      ],
+      "zentCosts": [
+        2116310,
+        2751200,
+        3809360,
+        5714030,
+        9100130
+      ],
+      "combatPower": [
+        11549,
+        24545,
+        39591,
+        57649,
+        79914
+      ],
+      "icon": "elite-troops/mobile-defense",
+      "prerequisites": [
+        {
+          "id": "quick-assembly-2"
+        },
+        {
+          "id": "arms-assembly-2"
+        },
+        {
+          "id": "target-training-2"
+        }
+      ]
+    },
+    {
+      "id": "combat-policy",
+      "nameKey": "research.elite_troops.combat-policy",
+      "name": "Combat Policy",
+      "maxLevel": 5,
+      "labLevel": 10,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        2865840,
+        3725590,
+        5158500,
+        7737760,
+        12323090
+      ],
+      "zentCosts": [
+        2116310,
+        2751200,
+        3809360,
+        5714030,
+        9100130
+      ],
+      "combatPower": [
+        11549,
+        24545,
+        39591,
+        57649,
+        79914
+      ],
+      "icon": "elite-troops/combat-policy",
+      "prerequisites": [
+        {
+          "id": "joint-operation"
+        },
+        {
+          "id": "mobile-defense"
+        }
+      ]
+    },
+    {
+      "id": "interceptions",
+      "nameKey": "research.elite_troops.interceptions",
+      "name": "Interceptions",
+      "maxLevel": 5,
+      "labLevel": 10,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        2865840,
+        3725590,
+        5158500,
+        7737760,
+        12323090
+      ],
+      "zentCosts": [
+        2116310,
+        2751200,
+        3809360,
+        5714030,
+        9100130
+      ],
+      "combatPower": [
+        11549,
+        24545,
+        39591,
+        57649,
+        79914
+      ],
+      "icon": "elite-troops/interceptions",
+      "prerequisites": [
+        {
+          "id": "joint-operation"
+        },
+        {
+          "id": "mobile-defense"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+/* Tank-Sheet: 3-Spalten-Raster (Sub-Level, Kosten/Sub, kumuliert)
+   Basis-Styling kommt aus ResearchLevelSheet.css (rls-*). */
+.rls-table-head.tls-3,
+.rls-row.tls-3 {
+  grid-template-columns: 4rem 1fr 1fr;
+}

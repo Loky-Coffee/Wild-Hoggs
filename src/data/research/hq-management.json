@@ -1,0 +1,1251 @@
+{
+  "id": "hq_management",
+  "nameKey": "research.hq_management.name",
+  "name": "HQ Management",
+  "tabId": 8,
+  "nodeCount": 20,
+  "totalLevels": 195,
+  "totalBadges": 0,
+  "totalStrom": 1440000220,
+  "totalZent": 432000180,
+  "labLevelMin": 14,
+  "onlyResourcesNoBadges": true,
+  "image": "/images/research/hq-management.png",
+  "technologies": [
+    {
+      "id": "anti-theft",
+      "nameKey": "research.hq_management.anti-theft",
+      "name": "Anti Theft",
+      "maxLevel": 10,
+      "labLevel": 14,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        269360,
+        323230,
+        377100,
+        457900,
+        538710,
+        673390,
+        835000,
+        1050490,
+        1319840,
+        1616130
+      ],
+      "zentCosts": [
+        80810,
+        96970,
+        113130,
+        137370,
+        161610,
+        202020,
+        250500,
+        315150,
+        395950,
+        484840
+      ],
+      "combatPower": [
+        3333,
+        6951,
+        10829,
+        15061,
+        19614,
+        24648,
+        30194,
+        36343,
+        43158,
+        50623
+      ],
+      "icon": "hq-management/anti-theft",
+      "prerequisites": []
+    },
+    {
+      "id": "photovoltaics",
+      "nameKey": "research.hq_management.photovoltaics",
+      "name": "Photovoltaics",
+      "maxLevel": 10,
+      "labLevel": 14,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        269360,
+        323230,
+        377100,
+        457900,
+        538710,
+        673390,
+        835000,
+        1050490,
+        1319840,
+        1616130
+      ],
+      "zentCosts": [
+        80810,
+        96970,
+        113130,
+        137370,
+        161610,
+        202020,
+        250500,
+        315150,
+        395950,
+        484840
+      ],
+      "combatPower": [
+        3333,
+        6951,
+        10829,
+        15061,
+        19614,
+        24648,
+        30194,
+        36343,
+        43158,
+        50623
+      ],
+      "icon": "hq-management/photovoltaics",
+      "prerequisites": [
+        {
+          "id": "anti-theft"
+        }
+      ]
+    },
+    {
+      "id": "storage-battery",
+      "nameKey": "research.hq_management.storage-battery",
+      "name": "Storage Battery",
+      "maxLevel": 10,
+      "labLevel": 14,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        538710,
+        646450,
+        754200,
+        915810,
+        1077420,
+        1346780,
+        1670000,
+        2100970,
+        2639680,
+        3232260
+      ],
+      "zentCosts": [
+        161610,
+        193940,
+        226260,
+        274740,
+        323230,
+        404030,
+        501000,
+        630290,
+        791910,
+        969680
+      ],
+      "combatPower": [
+        4553,
+        9495,
+        14792,
+        20573,
+        26793,
+        33670,
+        41246,
+        49646,
+        58955,
+        69153
+      ],
+      "icon": "hq-management/storage-battery",
+      "prerequisites": [
+        {
+          "id": "anti-theft"
+        }
+      ]
+    },
+    {
+      "id": "quick-harvest",
+      "nameKey": "research.hq_management.quick-harvest",
+      "name": "Quick Harvest",
+      "maxLevel": 10,
+      "labLevel": 14,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        538710,
+        646450,
+        754200,
+        915810,
+        1077420,
+        1346780,
+        1670000,
+        2100970,
+        2639680,
+        3232260
+      ],
+      "zentCosts": [
+        161610,
+        193940,
+        226260,
+        274740,
+        323230,
+        404030,
+        501000,
+        630290,
+        791910,
+        969680
+      ],
+      "combatPower": [
+        4553,
+        9495,
+        14792,
+        20573,
+        26793,
+        33670,
+        41246,
+        49646,
+        58955,
+        69153
+      ],
+      "icon": "hq-management/quick-harvest",
+      "prerequisites": [
+        {
+          "id": "photovoltaics"
+        },
+        {
+          "id": "storage-battery"
+        }
+      ]
+    },
+    {
+      "id": "gold-panning",
+      "nameKey": "research.hq_management.gold-panning",
+      "name": "Gold Panning",
+      "maxLevel": 10,
+      "labLevel": 14,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        808070,
+        969680,
+        1131290,
+        1373710,
+        1616130,
+        2020170,
+        2505000,
+        3151460,
+        3959520,
+        4848400
+      ],
+      "zentCosts": [
+        242420,
+        290900,
+        339390,
+        412110,
+        484840,
+        606050,
+        751500,
+        945440,
+        1187860,
+        1454520
+      ],
+      "combatPower": [
+        5465,
+        11397,
+        17755,
+        24693,
+        32158,
+        40412,
+        49504,
+        59586,
+        70759,
+        82998
+      ],
+      "icon": "hq-management/gold-panning",
+      "prerequisites": [
+        {
+          "id": "photovoltaics"
+        },
+        {
+          "id": "storage-battery"
+        }
+      ]
+    },
+    {
+      "id": "rapid-casualty-care",
+      "nameKey": "research.hq_management.rapid-casualty-care",
+      "name": "Rapid Casualty Care",
+      "maxLevel": 10,
+      "labLevel": 15,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        808070,
+        969680,
+        1131290,
+        1373710,
+        1616130,
+        2020170,
+        2505000,
+        3151460,
+        3959520,
+        4848400
+      ],
+      "zentCosts": [
+        242420,
+        290900,
+        339390,
+        412110,
+        484840,
+        606050,
+        751500,
+        945440,
+        1187860,
+        1454520
+      ],
+      "combatPower": [
+        5465,
+        11397,
+        17755,
+        24693,
+        32158,
+        40412,
+        49504,
+        59586,
+        70759,
+        82998
+      ],
+      "icon": "hq-management/rapid-casualty-care",
+      "prerequisites": [
+        {
+          "id": "quick-harvest"
+        },
+        {
+          "id": "gold-panning"
+        }
+      ]
+    },
+    {
+      "id": "farming-technology",
+      "nameKey": "research.hq_management.farming-technology",
+      "name": "Farming Technology",
+      "maxLevel": 10,
+      "labLevel": 15,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        1346780,
+        1616130,
+        1885490,
+        2289520,
+        2693550,
+        3366940,
+        4175010,
+        5252430,
+        6599200,
+        8080660
+      ],
+      "zentCosts": [
+        404030,
+        484840,
+        565650,
+        686860,
+        808070,
+        1010080,
+        1252500,
+        1575730,
+        1979760,
+        2424200
+      ],
+      "combatPower": [
+        6877,
+        14342,
+        22343,
+        31075,
+        40469,
+        50856,
+        62298,
+        74986,
+        89046,
+        104448
+      ],
+      "icon": "hq-management/farming-technology",
+      "prerequisites": [
+        {
+          "id": "rapid-casualty-care"
+        }
+      ]
+    },
+    {
+      "id": "woodcutter",
+      "nameKey": "research.hq_management.woodcutter",
+      "name": "Woodcutter",
+      "maxLevel": 10,
+      "labLevel": 15,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        1885490,
+        2262580,
+        2639680,
+        3205330,
+        3770970,
+        4713720,
+        5845010,
+        7353400,
+        9238890,
+        11312920
+      ],
+      "zentCosts": [
+        565650,
+        678780,
+        791910,
+        961600,
+        1131290,
+        1414120,
+        1753500,
+        2206020,
+        2771670,
+        3393880
+      ],
+      "combatPower": [
+        8001,
+        16686,
+        25995,
+        36154,
+        47084,
+        59169,
+        72482,
+        87244,
+        103603,
+        121523
+      ],
+      "icon": "hq-management/woodcutter",
+      "prerequisites": [
+        {
+          "id": "rapid-casualty-care"
+        }
+      ]
+    },
+    {
+      "id": "food-warehouse",
+      "nameKey": "research.hq_management.food-warehouse",
+      "name": "Food Warehouse",
+      "maxLevel": 10,
+      "labLevel": 16,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        1885490,
+        2262580,
+        2639680,
+        3205330,
+        3770970,
+        4713720,
+        5845010,
+        7353400,
+        9238890,
+        11312920
+      ],
+      "zentCosts": [
+        565650,
+        678780,
+        791910,
+        961600,
+        1131290,
+        1414120,
+        1753500,
+        2206020,
+        2771670,
+        3393880
+      ],
+      "combatPower": [
+        8001,
+        16686,
+        25995,
+        36154,
+        47084,
+        59169,
+        72482,
+        87244,
+        103603,
+        121523
+      ],
+      "icon": "hq-management/food-warehouse",
+      "prerequisites": [
+        {
+          "id": "farming-technology"
+        },
+        {
+          "id": "woodcutter"
+        }
+      ]
+    },
+    {
+      "id": "centralized-storage",
+      "nameKey": "research.hq_management.centralized-storage",
+      "name": "Centralized Storage",
+      "maxLevel": 10,
+      "labLevel": 16,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        1885490,
+        2262580,
+        2639680,
+        3205330,
+        3770970,
+        4713720,
+        5845010,
+        7353400,
+        9238890,
+        11312920
+      ],
+      "zentCosts": [
+        565650,
+        678780,
+        791910,
+        961600,
+        1131290,
+        1414120,
+        1753500,
+        2206020,
+        2771670,
+        3393880
+      ],
+      "combatPower": [
+        8001,
+        16686,
+        25995,
+        36154,
+        47084,
+        59169,
+        72482,
+        87244,
+        103603,
+        121523
+      ],
+      "icon": "hq-management/centralized-storage",
+      "prerequisites": [
+        {
+          "id": "farming-technology"
+        },
+        {
+          "id": "woodcutter"
+        }
+      ]
+    },
+    {
+      "id": "parallel-work-i",
+      "nameKey": "research.hq_management.parallel-work-i",
+      "name": "Parallel Work I",
+      "maxLevel": 5,
+      "labLevel": 16,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        3360870,
+        4369140,
+        6049570,
+        9074360,
+        14451760
+      ],
+      "zentCosts": [
+        1008260,
+        1310740,
+        1814870,
+        2722310,
+        4335530
+      ],
+      "combatPower": [
+        10378,
+        22057,
+        35578,
+        51805,
+        71813
+      ],
+      "icon": "hq-management/parallel-work-i",
+      "prerequisites": [
+        {
+          "id": "food-warehouse"
+        },
+        {
+          "id": "centralized-storage"
+        }
+      ]
+    },
+    {
+      "id": "skillful-craftsman",
+      "nameKey": "research.hq_management.skillful-craftsman",
+      "name": "Skillful Craftsman Ⅰ",
+      "maxLevel": 10,
+      "labLevel": 16,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        2693550,
+        3232260,
+        3770970,
+        4579040,
+        5387110,
+        6733880,
+        8350010,
+        10504860,
+        13198410,
+        16161310
+      ],
+      "zentCosts": [
+        808070,
+        969680,
+        1131290,
+        1373710,
+        1616130,
+        2020170,
+        2505000,
+        3151460,
+        3959520,
+        4848400
+      ],
+      "combatPower": [
+        9394,
+        19592,
+        30522,
+        42450,
+        55283,
+        69472,
+        85103,
+        102435,
+        121642,
+        142682
+      ],
+      "icon": "hq-management/skillful-craftsman",
+      "prerequisites": [
+        {
+          "id": "food-warehouse"
+        },
+        {
+          "id": "centralized-storage"
+        }
+      ]
+    },
+    {
+      "id": "anti-theft-2",
+      "nameKey": "research.hq_management.anti-theft",
+      "name": "Anti Theft",
+      "maxLevel": 10,
+      "labLevel": 17,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        4040330,
+        4848400,
+        5656460,
+        6868560,
+        8080660,
+        10100820,
+        12525020,
+        15757280,
+        19797610,
+        24241970
+      ],
+      "zentCosts": [
+        1212100,
+        1454520,
+        1696940,
+        2060570,
+        2424200,
+        3030250,
+        3757510,
+        4727190,
+        5939280,
+        7272590
+      ],
+      "combatPower": [
+        11275,
+        23514,
+        36632,
+        50948,
+        66350,
+        83379,
+        102139,
+        122941,
+        145993,
+        171245
+      ],
+      "icon": "hq-management/anti-theft",
+      "prerequisites": [
+        {
+          "id": "parallel-work-i"
+        },
+        {
+          "id": "skillful-craftsman"
+        }
+      ]
+    },
+    {
+      "id": "house-renovation",
+      "nameKey": "research.hq_management.house-renovation",
+      "name": "House Renovation",
+      "maxLevel": 10,
+      "labLevel": 17,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        4040330,
+        4848400,
+        5656460,
+        6868560,
+        8080660,
+        10100820,
+        12525020,
+        15757280,
+        19797610,
+        24241970
+      ],
+      "zentCosts": [
+        1212100,
+        1454520,
+        1696940,
+        2060570,
+        2424200,
+        3030250,
+        3757510,
+        4727190,
+        5939280,
+        7272590
+      ],
+      "combatPower": [
+        11275,
+        23514,
+        36632,
+        50948,
+        66350,
+        83379,
+        102139,
+        122941,
+        145993,
+        171245
+      ],
+      "icon": "hq-management/house-renovation",
+      "prerequisites": [
+        {
+          "id": "anti-theft-2"
+        }
+      ]
+    },
+    {
+      "id": "wind-drive-i",
+      "nameKey": "research.hq_management.wind-drive-i",
+      "name": "Wind Drive I",
+      "maxLevel": 10,
+      "labLevel": 17,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        4040330,
+        4848400,
+        5656460,
+        6868560,
+        8080660,
+        10100820,
+        12525020,
+        15757280,
+        19797610,
+        24241970
+      ],
+      "zentCosts": [
+        1212100,
+        1454520,
+        1696940,
+        2060570,
+        2424200,
+        3030250,
+        3757510,
+        4727190,
+        5939280,
+        7272590
+      ],
+      "combatPower": [
+        11275,
+        23514,
+        36632,
+        50948,
+        66350,
+        83379,
+        102139,
+        122941,
+        145993,
+        171245
+      ],
+      "icon": "hq-management/wind-drive-i",
+      "prerequisites": [
+        {
+          "id": "anti-theft-2"
+        }
+      ]
+    },
+    {
+      "id": "safe-box",
+      "nameKey": "research.hq_management.safe-box",
+      "name": "Safe Box",
+      "maxLevel": 10,
+      "labLevel": 17,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        4040330,
+        4848400,
+        5656460,
+        6868560,
+        8080660,
+        10100820,
+        12525020,
+        15757280,
+        19797610,
+        24241970
+      ],
+      "zentCosts": [
+        1212100,
+        1454520,
+        1696940,
+        2060570,
+        2424200,
+        3030250,
+        3757510,
+        4727190,
+        5939280,
+        7272590
+      ],
+      "combatPower": [
+        11275,
+        23514,
+        36632,
+        50948,
+        66350,
+        83379,
+        102139,
+        122941,
+        145993,
+        171245
+      ],
+      "icon": "hq-management/safe-box",
+      "prerequisites": [
+        {
+          "id": "house-renovation"
+        },
+        {
+          "id": "wind-drive-i"
+        }
+      ]
+    },
+    {
+      "id": "lead-battery",
+      "nameKey": "research.hq_management.lead-battery",
+      "name": "Lead Battery",
+      "maxLevel": 10,
+      "labLevel": 17,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        5387110,
+        6464530,
+        7541950,
+        9158080,
+        10774210,
+        13467760,
+        16700030,
+        21009710,
+        26396810,
+        32322630
+      ],
+      "zentCosts": [
+        1616130,
+        1939360,
+        2262580,
+        2747420,
+        3232260,
+        4040330,
+        5010010,
+        6302910,
+        7919040,
+        9696790
+      ],
+      "combatPower": [
+        12833,
+        26764,
+        41695,
+        57989,
+        75520,
+        94903,
+        116256,
+        139933,
+        166171,
+        194913
+      ],
+      "icon": "hq-management/lead-battery",
+      "prerequisites": [
+        {
+          "id": "house-renovation"
+        },
+        {
+          "id": "wind-drive-i"
+        }
+      ]
+    },
+    {
+      "id": "photovoltaics-2",
+      "nameKey": "research.hq_management.photovoltaics",
+      "name": "Photovoltaics",
+      "maxLevel": 10,
+      "labLevel": 18,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        5387110,
+        6464530,
+        7541950,
+        9158080,
+        10774210,
+        13467760,
+        16700030,
+        21009710,
+        26396810,
+        32322630
+      ],
+      "zentCosts": [
+        1616130,
+        1939360,
+        2262580,
+        2747420,
+        3232260,
+        4040330,
+        5010010,
+        6302910,
+        7919040,
+        9696790
+      ],
+      "combatPower": [
+        12833,
+        26764,
+        41695,
+        57989,
+        75520,
+        94903,
+        116256,
+        139933,
+        166171,
+        194913
+      ],
+      "icon": "hq-management/photovoltaics",
+      "prerequisites": [
+        {
+          "id": "safe-box"
+        },
+        {
+          "id": "lead-battery"
+        }
+      ]
+    },
+    {
+      "id": "storage-battery-2",
+      "nameKey": "research.hq_management.storage-battery",
+      "name": "Storage Battery",
+      "maxLevel": 10,
+      "labLevel": 18,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        5387110,
+        6464530,
+        7541950,
+        9158080,
+        10774210,
+        13467760,
+        16700030,
+        21009710,
+        26396810,
+        32322630
+      ],
+      "zentCosts": [
+        1616130,
+        1939360,
+        2262580,
+        2747420,
+        3232260,
+        4040330,
+        5010010,
+        6302910,
+        7919040,
+        9696790
+      ],
+      "combatPower": [
+        12833,
+        26764,
+        41695,
+        57989,
+        75520,
+        94903,
+        116256,
+        139933,
+        166171,
+        194913
+      ],
+      "icon": "hq-management/storage-battery",
+      "prerequisites": [
+        {
+          "id": "safe-box"
+        },
+        {
+          "id": "lead-battery"
+        }
+      ]
+    },
+    {
+      "id": "hospital-expansion",
+      "nameKey": "research.hq_management.hospital-expansion",
+      "name": "Hospital Expansion",
+      "maxLevel": 10,
+      "labLevel": 18,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        5387110,
+        6464530,
+        7541950,
+        9158080,
+        10774210,
+        13467760,
+        16700030,
+        21009710,
+        26396810,
+        32322630
+      ],
+      "zentCosts": [
+        1616130,
+        1939360,
+        2262580,
+        2747420,
+        3232260,
+        4040330,
+        5010010,
+        6302910,
+        7919040,
+        9696790
+      ],
+      "combatPower": [
+        12833,
+        26764,
+        41695,
+        57989,
+        75520,
+        94903,
+        116256,
+        139933,
+        166171,
+        194913
+      ],
+      "icon": "hq-management/hospital-expansion",
+      "prerequisites": [
+        {
+          "id": "photovoltaics-2"
+        },
+        {
+          "id": "storage-battery-2"
+        }
+      ]
+    }
+  ]
+}

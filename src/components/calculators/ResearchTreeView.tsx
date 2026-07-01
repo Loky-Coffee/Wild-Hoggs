@@ -4,6 +4,7 @@ import type { Technology } from '../../schemas/research';
 import { formatNumber as sharedFormatNumber } from '../../utils/formatters';
 import type { TranslationData } from '../../i18n/index';
 import ResearchTreeNode from './ResearchTreeNode';
+import ResearchLevelSheet from './ResearchLevelSheet';
 import ResearchTreeConnections from './ResearchTreeConnections';
 import TreeControls from './TreeControls';
 import {
@@ -49,6 +50,7 @@ export default function ResearchTreeView({
     resetView } = useTreeZoom(scrollContainerRef);
 
   const [focusedNodeId, setFocusedNodeId] = useState<string | null>(null);
+  const [sheetTech, setSheetTech] = useState<Technology | null>(null);
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -480,7 +482,7 @@ export default function ResearchTreeView({
 
               return (
                 <ResearchTreeNode
-                  key={tech.id}
+                  key={`${tech.id}:${unlocked ? 'u' : 'l'}`}
                   tech={tech}
                   x={pos.x + svgDimensions.offsetX}
                   y={pos.y + svgDimensions.offsetY}
@@ -490,6 +492,7 @@ export default function ResearchTreeView({
                   isTarget={targetTechId === tech.id}
                   formatNumber={formatNumber}
                   onLevelChange={onLevelChange}
+                  onOpenSheet={setSheetTech}
                   onUnlockClick={unlockWithPrerequisites}
                   onSetTarget={() => onTargetTechIdChange(tech.id)}
                   onFocus={() => {
@@ -526,6 +529,39 @@ export default function ResearchTreeView({
         onScrollLeft={handleScrollLeft}
         onScrollRight={handleScrollRight}
       />
+      {sheetTech && (
+        <ResearchLevelSheet
+          tech={sheetTech}
+          currentLevel={selectedLevels.get(sheetTech.id) || 0}
+          maxAvailable={getMaxAvailableLevel(sheetTech)}
+          unlocked={isUnlocked(sheetTech)}
+          onSelect={(level) => {
+            if (level > getMaxAvailableLevel(sheetTech)) {
+              // Gesperrter/nicht-erreichbarer Level -> Voraussetzungen automatisch
+              // auf Max setzen + Ziel-Level, alles in EINEM Batch (keine Race-Condition)
+              const updates = new Map<string, number>();
+              const collectPrereqs = (tt: Technology) => {
+                tt.prerequisites.forEach((p) => {
+                  const pid = typeof p === 'string' ? p : p.id;
+                  const pt = technologies.find((x) => x.id === pid);
+                  if (pt) {
+                    collectPrereqs(pt);
+                    updates.set(pid, pt.maxLevel);
+                  }
+                });
+              };
+              collectPrereqs(sheetTech);
+              updates.set(sheetTech.id, level);
+              onBatchLevelChange(updates);
+            } else {
+              onLevelChange(sheetTech.id, level);
+            }
+          }}
+          onClose={() => setSheetTech(null)}
+          lang={lang}
+          translationData={translationData}
+        />
+      )}
     </div>
   );
 }

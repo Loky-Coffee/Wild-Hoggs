@@ -22,6 +22,16 @@ import {
   peaceShield,
   siegeToSeize,
   armyBuilding,
+  tacticalMaster,
+  riderTraining,
+  assaulterTraining,
+  shooterTraining,
+  ageOfSteel,
+  newHome,
+  rapidGrowth,
+  shelterBuilding,
+  eliteTroops,
+  hqManagement,
 } from '../../../../data/validated/research';
 import '../../../../styles/shared-layouts.css';
 
@@ -35,6 +45,16 @@ import militaryStrategiesImg from '../../../../assets/images/research/military-s
 import peaceShieldImg from '../../../../assets/images/research/peace-shield.webp';
 import siegeToSeizeImg from '../../../../assets/images/research/siege-to-seize.webp';
 import armyBuildingImg from '../../../../assets/images/research/army-building.webp';
+import tacticalMasterImg from '../../../../assets/images/research/tactical-master.webp';
+import riderTrainingImg from '../../../../assets/images/research/rider-training.webp';
+import assaulterTrainingImg from '../../../../assets/images/research/assaulter-training.webp';
+import shooterTrainingImg from '../../../../assets/images/research/shooter-training.webp';
+import ageOfSteelImg from '../../../../assets/images/research/age-of-steel.webp';
+import newHomeImg from '../../../../assets/images/research/new-home.webp';
+import rapidGrowthImg from '../../../../assets/images/research/rapid-growth.webp';
+import shelterBuildingImg from '../../../../assets/images/research/shelter-building.webp';
+import eliteTroopsImg from '../../../../assets/images/research/elite-troops.webp';
+import hqManagementImg from '../../../../assets/images/research/hq-management.webp';
 
 export function getStaticPaths() {
   const paths: { params: { lang: string | undefined; categoryId: string } }[] = [];
@@ -48,6 +68,16 @@ export function getStaticPaths() {
     'peace_shield',
     'siege_to_seize',
     'army_building',
+    'tactical_master',
+    'rider_training',
+    'assaulter_training',
+    'shooter_training',
+    'age_of_steel',
+    'new_home',
+    'rapid_growth',
+    'shelter_building',
+    'elite_troops',
+    'hq_management',
   ];
 
   // Generate paths for all languages
@@ -74,6 +104,16 @@ const researchDataMap: Record<string, ResearchTree> = {
   peace_shield: peaceShield,
   siege_to_seize: siegeToSeize,
   army_building: armyBuilding,
+  tactical_master: tacticalMaster,
+  rider_training: riderTraining,
+  assaulter_training: assaulterTraining,
+  shooter_training: shooterTraining,
+  age_of_steel: ageOfSteel,
+  new_home: newHome,
+  rapid_growth: rapidGrowth,
+  shelter_building: shelterBuilding,
+  elite_troops: eliteTroops,
+  hq_management: hqManagement,
 };
 
 // Map category images by ID
@@ -87,6 +127,16 @@ const imageMap: Record<string, ImageMetadata> = {
   peace_shield: peaceShieldImg,
   siege_to_seize: siegeToSeizeImg,
   army_building: armyBuildingImg,
+  tactical_master: tacticalMasterImg,
+  rider_training: riderTrainingImg,
+  assaulter_training: assaulterTrainingImg,
+  shooter_training: shooterTrainingImg,
+  age_of_steel: ageOfSteelImg,
+  new_home: newHomeImg,
+  rapid_growth: rapidGrowthImg,
+  shelter_building: shelterBuildingImg,
+  elite_troops: eliteTroopsImg,
+  hq_management: hqManagementImg,
 };
 
 const { categoryId } = Astro.params;

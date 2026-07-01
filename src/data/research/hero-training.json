@@ -1,21 +1,50 @@
 {
   "id": "hero_training",
   "nameKey": "research.hero_training.name",
-  "totalBadges": 39590,
-  "totalLevels": 67,
+  "name": "Hero Training",
+  "tabId": 22,
   "nodeCount": 13,
+  "totalLevels": 67,
+  "totalBadges": 40040,
+  "totalStrom": 260000040,
+  "totalZent": 192000110,
+  "labLevelMin": 0,
+  "onlyResourcesNoBadges": false,
   "image": "/images/research/hero-training.png",
   "technologies": [
     {
       "id": "atk-spec-1",
       "nameKey": "research.hero_training.attack-special-training",
+      "name": "Attack Special Training",
       "maxLevel": 5,
+      "labLevel": 0,
       "badgeCosts": [
         120,
         150,
         210,
         310,
         490
+      ],
+      "stromCosts": [
+        743600,
+        966680,
+        1338480,
+        2007720,
+        3197480
+      ],
+      "zentCosts": [
+        549120,
+        713860,
+        988420,
+        1482630,
+        2361220
+      ],
+      "combatPower": [
+        6294,
+        13376,
+        21576,
+        31417,
+        43550
       ],
       "icon": "hero-training/attack-special-training",
       "prerequisites": []
@@ -23,7 +52,9 @@
     {
       "id": "str-train-1",
       "nameKey": "research.hero_training.strength-training",
+      "name": "Strength Training",
       "maxLevel": 5,
+      "labLevel": 0,
       "badgeCosts": [
         120,
         150,
@@ -31,19 +62,63 @@
         310,
         490
       ],
+      "stromCosts": [
+        743600,
+        966680,
+        1338480,
+        2007720,
+        3197480
+      ],
+      "zentCosts": [
+        549120,
+        713860,
+        988420,
+        1482630,
+        2361220
+      ],
+      "combatPower": [
+        6294,
+        13376,
+        21576,
+        31417,
+        43550
+      ],
       "icon": "hero-training/strength-training",
       "prerequisites": []
     },
     {
       "id": "rose-bloom",
       "nameKey": "research.hero_training.rose-bloom",
+      "name": "Rose Bloom",
       "maxLevel": 5,
+      "labLevel": 0,
       "badgeCosts": [
         170,
         220,
         310,
         460,
         740
+      ],
+      "stromCosts": [
+        1115400,
+        1450020,
+        2007720,
+        3011580,
+        4796230
+      ],
+      "zentCosts": [
+        823680,
+        1070790,
+        1482630,
+        2223940,
+        3541830
+      ],
+      "combatPower": [
+        7554,
+        16054,
+        25895,
+        37706,
+        52268
       ],
       "icon": "hero-training/rose-bloom",
       "prerequisites": [
@@ -54,13 +129,36 @@
     {
       "id": "morning-star",
       "nameKey": "research.hero_training.morning-star",
+      "name": "Morning Star",
       "maxLevel": 5,
+      "labLevel": 0,
       "badgeCosts": [
         170,
         220,
         310,
         460,
         740
+      ],
+      "stromCosts": [
+        1115400,
+        1450020,
+        2007720,
+        3011580,
+        4796230
+      ],
+      "zentCosts": [
+        823680,
+        1070790,
+        1482630,
+        2223940,
+        3541830
+      ],
+      "combatPower": [
+        7554,
+        16054,
+        25895,
+        37706,
+        52268
       ],
       "icon": "hero-training/morning-star",
       "prerequisites": [
@@ -71,13 +169,36 @@
     {
       "id": "light-of-order",
       "nameKey": "research.hero_training.light-of-order",
+      "name": "Light of Order",
       "maxLevel": 5,
+      "labLevel": 0,
       "badgeCosts": [
         170,
         220,
         310,
         460,
         740
+      ],
+      "stromCosts": [
+        1115400,
+        1450020,
+        2007720,
+        3011580,
+        4796230
+      ],
+      "zentCosts": [
+        823680,
+        1070790,
+        1482630,
+        2223940,
+        3541830
+      ],
+      "combatPower": [
+        7554,
+        16054,
+        25895,
+        37706,
+        52268
       ],
       "icon": "hero-training/light-of-order",
       "prerequisites": [
@@ -88,29 +209,78 @@
     {
       "id": "resource-gathering-1",
       "nameKey": "research.hero_training.resource-gathering",
+      "name": "Resource Gathering",
       "maxLevel": 3,
+      "labLevel": 0,
       "badgeCosts": [
         340,
         570,
         1000
       ],
+      "stromCosts": [
+        2172100,
+        3692570,
+        6516290
+      ],
+      "zentCosts": [
+        1604010,
+        2726820,
+        4812030
+      ],
+      "combatPower": [
+        10196,
+        23142,
+        39858
+      ],
       "icon": "hero-training/resource-gathering",
       "prerequisites": [
-        { "id": "rose-bloom", "requiredLevel": 5 },
-        { "id": "morning-star", "requiredLevel": 5 },
-        { "id": "light-of-order", "requiredLevel": 5 }
+        {
+          "id": "rose-bloom",
+          "requiredLevel": 5
+        },
+        {
+          "id": "morning-star",
+          "requiredLevel": 5
+        },
+        {
+          "id": "light-of-order",
+          "requiredLevel": 5
+        }
       ]
     },
     {
       "id": "rose-barrier",
       "nameKey": "research.hero_training.rose-barrier",
+      "name": "Rose Barrier",
       "maxLevel": 5,
+      "labLevel": 0,
       "badgeCosts": [
         290,
         370,
         520,
         770,
-        1200
+        1230
+      ],
+      "stromCosts": [
+        1859000,
+        2416700,
+        3346200,
+        5019310,
+        7993710
+      ],
+      "zentCosts": [
+        1372800,
+        1784640,
+        2471040,
+        3706560,
+        5903050
+      ],
+      "combatPower": [
+        9506,
+        20203,
+        32587,
+        47450,
+        65776
       ],
       "icon": "hero-training/rose-barrier",
       "prerequisites": [
@@ -120,13 +290,36 @@
     {
       "id": "dawns-light",
       "nameKey": "research.hero_training.dawns-light",
+      "name": "Dawn's Light",
       "maxLevel": 5,
+      "labLevel": 0,
       "badgeCosts": [
         290,
         370,
         520,
         770,
-        1200
+        1230
+      ],
+      "stromCosts": [
+        1859000,
+        2416700,
+        3346200,
+        5019310,
+        7993710
+      ],
+      "zentCosts": [
+        1372800,
+        1784640,
+        2471040,
+        3706560,
+        5903050
+      ],
+      "combatPower": [
+        9506,
+        20203,
+        32587,
+        47450,
+        65776
       ],
       "icon": "hero-training/dawns-light",
       "prerequisites": [
@@ -136,13 +329,36 @@
     {
       "id": "shield-of-order",
       "nameKey": "research.hero_training.shield-of-order",
+      "name": "Shield of Order",
       "maxLevel": 5,
+      "labLevel": 0,
       "badgeCosts": [
         290,
         370,
         520,
         770,
-        1200
+        1230
+      ],
+      "stromCosts": [
+        1859000,
+        2416700,
+        3346200,
+        5019310,
+        7993710
+      ],
+      "zentCosts": [
+        1372800,
+        1784640,
+        2471040,
+        3706560,
+        5903050
+      ],
+      "combatPower": [
+        9506,
+        20203,
+        32587,
+        47450,
+        65776
       ],
       "icon": "hero-training/shield-of-order",
       "prerequisites": [
@@ -152,25 +368,62 @@
     {
       "id": "cockpit",
       "nameKey": "research.hero_training.cockpit",
+      "name": "Cockpit",
       "maxLevel": 1,
+      "labLevel": 0,
       "badgeCosts": [
-        2200
+        2220
+      ],
+      "stromCosts": [
+        14444450
+      ],
+      "zentCosts": [
+        10666670
+      ],
+      "combatPower": [
+        23916
       ],
       "icon": "hero-training/cockpit",
       "prerequisites": [
-        { "id": "rose-barrier", "requiredLevel": 5 },
-        { "id": "dawns-light", "requiredLevel": 5 },
-        { "id": "shield-of-order", "requiredLevel": 5 }
+        {
+          "id": "rose-barrier",
+          "requiredLevel": 5
+        },
+        {
+          "id": "dawns-light",
+          "requiredLevel": 5
+        },
+        {
+          "id": "shield-of-order",
+          "requiredLevel": 5
+        }
       ]
     },
     {
       "id": "resource-gathering-2",
       "nameKey": "research.hero_training.resource-gathering",
+      "name": "Resource Gathering",
       "maxLevel": 3,
+      "labLevel": 0,
       "badgeCosts": [
         500,
         850,
         1500
+      ],
+      "stromCosts": [
+        3258150,
+        5538850,
+        9774440
+      ],
+      "zentCosts": [
+        2406020,
+        4090230,
+        7218050
+      ],
+      "combatPower": [
+        12237,
+        27774,
+        47836
       ],
       "icon": "hero-training/resource-gathering",
       "prerequisites": [
@@ -180,7 +433,9 @@
     {
       "id": "atk-spec-2",
       "nameKey": "research.hero_training.attack-special-training",
+      "name": "Attack Special Training",
       "maxLevel": 10,
+      "labLevel": 0,
       "badgeCosts": [
         280,
         330,
@@ -189,9 +444,45 @@
         550,
         690,
         850,
-        1000,
-        1300,
-        1600
+        1070,
+        1350,
+        1650
+      ],
+      "stromCosts": [
+        1787860,
+        2145440,
+        2503010,
+        3039370,
+        3575730,
+        4469660,
+        5542380,
+        6972670,
+        8760530,
+        10727180
+      ],
+      "zentCosts": [
+        1320270,
+        1584320,
+        1848380,
+        2244460,
+        2640540,
+        3300670,
+        4092830,
+        5149050,
+        6469320,
+        7921610
+      ],
+      "combatPower": [
+        9340,
+        19479,
+        30346,
+        42206,
+        54966,
+        69073,
+        84614,
+        101847,
+        120944,
+        141863
       ],
       "icon": "hero-training/attack-special-training",
       "prerequisites": [
@@ -201,7 +492,9 @@
     {
       "id": "str-train-2",
       "nameKey": "research.hero_training.strength-training",
+      "name": "Strength Training",
       "maxLevel": 10,
+      "labLevel": 0,
       "badgeCosts": [
         280,
         330,
@@ -210,9 +503,45 @@
         550,
         690,
         850,
-        1000,
-        1300,
-        1600
+        1070,
+        1350,
+        1650
+      ],
+      "stromCosts": [
+        1787860,
+        2145440,
+        2503010,
+        3039370,
+        3575730,
+        4469660,
+        5542380,
+        6972670,
+        8760530,
+        10727180
+      ],
+      "zentCosts": [
+        1320270,
+        1584320,
+        1848380,
+        2244460,
+        2640540,
+        3300670,
+        4092830,
+        5149050,
+        6469320,
+        7921610
+      ],
+      "combatPower": [
+        9340,
+        19479,
+        30346,
+        42206,
+        54966,
+        69073,
+        84614,
+        101847,
+        120944,
+        141863
       ],
       "icon": "hero-training/strength-training",
       "prerequisites": [

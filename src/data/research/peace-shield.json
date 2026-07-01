@@ -1,15 +1,80 @@
 {
   "id": "peace_shield",
   "nameKey": "research.peace_shield.name",
-  "totalBadges": 268930,
-  "totalLevels": 165,
+  "name": "Peace Shield",
+  "tabId": 11,
   "nodeCount": 16,
+  "totalLevels": 165,
+  "totalBadges": 270203,
+  "totalStrom": 960000160,
+  "totalZent": 720000150,
+  "labLevelMin": 18,
+  "onlyResourcesNoBadges": false,
   "image": "/images/research/peace-shield.png",
   "technologies": [
     {
       "id": "auto-repair",
       "nameKey": "research.peace_shield.auto-repair",
+      "name": "Auto Repair",
       "maxLevel": 10,
+      "labLevel": 18,
+      "badgeCosts": [
+        83,
+        100,
+        120,
+        140,
+        170,
+        210,
+        260,
+        320,
+        410,
+        500
+      ],
+      "stromCosts": [
+        337790,
+        405350,
+        472900,
+        574240,
+        675580,
+        844470,
+        1047140,
+        1317370,
+        1655160,
+        2026730
+      ],
+      "zentCosts": [
+        253340,
+        304010,
+        354680,
+        430680,
+        506680,
+        633350,
+        785360,
+        988030,
+        1241370,
+        1520050
+      ],
+      "combatPower": [
+        4430,
+        9239,
+        14393,
+        20018,
+        26069,
+        32760,
+        40131,
+        48304,
+        57361,
+        67282
+      ],
+      "icon": "peace-shield/auto-repair",
+      "prerequisites": []
+    },
+    {
+      "id": "combat-policy",
+      "nameKey": "research.peace_shield.combat-policy",
+      "name": "Combat Policy",
+      "maxLevel": 10,
+      "labLevel": 18,
       "badgeCosts": [
         130,
         150,
@@ -22,24 +87,41 @@
         610,
         750
       ],
-      "icon": "peace-shield/auto-repair",
-      "prerequisites": []
-    },
-    {
-      "id": "combat-policy",
-      "nameKey": "research.peace_shield.combat-policy",
-      "maxLevel": 10,
-      "badgeCosts": [
-        130,
-        150,
-        180,
-        210,
-        250,
-        310,
-        390,
-        490,
-        610,
-        750
+      "stromCosts": [
+        506680,
+        608020,
+        709360,
+        861360,
+        1013360,
+        1266710,
+        1570710,
+        1976060,
+        2482740,
+        3040090
+      ],
+      "zentCosts": [
+        380010,
+        456010,
+        532020,
+        646020,
+        760020,
+        950030,
+        1178040,
+        1482050,
+        1862060,
+        2280070
+      ],
+      "combatPower": [
+        5317,
+        11088,
+        17274,
+        24025,
+        31288,
+        39318,
+        48164,
+        57973,
+        68843,
+        80750
       ],
       "icon": "peace-shield/combat-policy",
       "prerequisites": [
@@ -49,7 +131,9 @@
     {
       "id": "interceptions",
       "nameKey": "research.peace_shield.interceptions",
+      "name": "Interceptions",
       "maxLevel": 10,
+      "labLevel": 18,
       "badgeCosts": [
         130,
         150,
@@ -62,6 +146,42 @@
         610,
         750
       ],
+      "stromCosts": [
+        506680,
+        608020,
+        709360,
+        861360,
+        1013360,
+        1266710,
+        1570710,
+        1976060,
+        2482740,
+        3040090
+      ],
+      "zentCosts": [
+        380010,
+        456010,
+        532020,
+        646020,
+        760020,
+        950030,
+        1178040,
+        1482050,
+        1862060,
+        2280070
+      ],
+      "combatPower": [
+        5317,
+        11088,
+        17274,
+        24025,
+        31288,
+        39318,
+        48164,
+        57973,
+        68843,
+        80750
+      ],
       "icon": "peace-shield/interceptions",
       "prerequisites": [
         "auto-repair"
@@ -70,7 +190,9 @@
     {
       "id": "mobility-enhancement",
       "nameKey": "research.peace_shield.mobility-enhancement",
+      "name": "Mobility Enhancement",
       "maxLevel": 10,
+      "labLevel": 18,
       "badgeCosts": [
         170,
         200,
@@ -83,6 +205,42 @@
         810,
         1000
       ],
+      "stromCosts": [
+        675580,
+        810690,
+        945810,
+        1148480,
+        1351150,
+        1688940,
+        2094290,
+        2634750,
+        3310320,
+        4053460
+      ],
+      "zentCosts": [
+        506680,
+        608020,
+        709360,
+        861360,
+        1013360,
+        1266710,
+        1570710,
+        1976060,
+        2482740,
+        3040090
+      ],
+      "combatPower": [
+        6051,
+        12620,
+        19661,
+        27345,
+        35612,
+        44752,
+        54821,
+        65986,
+        78359,
+        91912
+      ],
       "icon": "peace-shield/mobility-enhancement",
       "prerequisites": [
         "combat-policy"
@@ -91,7 +249,9 @@
     {
       "id": "melee-combat",
       "nameKey": "research.peace_shield.melee-combat",
+      "name": "Melee Combat",
       "maxLevel": 10,
+      "labLevel": 18,
       "badgeCosts": [
         170,
         200,
@@ -103,6 +263,42 @@
         650,
         810,
         1000
+      ],
+      "stromCosts": [
+        675580,
+        810690,
+        945810,
+        1148480,
+        1351150,
+        1688940,
+        2094290,
+        2634750,
+        3310320,
+        4053460
+      ],
+      "zentCosts": [
+        506680,
+        608020,
+        709360,
+        861360,
+        1013360,
+        1266710,
+        1570710,
+        1976060,
+        2482740,
+        3040090
+      ],
+      "combatPower": [
+        6051,
+        12620,
+        19661,
+        27345,
+        35612,
+        44752,
+        54821,
+        65986,
+        78359,
+        91912
       ],
       "icon": "peace-shield/melee-combat",
       "prerequisites": [
@@ -113,7 +309,9 @@
     {
       "id": "weapon-upgrading",
       "nameKey": "research.peace_shield.weapon-upgrading",
+      "name": "Weapon Upgrading",
       "maxLevel": 10,
+      "labLevel": 18,
       "badgeCosts": [
         170,
         200,
@@ -126,6 +324,42 @@
         810,
         1000
       ],
+      "stromCosts": [
+        675580,
+        810690,
+        945810,
+        1148480,
+        1351150,
+        1688940,
+        2094290,
+        2634750,
+        3310320,
+        4053460
+      ],
+      "zentCosts": [
+        506680,
+        608020,
+        709360,
+        861360,
+        1013360,
+        1266710,
+        1570710,
+        1976060,
+        2482740,
+        3040090
+      ],
+      "combatPower": [
+        6051,
+        12620,
+        19661,
+        27345,
+        35612,
+        44752,
+        54821,
+        65986,
+        78359,
+        91912
+      ],
       "icon": "peace-shield/weapon-upgrading",
       "prerequisites": [
         "interceptions"
@@ -134,13 +368,36 @@
     {
       "id": "quick-assembly",
       "nameKey": "research.peace_shield.quick-assembly",
+      "name": "Quick Assembly",
       "maxLevel": 5,
+      "labLevel": 19,
       "badgeCosts": [
         250,
         320,
         450,
         670,
-        1000
+        1070
+      ],
+      "stromCosts": [
+        1011540,
+        1315000,
+        1820770,
+        2731150,
+        4349610
+      ],
+      "zentCosts": [
+        758650,
+        986250,
+        1365580,
+        2048370,
+        3262210
+      ],
+      "combatPower": [
+        7257,
+        15423,
+        24877,
+        36224,
+        50214
       ],
       "icon": "peace-shield/quick-assembly",
       "prerequisites": [
@@ -150,13 +407,36 @@
     {
       "id": "arms-assembly",
       "nameKey": "research.peace_shield.arms-assembly",
+      "name": "Arms Assembly",
       "maxLevel": 5,
+      "labLevel": 19,
       "badgeCosts": [
         250,
         320,
         450,
         670,
-        1000
+        1070
+      ],
+      "stromCosts": [
+        1011540,
+        1315000,
+        1820770,
+        2731150,
+        4349610
+      ],
+      "zentCosts": [
+        758650,
+        986250,
+        1365580,
+        2048370,
+        3262210
+      ],
+      "combatPower": [
+        7257,
+        15423,
+        24877,
+        36224,
+        50214
       ],
       "icon": "peace-shield/arms-assembly",
       "prerequisites": [
@@ -166,13 +446,36 @@
     {
       "id": "target-training",
       "nameKey": "research.peace_shield.target-training",
+      "name": "Target Training",
       "maxLevel": 5,
+      "labLevel": 19,
       "badgeCosts": [
         250,
         320,
         450,
         670,
-        1000
+        1070
+      ],
+      "stromCosts": [
+        1011540,
+        1315000,
+        1820770,
+        2731150,
+        4349610
+      ],
+      "zentCosts": [
+        758650,
+        986250,
+        1365580,
+        2048370,
+        3262210
+      ],
+      "combatPower": [
+        7257,
+        15423,
+        24877,
+        36224,
+        50214
       ],
       "icon": "peace-shield/target-training",
       "prerequisites": [
@@ -182,7 +485,9 @@
     {
       "id": "urgent-rescue",
       "nameKey": "research.peace_shield.urgent-rescue",
+      "name": "Urgent Rescue",
       "maxLevel": 10,
+      "labLevel": 19,
       "badgeCosts": [
         330,
         400,
@@ -190,10 +495,46 @@
         560,
         660,
         830,
-        1000,
-        1200,
-        1600,
-        1900
+        1030,
+        1290,
+        1630,
+        1990
+      ],
+      "stromCosts": [
+        1351150,
+        1621380,
+        1891610,
+        2296960,
+        2702300,
+        3377880,
+        4188570,
+        5269490,
+        6620640,
+        8106910
+      ],
+      "zentCosts": [
+        1013360,
+        1216040,
+        1418710,
+        1722720,
+        2026730,
+        2533410,
+        3141430,
+        3952120,
+        4965480,
+        6080180
+      ],
+      "combatPower": [
+        8267,
+        17240,
+        26858,
+        37354,
+        48647,
+        61133,
+        74888,
+        90140,
+        107042,
+        125556
       ],
       "icon": "peace-shield/urgent-rescue",
       "prerequisites": [
@@ -205,18 +546,56 @@
     {
       "id": "stronger-armor",
       "nameKey": "research.peace_shield.stronger-armor",
+      "name": "Stronger Armor",
       "maxLevel": 10,
+      "labLevel": 19,
       "badgeCosts": [
         420,
         500,
         580,
         710,
         830,
-        1000,
-        1200,
-        1600,
+        1040,
+        1290,
+        1620,
         2030,
-        2400
+        2490
+      ],
+      "stromCosts": [
+        1688940,
+        2026730,
+        2364520,
+        2871200,
+        3377880,
+        4222350,
+        5235710,
+        6586870,
+        8275800,
+        10133640
+      ],
+      "zentCosts": [
+        1266710,
+        1520050,
+        1773390,
+        2153400,
+        2533410,
+        3166760,
+        3926790,
+        4940150,
+        6206850,
+        7600230
+      ],
+      "combatPower": [
+        9140,
+        19061,
+        29695,
+        41300,
+        53786,
+        67590,
+        82798,
+        99661,
+        118348,
+        138818
       ],
       "icon": "peace-shield/stronger-armor",
       "prerequisites": [
@@ -226,18 +605,56 @@
     {
       "id": "shield-upgrade",
       "nameKey": "research.peace_shield.shield-upgrade",
+      "name": "Shield Upgrade",
       "maxLevel": 10,
+      "labLevel": 19,
       "badgeCosts": [
         420,
         500,
         580,
         710,
         830,
-        1000,
-        1200,
-        1600,
+        1040,
+        1290,
+        1620,
         2030,
-        2400
+        2490
+      ],
+      "stromCosts": [
+        1688940,
+        2026730,
+        2364520,
+        2871200,
+        3377880,
+        4222350,
+        5235710,
+        6586870,
+        8275800,
+        10133640
+      ],
+      "zentCosts": [
+        1266710,
+        1520050,
+        1773390,
+        2153400,
+        2533410,
+        3166760,
+        3926790,
+        4940150,
+        6206850,
+        7600230
+      ],
+      "combatPower": [
+        9140,
+        19061,
+        29695,
+        41300,
+        53786,
+        67590,
+        82798,
+        99661,
+        118348,
+        138818
       ],
       "icon": "peace-shield/shield-upgrade",
       "prerequisites": [
@@ -247,18 +664,56 @@
     {
       "id": "tactical-cover",
       "nameKey": "research.peace_shield.tactical-cover",
+      "name": "Tactical Cover",
       "maxLevel": 10,
+      "labLevel": 19,
       "badgeCosts": [
         420,
         500,
         580,
         710,
         830,
-        1000,
-        1200,
-        1600,
+        1040,
+        1290,
+        1620,
         2030,
-        2400
+        2490
+      ],
+      "stromCosts": [
+        1688940,
+        2026730,
+        2364520,
+        2871200,
+        3377880,
+        4222350,
+        5235710,
+        6586870,
+        8275800,
+        10133640
+      ],
+      "zentCosts": [
+        1266710,
+        1520050,
+        1773390,
+        2153400,
+        2533410,
+        3166760,
+        3926790,
+        4940150,
+        6206850,
+        7600230
+      ],
+      "combatPower": [
+        9140,
+        19061,
+        29695,
+        41300,
+        53786,
+        67590,
+        82798,
+        99661,
+        118348,
+        138818
       ],
       "icon": "peace-shield/tactical-cover",
       "prerequisites": [
@@ -268,28 +723,96 @@
     {
       "id": "combat-policy-2",
       "nameKey": "research.peace_shield.combat-policy",
+      "name": "Combat Policy",
       "maxLevel": 20,
+      "labLevel": 20,
       "badgeCosts": [
         600,
         720,
         840,
         960,
         1140,
-        1300,
-        1600,
-        1800,
-        2200,
-        2600,
+        1380,
+        1620,
+        1920,
+        2280,
+        2640,
         3000,
-        3400,
+        3420,
         3900,
         4500,
-        5200,
+        5220,
         5400,
-        6200,
+        6240,
         6600,
         7500,
         9000
+      ],
+      "stromCosts": [
+        2445140,
+        2934170,
+        3423190,
+        3912220,
+        4645760,
+        5623820,
+        6601870,
+        7824440,
+        9291520,
+        10758600,
+        12225690,
+        13937280,
+        15893390,
+        18338530,
+        21272690,
+        22006240,
+        25429430,
+        26896510,
+        30564220,
+        36677060
+      ],
+      "zentCosts": [
+        1833850,
+        2200620,
+        2567400,
+        2934170,
+        3484320,
+        4217860,
+        4951400,
+        5868330,
+        6968640,
+        8068950,
+        9169270,
+        10452960,
+        11920050,
+        13753900,
+        15954520,
+        16504680,
+        19072070,
+        20172380,
+        22923160,
+        27507790
+      ],
+      "combatPower": [
+        10796,
+        22515,
+        35076,
+        48415,
+        62826,
+        78531,
+        95411,
+        113632,
+        133318,
+        154347,
+        176621,
+        200248,
+        225313,
+        252046,
+        280625,
+        309643,
+        340612,
+        372373,
+        406014,
+        442532
       ],
       "icon": "peace-shield/combat-policy",
       "prerequisites": [
@@ -301,28 +824,96 @@
     {
       "id": "interceptions-2",
       "nameKey": "research.peace_shield.interceptions",
+      "name": "Interceptions",
       "maxLevel": 20,
+      "labLevel": 20,
       "badgeCosts": [
         600,
         720,
         840,
         960,
         1140,
-        1300,
-        1600,
-        1800,
-        2200,
-        2600,
+        1380,
+        1620,
+        1920,
+        2280,
+        2640,
         3000,
-        3400,
+        3420,
         3900,
         4500,
-        5200,
+        5220,
         5400,
-        6200,
+        6240,
         6600,
         7500,
         9000
+      ],
+      "stromCosts": [
+        2445140,
+        2934170,
+        3423190,
+        3912220,
+        4645760,
+        5623820,
+        6601870,
+        7824440,
+        9291520,
+        10758600,
+        12225690,
+        13937280,
+        15893390,
+        18338530,
+        21272690,
+        22006240,
+        25429430,
+        26896510,
+        30564220,
+        36677060
+      ],
+      "zentCosts": [
+        1833850,
+        2200620,
+        2567400,
+        2934170,
+        3484320,
+        4217860,
+        4951400,
+        5868330,
+        6968640,
+        8068950,
+        9169270,
+        10452960,
+        11920050,
+        13753900,
+        15954520,
+        16504680,
+        19072070,
+        20172380,
+        22923160,
+        27507790
+      ],
+      "combatPower": [
+        10796,
+        22515,
+        35076,
+        48415,
+        62826,
+        78531,
+        95411,
+        113632,
+        133318,
+        154347,
+        176621,
+        200248,
+        225313,
+        252046,
+        280625,
+        309643,
+        340612,
+        372373,
+        406014,
+        442532
       ],
       "icon": "peace-shield/interceptions",
       "prerequisites": [
@@ -334,18 +925,56 @@
     {
       "id": "recharge-shield",
       "nameKey": "research.peace_shield.recharge-shield",
+      "name": "Recharge Shield",
       "maxLevel": 10,
+      "labLevel": 20,
       "badgeCosts": [
-        2000,
-        2400,
+        2070,
+        2490,
         2900,
         3520,
         4150,
-        5100,
-        6400,
-        8000,
-        10100,
-        12400
+        5180,
+        6420,
+        8080,
+        10150,
+        12430
+      ],
+      "stromCosts": [
+        3377880,
+        4053460,
+        4729030,
+        5742400,
+        6755760,
+        8444700,
+        10471430,
+        13173730,
+        16551610,
+        20267280
+      ],
+      "zentCosts": [
+        2533410,
+        3040090,
+        3546770,
+        4306800,
+        5066820,
+        6333520,
+        7853570,
+        9880300,
+        12413710,
+        15200460
+      ],
+      "combatPower": [
+        12488,
+        26044,
+        40573,
+        56429,
+        73488,
+        92349,
+        113127,
+        136167,
+        161699,
+        189667
       ],
       "icon": "peace-shield/recharge-shield",
       "prerequisites": [

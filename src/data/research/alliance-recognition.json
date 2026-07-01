@@ -1,15 +1,23 @@
 {
   "id": "alliance_recognition",
   "nameKey": "research.alliance_recognition.name",
-  "totalBadges": 356770,
-  "totalLevels": 183,
+  "name": "Alliance Recognition",
+  "tabId": 4,
   "nodeCount": 19,
+  "totalLevels": 183,
+  "totalBadges": 360350,
+  "totalStrom": 1800000110,
+  "totalZent": 864000130,
+  "labLevelMin": 0,
+  "onlyResourcesNoBadges": false,
   "image": "/images/research/alliance-recognition.png",
   "technologies": [
     {
       "id": "collect-wood",
       "nameKey": "research.alliance_recognition.collect-wood",
+      "name": "Collect Wood",
       "maxLevel": 10,
+      "labLevel": 0,
       "badgeCosts": [
         150,
         180,
@@ -21,6 +29,42 @@
         580,
         730,
         890
+      ],
+      "stromCosts": [
+        649820,
+        779780,
+        909750,
+        1104690,
+        1299640,
+        1624550,
+        2014440,
+        2534300,
+        3184120,
+        3898920
+      ],
+      "zentCosts": [
+        311910,
+        374300,
+        436680,
+        530250,
+        623830,
+        779780,
+        966930,
+        1216460,
+        1528380,
+        1871480
+      ],
+      "combatPower": [
+        5378,
+        11216,
+        17474,
+        24303,
+        31650,
+        39773,
+        48722,
+        58645,
+        69642,
+        81688
       ],
       "icon": "alliance-recognition/collect-wood",
       "prerequisites": []
@@ -28,7 +72,9 @@
     {
       "id": "zent-gatherer",
       "nameKey": "research.alliance_recognition.zent-gatherer",
+      "name": "Zent Gatherer",
       "maxLevel": 10,
+      "labLevel": 0,
       "badgeCosts": [
         150,
         180,
@@ -41,15 +87,62 @@
         730,
         890
       ],
+      "stromCosts": [
+        649820,
+        779780,
+        909750,
+        1104690,
+        1299640,
+        1624550,
+        2014440,
+        2534300,
+        3184120,
+        3898920
+      ],
+      "zentCosts": [
+        311910,
+        374300,
+        436680,
+        530250,
+        623830,
+        779780,
+        966930,
+        1216460,
+        1528380,
+        1871480
+      ],
+      "combatPower": [
+        5378,
+        11216,
+        17474,
+        24303,
+        31650,
+        39773,
+        48722,
+        58645,
+        69642,
+        81688
+      ],
       "icon": "alliance-recognition/zent-gatherer",
       "prerequisites": []
     },
     {
       "id": "premium-rewards",
       "nameKey": "research.alliance_recognition.premium-rewards",
+      "name": "Prime Rewards",
       "maxLevel": 1,
+      "labLevel": 0,
       "badgeCosts": [
-        1200
+        1230
+      ],
+      "stromCosts": [
+        7200000
+      ],
+      "zentCosts": [
+        3456000
+      ],
+      "combatPower": [
+        15875
       ],
       "icon": "alliance-recognition/premium-rewards",
       "prerequisites": [
@@ -66,7 +159,9 @@
     {
       "id": "event-expert",
       "nameKey": "research.alliance_recognition.event-expert",
+      "name": "Event Expert",
       "maxLevel": 20,
+      "labLevel": 0,
       "badgeCosts": [
         160,
         190,
@@ -80,14 +175,80 @@
         710,
         800,
         920,
-        1000,
-        1200,
+        1050,
+        1210,
         1400,
-        1400,
-        1600,
-        1700,
-        2000,
-        2400
+        1450,
+        1670,
+        1770,
+        2010,
+        2410
+      ],
+      "stromCosts": [
+        940770,
+        1128920,
+        1317070,
+        1505230,
+        1787460,
+        2163760,
+        2540070,
+        3010450,
+        3574910,
+        4139370,
+        4703830,
+        5362370,
+        6114980,
+        7055750,
+        8184670,
+        8466900,
+        9783970,
+        10348430,
+        11759580,
+        14111500
+      ],
+      "zentCosts": [
+        451570,
+        541880,
+        632200,
+        722510,
+        857980,
+        1038610,
+        1219230,
+        1445020,
+        1715960,
+        1986900,
+        2257840,
+        2573940,
+        2935190,
+        3386760,
+        3928640,
+        4064110,
+        4696310,
+        4967250,
+        5644600,
+        6773520
+      ],
+      "combatPower": [
+        6353,
+        13249,
+        20640,
+        28489,
+        36969,
+        46210,
+        56143,
+        66865,
+        78449,
+        90823,
+        103930,
+        117833,
+        132583,
+        148314,
+        165131,
+        182207,
+        200431,
+        219121,
+        238917,
+        260406
       ],
       "icon": "alliance-recognition/event-expert",
       "prerequisites": [
@@ -100,7 +261,9 @@
     {
       "id": "augmented-engine",
       "nameKey": "research.alliance_recognition.augmented-engine",
+      "name": "Augmented Engine",
       "maxLevel": 10,
+      "labLevel": 0,
       "badgeCosts": [
         300,
         360,
@@ -109,9 +272,45 @@
         590,
         740,
         920,
-        1100,
-        1400,
-        1700
+        1160,
+        1450,
+        1780
+      ],
+      "stromCosts": [
+        1299640,
+        1559570,
+        1819500,
+        2209390,
+        2599280,
+        3249100,
+        4028880,
+        5068590,
+        6368230,
+        7797830
+      ],
+      "zentCosts": [
+        623830,
+        748590,
+        873360,
+        1060510,
+        1247650,
+        1559570,
+        1933860,
+        2432930,
+        3056750,
+        3742960
+      ],
+      "combatPower": [
+        7347,
+        15323,
+        23871,
+        33200,
+        43237,
+        54334,
+        66559,
+        80115,
+        95137,
+        111592
       ],
       "icon": "alliance-recognition/augmented-engine",
       "prerequisites": [
@@ -124,7 +323,9 @@
     {
       "id": "transport-capacity-up",
       "nameKey": "research.alliance_recognition.transport-capacity-up",
+      "name": "Transport Capacity Up",
       "maxLevel": 10,
+      "labLevel": 0,
       "badgeCosts": [
         300,
         360,
@@ -133,9 +334,45 @@
         590,
         740,
         920,
-        1100,
-        1400,
-        1700
+        1160,
+        1450,
+        1780
+      ],
+      "stromCosts": [
+        1299640,
+        1559570,
+        1819500,
+        2209390,
+        2599280,
+        3249100,
+        4028880,
+        5068590,
+        6368230,
+        7797830
+      ],
+      "zentCosts": [
+        623830,
+        748590,
+        873360,
+        1060510,
+        1247650,
+        1559570,
+        1933860,
+        2432930,
+        3056750,
+        3742960
+      ],
+      "combatPower": [
+        7347,
+        15323,
+        23871,
+        33200,
+        43237,
+        54334,
+        66559,
+        80115,
+        95137,
+        111592
       ],
       "icon": "alliance-recognition/transport-capacity-up",
       "prerequisites": [
@@ -148,7 +385,9 @@
     {
       "id": "production-line-expansion",
       "nameKey": "research.alliance_recognition.production-line-expansion",
+      "name": "Production Line Expansion",
       "maxLevel": 10,
+      "labLevel": 0,
       "badgeCosts": [
         300,
         360,
@@ -157,9 +396,45 @@
         590,
         740,
         920,
-        1100,
-        1400,
-        1700
+        1160,
+        1450,
+        1780
+      ],
+      "stromCosts": [
+        1299640,
+        1559570,
+        1819500,
+        2209390,
+        2599280,
+        3249100,
+        4028880,
+        5068590,
+        6368230,
+        7797830
+      ],
+      "zentCosts": [
+        623830,
+        748590,
+        873360,
+        1060510,
+        1247650,
+        1559570,
+        1933860,
+        2432930,
+        3056750,
+        3742960
+      ],
+      "combatPower": [
+        7347,
+        15323,
+        23871,
+        33200,
+        43237,
+        54334,
+        66559,
+        80115,
+        95137,
+        111592
       ],
       "icon": "alliance-recognition/production-line-expansion",
       "prerequisites": [
@@ -172,7 +447,9 @@
     {
       "id": "fast-production",
       "nameKey": "research.alliance_recognition.fast-production",
+      "name": "Fast Production",
       "maxLevel": 10,
+      "labLevel": 0,
       "badgeCosts": [
         300,
         360,
@@ -181,9 +458,45 @@
         590,
         740,
         920,
-        1100,
-        1400,
-        1700
+        1160,
+        1450,
+        1780
+      ],
+      "stromCosts": [
+        1299640,
+        1559570,
+        1819500,
+        2209390,
+        2599280,
+        3249100,
+        4028880,
+        5068590,
+        6368230,
+        7797830
+      ],
+      "zentCosts": [
+        623830,
+        748590,
+        873360,
+        1060510,
+        1247650,
+        1559570,
+        1933860,
+        2432930,
+        3056750,
+        3742960
+      ],
+      "combatPower": [
+        7347,
+        15323,
+        23871,
+        33200,
+        43237,
+        54334,
+        66559,
+        80115,
+        95137,
+        111592
       ],
       "icon": "alliance-recognition/fast-production",
       "prerequisites": [
@@ -196,9 +509,20 @@
     {
       "id": "super-rewards",
       "nameKey": "research.alliance_recognition.super-rewards",
+      "name": "Super Rewards",
       "maxLevel": 1,
+      "labLevel": 0,
       "badgeCosts": [
         4100
+      ],
+      "stromCosts": [
+        28800000
+      ],
+      "zentCosts": [
+        13824000
+      ],
+      "combatPower": [
+        29623
       ],
       "icon": "alliance-recognition/super-rewards",
       "prerequisites": [
@@ -215,18 +539,56 @@
     {
       "id": "incentive-gathering",
       "nameKey": "research.alliance_recognition.incentive-gathering",
+      "name": "Incentive - Gathering",
       "maxLevel": 10,
+      "labLevel": 0,
       "badgeCosts": [
         520,
         620,
         730,
         880,
-        1000,
+        1040,
         1300,
-        1600,
-        2000,
-        2500,
-        3100
+        1610,
+        2020,
+        2540,
+        3110
+      ],
+      "stromCosts": [
+        2599280,
+        3119130,
+        3638990,
+        4418770,
+        5198560,
+        6498200,
+        8057760,
+        10137190,
+        12736460,
+        15595670
+      ],
+      "zentCosts": [
+        1247650,
+        1497190,
+        1746720,
+        2121010,
+        2495310,
+        3119130,
+        3867730,
+        4865850,
+        6113500,
+        7485920
+      ],
+      "combatPower": [
+        10037,
+        20932,
+        32610,
+        45354,
+        59065,
+        74224,
+        90924,
+        109441,
+        129962,
+        152441
       ],
       "icon": "alliance-recognition/incentive-gathering",
       "prerequisites": [
@@ -239,18 +601,56 @@
     {
       "id": "incentive-modified-vehicle",
       "nameKey": "research.alliance_recognition.incentive-modified-vehicle",
+      "name": "Incentive - Mod Vehicle",
       "maxLevel": 10,
+      "labLevel": 0,
       "badgeCosts": [
         520,
         620,
         730,
         880,
-        1000,
+        1040,
         1300,
-        1600,
-        2000,
-        2500,
-        3100
+        1610,
+        2020,
+        2540,
+        3110
+      ],
+      "stromCosts": [
+        2599280,
+        3119130,
+        3638990,
+        4418770,
+        5198560,
+        6498200,
+        8057760,
+        10137190,
+        12736460,
+        15595670
+      ],
+      "zentCosts": [
+        1247650,
+        1497190,
+        1746720,
+        2121010,
+        2495310,
+        3119130,
+        3867730,
+        4865850,
+        6113500,
+        7485920
+      ],
+      "combatPower": [
+        10037,
+        20932,
+        32610,
+        45354,
+        59065,
+        74224,
+        90924,
+        109441,
+        129962,
+        152441
       ],
       "icon": "alliance-recognition/incentive-modified-vehicle",
       "prerequisites": [
@@ -263,18 +663,56 @@
     {
       "id": "incentive-development",
       "nameKey": "research.alliance_recognition.incentive-development",
+      "name": "Incentive - Development",
       "maxLevel": 10,
+      "labLevel": 0,
       "badgeCosts": [
         520,
         620,
         730,
         880,
-        1000,
+        1040,
         1300,
-        1600,
-        2000,
-        2500,
-        3100
+        1610,
+        2020,
+        2540,
+        3110
+      ],
+      "stromCosts": [
+        2599280,
+        3119130,
+        3638990,
+        4418770,
+        5198560,
+        6498200,
+        8057760,
+        10137190,
+        12736460,
+        15595670
+      ],
+      "zentCosts": [
+        1247650,
+        1497190,
+        1746720,
+        2121010,
+        2495310,
+        3119130,
+        3867730,
+        4865850,
+        6113500,
+        7485920
+      ],
+      "combatPower": [
+        10037,
+        20932,
+        32610,
+        45354,
+        59065,
+        74224,
+        90924,
+        109441,
+        129962,
+        152441
       ],
       "icon": "alliance-recognition/incentive-development",
       "prerequisites": [
@@ -287,18 +725,56 @@
     {
       "id": "incentive-equipment",
       "nameKey": "research.alliance_recognition.incentive-equipment",
+      "name": "Incentive - Equipment",
       "maxLevel": 10,
+      "labLevel": 0,
       "badgeCosts": [
         520,
         620,
         730,
         880,
-        1000,
+        1040,
         1300,
-        1600,
-        2000,
-        2500,
-        3100
+        1610,
+        2020,
+        2540,
+        3110
+      ],
+      "stromCosts": [
+        2599280,
+        3119130,
+        3638990,
+        4418770,
+        5198560,
+        6498200,
+        8057760,
+        10137190,
+        12736460,
+        15595670
+      ],
+      "zentCosts": [
+        1247650,
+        1497190,
+        1746720,
+        2121010,
+        2495310,
+        3119130,
+        3867730,
+        4865850,
+        6113500,
+        7485920
+      ],
+      "combatPower": [
+        10037,
+        20932,
+        32610,
+        45354,
+        59065,
+        74224,
+        90924,
+        109441,
+        129962,
+        152441
       ],
       "icon": "alliance-recognition/incentive-equipment",
       "prerequisites": [
@@ -311,18 +787,56 @@
     {
       "id": "incentive-creeps",
       "nameKey": "research.alliance_recognition.incentive-creeps",
+      "name": "Incentive - Creeps",
       "maxLevel": 10,
+      "labLevel": 0,
       "badgeCosts": [
         520,
         620,
         730,
         880,
-        1000,
+        1040,
         1300,
-        1600,
-        2000,
-        2500,
-        3100
+        1610,
+        2020,
+        2540,
+        3110
+      ],
+      "stromCosts": [
+        2599280,
+        3119130,
+        3638990,
+        4418770,
+        5198560,
+        6498200,
+        8057760,
+        10137190,
+        12736460,
+        15595670
+      ],
+      "zentCosts": [
+        1247650,
+        1497190,
+        1746720,
+        2121010,
+        2495310,
+        3119130,
+        3867730,
+        4865850,
+        6113500,
+        7485920
+      ],
+      "combatPower": [
+        10037,
+        20932,
+        32610,
+        45354,
+        59065,
+        74224,
+        90924,
+        109441,
+        129962,
+        152441
       ],
       "icon": "alliance-recognition/incentive-creeps",
       "prerequisites": [
@@ -335,18 +849,56 @@
     {
       "id": "incentive-training",
       "nameKey": "research.alliance_recognition.incentive-training",
+      "name": "Incentive - Training",
       "maxLevel": 10,
+      "labLevel": 0,
       "badgeCosts": [
         520,
         620,
         730,
         880,
-        1000,
+        1040,
         1300,
-        1600,
-        2000,
-        2500,
-        3100
+        1610,
+        2020,
+        2540,
+        3110
+      ],
+      "stromCosts": [
+        2599280,
+        3119130,
+        3638990,
+        4418770,
+        5198560,
+        6498200,
+        8057760,
+        10137190,
+        12736460,
+        15595670
+      ],
+      "zentCosts": [
+        1247650,
+        1497190,
+        1746720,
+        2121010,
+        2495310,
+        3119130,
+        3867730,
+        4865850,
+        6113500,
+        7485920
+      ],
+      "combatPower": [
+        10037,
+        20932,
+        32610,
+        45354,
+        59065,
+        74224,
+        90924,
+        109441,
+        129962,
+        152441
       ],
       "icon": "alliance-recognition/incentive-training",
       "prerequisites": [
@@ -359,18 +911,56 @@
     {
       "id": "incentive-recruiting",
       "nameKey": "research.alliance_recognition.incentive-recruiting",
+      "name": "Incentive - Recruiting",
       "maxLevel": 10,
+      "labLevel": 0,
       "badgeCosts": [
         820,
         980,
-        1100,
-        1300,
-        1600,
-        2000,
-        2500,
-        3100,
-        3900,
-        4800
+        1140,
+        1390,
+        1630,
+        2040,
+        2520,
+        3180,
+        3990,
+        4890
+      ],
+      "stromCosts": [
+        3898920,
+        4678700,
+        5458480,
+        6628160,
+        7797830,
+        9747290,
+        12086640,
+        15205780,
+        19104690,
+        23393500
+      ],
+      "zentCosts": [
+        1871480,
+        2245780,
+        2620070,
+        3181520,
+        3742960,
+        4678700,
+        5801590,
+        7298770,
+        9170250,
+        11228880
+      ],
+      "combatPower": [
+        12046,
+        25122,
+        39137,
+        54432,
+        70887,
+        89080,
+        109123,
+        131347,
+        155975,
+        182953
       ],
       "icon": "alliance-recognition/incentive-recruiting",
       "prerequisites": [
@@ -383,18 +973,56 @@
     {
       "id": "incentive-killing",
       "nameKey": "research.alliance_recognition.incentive-killing",
+      "name": "Incentive - Killing",
       "maxLevel": 10,
+      "labLevel": 0,
       "badgeCosts": [
         820,
         980,
-        1100,
-        1300,
-        1600,
-        2000,
-        2500,
-        3100,
-        3900,
-        4800
+        1140,
+        1390,
+        1630,
+        2040,
+        2520,
+        3180,
+        3990,
+        4890
+      ],
+      "stromCosts": [
+        3898920,
+        4678700,
+        5458480,
+        6628160,
+        7797830,
+        9747290,
+        12086640,
+        15205780,
+        19104690,
+        23393500
+      ],
+      "zentCosts": [
+        1871480,
+        2245780,
+        2620070,
+        3181520,
+        3742960,
+        4678700,
+        5801590,
+        7298770,
+        9170250,
+        11228880
+      ],
+      "combatPower": [
+        12046,
+        25122,
+        39137,
+        54432,
+        70887,
+        89080,
+        109123,
+        131347,
+        155975,
+        182953
       ],
       "icon": "alliance-recognition/incentive-killing",
       "prerequisites": [
@@ -407,28 +1035,96 @@
     {
       "id": "event-king",
       "nameKey": "research.alliance_recognition.event-king",
+      "name": "Event King",
       "maxLevel": 20,
+      "labLevel": 0,
       "badgeCosts": [
-        1200,
+        1250,
         1500,
-        1700,
+        1750,
         2000,
-        2300,
-        2800,
-        3300,
+        2380,
+        2880,
+        3380,
         4000,
-        4700,
+        4750,
         5500,
-        6200,
-        7100,
-        8100,
-        9300,
-        10800,
-        11200,
+        6250,
+        7130,
+        8130,
+        9380,
+        10880,
+        11250,
         13000,
-        13700,
-        15600,
-        18700
+        13750,
+        15630,
+        18750
+      ],
+      "stromCosts": [
+        6271780,
+        7526130,
+        8780490,
+        10034840,
+        11916380,
+        14425090,
+        16933800,
+        20069690,
+        23832750,
+        27595820,
+        31358890,
+        35749130,
+        40766550,
+        47038330,
+        54564460,
+        56445990,
+        65226480,
+        68989550,
+        78397210,
+        94076660
+      ],
+      "zentCosts": [
+        3010450,
+        3612540,
+        4214640,
+        4816730,
+        5719860,
+        6924040,
+        8128220,
+        9633450,
+        11439720,
+        13245990,
+        15052270,
+        17159580,
+        19567950,
+        22578400,
+        26190940,
+        27094080,
+        31308710,
+        33114980,
+        37630660,
+        45156800
+      ],
+      "combatPower": [
+        14919,
+        31114,
+        48472,
+        66905,
+        86820,
+        108523,
+        131850,
+        157030,
+        184235,
+        213295,
+        244076,
+        276726,
+        311364,
+        348306,
+        387800,
+        427901,
+        470698,
+        514589,
+        561079,
+        611544
       ],
       "icon": "alliance-recognition/event-king",
       "prerequisites": [
@@ -445,9 +1141,20 @@
     {
       "id": "one-more",
       "nameKey": "research.alliance_recognition.one-more",
+      "name": "One More!",
       "maxLevel": 1,
+      "labLevel": 0,
       "badgeCosts": [
         20500
+      ],
+      "stromCosts": [
+        108000000
+      ],
+      "zentCosts": [
+        51840000
+      ],
+      "combatPower": [
+        53698
       ],
       "icon": "alliance-recognition/one-more",
       "prerequisites": [

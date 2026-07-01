@@ -1,6 +1,7 @@
 import { useMemo, useRef, useCallback, useEffect, useState } from 'preact/hooks';
 import { useTreeZoom, calculateMobileZoom, TREE_ZOOM_DEFAULTS } from '../../hooks/useTreeZoom';
 import TankModificationNode from './TankModificationNode';
+import TankLevelSheet from './TankLevelSheet';
 import TankModificationConnections from './TankModificationConnections';
 import TreeControls from './TreeControls';
 import { formatNumber as sharedFormatNumber } from '../../utils/formatters';
@@ -64,6 +65,7 @@ export default function TankModificationTree({
     resetView } = useTreeZoom(scrollContainerRef);
 
   const [focusedNodeLevel, setFocusedNodeLevel] = useState<number | null>(null);
+  const [sheetLevel, setSheetLevel] = useState<number | null>(null);
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -144,57 +146,40 @@ export default function TankModificationTree({
     }
   }, [svgDimensions, mounted, isMobile]);
 
-  // Handle sub-level change with dependency logic
-  const handleSubLevelChange = useCallback((level: number, subLevel: number) => {
-    const newMap = new Map(subLevels);
-    const currentMod = modifications.find(m => m.level === level);
-    if (!currentMod) return;
-
-    newMap.set(level, subLevel);
-
-    const wasMax = subLevels.get(level) === currentMod.subLevels;
-    const isNowLessThanMax = subLevel < currentMod.subLevels;
-
-    if (wasMax && isNowLessThanMax) {
-      const currentIndex = modifications.findIndex(m => m.level === level);
-      for (let i = currentIndex + 1; i < modifications.length; i++) {
-        newMap.set(modifications[i].level, 0);
-      }
-    }
-
-    onSubLevelsChange(newMap);
+  // Sheet-Auswahl: Sub-Level setzen + kaskadierende Auto-Entsperrung — alles in
+  // EINEM State-Update (sonst würde der 2. Setter mit stale State den 1. überschreiben).
+  // Regeln: dieser Level + alle vorigen werden entsperrt und vorige auf Max gesetzt;
+  // liegt dieser Level unter Max, werden alle folgenden abgewählt und gesperrt.
+  const handleSheetSelect = useCallback((level: number, subLevel: number) => {
+    const currentIndex = modifications.findIndex(m => m.level === level);
+    if (currentIndex < 0) return;
+    const mod = modifications[currentIndex];
 
     const newSet = new Set(unlockedLevels);
+    const newMap = new Map(subLevels);
 
-    if (isNowLessThanMax) {
-      const currentIndex = modifications.findIndex(m => m.level === level);
+    // Dieser Level + alle vorigen entsperren; vorige auf Max
+    for (let i = 0; i <= currentIndex; i++) {
+      newSet.add(modifications[i].level);
+    }
+    for (let i = 0; i < currentIndex; i++) {
+      newMap.set(modifications[i].level, modifications[i].subLevels);
+    }
+
+    // Gewähltes Sub-Level setzen
+    newMap.set(level, subLevel);
+
+    // Unter Max -> alle folgenden abwählen + sperren (Kaskade nach unten)
+    if (subLevel < mod.subLevels) {
       for (let i = currentIndex + 1; i < modifications.length; i++) {
+        newMap.set(modifications[i].level, 0);
         newSet.delete(modifications[i].level);
       }
     }
 
+    onSubLevelsChange(newMap);
     onUnlockedLevelsChange(newSet);
   }, [modifications, subLevels, unlockedLevels, onSubLevelsChange, onUnlockedLevelsChange]);
-
-  // Handle unlock - set all previous to MAX
-  const handleUnlock = useCallback((mod: TankModification) => {
-    const currentIndex = modifications.findIndex(m => m.level === mod.level);
-
-    const newSet = new Set(unlockedLevels);
-    newSet.add(mod.level);
-    for (let i = 0; i <= currentIndex; i++) {
-      newSet.add(modifications[i].level);
-    }
-    onUnlockedLevelsChange(newSet);
-
-    const newMap = new Map(subLevels);
-    for (let i = 0; i < currentIndex; i++) {
-      const prevMod = modifications[i];
-      newMap.set(prevMod.level, prevMod.subLevels);
-    }
-    newMap.set(mod.level, 0);
-    onSubLevelsChange(newMap);
-  }, [modifications, subLevels, unlockedLevels, onUnlockedLevelsChange, onSubLevelsChange]);
 
   useEffect(() => {
     const container = scrollContainerRef.current;
@@ -351,7 +336,7 @@ export default function TankModificationTree({
 
             return (
               <TankModificationNode
-                key={mod.level}
+                key={`${mod.level}:${isUnlocked ? 'u' : 'l'}`}
                 mod={mod}
                 x={pos.x + svgDimensions.offsetX}
                 y={pos.y + svgDimensions.offsetY}
@@ -360,8 +345,7 @@ export default function TankModificationTree({
                 unlocked={isUnlocked}
                 isTarget={targetLevel === mod.level}
                 formatNumber={formatNumber}
-                onSubLevelChange={handleSubLevelChange}
-                onUnlockClick={handleUnlock}
+                onOpenSheet={(m) => setSheetLevel(m.level)}
                 onSetTarget={() => onTargetLevelChange(mod.level)}
                 onFocus={() => setFocusedNodeLevel(mod.level)}
                 lang={lang}
@@ -382,6 +366,21 @@ export default function TankModificationTree({
         onScrollLeft={handleScrollLeft}
         onScrollRight={handleScrollRight}
       />
+      {sheetLevel !== null && (() => {
+        const m = modifications.find(mm => mm.level === sheetLevel);
+        if (!m) return null;
+        return (
+          <TankLevelSheet
+            mod={m}
+            currentSubLevel={subLevels.get(sheetLevel) || 0}
+            unlocked={unlockedLevels.has(sheetLevel)}
+            onSelect={(sl) => handleSheetSelect(sheetLevel, sl)}
+            onClose={() => setSheetLevel(null)}
+            lang={lang}
+            translationData={translationData}
+          />
+        );
+      })()}
     </div>
   );
 }

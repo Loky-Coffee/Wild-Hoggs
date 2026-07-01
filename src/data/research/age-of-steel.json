@@ -1,0 +1,1144 @@
+{
+  "id": "age_of_steel",
+  "nameKey": "research.age_of_steel.name",
+  "name": "Age of Steel",
+  "tabId": 26,
+  "nodeCount": 24,
+  "totalLevels": 145,
+  "totalBadges": 1079410,
+  "totalStrom": 2698390090,
+  "totalZent": 1079356140,
+  "labLevelMin": 30,
+  "onlyResourcesNoBadges": false,
+  "image": "/images/research/age-of-steel.png",
+  "technologies": [
+    {
+      "id": "steel-plant",
+      "nameKey": "research.age_of_steel.steel-plant",
+      "name": "Steel Plant",
+      "maxLevel": 1,
+      "labLevel": 30,
+      "badgeCosts": [
+        2580
+      ],
+      "stromCosts": [
+        6440070
+      ],
+      "zentCosts": [
+        2576030
+      ],
+      "combatPower": [
+        14586
+      ],
+      "icon": "age-of-steel/steel-plant",
+      "prerequisites": []
+    },
+    {
+      "id": "farming-technology",
+      "nameKey": "research.age_of_steel.farming-technology",
+      "name": "Farming Technology",
+      "maxLevel": 5,
+      "labLevel": 30,
+      "badgeCosts": [
+        470,
+        600,
+        840,
+        1250,
+        2000
+      ],
+      "stromCosts": [
+        1160370,
+        1508490,
+        2088670,
+        3133010,
+        4989610
+      ],
+      "zentCosts": [
+        464150,
+        603400,
+        835470,
+        1253200,
+        1995840
+      ],
+      "combatPower": [
+        6745,
+        14335,
+        23123,
+        33670,
+        46674
+      ],
+      "icon": "age-of-steel/farming-technology",
+      "prerequisites": [
+        {
+          "id": "steel-plant"
+        }
+      ]
+    },
+    {
+      "id": "woodcutter",
+      "nameKey": "research.age_of_steel.woodcutter",
+      "name": "Woodcutter",
+      "maxLevel": 5,
+      "labLevel": 30,
+      "badgeCosts": [
+        470,
+        600,
+        840,
+        1250,
+        2000
+      ],
+      "stromCosts": [
+        1160370,
+        1508490,
+        2088670,
+        3133010,
+        4989610
+      ],
+      "zentCosts": [
+        464150,
+        603400,
+        835470,
+        1253200,
+        1995840
+      ],
+      "combatPower": [
+        6745,
+        14335,
+        23123,
+        33670,
+        46674
+      ],
+      "icon": "age-of-steel/woodcutter",
+      "prerequisites": [
+        {
+          "id": "steel-plant"
+        }
+      ]
+    },
+    {
+      "id": "house-renovation",
+      "nameKey": "research.age_of_steel.house-renovation",
+      "name": "House Renovation",
+      "maxLevel": 5,
+      "labLevel": 30,
+      "badgeCosts": [
+        1860,
+        2410,
+        3340,
+        5010,
+        7980
+      ],
+      "stromCosts": [
+        4641490,
+        6033940,
+        8354690,
+        12532030,
+        19958420
+      ],
+      "zentCosts": [
+        1856600,
+        2413580,
+        3341880,
+        5012810,
+        7983370
+      ],
+      "combatPower": [
+        12587,
+        26752,
+        43151,
+        62832,
+        87098
+      ],
+      "icon": "age-of-steel/house-renovation",
+      "prerequisites": [
+        {
+          "id": "farming-technology"
+        },
+        {
+          "id": "woodcutter"
+        }
+      ]
+    },
+    {
+      "id": "smelting",
+      "nameKey": "research.age_of_steel.smelting",
+      "name": "Smelting",
+      "maxLevel": 5,
+      "labLevel": 30,
+      "badgeCosts": [
+        1860,
+        2410,
+        3340,
+        5010,
+        7980
+      ],
+      "stromCosts": [
+        4641490,
+        6033940,
+        8354690,
+        12532030,
+        19958420
+      ],
+      "zentCosts": [
+        1856600,
+        2413580,
+        3341880,
+        5012810,
+        7983370
+      ],
+      "combatPower": [
+        12587,
+        26752,
+        43151,
+        62832,
+        87098
+      ],
+      "icon": "age-of-steel/smelting",
+      "prerequisites": [
+        {
+          "id": "farming-technology"
+        },
+        {
+          "id": "woodcutter"
+        }
+      ]
+    },
+    {
+      "id": "wind-drive-i",
+      "nameKey": "research.age_of_steel.wind-drive-i",
+      "name": "Wind Drive I",
+      "maxLevel": 5,
+      "labLevel": 30,
+      "badgeCosts": [
+        2790,
+        3620,
+        5010,
+        7520,
+        11980
+      ],
+      "stromCosts": [
+        6962240,
+        9050910,
+        12532030,
+        18798050,
+        29937630
+      ],
+      "zentCosts": [
+        2784900,
+        3620370,
+        5012810,
+        7519220,
+        11975050
+      ],
+      "combatPower": [
+        15107,
+        32107,
+        51788,
+        75409,
+        104532
+      ],
+      "icon": "age-of-steel/wind-drive-i",
+      "prerequisites": [
+        {
+          "id": "farming-technology"
+        },
+        {
+          "id": "woodcutter"
+        }
+      ]
+    },
+    {
+      "id": "production-boost",
+      "nameKey": "research.age_of_steel.production-boost",
+      "name": "Production Boost",
+      "maxLevel": 1,
+      "labLevel": 31,
+      "badgeCosts": [
+        5150
+      ],
+      "stromCosts": [
+        12880140
+      ],
+      "zentCosts": [
+        5152060
+      ],
+      "combatPower": [
+        19925
+      ],
+      "icon": "age-of-steel/production-boost",
+      "prerequisites": [
+        {
+          "id": "house-renovation"
+        },
+        {
+          "id": "smelting"
+        },
+        {
+          "id": "wind-drive-i"
+        }
+      ]
+    },
+    {
+      "id": "emergency-center",
+      "nameKey": "research.age_of_steel.emergency-center",
+      "name": "Emergency Center",
+      "maxLevel": 1,
+      "labLevel": 31,
+      "badgeCosts": [
+        5150
+      ],
+      "stromCosts": [
+        12880140
+      ],
+      "zentCosts": [
+        5152060
+      ],
+      "combatPower": [
+        19925
+      ],
+      "icon": "age-of-steel/emergency-center",
+      "prerequisites": [
+        {
+          "id": "production-boost"
+        }
+      ]
+    },
+    {
+      "id": "rapid-casualty-care",
+      "nameKey": "research.age_of_steel.rapid-casualty-care",
+      "name": "Rapid Casualty Care",
+      "maxLevel": 10,
+      "labLevel": 31,
+      "badgeCosts": [
+        930,
+        1120,
+        1300,
+        1580,
+        1860,
+        2330,
+        2880,
+        3630,
+        4560,
+        5580
+      ],
+      "stromCosts": [
+        2324940,
+        2789920,
+        3254910,
+        3952390,
+        4649870,
+        5812340,
+        7207300,
+        9067250,
+        11392190,
+        13949610
+      ],
+      "zentCosts": [
+        929980,
+        1115970,
+        1301960,
+        1580960,
+        1859950,
+        2324940,
+        2882920,
+        3626900,
+        4556870,
+        5579850
+      ],
+      "combatPower": [
+        9222,
+        19232,
+        29961,
+        41670,
+        54267,
+        68195,
+        83539,
+        100553,
+        119407,
+        140060
+      ],
+      "icon": "age-of-steel/rapid-casualty-care",
+      "prerequisites": [
+        {
+          "id": "emergency-center"
+        }
+      ]
+    },
+    {
+      "id": "critical-care-bed",
+      "nameKey": "research.age_of_steel.critical-care-bed",
+      "name": "Critical Care Bed",
+      "maxLevel": 10,
+      "labLevel": 31,
+      "badgeCosts": [
+        930,
+        1120,
+        1300,
+        1580,
+        1860,
+        2330,
+        2880,
+        3630,
+        4560,
+        5580
+      ],
+      "stromCosts": [
+        2324940,
+        2789920,
+        3254910,
+        3952390,
+        4649870,
+        5812340,
+        7207300,
+        9067250,
+        11392190,
+        13949610
+      ],
+      "zentCosts": [
+        929980,
+        1115970,
+        1301960,
+        1580960,
+        1859950,
+        2324940,
+        2882920,
+        3626900,
+        4556870,
+        5579850
+      ],
+      "combatPower": [
+        9222,
+        19232,
+        29961,
+        41670,
+        54267,
+        68195,
+        83539,
+        100553,
+        119407,
+        140060
+      ],
+      "icon": "age-of-steel/critical-care-bed",
+      "prerequisites": [
+        {
+          "id": "emergency-center"
+        }
+      ]
+    },
+    {
+      "id": "skillful-craftsman",
+      "nameKey": "research.age_of_steel.skillful-craftsman",
+      "name": "Skillful Craftsman Ⅰ",
+      "maxLevel": 10,
+      "labLevel": 32,
+      "badgeCosts": [
+        1860,
+        2230,
+        2600,
+        3160,
+        3720,
+        4650,
+        5770,
+        7250,
+        9110,
+        11160
+      ],
+      "stromCosts": [
+        4649870,
+        5579850,
+        6509820,
+        7904780,
+        9299740,
+        11624680,
+        14414600,
+        18134500,
+        22784370,
+        27899230
+      ],
+      "zentCosts": [
+        1859950,
+        2231940,
+        2603930,
+        3161910,
+        3719900,
+        4649870,
+        5765840,
+        7253800,
+        9113750,
+        11159690
+      ],
+      "combatPower": [
+        12597,
+        26272,
+        40929,
+        56924,
+        74133,
+        93160,
+        114120,
+        137362,
+        163118,
+        191332
+      ],
+      "icon": "age-of-steel/skillful-craftsman",
+      "prerequisites": [
+        {
+          "id": "rapid-casualty-care"
+        },
+        {
+          "id": "critical-care-bed"
+        }
+      ]
+    },
+    {
+      "id": "parallel-work-i",
+      "nameKey": "research.age_of_steel.parallel-work-i",
+      "name": "Parallel Work I",
+      "maxLevel": 10,
+      "labLevel": 32,
+      "badgeCosts": [
+        1860,
+        2230,
+        2600,
+        3160,
+        3720,
+        4650,
+        5770,
+        7250,
+        9110,
+        11160
+      ],
+      "stromCosts": [
+        4649870,
+        5579850,
+        6509820,
+        7904780,
+        9299740,
+        11624680,
+        14414600,
+        18134500,
+        22784370,
+        27899230
+      ],
+      "zentCosts": [
+        1859950,
+        2231940,
+        2603930,
+        3161910,
+        3719900,
+        4649870,
+        5765840,
+        7253800,
+        9113750,
+        11159690
+      ],
+      "combatPower": [
+        12597,
+        26272,
+        40929,
+        56924,
+        74133,
+        93160,
+        114120,
+        137362,
+        163118,
+        191332
+      ],
+      "icon": "age-of-steel/parallel-work-i",
+      "prerequisites": [
+        {
+          "id": "rapid-casualty-care"
+        },
+        {
+          "id": "critical-care-bed"
+        }
+      ]
+    },
+    {
+      "id": "rapid-casualty-care-2",
+      "nameKey": "research.age_of_steel.rapid-casualty-care",
+      "name": "Rapid Casualty Care",
+      "maxLevel": 10,
+      "labLevel": 32,
+      "badgeCosts": [
+        2790,
+        3350,
+        3910,
+        4740,
+        5580,
+        6980,
+        8650,
+        10880,
+        13670,
+        16740
+      ],
+      "stromCosts": [
+        6974810,
+        8369770,
+        9764730,
+        11857170,
+        13949610,
+        17437020,
+        21621900,
+        27201750,
+        34176550,
+        41848840
+      ],
+      "zentCosts": [
+        2789920,
+        3347910,
+        3905890,
+        4742870,
+        5579850,
+        6974810,
+        8648760,
+        10880700,
+        13670620,
+        16739540
+      ],
+      "combatPower": [
+        15119,
+        31531,
+        49122,
+        68319,
+        88972,
+        111807,
+        136963,
+        164857,
+        195768,
+        229629
+      ],
+      "icon": "age-of-steel/rapid-casualty-care",
+      "prerequisites": [
+        {
+          "id": "skillful-craftsman"
+        },
+        {
+          "id": "parallel-work-i"
+        }
+      ]
+    },
+    {
+      "id": "critical-care-bed-2",
+      "nameKey": "research.age_of_steel.critical-care-bed",
+      "name": "Critical Care Bed",
+      "maxLevel": 10,
+      "labLevel": 32,
+      "badgeCosts": [
+        2790,
+        3350,
+        3910,
+        4740,
+        5580,
+        6980,
+        8650,
+        10880,
+        13670,
+        16740
+      ],
+      "stromCosts": [
+        6974810,
+        8369770,
+        9764730,
+        11857170,
+        13949610,
+        17437020,
+        21621900,
+        27201750,
+        34176550,
+        41848840
+      ],
+      "zentCosts": [
+        2789920,
+        3347910,
+        3905890,
+        4742870,
+        5579850,
+        6974810,
+        8648760,
+        10880700,
+        13670620,
+        16739540
+      ],
+      "combatPower": [
+        15119,
+        31531,
+        49122,
+        68319,
+        88972,
+        111807,
+        136963,
+        164857,
+        195768,
+        229629
+      ],
+      "icon": "age-of-steel/critical-care-bed",
+      "prerequisites": [
+        {
+          "id": "skillful-craftsman"
+        },
+        {
+          "id": "parallel-work-i"
+        }
+      ]
+    },
+    {
+      "id": "production-boost-2",
+      "nameKey": "research.age_of_steel.production-boost",
+      "name": "Production Boost",
+      "maxLevel": 1,
+      "labLevel": 33,
+      "badgeCosts": [
+        20610
+      ],
+      "stromCosts": [
+        51520570
+      ],
+      "zentCosts": [
+        20608230
+      ],
+      "combatPower": [
+        37182
+      ],
+      "icon": "age-of-steel/production-boost",
+      "prerequisites": [
+        {
+          "id": "rapid-casualty-care-2"
+        },
+        {
+          "id": "critical-care-bed-2"
+        }
+      ]
+    },
+    {
+      "id": "farming-technology-2",
+      "nameKey": "research.age_of_steel.farming-technology",
+      "name": "Farming Technology",
+      "maxLevel": 5,
+      "labLevel": 33,
+      "badgeCosts": [
+        6960,
+        9050,
+        12530,
+        18800,
+        29940
+      ],
+      "stromCosts": [
+        17405600,
+        22627280,
+        31330080,
+        46995120,
+        74844080
+      ],
+      "zentCosts": [
+        6962240,
+        9050910,
+        12532030,
+        18798050,
+        29937630
+      ],
+      "combatPower": [
+        22817,
+        48493,
+        78218,
+        113893,
+        157879
+      ],
+      "icon": "age-of-steel/farming-technology",
+      "prerequisites": [
+        {
+          "id": "production-boost-2"
+        }
+      ]
+    },
+    {
+      "id": "woodcutter-2",
+      "nameKey": "research.age_of_steel.woodcutter",
+      "name": "Woodcutter",
+      "maxLevel": 5,
+      "labLevel": 33,
+      "badgeCosts": [
+        6960,
+        9050,
+        12530,
+        18800,
+        29940
+      ],
+      "stromCosts": [
+        17405600,
+        22627280,
+        31330080,
+        46995120,
+        74844080
+      ],
+      "zentCosts": [
+        6962240,
+        9050910,
+        12532030,
+        18798050,
+        29937630
+      ],
+      "combatPower": [
+        22817,
+        48493,
+        78218,
+        113893,
+        157879
+      ],
+      "icon": "age-of-steel/woodcutter",
+      "prerequisites": [
+        {
+          "id": "production-boost-2"
+        }
+      ]
+    },
+    {
+      "id": "house-renovation-2",
+      "nameKey": "research.age_of_steel.house-renovation",
+      "name": "House Renovation",
+      "maxLevel": 5,
+      "labLevel": 33,
+      "badgeCosts": [
+        6960,
+        9050,
+        12530,
+        18800,
+        29940
+      ],
+      "stromCosts": [
+        17405600,
+        22627280,
+        31330080,
+        46995120,
+        74844080
+      ],
+      "zentCosts": [
+        6962240,
+        9050910,
+        12532030,
+        18798050,
+        29937630
+      ],
+      "combatPower": [
+        22817,
+        48493,
+        78218,
+        113893,
+        157879
+      ],
+      "icon": "age-of-steel/house-renovation",
+      "prerequisites": [
+        {
+          "id": "farming-technology-2"
+        },
+        {
+          "id": "woodcutter-2"
+        }
+      ]
+    },
+    {
+      "id": "smelting-2",
+      "nameKey": "research.age_of_steel.smelting",
+      "name": "Smelting",
+      "maxLevel": 5,
+      "labLevel": 33,
+      "badgeCosts": [
+        6960,
+        9050,
+        12530,
+        18800,
+        29940
+      ],
+      "stromCosts": [
+        17405600,
+        22627280,
+        31330080,
+        46995120,
+        74844080
+      ],
+      "zentCosts": [
+        6962240,
+        9050910,
+        12532030,
+        18798050,
+        29937630
+      ],
+      "combatPower": [
+        22817,
+        48493,
+        78218,
+        113893,
+        157879
+      ],
+      "icon": "age-of-steel/smelting",
+      "prerequisites": [
+        {
+          "id": "farming-technology-2"
+        },
+        {
+          "id": "woodcutter-2"
+        }
+      ]
+    },
+    {
+      "id": "wind-drive-i-2",
+      "nameKey": "research.age_of_steel.wind-drive-i",
+      "name": "Wind Drive I",
+      "maxLevel": 5,
+      "labLevel": 33,
+      "badgeCosts": [
+        6960,
+        9050,
+        12530,
+        18800,
+        29940
+      ],
+      "stromCosts": [
+        17405600,
+        22627280,
+        31330080,
+        46995120,
+        74844080
+      ],
+      "zentCosts": [
+        6962240,
+        9050910,
+        12532030,
+        18798050,
+        29937630
+      ],
+      "combatPower": [
+        22817,
+        48493,
+        78218,
+        113893,
+        157879
+      ],
+      "icon": "age-of-steel/wind-drive-i",
+      "prerequisites": [
+        {
+          "id": "farming-technology-2"
+        },
+        {
+          "id": "woodcutter-2"
+        }
+      ]
+    },
+    {
+      "id": "reservist-camp",
+      "nameKey": "research.age_of_steel.reservist-camp",
+      "name": "Reservist Camp",
+      "maxLevel": 1,
+      "labLevel": 34,
+      "badgeCosts": [
+        36070
+      ],
+      "stromCosts": [
+        90161000
+      ],
+      "zentCosts": [
+        36064400
+      ],
+      "combatPower": [
+        47830
+      ],
+      "icon": "age-of-steel/reservist-camp",
+      "prerequisites": [
+        {
+          "id": "house-renovation-2"
+        },
+        {
+          "id": "smelting-2"
+        },
+        {
+          "id": "wind-drive-i-2"
+        }
+      ]
+    },
+    {
+      "id": "rapid-casualty-care-3",
+      "nameKey": "research.age_of_steel.rapid-casualty-care",
+      "name": "Rapid Casualty Care",
+      "maxLevel": 10,
+      "labLevel": 34,
+      "badgeCosts": [
+        2790,
+        3350,
+        3910,
+        4740,
+        5580,
+        6980,
+        8650,
+        10880,
+        13670,
+        16740
+      ],
+      "stromCosts": [
+        6974810,
+        8369770,
+        9764730,
+        11857170,
+        13949610,
+        17437020,
+        21621900,
+        27201750,
+        34176550,
+        41848840
+      ],
+      "zentCosts": [
+        2789920,
+        3347910,
+        3905890,
+        4742870,
+        5579850,
+        6974810,
+        8648760,
+        10880700,
+        13670620,
+        16739540
+      ],
+      "combatPower": [
+        15119,
+        31531,
+        49122,
+        68319,
+        88972,
+        111807,
+        136963,
+        164857,
+        195768,
+        229629
+      ],
+      "icon": "age-of-steel/rapid-casualty-care",
+      "prerequisites": [
+        {
+          "id": "reservist-camp"
+        }
+      ]
+    },
+    {
+      "id": "critical-care-bed-3",
+      "nameKey": "research.age_of_steel.critical-care-bed",
+      "name": "Critical Care Bed",
+      "maxLevel": 10,
+      "labLevel": 34,
+      "badgeCosts": [
+        2790,
+        3350,
+        3910,
+        4740,
+        5580,
+        6980,
+        8650,
+        10880,
+        13670,
+        16740
+      ],
+      "stromCosts": [
+        6974810,
+        8369770,
+        9764730,
+        11857170,
+        13949610,
+        17437020,
+        21621900,
+        27201750,
+        34176550,
+        41848840
+      ],
+      "zentCosts": [
+        2789920,
+        3347910,
+        3905890,
+        4742870,
+        5579850,
+        6974810,
+        8648760,
+        10880700,
+        13670620,
+        16739540
+      ],
+      "combatPower": [
+        15119,
+        31531,
+        49122,
+        68319,
+        88972,
+        111807,
+        136963,
+        164857,
+        195768,
+        229629
+      ],
+      "icon": "age-of-steel/critical-care-bed",
+      "prerequisites": [
+        {
+          "id": "reservist-camp"
+        }
+      ]
+    },
+    {
+      "id": "combat-readiness",
+      "nameKey": "research.age_of_steel.combat-readiness",
+      "name": "Combat Readiness",
+      "maxLevel": 10,
+      "labLevel": 34,
+      "badgeCosts": [
+        2790,
+        3350,
+        3910,
+        4740,
+        5580,
+        6980,
+        8650,
+        10880,
+        13670,
+        16740
+      ],
+      "stromCosts": [
+        6974810,
+        8369770,
+        9764730,
+        11857170,
+        13949610,
+        17437020,
+        21621900,
+        27201750,
+        34176550,
+        41848840
+      ],
+      "zentCosts": [
+        2789920,
+        3347910,
+        3905890,
+        4742870,
+        5579850,
+        6974810,
+        8648760,
+        10880700,
+        13670620,
+        16739540
+      ],
+      "combatPower": [
+        15119,
+        31531,
+        49122,
+        68319,
+        88972,
+        111807,
+        136963,
+        164857,
+        195768,
+        229629
+      ],
+      "icon": "age-of-steel/combat-readiness",
+      "prerequisites": [
+        {
+          "id": "rapid-casualty-care-3"
+        },
+        {
+          "id": "critical-care-bed-3"
+        }
+      ]
+    }
+  ]
+}

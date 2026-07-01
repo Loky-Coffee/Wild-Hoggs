@@ -1,0 +1,1391 @@
+{
+  "id": "new_home",
+  "nameKey": "research.new_home.name",
+  "name": "New Home",
+  "tabId": 1,
+  "nodeCount": 50,
+  "totalLevels": 50,
+  "totalBadges": 0,
+  "totalStrom": 13070400,
+  "totalZent": 7847240,
+  "labLevelMin": 1,
+  "onlyResourcesNoBadges": true,
+  "image": "/images/research/new-home.png",
+  "technologies": [
+    {
+      "id": "wind-power",
+      "nameKey": "research.new_home.wind-power",
+      "name": "Wind Power",
+      "maxLevel": 1,
+      "labLevel": 1,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        0
+      ],
+      "zentCosts": [
+        5000
+      ],
+      "combatPower": [
+        256
+      ],
+      "icon": "new-home/wind-power",
+      "prerequisites": [
+        {
+          "id": "stacking-technique"
+        }
+      ]
+    },
+    {
+      "id": "stacking-technique",
+      "nameKey": "research.new_home.stacking-technique",
+      "name": "Stacking Technique",
+      "maxLevel": 1,
+      "labLevel": 1,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        20000
+      ],
+      "zentCosts": [
+        12000
+      ],
+      "combatPower": [
+        518
+      ],
+      "icon": "new-home/stacking-technique",
+      "prerequisites": []
+    },
+    {
+      "id": "stock-management",
+      "nameKey": "research.new_home.stock-management",
+      "name": "Stock Management Ⅰ",
+      "maxLevel": 1,
+      "labLevel": 1,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        20000
+      ],
+      "zentCosts": [
+        12000
+      ],
+      "combatPower": [
+        518
+      ],
+      "icon": "new-home/stock-management",
+      "prerequisites": [
+        {
+          "id": "stacking-technique"
+        }
+      ]
+    },
+    {
+      "id": "shooter-camp",
+      "nameKey": "research.new_home.shooter-camp",
+      "name": "Shooter Camp",
+      "maxLevel": 1,
+      "labLevel": 1,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        32000
+      ],
+      "zentCosts": [
+        19200
+      ],
+      "combatPower": [
+        572
+      ],
+      "icon": "new-home/shooter-camp",
+      "prerequisites": [
+        {
+          "id": "wind-power"
+        },
+        {
+          "id": "stock-management"
+        }
+      ]
+    },
+    {
+      "id": "underground-deal-i",
+      "nameKey": "research.new_home.underground-deal-i",
+      "name": "Underground Deal I",
+      "maxLevel": 1,
+      "labLevel": 2,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        25600
+      ],
+      "zentCosts": [
+        15360
+      ],
+      "combatPower": [
+        506
+      ],
+      "icon": "new-home/underground-deal-i",
+      "prerequisites": [
+        {
+          "id": "shooter-camp"
+        }
+      ]
+    },
+    {
+      "id": "house-renovation",
+      "nameKey": "research.new_home.house-renovation",
+      "name": "House Renovation",
+      "maxLevel": 1,
+      "labLevel": 2,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        25600
+      ],
+      "zentCosts": [
+        15360
+      ],
+      "combatPower": [
+        506
+      ],
+      "icon": "new-home/house-renovation",
+      "prerequisites": [
+        {
+          "id": "shooter-camp"
+        }
+      ]
+    },
+    {
+      "id": "stock-management-2",
+      "nameKey": "research.new_home.stock-management",
+      "name": "Stock Management Ⅱ",
+      "maxLevel": 1,
+      "labLevel": 2,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        28000
+      ],
+      "zentCosts": [
+        16800
+      ],
+      "combatPower": [
+        515
+      ],
+      "icon": "new-home/stock-management",
+      "prerequisites": [
+        {
+          "id": "underground-deal-i"
+        },
+        {
+          "id": "house-renovation"
+        }
+      ]
+    },
+    {
+      "id": "fast-drive",
+      "nameKey": "research.new_home.fast-drive",
+      "name": "Fast Drive",
+      "maxLevel": 1,
+      "labLevel": 2,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        28000
+      ],
+      "zentCosts": [
+        16800
+      ],
+      "combatPower": [
+        515
+      ],
+      "icon": "new-home/fast-drive",
+      "prerequisites": [
+        {
+          "id": "underground-deal-i"
+        },
+        {
+          "id": "house-renovation"
+        }
+      ]
+    },
+    {
+      "id": "mechanical-parts",
+      "nameKey": "research.new_home.mechanical-parts",
+      "name": "Mechanical Parts",
+      "maxLevel": 1,
+      "labLevel": 2,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        42000
+      ],
+      "zentCosts": [
+        25200
+      ],
+      "combatPower": [
+        603
+      ],
+      "icon": "new-home/mechanical-parts",
+      "prerequisites": [
+        {
+          "id": "stock-management-2"
+        },
+        {
+          "id": "fast-drive"
+        }
+      ]
+    },
+    {
+      "id": "food-production",
+      "nameKey": "research.new_home.food-production",
+      "name": "Food Production",
+      "maxLevel": 1,
+      "labLevel": 5,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        36000
+      ],
+      "zentCosts": [
+        21600
+      ],
+      "combatPower": [
+        548
+      ],
+      "icon": "new-home/food-production",
+      "prerequisites": [
+        {
+          "id": "multitasking"
+        }
+      ]
+    },
+    {
+      "id": "stock-management-3",
+      "nameKey": "research.new_home.stock-management",
+      "name": "Stock Management Ⅲ",
+      "maxLevel": 1,
+      "labLevel": 3,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        43200
+      ],
+      "zentCosts": [
+        25920
+      ],
+      "combatPower": [
+        579
+      ],
+      "icon": "new-home/stock-management",
+      "prerequisites": [
+        {
+          "id": "rider-camp"
+        }
+      ]
+    },
+    {
+      "id": "wood-harvest",
+      "nameKey": "research.new_home.wood-harvest",
+      "name": "Wood Harvest",
+      "maxLevel": 1,
+      "labLevel": 3,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        43200
+      ],
+      "zentCosts": [
+        25920
+      ],
+      "combatPower": [
+        579
+      ],
+      "icon": "new-home/wood-harvest",
+      "prerequisites": [
+        {
+          "id": "rider-camp"
+        }
+      ]
+    },
+    {
+      "id": "vehicle-parts",
+      "nameKey": "research.new_home.vehicle-parts",
+      "name": "Vehicle Parts",
+      "maxLevel": 1,
+      "labLevel": 3,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        84000
+      ],
+      "zentCosts": [
+        50400
+      ],
+      "combatPower": [
+        736
+      ],
+      "icon": "new-home/vehicle-parts",
+      "prerequisites": [
+        {
+          "id": "stock-management-3"
+        },
+        {
+          "id": "wood-harvest"
+        }
+      ]
+    },
+    {
+      "id": "wood-harvest-2",
+      "nameKey": "research.new_home.wood-harvest",
+      "name": "Wood Harvest",
+      "maxLevel": 1,
+      "labLevel": 3,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        110000
+      ],
+      "zentCosts": [
+        66000
+      ],
+      "combatPower": [
+        804
+      ],
+      "icon": "new-home/wood-harvest",
+      "prerequisites": [
+        {
+          "id": "vehicle-parts"
+        }
+      ]
+    },
+    {
+      "id": "underground-deal",
+      "nameKey": "research.new_home.underground-deal",
+      "name": "Underground Deal Ⅱ",
+      "maxLevel": 1,
+      "labLevel": 4,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        102400
+      ],
+      "zentCosts": [
+        61440
+      ],
+      "combatPower": [
+        751
+      ],
+      "icon": "new-home/underground-deal",
+      "prerequisites": [
+        {
+          "id": "wood-harvest-2"
+        }
+      ]
+    },
+    {
+      "id": "wind-power-2",
+      "nameKey": "research.new_home.wind-power",
+      "name": "Wind Power",
+      "maxLevel": 1,
+      "labLevel": 4,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        88000
+      ],
+      "zentCosts": [
+        52800
+      ],
+      "combatPower": [
+        701
+      ],
+      "icon": "new-home/wind-power",
+      "prerequisites": [
+        {
+          "id": "wood-harvest-2"
+        }
+      ]
+    },
+    {
+      "id": "house-renovation-2",
+      "nameKey": "research.new_home.house-renovation",
+      "name": "House Renovation",
+      "maxLevel": 1,
+      "labLevel": 4,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        102400
+      ],
+      "zentCosts": [
+        61440
+      ],
+      "combatPower": [
+        751
+      ],
+      "icon": "new-home/house-renovation",
+      "prerequisites": [
+        {
+          "id": "wood-harvest-2"
+        }
+      ]
+    },
+    {
+      "id": "advanced-mathematics-i",
+      "nameKey": "research.new_home.advanced-mathematics-i",
+      "name": "Advanced Mathematics I",
+      "maxLevel": 1,
+      "labLevel": 4,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        144000
+      ],
+      "zentCosts": [
+        86400
+      ],
+      "combatPower": [
+        842
+      ],
+      "icon": "new-home/advanced-mathematics-i",
+      "prerequisites": [
+        {
+          "id": "underground-deal"
+        },
+        {
+          "id": "wind-power-2"
+        },
+        {
+          "id": "house-renovation-2"
+        }
+      ]
+    },
+    {
+      "id": "fast-drive-2",
+      "nameKey": "research.new_home.fast-drive",
+      "name": "Fast Drive",
+      "maxLevel": 1,
+      "labLevel": 4,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        144000
+      ],
+      "zentCosts": [
+        86400
+      ],
+      "combatPower": [
+        842
+      ],
+      "icon": "new-home/fast-drive",
+      "prerequisites": [
+        {
+          "id": "underground-deal"
+        },
+        {
+          "id": "wind-power-2"
+        },
+        {
+          "id": "house-renovation-2"
+        }
+      ]
+    },
+    {
+      "id": "skillful-craftsman",
+      "nameKey": "research.new_home.skillful-craftsman",
+      "name": "Skillful Craftsman Ⅰ",
+      "maxLevel": 1,
+      "labLevel": 4,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        144000
+      ],
+      "zentCosts": [
+        86400
+      ],
+      "combatPower": [
+        842
+      ],
+      "icon": "new-home/skillful-craftsman",
+      "prerequisites": [
+        {
+          "id": "underground-deal"
+        },
+        {
+          "id": "wind-power-2"
+        },
+        {
+          "id": "house-renovation-2"
+        }
+      ]
+    },
+    {
+      "id": "stock-management-4",
+      "nameKey": "research.new_home.stock-management",
+      "name": "Stock Management Ⅳ",
+      "maxLevel": 1,
+      "labLevel": 4,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        115200
+      ],
+      "zentCosts": [
+        69120
+      ],
+      "combatPower": [
+        729
+      ],
+      "icon": "new-home/stock-management",
+      "prerequisites": [
+        {
+          "id": "advanced-mathematics-i"
+        },
+        {
+          "id": "fast-drive-2"
+        },
+        {
+          "id": "skillful-craftsman"
+        }
+      ]
+    },
+    {
+      "id": "food-production-2",
+      "nameKey": "research.new_home.food-production",
+      "name": "Food Production",
+      "maxLevel": 1,
+      "labLevel": 4,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        115200
+      ],
+      "zentCosts": [
+        69120
+      ],
+      "combatPower": [
+        729
+      ],
+      "icon": "new-home/food-production",
+      "prerequisites": [
+        {
+          "id": "advanced-mathematics-i"
+        },
+        {
+          "id": "fast-drive-2"
+        },
+        {
+          "id": "skillful-craftsman"
+        }
+      ]
+    },
+    {
+      "id": "food-gathering",
+      "nameKey": "research.new_home.food-gathering",
+      "name": "Food Gathering",
+      "maxLevel": 1,
+      "labLevel": 5,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        153600
+      ],
+      "zentCosts": [
+        92160
+      ],
+      "combatPower": [
+        830
+      ],
+      "icon": "new-home/food-gathering",
+      "prerequisites": [
+        {
+          "id": "stock-management-4"
+        },
+        {
+          "id": "food-production-2"
+        }
+      ]
+    },
+    {
+      "id": "advanced-mathematics-i-2",
+      "nameKey": "research.new_home.advanced-mathematics-i",
+      "name": "Advanced Mathematics I",
+      "maxLevel": 1,
+      "labLevel": 5,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        153600
+      ],
+      "zentCosts": [
+        92160
+      ],
+      "combatPower": [
+        830
+      ],
+      "icon": "new-home/advanced-mathematics-i",
+      "prerequisites": [
+        {
+          "id": "stock-management-4"
+        },
+        {
+          "id": "food-production-2"
+        }
+      ]
+    },
+    {
+      "id": "wood-harvest-3",
+      "nameKey": "research.new_home.wood-harvest",
+      "name": "Wood Harvest",
+      "maxLevel": 1,
+      "labLevel": 5,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        153600
+      ],
+      "zentCosts": [
+        92160
+      ],
+      "combatPower": [
+        830
+      ],
+      "icon": "new-home/wood-harvest",
+      "prerequisites": [
+        {
+          "id": "stock-management-4"
+        },
+        {
+          "id": "food-production-2"
+        }
+      ]
+    },
+    {
+      "id": "multitasking",
+      "nameKey": "research.new_home.multitasking",
+      "name": "Multitasking",
+      "maxLevel": 1,
+      "labLevel": 5,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        153600
+      ],
+      "zentCosts": [
+        92160
+      ],
+      "combatPower": [
+        830
+      ],
+      "icon": "new-home/multitasking",
+      "prerequisites": [
+        {
+          "id": "food-gathering"
+        },
+        {
+          "id": "advanced-mathematics-i-2"
+        },
+        {
+          "id": "wood-harvest-3"
+        }
+      ]
+    },
+    {
+      "id": "rider-camp",
+      "nameKey": "research.new_home.rider-camp",
+      "name": "Rider Camp",
+      "maxLevel": 1,
+      "labLevel": 3,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        432000
+      ],
+      "zentCosts": [
+        259200
+      ],
+      "combatPower": [
+        1322
+      ],
+      "icon": "new-home/rider-camp",
+      "prerequisites": [
+        {
+          "id": "mechanical-parts"
+        }
+      ]
+    },
+    {
+      "id": "engine-upgrading",
+      "nameKey": "research.new_home.engine-upgrading",
+      "name": "Engine Upgrading",
+      "maxLevel": 1,
+      "labLevel": 6,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        192000
+      ],
+      "zentCosts": [
+        115200
+      ],
+      "combatPower": [
+        918
+      ],
+      "icon": "new-home/engine-upgrading",
+      "prerequisites": [
+        {
+          "id": "food-production"
+        }
+      ]
+    },
+    {
+      "id": "wind-power-3",
+      "nameKey": "research.new_home.wind-power",
+      "name": "Wind Power",
+      "maxLevel": 1,
+      "labLevel": 6,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        230400
+      ],
+      "zentCosts": [
+        138240
+      ],
+      "combatPower": [
+        996
+      ],
+      "icon": "new-home/wind-power",
+      "prerequisites": [
+        {
+          "id": "engine-upgrading"
+        }
+      ]
+    },
+    {
+      "id": "food-production-3",
+      "nameKey": "research.new_home.food-production",
+      "name": "Food Production",
+      "maxLevel": 1,
+      "labLevel": 6,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        230400
+      ],
+      "zentCosts": [
+        138240
+      ],
+      "combatPower": [
+        996
+      ],
+      "icon": "new-home/food-production",
+      "prerequisites": [
+        {
+          "id": "engine-upgrading"
+        }
+      ]
+    },
+    {
+      "id": "wood-harvest-4",
+      "nameKey": "research.new_home.wood-harvest",
+      "name": "Wood Harvest",
+      "maxLevel": 1,
+      "labLevel": 6,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        230400
+      ],
+      "zentCosts": [
+        138240
+      ],
+      "combatPower": [
+        996
+      ],
+      "icon": "new-home/wood-harvest",
+      "prerequisites": [
+        {
+          "id": "engine-upgrading"
+        }
+      ]
+    },
+    {
+      "id": "assembly-tech",
+      "nameKey": "research.new_home.assembly-tech",
+      "name": "Assembly Tech",
+      "maxLevel": 1,
+      "labLevel": 6,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        320000
+      ],
+      "zentCosts": [
+        192000
+      ],
+      "combatPower": [
+        1155
+      ],
+      "icon": "new-home/assembly-tech",
+      "prerequisites": [
+        {
+          "id": "wind-power-3"
+        },
+        {
+          "id": "food-production-3"
+        },
+        {
+          "id": "wood-harvest-4"
+        }
+      ]
+    },
+    {
+      "id": "emergency-training",
+      "nameKey": "research.new_home.emergency-training",
+      "name": "Emergency Training",
+      "maxLevel": 1,
+      "labLevel": 6,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        320000
+      ],
+      "zentCosts": [
+        192000
+      ],
+      "combatPower": [
+        1155
+      ],
+      "icon": "new-home/emergency-training",
+      "prerequisites": [
+        {
+          "id": "wind-power-3"
+        },
+        {
+          "id": "food-production-3"
+        },
+        {
+          "id": "wood-harvest-4"
+        }
+      ]
+    },
+    {
+      "id": "firearms-assembly",
+      "nameKey": "research.new_home.firearms-assembly",
+      "name": "Firearms Assembly",
+      "maxLevel": 1,
+      "labLevel": 6,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        320000
+      ],
+      "zentCosts": [
+        192000
+      ],
+      "combatPower": [
+        1155
+      ],
+      "icon": "new-home/firearms-assembly",
+      "prerequisites": [
+        {
+          "id": "wind-power-3"
+        },
+        {
+          "id": "food-production-3"
+        },
+        {
+          "id": "wood-harvest-4"
+        }
+      ]
+    },
+    {
+      "id": "firearms-upgrading",
+      "nameKey": "research.new_home.firearms-upgrading",
+      "name": "Firearms Upgrading",
+      "maxLevel": 1,
+      "labLevel": 7,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        640000
+      ],
+      "zentCosts": [
+        384000
+      ],
+      "combatPower": [
+        1578
+      ],
+      "icon": "new-home/firearms-upgrading",
+      "prerequisites": [
+        {
+          "id": "assembly-tech"
+        },
+        {
+          "id": "emergency-training"
+        },
+        {
+          "id": "firearms-assembly"
+        }
+      ]
+    },
+    {
+      "id": "fighting-skills-i",
+      "nameKey": "research.new_home.fighting-skills-i",
+      "name": "Fighting Skills I",
+      "maxLevel": 1,
+      "labLevel": 7,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        384000
+      ],
+      "zentCosts": [
+        230400
+      ],
+      "combatPower": [
+        1254
+      ],
+      "icon": "new-home/fighting-skills-i",
+      "prerequisites": [
+        {
+          "id": "firearms-upgrading"
+        }
+      ]
+    },
+    {
+      "id": "equipment-enhancement-i",
+      "nameKey": "research.new_home.equipment-enhancement-i",
+      "name": "Equipment Enhancement I",
+      "maxLevel": 1,
+      "labLevel": 7,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        384000
+      ],
+      "zentCosts": [
+        230400
+      ],
+      "combatPower": [
+        1254
+      ],
+      "icon": "new-home/equipment-enhancement-i",
+      "prerequisites": [
+        {
+          "id": "firearms-upgrading"
+        }
+      ]
+    },
+    {
+      "id": "gun-sight-i",
+      "nameKey": "research.new_home.gun-sight-i",
+      "name": "Gun Sight I",
+      "maxLevel": 1,
+      "labLevel": 7,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        384000
+      ],
+      "zentCosts": [
+        230400
+      ],
+      "combatPower": [
+        1254
+      ],
+      "icon": "new-home/gun-sight-i",
+      "prerequisites": [
+        {
+          "id": "firearms-upgrading"
+        }
+      ]
+    },
+    {
+      "id": "multitasking-2",
+      "nameKey": "research.new_home.multitasking",
+      "name": "Multitasking",
+      "maxLevel": 1,
+      "labLevel": 7,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        1280000
+      ],
+      "zentCosts": [
+        768000
+      ],
+      "combatPower": [
+        2156
+      ],
+      "icon": "new-home/multitasking",
+      "prerequisites": [
+        {
+          "id": "fighting-skills-i"
+        },
+        {
+          "id": "equipment-enhancement-i"
+        },
+        {
+          "id": "gun-sight-i"
+        }
+      ]
+    },
+    {
+      "id": "food-gathering-2",
+      "nameKey": "research.new_home.food-gathering",
+      "name": "Food Gathering",
+      "maxLevel": 1,
+      "labLevel": 7,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        432000
+      ],
+      "zentCosts": [
+        259200
+      ],
+      "combatPower": [
+        1322
+      ],
+      "icon": "new-home/food-gathering",
+      "prerequisites": [
+        {
+          "id": "multitasking-2"
+        }
+      ]
+    },
+    {
+      "id": "wind-power-4",
+      "nameKey": "research.new_home.wind-power",
+      "name": "Wind Power",
+      "maxLevel": 1,
+      "labLevel": 7,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        432000
+      ],
+      "zentCosts": [
+        259200
+      ],
+      "combatPower": [
+        1322
+      ],
+      "icon": "new-home/wind-power",
+      "prerequisites": [
+        {
+          "id": "multitasking-2"
+        }
+      ]
+    },
+    {
+      "id": "food-production-4",
+      "nameKey": "research.new_home.food-production",
+      "name": "Food Production",
+      "maxLevel": 1,
+      "labLevel": 7,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        432000
+      ],
+      "zentCosts": [
+        259200
+      ],
+      "combatPower": [
+        1322
+      ],
+      "icon": "new-home/food-production",
+      "prerequisites": [
+        {
+          "id": "multitasking-2"
+        }
+      ]
+    },
+    {
+      "id": "advanced-mathematics",
+      "nameKey": "research.new_home.advanced-mathematics",
+      "name": "Advanced Mathematics Ⅱ",
+      "maxLevel": 1,
+      "labLevel": 8,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        432000
+      ],
+      "zentCosts": [
+        259200
+      ],
+      "combatPower": [
+        1322
+      ],
+      "icon": "new-home/advanced-mathematics",
+      "prerequisites": [
+        {
+          "id": "food-gathering-2"
+        },
+        {
+          "id": "wind-power-4"
+        },
+        {
+          "id": "food-production-4"
+        }
+      ]
+    },
+    {
+      "id": "skillful-craftsman-2",
+      "nameKey": "research.new_home.skillful-craftsman",
+      "name": "Skillful Craftsman Ⅱ",
+      "maxLevel": 1,
+      "labLevel": 8,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        432000
+      ],
+      "zentCosts": [
+        259200
+      ],
+      "combatPower": [
+        1322
+      ],
+      "icon": "new-home/skillful-craftsman",
+      "prerequisites": [
+        {
+          "id": "food-gathering-2"
+        },
+        {
+          "id": "wind-power-4"
+        },
+        {
+          "id": "food-production-4"
+        }
+      ]
+    },
+    {
+      "id": "assembly-tech-2",
+      "nameKey": "research.new_home.assembly-tech",
+      "name": "Assembly Tech",
+      "maxLevel": 1,
+      "labLevel": 8,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        576000
+      ],
+      "zentCosts": [
+        345600
+      ],
+      "combatPower": [
+        1505
+      ],
+      "icon": "new-home/assembly-tech",
+      "prerequisites": [
+        {
+          "id": "advanced-mathematics"
+        },
+        {
+          "id": "skillful-craftsman-2"
+        }
+      ]
+    },
+    {
+      "id": "emergency-training-2",
+      "nameKey": "research.new_home.emergency-training",
+      "name": "Emergency Training",
+      "maxLevel": 1,
+      "labLevel": 8,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        576000
+      ],
+      "zentCosts": [
+        345600
+      ],
+      "combatPower": [
+        1505
+      ],
+      "icon": "new-home/emergency-training",
+      "prerequisites": [
+        {
+          "id": "advanced-mathematics"
+        },
+        {
+          "id": "skillful-craftsman-2"
+        }
+      ]
+    },
+    {
+      "id": "firearms-assembly-2",
+      "nameKey": "research.new_home.firearms-assembly",
+      "name": "Firearms Assembly",
+      "maxLevel": 1,
+      "labLevel": 8,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        576000
+      ],
+      "zentCosts": [
+        345600
+      ],
+      "combatPower": [
+        1505
+      ],
+      "icon": "new-home/firearms-assembly",
+      "prerequisites": [
+        {
+          "id": "advanced-mathematics"
+        },
+        {
+          "id": "skillful-craftsman-2"
+        }
+      ]
+    },
+    {
+      "id": "self-defense-tricks",
+      "nameKey": "research.new_home.self-defense-tricks",
+      "name": "Self-Defense Tricks",
+      "maxLevel": 1,
+      "labLevel": 8,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        576000
+      ],
+      "zentCosts": [
+        345600
+      ],
+      "combatPower": [
+        1505
+      ],
+      "icon": "new-home/self-defense-tricks",
+      "prerequisites": [
+        {
+          "id": "assembly-tech-2"
+        },
+        {
+          "id": "emergency-training-2"
+        },
+        {
+          "id": "firearms-assembly-2"
+        }
+      ]
+    },
+    {
+      "id": "explosion-proof-armor",
+      "nameKey": "research.new_home.explosion-proof-armor",
+      "name": "Explosion-proof Armor",
+      "maxLevel": 1,
+      "labLevel": 8,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        576000
+      ],
+      "zentCosts": [
+        345600
+      ],
+      "combatPower": [
+        1505
+      ],
+      "icon": "new-home/explosion-proof-armor",
+      "prerequisites": [
+        {
+          "id": "assembly-tech-2"
+        },
+        {
+          "id": "emergency-training-2"
+        },
+        {
+          "id": "firearms-assembly-2"
+        }
+      ]
+    },
+    {
+      "id": "tactical-cover",
+      "nameKey": "research.new_home.tactical-cover",
+      "name": "Tactical Cover",
+      "maxLevel": 1,
+      "labLevel": 8,
+      "badgeCosts": [
+        0
+      ],
+      "stromCosts": [
+        576000
+      ],
+      "zentCosts": [
+        345600
+      ],
+      "combatPower": [
+        1505
+      ],
+      "icon": "new-home/tactical-cover",
+      "prerequisites": [
+        {
+          "id": "assembly-tech-2"
+        },
+        {
+          "id": "emergency-training-2"
+        },
+        {
+          "id": "firearms-assembly-2"
+        }
+      ]
+    }
+  ]
+}

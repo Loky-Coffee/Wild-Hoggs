@@ -53,13 +53,14 @@ export function getLocalizedPath(path: string, lang: Language): string {
   // Remove leading slash if present
   const cleanPath = path.startsWith('/') ? path.slice(1) : path;
 
-  // English (default) has no prefix
-  if (lang === defaultLang) {
-    return `/${cleanPath}`;
-  }
+  // Basis-Pfad (English = default, ohne Präfix; andere mit /{lang}/)
+  const base = lang === defaultLang ? `/${cleanPath}` : `/${lang}/${cleanPath}`;
 
-  // Other languages have /{lang}/ prefix
-  return `/${lang}/${cleanPath}`;
+  // trailingSlash: 'always' -> Slash anhängen (außer bei Query/Hash/Datei-Endung)
+  if (base.endsWith('/') || base.includes('?') || base.includes('#') || /\.[a-z0-9]+$/i.test(base)) {
+    return base;
+  }
+  return `${base}/`;
 }
 
 /**

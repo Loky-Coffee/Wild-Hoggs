@@ -1,15 +1,23 @@
 {
   "id": "military_strategies",
   "nameKey": "research.military_strategies.name",
-  "totalBadges": 79816,
-  "totalLevels": 149,
+  "name": "Military Strategies",
+  "tabId": 9,
   "nodeCount": 18,
+  "totalLevels": 149,
+  "totalBadges": 80116,
+  "totalStrom": 840000170,
+  "totalZent": 576000260,
+  "labLevelMin": 16,
+  "onlyResourcesNoBadges": false,
   "image": "/images/research/military-strategies.png",
   "technologies": [
     {
       "id": "fire-up",
       "nameKey": "research.military_strategies.fire-up",
+      "name": "Fire Up",
       "maxLevel": 10,
+      "labLevel": 16,
       "badgeCosts": [
         77,
         92,
@@ -21,6 +29,42 @@
         300,
         380,
         460
+      ],
+      "stromCosts": [
+        567880,
+        681460,
+        795040,
+        965400,
+        1135770,
+        1419710,
+        1760440,
+        2214740,
+        2782620,
+        3407290
+      ],
+      "zentCosts": [
+        389410,
+        467290,
+        545170,
+        661990,
+        778810,
+        973510,
+        1207160,
+        1518680,
+        1908090,
+        2336430
+      ],
+      "combatPower": [
+        5475,
+        11418,
+        17788,
+        24739,
+        32218,
+        40487,
+        49596,
+        59697,
+        70890,
+        83152
       ],
       "icon": "military-strategies/fire-up",
       "prerequisites": []
@@ -28,7 +72,9 @@
     {
       "id": "armor-upgrade",
       "nameKey": "research.military_strategies.armor-upgrade",
+      "name": "Armor Upgrade",
       "maxLevel": 10,
+      "labLevel": 16,
       "badgeCosts": [
         77,
         92,
@@ -41,13 +87,51 @@
         380,
         460
       ],
+      "stromCosts": [
+        567880,
+        681460,
+        795040,
+        965400,
+        1135770,
+        1419710,
+        1760440,
+        2214740,
+        2782620,
+        3407290
+      ],
+      "zentCosts": [
+        389410,
+        467290,
+        545170,
+        661990,
+        778810,
+        973510,
+        1207160,
+        1518680,
+        1908090,
+        2336430
+      ],
+      "combatPower": [
+        5475,
+        11418,
+        17788,
+        24739,
+        32218,
+        40487,
+        49596,
+        59697,
+        70890,
+        83152
+      ],
       "icon": "military-strategies/armor-upgrade",
       "prerequisites": []
     },
     {
       "id": "joint-operation",
       "nameKey": "research.military_strategies.joint-operation",
+      "name": "Joint Operation",
       "maxLevel": 10,
+      "labLevel": 16,
       "badgeCosts": [
         77,
         92,
@@ -59,6 +143,42 @@
         300,
         380,
         460
+      ],
+      "stromCosts": [
+        567880,
+        681460,
+        795040,
+        965400,
+        1135770,
+        1419710,
+        1760440,
+        2214740,
+        2782620,
+        3407290
+      ],
+      "zentCosts": [
+        389410,
+        467290,
+        545170,
+        661990,
+        778810,
+        973510,
+        1207160,
+        1518680,
+        1908090,
+        2336430
+      ],
+      "combatPower": [
+        5475,
+        11418,
+        17788,
+        24739,
+        32218,
+        40487,
+        49596,
+        59697,
+        70890,
+        83152
       ],
       "icon": "military-strategies/joint-operation",
       "prerequisites": [
@@ -68,7 +188,9 @@
     {
       "id": "mobile-defense",
       "nameKey": "research.military_strategies.mobile-defense",
+      "name": "Mobile Defense",
       "maxLevel": 10,
+      "labLevel": 16,
       "badgeCosts": [
         77,
         92,
@@ -81,6 +203,42 @@
         380,
         460
       ],
+      "stromCosts": [
+        567880,
+        681460,
+        795040,
+        965400,
+        1135770,
+        1419710,
+        1760440,
+        2214740,
+        2782620,
+        3407290
+      ],
+      "zentCosts": [
+        389410,
+        467290,
+        545170,
+        661990,
+        778810,
+        973510,
+        1207160,
+        1518680,
+        1908090,
+        2336430
+      ],
+      "combatPower": [
+        5475,
+        11418,
+        17788,
+        24739,
+        32218,
+        40487,
+        49596,
+        59697,
+        70890,
+        83152
+      ],
       "icon": "military-strategies/mobile-defense",
       "prerequisites": [
         "armor-upgrade"
@@ -89,7 +247,9 @@
     {
       "id": "combat-policy",
       "nameKey": "research.military_strategies.combat-policy",
+      "name": "Combat Policy",
       "maxLevel": 10,
+      "labLevel": 16,
       "badgeCosts": [
         100,
         120,
@@ -101,6 +261,42 @@
         400,
         500,
         610
+      ],
+      "stromCosts": [
+        851820,
+        1022190,
+        1192550,
+        1448100,
+        1703650,
+        2129560,
+        2640650,
+        3322110,
+        4173940,
+        5110940
+      ],
+      "zentCosts": [
+        584110,
+        700930,
+        817750,
+        992980,
+        1168220,
+        1460270,
+        1810730,
+        2278020,
+        2862130,
+        3504650
+      ],
+      "combatPower": [
+        6570,
+        13702,
+        21347,
+        29690,
+        38666,
+        48590,
+        59523,
+        71646,
+        85080,
+        99796
       ],
       "icon": "military-strategies/combat-policy",
       "prerequisites": [
@@ -110,7 +306,9 @@
     {
       "id": "interceptions",
       "nameKey": "research.military_strategies.interceptions",
+      "name": "Interceptions",
       "maxLevel": 10,
+      "labLevel": 16,
       "badgeCosts": [
         100,
         120,
@@ -123,6 +321,42 @@
         500,
         610
       ],
+      "stromCosts": [
+        851820,
+        1022190,
+        1192550,
+        1448100,
+        1703650,
+        2129560,
+        2640650,
+        3322110,
+        4173940,
+        5110940
+      ],
+      "zentCosts": [
+        584110,
+        700930,
+        817750,
+        992980,
+        1168220,
+        1460270,
+        1810730,
+        2278020,
+        2862130,
+        3504650
+      ],
+      "combatPower": [
+        6570,
+        13702,
+        21347,
+        29690,
+        38666,
+        48590,
+        59523,
+        71646,
+        85080,
+        99796
+      ],
       "icon": "military-strategies/interceptions",
       "prerequisites": [
         "mobile-defense"
@@ -131,26 +365,66 @@
     {
       "id": "demolition-crew",
       "nameKey": "research.military_strategies.demolition-crew",
+      "name": "Demolition Crew",
       "maxLevel": 1,
+      "labLevel": 16,
       "badgeCosts": [
         570
       ],
+      "stromCosts": [
+        3146070
+      ],
+      "zentCosts": [
+        2157300
+      ],
+      "combatPower": [
+        11829
+      ],
       "icon": "military-strategies/demolition-crew",
       "prerequisites": [
-        { "id": "combat-policy", "requiredLevel": 10 },
-        { "id": "interceptions", "requiredLevel": 10 }
+        {
+          "id": "combat-policy",
+          "requiredLevel": 10
+        },
+        {
+          "id": "interceptions",
+          "requiredLevel": 10
+        }
       ]
     },
     {
       "id": "quick-assembly",
       "nameKey": "research.military_strategies.quick-assembly",
+      "name": "Quick Assembly",
       "maxLevel": 5,
+      "labLevel": 17,
       "badgeCosts": [
         190,
         250,
         340,
         520,
         820
+      ],
+      "stromCosts": [
+        2125720,
+        2763440,
+        3826300,
+        5739450,
+        9140600
+      ],
+      "zentCosts": [
+        1457640,
+        1894930,
+        2623750,
+        3935620,
+        6267840
+      ],
+      "combatPower": [
+        9916,
+        21074,
+        33992,
+        49496,
+        68612
       ],
       "icon": "military-strategies/quick-assembly",
       "prerequisites": [
@@ -160,13 +434,36 @@
     {
       "id": "arms-assembly",
       "nameKey": "research.military_strategies.arms-assembly",
+      "name": "Arms Assembly",
       "maxLevel": 5,
+      "labLevel": 17,
       "badgeCosts": [
         190,
         250,
         340,
         520,
         820
+      ],
+      "stromCosts": [
+        2125720,
+        2763440,
+        3826300,
+        5739450,
+        9140600
+      ],
+      "zentCosts": [
+        1457640,
+        1894930,
+        2623750,
+        3935620,
+        6267840
+      ],
+      "combatPower": [
+        9916,
+        21074,
+        33992,
+        49496,
+        68612
       ],
       "icon": "military-strategies/arms-assembly",
       "prerequisites": [
@@ -176,13 +473,36 @@
     {
       "id": "target-training",
       "nameKey": "research.military_strategies.target-training",
+      "name": "Target Training",
       "maxLevel": 5,
+      "labLevel": 17,
       "badgeCosts": [
         190,
         250,
         340,
         520,
         820
+      ],
+      "stromCosts": [
+        2125720,
+        2763440,
+        3826300,
+        5739450,
+        9140600
+      ],
+      "zentCosts": [
+        1457640,
+        1894930,
+        2623750,
+        3935620,
+        6267840
+      ],
+      "combatPower": [
+        9916,
+        21074,
+        33992,
+        49496,
+        68612
       ],
       "icon": "military-strategies/target-training",
       "prerequisites": [
@@ -192,23 +512,51 @@
     {
       "id": "recharge-shield",
       "nameKey": "research.military_strategies.recharge-shield",
+      "name": "Recharge Shield",
       "maxLevel": 3,
+      "labLevel": 17,
       "badgeCosts": [
         170,
         300,
         520
       ],
+      "stromCosts": [
+        1931800,
+        3284050,
+        5795390
+      ],
+      "zentCosts": [
+        1324660,
+        2251920,
+        3973980
+      ],
+      "combatPower": [
+        9498,
+        21558,
+        37130
+      ],
       "icon": "military-strategies/recharge-shield",
       "prerequisites": [
-        { "id": "quick-assembly", "requiredLevel": 5 },
-        { "id": "arms-assembly", "requiredLevel": 5 },
-        { "id": "target-training", "requiredLevel": 5 }
+        {
+          "id": "quick-assembly",
+          "requiredLevel": 5
+        },
+        {
+          "id": "arms-assembly",
+          "requiredLevel": 5
+        },
+        {
+          "id": "target-training",
+          "requiredLevel": 5
+        }
       ]
     },
     {
       "id": "fire-up-2",
       "nameKey": "research.military_strategies.fire-up",
+      "name": "Fire Up",
       "maxLevel": 10,
+      "labLevel": 18,
       "badgeCosts": [
         260,
         310,
@@ -219,7 +567,43 @@
         790,
         1000,
         1250,
-        1500
+        1530
+      ],
+      "stromCosts": [
+        2839410,
+        3407290,
+        3975180,
+        4827000,
+        5678820,
+        7098530,
+        8802180,
+        11073700,
+        13913120,
+        17036470
+      ],
+      "zentCosts": [
+        1947030,
+        2336430,
+        2725840,
+        3309940,
+        3894050,
+        4867560,
+        6035780,
+        7593400,
+        9540420,
+        11682150
+      ],
+      "combatPower": [
+        11295,
+        23556,
+        36698,
+        51040,
+        66470,
+        83530,
+        102324,
+        123164,
+        146258,
+        171556
       ],
       "icon": "military-strategies/fire-up",
       "prerequisites": [
@@ -229,7 +613,9 @@
     {
       "id": "armor-upgrade-2",
       "nameKey": "research.military_strategies.armor-upgrade",
+      "name": "Armor Upgrade",
       "maxLevel": 10,
+      "labLevel": 18,
       "badgeCosts": [
         260,
         310,
@@ -240,7 +626,43 @@
         790,
         1000,
         1250,
-        1500
+        1530
+      ],
+      "stromCosts": [
+        2839410,
+        3407290,
+        3975180,
+        4827000,
+        5678820,
+        7098530,
+        8802180,
+        11073700,
+        13913120,
+        17036470
+      ],
+      "zentCosts": [
+        1947030,
+        2336430,
+        2725840,
+        3309940,
+        3894050,
+        4867560,
+        6035780,
+        7593400,
+        9540420,
+        11682150
+      ],
+      "combatPower": [
+        11295,
+        23556,
+        36698,
+        51040,
+        66470,
+        83530,
+        102324,
+        123164,
+        146258,
+        171556
       ],
       "icon": "military-strategies/armor-upgrade",
       "prerequisites": [
@@ -250,7 +672,9 @@
     {
       "id": "field-training",
       "nameKey": "research.military_strategies.field-training",
+      "name": "Field Training",
       "maxLevel": 10,
+      "labLevel": 18,
       "badgeCosts": [
         260,
         310,
@@ -261,7 +685,43 @@
         790,
         1000,
         1250,
-        1500
+        1530
+      ],
+      "stromCosts": [
+        2839410,
+        3407290,
+        3975180,
+        4827000,
+        5678820,
+        7098530,
+        8802180,
+        11073700,
+        13913120,
+        17036470
+      ],
+      "zentCosts": [
+        1947030,
+        2336430,
+        2725840,
+        3309940,
+        3894050,
+        4867560,
+        6035780,
+        7593400,
+        9540420,
+        11682150
+      ],
+      "combatPower": [
+        11295,
+        23556,
+        36698,
+        51040,
+        66470,
+        83530,
+        102324,
+        123164,
+        146258,
+        171556
       ],
       "icon": "military-strategies/field-training",
       "prerequisites": [
@@ -271,7 +731,9 @@
     {
       "id": "camo-coating",
       "nameKey": "research.military_strategies.camo-coating",
+      "name": "Camo Coating",
       "maxLevel": 10,
+      "labLevel": 18,
       "badgeCosts": [
         260,
         310,
@@ -282,7 +744,43 @@
         790,
         1000,
         1250,
-        1500
+        1530
+      ],
+      "stromCosts": [
+        2839410,
+        3407290,
+        3975180,
+        4827000,
+        5678820,
+        7098530,
+        8802180,
+        11073700,
+        13913120,
+        17036470
+      ],
+      "zentCosts": [
+        1947030,
+        2336430,
+        2725840,
+        3309940,
+        3894050,
+        4867560,
+        6035780,
+        7593400,
+        9540420,
+        11682150
+      ],
+      "combatPower": [
+        11295,
+        23556,
+        36698,
+        51040,
+        66470,
+        83530,
+        102324,
+        123164,
+        146258,
+        171556
       ],
       "icon": "military-strategies/camo-coating",
       "prerequisites": [
@@ -292,7 +790,9 @@
     {
       "id": "alloy-plate",
       "nameKey": "research.military_strategies.alloy-plate",
+      "name": "Alloy Plate",
       "maxLevel": 10,
+      "labLevel": 18,
       "badgeCosts": [
         360,
         430,
@@ -300,10 +800,46 @@
         610,
         720,
         890,
-        1100,
+        1110,
         1390,
-        1700,
+        1750,
         2140
+      ],
+      "stromCosts": [
+        3975180,
+        4770210,
+        5565250,
+        6757800,
+        7950350,
+        9937940,
+        12323040,
+        15503190,
+        19478360,
+        23851050
+      ],
+      "zentCosts": [
+        2725840,
+        3271000,
+        3816170,
+        4633920,
+        5451670,
+        6814590,
+        8450090,
+        10630760,
+        13356590,
+        16355010
+      ],
+      "combatPower": [
+        13142,
+        27408,
+        42698,
+        59385,
+        77338,
+        97187,
+        119054,
+        143300,
+        170169,
+        199602
       ],
       "icon": "military-strategies/alloy-plate",
       "prerequisites": [
@@ -313,7 +849,9 @@
     {
       "id": "enhanced-armor",
       "nameKey": "research.military_strategies.enhanced-armor",
+      "name": "Enhanced Armor",
       "maxLevel": 10,
+      "labLevel": 18,
       "badgeCosts": [
         360,
         430,
@@ -321,10 +859,46 @@
         610,
         720,
         890,
-        1100,
+        1110,
         1390,
-        1700,
+        1750,
         2140
+      ],
+      "stromCosts": [
+        3975180,
+        4770210,
+        5565250,
+        6757800,
+        7950350,
+        9937940,
+        12323040,
+        15503190,
+        19478360,
+        23851050
+      ],
+      "zentCosts": [
+        2725840,
+        3271000,
+        3816170,
+        4633920,
+        5451670,
+        6814590,
+        8450090,
+        10630760,
+        13356590,
+        16355010
+      ],
+      "combatPower": [
+        13142,
+        27408,
+        42698,
+        59385,
+        77338,
+        97187,
+        119054,
+        143300,
+        170169,
+        199602
       ],
       "icon": "military-strategies/enhanced-armor",
       "prerequisites": [
@@ -335,7 +909,9 @@
     {
       "id": "aerocraft-material",
       "nameKey": "research.military_strategies.aerocraft-material",
+      "name": "Aerocraft Material",
       "maxLevel": 10,
+      "labLevel": 18,
       "badgeCosts": [
         360,
         430,
@@ -343,10 +919,46 @@
         610,
         720,
         890,
-        1100,
+        1110,
         1390,
-        1700,
+        1750,
         2140
+      ],
+      "stromCosts": [
+        3975180,
+        4770210,
+        5565250,
+        6757800,
+        7950350,
+        9937940,
+        12323040,
+        15503190,
+        19478360,
+        23851050
+      ],
+      "zentCosts": [
+        2725840,
+        3271000,
+        3816170,
+        4633920,
+        5451670,
+        6814590,
+        8450090,
+        10630760,
+        13356590,
+        16355010
+      ],
+      "combatPower": [
+        13142,
+        27408,
+        42698,
+        59385,
+        77338,
+        97187,
+        119054,
+        143300,
+        170169,
+        199602
       ],
       "icon": "military-strategies/aerocraft-material",
       "prerequisites": [

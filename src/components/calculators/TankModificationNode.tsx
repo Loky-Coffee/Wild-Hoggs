@@ -1,7 +1,6 @@
-import { memo, useRef, useEffect } from 'preact/compat';
+import { memo } from 'preact/compat';
 import { useTranslations } from '../../i18n/utils';
 import type { TranslationData, TranslationKey } from '../../i18n/index';
-import RangeTouch from 'rangetouch';
 import { NODE_WIDTH, NODE_HEIGHT } from '../../utils/treeNodeConfig';
 
 interface TankModification {
@@ -23,8 +22,7 @@ interface TankModificationNodeProps {
   readonly unlocked: boolean;
   readonly isTarget?: boolean;
   readonly formatNumber: (num: number) => string;
-  readonly onSubLevelChange: (level: number, subLevel: number) => void;
-  readonly onUnlockClick: (mod: TankModification) => void;
+  readonly onOpenSheet?: (mod: TankModification) => void;
   readonly onSetTarget?: () => void;
   readonly onFocus?: () => void;
   readonly lang: 'de' | 'en';
@@ -40,42 +38,14 @@ function TankModificationNode({
   unlocked,
   isTarget = false,
   formatNumber,
-  onSubLevelChange,
-  onUnlockClick,
+  onOpenSheet,
   onSetTarget,
   onFocus,
-  lang,
   translationData
 }: TankModificationNodeProps) {
   const t = useTranslations(translationData);
   const isVehicle = mod.isVehicle === true;
   const isActive = currentSubLevel > 0;
-
-  const rangeInputRef = useRef<HTMLInputElement>(null);
-  const rangeTouchInstanceRef = useRef<RangeTouch | null>(null);
-
-  // RangeTouch for iOS support
-  useEffect(() => {
-    if (rangeTouchInstanceRef.current) {
-      rangeTouchInstanceRef.current.destroy();
-      rangeTouchInstanceRef.current = null;
-    }
-
-    if (rangeInputRef.current && unlocked) {
-      rangeTouchInstanceRef.current = new RangeTouch(rangeInputRef.current, {
-        addCSS: true,
-        thumbWidth: 15,
-        watch: true
-      });
-    }
-
-    return () => {
-      if (rangeTouchInstanceRef.current) {
-        rangeTouchInstanceRef.current.destroy();
-        rangeTouchInstanceRef.current = null;
-      }
-    };
-  }, [unlocked]);
 
   const nodeStrokeColor = isActive
     ? '#ffa500'
@@ -88,11 +58,7 @@ function TankModificationNode({
   const handleNodeKeyDown = (e: React.KeyboardEvent<Element>) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      if (!unlocked) {
-        onUnlockClick(mod);
-      } else if (rangeInputRef.current) {
-        rangeInputRef.current.focus();
-      }
+      if (onOpenSheet) onOpenSheet(mod);
     }
   };
 
@@ -101,18 +67,23 @@ function TankModificationNode({
       transform={`translate(${x}, ${y})`}
       data-node-element="true"
       tabIndex={0}
-      role="group"
+      role="button"
       aria-label={`Level ${mod.level}: ${t(mod.nameKey as TranslationKey)} - Sub-Level ${currentSubLevel} of ${maxSubLevel}${unlocked ? '' : ' (locked)'}`}
       className="research-tree-node"
       data-mod-level={mod.level}
       data-unlocked={unlocked}
       onKeyDown={handleNodeKeyDown}
       onFocus={onFocus}
+      onClick={(e: React.MouseEvent<Element>) => {
+        const target = e.target as Element;
+        // Klick auf Ziel-Button etc. nicht abfangen; sonst Sheet öffnen
+        if (!target.closest('[data-clickable="true"]')) {
+          onFocus?.();
+          if (onOpenSheet) onOpenSheet(mod);
+        }
+      }}
+      style={{ cursor: 'pointer' }}
     >
-      {!unlocked && (
-        <title>Click to unlock this modification</title>
-      )}
-
       {/* Focus indicator */}
       <rect
         x={-NODE_WIDTH / 2 - 4}
@@ -210,72 +181,6 @@ function TankModificationNode({
         </g>
       )}
 
-      {/* Unlock button */}
-      {!unlocked && (
-        <g
-          onClick={() => onUnlockClick(mod)}
-          onKeyDown={(e: React.KeyboardEvent<Element>) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              onUnlockClick(mod);
-            }
-          }}
-          tabIndex={0}
-          role="button"
-          aria-label={`Unlock Level ${mod.level}`}
-          style={{ cursor: 'pointer', outline: 'none' }}
-          data-node-element="true"
-          data-clickable="true"
-          data-unlock-button="true"
-        >
-          <rect
-            x={NODE_WIDTH / 2 - 47}
-            y={-NODE_HEIGHT / 2 + 3}
-            width={44}
-            height={39}
-            rx={6}
-            fill="none"
-            stroke="rgba(255, 165, 0, 0.8)"
-            strokeWidth={2}
-            opacity={0}
-            className="unlock-button-focus-indicator"
-            data-node-element="true"
-          />
-          <rect
-            x={NODE_WIDTH / 2 - 45}
-            y={-NODE_HEIGHT / 2 + 5}
-            width={40}
-            height={35}
-            rx={6}
-            fill="rgba(255, 165, 0, 0.2)"
-            stroke="rgba(255, 165, 0, 0.5)"
-            strokeWidth={1}
-            className="unlock-button-bg"
-            data-node-element="true"
-          />
-          <text
-            x={NODE_WIDTH / 2 - 25}
-            y={-NODE_HEIGHT / 2 + 20}
-            textAnchor="middle"
-            fontSize="16"
-            data-node-element="true"
-          >
-            🔒
-          </text>
-          <text
-            x={NODE_WIDTH / 2 - 25}
-            y={-NODE_HEIGHT / 2 + 33}
-            textAnchor="middle"
-            fontSize="11"
-            fill="#ffa500"
-            fontWeight="600"
-            data-node-element="true"
-          >
-            {t('tank.unlock')}
-          </text>
-        </g>
-      )}
-
       {/* Vehicle name */}
       {isVehicle && (
         <text
@@ -341,70 +246,31 @@ function TankModificationNode({
         {t('tank.subLevel')}: {currentSubLevel} / {maxSubLevel}
       </text>
 
-      {/* Slider */}
-      {unlocked ? (
-        <foreignObject
+      {/* Read-only Fortschrittsbalken — Sub-Level wählt man im Bottom-Sheet */}
+      <g data-node-element="true">
+        <rect
           x={-NODE_WIDTH / 2 + 15}
-          y={-NODE_HEIGHT / 2 + 110}
+          y={-NODE_HEIGHT / 2 + 122}
           width={NODE_WIDTH - 30}
-          height={40}
-        >
-          <div style={{ width: '100%', height: '100%' }}>
-            <input
-              ref={rangeInputRef}
-              type="range"
-              min="0"
-              max={maxSubLevel}
-              value={Math.min(currentSubLevel, maxSubLevel)}
-              onChange={(e) => {
-                const newValue = Number.parseInt((e.target as HTMLInputElement).value, 10);
-                onSubLevelChange(mod.level, newValue);
-              }}
-              aria-label={`Level ${mod.level} sub-level`}
-              aria-valuemin={0}
-              aria-valuemax={maxSubLevel}
-              aria-valuenow={Math.min(currentSubLevel, maxSubLevel)}
-              aria-valuetext={`Sub-level ${Math.min(currentSubLevel, maxSubLevel)} of ${maxSubLevel}`}
-              style={{
-                width: '100%',
-                height: '8px',
-                cursor: 'pointer',
-                accentColor: isVehicle ? '#3498db' : '#ffa500',
-                touchAction: 'manipulation'
-              }}
-            />
-          </div>
-        </foreignObject>
-      ) : (
-        <g data-node-element="true">
+          height={8}
+          rx={4}
+          fill="rgba(255, 255, 255, 0.12)"
+          opacity={unlocked ? 1 : 0.4}
+          data-node-element="true"
+        />
+        {maxSubLevel > 0 && currentSubLevel > 0 && (
           <rect
             x={-NODE_WIDTH / 2 + 15}
-            y={-NODE_HEIGHT / 2 + 120}
-            width={NODE_WIDTH - 30}
+            y={-NODE_HEIGHT / 2 + 122}
+            width={(Math.min(currentSubLevel, maxSubLevel) / maxSubLevel) * (NODE_WIDTH - 30)}
             height={8}
             rx={4}
-            fill="rgba(255, 255, 255, 0.15)"
-            stroke="rgba(255, 255, 255, 0.2)"
-            strokeWidth={1}
-            opacity={0.3}
+            fill={isVehicle ? '#3498db' : (isActive ? '#ffa500' : 'rgba(255, 165, 0, 0.4)')}
+            opacity={unlocked ? 1 : 0.4}
             data-node-element="true"
           />
-          {maxSubLevel > 0 && (
-            <rect
-              x={-NODE_WIDTH / 2 + 15 + (currentSubLevel / maxSubLevel) * (NODE_WIDTH - 30) - 6}
-              y={-NODE_HEIGHT / 2 + 116}
-              width={12}
-              height={16}
-              rx={3}
-              fill="rgba(255, 165, 0, 0.4)"
-              stroke="rgba(255, 165, 0, 0.5)"
-              strokeWidth={1}
-              opacity={0.3}
-              data-node-element="true"
-            />
-          )}
-        </g>
-      )}
+        )}
+      </g>
 
       {/* Total wrenches for current sub-level */}
       <text

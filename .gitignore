@@ -37,3 +37,11 @@ pnpm-debug.log*
 .wrangler/
 
 *TODO*
+
+# App-Analyse: Spieldaten-Extraktion (groß, nur lokal, nicht committen)
+app_analyse/
+
+# Backups & lokale Audit-/Streu-Dateien (nicht committen)
+*.bak
+AUDIT_*.md
+/assault_training

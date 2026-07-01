@@ -1,0 +1,856 @@
+{
+  "id": "shelter_building",
+  "nameKey": "research.shelter_building.name",
+  "name": "Shelter Building",
+  "tabId": 6,
+  "nodeCount": 18,
+  "totalLevels": 110,
+  "totalBadges": 0,
+  "totalStrom": 160000080,
+  "totalZent": 120000120,
+  "labLevelMin": 5,
+  "onlyResourcesNoBadges": true,
+  "image": "/images/research/shelter-building.png",
+  "technologies": [
+    {
+      "id": "farming-technology",
+      "nameKey": "research.shelter_building.farming-technology",
+      "name": "Farming Technology",
+      "maxLevel": 5,
+      "labLevel": 5,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        87360,
+        113570,
+        157250,
+        235870,
+        375650
+      ],
+      "zentCosts": [
+        65520,
+        85180,
+        117940,
+        176910,
+        281740
+      ],
+      "combatPower": [
+        2410,
+        5122,
+        8262,
+        12030,
+        16676
+      ],
+      "icon": "shelter-building/farming-technology",
+      "prerequisites": []
+    },
+    {
+      "id": "woodcutter",
+      "nameKey": "research.shelter_building.woodcutter",
+      "name": "Woodcutter",
+      "maxLevel": 5,
+      "labLevel": 5,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        87360,
+        113570,
+        157250,
+        235870,
+        375650
+      ],
+      "zentCosts": [
+        65520,
+        85180,
+        117940,
+        176910,
+        281740
+      ],
+      "combatPower": [
+        2410,
+        5122,
+        8262,
+        12030,
+        16676
+      ],
+      "icon": "shelter-building/woodcutter",
+      "prerequisites": []
+    },
+    {
+      "id": "food-warehouse",
+      "nameKey": "research.shelter_building.food-warehouse",
+      "name": "Food Warehouse",
+      "maxLevel": 5,
+      "labLevel": 5,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        87360,
+        113570,
+        157250,
+        235870,
+        375650
+      ],
+      "zentCosts": [
+        65520,
+        85180,
+        117940,
+        176910,
+        281740
+      ],
+      "combatPower": [
+        2410,
+        5122,
+        8262,
+        12030,
+        16676
+      ],
+      "icon": "shelter-building/food-warehouse",
+      "prerequisites": [
+        {
+          "id": "farming-technology"
+        },
+        {
+          "id": "woodcutter"
+        }
+      ]
+    },
+    {
+      "id": "centralized-storage",
+      "nameKey": "research.shelter_building.centralized-storage",
+      "name": "Centralized Storage",
+      "maxLevel": 5,
+      "labLevel": 5,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        87360,
+        113570,
+        157250,
+        235870,
+        375650
+      ],
+      "zentCosts": [
+        65520,
+        85180,
+        117940,
+        176910,
+        281740
+      ],
+      "combatPower": [
+        2410,
+        5122,
+        8262,
+        12030,
+        16676
+      ],
+      "icon": "shelter-building/centralized-storage",
+      "prerequisites": [
+        {
+          "id": "farming-technology"
+        },
+        {
+          "id": "woodcutter"
+        }
+      ]
+    },
+    {
+      "id": "skillful-craftsman",
+      "nameKey": "research.shelter_building.skillful-craftsman",
+      "name": "Skillful Craftsman Ⅰ",
+      "maxLevel": 5,
+      "labLevel": 6,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        174720,
+        227140,
+        314500,
+        471750,
+        751300
+      ],
+      "zentCosts": [
+        131040,
+        170350,
+        235870,
+        353810,
+        563470
+      ],
+      "combatPower": [
+        3292,
+        6997,
+        11286,
+        16434,
+        22781
+      ],
+      "icon": "shelter-building/skillful-craftsman",
+      "prerequisites": [
+        {
+          "id": "food-warehouse"
+        },
+        {
+          "id": "centralized-storage"
+        }
+      ]
+    },
+    {
+      "id": "lead-battery",
+      "nameKey": "research.shelter_building.lead-battery",
+      "name": "Lead Battery",
+      "maxLevel": 5,
+      "labLevel": 6,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        262080,
+        340710,
+        471750,
+        707620,
+        1126950
+      ],
+      "zentCosts": [
+        196560,
+        255530,
+        353810,
+        530710,
+        845210
+      ],
+      "combatPower": [
+        3951,
+        8397,
+        13545,
+        19723,
+        27340
+      ],
+      "icon": "shelter-building/lead-battery",
+      "prerequisites": [
+        {
+          "id": "skillful-craftsman"
+        }
+      ]
+    },
+    {
+      "id": "wind-drive-i",
+      "nameKey": "research.shelter_building.wind-drive-i",
+      "name": "Wind Drive I",
+      "maxLevel": 5,
+      "labLevel": 6,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        262080,
+        340710,
+        471750,
+        707620,
+        1126950
+      ],
+      "zentCosts": [
+        196560,
+        255530,
+        353810,
+        530710,
+        845210
+      ],
+      "combatPower": [
+        3951,
+        8397,
+        13545,
+        19723,
+        27340
+      ],
+      "icon": "shelter-building/wind-drive-i",
+      "prerequisites": [
+        {
+          "id": "skillful-craftsman"
+        }
+      ]
+    },
+    {
+      "id": "anti-theft",
+      "nameKey": "research.shelter_building.anti-theft",
+      "name": "Anti Theft",
+      "maxLevel": 10,
+      "labLevel": 6,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        175040,
+        210040,
+        245050,
+        297560,
+        350070,
+        437590,
+        542610,
+        682640,
+        857680,
+        1050210
+      ],
+      "zentCosts": [
+        131280,
+        157530,
+        183790,
+        223170,
+        262550,
+        328190,
+        406960,
+        511980,
+        643260,
+        787660
+      ],
+      "combatPower": [
+        3295,
+        6871,
+        10704,
+        14887,
+        19388,
+        24364,
+        29846,
+        35925,
+        42662,
+        50042
+      ],
+      "icon": "shelter-building/anti-theft",
+      "prerequisites": [
+        {
+          "id": "lead-battery"
+        },
+        {
+          "id": "wind-drive-i"
+        }
+      ]
+    },
+    {
+      "id": "quick-harvest",
+      "nameKey": "research.shelter_building.quick-harvest",
+      "name": "Quick Harvest",
+      "maxLevel": 10,
+      "labLevel": 7,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        280060,
+        336070,
+        392080,
+        476100,
+        560110,
+        700140,
+        868180,
+        1092220,
+        1372280,
+        1680340
+      ],
+      "zentCosts": [
+        210040,
+        252050,
+        294060,
+        357070,
+        420090,
+        525110,
+        651130,
+        819170,
+        1029210,
+        1260260
+      ],
+      "combatPower": [
+        4071,
+        8490,
+        13226,
+        18395,
+        23956,
+        30105,
+        36879,
+        44390,
+        52713,
+        61831
+      ],
+      "icon": "shelter-building/quick-harvest",
+      "prerequisites": [
+        {
+          "id": "anti-theft"
+        }
+      ]
+    },
+    {
+      "id": "gold-panning",
+      "nameKey": "research.shelter_building.gold-panning",
+      "name": "Gold Panning",
+      "maxLevel": 10,
+      "labLevel": 7,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        280060,
+        336070,
+        392080,
+        476100,
+        560110,
+        700140,
+        868180,
+        1092220,
+        1372280,
+        1680340
+      ],
+      "zentCosts": [
+        210040,
+        252050,
+        294060,
+        357070,
+        420090,
+        525110,
+        651130,
+        819170,
+        1029210,
+        1260260
+      ],
+      "combatPower": [
+        4071,
+        8490,
+        13226,
+        18395,
+        23956,
+        30105,
+        36879,
+        44390,
+        52713,
+        61831
+      ],
+      "icon": "shelter-building/gold-panning",
+      "prerequisites": [
+        {
+          "id": "anti-theft"
+        }
+      ]
+    },
+    {
+      "id": "farming-technology-2",
+      "nameKey": "research.shelter_building.farming-technology",
+      "name": "Farming Technology",
+      "maxLevel": 5,
+      "labLevel": 7,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        524160,
+        681410,
+        943490,
+        1415230,
+        2253890
+      ],
+      "zentCosts": [
+        393120,
+        511060,
+        707620,
+        1061430,
+        1690420
+      ],
+      "combatPower": [
+        5398,
+        11472,
+        18504,
+        26944,
+        37350
+      ],
+      "icon": "shelter-building/farming-technology",
+      "prerequisites": [
+        {
+          "id": "quick-harvest"
+        },
+        {
+          "id": "gold-panning"
+        }
+      ]
+    },
+    {
+      "id": "woodcutter-2",
+      "nameKey": "research.shelter_building.woodcutter",
+      "name": "Woodcutter",
+      "maxLevel": 5,
+      "labLevel": 7,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        524160,
+        681410,
+        943490,
+        1415230,
+        2253890
+      ],
+      "zentCosts": [
+        393120,
+        511060,
+        707620,
+        1061430,
+        1690420
+      ],
+      "combatPower": [
+        5398,
+        11472,
+        18504,
+        26944,
+        37350
+      ],
+      "icon": "shelter-building/woodcutter",
+      "prerequisites": [
+        {
+          "id": "quick-harvest"
+        },
+        {
+          "id": "gold-panning"
+        }
+      ]
+    },
+    {
+      "id": "food-warehouse-2",
+      "nameKey": "research.shelter_building.food-warehouse",
+      "name": "Food Warehouse",
+      "maxLevel": 5,
+      "labLevel": 8,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        873600,
+        1135680,
+        1572480,
+        2358720,
+        3756480
+      ],
+      "zentCosts": [
+        655200,
+        851760,
+        1179360,
+        1769040,
+        2817360
+      ],
+      "combatPower": [
+        6793,
+        14437,
+        23287,
+        33908,
+        47003
+      ],
+      "icon": "shelter-building/food-warehouse",
+      "prerequisites": [
+        {
+          "id": "farming-technology-2"
+        },
+        {
+          "id": "woodcutter-2"
+        }
+      ]
+    },
+    {
+      "id": "centralized-storage-2",
+      "nameKey": "research.shelter_building.centralized-storage",
+      "name": "Centralized Storage",
+      "maxLevel": 5,
+      "labLevel": 8,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        873600,
+        1135680,
+        1572480,
+        2358720,
+        3756480
+      ],
+      "zentCosts": [
+        655200,
+        851760,
+        1179360,
+        1769040,
+        2817360
+      ],
+      "combatPower": [
+        6793,
+        14437,
+        23287,
+        33908,
+        47003
+      ],
+      "icon": "shelter-building/centralized-storage",
+      "prerequisites": [
+        {
+          "id": "farming-technology-2"
+        },
+        {
+          "id": "woodcutter-2"
+        }
+      ]
+    },
+    {
+      "id": "parallel-work-i",
+      "nameKey": "research.shelter_building.parallel-work-i",
+      "name": "Parallel Work I",
+      "maxLevel": 5,
+      "labLevel": 8,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        1223040,
+        1589950,
+        2201480,
+        3302210,
+        5259080
+      ],
+      "zentCosts": [
+        917280,
+        1192470,
+        1651110,
+        2476660,
+        3944310
+      ],
+      "combatPower": [
+        7903,
+        16797,
+        27093,
+        39450,
+        54686
+      ],
+      "icon": "shelter-building/parallel-work-i",
+      "prerequisites": [
+        {
+          "id": "food-warehouse-2"
+        },
+        {
+          "id": "centralized-storage-2"
+        }
+      ]
+    },
+    {
+      "id": "lead-battery-2",
+      "nameKey": "research.shelter_building.lead-battery",
+      "name": "Lead Battery",
+      "maxLevel": 5,
+      "labLevel": 9,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        1572480,
+        2044230,
+        2830470,
+        4245700,
+        6761670
+      ],
+      "zentCosts": [
+        1179360,
+        1533170,
+        2122850,
+        3184280,
+        5071250
+      ],
+      "combatPower": [
+        8850,
+        18809,
+        30338,
+        44175,
+        61236
+      ],
+      "icon": "shelter-building/lead-battery",
+      "prerequisites": [
+        {
+          "id": "parallel-work-i"
+        }
+      ]
+    },
+    {
+      "id": "wind-drive-i-2",
+      "nameKey": "research.shelter_building.wind-drive-i",
+      "name": "Wind Drive I",
+      "maxLevel": 5,
+      "labLevel": 9,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        1572480,
+        2044230,
+        2830470,
+        4245700,
+        6761670
+      ],
+      "zentCosts": [
+        1179360,
+        1533170,
+        2122850,
+        3184280,
+        5071250
+      ],
+      "combatPower": [
+        8850,
+        18809,
+        30338,
+        44175,
+        61236
+      ],
+      "icon": "shelter-building/wind-drive-i",
+      "prerequisites": [
+        {
+          "id": "parallel-work-i"
+        }
+      ]
+    },
+    {
+      "id": "skillful-craftsman-2",
+      "nameKey": "research.shelter_building.skillful-craftsman",
+      "name": "Skillful Craftsman Ⅰ",
+      "maxLevel": 10,
+      "labLevel": 9,
+      "badgeCosts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "stromCosts": [
+        1750360,
+        2100430,
+        2450500,
+        2975610,
+        3500710,
+        4375890,
+        5426100,
+        6826390,
+        8576740,
+        10502130
+      ],
+      "zentCosts": [
+        1312770,
+        1575320,
+        1837870,
+        2231700,
+        2625530,
+        3281920,
+        4069580,
+        5119790,
+        6432560,
+        7876600
+      ],
+      "combatPower": [
+        9287,
+        19368,
+        30173,
+        41965,
+        54651,
+        68677,
+        84129,
+        101263,
+        120250,
+        141049
+      ],
+      "icon": "shelter-building/skillful-craftsman",
+      "prerequisites": [
+        {
+          "id": "lead-battery-2"
+        },
+        {
+          "id": "wind-drive-i-2"
+        }
+      ]
+    }
+  ]
+}

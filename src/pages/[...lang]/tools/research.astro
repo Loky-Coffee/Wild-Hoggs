@@ -15,6 +15,16 @@ import militaryStrategies from '../../../data/research/military-strategies.json'
 import peaceShield from '../../../data/research/peace-shield.json';
 import siegeToSeize from '../../../data/research/siege-to-seize.json';
 import armyBuilding from '../../../data/research/army-building.json';
+import tacticalMaster from '../../../data/research/tactical-master.json';
+import riderTraining from '../../../data/research/rider-training.json';
+import assaulterTraining from '../../../data/research/assaulter-training.json';
+import shooterTraining from '../../../data/research/shooter-training.json';
+import ageOfSteel from '../../../data/research/age-of-steel.json';
+import newHome from '../../../data/research/new-home.json';
+import rapidGrowth from '../../../data/research/rapid-growth.json';
+import shelterBuilding from '../../../data/research/shelter-building.json';
+import eliteTroops from '../../../data/research/elite-troops.json';
+import hqManagement from '../../../data/research/hq-management.json';
 import '../../../styles/shared-layouts.css';
 
 // Import optimized images
@@ -28,6 +38,19 @@ import militaryStrategiesImg from '../../../assets/images/research/military-stra
 import peaceShieldImg from '../../../assets/images/research/peace-shield.webp';
 import siegeToSeizeImg from '../../../assets/images/research/siege-to-seize.webp';
 import armyBuildingImg from '../../../assets/images/research/army-building.webp';
+import tacticalMasterImg from '../../../assets/images/research/tactical-master.webp';
+import riderTrainingImg from '../../../assets/images/research/rider-training.webp';
+import assaulterTrainingImg from '../../../assets/images/research/assaulter-training.webp';
+import shooterTrainingImg from '../../../assets/images/research/shooter-training.webp';
+import ageOfSteelImg from '../../../assets/images/research/age-of-steel.webp';
+import newHomeImg from '../../../assets/images/research/new-home.webp';
+import rapidGrowthImg from '../../../assets/images/research/rapid-growth.webp';
+import shelterBuildingImg from '../../../assets/images/research/shelter-building.webp';
+import eliteTroopsImg from '../../../assets/images/research/elite-troops.webp';
+import hqManagementImg from '../../../assets/images/research/hq-management.webp';
+import badgeIcon from '../../../assets/images/research-icons/badge.webp';
+import stromIcon from '../../../assets/images/research-icons/strom.webp';
+import zentIcon from '../../../assets/images/research-icons/zent.webp';
 
 export function getStaticPaths() {
   return getLanguagePaths();
@@ -37,6 +60,8 @@ const lang = getLangFromUrl(Astro.url);
 const translationData = await loadTranslations(lang);
 const t = useTranslations(translationData);
 const currentYear = getCurrentYear();
+const nf = lang === 'de' ? 'de-DE' : 'en-US';
+const fmtCompact = (n: number) => new Intl.NumberFormat(nf, { notation: 'compact', maximumFractionDigits: 1 }).format(n);
 
 // Map category data by ID
 const researchDataMap: Record<string, any> = {
@@ -49,6 +74,16 @@ const researchDataMap: Record<string, any> = {
   peace_shield: peaceShield,
   siege_to_seize: siegeToSeize,
   army_building: armyBuilding,
+  tactical_master: tacticalMaster,
+  rider_training: riderTraining,
+  assaulter_training: assaulterTraining,
+  shooter_training: shooterTraining,
+  age_of_steel: ageOfSteel,
+  new_home: newHome,
+  rapid_growth: rapidGrowth,
+  shelter_building: shelterBuilding,
+  elite_troops: eliteTroops,
+  hq_management: hqManagement,
 };
 
 // Map optimized images by ID
@@ -62,6 +97,16 @@ const imageMap: Record<string, ImageMetadata> = {
   peace_shield: peaceShieldImg,
   siege_to_seize: siegeToSeizeImg,
   army_building: armyBuildingImg,
+  tactical_master: tacticalMasterImg,
+  rider_training: riderTrainingImg,
+  assaulter_training: assaulterTrainingImg,
+  shooter_training: shooterTrainingImg,
+  age_of_steel: ageOfSteelImg,
+  new_home: newHomeImg,
+  rapid_growth: rapidGrowthImg,
+  shelter_building: shelterBuildingImg,
+  elite_troops: eliteTroopsImg,
+  hq_management: hqManagementImg,
 };
 
 const categories = [
@@ -74,6 +119,16 @@ const categories = [
   { id: 'siege_to_seize', icon: '🏰' },
   { id: 'hero_training', icon: '💪' },
   { id: 'army_building', icon: '🪖' },
+  { id: 'tactical_master', icon: '🎯' },
+  { id: 'rider_training', icon: '🏍️' },
+  { id: 'assaulter_training', icon: '💥' },
+  { id: 'shooter_training', icon: '🔫' },
+  { id: 'age_of_steel', icon: '⚙️' },
+  { id: 'new_home', icon: '🏠' },
+  { id: 'rapid_growth', icon: '📈' },
+  { id: 'shelter_building', icon: '🏗️' },
+  { id: 'elite_troops', icon: '🎖️' },
+  { id: 'hq_management', icon: '🏢' },
 ];
 
 const breadcrumbItems = [
@@ -100,7 +155,7 @@ const breadcrumbItems = [
       const category = researchDataMap[id];
       if (!category) return null;
 
-      const isEnabled = ['alliance_recognition', 'hero_training', 'military_strategies', 'unit_special_training', 'field', 'fully_armed_alliance', 'peace_shield', 'siege_to_seize', 'army_building'].includes(id);
+      const isEnabled = true; // alle Bäume aktiviert (anklickbar)
       const CardTag = isEnabled ? 'a' : 'div';
 
       return (
@@ -110,35 +165,41 @@ const breadcrumbItems = [
           data-category-id={id}
           data-total-badges={String(category.totalBadges)}
           data-total-levels={String(category.totalLevels)}
-          data-badge-map={JSON.stringify(Object.fromEntries((category.technologies as {id:string;badgeCosts:number[]}[]).map(t => [t.id, t.badgeCosts])))}>
+          data-badge-map={JSON.stringify(Object.fromEntries((category.technologies as {id:string;badgeCosts:number[]}[]).map(t => [t.id, t.badgeCosts])))}
+          data-total-strom={String(category.totalStrom || 0)}
+          data-total-zent={String(category.totalZent || 0)}
+          data-strom-map={JSON.stringify(Object.fromEntries((category.technologies as {id:string;stromCosts?:number[]}[]).map(t => [t.id, t.stromCosts || []])))}
+          data-zent-map={JSON.stringify(Object.fromEntries((category.technologies as {id:string;zentCosts?:number[]}[]).map(t => [t.id, t.zentCosts || []])))}>
 
-          <span class="max-badge" data-max-badge>0%</span>
           <div class="category-icon-wrapper">
             {imageMap[id] ? (
               <Image
                 src={imageMap[id]}
                 alt={t(category.nameKey)}
                 class="category-image"
-                width={80}
-                height={80}
+                width={230}
+                height={295}
                 loading="lazy"
               />
             ) : (
               <div class="category-icon">{icon}</div>
             )}
-          </div>
-          <h2>{t(category.nameKey)}</h2>
-          <div class="category-stats">
-            <div class="stat">
-              <span class="stat-value"><span data-used>0</span> / {category.totalBadges.toLocaleString(lang === 'de' ? 'de-DE' : 'en-US')}</span>
-              <span class="stat-label">🎖️ Badges · <span data-pct>0%</span></span>
+            <div class="card-overlay">
+              <h2>{t(category.nameKey)}</h2>
+              <span class="max-badge" data-max-badge>0%</span>
             </div>
           </div>
-          {isEnabled ? (
-            <span class="available">{t('research.available')}</span>
-          ) : (
-            <span class="coming-soon">{t('research.comingSoon')}</span>
-          )}
+          <div class="category-stats">
+            {category.totalStrom ? (
+              <div class="stat-line"><img src={stromIcon.src} alt="Strom" class="res-ico" width="20" height="20" /><b><span data-used-strom>0</span> / {fmtCompact(category.totalStrom)}</b> <span class="stat-pct" data-pct-strom>0%</span></div>
+            ) : null}
+            {category.totalZent ? (
+              <div class="stat-line"><img src={zentIcon.src} alt="Zent" class="res-ico" width="20" height="20" /><b><span data-used-zent>0</span> / {fmtCompact(category.totalZent)}</b> <span class="stat-pct" data-pct-zent>0%</span></div>
+            ) : null}
+            {category.onlyResourcesNoBadges ? null : (
+              <div class="stat-line"><img src={badgeIcon.src} alt="Badges" class="res-ico" width="20" height="20" /><b><span data-used>0</span> / {fmtCompact(category.totalBadges)}</b> <span class="stat-pct" data-pct>0%</span></div>
+            )}
+          </div>
         </CardTag>
       );
     })}
@@ -162,9 +223,8 @@ const breadcrumbItems = [
       padding: 1.75rem;
     }
 
-    .category-image {
-      width: 80px;
-      height: 80px;
+    .category-icon-wrapper {
+      max-width: 240px;
     }
 
     .category-icon {
@@ -213,7 +273,31 @@ const breadcrumbItems = [
   }
 
   .category-icon-wrapper {
-    margin-bottom: 0.75rem;
+    position: relative;
+    display: block;
+    width: 100%;
+    max-width: 210px;
+    margin: 0 auto 0.5rem;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .card-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1.6rem 0.4rem 1rem;
+    text-align: center;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.82));
+  }
+
+  .card-overlay h2 {
+    margin: 0;
+    color: #fff;
+    font-size: 1.15rem;
+    line-height: 1.15;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.95);
   }
 
   .category-icon {
@@ -221,9 +305,15 @@ const breadcrumbItems = [
   }
 
   .category-image {
-    width: 60px;
-    height: 60px;
-    object-fit: contain;
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .no-badges {
+    color: #52be80;
+    font-size: 0.9rem;
+    font-weight: 700;
   }
 
   .category-card h2 {
@@ -234,11 +324,42 @@ const breadcrumbItems = [
   }
 
   .category-stats {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 1rem;
-    width: 100%;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    align-items: center;
     justify-content: center;
+    column-gap: 0.5rem;
+    row-gap: 0.35rem;
+    margin: 0 auto 1rem;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.85);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .stat-line {
+    display: contents;
+  }
+
+  .stat-line b {
+    justify-self: start;
+  }
+
+  .res-ico {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+
+  .stat-pct {
+    color: rgba(255, 165, 0, 0.8);
+    font-size: 0.82rem;
+    margin-left: 0.15rem;
+  }
+
+  .stat-line b {
+    color: #ffa500;
+    font-weight: 700;
   }
 
   .stat {
@@ -292,22 +413,18 @@ const breadcrumbItems = [
   }
 
   .max-badge {
-    position: absolute;
-    top: 0;
-    right: 0;
-    background: rgba(255, 165, 0, 0.15);
-    color: rgba(255, 165, 0, 0.9);
-    font-size: 1rem;
+    display: block;
+    margin-top: 0.3rem;
+    color: #ffd54a;
+    font-size: 1.4rem;
     font-weight: 800;
     letter-spacing: 0.05em;
-    padding: 0.4rem 0.85rem;
-    border-radius: 0 12px 0 10px;
     line-height: 1;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.95);
   }
 
   .max-badge.is-max {
-    background: rgba(39, 174, 96, 0.2);
-    color: #52be80;
+    color: #6ee7a0;
   }
 </style>
 
@@ -321,9 +438,19 @@ const breadcrumbItems = [
       var totalBadges = parseInt(card.getAttribute('data-total-badges') || '0', 10);
       var totalLevels = parseInt(card.getAttribute('data-total-levels') || '0', 10);
       var badgeMap = {};
-      try { badgeMap = JSON.parse(card.getAttribute('data-badge-map') || '{}'); } catch (e) { return; }
+      var stromMap = {};
+      var zentMap = {};
+      try {
+        badgeMap = JSON.parse(card.getAttribute('data-badge-map') || '{}');
+        stromMap = JSON.parse(card.getAttribute('data-strom-map') || '{}');
+        zentMap = JSON.parse(card.getAttribute('data-zent-map') || '{}');
+      } catch (e) { return; }
+      var totalStrom = parseInt(card.getAttribute('data-total-strom') || '0', 10);
+      var totalZent = parseInt(card.getAttribute('data-total-zent') || '0', 10);
 
       var usedBadges = 0;
+      var usedStrom = 0;
+      var usedZent = 0;
       var usedLevels = 0;
       try {
         var raw = localStorage.getItem('wh-calc-' + profileId + '-research-' + id);
@@ -339,20 +466,40 @@ const breadcrumbItems = [
                 var costs = badgeMap[techId];
                 for (var i = 0; i < level && i < costs.length; i++) { usedBadges += costs[i]; }
               }
+              if (stromMap[techId]) {
+                var sc = stromMap[techId];
+                for (var j = 0; j < level && j < sc.length; j++) { usedStrom += sc[j]; }
+              }
+              if (zentMap[techId]) {
+                var zc = zentMap[techId];
+                for (var k = 0; k < level && k < zc.length; k++) { usedZent += zc[k]; }
+              }
             }
           });
         }
       } catch (e) { /* ignore */ }
 
       var badgePct = totalBadges > 0 ? Math.round((usedBadges / totalBadges) * 100) : 0;
+      var stromPct = totalStrom > 0 ? Math.round((usedStrom / totalStrom) * 100) : 0;
+      var zentPct = totalZent > 0 ? Math.round((usedZent / totalZent) * 100) : 0;
       var treePct = totalLevels > 0 ? Math.round((usedLevels / totalLevels) * 100) : 0;
+      var fc = function (n) {
+        try { return new Intl.NumberFormat(undefined, { notation: 'compact', maximumFractionDigits: 1 }).format(n); }
+        catch (e) { return String(n); }
+      };
       var usedEl = card.querySelector('[data-used]');
       var pctEl = card.querySelector('[data-pct]');
-      var levelsUsedEl = card.querySelector('[data-levels-used]');
-      var treePctEl = card.querySelector('[data-tree-pct]');
+      var usedStromEl = card.querySelector('[data-used-strom]');
+      var usedZentEl = card.querySelector('[data-used-zent]');
+      var pctStromEl = card.querySelector('[data-pct-strom]');
+      var pctZentEl = card.querySelector('[data-pct-zent]');
       var maxBadgeEl = card.querySelector('[data-max-badge]');
-      if (usedEl) usedEl.textContent = usedBadges.toLocaleString();
+      if (usedEl) usedEl.textContent = fc(usedBadges);
       if (pctEl) pctEl.textContent = badgePct + '%';
+      if (usedStromEl) usedStromEl.textContent = fc(usedStrom);
+      if (usedZentEl) usedZentEl.textContent = fc(usedZent);
+      if (pctStromEl) pctStromEl.textContent = stromPct + '%';
+      if (pctZentEl) pctZentEl.textContent = zentPct + '%';
       if (maxBadgeEl) {
         maxBadgeEl.textContent = treePct >= 100 ? 'MAX' : treePct + '%';
         maxBadgeEl.classList.toggle('is-max', treePct >= 100);

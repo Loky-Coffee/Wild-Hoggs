@@ -5,6 +5,23 @@ export interface ChangelogEntry {
 }
 
 export const changelog: ChangelogEntry[] = [
+  // ── July 2026 ───────────────────────────────────────────────────────────
+  {
+    date: '2026-07-01',
+    time: '16:40',
+    text: 'Tank modifications: tree view switched to the same bottom-sheet picker — tap a modification to choose its sub-level; previous levels auto-unlock and are set to max',
+  },
+  {
+    date: '2026-07-01',
+    time: '16:20',
+    text: 'Research calculator: tree nodes are now read-only — tap any node to open a bottom sheet and pick a level; the per-level table shows Strom/Zent/Badge costs, selecting a level auto-unlocks its prerequisites, and lowering or resetting a node cascades down to its dependents',
+  },
+  {
+    date: '2026-07-01',
+    time: '15:30',
+    text: 'Research: corrected all tree data from the game (prerequisites, per-level Strom/Zent/Badge costs, lab levels, combat power) and added 10 new research trees — fully translated in all 15 languages',
+  },
+
   // ── March 2026 ──────────────────────────────────────────────────────────
   {
     date: '2026-03-31',
