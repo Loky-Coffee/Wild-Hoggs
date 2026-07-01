@@ -8,6 +8,11 @@ export const changelog: ChangelogEntry[] = [
   // ── July 2026 ───────────────────────────────────────────────────────────
   {
     date: '2026-07-01',
+    time: '20:45',
+    text: 'Research calculator: the header now shows Used and Remaining for Strom, Zent and total research time (with your Lab-Speed applied) — not just badges',
+  },
+  {
+    date: '2026-07-01',
     time: '20:30',
     text: 'Research: added a global Lab-Speed setting (a button on the research overview and inside every node) — enter your base research-speed % plus optional Capitol / Research-Minister / Rose buff checkboxes, with an in-game how-to and screenshot; each node then shows the base time struck through next to the real time. Saved to your account (synced when logged in), in 15 languages',
   },

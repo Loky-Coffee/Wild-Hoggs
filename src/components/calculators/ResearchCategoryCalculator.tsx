@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect, useRef } from 'preact/hooks';
 import type { ResearchTree, Technology } from '../../schemas/research';
 import ResearchTreeView from './ResearchTreeView';
-import { LAB_SPEED_DEFAULT, type LabSpeed } from '../../utils/labSpeed';
+import { LAB_SPEED_DEFAULT, effectiveLabSpeed, type LabSpeed } from '../../utils/labSpeed';
 import LabSpeedModal from './LabSpeedModal';
 import { useTranslations } from '../../i18n/utils';
 import { formatNumber } from '../../utils/formatters';
@@ -30,14 +30,28 @@ const RESEARCH_DEFAULT: ResearchState = {
   layoutDirection: 'vertical',
 };
 
+// Sekunden -> "Xd HH:MM:SS"
+function fmtDuration(sec: number): string {
+  sec = Math.max(0, Math.round(sec));
+  const d = Math.floor(sec / 86400);
+  const h = Math.floor((sec % 86400) / 3600);
+  const m = Math.floor((sec % 3600) / 60);
+  const s = sec % 60;
+  const p = (n: number) => String(n).padStart(2, '0');
+  return (d > 0 ? `${d}d ` : '') + `${p(h)}:${p(m)}:${p(s)}`;
+}
+
 function calculateTotalBadges(
   selectedTechnologies: Map<string, number>,
   category: ResearchTree | null
-): { totalBadges: number; selectedCount: number } {
+): { totalBadges: number; totalStrom: number; totalZent: number; totalTimeSec: number; selectedCount: number } {
   let totalBadges = 0;
+  let totalStrom = 0;
+  let totalZent = 0;
+  let totalTimeSec = 0;
   let selectedCount = 0;
 
-  if (!category) return { totalBadges: 0, selectedCount: 0 };
+  if (!category) return { totalBadges: 0, totalStrom: 0, totalZent: 0, totalTimeSec: 0, selectedCount: 0 };
 
   // Helper to check if a technology is unlocked
   const isUnlocked = (tech: Technology): boolean => {
@@ -105,8 +119,11 @@ function calculateTotalBadges(
       // Only count badges up to the maximum available level
       const effectiveLevel = Math.min(level, maxAvailable);
 
-      for (let i = 0; i < effectiveLevel && i < tech.badgeCosts.length; i++) {
-        totalBadges += tech.badgeCosts[i];
+      for (let i = 0; i < effectiveLevel; i++) {
+        totalBadges += tech.badgeCosts[i] ?? 0;
+        totalStrom += tech.stromCosts?.[i] ?? 0;
+        totalZent += tech.zentCosts?.[i] ?? 0;
+        totalTimeSec += tech.times?.[i] ?? 0;
       }
 
       if (effectiveLevel > 0) {
@@ -117,6 +134,9 @@ function calculateTotalBadges(
 
   return {
     totalBadges,
+    totalStrom,
+    totalZent,
+    totalTimeSec,
     selectedCount,
   };
 }
@@ -307,6 +327,16 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
   const isInfoBoxCollapsedRef = useRef(isInfoBoxCollapsed);
 
   const remainingBadges = category.totalBadges - calculatedResults.totalBadges;
+  // Strom / Zent / Zeit (verbraucht + verbleibend) für den Header
+  const eff = effectiveLabSpeed(labSpeed);
+  const totalTreeTimeSec = category.technologies.reduce((s, tt) => s + (tt.times?.reduce((a, b) => a + b, 0) ?? 0), 0);
+  const applySpeed = (sec: number) => sec / (1 + eff / 100);
+  const remainingStrom = Math.max(0, (category.totalStrom || 0) - calculatedResults.totalStrom);
+  const remainingZent = Math.max(0, (category.totalZent || 0) - calculatedResults.totalZent);
+  const remainingTimeSec = Math.max(0, totalTreeTimeSec - calculatedResults.totalTimeSec);
+  const hasStrom = (category.totalStrom || 0) > 0;
+  const hasZent = (category.totalZent || 0) > 0;
+  const hasTime = totalTreeTimeSec > 0;
 
   // Sync ref with state to avoid event listener thrashing
   useEffect(() => {
@@ -388,22 +418,28 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
             </div>
           </div>
 
-          {/* Center: Badge Stats */}
-          <div style={{ display: 'flex', gap: '2rem', alignItems: 'center', flexWrap: 'wrap' }}>
+          {/* Center: Stats (Badges / Strom / Zent / Zeit) */}
+          <div style={{ display: 'flex', gap: '1.6rem', alignItems: 'flex-start', flexWrap: 'wrap' }}>
             <div>
               <div style={{ fontSize: '0.85rem', opacity: 0.7, marginBottom: '0.25rem' }}>
                 {t('calc.research.used')}
               </div>
-              <div style={{ fontSize: '1.2rem', fontWeight: 700, color: calculatedResults.totalBadges > 0 ? '#ffa500' : 'rgba(255,255,255,0.5)' }}>
-                {formatNumber(calculatedResults.totalBadges, lang)} 🎖️
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.12rem', fontSize: '0.95rem', fontWeight: 700 }}>
+                <span style={{ color: calculatedResults.totalBadges > 0 ? '#ffa500' : 'rgba(255,255,255,0.45)' }}>{formatNumber(calculatedResults.totalBadges, lang)} 🎖️</span>
+                {hasStrom && <span><img src="/images/research-icons/strom.webp" width="15" height="15" alt="" style={{ verticalAlign: '-3px' }} /> {formatNumber(calculatedResults.totalStrom, lang)}</span>}
+                {hasZent && <span><img src="/images/research-icons/zent.webp" width="15" height="15" alt="" style={{ verticalAlign: '-3px' }} /> {formatNumber(calculatedResults.totalZent, lang)}</span>}
+                {hasTime && <span style={{ color: '#9db4d0' }}>⏱ {fmtDuration(applySpeed(calculatedResults.totalTimeSec))}</span>}
               </div>
             </div>
             <div>
               <div style={{ fontSize: '0.85rem', opacity: 0.7, marginBottom: '0.25rem' }}>
                 {t('calc.research.remaining')}
               </div>
-              <div style={{ fontSize: '1.2rem', fontWeight: 700, color: remainingBadges > 0 ? 'rgba(255,255,255,0.7)' : '#52be80' }}>
-                {formatNumber(remainingBadges, lang)} 🎖️
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.12rem', fontSize: '0.95rem', fontWeight: 700 }}>
+                <span style={{ color: remainingBadges > 0 ? 'rgba(255,255,255,0.7)' : '#52be80' }}>{formatNumber(remainingBadges, lang)} 🎖️</span>
+                {hasStrom && <span style={{ opacity: 0.85 }}><img src="/images/research-icons/strom.webp" width="15" height="15" alt="" style={{ verticalAlign: '-3px' }} /> {formatNumber(remainingStrom, lang)}</span>}
+                {hasZent && <span style={{ opacity: 0.85 }}><img src="/images/research-icons/zent.webp" width="15" height="15" alt="" style={{ verticalAlign: '-3px' }} /> {formatNumber(remainingZent, lang)}</span>}
+                {hasTime && <span style={{ color: '#9db4d0', opacity: 0.85 }}>⏱ {fmtDuration(applySpeed(remainingTimeSec))}</span>}
               </div>
             </div>
             {targetTech && (
