@@ -8,6 +8,11 @@ export const changelog: ChangelogEntry[] = [
   // ── July 2026 ───────────────────────────────────────────────────────────
   {
     date: '2026-07-01',
+    time: '22:20',
+    text: 'Tactical Master tree: Recharge Shield now requires Interceptions, so the Interceptions node connects cleanly into the tree instead of hanging as a dead-end (mirrors the second-tier layout)',
+  },
+  {
+    date: '2026-07-01',
     time: '21:35',
     text: 'Research: everything now focuses on what you still NEED (remaining), not what you spent. The all-trees bar at the top shows the remaining Strom, Zent, Badges and time on one line; the time already spent is left out everywhere because the past Lab-Speed discount is unknown. Node sheets show a remaining-time line, the tree header time row is remaining-only, and the Target lists all four values (Badges, Strom, Zent, remaining time) neatly aligned',
   },

@@ -1785,7 +1785,7 @@
       "icon": "tactical-master/recharge-shield",
       "prerequisites": [
         {
-          "id": "combat-policy",
+          "id": "interceptions",
           "requiredLevel": 1
         },
         {
