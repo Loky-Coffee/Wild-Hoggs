@@ -8,6 +8,11 @@ export const changelog: ChangelogEntry[] = [
   // ── July 2026 ───────────────────────────────────────────────────────────
   {
     date: '2026-07-01',
+    time: '19:30',
+    text: 'Research calculator: fixed the red target outline staying on the old node when you pick a new target — it now moves to the selected node',
+  },
+  {
+    date: '2026-07-01',
     time: '19:15',
     text: 'All calculators: fixed leveled/maxed nodes appearing dimmed after reloading the page — saved state is now applied right after load, so nodes reliably show as active',
   },
