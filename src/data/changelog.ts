@@ -8,6 +8,11 @@ export const changelog: ChangelogEntry[] = [
   // ── July 2026 ───────────────────────────────────────────────────────────
   {
     date: '2026-07-01',
+    time: '21:20',
+    text: 'Research calculator: on desktop the stats panel now sits on the left (top on mobile) like the tank — with a Lab-Speed button showing your bonus, a neatly aligned Used/Remaining table and coarser values (compact numbers, time without seconds). The horizontal layout now scrolls left/right with the mouse wheel and centers the tree vertically',
+  },
+  {
+    date: '2026-07-01',
     time: '20:45',
     text: 'Research calculator: the header now shows Used and Remaining for Strom, Zent and total research time (with your Lab-Speed applied) — not just badges',
   },

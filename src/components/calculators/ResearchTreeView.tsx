@@ -56,6 +56,22 @@ export default function ResearchTreeView({
     handleScrollLeft, handleScrollRight, handleScrollUp, handleScrollDown,
     resetView } = useTreeZoom(scrollContainerRef);
 
+  // Im horizontalen Layout: vertikales Mausrad -> horizontales Scrollen (links/rechts)
+  useEffect(() => {
+    const c = scrollContainerRef.current;
+    if (!c) return;
+    const onWheel = (e: WheelEvent) => {
+      if (layoutDirection !== 'horizontal') return;
+      if (e.ctrlKey) return; // Pinch-Zoom nicht stören
+      if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return; // schon horizontal
+      if (c.scrollWidth <= c.clientWidth) return; // nichts horizontal zu scrollen
+      c.scrollLeft += e.deltaY;
+      e.preventDefault();
+    };
+    c.addEventListener('wheel', onWheel, { passive: false });
+    return () => c.removeEventListener('wheel', onWheel);
+  }, [layoutDirection]);
+
   const [focusedNodeId, setFocusedNodeId] = useState<string | null>(null);
   const [sheetTech, setSheetTech] = useState<Technology | null>(null);
   const [mounted, setMounted] = useState(false);
@@ -463,6 +479,16 @@ export default function ResearchTreeView({
         WebkitUserSelect: 'none'
       }}
     >
+          <div
+            style={{
+              minHeight: '100%',
+              width: layoutDirection === 'horizontal' ? 'max-content' : '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxSizing: 'border-box',
+            }}
+          >
           <svg
             width={svgDimensions.width * zoomLevel}
             height={svgDimensions.height * zoomLevel}
@@ -512,6 +538,7 @@ export default function ResearchTreeView({
               );
             })}
           </svg>
+          </div>
 
     </div>
       <TreeControls

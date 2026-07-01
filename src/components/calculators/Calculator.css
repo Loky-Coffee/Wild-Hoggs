@@ -59,6 +59,29 @@
   }
 }
 
+/* Research-Layout: Panel oben (mobile) / links (desktop) — wie beim Tank */
+.research-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 1rem;
+  min-height: 0;
+}
+.research-layout .info-box {
+  margin-bottom: 0;
+}
+@media (min-width: 900px) {
+  .research-layout {
+    flex-direction: row;
+  }
+  .research-layout > .info-box {
+    width: 340px;
+    align-self: flex-start;
+    max-height: 100%;
+    overflow-y: auto;
+  }
+}
+
 .info-box {
   background: rgba(52, 152, 219, 0.1);
   border: 1px solid rgba(52, 152, 219, 0.3);

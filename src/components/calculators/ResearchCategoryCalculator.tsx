@@ -3,6 +3,9 @@ import type { ResearchTree, Technology } from '../../schemas/research';
 import ResearchTreeView from './ResearchTreeView';
 import { LAB_SPEED_DEFAULT, effectiveLabSpeed, type LabSpeed } from '../../utils/labSpeed';
 import LabSpeedModal from './LabSpeedModal';
+import labSpeedHelp from '../../data/lab-speed-help.json';
+
+const LABHELP = labSpeedHelp as Record<string, Record<string, string>>;
 import { useTranslations } from '../../i18n/utils';
 import { formatNumber } from '../../utils/formatters';
 import type { TranslationData, TranslationKey } from '../../i18n/index';
@@ -39,6 +42,25 @@ function fmtDuration(sec: number): string {
   const s = sec % 60;
   const p = (n: number) => String(n).padStart(2, '0');
   return (d > 0 ? `${d}d ` : '') + `${p(h)}:${p(m)}:${p(s)}`;
+}
+
+// Grobe Zeit ohne Sekunden -> "Xd HH:MM"
+function fmtDurationShort(sec: number): string {
+  sec = Math.max(0, Math.round(sec));
+  const d = Math.floor(sec / 86400);
+  const h = Math.floor((sec % 86400) / 3600);
+  const m = Math.floor((sec % 3600) / 60);
+  const p = (n: number) => String(n).padStart(2, '0');
+  return (d > 0 ? `${d}d ` : '') + `${p(h)}:${p(m)}`;
+}
+
+// Kompakte grobe Zahl -> "2,86 Mrd" / "2.86B"
+function fcCompact(n: number, lang: string): string {
+  try {
+    return new Intl.NumberFormat(lang === 'de' ? 'de-DE' : 'en-US', { notation: 'compact', maximumFractionDigits: 2 }).format(n);
+  } catch {
+    return String(n);
+  }
 }
 
 function calculateTotalBadges(
@@ -329,6 +351,7 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
   const remainingBadges = category.totalBadges - calculatedResults.totalBadges;
   // Strom / Zent / Zeit (verbraucht + verbleibend) für den Header
   const eff = effectiveLabSpeed(labSpeed);
+  const H = LABHELP[lang] || LABHELP.en;
   const totalTreeTimeSec = category.technologies.reduce((s, tt) => s + (tt.times?.reduce((a, b) => a + b, 0) ?? 0), 0);
   const applySpeed = (sec: number) => sec / (1 + eff / 100);
   const remainingStrom = Math.max(0, (category.totalStrom || 0) - calculatedResults.totalStrom);
@@ -366,8 +389,8 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
   }, []); // Empty dependency array - listeners only added once
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: '1rem', minHeight: 0 }}>
-      {/* Header with all controls and info */}
+    <div className="research-layout">
+      {/* Panel: oben (mobile) / links (desktop) */}
       <div className={`info-box ${isInfoBoxCollapsed ? 'collapsed' : ''}`} style={{ flexShrink: 0 }}>
         {/* Mobile Toggle Button */}
         <button
@@ -393,10 +416,9 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
           className="info-box-content"
           style={{
             display: isInfoBoxCollapsed ? 'none' : 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'flex-start',
-            gap: '2rem',
-            flexWrap: 'wrap'
+            flexDirection: 'column',
+            alignItems: 'stretch',
+            gap: '0.8rem'
           }}
         >
           {/* Left: Category Info */}
@@ -418,51 +440,40 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
             </div>
           </div>
 
-          {/* Center: Stats (Badges / Strom / Zent / Zeit) */}
-          <div style={{ display: 'flex', gap: '1.6rem', alignItems: 'flex-start', flexWrap: 'wrap' }}>
-            <div>
-              <div style={{ fontSize: '0.85rem', opacity: 0.7, marginBottom: '0.25rem' }}>
-                {t('calc.research.used')}
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.12rem', fontSize: '0.95rem', fontWeight: 700 }}>
-                <span style={{ color: calculatedResults.totalBadges > 0 ? '#ffa500' : 'rgba(255,255,255,0.45)' }}>{formatNumber(calculatedResults.totalBadges, lang)} 🎖️</span>
-                {hasStrom && <span><img src="/images/research-icons/strom.webp" width="15" height="15" alt="" style={{ verticalAlign: '-3px' }} /> {formatNumber(calculatedResults.totalStrom, lang)}</span>}
-                {hasZent && <span><img src="/images/research-icons/zent.webp" width="15" height="15" alt="" style={{ verticalAlign: '-3px' }} /> {formatNumber(calculatedResults.totalZent, lang)}</span>}
-                {hasTime && <span style={{ color: '#9db4d0' }}>⏱ {fmtDuration(applySpeed(calculatedResults.totalTimeSec))}</span>}
-              </div>
-            </div>
-            <div>
-              <div style={{ fontSize: '0.85rem', opacity: 0.7, marginBottom: '0.25rem' }}>
-                {t('calc.research.remaining')}
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.12rem', fontSize: '0.95rem', fontWeight: 700 }}>
-                <span style={{ color: remainingBadges > 0 ? 'rgba(255,255,255,0.7)' : '#52be80' }}>{formatNumber(remainingBadges, lang)} 🎖️</span>
-                {hasStrom && <span style={{ opacity: 0.85 }}><img src="/images/research-icons/strom.webp" width="15" height="15" alt="" style={{ verticalAlign: '-3px' }} /> {formatNumber(remainingStrom, lang)}</span>}
-                {hasZent && <span style={{ opacity: 0.85 }}><img src="/images/research-icons/zent.webp" width="15" height="15" alt="" style={{ verticalAlign: '-3px' }} /> {formatNumber(remainingZent, lang)}</span>}
-                {hasTime && <span style={{ color: '#9db4d0', opacity: 0.85 }}>⏱ {fmtDuration(applySpeed(remainingTimeSec))}</span>}
-              </div>
+          {/* Stats: Lab-Speed-Bonus (Button) + ausgerichtete kompakte Tabelle + Target */}
+          <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '10px', padding: '0.5rem 0.7rem' }}>
+            {hasTime && (
+              <button
+                type="button"
+                onClick={() => setShowLabSpeed(true)}
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.35rem', width: '100%', marginBottom: '0.5rem', padding: '0.4rem', background: 'rgba(124,197,255,0.12)', border: '1px solid rgba(124,197,255,0.4)', borderRadius: '8px', color: '#7cc5ff', fontSize: '0.8rem', fontWeight: 700, cursor: 'pointer' }}
+              >
+                ⏱ {H.title}: <span style={{ color: '#6ee7a0' }}>{eff}%</span> ⚙️
+              </button>
+            )}
+            <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr 1fr', columnGap: '0.7rem', alignItems: 'baseline', fontVariantNumeric: 'tabular-nums' }}>
+              <span style={{ paddingBottom: '0.2rem' }} />
+              <span style={{ fontSize: '0.64rem', textTransform: 'uppercase', letterSpacing: '0.04em', color: 'rgba(255,255,255,0.4)', textAlign: 'right', paddingBottom: '0.2rem' }}>{t('calc.research.used')}</span>
+              <span style={{ fontSize: '0.64rem', textTransform: 'uppercase', letterSpacing: '0.04em', color: 'rgba(255,255,255,0.4)', textAlign: 'right', paddingBottom: '0.2rem' }}>{t('calc.research.remaining')}</span>
+              {[
+                { k: 'badges', ic: '🎖️', label: 'Badges', used: fcCompact(calculatedResults.totalBadges, lang), rem: fcCompact(remainingBadges, lang), show: true },
+                { k: 'strom', img: '/images/research-icons/strom.webp', label: lang === 'de' ? 'Strom' : 'Electricity', used: fcCompact(calculatedResults.totalStrom, lang), rem: fcCompact(remainingStrom, lang), show: hasStrom },
+                { k: 'zent', img: '/images/research-icons/zent.webp', label: 'Zent', used: fcCompact(calculatedResults.totalZent, lang), rem: fcCompact(remainingZent, lang), show: hasZent },
+                { k: 'time', ic: '⏱', label: lang === 'de' ? 'Zeit' : 'Time', used: fmtDurationShort(applySpeed(calculatedResults.totalTimeSec)), rem: fmtDurationShort(applySpeed(remainingTimeSec)), show: hasTime },
+              ].filter((r) => r.show).flatMap((r) => [
+                <span key={r.k + 'l'} style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.6)', display: 'inline-flex', alignItems: 'center', gap: '0.3rem', padding: '0.24rem 0', borderTop: '1px solid rgba(255,255,255,0.06)', whiteSpace: 'nowrap' }}>
+                  {r.img ? <img src={r.img} width="15" height="15" alt="" /> : <span>{r.ic}</span>} {r.label}
+                </span>,
+                <span key={r.k + 'u'} style={{ fontSize: '0.85rem', fontWeight: 700, color: '#ffa500', textAlign: 'right', padding: '0.24rem 0', borderTop: '1px solid rgba(255,255,255,0.06)' }}>{r.used}</span>,
+                <span key={r.k + 'r'} style={{ fontSize: '0.85rem', fontWeight: 600, color: 'rgba(255,255,255,0.55)', textAlign: 'right', padding: '0.24rem 0', borderTop: '1px solid rgba(255,255,255,0.06)' }}>{r.rem}</span>,
+              ])}
             </div>
             {targetTech && (
-              <div>
-                <div style={{ fontSize: '0.85rem', opacity: 0.7, marginBottom: '0.25rem' }}>
-                  {t('tank.target')}
-                </div>
-                <div style={{ fontSize: '1.2rem', fontWeight: 700, color: '#e74c3c', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  {t(targetTech.nameKey as TranslationKey)} · {formatNumber(badgesToTarget, lang)} 🎖️
-                  <button
-                    onClick={() => setTargetTechId(null)}
-                    style={{
-                      padding: '0.2rem 0.4rem',
-                      fontSize: '0.75rem',
-                      background: 'rgba(231, 76, 60, 0.2)',
-                      border: '1px solid rgba(231, 76, 60, 0.5)',
-                      borderRadius: '4px',
-                      color: '#e74c3c',
-                      cursor: 'pointer'
-                    }}
-                  >
-                    ✕
-                  </button>
+              <div style={{ marginTop: '0.5rem', paddingTop: '0.4rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                <div style={{ fontSize: '0.64rem', opacity: 0.55, marginBottom: '0.2rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{t('tank.target')}</div>
+                <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#e74c3c', display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
+                  <span>{t(targetTech.nameKey as TranslationKey)} · {fcCompact(badgesToTarget, lang)} 🎖️</span>
+                  <button onClick={() => setTargetTechId(null)} style={{ padding: '0.1rem 0.4rem', fontSize: '0.75rem', background: 'rgba(231,76,60,0.2)', border: '1px solid rgba(231,76,60,0.5)', borderRadius: '4px', color: '#e74c3c', cursor: 'pointer' }}>✕</button>
                 </div>
               </div>
             )}
@@ -488,7 +499,7 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
       </div>
 
       {/* Tree taking remaining space */}
-      <div ref={treeContainerRef} style={{ flex: 1, minHeight: 0 }}>
+      <div ref={treeContainerRef} style={{ flex: 1, minHeight: 0, minWidth: 0 }}>
         <ResearchTreeView
           technologies={category.technologies}
           selectedLevels={selectedTechnologies}
