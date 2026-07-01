@@ -132,7 +132,8 @@
       "icon": "hq-management/photovoltaics",
       "prerequisites": [
         {
-          "id": "anti-theft"
+          "id": "anti-theft",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -199,7 +200,8 @@
       "icon": "hq-management/storage-battery",
       "prerequisites": [
         {
-          "id": "anti-theft"
+          "id": "anti-theft",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -266,10 +268,8 @@
       "icon": "hq-management/quick-harvest",
       "prerequisites": [
         {
-          "id": "photovoltaics"
-        },
-        {
-          "id": "storage-battery"
+          "id": "photovoltaics",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -340,10 +340,8 @@
       "icon": "hq-management/gold-panning",
       "prerequisites": [
         {
-          "id": "photovoltaics"
-        },
-        {
-          "id": "storage-battery"
+          "id": "storage-battery",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -414,10 +412,12 @@
       "icon": "hq-management/rapid-casualty-care",
       "prerequisites": [
         {
-          "id": "quick-harvest"
+          "id": "quick-harvest",
+          "requiredLevel": 1
         },
         {
-          "id": "gold-panning"
+          "id": "gold-panning",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -484,7 +484,8 @@
       "icon": "hq-management/farming-technology",
       "prerequisites": [
         {
-          "id": "rapid-casualty-care"
+          "id": "rapid-casualty-care",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -551,7 +552,8 @@
       "icon": "hq-management/woodcutter",
       "prerequisites": [
         {
-          "id": "rapid-casualty-care"
+          "id": "rapid-casualty-care",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -618,10 +620,8 @@
       "icon": "hq-management/food-warehouse",
       "prerequisites": [
         {
-          "id": "farming-technology"
-        },
-        {
-          "id": "woodcutter"
+          "id": "farming-technology",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -688,10 +688,8 @@
       "icon": "hq-management/centralized-storage",
       "prerequisites": [
         {
-          "id": "farming-technology"
-        },
-        {
-          "id": "woodcutter"
+          "id": "woodcutter",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -738,10 +736,8 @@
       "icon": "hq-management/parallel-work-i",
       "prerequisites": [
         {
-          "id": "food-warehouse"
-        },
-        {
-          "id": "centralized-storage"
+          "id": "food-warehouse",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -808,10 +804,8 @@
       "icon": "hq-management/skillful-craftsman",
       "prerequisites": [
         {
-          "id": "food-warehouse"
-        },
-        {
-          "id": "centralized-storage"
+          "id": "centralized-storage",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -878,10 +872,12 @@
       "icon": "hq-management/anti-theft",
       "prerequisites": [
         {
-          "id": "parallel-work-i"
+          "id": "parallel-work-i",
+          "requiredLevel": 1
         },
         {
-          "id": "skillful-craftsman"
+          "id": "skillful-craftsman",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -948,7 +944,8 @@
       "icon": "hq-management/house-renovation",
       "prerequisites": [
         {
-          "id": "anti-theft-2"
+          "id": "anti-theft-2",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -1015,7 +1012,8 @@
       "icon": "hq-management/wind-drive-i",
       "prerequisites": [
         {
-          "id": "anti-theft-2"
+          "id": "anti-theft-2",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -1082,10 +1080,8 @@
       "icon": "hq-management/safe-box",
       "prerequisites": [
         {
-          "id": "house-renovation"
-        },
-        {
-          "id": "wind-drive-i"
+          "id": "house-renovation",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -1152,10 +1148,8 @@
       "icon": "hq-management/lead-battery",
       "prerequisites": [
         {
-          "id": "house-renovation"
-        },
-        {
-          "id": "wind-drive-i"
+          "id": "wind-drive-i",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -1222,10 +1216,8 @@
       "icon": "hq-management/photovoltaics",
       "prerequisites": [
         {
-          "id": "safe-box"
-        },
-        {
-          "id": "lead-battery"
+          "id": "safe-box",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -1292,10 +1284,8 @@
       "icon": "hq-management/storage-battery",
       "prerequisites": [
         {
-          "id": "safe-box"
-        },
-        {
-          "id": "lead-battery"
+          "id": "lead-battery",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -1362,10 +1352,12 @@
       "icon": "hq-management/hospital-expansion",
       "prerequisites": [
         {
-          "id": "photovoltaics-2"
+          "id": "photovoltaics-2",
+          "requiredLevel": 1
         },
         {
-          "id": "storage-battery-2"
+          "id": "storage-battery-2",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [

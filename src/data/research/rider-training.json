@@ -217,10 +217,8 @@
       "icon": "rider-training/mobility-enhancement",
       "prerequisites": [
         {
-          "id": "combat-policy"
-        },
-        {
-          "id": "interceptions"
+          "id": "combat-policy",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -298,10 +296,8 @@
       "icon": "rider-training/stronger-armor",
       "prerequisites": [
         {
-          "id": "combat-policy"
-        },
-        {
-          "id": "interceptions"
+          "id": "interceptions",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -399,10 +395,12 @@
       "icon": "rider-training/hybrid-armor",
       "prerequisites": [
         {
-          "id": "mobility-enhancement"
+          "id": "mobility-enhancement",
+          "requiredLevel": 1
         },
         {
-          "id": "stronger-armor"
+          "id": "stronger-armor",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -469,7 +467,8 @@
       "icon": "rider-training/joint-operation",
       "prerequisites": [
         {
-          "id": "hybrid-armor"
+          "id": "hybrid-armor",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -547,7 +546,8 @@
       "icon": "rider-training/mobile-defense",
       "prerequisites": [
         {
-          "id": "hybrid-armor"
+          "id": "hybrid-armor",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -625,10 +625,8 @@
       "icon": "rider-training/field-training",
       "prerequisites": [
         {
-          "id": "joint-operation"
-        },
-        {
-          "id": "mobile-defense"
+          "id": "joint-operation",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -706,10 +704,8 @@
       "icon": "rider-training/camo-coating",
       "prerequisites": [
         {
-          "id": "joint-operation"
-        },
-        {
-          "id": "mobile-defense"
+          "id": "mobile-defense",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -827,10 +823,8 @@
       "icon": "rider-training/mobility-enhancement",
       "prerequisites": [
         {
-          "id": "field-training"
-        },
-        {
-          "id": "camo-coating"
+          "id": "field-training",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -958,10 +952,8 @@
       "icon": "rider-training/stronger-armor",
       "prerequisites": [
         {
-          "id": "field-training"
-        },
-        {
-          "id": "camo-coating"
+          "id": "camo-coating",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -1089,10 +1081,12 @@
       "icon": "rider-training/hybrid-armor",
       "prerequisites": [
         {
-          "id": "mobility-enhancement-2"
+          "id": "mobility-enhancement-2",
+          "requiredLevel": 1
         },
         {
-          "id": "stronger-armor-2"
+          "id": "stronger-armor-2",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [

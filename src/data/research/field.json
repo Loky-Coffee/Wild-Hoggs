@@ -216,7 +216,10 @@
       ],
       "icon": "field/mobility-enhancement",
       "prerequisites": [
-        "field-training"
+        {
+          "id": "field-training",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -292,8 +295,14 @@
       ],
       "icon": "field/melee-combat",
       "prerequisites": [
-        "field-training",
-        "camo-coating"
+        {
+          "id": "field-training",
+          "requiredLevel": 1
+        },
+        {
+          "id": "camo-coating",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -369,7 +378,10 @@
       ],
       "icon": "field/weapon-upgrading",
       "prerequisites": [
-        "camo-coating"
+        {
+          "id": "camo-coating",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -425,7 +437,10 @@
       ],
       "icon": "field/quick-assembly",
       "prerequisites": [
-        "weapon-upgrading"
+        {
+          "id": "weapon-upgrading",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -476,7 +491,10 @@
       ],
       "icon": "field/arms-assembly",
       "prerequisites": [
-        "melee-combat"
+        {
+          "id": "melee-combat",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -527,7 +545,10 @@
       ],
       "icon": "field/target-training",
       "prerequisites": [
-        "mobility-enhancement"
+        {
+          "id": "mobility-enhancement",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -598,7 +619,10 @@
       ],
       "icon": "field/stronger-armor",
       "prerequisites": [
-        "target-training"
+        {
+          "id": "target-training",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -674,7 +698,10 @@
       ],
       "icon": "field/shield-upgrade",
       "prerequisites": [
-        "arms-assembly"
+        {
+          "id": "arms-assembly",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -750,7 +777,10 @@
       ],
       "icon": "field/tactical-cover",
       "prerequisites": [
-        "quick-assembly"
+        {
+          "id": "quick-assembly",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -866,8 +896,14 @@
       ],
       "icon": "field/field-training",
       "prerequisites": [
-        "stronger-armor",
-        "shield-upgrade"
+        {
+          "id": "stronger-armor",
+          "requiredLevel": 1
+        },
+        {
+          "id": "shield-upgrade",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -993,8 +1029,14 @@
       ],
       "icon": "field/camo-coating",
       "prerequisites": [
-        "shield-upgrade",
-        "tactical-cover"
+        {
+          "id": "shield-upgrade",
+          "requiredLevel": 1
+        },
+        {
+          "id": "tactical-cover",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -1080,8 +1122,14 @@
       ],
       "icon": "field/recharge-shield",
       "prerequisites": [
-        "field-training-2",
-        "camo-coating-2"
+        {
+          "id": "field-training-2",
+          "requiredLevel": 1
+        },
+        {
+          "id": "camo-coating-2",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {

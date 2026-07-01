@@ -194,8 +194,10 @@
       ],
       "icon": "army-building/field-training",
       "prerequisites": [
-        "combat-policy",
-        "interceptions"
+        {
+          "id": "combat-policy",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -260,8 +262,10 @@
       ],
       "icon": "army-building/camo-coating",
       "prerequisites": [
-        "combat-policy",
-        "interceptions"
+        {
+          "id": "interceptions",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -290,8 +294,14 @@
       ],
       "icon": "army-building/demolition-crew",
       "prerequisites": [
-        "field-training",
-        "camo-coating"
+        {
+          "id": "field-training",
+          "requiredLevel": 1
+        },
+        {
+          "id": "camo-coating",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -328,7 +338,10 @@
       ],
       "icon": "army-building/alloy-plate",
       "prerequisites": [
-        "demolition-crew"
+        {
+          "id": "demolition-crew",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -369,7 +382,10 @@
       ],
       "icon": "army-building/enhanced-armour",
       "prerequisites": [
-        "demolition-crew"
+        {
+          "id": "demolition-crew",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -410,7 +426,10 @@
       ],
       "icon": "army-building/aerocraft-material",
       "prerequisites": [
-        "demolition-crew"
+        {
+          "id": "demolition-crew",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -479,9 +498,10 @@
       ],
       "icon": "army-building/mobility-enhancement",
       "prerequisites": [
-        "alloy-plate",
-        "enhanced-armour",
-        "aerocraft-material"
+        {
+          "id": "alloy-plate",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -557,9 +577,10 @@
       ],
       "icon": "army-building/melee-combat",
       "prerequisites": [
-        "alloy-plate",
-        "enhanced-armour",
-        "aerocraft-material"
+        {
+          "id": "enhanced-armour",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -635,9 +656,10 @@
       ],
       "icon": "army-building/weapon-upgrading",
       "prerequisites": [
-        "alloy-plate",
-        "enhanced-armour",
-        "aerocraft-material"
+        {
+          "id": "aerocraft-material",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -713,9 +735,10 @@
       ],
       "icon": "army-building/stronger-armor",
       "prerequisites": [
-        "mobility-enhancement",
-        "melee-combat",
-        "weapon-upgrading"
+        {
+          "id": "mobility-enhancement",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -791,9 +814,10 @@
       ],
       "icon": "army-building/shield-upgrade",
       "prerequisites": [
-        "mobility-enhancement",
-        "melee-combat",
-        "weapon-upgrading"
+        {
+          "id": "melee-combat",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -869,9 +893,10 @@
       ],
       "icon": "army-building/tactical-cover",
       "prerequisites": [
-        "mobility-enhancement",
-        "melee-combat",
-        "weapon-upgrading"
+        {
+          "id": "weapon-upgrading",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -967,9 +992,14 @@
       ],
       "icon": "army-building/joint-operation",
       "prerequisites": [
-        "stronger-armor",
-        "shield-upgrade",
-        "tactical-cover"
+        {
+          "id": "stronger-armor",
+          "requiredLevel": 1
+        },
+        {
+          "id": "shield-upgrade",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -1054,9 +1084,14 @@
       ],
       "icon": "army-building/mobile-defense",
       "prerequisites": [
-        "stronger-armor",
-        "shield-upgrade",
-        "tactical-cover"
+        {
+          "id": "shield-upgrade",
+          "requiredLevel": 1
+        },
+        {
+          "id": "tactical-cover",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -1141,8 +1176,10 @@
       ],
       "icon": "army-building/combat-policy",
       "prerequisites": [
-        "joint-operation",
-        "mobile-defense"
+        {
+          "id": "joint-operation",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -1227,8 +1264,10 @@
       ],
       "icon": "army-building/interceptions",
       "prerequisites": [
-        "joint-operation",
-        "mobile-defense"
+        {
+          "id": "mobile-defense",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -1313,8 +1352,10 @@
       ],
       "icon": "army-building/field-training",
       "prerequisites": [
-        "combat-policy-2",
-        "interceptions-2"
+        {
+          "id": "combat-policy-2",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -1399,8 +1440,10 @@
       ],
       "icon": "army-building/camo-coating",
       "prerequisites": [
-        "combat-policy-2",
-        "interceptions-2"
+        {
+          "id": "interceptions-2",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -1505,8 +1548,10 @@
       ],
       "icon": "army-building/fire-up",
       "prerequisites": [
-        "field-training-2",
-        "camo-coating-2"
+        {
+          "id": "field-training-2",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -1632,8 +1677,10 @@
       ],
       "icon": "army-building/armor-upgrade",
       "prerequisites": [
-        "field-training-2",
-        "camo-coating-2"
+        {
+          "id": "camo-coating-2",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -1739,8 +1786,14 @@
       ],
       "icon": "army-building/recharge-shield",
       "prerequisites": [
-        "fire-up",
-        "armor-upgrade"
+        {
+          "id": "fire-up",
+          "requiredLevel": 1
+        },
+        {
+          "id": "armor-upgrade",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {

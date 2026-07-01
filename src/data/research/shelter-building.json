@@ -135,10 +135,8 @@
       "icon": "shelter-building/food-warehouse",
       "prerequisites": [
         {
-          "id": "farming-technology"
-        },
-        {
-          "id": "woodcutter"
+          "id": "farming-technology",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -185,10 +183,8 @@
       "icon": "shelter-building/centralized-storage",
       "prerequisites": [
         {
-          "id": "farming-technology"
-        },
-        {
-          "id": "woodcutter"
+          "id": "woodcutter",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -235,10 +231,12 @@
       "icon": "shelter-building/skillful-craftsman",
       "prerequisites": [
         {
-          "id": "food-warehouse"
+          "id": "food-warehouse",
+          "requiredLevel": 1
         },
         {
-          "id": "centralized-storage"
+          "id": "centralized-storage",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -285,7 +283,8 @@
       "icon": "shelter-building/lead-battery",
       "prerequisites": [
         {
-          "id": "skillful-craftsman"
+          "id": "skillful-craftsman",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -332,7 +331,8 @@
       "icon": "shelter-building/wind-drive-i",
       "prerequisites": [
         {
-          "id": "skillful-craftsman"
+          "id": "skillful-craftsman",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -399,10 +399,12 @@
       "icon": "shelter-building/anti-theft",
       "prerequisites": [
         {
-          "id": "lead-battery"
+          "id": "lead-battery",
+          "requiredLevel": 1
         },
         {
-          "id": "wind-drive-i"
+          "id": "wind-drive-i",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -469,7 +471,8 @@
       "icon": "shelter-building/quick-harvest",
       "prerequisites": [
         {
-          "id": "anti-theft"
+          "id": "anti-theft",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -562,7 +565,8 @@
       "icon": "shelter-building/gold-panning",
       "prerequisites": [
         {
-          "id": "anti-theft"
+          "id": "anti-theft",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -635,10 +639,8 @@
       "icon": "shelter-building/farming-technology",
       "prerequisites": [
         {
-          "id": "quick-harvest"
-        },
-        {
-          "id": "gold-panning"
+          "id": "quick-harvest",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -685,10 +687,8 @@
       "icon": "shelter-building/woodcutter",
       "prerequisites": [
         {
-          "id": "quick-harvest"
-        },
-        {
-          "id": "gold-panning"
+          "id": "gold-panning",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -735,10 +735,8 @@
       "icon": "shelter-building/food-warehouse",
       "prerequisites": [
         {
-          "id": "farming-technology-2"
-        },
-        {
-          "id": "woodcutter-2"
+          "id": "farming-technology-2",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -785,10 +783,8 @@
       "icon": "shelter-building/centralized-storage",
       "prerequisites": [
         {
-          "id": "farming-technology-2"
-        },
-        {
-          "id": "woodcutter-2"
+          "id": "woodcutter-2",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -835,10 +831,12 @@
       "icon": "shelter-building/parallel-work-i",
       "prerequisites": [
         {
-          "id": "food-warehouse-2"
+          "id": "food-warehouse-2",
+          "requiredLevel": 1
         },
         {
-          "id": "centralized-storage-2"
+          "id": "centralized-storage-2",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -885,7 +883,8 @@
       "icon": "shelter-building/lead-battery",
       "prerequisites": [
         {
-          "id": "parallel-work-i"
+          "id": "parallel-work-i",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -932,7 +931,8 @@
       "icon": "shelter-building/wind-drive-i",
       "prerequisites": [
         {
-          "id": "parallel-work-i"
+          "id": "parallel-work-i",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -999,10 +999,12 @@
       "icon": "shelter-building/skillful-craftsman",
       "prerequisites": [
         {
-          "id": "lead-battery-2"
+          "id": "lead-battery-2",
+          "requiredLevel": 1
         },
         {
-          "id": "wind-drive-i-2"
+          "id": "wind-drive-i-2",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [

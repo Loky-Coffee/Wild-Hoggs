@@ -217,10 +217,8 @@
       "icon": "shooter-training/weapon-upgrading",
       "prerequisites": [
         {
-          "id": "combat-policy"
-        },
-        {
-          "id": "interceptions"
+          "id": "combat-policy",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -298,10 +296,8 @@
       "icon": "shooter-training/tactical-cover",
       "prerequisites": [
         {
-          "id": "combat-policy"
-        },
-        {
-          "id": "interceptions"
+          "id": "interceptions",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -399,10 +395,12 @@
       "icon": "shooter-training/alert-formation",
       "prerequisites": [
         {
-          "id": "weapon-upgrading"
+          "id": "weapon-upgrading",
+          "requiredLevel": 1
         },
         {
-          "id": "tactical-cover"
+          "id": "tactical-cover",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -469,7 +467,8 @@
       "icon": "shooter-training/joint-operation",
       "prerequisites": [
         {
-          "id": "alert-formation"
+          "id": "alert-formation",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -547,7 +546,8 @@
       "icon": "shooter-training/mobile-defense",
       "prerequisites": [
         {
-          "id": "alert-formation"
+          "id": "alert-formation",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -625,10 +625,8 @@
       "icon": "shooter-training/field-training",
       "prerequisites": [
         {
-          "id": "joint-operation"
-        },
-        {
-          "id": "mobile-defense"
+          "id": "joint-operation",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -706,10 +704,8 @@
       "icon": "shooter-training/camo-coating",
       "prerequisites": [
         {
-          "id": "joint-operation"
-        },
-        {
-          "id": "mobile-defense"
+          "id": "mobile-defense",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -827,10 +823,8 @@
       "icon": "shooter-training/weapon-upgrading",
       "prerequisites": [
         {
-          "id": "field-training"
-        },
-        {
-          "id": "camo-coating"
+          "id": "field-training",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -958,10 +952,8 @@
       "icon": "shooter-training/tactical-cover",
       "prerequisites": [
         {
-          "id": "field-training"
-        },
-        {
-          "id": "camo-coating"
+          "id": "camo-coating",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -1089,10 +1081,12 @@
       "icon": "shooter-training/alert-formation",
       "prerequisites": [
         {
-          "id": "weapon-upgrading-2"
+          "id": "weapon-upgrading-2",
+          "requiredLevel": 1
         },
         {
-          "id": "tactical-cover-2"
+          "id": "tactical-cover-2",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [

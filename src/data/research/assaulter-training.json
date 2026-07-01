@@ -217,10 +217,8 @@
       "icon": "assaulter-training/melee-combat",
       "prerequisites": [
         {
-          "id": "combat-policy"
-        },
-        {
-          "id": "interceptions"
+          "id": "combat-policy",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -298,10 +296,8 @@
       "icon": "assaulter-training/shield-upgrade",
       "prerequisites": [
         {
-          "id": "combat-policy"
-        },
-        {
-          "id": "interceptions"
+          "id": "interceptions",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -399,10 +395,12 @@
       "icon": "assaulter-training/alloy-shield",
       "prerequisites": [
         {
-          "id": "melee-combat"
+          "id": "melee-combat",
+          "requiredLevel": 1
         },
         {
-          "id": "shield-upgrade"
+          "id": "shield-upgrade",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -469,7 +467,8 @@
       "icon": "assaulter-training/joint-operation",
       "prerequisites": [
         {
-          "id": "alloy-shield"
+          "id": "alloy-shield",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -547,7 +546,8 @@
       "icon": "assaulter-training/mobile-defense",
       "prerequisites": [
         {
-          "id": "alloy-shield"
+          "id": "alloy-shield",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -625,10 +625,8 @@
       "icon": "assaulter-training/field-training",
       "prerequisites": [
         {
-          "id": "joint-operation"
-        },
-        {
-          "id": "mobile-defense"
+          "id": "joint-operation",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -706,10 +704,8 @@
       "icon": "assaulter-training/camo-coating",
       "prerequisites": [
         {
-          "id": "joint-operation"
-        },
-        {
-          "id": "mobile-defense"
+          "id": "mobile-defense",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -827,10 +823,8 @@
       "icon": "assaulter-training/melee-combat",
       "prerequisites": [
         {
-          "id": "field-training"
-        },
-        {
-          "id": "camo-coating"
+          "id": "field-training",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -958,10 +952,8 @@
       "icon": "assaulter-training/shield-upgrade",
       "prerequisites": [
         {
-          "id": "field-training"
-        },
-        {
-          "id": "camo-coating"
+          "id": "camo-coating",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -1089,10 +1081,12 @@
       "icon": "assaulter-training/alloy-shield",
       "prerequisites": [
         {
-          "id": "melee-combat-2"
+          "id": "melee-combat-2",
+          "requiredLevel": 1
         },
         {
-          "id": "shield-upgrade-2"
+          "id": "shield-upgrade-2",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [

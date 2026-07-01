@@ -76,7 +76,8 @@
       "icon": "age-of-steel/farming-technology",
       "prerequisites": [
         {
-          "id": "steel-plant"
+          "id": "steel-plant",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -123,7 +124,8 @@
       "icon": "age-of-steel/woodcutter",
       "prerequisites": [
         {
-          "id": "steel-plant"
+          "id": "steel-plant",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -170,10 +172,8 @@
       "icon": "age-of-steel/house-renovation",
       "prerequisites": [
         {
-          "id": "farming-technology"
-        },
-        {
-          "id": "woodcutter"
+          "id": "farming-technology",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -220,10 +220,12 @@
       "icon": "age-of-steel/smelting",
       "prerequisites": [
         {
-          "id": "farming-technology"
+          "id": "farming-technology",
+          "requiredLevel": 1
         },
         {
-          "id": "woodcutter"
+          "id": "woodcutter",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -270,10 +272,8 @@
       "icon": "age-of-steel/wind-drive-i",
       "prerequisites": [
         {
-          "id": "farming-technology"
-        },
-        {
-          "id": "woodcutter"
+          "id": "woodcutter",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -304,13 +304,16 @@
       "icon": "age-of-steel/production-boost",
       "prerequisites": [
         {
-          "id": "house-renovation"
+          "id": "house-renovation",
+          "requiredLevel": 5
         },
         {
-          "id": "smelting"
+          "id": "smelting",
+          "requiredLevel": 5
         },
         {
-          "id": "wind-drive-i"
+          "id": "wind-drive-i",
+          "requiredLevel": 5
         }
       ],
       "bonuses": [
@@ -341,7 +344,8 @@
       "icon": "age-of-steel/emergency-center",
       "prerequisites": [
         {
-          "id": "production-boost"
+          "id": "production-boost",
+          "requiredLevel": 1
         }
       ],
       "unlocks": [
@@ -408,7 +412,8 @@
       "icon": "age-of-steel/rapid-casualty-care",
       "prerequisites": [
         {
-          "id": "emergency-center"
+          "id": "emergency-center",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -475,7 +480,8 @@
       "icon": "age-of-steel/critical-care-bed",
       "prerequisites": [
         {
-          "id": "emergency-center"
+          "id": "emergency-center",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -542,10 +548,8 @@
       "icon": "age-of-steel/skillful-craftsman",
       "prerequisites": [
         {
-          "id": "rapid-casualty-care"
-        },
-        {
-          "id": "critical-care-bed"
+          "id": "rapid-casualty-care",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -612,10 +616,8 @@
       "icon": "age-of-steel/parallel-work-i",
       "prerequisites": [
         {
-          "id": "rapid-casualty-care"
-        },
-        {
-          "id": "critical-care-bed"
+          "id": "critical-care-bed",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -682,10 +684,8 @@
       "icon": "age-of-steel/rapid-casualty-care",
       "prerequisites": [
         {
-          "id": "skillful-craftsman"
-        },
-        {
-          "id": "parallel-work-i"
+          "id": "skillful-craftsman",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -752,10 +752,8 @@
       "icon": "age-of-steel/critical-care-bed",
       "prerequisites": [
         {
-          "id": "skillful-craftsman"
-        },
-        {
-          "id": "parallel-work-i"
+          "id": "parallel-work-i",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -786,10 +784,12 @@
       "icon": "age-of-steel/production-boost",
       "prerequisites": [
         {
-          "id": "rapid-casualty-care-2"
+          "id": "rapid-casualty-care-2",
+          "requiredLevel": 10
         },
         {
-          "id": "critical-care-bed-2"
+          "id": "critical-care-bed-2",
+          "requiredLevel": 10
         }
       ],
       "bonuses": [
@@ -836,7 +836,8 @@
       "icon": "age-of-steel/farming-technology",
       "prerequisites": [
         {
-          "id": "production-boost-2"
+          "id": "production-boost-2",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -883,7 +884,8 @@
       "icon": "age-of-steel/woodcutter",
       "prerequisites": [
         {
-          "id": "production-boost-2"
+          "id": "production-boost-2",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -930,10 +932,8 @@
       "icon": "age-of-steel/house-renovation",
       "prerequisites": [
         {
-          "id": "farming-technology-2"
-        },
-        {
-          "id": "woodcutter-2"
+          "id": "farming-technology-2",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -980,10 +980,12 @@
       "icon": "age-of-steel/smelting",
       "prerequisites": [
         {
-          "id": "farming-technology-2"
+          "id": "farming-technology-2",
+          "requiredLevel": 1
         },
         {
-          "id": "woodcutter-2"
+          "id": "woodcutter-2",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -1030,10 +1032,8 @@
       "icon": "age-of-steel/wind-drive-i",
       "prerequisites": [
         {
-          "id": "farming-technology-2"
-        },
-        {
-          "id": "woodcutter-2"
+          "id": "woodcutter-2",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -1064,13 +1064,16 @@
       "icon": "age-of-steel/reservist-camp",
       "prerequisites": [
         {
-          "id": "house-renovation-2"
+          "id": "house-renovation-2",
+          "requiredLevel": 5
         },
         {
-          "id": "smelting-2"
+          "id": "smelting-2",
+          "requiredLevel": 5
         },
         {
-          "id": "wind-drive-i-2"
+          "id": "wind-drive-i-2",
+          "requiredLevel": 5
         }
       ],
       "unlocks": [
@@ -1137,7 +1140,8 @@
       "icon": "age-of-steel/rapid-casualty-care",
       "prerequisites": [
         {
-          "id": "reservist-camp"
+          "id": "reservist-camp",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -1204,7 +1208,8 @@
       "icon": "age-of-steel/critical-care-bed",
       "prerequisites": [
         {
-          "id": "reservist-camp"
+          "id": "reservist-camp",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -1271,10 +1276,12 @@
       "icon": "age-of-steel/combat-readiness",
       "prerequisites": [
         {
-          "id": "rapid-casualty-care-3"
+          "id": "rapid-casualty-care-3",
+          "requiredLevel": 1
         },
         {
-          "id": "critical-care-bed-3"
+          "id": "critical-care-bed-3",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [

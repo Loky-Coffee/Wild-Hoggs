@@ -195,10 +195,8 @@
       "icon": "rapid-growth/safe-box",
       "prerequisites": [
         {
-          "id": "house-renovation"
-        },
-        {
-          "id": "wind-drive-i"
+          "id": "house-renovation",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -265,10 +263,8 @@
       "icon": "rapid-growth/lead-battery",
       "prerequisites": [
         {
-          "id": "house-renovation"
-        },
-        {
-          "id": "wind-drive-i"
+          "id": "wind-drive-i",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -335,10 +331,8 @@
       "icon": "rapid-growth/photovoltaics",
       "prerequisites": [
         {
-          "id": "safe-box"
-        },
-        {
-          "id": "lead-battery"
+          "id": "safe-box",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -405,10 +399,8 @@
       "icon": "rapid-growth/storage-battery",
       "prerequisites": [
         {
-          "id": "safe-box"
-        },
-        {
-          "id": "lead-battery"
+          "id": "lead-battery",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -475,10 +467,12 @@
       "icon": "rapid-growth/skillful-craftsman",
       "prerequisites": [
         {
-          "id": "photovoltaics"
+          "id": "photovoltaics",
+          "requiredLevel": 1
         },
         {
-          "id": "storage-battery"
+          "id": "storage-battery",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -545,7 +539,8 @@
       "icon": "rapid-growth/quick-harvest",
       "prerequisites": [
         {
-          "id": "skillful-craftsman"
+          "id": "skillful-craftsman",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -616,7 +611,8 @@
       "icon": "rapid-growth/gold-panning",
       "prerequisites": [
         {
-          "id": "skillful-craftsman"
+          "id": "skillful-craftsman",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -703,10 +699,12 @@
       "icon": "rapid-growth/parallel-work-i",
       "prerequisites": [
         {
-          "id": "quick-harvest"
+          "id": "quick-harvest",
+          "requiredLevel": 1
         },
         {
-          "id": "gold-panning"
+          "id": "gold-panning",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -773,7 +771,8 @@
       "icon": "rapid-growth/farming-technology",
       "prerequisites": [
         {
-          "id": "parallel-work-i"
+          "id": "parallel-work-i",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -840,7 +839,8 @@
       "icon": "rapid-growth/woodcutter",
       "prerequisites": [
         {
-          "id": "parallel-work-i"
+          "id": "parallel-work-i",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -907,10 +907,8 @@
       "icon": "rapid-growth/food-warehouse",
       "prerequisites": [
         {
-          "id": "farming-technology"
-        },
-        {
-          "id": "woodcutter"
+          "id": "farming-technology",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -977,10 +975,8 @@
       "icon": "rapid-growth/centralized-storage",
       "prerequisites": [
         {
-          "id": "farming-technology"
-        },
-        {
-          "id": "woodcutter"
+          "id": "woodcutter",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -1087,10 +1083,12 @@
       "icon": "rapid-growth/skillful-craftsman",
       "prerequisites": [
         {
-          "id": "food-warehouse"
+          "id": "food-warehouse",
+          "requiredLevel": 1
         },
         {
-          "id": "centralized-storage"
+          "id": "centralized-storage",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -1197,7 +1195,8 @@
       "icon": "rapid-growth/hospital-expansion",
       "prerequisites": [
         {
-          "id": "skillful-craftsman-2"
+          "id": "skillful-craftsman-2",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [

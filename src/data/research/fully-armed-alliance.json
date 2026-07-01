@@ -131,7 +131,10 @@
       ],
       "icon": "fully-armed-alliance/piercing-shot",
       "prerequisites": [
-        "mechanical-repair"
+        {
+          "id": "mechanical-repair",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -196,7 +199,10 @@
       ],
       "icon": "fully-armed-alliance/tough-shield",
       "prerequisites": [
-        "mechanical-repair"
+        {
+          "id": "mechanical-repair",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -261,7 +267,10 @@
       ],
       "icon": "fully-armed-alliance/bazooka",
       "prerequisites": [
-        "piercing-shot"
+        {
+          "id": "piercing-shot",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -326,7 +335,10 @@
       ],
       "icon": "fully-armed-alliance/hold-fast",
       "prerequisites": [
-        "tough-shield"
+        {
+          "id": "tough-shield",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -391,7 +403,10 @@
       ],
       "icon": "fully-armed-alliance/circuitous-tactics",
       "prerequisites": [
-        "bazooka"
+        {
+          "id": "bazooka",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -456,7 +471,10 @@
       ],
       "icon": "fully-armed-alliance/alloy-composite",
       "prerequisites": [
-        "hold-fast"
+        {
+          "id": "hold-fast",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -633,7 +651,10 @@
       ],
       "icon": "fully-armed-alliance/annihilation",
       "prerequisites": [
-        "peace-breaker"
+        {
+          "id": "peace-breaker",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -698,7 +719,10 @@
       ],
       "icon": "fully-armed-alliance/riders-attack-training",
       "prerequisites": [
-        "annihilation"
+        {
+          "id": "annihilation",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -763,7 +787,10 @@
       ],
       "icon": "fully-armed-alliance/shooters-attack-training",
       "prerequisites": [
-        "annihilation"
+        {
+          "id": "annihilation",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -828,7 +855,10 @@
       ],
       "icon": "fully-armed-alliance/assaulters-attack-training",
       "prerequisites": [
-        "annihilation"
+        {
+          "id": "annihilation",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -893,7 +923,10 @@
       ],
       "icon": "fully-armed-alliance/riders-defense-training",
       "prerequisites": [
-        "riders-attack-training"
+        {
+          "id": "riders-attack-training",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -958,7 +991,10 @@
       ],
       "icon": "fully-armed-alliance/shooters-defense-training",
       "prerequisites": [
-        "shooters-attack-training"
+        {
+          "id": "shooters-attack-training",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -1023,7 +1059,10 @@
       ],
       "icon": "fully-armed-alliance/assaulters-defense-training",
       "prerequisites": [
-        "assaulters-attack-training"
+        {
+          "id": "assaulters-attack-training",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -1088,8 +1127,14 @@
       ],
       "icon": "fully-armed-alliance/mechanical-repair",
       "prerequisites": [
-        "riders-defense-training",
-        "assaulters-defense-training"
+        {
+          "id": "riders-defense-training",
+          "requiredLevel": 10
+        },
+        {
+          "id": "shooters-defense-training",
+          "requiredLevel": 10
+        }
       ],
       "bonuses": [
         {
@@ -1154,8 +1199,14 @@
       ],
       "icon": "fully-armed-alliance/repair-kit",
       "prerequisites": [
-        "assaulters-defense-training",
-        "shooters-defense-training"
+        {
+          "id": "shooters-defense-training",
+          "requiredLevel": 10
+        },
+        {
+          "id": "assaulters-defense-training",
+          "requiredLevel": 10
+        }
       ],
       "bonuses": [
         {
@@ -1260,8 +1311,14 @@
       ],
       "icon": "fully-armed-alliance/move-out",
       "prerequisites": [
-        "mechanical-repair-2",
-        "repair-kit"
+        {
+          "id": "mechanical-repair-2",
+          "requiredLevel": 10
+        },
+        {
+          "id": "repair-kit",
+          "requiredLevel": 10
+        }
       ],
       "bonuses": [
         {

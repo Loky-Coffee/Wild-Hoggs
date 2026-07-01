@@ -131,7 +131,10 @@
       ],
       "icon": "peace-shield/combat-policy",
       "prerequisites": [
-        "auto-repair"
+        {
+          "id": "auto-repair",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -207,7 +210,10 @@
       ],
       "icon": "peace-shield/interceptions",
       "prerequisites": [
-        "auto-repair"
+        {
+          "id": "auto-repair",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -283,7 +289,10 @@
       ],
       "icon": "peace-shield/mobility-enhancement",
       "prerequisites": [
-        "combat-policy"
+        {
+          "id": "combat-policy",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -359,8 +368,14 @@
       ],
       "icon": "peace-shield/melee-combat",
       "prerequisites": [
-        "combat-policy",
-        "interceptions"
+        {
+          "id": "combat-policy",
+          "requiredLevel": 1
+        },
+        {
+          "id": "interceptions",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -436,7 +451,10 @@
       ],
       "icon": "peace-shield/weapon-upgrading",
       "prerequisites": [
-        "interceptions"
+        {
+          "id": "interceptions",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -492,7 +510,10 @@
       ],
       "icon": "peace-shield/quick-assembly",
       "prerequisites": [
-        "mobility-enhancement"
+        {
+          "id": "weapon-upgrading",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -543,7 +564,10 @@
       ],
       "icon": "peace-shield/arms-assembly",
       "prerequisites": [
-        "melee-combat"
+        {
+          "id": "melee-combat",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -594,7 +618,10 @@
       ],
       "icon": "peace-shield/target-training",
       "prerequisites": [
-        "weapon-upgrading"
+        {
+          "id": "mobility-enhancement",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -665,9 +692,18 @@
       ],
       "icon": "peace-shield/urgent-rescue",
       "prerequisites": [
-        "quick-assembly",
-        "arms-assembly",
-        "target-training"
+        {
+          "id": "quick-assembly",
+          "requiredLevel": 1
+        },
+        {
+          "id": "arms-assembly",
+          "requiredLevel": 1
+        },
+        {
+          "id": "target-training",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -732,7 +768,10 @@
       ],
       "icon": "peace-shield/stronger-armor",
       "prerequisites": [
-        "urgent-rescue"
+        {
+          "id": "urgent-rescue",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -808,7 +847,10 @@
       ],
       "icon": "peace-shield/shield-upgrade",
       "prerequisites": [
-        "urgent-rescue"
+        {
+          "id": "urgent-rescue",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -884,7 +926,10 @@
       ],
       "icon": "peace-shield/tactical-cover",
       "prerequisites": [
-        "urgent-rescue"
+        {
+          "id": "urgent-rescue",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -1000,9 +1045,14 @@
       ],
       "icon": "peace-shield/combat-policy",
       "prerequisites": [
-        "stronger-armor",
-        "shield-upgrade",
-        "tactical-cover"
+        {
+          "id": "stronger-armor",
+          "requiredLevel": 1
+        },
+        {
+          "id": "shield-upgrade",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -1128,9 +1178,14 @@
       ],
       "icon": "peace-shield/interceptions",
       "prerequisites": [
-        "stronger-armor",
-        "shield-upgrade",
-        "tactical-cover"
+        {
+          "id": "shield-upgrade",
+          "requiredLevel": 1
+        },
+        {
+          "id": "tactical-cover",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -1216,8 +1271,14 @@
       ],
       "icon": "peace-shield/recharge-shield",
       "prerequisites": [
-        "combat-policy-2",
-        "interceptions-2"
+        {
+          "id": "combat-policy-2",
+          "requiredLevel": 1
+        },
+        {
+          "id": "interceptions-2",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {

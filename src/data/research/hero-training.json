@@ -146,8 +146,10 @@
       ],
       "icon": "hero-training/rose-bloom",
       "prerequisites": [
-        "atk-spec-1",
-        "str-train-1"
+        {
+          "id": "atk-spec-1",
+          "requiredLevel": 5
+        }
       ],
       "bonuses": [
         {
@@ -198,8 +200,14 @@
       ],
       "icon": "hero-training/morning-star",
       "prerequisites": [
-        "atk-spec-1",
-        "str-train-1"
+        {
+          "id": "atk-spec-1",
+          "requiredLevel": 5
+        },
+        {
+          "id": "str-train-1",
+          "requiredLevel": 5
+        }
       ],
       "bonuses": [
         {
@@ -250,8 +258,10 @@
       ],
       "icon": "hero-training/light-of-order",
       "prerequisites": [
-        "atk-spec-1",
-        "str-train-1"
+        {
+          "id": "str-train-1",
+          "requiredLevel": 5
+        }
       ],
       "bonuses": [
         {
@@ -354,7 +364,10 @@
       ],
       "icon": "hero-training/rose-barrier",
       "prerequisites": [
-        "resource-gathering-1"
+        {
+          "id": "resource-gathering-1",
+          "requiredLevel": 3
+        }
       ],
       "bonuses": [
         {
@@ -405,7 +418,10 @@
       ],
       "icon": "hero-training/dawns-light",
       "prerequisites": [
-        "resource-gathering-1"
+        {
+          "id": "resource-gathering-1",
+          "requiredLevel": 3
+        }
       ],
       "bonuses": [
         {
@@ -456,7 +472,10 @@
       ],
       "icon": "hero-training/shield-of-order",
       "prerequisites": [
-        "resource-gathering-1"
+        {
+          "id": "resource-gathering-1",
+          "requiredLevel": 3
+        }
       ],
       "bonuses": [
         {
@@ -539,7 +558,10 @@
       ],
       "icon": "hero-training/resource-gathering",
       "prerequisites": [
-        "cockpit"
+        {
+          "id": "cockpit",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -608,7 +630,10 @@
       ],
       "icon": "hero-training/attack-special-training",
       "prerequisites": [
-        "resource-gathering-2"
+        {
+          "id": "resource-gathering-2",
+          "requiredLevel": 3
+        }
       ],
       "bonuses": [
         {
@@ -684,7 +709,10 @@
       ],
       "icon": "hero-training/strength-training",
       "prerequisites": [
-        "resource-gathering-2"
+        {
+          "id": "resource-gathering-2",
+          "requiredLevel": 3
+        }
       ],
       "bonuses": [
         {

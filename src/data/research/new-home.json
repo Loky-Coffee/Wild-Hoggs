@@ -33,7 +33,8 @@
       "icon": "new-home/wind-power",
       "prerequisites": [
         {
-          "id": "stacking-technique"
+          "id": "stacking-technique",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -91,7 +92,8 @@
       "icon": "new-home/stock-management",
       "prerequisites": [
         {
-          "id": "stacking-technique"
+          "id": "stacking-technique",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -128,10 +130,12 @@
       "icon": "new-home/shooter-camp",
       "prerequisites": [
         {
-          "id": "wind-power"
+          "id": "wind-power",
+          "requiredLevel": 1
         },
         {
-          "id": "stock-management"
+          "id": "stock-management",
+          "requiredLevel": 1
         }
       ],
       "unlocks": [
@@ -162,7 +166,8 @@
       "icon": "new-home/underground-deal-i",
       "prerequisites": [
         {
-          "id": "shooter-camp"
+          "id": "shooter-camp",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -193,7 +198,8 @@
       "icon": "new-home/house-renovation",
       "prerequisites": [
         {
-          "id": "shooter-camp"
+          "id": "shooter-camp",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -224,10 +230,8 @@
       "icon": "new-home/stock-management",
       "prerequisites": [
         {
-          "id": "underground-deal-i"
-        },
-        {
-          "id": "house-renovation"
+          "id": "underground-deal-i",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -264,10 +268,8 @@
       "icon": "new-home/fast-drive",
       "prerequisites": [
         {
-          "id": "underground-deal-i"
-        },
-        {
-          "id": "house-renovation"
+          "id": "house-renovation",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -298,10 +300,12 @@
       "icon": "new-home/mechanical-parts",
       "prerequisites": [
         {
-          "id": "stock-management-2"
+          "id": "stock-management-2",
+          "requiredLevel": 1
         },
         {
-          "id": "fast-drive"
+          "id": "fast-drive",
+          "requiredLevel": 1
         }
       ],
       "unlocks": [
@@ -332,7 +336,8 @@
       "icon": "new-home/food-production",
       "prerequisites": [
         {
-          "id": "multitasking"
+          "id": "multitasking",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -363,7 +368,8 @@
       "icon": "new-home/stock-management",
       "prerequisites": [
         {
-          "id": "rider-camp"
+          "id": "rider-camp",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -400,7 +406,8 @@
       "icon": "new-home/wood-harvest",
       "prerequisites": [
         {
-          "id": "rider-camp"
+          "id": "rider-camp",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -431,10 +438,12 @@
       "icon": "new-home/vehicle-parts",
       "prerequisites": [
         {
-          "id": "stock-management-3"
+          "id": "stock-management-3",
+          "requiredLevel": 1
         },
         {
-          "id": "wood-harvest"
+          "id": "wood-harvest",
+          "requiredLevel": 1
         }
       ],
       "unlocks": [
@@ -465,7 +474,8 @@
       "icon": "new-home/wood-harvest",
       "prerequisites": [
         {
-          "id": "vehicle-parts"
+          "id": "vehicle-parts",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -496,7 +506,8 @@
       "icon": "new-home/underground-deal",
       "prerequisites": [
         {
-          "id": "wood-harvest-2"
+          "id": "wood-harvest-2",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -527,7 +538,8 @@
       "icon": "new-home/wind-power",
       "prerequisites": [
         {
-          "id": "wood-harvest-2"
+          "id": "wood-harvest-2",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -558,7 +570,8 @@
       "icon": "new-home/house-renovation",
       "prerequisites": [
         {
-          "id": "wood-harvest-2"
+          "id": "wood-harvest-2",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -589,13 +602,8 @@
       "icon": "new-home/advanced-mathematics-i",
       "prerequisites": [
         {
-          "id": "underground-deal"
-        },
-        {
-          "id": "wind-power-2"
-        },
-        {
-          "id": "house-renovation-2"
+          "id": "underground-deal",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -626,13 +634,8 @@
       "icon": "new-home/fast-drive",
       "prerequisites": [
         {
-          "id": "underground-deal"
-        },
-        {
-          "id": "wind-power-2"
-        },
-        {
-          "id": "house-renovation-2"
+          "id": "wind-power-2",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -663,13 +666,8 @@
       "icon": "new-home/skillful-craftsman",
       "prerequisites": [
         {
-          "id": "underground-deal"
-        },
-        {
-          "id": "wind-power-2"
-        },
-        {
-          "id": "house-renovation-2"
+          "id": "house-renovation-2",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -700,13 +698,12 @@
       "icon": "new-home/stock-management",
       "prerequisites": [
         {
-          "id": "advanced-mathematics-i"
+          "id": "advanced-mathematics-i",
+          "requiredLevel": 1
         },
         {
-          "id": "fast-drive-2"
-        },
-        {
-          "id": "skillful-craftsman"
+          "id": "fast-drive-2",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -743,13 +740,12 @@
       "icon": "new-home/food-production",
       "prerequisites": [
         {
-          "id": "advanced-mathematics-i"
+          "id": "fast-drive-2",
+          "requiredLevel": 1
         },
         {
-          "id": "fast-drive-2"
-        },
-        {
-          "id": "skillful-craftsman"
+          "id": "skillful-craftsman",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -780,10 +776,8 @@
       "icon": "new-home/food-gathering",
       "prerequisites": [
         {
-          "id": "stock-management-4"
-        },
-        {
-          "id": "food-production-2"
+          "id": "stock-management-4",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -818,10 +812,12 @@
       "icon": "new-home/advanced-mathematics-i",
       "prerequisites": [
         {
-          "id": "stock-management-4"
+          "id": "stock-management-4",
+          "requiredLevel": 1
         },
         {
-          "id": "food-production-2"
+          "id": "food-production-2",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -852,10 +848,8 @@
       "icon": "new-home/wood-harvest",
       "prerequisites": [
         {
-          "id": "stock-management-4"
-        },
-        {
-          "id": "food-production-2"
+          "id": "food-production-2",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -886,13 +880,16 @@
       "icon": "new-home/multitasking",
       "prerequisites": [
         {
-          "id": "food-gathering"
+          "id": "food-gathering",
+          "requiredLevel": 1
         },
         {
-          "id": "advanced-mathematics-i-2"
+          "id": "advanced-mathematics-i-2",
+          "requiredLevel": 1
         },
         {
-          "id": "wood-harvest-3"
+          "id": "wood-harvest-3",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -923,7 +920,8 @@
       "icon": "new-home/rider-camp",
       "prerequisites": [
         {
-          "id": "mechanical-parts"
+          "id": "mechanical-parts",
+          "requiredLevel": 1
         }
       ],
       "unlocks": [
@@ -954,7 +952,8 @@
       "icon": "new-home/engine-upgrading",
       "prerequisites": [
         {
-          "id": "food-production"
+          "id": "food-production",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -985,7 +984,8 @@
       "icon": "new-home/wind-power",
       "prerequisites": [
         {
-          "id": "engine-upgrading"
+          "id": "engine-upgrading",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -1016,7 +1016,8 @@
       "icon": "new-home/food-production",
       "prerequisites": [
         {
-          "id": "engine-upgrading"
+          "id": "engine-upgrading",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -1047,7 +1048,8 @@
       "icon": "new-home/wood-harvest",
       "prerequisites": [
         {
-          "id": "engine-upgrading"
+          "id": "engine-upgrading",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -1078,13 +1080,8 @@
       "icon": "new-home/assembly-tech",
       "prerequisites": [
         {
-          "id": "wind-power-3"
-        },
-        {
-          "id": "food-production-3"
-        },
-        {
-          "id": "wood-harvest-4"
+          "id": "wind-power-3",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -1115,13 +1112,8 @@
       "icon": "new-home/emergency-training",
       "prerequisites": [
         {
-          "id": "wind-power-3"
-        },
-        {
-          "id": "food-production-3"
-        },
-        {
-          "id": "wood-harvest-4"
+          "id": "food-production-3",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -1152,13 +1144,8 @@
       "icon": "new-home/firearms-assembly",
       "prerequisites": [
         {
-          "id": "wind-power-3"
-        },
-        {
-          "id": "food-production-3"
-        },
-        {
-          "id": "wood-harvest-4"
+          "id": "wood-harvest-4",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -1189,13 +1176,16 @@
       "icon": "new-home/firearms-upgrading",
       "prerequisites": [
         {
-          "id": "assembly-tech"
+          "id": "assembly-tech",
+          "requiredLevel": 1
         },
         {
-          "id": "emergency-training"
+          "id": "emergency-training",
+          "requiredLevel": 1
         },
         {
-          "id": "firearms-assembly"
+          "id": "firearms-assembly",
+          "requiredLevel": 1
         }
       ],
       "unlocks": [
@@ -1226,7 +1216,8 @@
       "icon": "new-home/fighting-skills-i",
       "prerequisites": [
         {
-          "id": "firearms-upgrading"
+          "id": "firearms-upgrading",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -1257,7 +1248,8 @@
       "icon": "new-home/equipment-enhancement-i",
       "prerequisites": [
         {
-          "id": "firearms-upgrading"
+          "id": "firearms-upgrading",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -1288,7 +1280,8 @@
       "icon": "new-home/gun-sight-i",
       "prerequisites": [
         {
-          "id": "firearms-upgrading"
+          "id": "firearms-upgrading",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -1319,13 +1312,16 @@
       "icon": "new-home/multitasking",
       "prerequisites": [
         {
-          "id": "fighting-skills-i"
+          "id": "fighting-skills-i",
+          "requiredLevel": 1
         },
         {
-          "id": "equipment-enhancement-i"
+          "id": "equipment-enhancement-i",
+          "requiredLevel": 1
         },
         {
-          "id": "gun-sight-i"
+          "id": "gun-sight-i",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -1356,7 +1352,8 @@
       "icon": "new-home/food-gathering",
       "prerequisites": [
         {
-          "id": "multitasking-2"
+          "id": "multitasking-2",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -1391,7 +1388,8 @@
       "icon": "new-home/wind-power",
       "prerequisites": [
         {
-          "id": "multitasking-2"
+          "id": "multitasking-2",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -1422,7 +1420,8 @@
       "icon": "new-home/food-production",
       "prerequisites": [
         {
-          "id": "multitasking-2"
+          "id": "multitasking-2",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -1453,13 +1452,12 @@
       "icon": "new-home/advanced-mathematics",
       "prerequisites": [
         {
-          "id": "food-gathering-2"
+          "id": "food-gathering-2",
+          "requiredLevel": 1
         },
         {
-          "id": "wind-power-4"
-        },
-        {
-          "id": "food-production-4"
+          "id": "wind-power-4",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -1490,13 +1488,12 @@
       "icon": "new-home/skillful-craftsman",
       "prerequisites": [
         {
-          "id": "food-gathering-2"
+          "id": "wind-power-4",
+          "requiredLevel": 1
         },
         {
-          "id": "wind-power-4"
-        },
-        {
-          "id": "food-production-4"
+          "id": "food-production-4",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -1527,10 +1524,8 @@
       "icon": "new-home/assembly-tech",
       "prerequisites": [
         {
-          "id": "advanced-mathematics"
-        },
-        {
-          "id": "skillful-craftsman-2"
+          "id": "advanced-mathematics",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -1561,10 +1556,12 @@
       "icon": "new-home/emergency-training",
       "prerequisites": [
         {
-          "id": "advanced-mathematics"
+          "id": "skillful-craftsman-2",
+          "requiredLevel": 1
         },
         {
-          "id": "skillful-craftsman-2"
+          "id": "advanced-mathematics",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -1595,10 +1592,8 @@
       "icon": "new-home/firearms-assembly",
       "prerequisites": [
         {
-          "id": "advanced-mathematics"
-        },
-        {
-          "id": "skillful-craftsman-2"
+          "id": "skillful-craftsman-2",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -1629,13 +1624,8 @@
       "icon": "new-home/self-defense-tricks",
       "prerequisites": [
         {
-          "id": "assembly-tech-2"
-        },
-        {
-          "id": "emergency-training-2"
-        },
-        {
-          "id": "firearms-assembly-2"
+          "id": "emergency-training-2",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -1666,13 +1656,8 @@
       "icon": "new-home/explosion-proof-armor",
       "prerequisites": [
         {
-          "id": "assembly-tech-2"
-        },
-        {
-          "id": "emergency-training-2"
-        },
-        {
-          "id": "firearms-assembly-2"
+          "id": "assembly-tech-2",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -1703,13 +1688,8 @@
       "icon": "new-home/tactical-cover",
       "prerequisites": [
         {
-          "id": "assembly-tech-2"
-        },
-        {
-          "id": "emergency-training-2"
-        },
-        {
-          "id": "firearms-assembly-2"
+          "id": "firearms-assembly-2",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [

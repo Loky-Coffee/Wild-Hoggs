@@ -119,10 +119,8 @@
       "icon": "elite-troops/quick-assembly",
       "prerequisites": [
         {
-          "id": "fire-up"
-        },
-        {
-          "id": "armor-upgrade"
+          "id": "fire-up",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -165,10 +163,12 @@
       "icon": "elite-troops/arms-assembly",
       "prerequisites": [
         {
-          "id": "fire-up"
+          "id": "fire-up",
+          "requiredLevel": 1
         },
         {
-          "id": "armor-upgrade"
+          "id": "armor-upgrade",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -211,10 +211,8 @@
       "icon": "elite-troops/target-training",
       "prerequisites": [
         {
-          "id": "fire-up"
-        },
-        {
-          "id": "armor-upgrade"
+          "id": "armor-upgrade",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -265,13 +263,12 @@
       "icon": "elite-troops/field-training",
       "prerequisites": [
         {
-          "id": "quick-assembly"
+          "id": "quick-assembly",
+          "requiredLevel": 1
         },
         {
-          "id": "arms-assembly"
-        },
-        {
-          "id": "target-training"
+          "id": "arms-assembly",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -324,13 +321,12 @@
       "icon": "elite-troops/camo-coating",
       "prerequisites": [
         {
-          "id": "quick-assembly"
+          "id": "arms-assembly",
+          "requiredLevel": 1
         },
         {
-          "id": "arms-assembly"
-        },
-        {
-          "id": "target-training"
+          "id": "target-training",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -403,10 +399,8 @@
       "icon": "elite-troops/mobility-enhancement",
       "prerequisites": [
         {
-          "id": "field-training"
-        },
-        {
-          "id": "camo-coating"
+          "id": "field-training",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -484,10 +478,12 @@
       "icon": "elite-troops/melee-combat",
       "prerequisites": [
         {
-          "id": "field-training"
+          "id": "field-training",
+          "requiredLevel": 1
         },
         {
-          "id": "camo-coating"
+          "id": "camo-coating",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -565,10 +561,8 @@
       "icon": "elite-troops/weapon-upgrading",
       "prerequisites": [
         {
-          "id": "field-training"
-        },
-        {
-          "id": "camo-coating"
+          "id": "camo-coating",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -646,13 +640,8 @@
       "icon": "elite-troops/stronger-armor",
       "prerequisites": [
         {
-          "id": "mobility-enhancement"
-        },
-        {
-          "id": "melee-combat"
-        },
-        {
-          "id": "weapon-upgrading"
+          "id": "mobility-enhancement",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -730,13 +719,8 @@
       "icon": "elite-troops/shield-upgrade",
       "prerequisites": [
         {
-          "id": "mobility-enhancement"
-        },
-        {
-          "id": "melee-combat"
-        },
-        {
-          "id": "weapon-upgrading"
+          "id": "melee-combat",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -814,13 +798,8 @@
       "icon": "elite-troops/tactical-cover",
       "prerequisites": [
         {
-          "id": "mobility-enhancement"
-        },
-        {
-          "id": "melee-combat"
-        },
-        {
-          "id": "weapon-upgrading"
+          "id": "weapon-upgrading",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -862,13 +841,16 @@
       "icon": "elite-troops/demolition-crew",
       "prerequisites": [
         {
-          "id": "stronger-armor"
+          "id": "stronger-armor",
+          "requiredLevel": 10
         },
         {
-          "id": "shield-upgrade"
+          "id": "shield-upgrade",
+          "requiredLevel": 10
         },
         {
-          "id": "tactical-cover"
+          "id": "tactical-cover",
+          "requiredLevel": 10
         }
       ],
       "bonuses": [
@@ -907,7 +889,8 @@
       "icon": "elite-troops/quick-assembly",
       "prerequisites": [
         {
-          "id": "demolition-crew"
+          "id": "demolition-crew",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -950,7 +933,8 @@
       "icon": "elite-troops/arms-assembly",
       "prerequisites": [
         {
-          "id": "demolition-crew"
+          "id": "demolition-crew",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -993,7 +977,8 @@
       "icon": "elite-troops/target-training",
       "prerequisites": [
         {
-          "id": "demolition-crew"
+          "id": "demolition-crew",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -1044,13 +1029,12 @@
       "icon": "elite-troops/joint-operation",
       "prerequisites": [
         {
-          "id": "quick-assembly-2"
+          "id": "quick-assembly-2",
+          "requiredLevel": 1
         },
         {
-          "id": "arms-assembly-2"
-        },
-        {
-          "id": "target-training-2"
+          "id": "arms-assembly-2",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -1103,13 +1087,12 @@
       "icon": "elite-troops/mobile-defense",
       "prerequisites": [
         {
-          "id": "quick-assembly-2"
+          "id": "arms-assembly-2",
+          "requiredLevel": 1
         },
         {
-          "id": "arms-assembly-2"
-        },
-        {
-          "id": "target-training-2"
+          "id": "target-training-2",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -1162,10 +1145,8 @@
       "icon": "elite-troops/combat-policy",
       "prerequisites": [
         {
-          "id": "joint-operation"
-        },
-        {
-          "id": "mobile-defense"
+          "id": "joint-operation",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [
@@ -1218,10 +1199,8 @@
       "icon": "elite-troops/interceptions",
       "prerequisites": [
         {
-          "id": "joint-operation"
-        },
-        {
-          "id": "mobile-defense"
+          "id": "mobile-defense",
+          "requiredLevel": 1
         }
       ],
       "bonuses": [

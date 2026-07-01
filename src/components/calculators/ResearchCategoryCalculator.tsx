@@ -232,8 +232,9 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
 
     // Recursively collect required levels for a tech and its prerequisites
     const collectRequiredLevels = (tech: Technology, targetLevel: number) => {
-      // Update required level for this tech (use max if already set)
+      // Zyklus-/Redundanz-Schutz: schon mit >= diesem Level erfasst -> stop
       const existingLevel = requiredLevels.get(tech.id) || 0;
+      if (requiredLevels.has(tech.id) && existingLevel >= targetLevel) return;
       requiredLevels.set(tech.id, Math.max(existingLevel, targetLevel));
 
       // Process prerequisites

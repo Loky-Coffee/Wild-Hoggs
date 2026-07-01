@@ -216,7 +216,10 @@
       ],
       "icon": "military-strategies/joint-operation",
       "prerequisites": [
-        "fire-up"
+        {
+          "id": "fire-up",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -292,7 +295,10 @@
       ],
       "icon": "military-strategies/mobile-defense",
       "prerequisites": [
-        "armor-upgrade"
+        {
+          "id": "armor-upgrade",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -368,7 +374,10 @@
       ],
       "icon": "military-strategies/combat-policy",
       "prerequisites": [
-        "joint-operation"
+        {
+          "id": "joint-operation",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -444,7 +453,10 @@
       ],
       "icon": "military-strategies/interceptions",
       "prerequisites": [
-        "mobile-defense"
+        {
+          "id": "mobile-defense",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -536,7 +548,10 @@
       ],
       "icon": "military-strategies/quick-assembly",
       "prerequisites": [
-        "demolition-crew"
+        {
+          "id": "demolition-crew",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -587,7 +602,10 @@
       ],
       "icon": "military-strategies/arms-assembly",
       "prerequisites": [
-        "demolition-crew"
+        {
+          "id": "demolition-crew",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -638,7 +656,10 @@
       ],
       "icon": "military-strategies/target-training",
       "prerequisites": [
-        "demolition-crew"
+        {
+          "id": "demolition-crew",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -761,7 +782,10 @@
       ],
       "icon": "military-strategies/fire-up",
       "prerequisites": [
-        "recharge-shield"
+        {
+          "id": "recharge-shield",
+          "requiredLevel": 3
+        }
       ],
       "bonuses": [
         {
@@ -837,7 +861,10 @@
       ],
       "icon": "military-strategies/armor-upgrade",
       "prerequisites": [
-        "recharge-shield"
+        {
+          "id": "recharge-shield",
+          "requiredLevel": 3
+        }
       ],
       "bonuses": [
         {
@@ -913,7 +940,10 @@
       ],
       "icon": "military-strategies/field-training",
       "prerequisites": [
-        "fire-up-2"
+        {
+          "id": "fire-up-2",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -989,7 +1019,10 @@
       ],
       "icon": "military-strategies/camo-coating",
       "prerequisites": [
-        "armor-upgrade-2"
+        {
+          "id": "armor-upgrade-2",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -1065,7 +1098,10 @@
       ],
       "icon": "military-strategies/alloy-plate",
       "prerequisites": [
-        "field-training"
+        {
+          "id": "field-training",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -1141,8 +1177,14 @@
       ],
       "icon": "military-strategies/enhanced-armor",
       "prerequisites": [
-        "field-training",
-        "camo-coating"
+        {
+          "id": "field-training",
+          "requiredLevel": 1
+        },
+        {
+          "id": "camo-coating",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -1218,7 +1260,10 @@
       ],
       "icon": "military-strategies/aerocraft-material",
       "prerequisites": [
-        "camo-coating"
+        {
+          "id": "camo-coating",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {

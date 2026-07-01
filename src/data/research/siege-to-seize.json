@@ -117,7 +117,10 @@
       ],
       "icon": "siege-to-seize/joint-operation",
       "prerequisites": [
-        "demolition-crew"
+        {
+          "id": "demolition-crew",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -193,7 +196,10 @@
       ],
       "icon": "siege-to-seize/mobile-defense",
       "prerequisites": [
-        "demolition-crew"
+        {
+          "id": "demolition-crew",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -269,7 +275,10 @@
       ],
       "icon": "siege-to-seize/mobility-enhancement",
       "prerequisites": [
-        "joint-operation"
+        {
+          "id": "joint-operation",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -345,8 +354,14 @@
       ],
       "icon": "siege-to-seize/melee-combat",
       "prerequisites": [
-        "joint-operation",
-        "mobile-defense"
+        {
+          "id": "joint-operation",
+          "requiredLevel": 1
+        },
+        {
+          "id": "mobile-defense",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -422,7 +437,10 @@
       ],
       "icon": "siege-to-seize/weapon-upgrading",
       "prerequisites": [
-        "mobile-defense"
+        {
+          "id": "mobile-defense",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -498,8 +516,14 @@
       ],
       "icon": "siege-to-seize/load-module",
       "prerequisites": [
-        "mobility-enhancement",
-        "melee-combat"
+        {
+          "id": "mobility-enhancement",
+          "requiredLevel": 1
+        },
+        {
+          "id": "melee-combat",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -564,8 +588,14 @@
       ],
       "icon": "siege-to-seize/propulsion",
       "prerequisites": [
-        "melee-combat",
-        "weapon-upgrading"
+        {
+          "id": "melee-combat",
+          "requiredLevel": 1
+        },
+        {
+          "id": "weapon-upgrading",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -610,7 +640,10 @@
       ],
       "icon": "siege-to-seize/quick-assembly",
       "prerequisites": [
-        "load-module"
+        {
+          "id": "load-module",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -661,8 +694,14 @@
       ],
       "icon": "siege-to-seize/arms-assembly",
       "prerequisites": [
-        "load-module",
-        "propulsion"
+        {
+          "id": "load-module",
+          "requiredLevel": 1
+        },
+        {
+          "id": "propulsion",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -713,7 +752,10 @@
       ],
       "icon": "siege-to-seize/target-training",
       "prerequisites": [
-        "propulsion"
+        {
+          "id": "propulsion",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -784,9 +826,18 @@
       ],
       "icon": "siege-to-seize/demolition-crew",
       "prerequisites": [
-        "quick-assembly",
-        "arms-assembly",
-        "target-training"
+        {
+          "id": "quick-assembly",
+          "requiredLevel": 1
+        },
+        {
+          "id": "arms-assembly",
+          "requiredLevel": 1
+        },
+        {
+          "id": "target-training",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -862,7 +913,10 @@
       ],
       "icon": "siege-to-seize/stronger-armor",
       "prerequisites": [
-        "demolition-crew-2"
+        {
+          "id": "demolition-crew-2",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -938,7 +992,10 @@
       ],
       "icon": "siege-to-seize/shield-upgrade",
       "prerequisites": [
-        "demolition-crew-2"
+        {
+          "id": "demolition-crew-2",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -1014,7 +1071,10 @@
       ],
       "icon": "siege-to-seize/tactical-cover",
       "prerequisites": [
-        "demolition-crew-2"
+        {
+          "id": "demolition-crew-2",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -1130,9 +1190,14 @@
       ],
       "icon": "siege-to-seize/joint-operation",
       "prerequisites": [
-        "stronger-armor",
-        "shield-upgrade",
-        "tactical-cover"
+        {
+          "id": "stronger-armor",
+          "requiredLevel": 1
+        },
+        {
+          "id": "shield-upgrade",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -1258,9 +1323,14 @@
       ],
       "icon": "siege-to-seize/mobile-defense",
       "prerequisites": [
-        "stronger-armor",
-        "shield-upgrade",
-        "tactical-cover"
+        {
+          "id": "shield-upgrade",
+          "requiredLevel": 1
+        },
+        {
+          "id": "tactical-cover",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
@@ -1346,8 +1416,14 @@
       ],
       "icon": "siege-to-seize/recharge-shield",
       "prerequisites": [
-        "joint-operation-2",
-        "mobile-defense-2"
+        {
+          "id": "joint-operation-2",
+          "requiredLevel": 1
+        },
+        {
+          "id": "mobile-defense-2",
+          "requiredLevel": 1
+        }
       ],
       "bonuses": [
         {
