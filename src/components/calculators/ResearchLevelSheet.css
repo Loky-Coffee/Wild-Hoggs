@@ -372,3 +372,16 @@
   color: rgba(255, 255, 255, 0.7);
   font-weight: 500;
 }
+
+/* Verbleibende Zeit (die gemachte Zeit ist unbekannt -> nicht anzeigen) */
+.rls-remtime {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3rem 0.6rem;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #9db4d0;
+  font-weight: 600;
+}
+.rls-remtime-val { font-variant-numeric: tabular-nums; }

@@ -271,8 +271,8 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
     return category.technologies.find(t => t.id === targetTechId) || null;
   }, [targetTechId, category]);
 
-  const badgesToTarget = useMemo(() => {
-    if (!targetTech || !category) return 0;
+  const targetTotals = useMemo(() => {
+    if (!targetTech || !category) return { badges: 0, strom: 0, zent: 0, timeSec: 0 };
 
     // Map to track required levels for each tech (prevents double counting)
     const requiredLevels = new Map<string, number>();
@@ -309,21 +309,27 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
     // Collect all required levels starting from target
     collectRequiredLevels(targetTech, targetTech.maxLevel);
 
-    // Calculate total badges needed (only count each tech once)
-    let totalNeededBadges = 0;
+    // Summiere alle 4 Ressourcen bis zum Ziel (jede Tech nur einmal, ab aktuellem Level)
+    let nBadges = 0;
+    let nStrom = 0;
+    let nZent = 0;
+    let nTimeSec = 0;
     requiredLevels.forEach((neededLevel, techId) => {
       const tech = category.technologies.find(t => t.id === techId);
       if (!tech) return;
 
       const currentLevel = selectedTechnologies.get(techId) || 0;
       if (currentLevel < neededLevel) {
-        for (let i = currentLevel; i < neededLevel && i < tech.badgeCosts.length; i++) {
-          totalNeededBadges += tech.badgeCosts[i];
+        for (let i = currentLevel; i < neededLevel; i++) {
+          nBadges += tech.badgeCosts[i] ?? 0;
+          nStrom += tech.stromCosts?.[i] ?? 0;
+          nZent += tech.zentCosts?.[i] ?? 0;
+          nTimeSec += tech.times?.[i] ?? 0;
         }
       }
     });
 
-    return totalNeededBadges;
+    return { badges: nBadges, strom: nStrom, zent: nZent, timeSec: nTimeSec };
   }, [targetTech, selectedTechnologies, category]);
 
   if (!category) {
@@ -404,7 +410,7 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
               {formatNumber(calculatedResults.totalBadges, lang)} / {formatNumber(category.totalBadges, lang)} 🎖️
               {targetTech && (
                 <span style={{ marginLeft: '0.5rem', color: '#e74c3c' }}>
-                  🎯 {t(targetTech.nameKey as TranslationKey)}: {formatNumber(badgesToTarget, lang)}
+                  🎯 {t(targetTech.nameKey as TranslationKey)}: {formatNumber(targetTotals.badges, lang)}
                 </span>
               )}
             </span>
@@ -459,7 +465,7 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
                 { k: 'badges', ic: '🎖️', label: 'Badges', used: fcCompact(calculatedResults.totalBadges, lang), rem: fcCompact(remainingBadges, lang), show: true },
                 { k: 'strom', img: '/images/research-icons/strom.webp', label: lang === 'de' ? 'Strom' : 'Electricity', used: fcCompact(calculatedResults.totalStrom, lang), rem: fcCompact(remainingStrom, lang), show: hasStrom },
                 { k: 'zent', img: '/images/research-icons/zent.webp', label: 'Zent', used: fcCompact(calculatedResults.totalZent, lang), rem: fcCompact(remainingZent, lang), show: hasZent },
-                { k: 'time', ic: '⏱', label: lang === 'de' ? 'Zeit' : 'Time', used: fmtDurationShort(applySpeed(calculatedResults.totalTimeSec)), rem: fmtDurationShort(applySpeed(remainingTimeSec)), show: hasTime },
+                { k: 'time', ic: '⏱', label: lang === 'de' ? 'Zeit' : 'Time', used: '–', rem: fmtDurationShort(applySpeed(remainingTimeSec)), show: hasTime },
               ].filter((r) => r.show).flatMap((r) => [
                 <span key={r.k + 'l'} style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.6)', display: 'inline-flex', alignItems: 'center', gap: '0.3rem', padding: '0.24rem 0', borderTop: '1px solid rgba(255,255,255,0.06)', whiteSpace: 'nowrap' }}>
                   {r.img ? <img src={r.img} width="15" height="15" alt="" /> : <span>{r.ic}</span>} {r.label}
@@ -470,10 +476,23 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
             </div>
             {targetTech && (
               <div style={{ marginTop: '0.5rem', paddingTop: '0.4rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-                <div style={{ fontSize: '0.64rem', opacity: 0.55, marginBottom: '0.2rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{t('tank.target')}</div>
-                <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#e74c3c', display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
-                  <span>{t(targetTech.nameKey as TranslationKey)} · {fcCompact(badgesToTarget, lang)} 🎖️</span>
-                  <button onClick={() => setTargetTechId(null)} style={{ padding: '0.1rem 0.4rem', fontSize: '0.75rem', background: 'rgba(231,76,60,0.2)', border: '1px solid rgba(231,76,60,0.5)', borderRadius: '4px', color: '#e74c3c', cursor: 'pointer' }}>✕</button>
+                <div style={{ fontSize: '0.64rem', opacity: 0.55, marginBottom: '0.2rem', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                  🎯 {t('tank.target')}
+                  <button onClick={() => setTargetTechId(null)} style={{ marginLeft: 'auto', padding: '0.05rem 0.35rem', fontSize: '0.72rem', background: 'rgba(231,76,60,0.2)', border: '1px solid rgba(231,76,60,0.5)', borderRadius: '4px', color: '#e74c3c', cursor: 'pointer' }}>✕</button>
+                </div>
+                <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#e74c3c', marginBottom: '0.25rem' }}>{t(targetTech.nameKey as TranslationKey)}</div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', columnGap: '0.7rem', fontVariantNumeric: 'tabular-nums' }}>
+                  {[
+                    { k: 'badges', ic: '🎖️', label: 'Badges', val: fcCompact(targetTotals.badges, lang), show: true },
+                    { k: 'strom', img: '/images/research-icons/strom.webp', label: lang === 'de' ? 'Strom' : 'Electricity', val: fcCompact(targetTotals.strom, lang), show: hasStrom },
+                    { k: 'zent', img: '/images/research-icons/zent.webp', label: 'Zent', val: fcCompact(targetTotals.zent, lang), show: hasZent },
+                    { k: 'time', ic: '⏱', label: lang === 'de' ? 'Zeit' : 'Time', val: fmtDurationShort(applySpeed(targetTotals.timeSec)), show: hasTime },
+                  ].filter((r) => r.show).flatMap((r) => [
+                    <span key={r.k + 'l'} style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.55)', display: 'inline-flex', alignItems: 'center', gap: '0.3rem', padding: '0.18rem 0', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                      {r.img ? <img src={r.img} width="14" height="14" alt="" /> : <span>{r.ic}</span>} {r.label}
+                    </span>,
+                    <span key={r.k + 'v'} style={{ fontSize: '0.82rem', fontWeight: 700, color: '#e74c3c', textAlign: 'right', padding: '0.18rem 0', borderTop: '1px solid rgba(255,255,255,0.06)' }}>{r.val}</span>,
+                  ])}
                 </div>
               </div>
             )}

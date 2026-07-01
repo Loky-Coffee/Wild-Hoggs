@@ -165,22 +165,22 @@ const breadcrumbItems = [
     </a>
     <LabSpeedButton lang={lang} client:load />
 
-    <div class="research-totals">
-      <span class="rt-label">{lang === 'de' ? 'Alle Bäume gesamt:' : 'All trees total:'}</span>
+    <div class="research-totals" title={lang === 'de' ? 'Verbleibend über alle Bäume (Zeit mit deinem Lab-Speed)' : 'Remaining across all trees (time with your Lab-Speed)'}>
+      <span class="rt-label">{lang === 'de' ? 'Verbleibend:' : 'Remaining:'}</span>
       <span class="rt-item">
         <img src={stromIcon.src} class="res-ico" width="18" height="18" alt="Strom" />
-        <b><span data-total-used-strom>0</span> / {fmtCompact(grandTotals.strom)}</b>
-        <span class="stat-pct" data-total-pct-strom>0%</span>
+        <b data-total-rem-strom>–</b>
       </span>
       <span class="rt-item">
         <img src={zentIcon.src} class="res-ico" width="18" height="18" alt="Zent" />
-        <b><span data-total-used-zent>0</span> / {fmtCompact(grandTotals.zent)}</b>
-        <span class="stat-pct" data-total-pct-zent>0%</span>
+        <b data-total-rem-zent>–</b>
       </span>
       <span class="rt-item">
         <img src={badgeIcon.src} class="res-ico" width="18" height="18" alt="Badges" />
-        <b><span data-total-used-badges>0</span> / {fmtCompact(grandTotals.badges)}</b>
-        <span class="stat-pct" data-total-pct-badges>0%</span>
+        <b data-total-rem-badges>–</b>
+      </span>
+      <span class="rt-item">
+        ⏱ <b data-total-rem-time>–</b>
       </span>
     </div>
   </div>
@@ -204,7 +204,9 @@ const breadcrumbItems = [
           data-total-strom={String(category.totalStrom || 0)}
           data-total-zent={String(category.totalZent || 0)}
           data-strom-map={JSON.stringify(Object.fromEntries((category.technologies as {id:string;stromCosts?:number[]}[]).map(t => [t.id, t.stromCosts || []])))}
-          data-zent-map={JSON.stringify(Object.fromEntries((category.technologies as {id:string;zentCosts?:number[]}[]).map(t => [t.id, t.zentCosts || []])))}>
+          data-zent-map={JSON.stringify(Object.fromEntries((category.technologies as {id:string;zentCosts?:number[]}[]).map(t => [t.id, t.zentCosts || []])))}
+          data-total-time={String((category.technologies as {times?:number[]}[]).reduce((s, t) => s + (t.times?.reduce((a, b) => a + b, 0) ?? 0), 0))}
+          data-time-map={JSON.stringify(Object.fromEntries((category.technologies as {id:string;times?:number[]}[]).map(t => [t.id, t.times || []])))}>
 
           <div class="category-icon-wrapper">
             {imageMap[id] ? (
@@ -261,17 +263,19 @@ const breadcrumbItems = [
 
   .research-totals {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     align-items: center;
     justify-content: center;
     gap: 0.4rem 1.1rem;
     margin: 0.8rem auto 0;
-    max-width: 720px;
+    width: fit-content;
+    max-width: 100%;
     padding: 0.6rem 0.9rem;
     background: rgba(255, 165, 0, 0.06);
     border: 1px solid rgba(255, 165, 0, 0.25);
     border-radius: 10px;
     font-variant-numeric: tabular-nums;
+    overflow-x: auto;
   }
   .rt-label {
     font-size: 0.75rem;
@@ -279,6 +283,8 @@ const breadcrumbItems = [
     color: rgba(255, 255, 255, 0.55);
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
   .rt-item {
     display: inline-flex;
@@ -286,6 +292,8 @@ const breadcrumbItems = [
     gap: 0.35rem;
     font-size: 0.95rem;
     color: #fff;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
   .rt-item b { color: #ffa500; font-weight: 700; }
   .rt-item .stat-pct { color: rgba(255, 255, 255, 0.5); font-size: 0.82rem; }
@@ -520,6 +528,7 @@ const breadcrumbItems = [
     // Gesamtsummen über ALLE Bäume (für die Übersichts-Leiste oben)
     var gUsedStrom = 0, gUsedZent = 0, gUsedBadges = 0;
     var gTotStrom = 0, gTotZent = 0, gTotBadges = 0;
+    var gTotTimeSec = 0, gUsedTimeSec = 0;
 
     document.querySelectorAll('[data-category-id]').forEach(function (card) {
       var id = card.getAttribute('data-category-id');
@@ -528,17 +537,21 @@ const breadcrumbItems = [
       var badgeMap = {};
       var stromMap = {};
       var zentMap = {};
+      var timeMap = {};
       try {
         badgeMap = JSON.parse(card.getAttribute('data-badge-map') || '{}');
         stromMap = JSON.parse(card.getAttribute('data-strom-map') || '{}');
         zentMap = JSON.parse(card.getAttribute('data-zent-map') || '{}');
+        timeMap = JSON.parse(card.getAttribute('data-time-map') || '{}');
       } catch (e) { return; }
       var totalStrom = parseInt(card.getAttribute('data-total-strom') || '0', 10);
       var totalZent = parseInt(card.getAttribute('data-total-zent') || '0', 10);
+      var totalTime = parseInt(card.getAttribute('data-total-time') || '0', 10);
 
       var usedBadges = 0;
       var usedStrom = 0;
       var usedZent = 0;
+      var usedTimeSec = 0;
       var usedLevels = 0;
       try {
         var raw = localStorage.getItem('wh-calc-' + profileId + '-research-' + id);
@@ -562,6 +575,10 @@ const breadcrumbItems = [
                 var zc = zentMap[techId];
                 for (var k = 0; k < level && k < zc.length; k++) { usedZent += zc[k]; }
               }
+              if (timeMap[techId]) {
+                var tc = timeMap[techId];
+                for (var m = 0; m < level && m < tc.length; m++) { usedTimeSec += tc[m]; }
+              }
             }
           });
         }
@@ -574,6 +591,7 @@ const breadcrumbItems = [
       card.__treePct = treePct;
       gUsedStrom += usedStrom; gUsedZent += usedZent; gUsedBadges += usedBadges;
       gTotStrom += totalStrom; gTotZent += totalZent; gTotBadges += totalBadges;
+      gTotTimeSec += totalTime; gUsedTimeSec += usedTimeSec;
       var fc = function (n) {
         try { return new Intl.NumberFormat(undefined, { notation: 'compact', maximumFractionDigits: 1 }).format(n); }
         catch (e) { return String(n); }
@@ -612,14 +630,32 @@ const breadcrumbItems = [
       try { return new Intl.NumberFormat(undefined, { notation: 'compact', maximumFractionDigits: 1 }).format(n); }
       catch (e) { return String(n); }
     };
-    var setG = function (usedSel, pctSel, used, total) {
-      var u = document.querySelector(usedSel), p = document.querySelector(pctSel);
-      if (u) u.textContent = fmtG(used);
-      if (p) p.textContent = (total > 0 ? Math.round(used / total * 100) : 0) + '%';
+    // Nur die VERBLEIBENDEN Werte (was man noch braucht) — kein "benutzt / gesamt".
+    var setRem = function (sel, val) { var e = document.querySelector(sel); if (e) e.textContent = fmtG(Math.max(0, val)); };
+    setRem('[data-total-rem-strom]', gTotStrom - gUsedStrom);
+    setRem('[data-total-rem-zent]', gTotZent - gUsedZent);
+    setRem('[data-total-rem-badges]', gTotBadges - gUsedBadges);
+
+    // Verbleibende Zeit über ALLE Bäume, mit dem aktuellen Lab-Speed-Rabatt.
+    // Die bereits gemachte Zeit zeigen wir nicht — der damalige Rabatt ist unbekannt.
+    var eff = 0;
+    try {
+      var lsRaw = localStorage.getItem('wh-calc-' + profileId + '-labspeed-main');
+      if (lsRaw) {
+        var lsParsed = JSON.parse(lsRaw);
+        var ls = (lsParsed && lsParsed.state) ? lsParsed.state : lsParsed;
+        if (ls) eff = (ls.base || 0) + (ls.generalG ? 20 : 0) + (ls.minister ? 15 : 0) + (ls.rose ? 20 : 0);
+      }
+    } catch (e) { /* ignore */ }
+    var remSec = Math.max(0, gTotTimeSec - gUsedTimeSec) / (1 + eff / 100);
+    var fmtDur = function (s) {
+      s = Math.max(0, Math.round(s));
+      var d = Math.floor(s / 86400), h = Math.floor((s % 86400) / 3600), mm = Math.floor((s % 3600) / 60);
+      var p = function (n) { return n < 10 ? '0' + n : '' + n; };
+      return (d > 0 ? d + 'd ' : '') + p(h) + ':' + p(mm);
     };
-    setG('[data-total-used-strom]', '[data-total-pct-strom]', gUsedStrom, gTotStrom);
-    setG('[data-total-used-zent]', '[data-total-pct-zent]', gUsedZent, gTotZent);
-    setG('[data-total-used-badges]', '[data-total-pct-badges]', gUsedBadges, gTotBadges);
+    var remTimeEl = document.querySelector('[data-total-rem-time]');
+    if (remTimeEl) remTimeEl.textContent = fmtDur(remSec);
   }
 
   if (document.readyState === 'loading') {

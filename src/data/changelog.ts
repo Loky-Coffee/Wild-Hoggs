@@ -8,6 +8,11 @@ export const changelog: ChangelogEntry[] = [
   // ── July 2026 ───────────────────────────────────────────────────────────
   {
     date: '2026-07-01',
+    time: '21:35',
+    text: 'Research: everything now focuses on what you still NEED (remaining), not what you spent. The all-trees bar at the top shows the remaining Strom, Zent, Badges and time on one line; the time already spent is left out everywhere because the past Lab-Speed discount is unknown. Node sheets show a remaining-time line, the tree header time row is remaining-only, and the Target lists all four values (Badges, Strom, Zent, remaining time) neatly aligned',
+  },
+  {
+    date: '2026-07-01',
     time: '21:20',
     text: 'Research calculator: on desktop the stats panel now sits on the left (top on mobile) like the tank — with a Lab-Speed button showing your bonus, a neatly aligned Used/Remaining table and coarser values (compact numbers, time without seconds). The horizontal layout now scrolls left/right with the mouse wheel and centers the tree vertically',
   },

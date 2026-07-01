@@ -107,18 +107,22 @@ export default function ResearchLevelSheet({
   const baseTime = (lvl: number) => tech.times?.[lvl - 1] ?? 0;
   const timeAt = (lvl: number) => baseTime(lvl) / (1 + eff / 100);
 
-  // Cumulative totals up to the currently selected level
+  // Cumulative totals up to the currently selected level (Ressourcen = feste Kosten -> "benutzt" ist gültig)
   let cs = 0;
   let cz = 0;
   let cb = 0;
-  let ctSec = 0;
   for (let i = 0; i < currentLevel; i++) {
     cs += strom(i);
     cz += zent(i);
     cb += badge(i);
-    ctSec += tech.times?.[i] ?? 0;
   }
-  const ct = ctSec / (1 + eff / 100);
+  // Verbleibende Zeit (currentLevel -> max) mit aktuellem Lab-Speed. Die bereits gemachte Zeit
+  // zeigen wir NICHT an: der damalige Rabatt ist unbekannt, nur die verbleibende ist berechenbar.
+  let remSec = 0;
+  for (let i = currentLevel; i < tech.maxLevel; i++) {
+    remSec += tech.times?.[i] ?? 0;
+  }
+  const remTime = remSec / (1 + eff / 100);
 
   const rows = [];
   for (let lvl = 1; lvl <= tech.maxLevel; lvl++) {
@@ -194,12 +198,15 @@ export default function ResearchLevelSheet({
           <span><img src={ICON.strom} class="rls-ico" alt="" />{fc(cs)}</span>
           <span><img src={ICON.zent} class="rls-ico" alt="" />{fc(cz)}</span>
           {hasBadges && <span><img src={ICON.badge} class="rls-ico" alt="" />{fc(cb)}</span>}
-          {hasTimes && (
-            <span class="rls-total-timeval">
-              ⏱ {eff > 0 && <s class="rls-time-base">{fmtTime(ctSec)}</s>} {fmtTime(ct)}
-            </span>
-          )}
         </div>
+        {hasTimes && currentLevel < tech.maxLevel && (
+          <div class="rls-remtime">
+            <span class="rls-total-label">⏱ {lang === 'de' ? 'Verbleibende Zeit' : 'Remaining time'}:</span>
+            <span class="rls-remtime-val">
+              {eff > 0 && <s class="rls-time-base">{fmtTime(remSec)}</s>} {fmtTime(remTime)}
+            </span>
+          </div>
+        )}
       </div>
     </div>,
     document.body,
