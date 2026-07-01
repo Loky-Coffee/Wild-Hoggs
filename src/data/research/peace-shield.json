@@ -67,7 +67,13 @@
         67282
       ],
       "icon": "peace-shield/auto-repair",
-      "prerequisites": []
+      "prerequisites": [],
+      "bonuses": [
+        {
+          "effect": "30135",
+          "perLevel": 8
+        }
+      ]
     },
     {
       "id": "combat-policy",
@@ -126,6 +132,23 @@
       "icon": "peace-shield/combat-policy",
       "prerequisites": [
         "auto-repair"
+      ],
+      "bonuses": [
+        {
+          "effect": "35048",
+          "values": [
+            1,
+            2,
+            3,
+            5,
+            7,
+            9,
+            11,
+            14,
+            17,
+            20
+          ]
+        }
       ]
     },
     {
@@ -185,6 +208,23 @@
       "icon": "peace-shield/interceptions",
       "prerequisites": [
         "auto-repair"
+      ],
+      "bonuses": [
+        {
+          "effect": "35052",
+          "values": [
+            1,
+            2,
+            3,
+            5,
+            7,
+            9,
+            11,
+            14,
+            17,
+            20
+          ]
+        }
       ]
     },
     {
@@ -244,6 +284,23 @@
       "icon": "peace-shield/mobility-enhancement",
       "prerequisites": [
         "combat-policy"
+      ],
+      "bonuses": [
+        {
+          "effect": "35003",
+          "values": [
+            1,
+            2,
+            3,
+            5,
+            7,
+            9,
+            11,
+            14,
+            17,
+            20
+          ]
+        }
       ]
     },
     {
@@ -304,6 +361,23 @@
       "prerequisites": [
         "combat-policy",
         "interceptions"
+      ],
+      "bonuses": [
+        {
+          "effect": "35002",
+          "values": [
+            1,
+            2,
+            3,
+            5,
+            7,
+            9,
+            11,
+            14,
+            17,
+            20
+          ]
+        }
       ]
     },
     {
@@ -363,6 +437,23 @@
       "icon": "peace-shield/weapon-upgrading",
       "prerequisites": [
         "interceptions"
+      ],
+      "bonuses": [
+        {
+          "effect": "35001",
+          "values": [
+            1,
+            2,
+            3,
+            5,
+            7,
+            9,
+            11,
+            14,
+            17,
+            20
+          ]
+        }
       ]
     },
     {
@@ -402,6 +493,18 @@
       "icon": "peace-shield/quick-assembly",
       "prerequisites": [
         "mobility-enhancement"
+      ],
+      "bonuses": [
+        {
+          "effect": "31000",
+          "values": [
+            1,
+            2,
+            4,
+            7,
+            10
+          ]
+        }
       ]
     },
     {
@@ -441,6 +544,18 @@
       "icon": "peace-shield/arms-assembly",
       "prerequisites": [
         "melee-combat"
+      ],
+      "bonuses": [
+        {
+          "effect": "31001",
+          "values": [
+            1,
+            2,
+            4,
+            7,
+            10
+          ]
+        }
       ]
     },
     {
@@ -480,6 +595,18 @@
       "icon": "peace-shield/target-training",
       "prerequisites": [
         "weapon-upgrading"
+      ],
+      "bonuses": [
+        {
+          "effect": "31002",
+          "values": [
+            1,
+            2,
+            4,
+            7,
+            10
+          ]
+        }
       ]
     },
     {
@@ -541,6 +668,12 @@
         "quick-assembly",
         "arms-assembly",
         "target-training"
+      ],
+      "bonuses": [
+        {
+          "effect": "35124",
+          "perLevel": 2
+        }
       ]
     },
     {
@@ -600,6 +733,23 @@
       "icon": "peace-shield/stronger-armor",
       "prerequisites": [
         "urgent-rescue"
+      ],
+      "bonuses": [
+        {
+          "effect": "35007",
+          "values": [
+            1,
+            2,
+            3,
+            5,
+            7,
+            9,
+            11,
+            14,
+            17,
+            20
+          ]
+        }
       ]
     },
     {
@@ -659,6 +809,23 @@
       "icon": "peace-shield/shield-upgrade",
       "prerequisites": [
         "urgent-rescue"
+      ],
+      "bonuses": [
+        {
+          "effect": "35006",
+          "values": [
+            1,
+            2,
+            3,
+            5,
+            7,
+            9,
+            11,
+            14,
+            17,
+            20
+          ]
+        }
       ]
     },
     {
@@ -718,6 +885,23 @@
       "icon": "peace-shield/tactical-cover",
       "prerequisites": [
         "urgent-rescue"
+      ],
+      "bonuses": [
+        {
+          "effect": "35005",
+          "values": [
+            1,
+            2,
+            3,
+            5,
+            7,
+            9,
+            11,
+            14,
+            17,
+            20
+          ]
+        }
       ]
     },
     {
@@ -819,6 +1003,33 @@
         "stronger-armor",
         "shield-upgrade",
         "tactical-cover"
+      ],
+      "bonuses": [
+        {
+          "effect": "35048",
+          "values": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            7,
+            9,
+            11,
+            13,
+            15,
+            17,
+            19,
+            21,
+            23,
+            25,
+            28,
+            31,
+            34,
+            37,
+            40
+          ]
+        }
       ]
     },
     {
@@ -920,6 +1131,33 @@
         "stronger-armor",
         "shield-upgrade",
         "tactical-cover"
+      ],
+      "bonuses": [
+        {
+          "effect": "35052",
+          "values": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            7,
+            9,
+            11,
+            13,
+            15,
+            17,
+            19,
+            21,
+            23,
+            25,
+            28,
+            31,
+            34,
+            37,
+            40
+          ]
+        }
       ]
     },
     {
@@ -980,6 +1218,12 @@
       "prerequisites": [
         "combat-policy-2",
         "interceptions-2"
+      ],
+      "bonuses": [
+        {
+          "effect": "35012",
+          "perLevel": 1
+        }
       ]
     }
   ]

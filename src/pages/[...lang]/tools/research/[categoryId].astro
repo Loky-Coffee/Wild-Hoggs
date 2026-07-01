@@ -160,7 +160,10 @@ const breadcrumbItems = [
 ---
 
 <PageLayout title={t(`seo.research.${categoryId}.title` as TranslationKey)} description={t(`seo.research.${categoryId}.description` as TranslationKey)} breadcrumbs={breadcrumbItems}>
-  <h1 class="page-title-subtle">Last Z · {t(category.nameKey as TranslationKey)} · Badge Calculator</h1>
+  <h1 class="page-title-subtle">
+    Last Z · {t(category.nameKey as TranslationKey)} · Badge Calculator
+    · <a class="titlebar-compare" href={getLocalizedPath('tools/research/compare', lang)}>⚖️ {lang === 'de' ? 'Vergleichen' : 'Compare'}</a>
+  </h1>
   <div class="calculator-wrapper">
     <!-- client:load ist hier ABSICHTLICH (nicht client:visible):
          .page-content hat overflow:hidden + height:100dvh für das Full-Viewport-Layout.
@@ -227,6 +230,13 @@ const breadcrumbItems = [
     margin: 0;
     padding: 0.5rem 1rem;
     border-bottom: 1px solid rgba(255, 165, 0, 0.15);
+  }
+
+  .titlebar-compare {
+    color: #ffa500;
+    text-decoration: none;
+    border-bottom: 1px dashed rgba(255, 165, 0, 0.6);
+    white-space: nowrap;
   }
 
   .calculator-wrapper {

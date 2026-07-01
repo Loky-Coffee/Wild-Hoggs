@@ -67,7 +67,24 @@
         83152
       ],
       "icon": "military-strategies/fire-up",
-      "prerequisites": []
+      "prerequisites": [],
+      "bonuses": [
+        {
+          "effect": "35000",
+          "values": [
+            1,
+            2,
+            3,
+            5,
+            7,
+            9,
+            11,
+            14,
+            17,
+            20
+          ]
+        }
+      ]
     },
     {
       "id": "armor-upgrade",
@@ -124,7 +141,24 @@
         83152
       ],
       "icon": "military-strategies/armor-upgrade",
-      "prerequisites": []
+      "prerequisites": [],
+      "bonuses": [
+        {
+          "effect": "35004",
+          "values": [
+            1,
+            2,
+            3,
+            5,
+            7,
+            9,
+            11,
+            14,
+            17,
+            20
+          ]
+        }
+      ]
     },
     {
       "id": "joint-operation",
@@ -183,6 +217,23 @@
       "icon": "military-strategies/joint-operation",
       "prerequisites": [
         "fire-up"
+      ],
+      "bonuses": [
+        {
+          "effect": "35040",
+          "values": [
+            1,
+            2,
+            3,
+            5,
+            7,
+            9,
+            11,
+            14,
+            17,
+            20
+          ]
+        }
       ]
     },
     {
@@ -242,6 +293,23 @@
       "icon": "military-strategies/mobile-defense",
       "prerequisites": [
         "armor-upgrade"
+      ],
+      "bonuses": [
+        {
+          "effect": "35044",
+          "values": [
+            1,
+            2,
+            3,
+            5,
+            7,
+            9,
+            11,
+            14,
+            17,
+            20
+          ]
+        }
       ]
     },
     {
@@ -301,6 +369,23 @@
       "icon": "military-strategies/combat-policy",
       "prerequisites": [
         "joint-operation"
+      ],
+      "bonuses": [
+        {
+          "effect": "35048",
+          "values": [
+            1,
+            2,
+            3,
+            5,
+            7,
+            9,
+            11,
+            14,
+            17,
+            20
+          ]
+        }
       ]
     },
     {
@@ -360,6 +445,23 @@
       "icon": "military-strategies/interceptions",
       "prerequisites": [
         "mobile-defense"
+      ],
+      "bonuses": [
+        {
+          "effect": "35052",
+          "values": [
+            1,
+            2,
+            3,
+            5,
+            7,
+            9,
+            11,
+            14,
+            17,
+            20
+          ]
+        }
       ]
     },
     {
@@ -389,6 +491,12 @@
         {
           "id": "interceptions",
           "requiredLevel": 10
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "40011",
+          "perLevel": 5
         }
       ]
     },
@@ -429,6 +537,18 @@
       "icon": "military-strategies/quick-assembly",
       "prerequisites": [
         "demolition-crew"
+      ],
+      "bonuses": [
+        {
+          "effect": "31000",
+          "values": [
+            1,
+            2,
+            4,
+            7,
+            10
+          ]
+        }
       ]
     },
     {
@@ -468,6 +588,18 @@
       "icon": "military-strategies/arms-assembly",
       "prerequisites": [
         "demolition-crew"
+      ],
+      "bonuses": [
+        {
+          "effect": "31001",
+          "values": [
+            1,
+            2,
+            4,
+            7,
+            10
+          ]
+        }
       ]
     },
     {
@@ -507,6 +639,18 @@
       "icon": "military-strategies/target-training",
       "prerequisites": [
         "demolition-crew"
+      ],
+      "bonuses": [
+        {
+          "effect": "31002",
+          "values": [
+            1,
+            2,
+            4,
+            7,
+            10
+          ]
+        }
       ]
     },
     {
@@ -548,6 +692,16 @@
         {
           "id": "target-training",
           "requiredLevel": 5
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "35012",
+          "values": [
+            1,
+            3,
+            5
+          ]
         }
       ]
     },
@@ -608,6 +762,23 @@
       "icon": "military-strategies/fire-up",
       "prerequisites": [
         "recharge-shield"
+      ],
+      "bonuses": [
+        {
+          "effect": "35000",
+          "values": [
+            1,
+            2,
+            3,
+            5,
+            7,
+            9,
+            11,
+            14,
+            17,
+            20
+          ]
+        }
       ]
     },
     {
@@ -667,6 +838,23 @@
       "icon": "military-strategies/armor-upgrade",
       "prerequisites": [
         "recharge-shield"
+      ],
+      "bonuses": [
+        {
+          "effect": "35004",
+          "values": [
+            1,
+            2,
+            3,
+            5,
+            7,
+            9,
+            11,
+            14,
+            17,
+            20
+          ]
+        }
       ]
     },
     {
@@ -726,6 +914,23 @@
       "icon": "military-strategies/field-training",
       "prerequisites": [
         "fire-up-2"
+      ],
+      "bonuses": [
+        {
+          "effect": "35024",
+          "values": [
+            1,
+            2,
+            3,
+            5,
+            7,
+            9,
+            11,
+            14,
+            17,
+            20
+          ]
+        }
       ]
     },
     {
@@ -785,6 +990,23 @@
       "icon": "military-strategies/camo-coating",
       "prerequisites": [
         "armor-upgrade-2"
+      ],
+      "bonuses": [
+        {
+          "effect": "35028",
+          "values": [
+            1,
+            2,
+            3,
+            5,
+            7,
+            9,
+            11,
+            14,
+            17,
+            20
+          ]
+        }
       ]
     },
     {
@@ -844,6 +1066,23 @@
       "icon": "military-strategies/alloy-plate",
       "prerequisites": [
         "field-training"
+      ],
+      "bonuses": [
+        {
+          "effect": "35015",
+          "values": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            7,
+            9,
+            11,
+            13,
+            15
+          ]
+        }
       ]
     },
     {
@@ -904,6 +1143,23 @@
       "prerequisites": [
         "field-training",
         "camo-coating"
+      ],
+      "bonuses": [
+        {
+          "effect": "35014",
+          "values": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            7,
+            9,
+            11,
+            13,
+            15
+          ]
+        }
       ]
     },
     {
@@ -963,6 +1219,23 @@
       "icon": "military-strategies/aerocraft-material",
       "prerequisites": [
         "camo-coating"
+      ],
+      "bonuses": [
+        {
+          "effect": "35013",
+          "values": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            7,
+            9,
+            11,
+            13,
+            15
+          ]
+        }
       ]
     }
   ]

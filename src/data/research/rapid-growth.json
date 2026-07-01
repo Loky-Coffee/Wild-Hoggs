@@ -67,7 +67,13 @@
         67096
       ],
       "icon": "rapid-growth/house-renovation",
-      "prerequisites": []
+      "prerequisites": [],
+      "bonuses": [
+        {
+          "effect": "30074",
+          "perLevel": 2
+        }
+      ]
     },
     {
       "id": "wind-drive-i",
@@ -124,7 +130,13 @@
         67096
       ],
       "icon": "rapid-growth/wind-drive-i",
-      "prerequisites": []
+      "prerequisites": [],
+      "bonuses": [
+        {
+          "effect": "30072",
+          "perLevel": 2
+        }
+      ]
     },
     {
       "id": "safe-box",
@@ -187,6 +199,12 @@
         },
         {
           "id": "wind-drive-i"
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "30085",
+          "perLevel": 2
         }
       ]
     },
@@ -252,6 +270,12 @@
         {
           "id": "wind-drive-i"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "30073",
+          "perLevel": 2
+        }
       ]
     },
     {
@@ -315,6 +339,12 @@
         },
         {
           "id": "lead-battery"
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "30072",
+          "perLevel": 2
         }
       ]
     },
@@ -380,6 +410,12 @@
         {
           "id": "lead-battery"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "30073",
+          "perLevel": 2
+        }
       ]
     },
     {
@@ -444,6 +480,12 @@
         {
           "id": "storage-battery"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "30070",
+          "perLevel": 1
+        }
       ]
     },
     {
@@ -505,6 +547,16 @@
         {
           "id": "skillful-craftsman"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "30063",
+          "perLevel": 3
+        },
+        {
+          "effect": "30061",
+          "perLevel": 3
+        }
       ]
     },
     {
@@ -565,6 +617,12 @@
       "prerequisites": [
         {
           "id": "skillful-craftsman"
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "35109",
+          "perLevel": 3
         }
       ]
     },
@@ -650,6 +708,12 @@
         {
           "id": "gold-panning"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "30071",
+          "perLevel": 2
+        }
       ]
     },
     {
@@ -711,6 +775,12 @@
         {
           "id": "parallel-work-i"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "30228",
+          "perLevel": 2
+        }
       ]
     },
     {
@@ -771,6 +841,12 @@
       "prerequisites": [
         {
           "id": "parallel-work-i"
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "30226",
+          "perLevel": 2
         }
       ]
     },
@@ -836,6 +912,12 @@
         {
           "id": "woodcutter"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "30227",
+          "perLevel": 2
+        }
       ]
     },
     {
@@ -899,6 +981,12 @@
         },
         {
           "id": "woodcutter"
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "30225",
+          "perLevel": 2
         }
       ]
     },
@@ -1004,6 +1092,12 @@
         {
           "id": "centralized-storage"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "30070",
+          "perLevel": 2
+        }
       ]
     },
     {
@@ -1104,6 +1198,12 @@
       "prerequisites": [
         {
           "id": "skillful-craftsman-2"
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "73",
+          "perLevel": 40
         }
       ]
     }

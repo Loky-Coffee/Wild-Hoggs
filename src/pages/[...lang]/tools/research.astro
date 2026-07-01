@@ -148,6 +148,9 @@ const breadcrumbItems = [
   <div class="page-header">
     <h1>{t('seo.research.h1', { year: currentYear })}</h1>
     <p class="subtitle">{t('research.subtitle')}</p>
+    <a class="compare-link" href={getLocalizedPath('tools/research/compare', lang)}>
+      ⚖️ {lang === 'de' ? 'Bäume vergleichen' : 'Compare Trees'}
+    </a>
   </div>
 
   <div class="categories-grid">
@@ -207,6 +210,23 @@ const breadcrumbItems = [
 </PageLayout>
 
 <style>
+  .compare-link {
+    display: inline-block;
+    margin-top: 0.6rem;
+    padding: 0.5rem 1.1rem;
+    background: rgba(255, 165, 0, 0.12);
+    border: 1px solid rgba(255, 165, 0, 0.5);
+    border-radius: 999px;
+    color: #ffa500;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+  .compare-link:hover {
+    background: rgba(255, 165, 0, 0.22);
+  }
+
   .categories-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));

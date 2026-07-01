@@ -47,7 +47,19 @@
         43550
       ],
       "icon": "hero-training/attack-special-training",
-      "prerequisites": []
+      "prerequisites": [],
+      "bonuses": [
+        {
+          "effect": "30442",
+          "values": [
+            10,
+            20,
+            40,
+            70,
+            100
+          ]
+        }
+      ]
     },
     {
       "id": "str-train-1",
@@ -84,7 +96,19 @@
         43550
       ],
       "icon": "hero-training/strength-training",
-      "prerequisites": []
+      "prerequisites": [],
+      "bonuses": [
+        {
+          "effect": "30443",
+          "values": [
+            10,
+            20,
+            40,
+            70,
+            100
+          ]
+        }
+      ]
     },
     {
       "id": "rose-bloom",
@@ -124,6 +148,18 @@
       "prerequisites": [
         "atk-spec-1",
         "str-train-1"
+      ],
+      "bonuses": [
+        {
+          "effect": "35222",
+          "values": [
+            20,
+            40,
+            80,
+            140,
+            200
+          ]
+        }
       ]
     },
     {
@@ -164,6 +200,18 @@
       "prerequisites": [
         "atk-spec-1",
         "str-train-1"
+      ],
+      "bonuses": [
+        {
+          "effect": "35216",
+          "values": [
+            20,
+            40,
+            80,
+            140,
+            200
+          ]
+        }
       ]
     },
     {
@@ -204,6 +252,18 @@
       "prerequisites": [
         "atk-spec-1",
         "str-train-1"
+      ],
+      "bonuses": [
+        {
+          "effect": "35219",
+          "values": [
+            20,
+            40,
+            80,
+            140,
+            200
+          ]
+        }
       ]
     },
     {
@@ -246,6 +306,16 @@
           "id": "light-of-order",
           "requiredLevel": 5
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "30425",
+          "values": [
+            3,
+            6,
+            10
+          ]
+        }
       ]
     },
     {
@@ -285,6 +355,18 @@
       "icon": "hero-training/rose-barrier",
       "prerequisites": [
         "resource-gathering-1"
+      ],
+      "bonuses": [
+        {
+          "effect": "35223",
+          "values": [
+            20,
+            40,
+            80,
+            140,
+            200
+          ]
+        }
       ]
     },
     {
@@ -324,6 +406,18 @@
       "icon": "hero-training/dawns-light",
       "prerequisites": [
         "resource-gathering-1"
+      ],
+      "bonuses": [
+        {
+          "effect": "35217",
+          "values": [
+            20,
+            40,
+            80,
+            140,
+            200
+          ]
+        }
       ]
     },
     {
@@ -363,6 +457,18 @@
       "icon": "hero-training/shield-of-order",
       "prerequisites": [
         "resource-gathering-1"
+      ],
+      "bonuses": [
+        {
+          "effect": "35220",
+          "values": [
+            20,
+            40,
+            80,
+            140,
+            200
+          ]
+        }
       ]
     },
     {
@@ -397,6 +503,12 @@
           "id": "shield-of-order",
           "requiredLevel": 5
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "30441",
+          "perLevel": 20
+        }
       ]
     },
     {
@@ -428,6 +540,16 @@
       "icon": "hero-training/resource-gathering",
       "prerequisites": [
         "cockpit"
+      ],
+      "bonuses": [
+        {
+          "effect": "30425",
+          "values": [
+            3,
+            6,
+            10
+          ]
+        }
       ]
     },
     {
@@ -487,6 +609,23 @@
       "icon": "hero-training/attack-special-training",
       "prerequisites": [
         "resource-gathering-2"
+      ],
+      "bonuses": [
+        {
+          "effect": "30442",
+          "values": [
+            20,
+            40,
+            60,
+            100,
+            140,
+            180,
+            220,
+            260,
+            320,
+            400
+          ]
+        }
       ]
     },
     {
@@ -546,6 +685,23 @@
       "icon": "hero-training/strength-training",
       "prerequisites": [
         "resource-gathering-2"
+      ],
+      "bonuses": [
+        {
+          "effect": "30443",
+          "values": [
+            20,
+            40,
+            60,
+            100,
+            140,
+            180,
+            220,
+            260,
+            320,
+            400
+          ]
+        }
       ]
     }
   ]

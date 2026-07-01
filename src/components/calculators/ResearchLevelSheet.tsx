@@ -3,7 +3,12 @@ import { createPortal } from 'preact/compat';
 import type { Technology } from '../../schemas/research';
 import { useTranslations } from '../../i18n/utils';
 import type { TranslationData, TranslationKey } from '../../i18n/index';
+import researchEffects from '../../data/research-effects.json';
+import researchUnlocks from '../../data/research-unlocks.json';
 import './ResearchLevelSheet.css';
+
+const EFFECTS = researchEffects as Record<string, { format: string; names: Record<string, string> }>;
+const UNLOCKS = researchUnlocks as Record<string, Record<string, string>>;
 
 const ICON = {
   strom: '/images/research-icons/strom.webp',
@@ -37,6 +42,7 @@ export default function ResearchLevelSheet({
   unlocked,
   onSelect,
   onClose,
+  lang,
   translationData,
 }: ResearchLevelSheetProps) {
   const t = useTranslations(translationData);
@@ -58,6 +64,23 @@ export default function ResearchLevelSheet({
   const zent = (i: number) => tech.zentCosts?.[i] ?? 0;
   const badge = (i: number) => tech.badgeCosts[i] ?? 0;
   const hasBadges = tech.badgeCosts.some((b) => b > 0);
+
+  // Boni/Effekte (aus Spieldaten) — Namen aus research-effects.json in der aktuellen Sprache
+  const effName = (id: string) => EFFECTS[id]?.names[lang] || EFFECTS[id]?.names.en || '';
+  const effUnit = (id: string) => (EFFECTS[id]?.format === 'percent' ? '%' : '');
+  const fmtV = (v: number) => (Number.isInteger(v) ? String(v) : v.toFixed(1));
+  const bonusList = (tech.bonuses ?? []).filter((b) => effName(b.effect));
+  const valAt = (b: { perLevel?: number; values?: number[] }, lvl: number): number =>
+    b.values ? (b.values[lvl - 1] ?? 0) : (b.perLevel ?? 0) * lvl;
+  const bonusFull = (lvl: number) =>
+    bonusList.map((b) => `${effName(b.effect)} +${fmtV(valAt(b, lvl))}${effUnit(b.effect)}`).join(' · ');
+
+  // Freischaltungen (Gebäude/Funktion/Einheit) — Text aus research-unlocks.json
+  const uText = (k: string) => UNLOCKS[k]?.[lang] || UNLOCKS[k]?.en || k;
+  const unlockList = tech.unlocks ?? [];
+  const unlockStr = unlockList
+    .map((u) => (u.target ? `${uText(u.type)} ${uText(u.target)}` : u.amount != null ? `${uText(u.type)} +${u.amount}` : uText(u.type)))
+    .join(' · ');
 
   // Cumulative totals up to the currently selected level
   let cs = 0;
@@ -85,6 +108,7 @@ export default function ResearchLevelSheet({
         <span><img src={ICON.strom} class="rls-ico" alt="" />{fc(strom(i))}</span>
         <span><img src={ICON.zent} class="rls-ico" alt="" />{fc(zent(i))}</span>
         <span>{hasBadges ? (<><img src={ICON.badge} class="rls-ico" alt="" />{fc(badge(i))}</>) : '–'}</span>
+        {bonusList.length > 0 && <span class="rls-row-bonus">{bonusFull(lvl)}</span>}
       </button>,
     );
   }
@@ -103,6 +127,7 @@ export default function ResearchLevelSheet({
           <div class="rls-note">🔒 {t('calc.research.unlockPrerequisites' as TranslationKey)}</div>
         )}
         {tech.labLevel ? <div class="rls-note">🔬 Labor-Level {tech.labLevel}</div> : null}
+        {unlockList.length > 0 && <div class="rls-note rls-unlock">🔓 {unlockStr}</div>}
 
         <div class="rls-table-head">
           <span>Lvl</span>

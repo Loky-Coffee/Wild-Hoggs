@@ -8,6 +8,23 @@ export const PrerequisiteSchema = z.union([
   }),
 ]);
 
+// Bonus/Effekt eines Knotens (aus Spieldaten APS_science col[12]).
+// effect -> Schlüssel in src/data/research-effects.json (Name in 15 Sprachen + Format).
+// Wert bei Stufe N: linear -> perLevel * N; sonst -> values[N-1].
+export const BonusSchema = z.object({
+  effect: z.string(),
+  perLevel: z.number().optional(),
+  values: z.array(z.number()).optional(),
+});
+
+// Freischaltung eines Knotens (aus Spieldaten APS_science col[16]).
+// type/target -> Text-Keys in src/data/research-unlocks.json; amount -> Zahlenwert.
+export const UnlockSchema = z.object({
+  type: z.string(),
+  target: z.string().optional(),
+  amount: z.number().optional(),
+});
+
 export const TechnologySchema = z.object({
   id: z.string(),
   nameKey: z.string(),
@@ -19,6 +36,8 @@ export const TechnologySchema = z.object({
   zentCosts: z.array(z.number().nonnegative().int()).optional(),  // je Stufe
   combatPower: z.array(z.number().nonnegative().int()).optional(),// Kampfkraft je Stufe
   badges: z.array(z.number().nonnegative().int()).optional(),
+  bonuses: z.array(BonusSchema).optional(), // Effekte/Boni je Stufe
+  unlocks: z.array(UnlockSchema).optional(), // Freischaltungen (Gebäude/Funktion/Einheit)
   icon: z.string().optional(),
   prerequisites: z.array(PrerequisiteSchema),
 }).refine(

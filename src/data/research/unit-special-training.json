@@ -67,7 +67,24 @@
         137222
       ],
       "icon": "unit-special-training/fire-up",
-      "prerequisites": []
+      "prerequisites": [],
+      "bonuses": [
+        {
+          "effect": "35000",
+          "values": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            7,
+            9,
+            11,
+            13,
+            15
+          ]
+        }
+      ]
     },
     {
       "id": "armor-upgrade",
@@ -124,7 +141,24 @@
         137222
       ],
       "icon": "unit-special-training/armor-upgrade",
-      "prerequisites": []
+      "prerequisites": [],
+      "bonuses": [
+        {
+          "effect": "35004",
+          "values": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            7,
+            9,
+            11,
+            13,
+            15
+          ]
+        }
+      ]
     },
     {
       "id": "fast-production",
@@ -190,6 +224,23 @@
           "id": "armor-upgrade",
           "requiredLevel": 10
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "31008",
+          "values": [
+            1,
+            2,
+            3,
+            5,
+            7,
+            9,
+            11,
+            14,
+            17,
+            20
+          ]
+        }
       ]
     },
     {
@@ -251,6 +302,23 @@
         {
           "id": "fast-production",
           "requiredLevel": 10
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "35003",
+          "values": [
+            1,
+            2,
+            3,
+            5,
+            7,
+            9,
+            11,
+            14,
+            17,
+            20
+          ]
         }
       ]
     },
@@ -314,6 +382,23 @@
           "id": "fast-production",
           "requiredLevel": 10
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "35002",
+          "values": [
+            1,
+            2,
+            3,
+            5,
+            7,
+            9,
+            11,
+            14,
+            17,
+            20
+          ]
+        }
       ]
     },
     {
@@ -375,6 +460,23 @@
         {
           "id": "fast-production",
           "requiredLevel": 10
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "35001",
+          "values": [
+            1,
+            2,
+            3,
+            5,
+            7,
+            9,
+            11,
+            14,
+            17,
+            20
+          ]
         }
       ]
     },
@@ -438,6 +540,23 @@
           "id": "mobility-enhancement",
           "requiredLevel": 10
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "35007",
+          "values": [
+            1,
+            2,
+            3,
+            5,
+            7,
+            9,
+            11,
+            14,
+            17,
+            20
+          ]
+        }
       ]
     },
     {
@@ -500,6 +619,23 @@
           "id": "melee-combat",
           "requiredLevel": 10
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "35006",
+          "values": [
+            1,
+            2,
+            3,
+            5,
+            7,
+            9,
+            11,
+            14,
+            17,
+            20
+          ]
+        }
       ]
     },
     {
@@ -561,6 +697,23 @@
         {
           "id": "weapon-upgrading",
           "requiredLevel": 10
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "35005",
+          "values": [
+            1,
+            2,
+            3,
+            5,
+            7,
+            9,
+            11,
+            14,
+            17,
+            20
+          ]
         }
       ]
     },
@@ -628,6 +781,23 @@
           "id": "shield-upgrade",
           "requiredLevel": 10
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "40020",
+          "values": [
+            1,
+            2,
+            3,
+            5,
+            7,
+            9,
+            11,
+            14,
+            17,
+            20
+          ]
+        }
       ]
     },
     {
@@ -694,6 +864,23 @@
           "id": "camo-coating",
           "requiredLevel": 10
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "31008",
+          "values": [
+            2,
+            4,
+            6,
+            8,
+            11,
+            14,
+            17,
+            20,
+            25,
+            30
+          ]
+        }
       ]
     },
     {
@@ -755,6 +942,23 @@
         {
           "id": "propulsion",
           "requiredLevel": 10
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "35000",
+          "values": [
+            2,
+            4,
+            6,
+            8,
+            10,
+            13,
+            16,
+            19,
+            22,
+            25
+          ]
         }
       ]
     },
@@ -818,6 +1022,23 @@
           "id": "fast-production-2",
           "requiredLevel": 10
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "35004",
+          "values": [
+            2,
+            4,
+            6,
+            8,
+            10,
+            13,
+            16,
+            19,
+            22,
+            25
+          ]
+        }
       ]
     },
     {
@@ -863,6 +1084,18 @@
         {
           "id": "armor-upgrade-2",
           "requiredLevel": 10
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "40011",
+          "values": [
+            3,
+            6,
+            9,
+            13,
+            20
+          ]
         }
       ]
     },
@@ -946,6 +1179,28 @@
           "id": "demolition-crew",
           "requiredLevel": 5
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "35003",
+          "values": [
+            2,
+            4,
+            6,
+            8,
+            10,
+            13,
+            16,
+            19,
+            22,
+            25,
+            28,
+            31,
+            34,
+            37,
+            40
+          ]
+        }
       ]
     },
     {
@@ -1027,6 +1282,28 @@
         {
           "id": "demolition-crew",
           "requiredLevel": 5
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "35002",
+          "values": [
+            2,
+            4,
+            6,
+            8,
+            10,
+            13,
+            16,
+            19,
+            22,
+            25,
+            28,
+            31,
+            34,
+            37,
+            40
+          ]
         }
       ]
     },
@@ -1110,6 +1387,28 @@
           "id": "demolition-crew",
           "requiredLevel": 5
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "35001",
+          "values": [
+            2,
+            4,
+            6,
+            8,
+            10,
+            13,
+            16,
+            19,
+            22,
+            25,
+            28,
+            31,
+            34,
+            37,
+            40
+          ]
+        }
       ]
     },
     {
@@ -1191,6 +1490,28 @@
         {
           "id": "mobility-enhancement-2",
           "requiredLevel": 15
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "35007",
+          "values": [
+            2,
+            4,
+            6,
+            8,
+            10,
+            13,
+            16,
+            19,
+            22,
+            25,
+            28,
+            31,
+            34,
+            37,
+            40
+          ]
         }
       ]
     },
@@ -1274,6 +1595,28 @@
           "id": "melee-combat-2",
           "requiredLevel": 15
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "35006",
+          "values": [
+            2,
+            4,
+            6,
+            8,
+            10,
+            13,
+            16,
+            19,
+            22,
+            25,
+            28,
+            31,
+            34,
+            37,
+            40
+          ]
+        }
       ]
     },
     {
@@ -1355,6 +1698,28 @@
         {
           "id": "weapon-upgrading-2",
           "requiredLevel": 15
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "35005",
+          "values": [
+            2,
+            4,
+            6,
+            8,
+            10,
+            13,
+            16,
+            19,
+            22,
+            25,
+            28,
+            31,
+            34,
+            37,
+            40
+          ]
         }
       ]
     },
@@ -1466,6 +1831,33 @@
           "id": "camo-coating-2",
           "requiredLevel": 15
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "35012",
+          "values": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            7,
+            9,
+            11,
+            13,
+            15,
+            17,
+            19,
+            21,
+            25,
+            29,
+            33,
+            37,
+            41,
+            45,
+            50
+          ]
+        }
       ]
     },
     {
@@ -1491,6 +1883,12 @@
         {
           "id": "recharge-shield",
           "requiredLevel": 20
+        }
+      ],
+      "unlocks": [
+        {
+          "type": "130056",
+          "target": "200584"
         }
       ]
     }

@@ -134,6 +134,27 @@
   opacity: 0.6;
 }
 
+/* Bonus-Zeile pro Level: zweite Zeile im Grid, volle Breite */
+.rls-row-bonus {
+  grid-column: 1 / -1;
+  font-size: 0.78rem;
+  color: #6ee7a0;
+  padding-top: 0.15rem;
+  line-height: 1.25;
+  white-space: normal;
+}
+
+/* Effekt-Namen im Kopf */
+.rls-bonus-head {
+  color: #6ee7a0 !important;
+}
+
+/* Freischaltung (Gebäude/Funktion/Einheit) */
+.rls-unlock {
+  color: #7cc5ff !important;
+  font-weight: 600;
+}
+
 .rls-row span,
 .rls-table-head span,
 .rls-total span {

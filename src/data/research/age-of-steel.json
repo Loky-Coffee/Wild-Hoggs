@@ -31,7 +31,13 @@
         14586
       ],
       "icon": "age-of-steel/steel-plant",
-      "prerequisites": []
+      "prerequisites": [],
+      "unlocks": [
+        {
+          "type": "220191",
+          "target": "911236"
+        }
+      ]
     },
     {
       "id": "farming-technology",
@@ -71,6 +77,12 @@
       "prerequisites": [
         {
           "id": "steel-plant"
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "30228",
+          "perLevel": 4
         }
       ]
     },
@@ -112,6 +124,12 @@
       "prerequisites": [
         {
           "id": "steel-plant"
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "30226",
+          "perLevel": 4
         }
       ]
     },
@@ -157,6 +175,12 @@
         {
           "id": "woodcutter"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "30074",
+          "perLevel": 4
+        }
       ]
     },
     {
@@ -200,6 +224,12 @@
         },
         {
           "id": "woodcutter"
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "30476",
+          "perLevel": 4
         }
       ]
     },
@@ -245,6 +275,12 @@
         {
           "id": "woodcutter"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "30072",
+          "perLevel": 4
+        }
       ]
     },
     {
@@ -276,6 +312,12 @@
         {
           "id": "wind-drive-i"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "30478",
+          "perLevel": 1
+        }
       ]
     },
     {
@@ -300,6 +342,12 @@
       "prerequisites": [
         {
           "id": "production-boost"
+        }
+      ],
+      "unlocks": [
+        {
+          "type": "220191",
+          "target": "911262"
         }
       ]
     },
@@ -362,6 +410,12 @@
         {
           "id": "emergency-center"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "31007",
+          "perLevel": 2
+        }
       ]
     },
     {
@@ -422,6 +476,12 @@
       "prerequisites": [
         {
           "id": "emergency-center"
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "73",
+          "perLevel": 50
         }
       ]
     },
@@ -487,6 +547,12 @@
         {
           "id": "critical-care-bed"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "30070",
+          "perLevel": 3
+        }
       ]
     },
     {
@@ -550,6 +616,12 @@
         },
         {
           "id": "critical-care-bed"
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "30071",
+          "perLevel": 3
         }
       ]
     },
@@ -615,6 +687,12 @@
         {
           "id": "parallel-work-i"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "31007",
+          "perLevel": 2
+        }
       ]
     },
     {
@@ -679,6 +757,12 @@
         {
           "id": "parallel-work-i"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "73",
+          "perLevel": 50
+        }
       ]
     },
     {
@@ -706,6 +790,12 @@
         },
         {
           "id": "critical-care-bed-2"
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "30478",
+          "perLevel": 1
         }
       ]
     },
@@ -748,6 +838,12 @@
         {
           "id": "production-boost-2"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "30228",
+          "perLevel": 6
+        }
       ]
     },
     {
@@ -788,6 +884,12 @@
       "prerequisites": [
         {
           "id": "production-boost-2"
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "30226",
+          "perLevel": 6
         }
       ]
     },
@@ -833,6 +935,12 @@
         {
           "id": "woodcutter-2"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "30074",
+          "perLevel": 6
+        }
       ]
     },
     {
@@ -876,6 +984,12 @@
         },
         {
           "id": "woodcutter-2"
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "30476",
+          "perLevel": 6
         }
       ]
     },
@@ -921,6 +1035,12 @@
         {
           "id": "woodcutter-2"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "30072",
+          "perLevel": 6
+        }
       ]
     },
     {
@@ -951,6 +1071,12 @@
         },
         {
           "id": "wind-drive-i-2"
+        }
+      ],
+      "unlocks": [
+        {
+          "type": "220191",
+          "target": "111019"
         }
       ]
     },
@@ -1013,6 +1139,12 @@
         {
           "id": "reservist-camp"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "31007",
+          "perLevel": 2
+        }
       ]
     },
     {
@@ -1073,6 +1205,12 @@
       "prerequisites": [
         {
           "id": "reservist-camp"
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "73",
+          "perLevel": 50
         }
       ]
     },
@@ -1137,6 +1275,12 @@
         },
         {
           "id": "critical-care-bed-3"
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "30313",
+          "perLevel": 200
         }
       ]
     }

@@ -1,0 +1,107 @@
+---
+import PageLayout from '../../../../layouts/PageLayout.astro';
+import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../../../i18n/utils';
+import { getLanguagePaths } from '../../../../i18n/static-paths';
+import { loadTranslations } from '../../../../i18n/index';
+import type { TranslationKey } from '../../../../i18n/index';
+import type { ResearchTree, Technology } from '../../../../schemas/research';
+import ResearchCompare from '../../../../components/calculators/ResearchCompare';
+import researchEffectsRaw from '../../../../data/research-effects.json';
+import researchUnlocksRaw from '../../../../data/research-unlocks.json';
+import '../../../../styles/shared-layouts.css';
+
+import {
+  allianceRecognition, unitSpecialTraining, fullyArmedAlliance, field, heroTraining,
+  militaryStrategies, peaceShield, siegeToSeize, armyBuilding, tacticalMaster,
+  riderTraining, assaulterTraining, shooterTraining, ageOfSteel, newHome,
+  rapidGrowth, shelterBuilding, eliteTroops, hqManagement,
+} from '../../../../data/validated/research';
+
+export function getStaticPaths() {
+  return getLanguagePaths();
+}
+
+const lang = getLangFromUrl(Astro.url);
+const translationData = await loadTranslations(lang);
+const t = useTranslations(translationData);
+
+const EFFECTS = researchEffectsRaw as Record<string, { format: string; names: Record<string, string> }>;
+const UNLOCKS = researchUnlocksRaw as Record<string, Record<string, string>>;
+
+const effName = (id: string) => EFFECTS[id]?.names[lang] || EFFECTS[id]?.names.en || '';
+const effUnit = (id: string) => (EFFECTS[id]?.format === 'percent' ? '%' : '');
+const uText = (k: string) => UNLOCKS[k]?.[lang] || UNLOCKS[k]?.en || k;
+const fmtV = (v: number) => (Number.isInteger(v) ? String(v) : v.toFixed(1));
+
+function maxBonus(tech: Technology): string {
+  return (tech.bonuses ?? [])
+    .map((b) => {
+      const v = b.values ? b.values[b.values.length - 1] : (b.perLevel ?? 0) * tech.maxLevel;
+      const name = effName(b.effect);
+      return name ? `${name} +${fmtV(v)}${effUnit(b.effect)}` : '';
+    })
+    .filter(Boolean)
+    .join(' · ');
+}
+function unlockStr(tech: Technology): string {
+  return (tech.unlocks ?? [])
+    .map((u) => (u.target ? `${uText(u.type)} ${uText(u.target)}` : u.amount != null ? `${uText(u.type)} +${u.amount}` : uText(u.type)))
+    .join(' · ');
+}
+
+const allTrees: ResearchTree[] = [
+  allianceRecognition, unitSpecialTraining, fullyArmedAlliance, field, heroTraining,
+  militaryStrategies, peaceShield, siegeToSeize, armyBuilding, tacticalMaster,
+  riderTraining, assaulterTraining, shooterTraining, ageOfSteel, newHome,
+  rapidGrowth, shelterBuilding, eliteTroops, hqManagement,
+];
+
+const treesData = allTrees.map((tree) => ({
+  id: tree.id,
+  name: t(tree.nameKey as TranslationKey) || tree.name || tree.id,
+  nodes: tree.technologies.map((tech) => ({
+    name: t(tech.nameKey as TranslationKey) || tech.name || tech.id,
+    bonus: maxBonus(tech),
+    unlock: unlockStr(tech),
+    maxLevel: tech.maxLevel,
+  })),
+}));
+
+const L = ({
+  de: { left: 'Baum A', right: 'Baum B', empty: 'Keine Knoten', title: 'Bäume vergleichen', sub: 'Boni bei Max-Level nebeneinander' },
+  en: { left: 'Tree A', right: 'Tree B', empty: 'No nodes', title: 'Compare Trees', sub: 'Max-level bonuses side by side' },
+} as Record<string, { left: string; right: string; empty: string; title: string; sub: string }>)[lang === 'de' ? 'de' : 'en'];
+
+const breadcrumbItems = [
+  { label: t('nav.home'), href: getLocalizedPath('', lang) },
+  { label: t('nav.tools'), href: getLocalizedPath('tools', lang) },
+  { label: t('tools.research.title'), href: getLocalizedPath('tools/research', lang) },
+  { label: L.title },
+];
+---
+
+<PageLayout title={`Last Z · ${L.title}`} description={L.sub} breadcrumbs={breadcrumbItems}>
+  <div class="cmp-page">
+    <h1 class="cmp-title">{L.title}</h1>
+    <p class="cmp-sub">{L.sub}</p>
+    <ResearchCompare treesData={treesData} labels={{ left: L.left, right: L.right, empty: L.empty }} client:load />
+  </div>
+</PageLayout>
+
+<style>
+  .cmp-page {
+    padding: 1rem;
+  }
+  .cmp-title {
+    font-size: 1.4rem;
+    color: #ffa500;
+    margin: 0;
+    text-align: center;
+  }
+  .cmp-sub {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.9rem;
+    margin: 0.25rem 0 0.5rem;
+  }
+</style>

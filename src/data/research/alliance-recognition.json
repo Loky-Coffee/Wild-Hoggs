@@ -67,7 +67,17 @@
         81688
       ],
       "icon": "alliance-recognition/collect-wood",
-      "prerequisites": []
+      "prerequisites": [],
+      "bonuses": [
+        {
+          "effect": "30063",
+          "perLevel": 5
+        },
+        {
+          "effect": "30061",
+          "perLevel": 5
+        }
+      ]
     },
     {
       "id": "zent-gatherer",
@@ -124,7 +134,17 @@
         81688
       ],
       "icon": "alliance-recognition/zent-gatherer",
-      "prerequisites": []
+      "prerequisites": [],
+      "bonuses": [
+        {
+          "effect": "35109",
+          "perLevel": 5
+        },
+        {
+          "effect": "30239",
+          "perLevel": 5
+        }
+      ]
     },
     {
       "id": "premium-rewards",
@@ -153,6 +173,18 @@
         {
           "id": "zent-gatherer",
           "requiredLevel": 10
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "30121",
+          "perLevel": 1
+        }
+      ],
+      "unlocks": [
+        {
+          "type": "130056",
+          "target": "220244"
         }
       ]
     },
@@ -256,6 +288,12 @@
           "id": "premium-rewards",
           "requiredLevel": 1
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "30122",
+          "perLevel": 5
+        }
       ]
     },
     {
@@ -317,6 +355,12 @@
         {
           "id": "event-expert",
           "requiredLevel": 1
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "40020",
+          "perLevel": 2
         }
       ]
     },
@@ -380,6 +424,12 @@
           "id": "event-expert",
           "requiredLevel": 1
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "40010",
+          "perLevel": 2
+        }
       ]
     },
     {
@@ -441,6 +491,12 @@
         {
           "id": "augmented-engine",
           "requiredLevel": 1
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "31009",
+          "perLevel": 2
         }
       ]
     },
@@ -504,6 +560,12 @@
           "id": "transport-capacity-up",
           "requiredLevel": 1
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "31008",
+          "perLevel": 5
+        }
       ]
     },
     {
@@ -533,6 +595,18 @@
         {
           "id": "fast-production",
           "requiredLevel": 10
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "30123",
+          "perLevel": 1
+        }
+      ],
+      "unlocks": [
+        {
+          "type": "130056",
+          "target": "220246"
         }
       ]
     },
@@ -596,6 +670,12 @@
           "id": "super-rewards",
           "requiredLevel": 1
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "30125",
+          "perLevel": 10
+        }
       ]
     },
     {
@@ -657,6 +737,16 @@
         {
           "id": "super-rewards",
           "requiredLevel": 1
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "30448",
+          "perLevel": 10
+        },
+        {
+          "effect": "30449",
+          "perLevel": 10
         }
       ]
     },
@@ -720,6 +810,16 @@
           "id": "incentive-gathering",
           "requiredLevel": 1
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "30127",
+          "perLevel": 10
+        },
+        {
+          "effect": "30126",
+          "perLevel": 10
+        }
       ]
     },
     {
@@ -781,6 +881,12 @@
         {
           "id": "incentive-modified-vehicle",
           "requiredLevel": 1
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "30450",
+          "perLevel": 10
         }
       ]
     },
@@ -844,6 +950,12 @@
           "id": "incentive-development",
           "requiredLevel": 1
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "30130",
+          "perLevel": 10
+        }
       ]
     },
     {
@@ -905,6 +1017,12 @@
         {
           "id": "incentive-equipment",
           "requiredLevel": 1
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "30128",
+          "perLevel": 10
         }
       ]
     },
@@ -968,6 +1086,12 @@
           "id": "incentive-creeps",
           "requiredLevel": 1
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "30129",
+          "perLevel": 10
+        }
       ]
     },
     {
@@ -1029,6 +1153,12 @@
         {
           "id": "incentive-training",
           "requiredLevel": 1
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "30131",
+          "perLevel": 10
         }
       ]
     },
@@ -1136,6 +1266,12 @@
           "id": "incentive-killing",
           "requiredLevel": 10
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "30122",
+          "perLevel": 10
+        }
       ]
     },
     {
@@ -1161,6 +1297,18 @@
         {
           "id": "event-king",
           "requiredLevel": 20
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "30132",
+          "perLevel": 1
+        }
+      ],
+      "unlocks": [
+        {
+          "type": "130056",
+          "target": "220255"
         }
       ]
     }

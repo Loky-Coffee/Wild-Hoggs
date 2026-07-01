@@ -35,6 +35,12 @@
         {
           "id": "stacking-technique"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "30072",
+          "perLevel": 5
+        }
       ]
     },
     {
@@ -56,7 +62,13 @@
         518
       ],
       "icon": "new-home/stacking-technique",
-      "prerequisites": []
+      "prerequisites": [],
+      "bonuses": [
+        {
+          "effect": "30070",
+          "perLevel": 5
+        }
+      ]
     },
     {
       "id": "stock-management",
@@ -80,6 +92,18 @@
       "prerequisites": [
         {
           "id": "stacking-technique"
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "30222",
+          "perLevel": 1000
+        }
+      ],
+      "unlocks": [
+        {
+          "type": "131124",
+          "amount": 1000
         }
       ]
     },
@@ -109,6 +133,12 @@
         {
           "id": "stock-management"
         }
+      ],
+      "unlocks": [
+        {
+          "type": "220191",
+          "target": "200212"
+        }
       ]
     },
     {
@@ -134,6 +164,12 @@
         {
           "id": "shooter-camp"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "30109",
+          "perLevel": 10
+        }
       ]
     },
     {
@@ -158,6 +194,12 @@
       "prerequisites": [
         {
           "id": "shooter-camp"
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "30074",
+          "perLevel": 5
         }
       ]
     },
@@ -187,6 +229,18 @@
         {
           "id": "house-renovation"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "30222",
+          "perLevel": 2000
+        }
+      ],
+      "unlocks": [
+        {
+          "type": "131124",
+          "amount": 2000
+        }
       ]
     },
     {
@@ -214,6 +268,12 @@
         },
         {
           "id": "house-renovation"
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "30002",
+          "perLevel": 200
         }
       ]
     },
@@ -243,6 +303,12 @@
         {
           "id": "fast-drive"
         }
+      ],
+      "unlocks": [
+        {
+          "type": "220193",
+          "target": "140055"
+        }
       ]
     },
     {
@@ -267,6 +333,12 @@
       "prerequisites": [
         {
           "id": "multitasking"
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "30228",
+          "perLevel": 5
         }
       ]
     },
@@ -293,6 +365,18 @@
         {
           "id": "rider-camp"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "30222",
+          "perLevel": 3000
+        }
+      ],
+      "unlocks": [
+        {
+          "type": "131124",
+          "amount": 3000
+        }
       ]
     },
     {
@@ -317,6 +401,12 @@
       "prerequisites": [
         {
           "id": "rider-camp"
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "30226",
+          "perLevel": 5
         }
       ]
     },
@@ -346,6 +436,12 @@
         {
           "id": "wood-harvest"
         }
+      ],
+      "unlocks": [
+        {
+          "type": "220193",
+          "target": "140054"
+        }
       ]
     },
     {
@@ -370,6 +466,12 @@
       "prerequisites": [
         {
           "id": "vehicle-parts"
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "30226",
+          "perLevel": 5
         }
       ]
     },
@@ -396,6 +498,12 @@
         {
           "id": "wood-harvest-2"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "30109",
+          "perLevel": 10
+        }
       ]
     },
     {
@@ -421,6 +529,12 @@
         {
           "id": "wood-harvest-2"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "30072",
+          "perLevel": 5
+        }
       ]
     },
     {
@@ -445,6 +559,12 @@
       "prerequisites": [
         {
           "id": "wood-harvest-2"
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "30074",
+          "perLevel": 5
         }
       ]
     },
@@ -477,6 +597,12 @@
         {
           "id": "house-renovation-2"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "30071",
+          "perLevel": 5
+        }
       ]
     },
     {
@@ -507,6 +633,12 @@
         },
         {
           "id": "house-renovation-2"
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "30002",
+          "perLevel": 200
         }
       ]
     },
@@ -539,6 +671,12 @@
         {
           "id": "house-renovation-2"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "30070",
+          "perLevel": 10
+        }
       ]
     },
     {
@@ -569,6 +707,18 @@
         },
         {
           "id": "skillful-craftsman"
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "30222",
+          "perLevel": 4000
+        }
+      ],
+      "unlocks": [
+        {
+          "type": "131124",
+          "amount": 4000
         }
       ]
     },
@@ -601,6 +751,12 @@
         {
           "id": "skillful-craftsman"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "30228",
+          "perLevel": 5
+        }
       ]
     },
     {
@@ -628,6 +784,16 @@
         },
         {
           "id": "food-production-2"
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "30063",
+          "perLevel": 10
+        },
+        {
+          "effect": "30061",
+          "perLevel": 10
         }
       ]
     },
@@ -657,6 +823,12 @@
         {
           "id": "food-production-2"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "30071",
+          "perLevel": 5
+        }
       ]
     },
     {
@@ -684,6 +856,12 @@
         },
         {
           "id": "food-production-2"
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "30226",
+          "perLevel": 5
         }
       ]
     },
@@ -716,6 +894,12 @@
         {
           "id": "wood-harvest-3"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "31008",
+          "perLevel": 3
+        }
       ]
     },
     {
@@ -740,6 +924,12 @@
       "prerequisites": [
         {
           "id": "mechanical-parts"
+        }
+      ],
+      "unlocks": [
+        {
+          "type": "220191",
+          "target": "100304"
         }
       ]
     },
@@ -766,6 +956,12 @@
         {
           "id": "food-production"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "40020",
+          "perLevel": 10
+        }
       ]
     },
     {
@@ -790,6 +986,12 @@
       "prerequisites": [
         {
           "id": "engine-upgrading"
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "30072",
+          "perLevel": 5
         }
       ]
     },
@@ -816,6 +1018,12 @@
         {
           "id": "engine-upgrading"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "30228",
+          "perLevel": 5
+        }
       ]
     },
     {
@@ -840,6 +1048,12 @@
       "prerequisites": [
         {
           "id": "engine-upgrading"
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "30226",
+          "perLevel": 5
         }
       ]
     },
@@ -872,6 +1086,12 @@
         {
           "id": "wood-harvest-4"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "31000",
+          "perLevel": 3
+        }
       ]
     },
     {
@@ -902,6 +1122,12 @@
         },
         {
           "id": "wood-harvest-4"
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "31001",
+          "perLevel": 3
         }
       ]
     },
@@ -934,6 +1160,12 @@
         {
           "id": "wood-harvest-4"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "31002",
+          "perLevel": 3
+        }
       ]
     },
     {
@@ -965,6 +1197,12 @@
         {
           "id": "firearms-assembly"
         }
+      ],
+      "unlocks": [
+        {
+          "type": "220193",
+          "target": "140053"
+        }
       ]
     },
     {
@@ -989,6 +1227,12 @@
       "prerequisites": [
         {
           "id": "firearms-upgrading"
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "35002",
+          "perLevel": 3
         }
       ]
     },
@@ -1015,6 +1259,12 @@
         {
           "id": "firearms-upgrading"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "35001",
+          "perLevel": 3
+        }
       ]
     },
     {
@@ -1039,6 +1289,12 @@
       "prerequisites": [
         {
           "id": "firearms-upgrading"
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "35003",
+          "perLevel": 3
         }
       ]
     },
@@ -1071,6 +1327,12 @@
         {
           "id": "gun-sight-i"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "31008",
+          "perLevel": 3
+        }
       ]
     },
     {
@@ -1095,6 +1357,16 @@
       "prerequisites": [
         {
           "id": "multitasking-2"
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "30063",
+          "perLevel": 10
+        },
+        {
+          "effect": "30061",
+          "perLevel": 10
         }
       ]
     },
@@ -1121,6 +1393,12 @@
         {
           "id": "multitasking-2"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "30072",
+          "perLevel": 5
+        }
       ]
     },
     {
@@ -1145,6 +1423,12 @@
       "prerequisites": [
         {
           "id": "multitasking-2"
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "30228",
+          "perLevel": 5
         }
       ]
     },
@@ -1177,6 +1461,12 @@
         {
           "id": "food-production-4"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "30071",
+          "perLevel": 10
+        }
       ]
     },
     {
@@ -1208,6 +1498,12 @@
         {
           "id": "food-production-4"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "30070",
+          "perLevel": 10
+        }
       ]
     },
     {
@@ -1235,6 +1531,12 @@
         },
         {
           "id": "skillful-craftsman-2"
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "31000",
+          "perLevel": 3
         }
       ]
     },
@@ -1264,6 +1566,12 @@
         {
           "id": "skillful-craftsman-2"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "31001",
+          "perLevel": 3
+        }
       ]
     },
     {
@@ -1291,6 +1599,12 @@
         },
         {
           "id": "skillful-craftsman-2"
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "31002",
+          "perLevel": 3
         }
       ]
     },
@@ -1323,6 +1637,12 @@
         {
           "id": "firearms-assembly-2"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "35006",
+          "perLevel": 3
+        }
       ]
     },
     {
@@ -1354,6 +1674,12 @@
         {
           "id": "firearms-assembly-2"
         }
+      ],
+      "bonuses": [
+        {
+          "effect": "35005",
+          "perLevel": 3
+        }
       ]
     },
     {
@@ -1384,6 +1710,12 @@
         },
         {
           "id": "firearms-assembly-2"
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "35007",
+          "perLevel": 3
         }
       ]
     }

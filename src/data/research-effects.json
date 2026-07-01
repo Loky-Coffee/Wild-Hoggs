@@ -1,0 +1,1582 @@
+{
+  "30228": {
+    "format": "percent",
+    "names": {
+      "en": "Food Production Speed",
+      "id": "Kecepatan Produksi Makanan",
+      "tr": "Gıda Üretim Hızı",
+      "es": "Velocidad de producción de comida",
+      "ar": "سرعة إنتاج الطعام",
+      "pt": "Velocidade de produção de alimentos",
+      "ja": "食糧生産速度",
+      "ko": "음식 생산 속도",
+      "fr": "Vitesse de production alimentaire",
+      "zh-CN": "食物生产速度",
+      "it": "Velocità di produzione del cibo",
+      "th": "สปีดผลิตอาหาร",
+      "vi": "Tốc độ tạo Lương Thực",
+      "de": "Lebensmittel-Rate",
+      "zh-TW": "食物生產速度"
+    }
+  },
+  "30226": {
+    "format": "percent",
+    "names": {
+      "en": "Wood Production Speed",
+      "id": "Kecepatan Produksi Kayu",
+      "tr": "Odun üretim hızı",
+      "es": "Tasa de Prod. de Madera",
+      "ar": "سرعة إنتاج الخشب",
+      "pt": "Velocidade de produção de madeira",
+      "ja": "木材生産速度",
+      "ko": "목재 생산 속도",
+      "fr": "Vitesse de production du bois",
+      "zh-CN": "木头生产速度",
+      "it": "Velocità di produzione della legna",
+      "th": "ความเร็วผลิตไม้",
+      "vi": "Tốc độ sản xuất Gỗ",
+      "de": "Produktionsgeschw. Holz",
+      "zh-TW": "木頭生產速度"
+    }
+  },
+  "30074": {
+    "format": "percent",
+    "names": {
+      "en": "Residence's Zent Production Speed",
+      "id": "Kecepatan Produksi Zent Pemukiman",
+      "tr": "Banka Z Parası üretim hızı",
+      "es": "Productividad de Monedas Z de Residencia",
+      "ar": "سرعة إنتاج عملة Z السكنية",
+      "pt": "Velo. de produção de Moedas Z da Residência",
+      "ja": "Zコイン生産速度",
+      "ko": "민가 Z코인 생산 속도",
+      "fr": "Vitesse de production de Pièces Z des habitations",
+      "zh-CN": "民居Z币产出速度",
+      "it": "Velocità di produzione di moneta delle abitazioni",
+      "th": "ความเร็วผลิตเหรียญ Zของธนาคาร",
+      "vi": "Tốc độ tạo Xu Z của Nhà Dân",
+      "de": "Produktion von Z-Münzen im Wohnsitz",
+      "zh-TW": "民居Z幣產出速度"
+    }
+  },
+  "30476": {
+    "format": "percent",
+    "names": {
+      "en": "Steel Production Speed",
+      "id": "Kecepatan Produksi Baja",
+      "tr": "Çelik Üretim Hızı",
+      "es": "Velocidad de producción de acero",
+      "ar": "سرعة إنتاج الفولاذ",
+      "pt": "Velocidade de produção de aço",
+      "ja": "鋼鉄の生産速度",
+      "ko": "강재 생산 속도",
+      "fr": "Vitesse de production d'acier",
+      "zh-CN": "钢材生产速度",
+      "it": "Velocità di produzione acciaio",
+      "th": "ความเร็วผลิตโลหะ",
+      "vi": "Tốc độ sản xuất thép",
+      "de": "Produktionsgeschw. Stahl",
+      "zh-TW": "鋼材生產速度"
+    }
+  },
+  "30072": {
+    "format": "percent",
+    "names": {
+      "en": "Wind Turbine Production Speed",
+      "id": "Produktivitas Turbin Angin",
+      "tr": "Rüzgar Enerji Santrali Üretim Hızı",
+      "es": "Velocidad de Producción de Turbina Eólica",
+      "ar": "سرعة إنتاج محطة طاقة الرياح",
+      "pt": "Velocidade de Produção da Estação de Energia Eólica",
+      "ja": "風力発電所の生産速度",
+      "ko": "풍력발전소 생산 속도",
+      "fr": "Vitesse de production de la centrale éolienne",
+      "zh-CN": "风力发电站生产速度",
+      "it": "Velocità di produzione della centrale eolica",
+      "th": "ความเร็วผลิตโรงไฟฟ้าพลังงานลม",
+      "vi": "Tốc Độ Sản Xuất của Trạm Phát Điện Gió",
+      "de": "Produktionsgeschw. des Windkraftwerks",
+      "zh-TW": "風力發電站生產速度"
+    }
+  },
+  "30478": {
+    "format": "flat",
+    "names": {
+      "en": "Steel Plant Amount",
+      "id": "Jumlah Pabrik Baja",
+      "tr": "Çelik Fabrikası Miktarı",
+      "es": "Cantidad de fábricas de acero",
+      "ar": "عدد مصانع الفولاذ",
+      "pt": "Quantidade de fábricas de aço",
+      "ja": "製鋼所の数",
+      "ko": "강재 공장 수량",
+      "fr": "Nombre d'usines sidérurgiques",
+      "zh-CN": "钢材厂数量",
+      "it": "Numero di acciaierie",
+      "th": "จำนวนโรงงานโลหะ",
+      "vi": "Số lượng Nhà Máy Thép",
+      "de": "Anzahl der Stahlfabriken",
+      "zh-TW": "鋼材廠數量"
+    }
+  },
+  "31007": {
+    "format": "percent",
+    "names": {
+      "en": "Healing Speed",
+      "id": "Kecepatan Penyembuhan",
+      "tr": "Tedavi Hızı",
+      "es": "Velocidad de Curación",
+      "ar": "سرعة العلاج",
+      "pt": "Velocidade de Cura",
+      "ja": "治療速度",
+      "ko": "치료 속도",
+      "fr": "Vitesse de traitement",
+      "zh-CN": "治疗速度",
+      "it": "Velocità di guarigione",
+      "th": "สปีดฮีล",
+      "vi": "Tốc Độ Chữa Trị",
+      "de": "Heilungsgeschwindigkeit",
+      "zh-TW": "治療速度"
+    }
+  },
+  "73": {
+    "format": "flat",
+    "names": {
+      "en": "Hospital Capacity Boost",
+      "id": "Peningkatan Kapasitas Rumah Sakit",
+      "tr": "Hastane kapasitesi artar",
+      "es": "Capac. del Hospital Ampliada",
+      "ar": "زيادة سعة المستشفى",
+      "pt": "Aumento da Capacidade do Hospital",
+      "ja": "病院の収容能力が増加する",
+      "ko": "병원 용량 증가",
+      "fr": "Capacité de l'hôpital",
+      "zh-CN": "医院容量增加",
+      "it": "Aumenta la capacità dell'ospedale",
+      "th": "เพิ่มความจุโรงพยาบาล",
+      "vi": "Tăng sức chứa Bệnh Viện",
+      "de": "Erhöhte Krankenhauskapazität",
+      "zh-TW": "醫院容量增加"
+    }
+  },
+  "30070": {
+    "format": "percent",
+    "names": {
+      "en": "Construction Speed",
+      "id": "Kecepatan Pembangunan",
+      "tr": "Bina yapım hızı",
+      "es": "Vel. de Construcción",
+      "ar": "سرعة بناء المباني",
+      "pt": "Velo. de construção",
+      "ja": "建造速度",
+      "ko": "건축물 건축 속도",
+      "fr": "Vitesse de construction",
+      "zh-CN": "建筑建造速度",
+      "it": "Velocità di costruzione di edifici",
+      "th": "ความเร็วสร้างสิ่งก่อสร้าง",
+      "vi": "Tốc Độ Xây Kiến Trúc",
+      "de": "Bau-Geschwindigkeit der Gebäude",
+      "zh-TW": "建築建造速度"
+    }
+  },
+  "30071": {
+    "format": "percent",
+    "names": {
+      "en": "Research Speed",
+      "id": "Kecepatan Penelitian",
+      "tr": "Bilimsel araştırma hızı",
+      "es": "Vel. de Investigación",
+      "ar": "سرعة البحث العلمي",
+      "pt": "Vel. da Pesq. Cient.",
+      "ja": "科学研究速度",
+      "ko": "테크 속도",
+      "fr": "Vitesse de recherche",
+      "zh-CN": "科研速度",
+      "it": "Velocità di ricerca",
+      "th": "ความเร็ววิจัย",
+      "vi": "Tốc Độ Nghiên Cứu",
+      "de": "Forschungsgeschwindigkeit",
+      "zh-TW": "科研速度"
+    }
+  },
+  "30313": {
+    "format": "flat",
+    "names": {
+      "en": "Max Reservists",
+      "id": "Batas Tentara Cadangan",
+      "tr": "Maksimum Yedekler",
+      "es": "Reservistas Máximos",
+      "ar": "أقصى عدد من الاحتياطيات",
+      "pt": "Número máximo de reservistas",
+      "ja": "予備兵数上限",
+      "ko": "예비병 수량 상한",
+      "fr": "Nombre maximal de réserves",
+      "zh-CN": "预备兵数量上限",
+      "it": "Limite massimo riservisti",
+      "th": "จำนวนนายสิบสูงสุด",
+      "vi": "Giới hạn SL Lính Dự Bị",
+      "de": "Maximale Reserve-Soldaten",
+      "zh-TW": "預備兵數量上限"
+    }
+  },
+  "30063": {
+    "format": "percent",
+    "names": {
+      "en": "Food Gathering Speed",
+      "id": "Kecepatan Pengumpulan Makanan",
+      "tr": "Yiyecek toplama hızı",
+      "es": "Velocidad de recolección de alimentos",
+      "ar": "سرعة تجميع الطعام",
+      "pt": "Velocidade de coleta de alimentos",
+      "ja": "食糧採集速度",
+      "ko": "음식 채집 속도",
+      "fr": "Vitesse de récolte des aliments",
+      "zh-CN": "食物采集速度",
+      "it": "Velocità di raccolta alimentare",
+      "th": "สปีดรวบรวมอาหาร",
+      "vi": "Tốc độ thu thập Lương Thực",
+      "de": "Lebensmittel-Sammlungsgeschwindigkeit",
+      "zh-TW": "食物採集速度"
+    }
+  },
+  "30061": {
+    "format": "percent",
+    "names": {
+      "en": "Wood Gathering Speed",
+      "id": "Kecepatan Pengumpulan Kayu",
+      "tr": "Odun toplama hızı",
+      "es": "Velocidad de Recolección de Madera",
+      "ar": "سرعة جمع الخشب",
+      "pt": "Veloc. de coleta de madeira",
+      "ja": "木材の採集速度",
+      "ko": "목재 채집 속도",
+      "fr": "Vitesse de collecte du bois",
+      "zh-CN": "木头采集速度",
+      "it": "Velocità di raccolta del legno",
+      "th": "ความเร็วรวบรวมไม้",
+      "vi": "Tốc độ thu thập Gỗ",
+      "de": "Sammlungsgeschwindigkeit von Holz",
+      "zh-TW": "木頭採集速度"
+    }
+  },
+  "35109": {
+    "format": "percent",
+    "names": {
+      "en": "Zent Gathering Speed",
+      "id": "Kecepatan Pengumpulan Zent",
+      "tr": "Z Parası toplama hızı",
+      "es": "Vel. de Recolección de Monedas Z",
+      "ar": "سرعة جمع عملة Z",
+      "pt": "Velocidade da Coleta de Moedas Z",
+      "ja": "Zコイン採集速度",
+      "ko": "Z코인 채집 속도",
+      "fr": "Vitesse de collecte des Pièces Z",
+      "zh-CN": "Z币采集速度",
+      "it": "Velocità di raccolta- Monete",
+      "th": "ความเร็วรวบรวมเหรียญ Z",
+      "vi": "Tốc độ thu thập Xu Z",
+      "de": "Sammlungsgeschwindigkeit von Z-Münzen",
+      "zh-TW": "Z幣採集速度"
+    }
+  },
+  "30239": {
+    "format": "percent",
+    "names": {
+      "en": "Electricity Gathering Speed",
+      "id": "Kecepatan Pengumpulan Listrik",
+      "tr": "Elektriğin toplanma hızı",
+      "es": "Vel. de Recolección de Electricidad",
+      "ar": "سرعة حصاد الطاقة",
+      "pt": "Velocidade de coleta de energia",
+      "ja": "電力採集速度",
+      "ko": "전력 채집 속도",
+      "fr": "Vitesse de collecte d'électricité",
+      "zh-CN": "电力采集速度",
+      "it": "Velocità di raccolta energetica",
+      "th": "ความเร็วรวบรวมไฟฟ้า",
+      "vi": "Tốc độ thu thập Điện Lực",
+      "de": "Sammlungsgeschwindigkeit von Strom",
+      "zh-TW": "電力採集速度"
+    }
+  },
+  "30121": {
+    "format": "flat",
+    "names": {
+      "en": "Tier 4–6 Rewards",
+      "id": "Hadiah Tier 4-6",
+      "tr": "Seviye 4-6 Ödülleri",
+      "es": "Recompensas de nivel 4-6",
+      "ar": "مكافآت الصف 4-6",
+      "pt": "Recompensas de Classes 4-6",
+      "ja": "4-6段階の報酬",
+      "ko": "4-6등급 보상",
+      "fr": "Récompenses de niveau 4 à 6",
+      "zh-CN": "4-6档奖励",
+      "it": "Ricompense di gradi 4-6",
+      "th": "แรงค์รางวัล 4 - 6",
+      "vi": "Thưởng hạng 4-6",
+      "de": "Belohnung für Stufe 4-6",
+      "zh-TW": "4-6檔獎勵"
+    }
+  },
+  "30122": {
+    "format": "percent",
+    "names": {
+      "en": "All Points",
+      "id": "Semua Poin",
+      "tr": "Tüm Puanlar",
+      "es": "Todos los puntos",
+      "ar": "كل النقاط",
+      "pt": "Todos os pontos",
+      "ja": "全てのポイント",
+      "ko": "전체 포인트",
+      "fr": "Tous les points",
+      "zh-CN": "所有积分",
+      "it": "Tutti i punti",
+      "th": "แต้มทั้งหมด",
+      "vi": "Tất cả tích điểm",
+      "de": "Alle Punkte",
+      "zh-TW": "所有積分"
+    }
+  },
+  "40020": {
+    "format": "percent",
+    "names": {
+      "en": "March Speed",
+      "id": "Kecepatan Berbaris",
+      "tr": "İntikal Hızı",
+      "es": "Velocidad de Marcha",
+      "ar": "سرعة السير",
+      "pt": "Velocidade de marcha",
+      "ja": "行軍速度",
+      "ko": "행군 속도",
+      "fr": "Vitesse de marche",
+      "zh-CN": "行军速度",
+      "it": "Velocità di marcia delle truppe",
+      "th": "ความเร็วเดินทัพ",
+      "vi": "Tốc độ Hành Quân",
+      "de": "Marschgeschwindigkeit",
+      "zh-TW": "行軍速度"
+    }
+  },
+  "40010": {
+    "format": "percent",
+    "names": {
+      "en": "Troop Load",
+      "id": "Muatan Formasi",
+      "tr": "Kıta Kapasitesi",
+      "es": "Carga de Formación",
+      "ar": "حمل التكوين",
+      "pt": "Peso da formação",
+      "ja": "編成積載量",
+      "ko": "편대 적재",
+      "fr": "Charge de formation",
+      "zh-CN": "编队负重",
+      "it": "Capacità di carico della formazione",
+      "th": "โหลดจัดทัพ",
+      "vi": "Tải Trọng Đội Hình",
+      "de": "Formation-Last",
+      "zh-TW": "編隊負重"
+    }
+  },
+  "31009": {
+    "format": "flat",
+    "names": {
+      "en": "Unit Training Volume",
+      "id": "Jumlah Pelatihan Pasukan",
+      "tr": "Birlik Eğitim Miktarı",
+      "es": "Cantidad de entrenamiento de tropas",
+      "ar": "حجم تدريب القوات",
+      "pt": "Capacidade de Treinamento das Tropas",
+      "ja": "部隊訓練量",
+      "ko": "부대 훈련량",
+      "fr": "Capacité d'entraînement des troupes",
+      "zh-CN": "部队训练量",
+      "it": "Quantità di truppe in addestramento",
+      "th": "จำนวนฝึกฝนทัพ",
+      "vi": "Lượng Huấn Luyện Đội",
+      "de": "Truppentrainingsmenge",
+      "zh-TW": "部隊訓練量"
+    }
+  },
+  "31008": {
+    "format": "percent",
+    "names": {
+      "en": "Troop Training Speed",
+      "id": "Kecepatan Pelatihan Pasukan",
+      "tr": "Birlik eğitim hızı",
+      "es": "Vel. de Entrenamiento de Tropa",
+      "ar": "سرعة تدريب القوات",
+      "pt": "Velocidade do treinamento das tropas",
+      "ja": "部隊の訓練速度",
+      "ko": "부대 훈련 속도",
+      "fr": "Vitesse d'entraînement des troupes",
+      "zh-CN": "部队训练速度",
+      "it": "Velocità di addestramento di truppe",
+      "th": "ความเร็วฝึกฝนทัพ",
+      "vi": "Tốc Độ Huấn Luyện Bộ Đội",
+      "de": "Trainingsgeschwindigkeit",
+      "zh-TW": "部隊訓練速度"
+    }
+  },
+  "30123": {
+    "format": "flat",
+    "names": {
+      "en": "Tier 7–9 Rewards",
+      "id": "Hadiah Tier 7-9",
+      "tr": "Seviye 7-9 Ödülleri",
+      "es": "Recompensas de nivel 7-9",
+      "ar": "مكافآت الصف 7-9",
+      "pt": "Recompensas de Classes 7-9",
+      "ja": "7-9段階の報酬",
+      "ko": "7-9등급 보상",
+      "fr": "Récompenses de niveau 7 à 9",
+      "zh-CN": "7-9档奖励",
+      "it": "Ricompense di gradi 7-9",
+      "th": "แรงค์รางวัล 7 - 9",
+      "vi": "Thưởng hạng 7-9",
+      "de": "Belohnung für Stufe 7-9",
+      "zh-TW": "7-9檔獎勵"
+    }
+  },
+  "30125": {
+    "format": "percent",
+    "names": {
+      "en": "Resource Gathering Points",
+      "id": "Poin Pengumpulan Sumber Daya",
+      "tr": "Kaynak toplama puanları",
+      "es": "Puntos por Recolección de Recursos",
+      "ar": "تجميع نقاط الموارد",
+      "pt": "Pontos de Recolha de Recursos",
+      "ja": "資源採集ポイント",
+      "ko": "자원 채집 포인트",
+      "fr": "Points pour collecter des ressources",
+      "zh-CN": "采集资源积分",
+      "it": "Punti raccolta risorse",
+      "th": "รวบรวมแต้มทรัพยากร",
+      "vi": "Điểm thu thập tài nguyên",
+      "de": "Ressourcensammel-Punkte",
+      "zh-TW": "採集資源積分"
+    }
+  },
+  "30448": {
+    "format": "percent",
+    "names": {
+      "en": "Modification Blueprint Consumption Points",
+      "id": "Poin Penggunaan Cetak Biru Modifikasi",
+      "tr": "Modifikasyon Çizim Noktalarını Tüketin",
+      "es": "Puntos de consumo de planos de modificación",
+      "ar": "استهلاك نقاط مخطط التعديل",
+      "pt": "Consome pontos de Projeto de Modificação",
+      "ja": "改造図消費のポイント",
+      "ko": "개조 설계도 포인트",
+      "fr": "Consommer des points de dessin de modification",
+      "zh-CN": "消耗改装图纸积分",
+      "it": "Punti modifica disegno",
+      "th": "ใช้แต้มแผนภาพดัดแปลง",
+      "vi": "Điểm tiêu Bản Vẽ Cải Tiến",
+      "de": "Verbrauch von Modifizierungsbauplan-Punkten",
+      "zh-TW": "消耗改裝圖紙積分"
+    }
+  },
+  "30449": {
+    "format": "percent",
+    "names": {
+      "en": "Golden Wrench Consumption Points",
+      "id": "Poin Penggunaan Kunci Pas Emas",
+      "tr": "Altın İngiliz Anahtarı Puanlarını Tüketin",
+      "es": "Puntos de consumo de llave inglesa dorada",
+      "ar": "استهلاك نقاط مفتاح ذهبي",
+      "pt": "Consome pontos de Chave Inglesa Dourada",
+      "ja": "ゴールデンレンチ消費のポイント",
+      "ko": "골드 렌치 포인트",
+      "fr": "Consommez des points de clé dorée",
+      "zh-CN": "消耗黄金扳手积分",
+      "it": "Punti di utilizzo della chiave d'oro",
+      "th": "ใช้แต้มประแจทอง",
+      "vi": "Điểm tiêu Mỏ Lết Vàng",
+      "de": "Verbrauch von Goldschraubenschlüssel-Punkten",
+      "zh-TW": "消耗黃金扳手積分"
+    }
+  },
+  "30127": {
+    "format": "percent",
+    "names": {
+      "en": "Structure Power Points",
+      "id": "Poin CP Bangunan",
+      "tr": "Bina Savaş Gücü Puanları",
+      "es": "Puntos de poder de edificios",
+      "ar": "نقاط قوة قتال المباني",
+      "pt": "Pontos de Poder de Construção",
+      "ja": "建物戦力ポイント",
+      "ko": "건축물 전투력 포인트",
+      "fr": "Points de puissance des bâtiments",
+      "zh-CN": "建筑战力积分",
+      "it": "Punti POC edifici",
+      "th": "แต้มพลังรบสิ่งก่อสร้าง",
+      "vi": "Điểm Lực Chiến Kiến Trúc",
+      "de": "Gebäude-Kampfkraft-Punkte",
+      "zh-TW": "建築戰力積分"
+    }
+  },
+  "30126": {
+    "format": "percent",
+    "names": {
+      "en": "Tech Power Points",
+      "id": "Poin CP Teknologi",
+      "tr": "Teknoloji Savaş Gücü Puanları",
+      "es": "Puntos por Poder de Tecnología",
+      "ar": "نقاط قوة القتال التكنولوجية",
+      "pt": "Pontos de Poder de Tecnologia",
+      "ja": "技術戦力ポイント",
+      "ko": "테크 전투력 포인트",
+      "fr": "Points de PC technologique",
+      "zh-CN": "科技战力积分",
+      "it": "Punti POC tecnologia",
+      "th": "แต้มพลังรบเทคโนโลยี",
+      "vi": "Điểm Lực Chiến Công Nghệ",
+      "de": "Technologie-Kampfkraft-Punkte",
+      "zh-TW": "科技戰力積分"
+    }
+  },
+  "30450": {
+    "format": "percent",
+    "names": {
+      "en": "Power Core Consumption Points",
+      "id": "Poin Penggunaan Inti Energi",
+      "tr": "Enerji Çekirdek Puanlarını Tüketin",
+      "es": "Puntos de consumo de núcleo de energía",
+      "ar": "استهلاك نقاط طاقة النواة",
+      "pt": "Consome pontos de Núcleo de Energia",
+      "ja": "エネルギーコア消費のポイント",
+      "ko": "에너지 코어 포인트",
+      "fr": "Consommer des points essentiels en énergie",
+      "zh-CN": "消耗能源核心积分",
+      "it": "Punti di utilizzo del nucleo di energia",
+      "th": "ใช้แต้มคอร์พลังงาน",
+      "vi": "Điểm tiêu Lõi Năng Lượng",
+      "de": "Verbrauch von Punkten des Energiekerns",
+      "zh-TW": "消耗能源核心積分"
+    }
+  },
+  "30130": {
+    "format": "percent",
+    "names": {
+      "en": "Creep Kill Points",
+      "id": "Poin dari Mengalahkan Creep",
+      "tr": "Vahşi Yaratığı öldürme puanları",
+      "es": "Puntos ganados por Derrotar a Monstruos Salvajes",
+      "ar": "تسجيل نقاط لهزيمة المخلوقات البرية",
+      "pt": "Pontos para derrotar os animais silvestres",
+      "ja": "野外生物を倒すポイント",
+      "ko": "필드 생물 격퇴 포인트",
+      "fr": "Points pour vaincre les monstres sauvages",
+      "zh-CN": "击败野外生物积分",
+      "it": "Punti per aver sconfitto i mostri",
+      "th": "แต้มเอาชนะสิ่งมีชีวิตในป่า",
+      "vi": "Điểm đánh bại Thú Hoang",
+      "de": "Wildnismonster-Tötungspunkte",
+      "zh-TW": "擊敗野外生物積分"
+    }
+  },
+  "30128": {
+    "format": "percent",
+    "names": {
+      "en": "Training Points",
+      "id": "Poin Pelatihan",
+      "tr": "Eğitim Puanları",
+      "es": "Puntos por Entrenamiento",
+      "ar": "نقاط التدريب",
+      "pt": "Pontos de Treinamento",
+      "ja": "訓練ポイント",
+      "ko": "훈련 포인트",
+      "fr": "Points d'entraînement",
+      "zh-CN": "训练积分",
+      "it": "Punti Addestramento",
+      "th": "แต้มฝึกฝน",
+      "vi": "Điểm Huấn Luyện",
+      "de": "Trainingspunkte",
+      "zh-TW": "訓練積分"
+    }
+  },
+  "30129": {
+    "format": "percent",
+    "names": {
+      "en": "Hero Recruiting Points",
+      "id": "Poin Perekrutan Hero",
+      "tr": "Kahraman İşe Alım Puanları",
+      "es": "Puntos por Reclutamiento de Héroes",
+      "ar": "نقاط تجنيد الأبطال",
+      "pt": "Pontos de Recrutamento de Heróis",
+      "ja": "ヒーロー募集ポイント",
+      "ko": "영웅 모집 포인트",
+      "fr": "Points du recrutement de héros",
+      "zh-CN": "招募英雄积分",
+      "it": "Punti recluta eroi",
+      "th": "แต้มรับสมัครฮีโร่",
+      "vi": "Điểm Chiêu Mộ Tướng",
+      "de": "Heldenrekrutierungs-Punkte",
+      "zh-TW": "招募英雄積分"
+    }
+  },
+  "30131": {
+    "format": "percent",
+    "names": {
+      "en": "Kill Points",
+      "id": "Poin Kill",
+      "tr": "Düşman öldürme puanları",
+      "es": "Puntos por Derrotar Enemigos",
+      "ar": "نقاط قتل الأعداء",
+      "pt": "Pontos de Matar Inimigos",
+      "ja": "敵撃破ポイント",
+      "ko": "적 처치 포인트",
+      "fr": "Points d'élimination",
+      "zh-CN": "杀敌积分",
+      "it": "Punti uccisione nemici",
+      "th": "แต้มฆ่าศัตรู",
+      "vi": "Điểm Diệt Địch",
+      "de": "Tötungspunkte",
+      "zh-TW": "殺敵積分"
+    }
+  },
+  "30132": {
+    "format": "flat",
+    "names": {
+      "en": "1st through 9th chest rewards doubled",
+      "id": "Hadiah Tier 1-9 Digandakan",
+      "tr": "Seviye 1-9 için 2 kat ödül",
+      "es": "Recompensas de nivel 1-9 Duplicadas",
+      "ar": "مضاعفة مكافآت الفئات 1-9",
+      "pt": "Bônus Duplo: Classes 1-9",
+      "ja": "1-9段階の報酬2倍",
+      "ko": "1-9등급 보상 2배",
+      "fr": "Les récompenses de niveau 1 à 9 sont doublées",
+      "zh-CN": "1-9档奖励双倍",
+      "it": "Premi doppi per gradi 1-9",
+      "th": "แรงค์รางวัล2 เท่า 1 - 9",
+      "vi": "Thưởng hạng 1-9 x2",
+      "de": "Doppelte Belohnung für Stufe 1-9",
+      "zh-TW": "1-9檔獎勵雙倍"
+    }
+  },
+  "35048": {
+    "format": "percent",
+    "names": {
+      "en": "Troop ATK in Siege Defenses",
+      "id": "ATK Pasukan dalam Pertahanan Kota",
+      "tr": "Birliklerin Şehir Savunma Saldırısı",
+      "es": "ATQ de Tropa en Defensas de Asedio",
+      "ar": "قوة هجوم القوات عند التمركز",
+      "pt": "Poder de ATQ de tropas que defendem a cidade",
+      "ja": "部隊守城攻撃力",
+      "ko": "부대 도시 수비 공격력",
+      "fr": "Attaque des troupes pour défendre la ville",
+      "zh-CN": "部队守城攻击力",
+      "it": "Attacco delle truppe nelle difese d'assedio",
+      "th": "พลังโจมตีปกป้องเมืองของทัพ",
+      "vi": "Công Thủ Thành Bộ Đội",
+      "de": "Stadtvert.-Angriff",
+      "zh-TW": "部隊守城攻擊力"
+    }
+  },
+  "35052": {
+    "format": "percent",
+    "names": {
+      "en": "Troop DEF in Siege Defenses",
+      "id": "DEF Pasukan dalam Pertahanan Kota",
+      "tr": "Şehir savunması-birliklerin savunması",
+      "es": "DEF de Tropa en Defensas de Asedio",
+      "ar": "قوة دفاع القوات عند التمركز",
+      "pt": "Poder de DEF de tropas que defendem a cidade",
+      "ja": "部隊守城防御力",
+      "ko": "부대 도시 수비 방어력",
+      "fr": "Défense des troupes pour défendre la ville",
+      "zh-CN": "部队守城防御力",
+      "it": "Difesa delle truppe per difendere città",
+      "th": "พลังป้องกันปกป้องเมืองของทัพ",
+      "vi": "Thủ Thủ Thành Bộ Đội",
+      "de": "Stadtvert.-Vert.",
+      "zh-TW": "部隊守城防禦力"
+    }
+  },
+  "35024": {
+    "format": "percent",
+    "names": {
+      "en": "Field Troop ATK",
+      "id": "ATK Pasukan di Alam Liar",
+      "tr": "Birlik saha saldırısı",
+      "es": "ATQ de Tropa de Campo",
+      "ar": "قوة الهجوم الميداني",
+      "pt": "Poder de ATQ das tropas no campo",
+      "ja": "部隊の野外攻撃力",
+      "ko": "부대 야외 공격력",
+      "fr": "ATQ de troupes sur le terrain",
+      "zh-CN": "部队野外攻击力",
+      "it": "Attacco delle truppe sul campo",
+      "th": "พลังโจมตีทัพเมื่ออยู่ในป่า",
+      "vi": "Công Tự Do Bộ Đội",
+      "de": "Angriff der Truppen in der Wildnis",
+      "zh-TW": "部隊野外攻擊力"
+    }
+  },
+  "35028": {
+    "format": "percent",
+    "names": {
+      "en": "Field Troop DEF",
+      "id": "DEF Pasukan di Alam Liar",
+      "tr": "Birlik saha savunması",
+      "es": "DEF de Tropa de Campo",
+      "ar": "قوة الدفاع الميداني للقوات",
+      "pt": "Poder de DEF das tropas no campo",
+      "ja": "部隊の野外防御力",
+      "ko": "부대 야외 방어력",
+      "fr": "Défense de troupes sur le terrain",
+      "zh-CN": "部队野外防御力",
+      "it": "Difesa delle truppe sul campo",
+      "th": "พลังป้องกันทัพเมื่ออยู่ในป่า",
+      "vi": "Thủ Tự Do Bộ Đội",
+      "de": "Verteidigung der Truppen in der Wildnis",
+      "zh-TW": "部隊野外防禦力"
+    }
+  },
+  "40011": {
+    "format": "percent",
+    "names": {
+      "en": "Destruction",
+      "id": "Nilai Penghancuran",
+      "tr": "Yıkım Puanı",
+      "es": "Destrucción",
+      "ar": "قيمة الضرر",
+      "pt": "Valor de Destruição",
+      "ja": "破壊値",
+      "ko": "파괴 수치",
+      "fr": "Destruction",
+      "zh-CN": "破坏值",
+      "it": "Distruzione",
+      "th": "ค่าทำลาย",
+      "vi": "Điểm Phá Hoại",
+      "de": "Vernichtungswert",
+      "zh-TW": "破壞值"
+    }
+  },
+  "35015": {
+    "format": "percent",
+    "names": {
+      "en": "Rider HP",
+      "id": "HP Rider",
+      "tr": "Motosiklet Birlikleri  HP",
+      "es": "Vida de Motorista",
+      "ar": "صحة قوات الدراجات",
+      "pt": "Vida da Tropa de Moto",
+      "ja": "オートバイ部隊生命",
+      "ko": "라이더 부대 HP",
+      "fr": "PV de la MOTO",
+      "zh-CN": "摩托部队生命",
+      "it": "Vita di truppa motociclistica",
+      "th": "HP ทัพมอเตอร์ไซค์",
+      "vi": "HP Bộ Đội Motor",
+      "de": "Motorradtruppe-HP",
+      "zh-TW": "摩托部隊生命"
+    }
+  },
+  "35014": {
+    "format": "percent",
+    "names": {
+      "en": "Assaulter HP",
+      "id": "HP Assaulter",
+      "tr": "Saldırı birlikleri HP",
+      "es": "Vida de Asaltante",
+      "ar": "صحة قوات الاقتحام",
+      "pt": "Vida da Tropa de Assalto",
+      "ja": "突撃部隊HP",
+      "ko": "돌격 부대 HP",
+      "fr": "PV des troupes d’assaut",
+      "zh-CN": "突击部队生命",
+      "it": "Vita delle truppe d'assalto",
+      "th": "HP ทัพจู่โจม",
+      "vi": "HP Bộ Đội Đột Kích",
+      "de": "Sturmtruppe-HP",
+      "zh-TW": "突擊部隊生命"
+    }
+  },
+  "35013": {
+    "format": "percent",
+    "names": {
+      "en": "Shooter HP",
+      "id": "HP Shooter",
+      "tr": "Atıcı Birlikleri HP",
+      "es": "Vida de Tirador",
+      "ar": "صحة قوات الرماة",
+      "pt": "Vida da Tropa de Atirador",
+      "ja": "射手部隊HP",
+      "ko": "슈터 부대 HP",
+      "fr": "PV des troupes de tireurs",
+      "zh-CN": "射手部队生命",
+      "it": "Vita di truppa di tiratori",
+      "th": "HP ทัพมือยิง",
+      "vi": "HP Bộ Đội Xạ Thủ",
+      "de": "Schützentruppe-HP",
+      "zh-TW": "射手部隊生命"
+    }
+  },
+  "35003": {
+    "format": "percent",
+    "names": {
+      "en": "Rider ATK",
+      "id": "ATK Rider",
+      "tr": "Motosiklet Birlikleri  Saldırısı",
+      "es": "ATQ de Motorista",
+      "ar": "قوة هجوم قوات الدراجات",
+      "pt": "Poder de ATQ de Tropa de Motos",
+      "ja": "オートバイ部隊攻撃力",
+      "ko": "라이더 부대 공격력",
+      "fr": "Attaque des troupes moto",
+      "zh-CN": "摩托部队攻击力",
+      "it": "Attacco della truppa motociclistica",
+      "th": "พลังโจมตีทัพมอเตอร์ไซค์",
+      "vi": "Công Bộ Đội Motor",
+      "de": "Motorradtruppe-Angriff",
+      "zh-TW": "摩托部隊攻擊力"
+    }
+  },
+  "35002": {
+    "format": "percent",
+    "names": {
+      "en": "Assaulter ATK",
+      "id": "ATK Assaulter",
+      "tr": "Saldırı birlikleri Saldırısı",
+      "es": "ATQ de Asaltante",
+      "ar": "قوة هجوم قوات الاقتحام",
+      "pt": "Poder de ATQ de Tropa de Assalto",
+      "ja": "突撃部隊攻撃力",
+      "ko": "돌격 부대 공격력",
+      "fr": "Attaque des troupes d’assaut",
+      "zh-CN": "突击部队攻击力",
+      "it": "Attacco delle truppe d'assalto",
+      "th": "พลังโจมตีทัพจู่โจม",
+      "vi": "Công Bộ Đội Đột Kích",
+      "de": "Sturmtruppe-Angriff",
+      "zh-TW": "突擊部隊攻擊力"
+    }
+  },
+  "35001": {
+    "format": "percent",
+    "names": {
+      "en": "Shooter ATK",
+      "id": "ATK Shooter",
+      "tr": "Nişancı Birliği Saldırı Gücü",
+      "es": "ATQ de Tirador",
+      "ar": "قوة هجوم قوات الرماة",
+      "pt": "Poder de ATQ de Tropa de Atiradores",
+      "ja": "射手部隊の攻撃力",
+      "ko": "슈터 부대 공격력",
+      "fr": "Attaque des troupes de tireurs",
+      "zh-CN": "射手部队攻击力",
+      "it": "Potenza di attacco di truppe di tiratori",
+      "th": "พลังโจมตีทัพมือยิง",
+      "vi": "Công Bộ Đội Xạ Thủ",
+      "de": "Schützentruppe-Angriff",
+      "zh-TW": "射手部隊攻擊力"
+    }
+  },
+  "35007": {
+    "format": "percent",
+    "names": {
+      "en": "Rider DEF",
+      "id": "DEF Rider",
+      "tr": "Motosiklet Birlikleri  Savunması",
+      "es": "DEF de Motorista",
+      "ar": "قوة دفاع قوات الدراجات",
+      "pt": "Poder de DEF de Tropa de Motos",
+      "ja": "オートバイ部隊防御力",
+      "ko": "라이더 부대 방어력",
+      "fr": "Défense des troupes moto",
+      "zh-CN": "摩托部队防御力",
+      "it": "Difesa di truppa motociclistica",
+      "th": "พลังป้องกันทัพมอเตอร์ไซค์",
+      "vi": "Thủ Bộ Đội Motor",
+      "de": "Motorradtruppe-Verteidigung",
+      "zh-TW": "摩托部隊防禦力"
+    }
+  },
+  "35006": {
+    "format": "percent",
+    "names": {
+      "en": "Assaulter DEF",
+      "id": "DEF Assaulter",
+      "tr": "Saldırı birlikleri Savunması",
+      "es": "DEF de Asaltante",
+      "ar": "قوة دفاع قوات الاقتحام",
+      "pt": "Poder de DEF de Tropa de Assalto",
+      "ja": "突撃部隊防御力",
+      "ko": "돌격 부대 방어력",
+      "fr": "Défense des troupes d’assaut",
+      "zh-CN": "突击部队防御力",
+      "it": "Difesa delle truppe d'assalto",
+      "th": "พลังป้องกันทัพจู่โจม",
+      "vi": "Thủ Bộ Đội Đột Kích",
+      "de": "Sturmtruppe-Verteidigung",
+      "zh-TW": "突擊部隊防禦力"
+    }
+  },
+  "35005": {
+    "format": "percent",
+    "names": {
+      "en": "Shooter DEF",
+      "id": "DEF Shooter",
+      "tr": "Atıcı Birlikleri Savunması",
+      "es": "DEF de Tirador",
+      "ar": "قوة دفاع قوات الرماة",
+      "pt": "Poder de DEF de Tropa de Atiradores",
+      "ja": "射手部隊防御力",
+      "ko": "슈터 부대 방어력",
+      "fr": "Défense des troupes de tireurs",
+      "zh-CN": "射手部队防御力",
+      "it": "Difesa di truppa di tiratori",
+      "th": "พลังป้องกันทัพมือยิง",
+      "vi": "Thủ Bộ Đội Xạ Thủ",
+      "de": "Schützentruppe-Verteidigung",
+      "zh-TW": "射手部隊防禦力"
+    }
+  },
+  "35040": {
+    "format": "percent",
+    "names": {
+      "en": "Troop ATK in Siege Attacks",
+      "id": "ATK Pasukan dalam Pengepungan",
+      "tr": "Birlikler kuşatma saldırı gücü",
+      "es": "ATQ de Tropa en Asedio",
+      "ar": "قوة هجوم القوات عند الحصار",
+      "pt": "Poder de ATQ de tropas que atacam a cidade",
+      "ja": "部隊攻城攻撃力",
+      "ko": "부대 공성 공격력",
+      "fr": "Attaque des troupes en siège",
+      "zh-CN": "部队攻城攻击力",
+      "it": "Attacco d'assedio delle truppe",
+      "th": "พลังโจมตีเมืองทัพ",
+      "vi": "Công Công Thành Bộ Đội",
+      "de": "Belagerung-Angriff der Truppen",
+      "zh-TW": "部隊攻城攻擊力"
+    }
+  },
+  "35044": {
+    "format": "percent",
+    "names": {
+      "en": "Troop DEF in Siege Attacks",
+      "id": "DEF Pasukan dalam Pengepungan",
+      "tr": "Birliklerin kuşatma savunması",
+      "es": "DEF de Tropa en Asedio",
+      "ar": "قوة دفاع القوات عند الحصار",
+      "pt": "Poder de DEF de tropas que atacam a cidade",
+      "ja": "部隊攻城防御力",
+      "ko": "부대 공성 방어력",
+      "fr": "Défense du siège des troupes",
+      "zh-CN": "部队攻城防御力",
+      "it": "Difesa negli attacchi d'assedio",
+      "th": "พลังป้องกันเมืองทัพ",
+      "vi": "Thủ Công Thành Bộ Đội",
+      "de": "Belagerung-Verteidigung der Truppen",
+      "zh-TW": "部隊攻城防禦力"
+    }
+  },
+  "35000": {
+    "format": "percent",
+    "names": {
+      "en": "Troop ATK",
+      "id": "ATK Pasukan",
+      "tr": "Birlik Savaş Gücü",
+      "es": "ATQ de Tropa",
+      "ar": "قوة هجوم القوات",
+      "pt": "ATQ de Tropas",
+      "ja": "部隊攻撃力",
+      "ko": "부대 공격력",
+      "fr": "ATQ de troupes",
+      "zh-CN": "部队攻击力",
+      "it": "Attacco delle truppe",
+      "th": "พลังโจมตีทัพ",
+      "vi": "Công Bộ Đội",
+      "de": "Truppenangriff",
+      "zh-TW": "部隊攻擊力"
+    }
+  },
+  "35004": {
+    "format": "percent",
+    "names": {
+      "en": "Troop DEF",
+      "id": "DEF Pasukan",
+      "tr": "Birlik Savunması",
+      "es": "DEF de Tropa",
+      "ar": "قوة دفاع القوات",
+      "pt": "DEF das Tropas",
+      "ja": "部隊防御力",
+      "ko": "부대 방어력",
+      "fr": "Défense des troupes",
+      "zh-CN": "部队防御力",
+      "it": "Difesa delle truppe",
+      "th": "พลังป้องกันทัพ",
+      "vi": "Thủ Bộ Đội",
+      "de": "Truppen-Verteidigung",
+      "zh-TW": "部隊防禦力"
+    }
+  },
+  "35012": {
+    "format": "percent",
+    "names": {
+      "en": "Troop HP",
+      "id": "HP Pasukan",
+      "tr": "Birlik HP",
+      "es": "Vida de Tropa",
+      "ar": "صحة القوات",
+      "pt": "Vida das Tropas",
+      "ja": "部隊HP",
+      "ko": "부대 HP",
+      "fr": "PV des troupes",
+      "zh-CN": "部队生命",
+      "it": "Vita delle truppe",
+      "th": "HP ทัพ",
+      "vi": "HP Bộ Đội",
+      "de": "Truppen-HP",
+      "zh-TW": "部隊生命"
+    }
+  },
+  "31000": {
+    "format": "percent",
+    "names": {
+      "en": "Shooter Training Speed",
+      "id": "Kecepatan Pelatihan Shooter",
+      "tr": "Atıcı Birlikleri eğitim hızı",
+      "es": "Vel. de Entrenamiento de Tirador",
+      "ar": "سرعة تدريب قوات الرماة",
+      "pt": "Velocidade de treinamento da tropa de tiro",
+      "ja": "射手部隊訓練速度",
+      "ko": "슈터 부대 훈련 속도",
+      "fr": "Vitesse d'entraînement des troupes de tireurs",
+      "zh-CN": "射手部队训练速度",
+      "it": "Velocità di addestramento delle truppe di tiratori",
+      "th": "ความเร็วฝึกฝนทัพมือยิง",
+      "vi": "Tốc Độ Huấn Luyện Bộ Đội Xạ Thủ",
+      "de": "Trainingsgeschwindigkeit von Schützentruppen",
+      "zh-TW": "射手部隊訓練速度"
+    }
+  },
+  "31001": {
+    "format": "percent",
+    "names": {
+      "en": "Assaulter Training Speed",
+      "id": "Kecepatan Pelatihan Assaulter",
+      "tr": "Saldırı birlikleri eğitim hızı",
+      "es": "Vel. de Entrenamiento de Asaltante",
+      "ar": "سرعة تدريب قوات الاقتحام",
+      "pt": "Velocidade de treinamento de Tropa de Assalto",
+      "ja": "突撃部隊訓練速度",
+      "ko": "돌격 부대 훈련 속도",
+      "fr": "Vitesse d'entraînement des troupes d'assaut",
+      "zh-CN": "突击部队训练速度",
+      "it": "Velocità di addestramento delle truppe d'assalto",
+      "th": "ความเร็วฝึกฝนทัพจู่โจม",
+      "vi": "Tốc Độ Huấn Luyện Bộ Đội Đột Kích",
+      "de": "Trainingsgeschwindigkeit von Sturmtruppen",
+      "zh-TW": "突擊部隊訓練速度"
+    }
+  },
+  "31002": {
+    "format": "percent",
+    "names": {
+      "en": "Rider Training Speed",
+      "id": "Kecepatan Pelatihan Rider",
+      "tr": "Motosiklet Birlikleri eğitim hızı",
+      "es": "Vel. de Entrenamiento de Motorista",
+      "ar": "سرعة تدريب قوات الدراجات",
+      "pt": "Velocidade de treinamento de tropas motorizadas",
+      "ja": "オートバイ部隊訓練速度",
+      "ko": "라이더 부대 훈련 속도",
+      "fr": "Vitesse d'entraînement des troupes moto",
+      "zh-CN": "摩托部队训练速度",
+      "it": "Velocità di addestramento delle truppe motociclistiche",
+      "th": "ความเร็วฝึกฝนทัพมอเตอร์ไซค์",
+      "vi": "Tốc Độ Huấn Luyện Bộ Đội Motor",
+      "de": "Trainingsgeschwindigkeit von Motorradtruppen",
+      "zh-TW": "摩托部隊訓練速度"
+    }
+  },
+  "30134": {
+    "format": "percent",
+    "names": {
+      "en": "Fatality",
+      "id": "Letalitas dalam Pertempuran",
+      "tr": "Savaşta ölüm oranı",
+      "es": "Tasa de letalidad en combate",
+      "ar": "معدل الوفيات أثناء القتال",
+      "pt": "Taxa de mortalidade em combate",
+      "ja": "戦闘時の致死率",
+      "ko": "전투 중 사상률",
+      "fr": "Taux de mortalité  au combat",
+      "zh-CN": "战斗中致死率",
+      "it": "Tasso di letalità in combattimento",
+      "th": "ขณะต่อสู้อัตราถึงตาย",
+      "vi": "Tỷ lệ tử vong trong trận chiến",
+      "de": "Kampf-Tötungsrate",
+      "zh-TW": "戰鬥中致死率"
+    }
+  },
+  "40001": {
+    "format": "flat",
+    "names": {
+      "en": "Troop Capacity",
+      "id": "Kapasitas Pasukan",
+      "tr": "Kapasite",
+      "es": "Capac. de Tropa",
+      "ar": "سَعَة القوات",
+      "pt": "Capac.",
+      "ja": "部隊容量",
+      "ko": "부대 용량",
+      "fr": "Capacité",
+      "zh-CN": "部队容量",
+      "it": "Truppe",
+      "th": "ความจุทัพ",
+      "vi": "Sức Chứa Bộ Đội",
+      "de": "Kapazität",
+      "zh-TW": "部隊容量"
+    }
+  },
+  "30442": {
+    "format": "flat",
+    "names": {
+      "en": "All Heroes' ATK",
+      "id": "ATK Semua Hero",
+      "tr": "Tüm Kahramanların Saldırısı",
+      "es": "ATQ de los héroes",
+      "ar": "هجوم جميع الأبطال",
+      "pt": "Ataque de Todos os Heróis",
+      "ja": "全ヒーロー攻撃力",
+      "ko": "모든 영웅 공격력",
+      "fr": "ATQ des héros",
+      "zh-CN": "全体英雄攻击",
+      "it": "ATT di tutti gli Eroi",
+      "th": "ฮีโร่โจมตีทั้งหมด",
+      "vi": "Công toàn bộ Tướng",
+      "de": "Angriff aller Helden",
+      "zh-TW": "全體英雄攻擊"
+    }
+  },
+  "30443": {
+    "format": "flat",
+    "names": {
+      "en": "All Heroes' DEF",
+      "id": "DEF Semua Hero",
+      "tr": "Tüm Kahramanlar Savunması",
+      "es": "DEF de los héroes",
+      "ar": "دفاع جميع الأبطال",
+      "pt": "Defesa de Todos os Heróis",
+      "ja": "全ヒーロー防御力",
+      "ko": "모든 영웅 방어력",
+      "fr": "DEF des héros",
+      "zh-CN": "全体英雄防御",
+      "it": "DIF di tutti gli Eroi",
+      "th": "ฮีโร่ป้องกันทั้งหมด",
+      "vi": "Thủ toàn bộ Tướng",
+      "de": "DEF aller Helden",
+      "zh-TW": "全體英雄防禦"
+    }
+  },
+  "35222": {
+    "format": "flat",
+    "names": {
+      "en": "Blood Rose Heroes' ATK",
+      "id": "ATK Semua Hero Blood Rose",
+      "tr": "Tüm Kan Gülü kahramanlarının saldırısı",
+      "es": "ATQ de todos los Héroes de Rosa de Sangre",
+      "ar": "هجمات جميع أبطال  وردة الدم",
+      "pt": "ATQ de Todos os Heróis da Rosa de Sangue",
+      "ja": "すべての血のバラヒーローの攻撃力",
+      "ko": "모든 블러디로즈 영웅의 공격",
+      "fr": "Attaque de tous les héros de Rose de sang",
+      "zh-CN": "所有血蔷薇英雄的攻击",
+      "it": "Attacco degli eroi della rosa sanguinaria",
+      "th": "โจมตีของฮีโร่กุหลาบเลือดทั้งหมด",
+      "vi": "Công mọi Tướng Huyết Tường Vi",
+      "de": "Erhöht den Angriff für alle \"Himmel des Chaos\"-Helden",
+      "zh-TW": "所有血薔薇英雄的攻擊"
+    }
+  },
+  "35216": {
+    "format": "flat",
+    "names": {
+      "en": "Wings of Dawn Heroes' ATK",
+      "id": "ATK Semua Hero Wings of Dawn",
+      "tr": "Şafağın Kanatları Tüm Kahraman Saldırısı",
+      "es": "ATQ de Todos los Héroes-Alas del Alba",
+      "ar": "هجوم جميع أبطال أجنحة الفجر",
+      "pt": "ATQ de Heróis das Asas do Amanhecer",
+      "ja": "すべての暁の翼のヒーローの攻撃力",
+      "ko": "모든 새벽의 날개 영웅 공격",
+      "fr": "Attaque de tous les héros d'Ailes de l'aube",
+      "zh-CN": "所有破晓之翼英雄的攻击",
+      "it": "Attacco degli eroi delle Ali dell'Alba",
+      "th": "โจมตีของฮีโร่ปีกแห่งรุ่งอรุณทั้งหมด",
+      "vi": "Công mọi Tướng Cánh Bình Minh",
+      "de": "Erhöht den Angriff für alle \"Flügel der Dämmerung\"-Helden",
+      "zh-TW": "所有破曉之翼英雄的攻擊"
+    }
+  },
+  "35219": {
+    "format": "flat",
+    "names": {
+      "en": "Guard of Order Heroes' ATK",
+      "id": "ATK Semua Hero Guard of Order",
+      "tr": "Tüm Düzen Muhafız kahramanlarının saldırısı",
+      "es": "ATQ de todos los Héroes de Guardia del Orden",
+      "ar": "هجمات جميع أبطال حرس النظام",
+      "pt": "ATQ de Todos os Heróis da Guarda de Ordem",
+      "ja": "すべての秩序衛隊ヒーローの攻撃力",
+      "ko": "모든 질서의 수호대 영웅의 공격",
+      "fr": "Attaque de tous les héros de Garde de l'ordre",
+      "zh-CN": "所有秩序卫队英雄的攻击",
+      "it": "Attacco degli eroi di Guardia dell'ordine",
+      "th": "โจมตีของฮีโร่การ์ดคำสั่งทั้งหมด",
+      "vi": "Công mọi Tướng Vệ Binh Trật Tự",
+      "de": "Erhöht den Angriff für alle \"Wächter der Ordnung\"-Helden",
+      "zh-TW": "所有秩序衛隊英雄的攻擊"
+    }
+  },
+  "30425": {
+    "format": "percent",
+    "names": {
+      "en": "Exploration Idle EXP Gains",
+      "id": "EXP Idle Eksplorasi",
+      "tr": "Macera otomatik olarak Exp kazan",
+      "es": "Experiencia obtenida por exploración en modo AFK",
+      "ar": "اكتسب الخبرة من خلال المغامرات في الوضع التلقائي",
+      "pt": "Ganhar EXP por exploração automática",
+      "ja": "オフライン探検で獲得する経験値",
+      "ko": "탐험 오프라인 경험치 획득",
+      "fr": "Gain d'EXP en exploration automatique",
+      "zh-CN": "探险挂机获得经验",
+      "it": "Esperienza guadagnata dall'Esplorazione Automatica",
+      "th": "บอทผจญภัยได้รับ EXP",
+      "vi": "Treo Máy Thám Hiểm nhận EXP",
+      "de": "Erhalte Exp durch Erkundung-AFK",
+      "zh-TW": "探險掛機獲得經驗"
+    }
+  },
+  "35223": {
+    "format": "flat",
+    "names": {
+      "en": "Blood Rose Heroes' DEF",
+      "id": "DEF Semua Hero Blood Rose",
+      "tr": "Tüm Kan Gülü kahramanlarının savunması",
+      "es": "DEF de todos los Héroes de Rosa de Sangre",
+      "ar": "الدفاع عن جميع أبطال  وردة الدم",
+      "pt": "DEF de Todos os Heróis da Rosa de Sangue",
+      "ja": "すべて血のバラヒーローの防御力",
+      "ko": "모든 블러디로즈 영웅의 방어",
+      "fr": "Défense de tous les héros de Rose de sang",
+      "zh-CN": "所有血蔷薇英雄的防御",
+      "it": "Difesa degli eroi della rosa sanguinaria",
+      "th": "ป้องกันของฮีโร่กุหลาบเลือดทั้งหมด",
+      "vi": "Thủ mọi Tướng Huyết Tường Vi",
+      "de": "Erhöht die Verteidigung für alle \"Himmel des Chaos\"-Helden",
+      "zh-TW": "所有血薔薇英雄的防禦"
+    }
+  },
+  "35217": {
+    "format": "flat",
+    "names": {
+      "en": "Wings of Dawn Heroes' DEF",
+      "id": "DEF semua Hero Wings of Dawn",
+      "tr": "Şafağın Kanatları Tüm Kahraman Savunması",
+      "es": "DEF de Todos los Héroes Alas del Alba",
+      "ar": "دفاع جميع أبطال أجنحة الفجر",
+      "pt": "DEF de Heróis das Asas do Amanhecer",
+      "ja": "すべての暁の翼のヒーローの防御力",
+      "ko": "모든 새벽의 날개 영웅 방어",
+      "fr": "Défense de tous les héros d'Ailes de l'aube",
+      "zh-CN": "所有破晓之翼英雄的防御",
+      "it": "Difesa degli eroi delle Ali dell'Alba",
+      "th": "ป้องกันของฮีโร่ปีกแห่งรุ่งอรุณทั้งหมด",
+      "vi": "Thủ mọi Tướng Cánh Bình Minh",
+      "de": "Erhöht die Verteidigung für alle \"Flügel der Dämmerung\"-Helden",
+      "zh-TW": "所有破曉之翼英雄的防禦"
+    }
+  },
+  "35220": {
+    "format": "flat",
+    "names": {
+      "en": "Guard of Order Heroes' DEF",
+      "id": "DEF Semua Hero Guard of Order",
+      "tr": "Tüm Düzen Muhafız kahramanlarının savunması",
+      "es": "DEF de todos los Héroes de Guardia del Orden",
+      "ar": "الدفاع عن جميع أبطال حرس النظام",
+      "pt": "DEF de Todos os Heróis da Guarda de Ordem",
+      "ja": "すべての秩序衛隊ヒーローの防御力",
+      "ko": "모든 질서의 수호대 영웅의 방어",
+      "fr": "Défense de tous les héros de Garde de l'ordre",
+      "zh-CN": "所有秩序卫队英雄的防御",
+      "it": "Difesa degli eroi di Guardia dell'ordine",
+      "th": "ป้องกันของฮีโร่การ์ดคำสั่งทั้งหมด",
+      "vi": "Thủ mọi Tướng Vệ Binh Trật Tự",
+      "de": "Erhöht die Verteidigung für alle \"Wächter der Ordnung\"-Helden",
+      "zh-TW": "所有秩序衛隊英雄的防禦"
+    }
+  },
+  "30441": {
+    "format": "flat",
+    "names": {
+      "en": "Units led per hero",
+      "id": "Jumlah prajurit yang dibawa Hero",
+      "tr": "Birliklere liderlik eden kahramanların sayısı",
+      "es": "Máximo de unidades lideradas por el Héroe",
+      "ar": "عدد الجنود الذين يقودهم البطل",
+      "pt": "Quantidade de tropas do herói",
+      "ja": "ヒーローの部隊容量",
+      "ko": "영웅 통솔 수량",
+      "fr": "Nombre de troupes menées par le héros",
+      "zh-CN": "英雄带兵数量",
+      "it": "Truppe guidate dall'eroe",
+      "th": "จำนวนพกทหารของฮีโร่",
+      "vi": "Số lượng Lính của Tướng",
+      "de": "Geführte Soldaten des Helden",
+      "zh-TW": "英雄帶兵數量"
+    }
+  },
+  "30078": {
+    "format": "percent",
+    "names": {
+      "en": "Resource Protection Cap",
+      "id": "Batas Perlindungan Gudang Sumber Daya",
+      "tr": "Kaynak ambarı koruma üst sınırı",
+      "es": "Límite de Protección de Almacén de Recursos",
+      "ar": "الحد الأعلى لحماية مستودع الموارد",
+      "pt": "Limite de proteção do Armazém de Recursos",
+      "ja": "資源倉庫保護上限",
+      "ko": "자원 창고 보호 상한",
+      "fr": "Limite de protection du dépôt de ressources",
+      "zh-CN": "资源仓库保护上限",
+      "it": "Limite di protezione del magazzino delle risorse",
+      "th": "ป้องกันคลังทรัพยากรสูงสุด",
+      "vi": "Giới hạn bảo vệ Kho Tài Nguyên",
+      "de": "Schutz-Grenze des Ressourcenlagers",
+      "zh-TW": "資源倉庫保護上限"
+    }
+  },
+  "30073": {
+    "format": "percent",
+    "names": {
+      "en": "Wind Turbine's Storage",
+      "id": "Cadangan Turbin Angin",
+      "tr": "Rüzgar santrali rezervleri",
+      "es": "Capacidad de Turbina Eólica",
+      "ar": "سعة تخزين محطة طاقة الرياح",
+      "pt": "Capac. de armazen. da Turbina Eólica",
+      "ja": "風力発電所容量",
+      "ko": "풍력 발전소 저장량",
+      "fr": "Réserves des centrales éoliennes",
+      "zh-CN": "风力发电站储量",
+      "it": "Capacità della centrale eolica",
+      "th": "จำนวนเก็บโรงไฟฟ้าพลังงานลม",
+      "vi": "Dự trữ Trạm Điện Gió",
+      "de": "Kapazität des Windkraftwerks",
+      "zh-TW": "風力發電站儲量"
+    }
+  },
+  "30227": {
+    "format": "percent",
+    "names": {
+      "en": "Farm Storage",
+      "id": "Cadangan Pertanian",
+      "tr": "Çiftlik Kapasitesi",
+      "es": "Capacidad de la granja",
+      "ar": "سعة المزرعة",
+      "pt": "Capacidade da fazenda",
+      "ja": "農場貯蔵",
+      "ko": "농장 저장량",
+      "fr": "Réserves agricoles",
+      "zh-CN": "农场储量",
+      "it": "Capacità della fattoria",
+      "th": "ความจุฟาร์ม",
+      "vi": "Trữ lượng Nông Trại",
+      "de": "Farm-Kapazität",
+      "zh-TW": "農場儲量"
+    }
+  },
+  "30225": {
+    "format": "percent",
+    "names": {
+      "en": "Lumberyard's Storage",
+      "id": "Cadangan Pabrik Kayu",
+      "tr": "Kereste fabrikası kapasitesi",
+      "es": "Capacidad de Aserradero",
+      "ar": "سعة المنشرة",
+      "pt": "Reservas do Depósito de Madeira Serrada",
+      "ja": "伐採場の貯蔵量",
+      "ko": "벌목장 저장량",
+      "fr": "Capacité de la scierie",
+      "zh-CN": "伐木场储量",
+      "it": "Riserve della Segheria",
+      "th": "จำนวนเก็บโรงงานไม้",
+      "vi": "Dự trữ Khu Đốn Củi",
+      "de": "Sägewerk-Kapazität",
+      "zh-TW": "伐木場儲量"
+    }
+  },
+  "30085": {
+    "format": "percent",
+    "names": {
+      "en": "Residence's Zent Storage",
+      "id": "Cadangan Zent Pemukiman",
+      "tr": "Banka Z Parası Rezervleri",
+      "es": "Almacenamiento de Monedas Z de Residencia",
+      "ar": "احتياطيات العملة Z السكنية",
+      "pt": "Reservas de Moedas Z da Residência",
+      "ja": "Zコイン貯蔵量",
+      "ko": "민가 Z코인 저장량",
+      "fr": "Réserves de Pièces Z des habitations",
+      "zh-CN": "民居Z币储量",
+      "it": "Riserve di moneta Z delle abitazioni",
+      "th": "จำนวนเก็บเหรียญ Z ของประชากร",
+      "vi": "Trữ lượng Xu Z Nhà Dân",
+      "de": "Z-Münzen-Kapazität im Wohnsitz",
+      "zh-TW": "民居Z幣儲量"
+    }
+  },
+  "30222": {
+    "format": "flat",
+    "names": {
+      "en": "Wood Protection",
+      "id": "Perlindungan Kayu",
+      "tr": "Ahşap Koruma",
+      "es": "Protección de Madera",
+      "ar": "حماية الخشب",
+      "pt": "Proteção da Madeira",
+      "ja": "木材保護",
+      "ko": "목재 보호",
+      "fr": "Protection du bois",
+      "zh-CN": "木头保护",
+      "it": "Protezione del legno",
+      "th": "ป้องกันไม้",
+      "vi": "Bảo Vệ Gỗ",
+      "de": "Holz-Schutz",
+      "zh-TW": "木頭保護"
+    }
+  },
+  "30109": {
+    "format": "percent",
+    "names": {
+      "en": "Zent Yields Bonus",
+      "id": "Bonus Pendapatan Zent",
+      "tr": "Z Parası Kazanç Bonusu",
+      "es": "Bonus de ganancias de Monedas Z",
+      "ar": "مكافأة دخل عملة Z",
+      "pt": "Bônus de ganho de moeda Z",
+      "ja": "Zコイン収益ボーナス",
+      "ko": "Z코인 수익 버프",
+      "fr": "Bonus de Pièces Z",
+      "zh-CN": "Z币收益加成",
+      "it": "Bonus sui guadagni in monete Z",
+      "th": "โบนัสบัฟเหรียญ Z",
+      "vi": "BUFF Thưởng Xu Z",
+      "de": "Z-Münzen",
+      "zh-TW": "Z幣收益加成"
+    }
+  },
+  "30002": {
+    "format": "flat",
+    "names": {
+      "en": "Wind Turbine Yield/h",
+      "id": "Hasil Turbin Angin/jam",
+      "tr": "Rüzgar Santrali Saatlik Üretim",
+      "es": "Producción de Turbina Eólica/h",
+      "ar": "إنتاجية توربينات الرياح بالساعة",
+      "pt": "Produção Horária de Turbina Eólica",
+      "ja": "電力産出量（1時間）",
+      "ko": "풍력 발전소 시간당 생산량",
+      "fr": "Productivité horaire (Centrale éolienne)",
+      "zh-CN": "风力电站每小时产量",
+      "it": "Produzione oraria di Turbina eolica",
+      "th": "กำลังผลิตโรงไฟฟ้าพลังงานลม/ชม.",
+      "vi": "Sản lượng điện gió mỗi giờ",
+      "de": "Stundenproduktivität für Windkraftwerke",
+      "zh-TW": "風力電站每小時產量"
+    }
+  },
+  "30135": {
+    "format": "percent",
+    "names": {
+      "en": "City Wall Durability Recovery Rate",
+      "id": "Kecepatan Pemulihan Daya Tahan Tembok Kota",
+      "tr": "Duvarın dayanıklılığının geri kazanım hızı",
+      "es": "Velocidad de restauración de la durabilidad de las murallas",
+      "ar": "سرعة ترميم جدار المدينة",
+      "pt": "Velocidade de recuperação da durabilidade da muralha.",
+      "ja": "ゲートの耐久回復速度",
+      "ko": "성벽 내구도 회복 속도",
+      "fr": "Vitesse de restauration des remparts",
+      "zh-CN": "城墙耐久恢复速度",
+      "it": "Velocità di recupero della durabilità del muro",
+      "th": "สปีดฟื้นฟูค่าทนทานกำแพงเมือง",
+      "vi": "Tốc độ hồi Độ Bền Tường Thành",
+      "de": "Wiederherstellung der Stadtmauer",
+      "zh-TW": "城牆耐久恢復速度"
+    }
+  },
+  "35124": {
+    "format": "percent",
+    "names": {
+      "en": "Perished to Seriously Injured Ratio",
+      "id": "Rasio Konversi Prajurit Tewas menjadi Terluka Parah",
+      "tr": "Ölüden yaralıya dönüşüm oranı",
+      "es": "Proporción de bajas convertidas en gravemente heridos",
+      "ar": "تحول نسبة القتلى من الجنود إلى اصابات خطيرة",
+      "pt": "Proporção de soldados mortos em ação convertida em feridos graves",
+      "ja": "死亡した兵士が重傷兵士への転換比率",
+      "ko": "전사 유닛을 중상으로 변경하는 비율",
+      "fr": "Le ratio de soldats morts convertis en blessés graves",
+      "zh-CN": "阵亡士兵转化为重伤比例",
+      "it": "Percentuale di Unità morte convertite in ferite gravi",
+      "th": "สัดส่วนทหารตายเปลี่ยนเป็นบาดเจ็บสาหัส",
+      "vi": "Tỷ lệ Lính tử trận chuyển thành Thương Nặng",
+      "de": "Verwandlungsrate von Gestorbene in Verwundete",
+      "zh-TW": "陣亡士兵轉化為重傷比例"
+    }
+  },
+  "35064": {
+    "format": "percent",
+    "names": {
+      "en": "Troop DMG",
+      "id": "DMG Pasukan",
+      "tr": "Birlik hasarı",
+      "es": "Daño de Tropa",
+      "ar": "ضرر القوات",
+      "pt": "Dano da Tropa",
+      "ja": "部隊ダメージ",
+      "ko": "부대 대미지",
+      "fr": "Dégâts des troupes",
+      "zh-CN": "部队伤害",
+      "it": "Danni delle truppe",
+      "th": "ดาเมจทัพ",
+      "vi": "ST Bộ Đội",
+      "de": "Truppenschaden",
+      "zh-TW": "部隊傷害"
+    }
+  },
+  "35065": {
+    "format": "percent",
+    "names": {
+      "en": "Troop DMG Resistance",
+      "id": "DMG RED Pasukan",
+      "tr": "Birlik Hasar Azaltma",
+      "es": "Reducción de daño de tropas",
+      "ar": "تقليل ضرر القوات",
+      "pt": "Redução de dano da tropa",
+      "ja": "部隊被ダメージ軽減",
+      "ko": "부대 대미지 감소",
+      "fr": "Réduction des dégâts subis par les troupes",
+      "zh-CN": "部队减伤",
+      "it": "Riduzione del danno subito",
+      "th": "ทัพลดดาเมจ",
+      "vi": "Giảm ST Bộ Đội",
+      "de": "Truppen-Schadensminderung",
+      "zh-TW": "部隊減傷"
+    }
+  }
+}

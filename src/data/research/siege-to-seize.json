@@ -47,7 +47,19 @@
         28372
       ],
       "icon": "siege-to-seize/demolition-crew",
-      "prerequisites": []
+      "prerequisites": [],
+      "bonuses": [
+        {
+          "effect": "40011",
+          "values": [
+            1,
+            2,
+            4,
+            7,
+            10
+          ]
+        }
+      ]
     },
     {
       "id": "joint-operation",
@@ -106,6 +118,23 @@
       "icon": "siege-to-seize/joint-operation",
       "prerequisites": [
         "demolition-crew"
+      ],
+      "bonuses": [
+        {
+          "effect": "35040",
+          "values": [
+            1,
+            2,
+            3,
+            5,
+            7,
+            9,
+            11,
+            14,
+            17,
+            20
+          ]
+        }
       ]
     },
     {
@@ -165,6 +194,23 @@
       "icon": "siege-to-seize/mobile-defense",
       "prerequisites": [
         "demolition-crew"
+      ],
+      "bonuses": [
+        {
+          "effect": "35044",
+          "values": [
+            1,
+            2,
+            3,
+            5,
+            7,
+            9,
+            11,
+            14,
+            17,
+            20
+          ]
+        }
       ]
     },
     {
@@ -224,6 +270,23 @@
       "icon": "siege-to-seize/mobility-enhancement",
       "prerequisites": [
         "joint-operation"
+      ],
+      "bonuses": [
+        {
+          "effect": "35003",
+          "values": [
+            1,
+            2,
+            3,
+            5,
+            7,
+            9,
+            11,
+            14,
+            17,
+            20
+          ]
+        }
       ]
     },
     {
@@ -284,6 +347,23 @@
       "prerequisites": [
         "joint-operation",
         "mobile-defense"
+      ],
+      "bonuses": [
+        {
+          "effect": "35002",
+          "values": [
+            1,
+            2,
+            3,
+            5,
+            7,
+            9,
+            11,
+            14,
+            17,
+            20
+          ]
+        }
       ]
     },
     {
@@ -343,6 +423,23 @@
       "icon": "siege-to-seize/weapon-upgrading",
       "prerequisites": [
         "mobile-defense"
+      ],
+      "bonuses": [
+        {
+          "effect": "35001",
+          "values": [
+            1,
+            2,
+            3,
+            5,
+            7,
+            9,
+            11,
+            14,
+            17,
+            20
+          ]
+        }
       ]
     },
     {
@@ -403,6 +500,12 @@
       "prerequisites": [
         "mobility-enhancement",
         "melee-combat"
+      ],
+      "bonuses": [
+        {
+          "effect": "40010",
+          "perLevel": 1
+        }
       ]
     },
     {
@@ -463,6 +566,12 @@
       "prerequisites": [
         "melee-combat",
         "weapon-upgrading"
+      ],
+      "bonuses": [
+        {
+          "effect": "40020",
+          "perLevel": 1
+        }
       ]
     },
     {
@@ -502,6 +611,18 @@
       "icon": "siege-to-seize/quick-assembly",
       "prerequisites": [
         "load-module"
+      ],
+      "bonuses": [
+        {
+          "effect": "31000",
+          "values": [
+            1,
+            2,
+            4,
+            7,
+            10
+          ]
+        }
       ]
     },
     {
@@ -542,6 +663,18 @@
       "prerequisites": [
         "load-module",
         "propulsion"
+      ],
+      "bonuses": [
+        {
+          "effect": "31001",
+          "values": [
+            1,
+            2,
+            4,
+            7,
+            10
+          ]
+        }
       ]
     },
     {
@@ -581,6 +714,18 @@
       "icon": "siege-to-seize/target-training",
       "prerequisites": [
         "propulsion"
+      ],
+      "bonuses": [
+        {
+          "effect": "31002",
+          "values": [
+            1,
+            2,
+            4,
+            7,
+            10
+          ]
+        }
       ]
     },
     {
@@ -642,6 +787,23 @@
         "quick-assembly",
         "arms-assembly",
         "target-training"
+      ],
+      "bonuses": [
+        {
+          "effect": "40011",
+          "values": [
+            1,
+            2,
+            3,
+            5,
+            7,
+            9,
+            11,
+            14,
+            17,
+            20
+          ]
+        }
       ]
     },
     {
@@ -701,6 +863,23 @@
       "icon": "siege-to-seize/stronger-armor",
       "prerequisites": [
         "demolition-crew-2"
+      ],
+      "bonuses": [
+        {
+          "effect": "35007",
+          "values": [
+            1,
+            2,
+            3,
+            5,
+            7,
+            9,
+            11,
+            14,
+            17,
+            20
+          ]
+        }
       ]
     },
     {
@@ -760,6 +939,23 @@
       "icon": "siege-to-seize/shield-upgrade",
       "prerequisites": [
         "demolition-crew-2"
+      ],
+      "bonuses": [
+        {
+          "effect": "35006",
+          "values": [
+            1,
+            2,
+            3,
+            5,
+            7,
+            9,
+            11,
+            14,
+            17,
+            20
+          ]
+        }
       ]
     },
     {
@@ -819,6 +1015,23 @@
       "icon": "siege-to-seize/tactical-cover",
       "prerequisites": [
         "demolition-crew-2"
+      ],
+      "bonuses": [
+        {
+          "effect": "35005",
+          "values": [
+            1,
+            2,
+            3,
+            5,
+            7,
+            9,
+            11,
+            14,
+            17,
+            20
+          ]
+        }
       ]
     },
     {
@@ -920,6 +1133,33 @@
         "stronger-armor",
         "shield-upgrade",
         "tactical-cover"
+      ],
+      "bonuses": [
+        {
+          "effect": "35040",
+          "values": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            7,
+            9,
+            11,
+            13,
+            15,
+            17,
+            19,
+            21,
+            23,
+            25,
+            28,
+            31,
+            34,
+            37,
+            40
+          ]
+        }
       ]
     },
     {
@@ -1021,6 +1261,33 @@
         "stronger-armor",
         "shield-upgrade",
         "tactical-cover"
+      ],
+      "bonuses": [
+        {
+          "effect": "35044",
+          "values": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            7,
+            9,
+            11,
+            13,
+            15,
+            17,
+            19,
+            21,
+            23,
+            25,
+            28,
+            31,
+            34,
+            37,
+            40
+          ]
+        }
       ]
     },
     {
@@ -1081,6 +1348,12 @@
       "prerequisites": [
         "joint-operation-2",
         "mobile-defense-2"
+      ],
+      "bonuses": [
+        {
+          "effect": "35012",
+          "perLevel": 1
+        }
       ]
     }
   ]

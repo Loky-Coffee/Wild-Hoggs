@@ -8,6 +8,21 @@ export const changelog: ChangelogEntry[] = [
   // ── July 2026 ───────────────────────────────────────────────────────────
   {
     date: '2026-07-01',
+    time: '18:20',
+    text: 'Research: new "Compare Trees" page — pick two trees and see every node\'s max-level bonus side by side, line by line (linked from the research overview and each calculator)',
+  },
+  {
+    date: '2026-07-01',
+    time: '18:10',
+    text: 'Research: nodes that unlock a building, function or unit now show it (e.g. "Unlock Lv.10 Unit", "New Structure: Steel Plant", "Resource Protection +1000") in all 15 languages',
+  },
+  {
+    date: '2026-07-01',
+    time: '18:00',
+    text: 'Research: the level picker now shows each node\'s stat bonus per level (e.g. "Field Troop ATK +50%"), available in all 15 languages',
+  },
+  {
+    date: '2026-07-01',
     time: '17:45',
     text: 'Research & Tank calculators: selecting a level in the bottom sheet now applies immediately and closes the sheet',
   },

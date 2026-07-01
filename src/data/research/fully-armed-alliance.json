@@ -67,7 +67,13 @@
         84164
       ],
       "icon": "fully-armed-alliance/mechanical-repair",
-      "prerequisites": []
+      "prerequisites": [],
+      "bonuses": [
+        {
+          "effect": "73",
+          "perLevel": 100
+        }
+      ]
     },
     {
       "id": "piercing-shot",
@@ -126,6 +132,12 @@
       "icon": "fully-armed-alliance/piercing-shot",
       "prerequisites": [
         "mechanical-repair"
+      ],
+      "bonuses": [
+        {
+          "effect": "35040",
+          "perLevel": 2
+        }
       ]
     },
     {
@@ -185,6 +197,12 @@
       "icon": "fully-armed-alliance/tough-shield",
       "prerequisites": [
         "mechanical-repair"
+      ],
+      "bonuses": [
+        {
+          "effect": "35044",
+          "perLevel": 2
+        }
       ]
     },
     {
@@ -244,6 +262,12 @@
       "icon": "fully-armed-alliance/bazooka",
       "prerequisites": [
         "piercing-shot"
+      ],
+      "bonuses": [
+        {
+          "effect": "35048",
+          "perLevel": 2
+        }
       ]
     },
     {
@@ -303,6 +327,12 @@
       "icon": "fully-armed-alliance/hold-fast",
       "prerequisites": [
         "tough-shield"
+      ],
+      "bonuses": [
+        {
+          "effect": "35052",
+          "perLevel": 2
+        }
       ]
     },
     {
@@ -362,6 +392,12 @@
       "icon": "fully-armed-alliance/circuitous-tactics",
       "prerequisites": [
         "bazooka"
+      ],
+      "bonuses": [
+        {
+          "effect": "35024",
+          "perLevel": 2
+        }
       ]
     },
     {
@@ -421,6 +457,12 @@
       "icon": "fully-armed-alliance/alloy-composite",
       "prerequisites": [
         "hold-fast"
+      ],
+      "bonuses": [
+        {
+          "effect": "35028",
+          "perLevel": 2
+        }
       ]
     },
     {
@@ -486,6 +528,12 @@
         {
           "id": "alloy-composite",
           "requiredLevel": 10
+        }
+      ],
+      "bonuses": [
+        {
+          "effect": "40011",
+          "perLevel": 3
         }
       ]
     },
@@ -586,6 +634,12 @@
       "icon": "fully-armed-alliance/annihilation",
       "prerequisites": [
         "peace-breaker"
+      ],
+      "bonuses": [
+        {
+          "effect": "30134",
+          "perLevel": 1
+        }
       ]
     },
     {
@@ -645,6 +699,12 @@
       "icon": "fully-armed-alliance/riders-attack-training",
       "prerequisites": [
         "annihilation"
+      ],
+      "bonuses": [
+        {
+          "effect": "35003",
+          "perLevel": 4
+        }
       ]
     },
     {
@@ -704,6 +764,12 @@
       "icon": "fully-armed-alliance/shooters-attack-training",
       "prerequisites": [
         "annihilation"
+      ],
+      "bonuses": [
+        {
+          "effect": "35001",
+          "perLevel": 4
+        }
       ]
     },
     {
@@ -763,6 +829,12 @@
       "icon": "fully-armed-alliance/assaulters-attack-training",
       "prerequisites": [
         "annihilation"
+      ],
+      "bonuses": [
+        {
+          "effect": "35002",
+          "perLevel": 4
+        }
       ]
     },
     {
@@ -822,6 +894,12 @@
       "icon": "fully-armed-alliance/riders-defense-training",
       "prerequisites": [
         "riders-attack-training"
+      ],
+      "bonuses": [
+        {
+          "effect": "35007",
+          "perLevel": 4
+        }
       ]
     },
     {
@@ -881,6 +959,12 @@
       "icon": "fully-armed-alliance/shooters-defense-training",
       "prerequisites": [
         "shooters-attack-training"
+      ],
+      "bonuses": [
+        {
+          "effect": "35005",
+          "perLevel": 4
+        }
       ]
     },
     {
@@ -940,6 +1024,12 @@
       "icon": "fully-armed-alliance/assaulters-defense-training",
       "prerequisites": [
         "assaulters-attack-training"
+      ],
+      "bonuses": [
+        {
+          "effect": "35006",
+          "perLevel": 4
+        }
       ]
     },
     {
@@ -1000,6 +1090,12 @@
       "prerequisites": [
         "riders-defense-training",
         "assaulters-defense-training"
+      ],
+      "bonuses": [
+        {
+          "effect": "73",
+          "perLevel": 100
+        }
       ]
     },
     {
@@ -1060,6 +1156,12 @@
       "prerequisites": [
         "assaulters-defense-training",
         "shooters-defense-training"
+      ],
+      "bonuses": [
+        {
+          "effect": "31007",
+          "perLevel": 5
+        }
       ]
     },
     {
@@ -1160,6 +1262,12 @@
       "prerequisites": [
         "mechanical-repair-2",
         "repair-kit"
+      ],
+      "bonuses": [
+        {
+          "effect": "40001",
+          "perLevel": 25
+        }
       ]
     }
   ]
