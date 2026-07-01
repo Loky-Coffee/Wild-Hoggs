@@ -120,59 +120,36 @@ function calculateTotalBadges(
 }
 
 /**
- * Bereinigt den Auswahl-Zustand kaskadierend: jeder Knoten, dessen aktuelles Level
- * über seinem verfügbaren Maximum liegt (Voraussetzung fehlt oder progressiver
- * Vorgänger zu niedrig), wird gekappt bzw. abgewählt. Wird iterativ bis zur
- * Stabilität ausgeführt, damit sich Abwahlen bis nach unten fortpflanzen.
+ * GEZIELTE Kaskade beim Reduzieren/Abwählen eines Knotens: es werden NUR die Knoten
+ * entfernt, die (direkt oder transitiv) von `changedId` abhängen und deren
+ * Voraussetzung dadurch nicht mehr erfüllt ist. Unbeteiligte Knoten — auch alte,
+ * inkonsistente Stände (z.B. aus der DB eingeloggter User) — bleiben unangetastet.
+ * Level werden NIE global "bereinigt" -> keine ungewollten Datenverluste.
  */
-function sanitizeLevels(
+function cascadeReset(
   selected: Record<string, number>,
+  changedId: string,
   category: ResearchTree | null,
 ): Record<string, number> {
   if (!category) return { ...selected };
-  const techById = new Map(category.technologies.map((tech) => [tech.id, tech]));
   const result: Record<string, number> = { ...selected };
-  const lvlOf = (id: string) => result[id] || 0;
+  const queue: string[] = [changedId];
+  const visited = new Set<string>();
 
-  const unlocked = (tech: Technology): boolean =>
-    tech.prerequisites.length === 0 ||
-    tech.prerequisites.every((p) => {
-      const pid = typeof p === 'string' ? p : p.id;
-      const req = typeof p === 'string' ? 1 : (p.requiredLevel || 1);
-      return lvlOf(pid) >= req;
-    });
+  while (queue.length) {
+    const id = queue.shift() as string;
+    if (visited.has(id)) continue;
+    visited.add(id);
+    const curLevel = result[id] || 0;
 
-  const maxAvail = (tech: Technology): number => {
-    if (tech.prerequisites.length === 0) return tech.maxLevel;
-    if (!unlocked(tech)) return 0;
-    const prog = tech.prerequisites.filter((p) => {
-      const pt = techById.get(typeof p === 'string' ? p : p.id);
-      const req = typeof p === 'string' ? 1 : (p.requiredLevel || 1);
-      return req < (pt?.maxLevel || 1);
-    });
-    if (prog.length === 0) return tech.maxLevel;
-    const levels = prog.map((p) => {
-      const pid = typeof p === 'string' ? p : p.id;
-      const pt = techById.get(pid);
-      const cur = lvlOf(pid);
-      return cur >= (pt?.maxLevel || 1) ? Infinity : cur;
-    });
-    const m = Math.max(...levels);
-    return m === Infinity ? tech.maxLevel : Math.min(tech.maxLevel, m);
-  };
-
-  let changed = true;
-  let guard = 0;
-  while (changed && guard++ < 200) {
-    changed = false;
     for (const tech of category.technologies) {
-      const cur = lvlOf(tech.id);
-      if (cur <= 0) continue;
-      const ma = maxAvail(tech);
-      if (cur > ma) {
-        if (ma <= 0) delete result[tech.id];
-        else result[tech.id] = ma;
-        changed = true;
+      if ((result[tech.id] || 0) <= 0) continue;
+      const req = tech.prerequisites.find((p) => (typeof p === 'string' ? p : p.id) === id);
+      if (!req) continue;
+      const reqLevel = typeof req === 'string' ? 1 : (req.requiredLevel || 1);
+      if (curLevel < reqLevel) {
+        delete result[tech.id]; // Voraussetzung auf `id` nicht mehr erfüllt -> abwählen
+        queue.push(tech.id);    // weiter nach unten kaskadieren
       }
     }
   }
@@ -201,7 +178,8 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
       } else {
         next[techId] = level;
       }
-      return { ...prev, selectedTechnologies: sanitizeLevels(next, category) };
+      // gezielte Kaskade nur von diesem Knoten aus — löscht keine unbeteiligten Level
+      return { ...prev, selectedTechnologies: cascadeReset(next, techId, category) };
     });
   };
 
@@ -215,20 +193,10 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
           next[techId] = level;
         }
       });
-      return { ...prev, selectedTechnologies: sanitizeLevels(next, category) };
+      // Batch (Auto-Entsperrung) setzt Voraussetzungen -> keine Kaskade nötig, nur speichern
+      return { ...prev, selectedTechnologies: next };
     });
   };
-
-  // Aufräumen, sobald sich der (evtl. asynchron aus localStorage geladene)
-  // Zustand ändert: Knoten mit Level, aber nicht erfüllter Voraussetzung ->
-  // kaskadierend abwählen/kappen. sanitizeLevels ist idempotent (Fixpunkt),
-  // daher kein Endlos-Loop: nur wenn sich wirklich was ändert, wird gespeichert.
-  useEffect(() => {
-    const cleaned = sanitizeLevels(stored.selectedTechnologies, category);
-    if (JSON.stringify(cleaned) !== JSON.stringify(stored.selectedTechnologies)) {
-      setStored((s) => ({ ...s, selectedTechnologies: cleaned }));
-    }
-  }, [stored.selectedTechnologies, category]);
 
   const selectAllToMax = () => {
     if (!category) return;

@@ -69,6 +69,9 @@ function ResearchTreeNode({
   const totalBadges = tech.badgeCosts.slice(0, selectedLevel).reduce((sum, cost) => sum + cost, 0);
   const maxBadges = tech.badgeCosts.reduce((a, b) => a + b, 0);
   const isActive = selectedLevel > 0;
+  // Knoten mit Level (isActive) hell zeigen — auch wenn Voraussetzungen (nach
+  // Regeländerung / alte DB-Stände) gerade nicht erfüllt sind. Level = echter Fortschritt.
+  const bright = unlocked || isActive;
 
   // Ref for the node group element to programmatically focus it
   const nodeGroupRef = useRef<SVGGElement>(null);
@@ -160,7 +163,7 @@ function ResearchTreeNode({
         fill={isActive ? '#3d2a00' : '#1e1e1e'}
         stroke={isTarget ? '#e74c3c' : nodeStrokeColor}
         strokeWidth={isTarget ? 3 : 2}
-        opacity={unlocked ? 1 : 0.5}
+        opacity={bright ? 1 : 0.5}
         data-node-element="true"
         className="node-background"
         style={{
@@ -248,7 +251,7 @@ function ResearchTreeNode({
         y={-NODE_HEIGHT / 2 + 15}
         width={50}
         height={50}
-        opacity={unlocked ? 1 : 0.3}
+        opacity={bright ? 1 : 0.3}
         data-node-element="true"
       />
 
@@ -258,7 +261,7 @@ function ResearchTreeNode({
         y={-NODE_HEIGHT / 2 + 80}
         textAnchor="middle"
         fontSize="13"
-        fill={unlocked ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.4)'}
+        fill={bright ?'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.4)'}
         fontWeight="600"
         data-node-element="true"
       >
@@ -289,7 +292,7 @@ function ResearchTreeNode({
           height={8}
           rx={4}
           fill="rgba(255, 255, 255, 0.12)"
-          opacity={unlocked ? 1 : 0.4}
+          opacity={bright ? 1 : 0.4}
           data-node-element="true"
         />
         {/* immer rendern (Breite 0 bei Level 0) — sonst SSR/Client-Hydration-Mismatch */}
@@ -300,7 +303,7 @@ function ResearchTreeNode({
           height={8}
           rx={4}
           fill={isActive ? '#ffa500' : 'rgba(255, 165, 0, 0.4)'}
-          opacity={unlocked ? 1 : 0.4}
+          opacity={bright ? 1 : 0.4}
           data-node-element="true"
         />
       </g>
@@ -324,7 +327,7 @@ function ResearchTreeNode({
         y={NODE_HEIGHT / 2 - 10}
         textAnchor="middle"
         fontSize="10"
-        fill={unlocked ? 'rgba(255, 165, 0, 0.7)' : 'rgba(255, 255, 255, 0.4)'}
+        fill={bright ?'rgba(255, 165, 0, 0.7)' : 'rgba(255, 255, 255, 0.4)'}
         fontWeight="500"
         data-node-element="true"
       >
