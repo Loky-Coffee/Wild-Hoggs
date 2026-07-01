@@ -8,6 +8,11 @@ export const changelog: ChangelogEntry[] = [
   // ── July 2026 ───────────────────────────────────────────────────────────
   {
     date: '2026-07-01',
+    time: '17:20',
+    text: 'Research & Tank calculators: fixed the level picker not opening on mobile — tapping a node now reliably opens the bottom sheet',
+  },
+  {
+    date: '2026-07-01',
     time: '16:40',
     text: 'Tank modifications: tree view switched to the same bottom-sheet picker — tap a modification to choose its sub-level; previous levels auto-unlock and are set to max',
   },

@@ -251,7 +251,8 @@ export default function TankModificationTree({
         target.closest('input') ||
         target.closest('foreignObject')
       ) return;
-      if (!shouldAllowScroll(e.target)) { e.preventDefault(); return; }
+      // Knoten getippt: KEIN preventDefault (sonst kein Click -> Sheet öffnet auf Mobile nicht)
+      if (!shouldAllowScroll(e.target)) { return; }
       touchStarted = true;
       const touch = e.touches[0];
       startX = touch.pageX - container.offsetLeft;

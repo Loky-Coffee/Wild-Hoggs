@@ -373,10 +373,10 @@ export default function ResearchTreeView({
         return;
       }
 
-      // Check if touch started on a node
+      // Knoten getippt: KEIN preventDefault — sonst unterdrückt Mobile das
+      // Click-Event und das Bottom-Sheet öffnet nicht. Kein touchStarted setzen
+      // -> kein eigenes Drag-Scroll; natives Scrollen/Tippen bleibt erhalten.
       if (!shouldAllowScroll(e.target)) {
-        // Prevent scrolling when touching nodes (but not inputs)
-        e.preventDefault();
         return;
       }
 
