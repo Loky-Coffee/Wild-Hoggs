@@ -1,0 +1,167 @@
+{
+  "en": {
+    "title": "Research speed",
+    "base": "Increased research speed",
+    "placeholder": "e.g. 288.1",
+    "howto": "Where do I find this value?",
+    "help": "To find your value: open any technology that is not maxed yet, then tap the ℹ️ info icon (right next to the 'Research' button — be careful not to tap 'Research' by mistake). At the very top it shows your total 'Increased research speed'. Enter that value here and the times update accordingly.",
+    "buffsNote": "Optional buffs — added on top of your base %:",
+    "generalG": "Capitol buff — General G",
+    "minister": "Research Minister buff",
+    "rose": "Rose buff (send 5 or 9 roses)"
+  },
+  "de": {
+    "title": "Forschungsgeschwindigkeit",
+    "base": "Erhöhte Forschungsgeschwindigkeit",
+    "placeholder": "z.B. 288.1",
+    "howto": "Wo finde ich diesen Wert?",
+    "help": "So findest du deinen Wert: Öffne eine beliebige Technologie, die noch nicht auf Max ist, und tippe dann auf das ℹ️-Symbol (direkt neben dem 'Forschung'-Button — bitte nicht versehentlich auf 'Forschung' tippen). Ganz oben steht deine gesamte 'Erhöhte Forschungsgeschwindigkeit'. Trage diesen Wert hier ein — die Zeiten passen sich an.",
+    "buffsNote": "Optionale Buffs — werden zum Basis-% addiert:",
+    "generalG": "Kapitol-Buff — General G",
+    "minister": "Forschungsminister-Buff",
+    "rose": "Rosen-Buff (5 oder 9 Rosen senden)"
+  },
+  "fr": {
+    "title": "Vitesse de recherche",
+    "base": "Vitesse de recherche accrue",
+    "placeholder": "ex. 288.1",
+    "howto": "Où trouver cette valeur ?",
+    "help": "Pour trouver ta valeur : ouvre n'importe quelle technologie pas encore au max, puis touche l'icône ℹ️ (juste à côté du bouton « Recherche » — attention à ne pas toucher « Recherche » par erreur). Tout en haut s'affiche ta « Vitesse de recherche accrue » totale. Saisis cette valeur ici et les durées s'ajustent.",
+    "buffsNote": "Buffs optionnels — ajoutés à ton % de base :",
+    "generalG": "Buff Capitole — Général G",
+    "minister": "Buff Ministre de la Recherche",
+    "rose": "Buff Rose (envoyer 5 ou 9 roses)"
+  },
+  "es": {
+    "title": "Velocidad de investigación",
+    "base": "Velocidad de investigación aumentada",
+    "placeholder": "p. ej. 288.1",
+    "howto": "¿Dónde encuentro este valor?",
+    "help": "Para encontrar tu valor: abre cualquier tecnología que aún no esté al máximo y toca el icono ℹ️ (justo al lado del botón 'Investigar' — ten cuidado de no tocar 'Investigar' por error). Arriba del todo se muestra tu 'Velocidad de investigación aumentada' total. Introduce ese valor aquí y los tiempos se ajustan.",
+    "buffsNote": "Buffs opcionales — se suman a tu % base:",
+    "generalG": "Buff del Capitolio — General G",
+    "minister": "Buff del Ministro de Investigación",
+    "rose": "Buff de Rosa (enviar 5 o 9 rosas)"
+  },
+  "pt": {
+    "title": "Velocidade de pesquisa",
+    "base": "Velocidade de pesquisa aumentada",
+    "placeholder": "ex. 288.1",
+    "howto": "Onde encontro este valor?",
+    "help": "Para encontrar o seu valor: abra qualquer tecnologia que ainda não esteja no máximo e toque no ícone ℹ️ (bem ao lado do botão 'Pesquisar' — cuidado para não tocar em 'Pesquisar' por engano). No topo aparece a sua 'Velocidade de pesquisa aumentada' total. Insira esse valor aqui e os tempos ajustam-se.",
+    "buffsNote": "Buffs opcionais — somados ao seu % base:",
+    "generalG": "Buff do Capitólio — General G",
+    "minister": "Buff do Ministro de Pesquisa",
+    "rose": "Buff da Rosa (enviar 5 ou 9 rosas)"
+  },
+  "it": {
+    "title": "Velocità di ricerca",
+    "base": "Velocità di ricerca aumentata",
+    "placeholder": "es. 288.1",
+    "howto": "Dove trovo questo valore?",
+    "help": "Per trovare il tuo valore: apri una tecnologia non ancora al massimo e tocca l'icona ℹ️ (proprio accanto al pulsante 'Ricerca' — attenzione a non toccare 'Ricerca' per sbaglio). In cima appare la tua 'Velocità di ricerca aumentata' totale. Inserisci quel valore qui e i tempi si adeguano.",
+    "buffsNote": "Buff opzionali — aggiunti al tuo % base:",
+    "generalG": "Buff del Campidoglio — Generale G",
+    "minister": "Buff del Ministro della Ricerca",
+    "rose": "Buff Rosa (invia 5 o 9 rose)"
+  },
+  "ja": {
+    "title": "研究速度",
+    "base": "研究速度アップ",
+    "placeholder": "例: 288.1",
+    "howto": "この値はどこで見つかりますか？",
+    "help": "値の見つけ方：まだ最大でない技術を開き、ℹ️アイコンをタップします（「研究」ボタンのすぐ隣です。間違えて「研究」を押さないよう注意）。一番上に合計の「研究速度アップ」が表示されます。その値をここに入力すると時間が調整されます。",
+    "buffsNote": "任意バフ — 基本％に加算されます：",
+    "generalG": "議事堂バフ — 将軍G",
+    "minister": "研究大臣バフ",
+    "rose": "バラバフ（バラを5本または9本送る）"
+  },
+  "ko": {
+    "title": "연구 속도",
+    "base": "연구 속도 증가",
+    "placeholder": "예: 288.1",
+    "howto": "이 값은 어디서 찾나요?",
+    "help": "값을 찾는 방법: 아직 최대가 아닌 기술을 열고 ℹ️ 아이콘을 누르세요('연구' 버튼 바로 옆이니 실수로 '연구'를 누르지 않도록 주의하세요). 맨 위에 총 '연구 속도 증가'가 표시됩니다. 그 값을 여기에 입력하면 시간이 조정됩니다.",
+    "buffsNote": "선택 버프 — 기본 %에 더해집니다:",
+    "generalG": "의사당 버프 — 장군 G",
+    "minister": "연구 장관 버프",
+    "rose": "장미 버프 (장미 5개 또는 9개 보내기)"
+  },
+  "zh-CN": {
+    "title": "研究速度",
+    "base": "研究速度提升",
+    "placeholder": "例如 288.1",
+    "howto": "在哪里找到这个数值？",
+    "help": "查找方法：打开任意一个尚未满级的科技，然后点击 ℹ️ 图标（就在“研究”按钮旁边——注意别误点“研究”）。最上方会显示你的总“研究速度提升”。在此输入该数值，时间会相应调整。",
+    "buffsNote": "可选增益 — 会加到你的基础 %：",
+    "generalG": "国会增益 — 将军G",
+    "minister": "研究部长增益",
+    "rose": "玫瑰增益（赠送5或9朵玫瑰）"
+  },
+  "zh-TW": {
+    "title": "研究速度",
+    "base": "研究速度提升",
+    "placeholder": "例如 288.1",
+    "howto": "在哪裡找到這個數值？",
+    "help": "查找方法：開啟任一尚未滿級的科技，然後點擊 ℹ️ 圖示（就在「研究」按鈕旁邊——注意別誤點「研究」）。最上方會顯示你的總「研究速度提升」。在此輸入該數值，時間會相應調整。",
+    "buffsNote": "可選增益 — 會加到你的基礎 %：",
+    "generalG": "國會增益 — 將軍G",
+    "minister": "研究部長增益",
+    "rose": "玫瑰增益（贈送5或9朵玫瑰）"
+  },
+  "th": {
+    "title": "ความเร็วการวิจัย",
+    "base": "ความเร็วการวิจัยที่เพิ่มขึ้น",
+    "placeholder": "เช่น 288.1",
+    "howto": "หาค่านี้ได้ที่ไหน?",
+    "help": "วิธีหาค่า: เปิดเทคโนโลยีใดก็ได้ที่ยังไม่เต็ม แล้วแตะไอคอน ℹ️ (อยู่ข้างปุ่ม 'วิจัย' — ระวังอย่าแตะ 'วิจัย' โดยบังเอิญ) ด้านบนสุดจะแสดง 'ความเร็วการวิจัยที่เพิ่มขึ้น' รวมของคุณ กรอกค่านี้ที่นี่แล้วเวลาจะปรับตาม",
+    "buffsNote": "บัฟเสริม — บวกเข้ากับ % พื้นฐานของคุณ:",
+    "generalG": "บัฟรัฐสภา — นายพล G",
+    "minister": "บัฟรัฐมนตรีวิจัย",
+    "rose": "บัฟกุหลาบ (ส่งกุหลาบ 5 หรือ 9 ดอก)"
+  },
+  "tr": {
+    "title": "Araştırma hızı",
+    "base": "Artırılmış araştırma hızı",
+    "placeholder": "örn. 288.1",
+    "howto": "Bu değeri nerede bulurum?",
+    "help": "Değerini bulmak için: henüz maks olmayan herhangi bir teknolojiyi aç, sonra ℹ️ simgesine dokun ('Araştır' düğmesinin hemen yanında — yanlışlıkla 'Araştır'a dokunmamaya dikkat et). En üstte toplam 'Artırılmış araştırma hızı' görünür. Bu değeri buraya gir, süreler buna göre güncellenir.",
+    "buffsNote": "İsteğe bağlı buff'lar — temel %'ne eklenir:",
+    "generalG": "Kongre buff'ı — General G",
+    "minister": "Araştırma Bakanı buff'ı",
+    "rose": "Gül buff'ı (5 veya 9 gül gönder)"
+  },
+  "id": {
+    "title": "Kecepatan riset",
+    "base": "Kecepatan riset meningkat",
+    "placeholder": "mis. 288.1",
+    "howto": "Di mana menemukan nilai ini?",
+    "help": "Cara menemukan nilaimu: buka teknologi apa pun yang belum maks, lalu ketuk ikon ℹ️ (tepat di sebelah tombol 'Riset' — hati-hati jangan sampai menekan 'Riset'). Di paling atas tertera total 'Kecepatan riset meningkat'-mu. Masukkan nilai itu di sini dan waktunya menyesuaikan.",
+    "buffsNote": "Buff opsional — ditambahkan ke % dasarmu:",
+    "generalG": "Buff Capitol — Jenderal G",
+    "minister": "Buff Menteri Riset",
+    "rose": "Buff Mawar (kirim 5 atau 9 mawar)"
+  },
+  "ar": {
+    "title": "سرعة البحث",
+    "base": "زيادة سرعة البحث",
+    "placeholder": "مثال 288.1",
+    "howto": "أين أجد هذه القيمة؟",
+    "help": "للعثور على قيمتك: افتح أي تقنية لم تصل للحد الأقصى بعد، ثم اضغط على أيقونة ℹ️ (بجوار زر 'بحث' مباشرة — احذر ألا تضغط 'بحث' بالخطأ). في الأعلى تظهر 'زيادة سرعة البحث' الإجمالية لديك. أدخل هذه القيمة هنا وستتعدّل الأوقات تلقائياً.",
+    "buffsNote": "تعزيزات اختيارية — تُضاف إلى نسبتك الأساسية:",
+    "generalG": "تعزيز الكابيتول — الجنرال G",
+    "minister": "تعزيز وزير البحث",
+    "rose": "تعزيز الوردة (أرسل 5 أو 9 ورود)"
+  },
+  "vi": {
+    "title": "Tốc độ nghiên cứu",
+    "base": "Tốc độ nghiên cứu tăng thêm",
+    "placeholder": "vd. 288.1",
+    "howto": "Tìm giá trị này ở đâu?",
+    "help": "Cách tìm giá trị: mở bất kỳ công nghệ nào chưa đạt tối đa, rồi chạm biểu tượng ℹ️ (ngay cạnh nút 'Nghiên cứu' — cẩn thận đừng chạm nhầm 'Nghiên cứu'). Trên cùng hiển thị tổng 'Tốc độ nghiên cứu tăng thêm' của bạn. Nhập giá trị đó vào đây và thời gian sẽ được điều chỉnh.",
+    "buffsNote": "Buff tùy chọn — cộng thêm vào % cơ bản của bạn:",
+    "generalG": "Buff Điện Capitol — Tướng G",
+    "minister": "Buff Bộ trưởng Nghiên cứu",
+    "rose": "Buff Hoa hồng (gửi 5 hoặc 9 hoa hồng)"
+  }
+}

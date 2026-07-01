@@ -4,6 +4,7 @@ import { getLangFromUrl, useTranslations, getLocalizedPath, getCurrentYear } fro
 import { getLanguagePaths } from '../../../i18n/static-paths';
 import { loadTranslations } from '../../../i18n/index';
 import { Image } from 'astro:assets';
+import LabSpeedButton from '../../../components/calculators/LabSpeedButton';
 
 // Import all research category data
 import allianceRecognition from '../../../data/research/alliance-recognition.json';
@@ -162,6 +163,7 @@ const breadcrumbItems = [
     <a class="compare-link" href={getLocalizedPath('tools/research/compare', lang)}>
       ⚖️ {lang === 'de' ? 'Bäume vergleichen' : 'Compare Trees'}
     </a>
+    <LabSpeedButton lang={lang} client:load />
 
     <div class="research-totals">
       <span class="rt-label">{lang === 'de' ? 'Alle Bäume gesamt:' : 'All trees total:'}</span>

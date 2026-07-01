@@ -8,6 +8,11 @@ export const changelog: ChangelogEntry[] = [
   // ── July 2026 ───────────────────────────────────────────────────────────
   {
     date: '2026-07-01',
+    time: '20:30',
+    text: 'Research: added a global Lab-Speed setting (a button on the research overview and inside every node) — enter your base research-speed % plus optional Capitol / Research-Minister / Rose buff checkboxes, with an in-game how-to and screenshot; each node then shows the base time struck through next to the real time. Saved to your account (synced when logged in), in 15 languages',
+  },
+  {
+    date: '2026-07-01',
     time: '20:15',
     text: 'Research: the level picker now shows the research time per level (and a cumulative total), with a Lab-Speed field — enter your research-speed bonus % to see the real duration',
   },

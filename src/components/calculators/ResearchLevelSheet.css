@@ -155,21 +155,27 @@
   font-weight: 600;
 }
 
-/* Lab-Speed-Eingabe */
+/* Lab-Speed-Steuerung */
 .rls-speed {
   display: flex;
-  align-items: center;
-  gap: 0.4rem;
+  flex-direction: column;
+  gap: 0.5rem;
   margin: 0.5rem 0;
-  padding: 0.5rem 0.6rem;
+  padding: 0.6rem 0.7rem;
   background: rgba(124, 197, 255, 0.08);
   border: 1px solid rgba(124, 197, 255, 0.3);
   border-radius: 8px;
   font-size: 0.85rem;
 }
-.rls-speed-label { color: #7cc5ff; font-weight: 600; white-space: nowrap; }
+.rls-speed-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+.rls-speed-label { color: #7cc5ff; font-weight: 600; }
 .rls-speed input {
-  width: 5rem;
+  width: 6rem;
   padding: 0.3rem 0.4rem;
   background: #1a1a1a;
   color: #fff;
@@ -179,7 +185,145 @@
   text-align: right;
 }
 .rls-speed-pct { color: rgba(255, 255, 255, 0.6); }
-.rls-speed-hint { color: rgba(255, 255, 255, 0.4); font-size: 0.78rem; margin-left: auto; }
+.rls-speed-eff { margin-left: auto; color: #6ee7a0; font-weight: 700; }
+.rls-help-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0 0.2rem;
+  line-height: 1;
+}
+.rls-buffs { display: flex; flex-direction: column; gap: 0.3rem; }
+.rls-buffs-note { color: rgba(255, 255, 255, 0.5); font-size: 0.75rem; }
+.rls-buff {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  font-size: 0.83rem;
+}
+.rls-buff input { width: auto; accent-color: #7cc5ff; }
+.rls-buff b { color: #7cc5ff; margin-left: auto; }
+
+/* Hilfe-Overlay (Anleitung + Bild) */
+.rls-help-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2100;
+  background: rgba(0, 0, 0, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+.rls-help-box {
+  position: relative;
+  background: #1a1a1a;
+  border: 1px solid rgba(124, 197, 255, 0.4);
+  border-radius: 12px;
+  max-width: 420px;
+  max-height: 88vh;
+  overflow-y: auto;
+  padding: 1.6rem 1rem 1rem;
+}
+.rls-help-close { position: absolute; top: 0.5rem; right: 0.6rem; }
+.rls-help-text {
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0 0 0.8rem;
+}
+.rls-help-img { width: 100%; border-radius: 8px; display: block; }
+
+/* Kompakter Button im Knoten-Sheet -> öffnet die globale Einstellung */
+.rls-speed-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  width: 100%;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  background: rgba(124, 197, 255, 0.1);
+  border: 1px solid rgba(124, 197, 255, 0.35);
+  border-radius: 8px;
+  color: #7cc5ff;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.rls-speed-btn b { color: #6ee7a0; }
+.rls-speed-gear { margin-left: 0.15rem; }
+
+/* Basis-Zeit durchgestrichen, rabattierte fett */
+.rls-time-base {
+  color: rgba(255, 255, 255, 0.4);
+  text-decoration: line-through;
+  margin-right: 0.25rem;
+}
+.rls-row-time b { color: #9db4d0; font-weight: 700; }
+
+/* Modal-spezifisch */
+.ls-modal { max-width: 440px; }
+.rls-speed-eff-total {
+  text-align: right;
+  color: #6ee7a0;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+.rls-howto-link {
+  display: block;
+  width: 100%;
+  margin-top: 0.6rem;
+  padding: 0.5rem;
+  background: none;
+  border: 1px dashed rgba(124, 197, 255, 0.4);
+  border-radius: 8px;
+  color: #7cc5ff;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+/* Hilfe-Sektion im Modal — immer sichtbar, kleineres Bild */
+.ls-help {
+  margin-top: 0.8rem;
+  padding-top: 0.7rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+.ls-help-title {
+  color: #7cc5ff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin: 0 0 0.4rem;
+}
+.ls-help-img {
+  max-width: 190px;
+  width: 100%;
+  border-radius: 8px;
+  display: block;
+  margin: 0.6rem auto 0;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Overview-Button — blaue Pille (passend zum Lab-Speed-Thema) */
+.labspeed-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.6rem;
+  padding: 0.5rem 1.1rem;
+  background: rgba(124, 197, 255, 0.12);
+  border: 1px solid rgba(124, 197, 255, 0.5);
+  border-radius: 999px;
+  color: #7cc5ff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.labspeed-link:hover { background: rgba(124, 197, 255, 0.22); }
 
 /* Zeit pro Level-Zeile */
 .rls-row-time {

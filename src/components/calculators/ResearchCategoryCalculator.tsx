@@ -1,6 +1,8 @@
 import { useState, useMemo, useEffect, useRef } from 'preact/hooks';
 import type { ResearchTree, Technology } from '../../schemas/research';
 import ResearchTreeView from './ResearchTreeView';
+import { LAB_SPEED_DEFAULT, type LabSpeed } from '../../utils/labSpeed';
+import LabSpeedModal from './LabSpeedModal';
 import { useTranslations } from '../../i18n/utils';
 import { formatNumber } from '../../utils/formatters';
 import type { TranslationData, TranslationKey } from '../../i18n/index';
@@ -163,6 +165,9 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
 
   // Jede Kategorie bekommt einen eigenen localStorage Key
   const [stored, setStored] = useCalculatorState<ResearchState>('research', category.id, RESEARCH_DEFAULT, activeProfile.id);
+  // Lab-Speed global pro Profil (Server-Sync bei Login, localStorage sonst) — wie alle Rechner-Werte
+  const [labSpeed, setLabSpeed] = useCalculatorState<LabSpeed>('labspeed', 'main', LAB_SPEED_DEFAULT, activeProfile.id);
+  const [showLabSpeed, setShowLabSpeed] = useState(false);
 
   // Runtime Map aus gespeichertem Record rekonstruieren
   const selectedTechnologies = new Map(Object.entries(stored.selectedTechnologies));
@@ -457,10 +462,15 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
           onTargetTechIdChange={setTargetTechId}
           layoutDirection={layoutDirection}
           iconMap={iconMap}
+          labSpeed={labSpeed}
+          onOpenLabSpeed={() => setShowLabSpeed(true)}
           lang={lang}
           translationData={translationData}
         />
       </div>
+      {showLabSpeed && (
+        <LabSpeedModal labSpeed={labSpeed} onChange={setLabSpeed} onClose={() => setShowLabSpeed(false)} lang={lang} />
+      )}
     </div>
   );
 }

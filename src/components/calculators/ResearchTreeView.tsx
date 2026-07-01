@@ -5,6 +5,7 @@ import { formatNumber as sharedFormatNumber } from '../../utils/formatters';
 import type { TranslationData } from '../../i18n/index';
 import ResearchTreeNode from './ResearchTreeNode';
 import ResearchLevelSheet from './ResearchLevelSheet';
+import { type LabSpeed } from '../../utils/labSpeed';
 import ResearchTreeConnections from './ResearchTreeConnections';
 import TreeControls from './TreeControls';
 import {
@@ -27,6 +28,8 @@ interface ResearchTreeViewProps {
   readonly onTargetTechIdChange: (techId: string | null) => void;
   readonly layoutDirection: 'horizontal' | 'vertical';
   readonly iconMap?: Record<string, string>;
+  readonly labSpeed: LabSpeed;
+  readonly onOpenLabSpeed: () => void;
   readonly lang: 'de' | 'en';
   readonly translationData: TranslationData;
 }
@@ -41,6 +44,8 @@ export default function ResearchTreeView({
   onTargetTechIdChange,
   layoutDirection,
   iconMap,
+  labSpeed,
+  onOpenLabSpeed,
   lang,
   translationData
 }: ResearchTreeViewProps) {
@@ -562,6 +567,8 @@ export default function ResearchTreeView({
             setSheetTech(null); // übernehmen + Sheet schließen
           }}
           onClose={() => setSheetTech(null)}
+          labSpeed={labSpeed}
+          onOpenLabSpeed={onOpenLabSpeed}
           lang={lang}
           translationData={translationData}
         />
