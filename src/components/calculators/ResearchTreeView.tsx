@@ -556,6 +556,7 @@ export default function ResearchTreeView({
             } else {
               onLevelChange(sheetTech.id, level);
             }
+            setSheetTech(null); // übernehmen + Sheet schließen
           }}
           onClose={() => setSheetTech(null)}
           lang={lang}

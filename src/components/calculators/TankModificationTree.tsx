@@ -375,7 +375,7 @@ export default function TankModificationTree({
             mod={m}
             currentSubLevel={subLevels.get(sheetLevel) || 0}
             unlocked={unlockedLevels.has(sheetLevel)}
-            onSelect={(sl) => handleSheetSelect(sheetLevel, sl)}
+            onSelect={(sl) => { handleSheetSelect(sheetLevel, sl); setSheetLevel(null); }}
             onClose={() => setSheetLevel(null)}
             lang={lang}
             translationData={translationData}

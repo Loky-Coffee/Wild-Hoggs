@@ -8,6 +8,11 @@ export const changelog: ChangelogEntry[] = [
   // ── July 2026 ───────────────────────────────────────────────────────────
   {
     date: '2026-07-01',
+    time: '17:45',
+    text: 'Research & Tank calculators: selecting a level in the bottom sheet now applies immediately and closes the sheet',
+  },
+  {
+    date: '2026-07-01',
     time: '17:20',
     text: 'Research & Tank calculators: fixed the level picker not opening on mobile — tapping a node now reliably opens the bottom sheet',
   },
