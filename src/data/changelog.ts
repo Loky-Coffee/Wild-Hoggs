@@ -8,6 +8,21 @@ export const changelog: ChangelogEntry[] = [
   // ── July 2026 ───────────────────────────────────────────────────────────
   {
     date: '2026-07-01',
+    time: '18:50',
+    text: 'Research calculator: opens noticeably faster — a tree now loads only its own node icons instead of every tree\'s icons',
+  },
+  {
+    date: '2026-07-01',
+    time: '18:40',
+    text: 'Research & Tank calculators: fixed console hydration warnings and occasional flicker when navigating between pages',
+  },
+  {
+    date: '2026-07-01',
+    time: '18:30',
+    text: 'Research overview: category cards now sort by progress — in-progress trees on top, untouched in the middle, completed (MAX) at the bottom',
+  },
+  {
+    date: '2026-07-01',
     time: '18:20',
     text: 'Research: new "Compare Trees" page — pick two trees and see every node\'s max-level bonus side by side, line by line (linked from the research overview and each calculator)',
   },

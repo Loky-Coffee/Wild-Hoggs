@@ -6,6 +6,7 @@ import type { TranslationKey } from '../../../../i18n/index';
 import ResearchCategoryCalculator from '../../../../components/calculators/ResearchCategoryCalculator';
 import { ErrorBoundary } from '../../../../components/ErrorBoundary';
 import type { ResearchTree } from '../../../../schemas/research';
+import { getResearchImage } from '../../../../utils/researchImages';
 import type { ImageMetadata } from 'astro';
 
 // Mark this page as special for CSS scoping
@@ -151,6 +152,15 @@ if (!category) {
   return Astro.redirect(getLocalizedPath('tools/research', lang));
 }
 
+// Icons serverseitig auflösen — nur die ~20 dieses Baums, statt im Client alle ~380 (eager-Glob).
+const iconMap: Record<string, string> = {};
+for (const tech of category.technologies) {
+  if (!tech.icon) continue;
+  const [cat, tid] = tech.icon.split('/');
+  const img = cat && tid ? getResearchImage(cat, tid) : null;
+  if (img) iconMap[tech.icon] = img.src;
+}
+
 const breadcrumbItems = [
   { label: t('nav.home'), href: getLocalizedPath('', lang) },
   { label: t('nav.tools'), href: getLocalizedPath('tools', lang) },
@@ -174,6 +184,7 @@ const breadcrumbItems = [
       <ResearchCategoryCalculator
         categoryData={category}
         categoryImageSrc={categoryImage.src}
+        iconMap={iconMap}
         lang={lang}
         translationData={translationData}
         client:load

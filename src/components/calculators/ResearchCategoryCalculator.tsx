@@ -11,6 +11,7 @@ import './Calculator.css';
 interface ResearchCategoryCalculatorProps {
   readonly categoryData: ResearchTree;
   readonly categoryImageSrc?: string;
+  readonly iconMap?: Record<string, string>;
   readonly lang: 'de' | 'en';
   readonly translationData: TranslationData;
 }
@@ -178,7 +179,7 @@ function sanitizeLevels(
   return result;
 }
 
-export default function ResearchCategoryCalculator({ categoryData, categoryImageSrc, lang, translationData }: ResearchCategoryCalculatorProps) {
+export default function ResearchCategoryCalculator({ categoryData, categoryImageSrc, iconMap, lang, translationData }: ResearchCategoryCalculatorProps) {
   const category = categoryData;
 
   const { activeProfile } = useProfile();
@@ -486,6 +487,7 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
           targetTechId={targetTechId}
           onTargetTechIdChange={setTargetTechId}
           layoutDirection={layoutDirection}
+          iconMap={iconMap}
           lang={lang}
           translationData={translationData}
         />

@@ -26,6 +26,7 @@ interface ResearchTreeViewProps {
   readonly targetTechId: string | null;
   readonly onTargetTechIdChange: (techId: string | null) => void;
   readonly layoutDirection: 'horizontal' | 'vertical';
+  readonly iconMap?: Record<string, string>;
   readonly lang: 'de' | 'en';
   readonly translationData: TranslationData;
 }
@@ -39,6 +40,7 @@ export default function ResearchTreeView({
   targetTechId,
   onTargetTechIdChange,
   layoutDirection,
+  iconMap,
   lang,
   translationData
 }: ResearchTreeViewProps) {
@@ -493,6 +495,7 @@ export default function ResearchTreeView({
                   formatNumber={formatNumber}
                   onLevelChange={onLevelChange}
                   onOpenSheet={setSheetTech}
+                  iconMap={iconMap}
                   onUnlockClick={unlockWithPrerequisites}
                   onSetTarget={() => onTargetTechIdChange(tech.id)}
                   onFocus={() => {

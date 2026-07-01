@@ -1,7 +1,6 @@
 import { memo } from 'preact/compat';
 import { useRef, useState } from 'preact/hooks';
 import type { Technology } from '../../schemas/research';
-import { getResearchImage } from '../../utils/researchImages';
 import { useTranslations } from '../../i18n/utils';
 import type { TranslationData, TranslationKey } from '../../i18n/index';
 import { NODE_WIDTH, NODE_HEIGHT } from '../../utils/treeNodeConfig';
@@ -20,6 +19,7 @@ interface ResearchTreeNodeProps {
   readonly onUnlockClick: (tech: Technology) => void;
   readonly onSetTarget?: () => void;
   readonly onFocus?: () => void;
+  readonly iconMap?: Record<string, string>;
   readonly lang: 'de' | 'en';
   readonly translationData: TranslationData;
 }
@@ -30,18 +30,14 @@ function generateFallbackSvg(letter: string): string {
 }
 
 // Helper function to get technology icon href
-function getTechIconHref(tech: Technology, techName: string): string {
+// iconMap (techIcon -> optimierter src) wird serverseitig gebaut und durchgereicht,
+// damit der Client NICHT alle ~380 Baum-Icons per eager-Glob lädt (nur die ~20 dieses Baums).
+function getTechIconHref(tech: Technology, techName: string, iconMap?: Record<string, string>): string {
   if (!tech.icon) {
     return generateFallbackSvg(techName.charAt(0));
   }
-
-  const [category, techId] = tech.icon.split('/');
-  if (!category || !techId) {
-    return generateFallbackSvg(techName.charAt(0));
-  }
-
-  const image = getResearchImage(category, techId);
-  return image ? image.src : generateFallbackSvg(techName.charAt(0));
+  const src = iconMap?.[tech.icon];
+  return src || generateFallbackSvg(techName.charAt(0));
 }
 
 // Helper function to determine node stroke color
@@ -64,6 +60,7 @@ function ResearchTreeNode({
   onUnlockClick,
   onSetTarget,
   onFocus,
+  iconMap,
   lang,
   translationData
 }: ResearchTreeNodeProps) {
@@ -79,7 +76,7 @@ function ResearchTreeNode({
   // State to control focus indicator visibility (React state for reliable SVG styling)
   const [isFocused, setIsFocused] = useState(false);
 
-  const iconHref = getTechIconHref(tech, techName);
+  const iconHref = getTechIconHref(tech, techName, iconMap);
   const nodeStrokeColor = getNodeStrokeColor(isActive, unlocked);
 
   // Important: Do not clamp the slider value here.
@@ -131,9 +128,8 @@ function ResearchTreeNode({
         }
       }}
     >
-      {!unlocked && (
-        <title>{t('calc.research.unlockPrerequisites')}</title>
-      )}
+      {/* immer rendern (Inhalt leer wenn entsperrt) — Hydration-stabil */}
+      <title>{!unlocked ? t('calc.research.unlockPrerequisites') : ''}</title>
 
       {/* Focus indicator ring - shows when node is focused */}
       <rect
@@ -296,18 +292,17 @@ function ResearchTreeNode({
           opacity={unlocked ? 1 : 0.4}
           data-node-element="true"
         />
-        {tech.maxLevel > 0 && selectedLevel > 0 && (
-          <rect
-            x={-NODE_WIDTH / 2 + 15}
-            y={-NODE_HEIGHT / 2 + 122}
-            width={(Math.min(selectedLevel, tech.maxLevel) / tech.maxLevel) * (NODE_WIDTH - 30)}
-            height={8}
-            rx={4}
-            fill={isActive ? '#ffa500' : 'rgba(255, 165, 0, 0.4)'}
-            opacity={unlocked ? 1 : 0.4}
-            data-node-element="true"
-          />
-        )}
+        {/* immer rendern (Breite 0 bei Level 0) — sonst SSR/Client-Hydration-Mismatch */}
+        <rect
+          x={-NODE_WIDTH / 2 + 15}
+          y={-NODE_HEIGHT / 2 + 122}
+          width={tech.maxLevel > 0 && selectedLevel > 0 ? (Math.min(selectedLevel, tech.maxLevel) / tech.maxLevel) * (NODE_WIDTH - 30) : 0}
+          height={8}
+          rx={4}
+          fill={isActive ? '#ffa500' : 'rgba(255, 165, 0, 0.4)'}
+          opacity={unlocked ? 1 : 0.4}
+          data-node-element="true"
+        />
       </g>
 
       {/* Badge cost - Current / Total */}
@@ -323,20 +318,18 @@ function ResearchTreeNode({
         {formatNumber(totalBadges)} / {formatNumber(maxBadges)} 🎖️
       </text>
 
-      {/* Next level cost (only show if not at max level) */}
-      {selectedLevel < tech.maxLevel && (
-        <text
-          x={0}
-          y={NODE_HEIGHT / 2 - 10}
-          textAnchor="middle"
-          fontSize="10"
-          fill={unlocked ? 'rgba(255, 165, 0, 0.7)' : 'rgba(255, 255, 255, 0.4)'}
-          fontWeight="500"
-          data-node-element="true"
-        >
-          {t('calc.research.next')}: {formatNumber(tech.badgeCosts[selectedLevel])} 🎖️
-        </text>
-      )}
+      {/* Next level cost — immer rendern, Inhalt leer bei Max (Hydration-stabil) */}
+      <text
+        x={0}
+        y={NODE_HEIGHT / 2 - 10}
+        textAnchor="middle"
+        fontSize="10"
+        fill={unlocked ? 'rgba(255, 165, 0, 0.7)' : 'rgba(255, 255, 255, 0.4)'}
+        fontWeight="500"
+        data-node-element="true"
+      >
+        {selectedLevel < tech.maxLevel ? `${t('calc.research.next')}: ${formatNumber(tech.badgeCosts[selectedLevel])} 🎖️` : ''}
+      </text>
     </g>
   );
 }

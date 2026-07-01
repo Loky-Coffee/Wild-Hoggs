@@ -258,18 +258,17 @@ function TankModificationNode({
           opacity={unlocked ? 1 : 0.4}
           data-node-element="true"
         />
-        {maxSubLevel > 0 && currentSubLevel > 0 && (
-          <rect
-            x={-NODE_WIDTH / 2 + 15}
-            y={-NODE_HEIGHT / 2 + 122}
-            width={(Math.min(currentSubLevel, maxSubLevel) / maxSubLevel) * (NODE_WIDTH - 30)}
-            height={8}
-            rx={4}
-            fill={isVehicle ? '#3498db' : (isActive ? '#ffa500' : 'rgba(255, 165, 0, 0.4)')}
-            opacity={unlocked ? 1 : 0.4}
-            data-node-element="true"
-          />
-        )}
+        {/* immer rendern (Breite 0 bei Sub-Level 0) — sonst SSR/Client-Hydration-Mismatch */}
+        <rect
+          x={-NODE_WIDTH / 2 + 15}
+          y={-NODE_HEIGHT / 2 + 122}
+          width={maxSubLevel > 0 && currentSubLevel > 0 ? (Math.min(currentSubLevel, maxSubLevel) / maxSubLevel) * (NODE_WIDTH - 30) : 0}
+          height={8}
+          rx={4}
+          fill={isVehicle ? '#3498db' : (isActive ? '#ffa500' : 'rgba(255, 165, 0, 0.4)')}
+          opacity={unlocked ? 1 : 0.4}
+          data-node-element="true"
+        />
       </g>
 
       {/* Total wrenches for current sub-level */}

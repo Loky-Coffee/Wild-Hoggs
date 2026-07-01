@@ -503,6 +503,7 @@ const breadcrumbItems = [
       var stromPct = totalStrom > 0 ? Math.round((usedStrom / totalStrom) * 100) : 0;
       var zentPct = totalZent > 0 ? Math.round((usedZent / totalZent) * 100) : 0;
       var treePct = totalLevels > 0 ? Math.round((usedLevels / totalLevels) * 100) : 0;
+      card.__treePct = treePct;
       var fc = function (n) {
         try { return new Intl.NumberFormat(undefined, { notation: 'compact', maximumFractionDigits: 1 }).format(n); }
         catch (e) { return String(n); }
@@ -525,6 +526,16 @@ const breadcrumbItems = [
         maxBadgeEl.classList.toggle('is-max', treePct >= 100);
       }
     });
+
+    // Karten nach Fortschritt sortieren:
+    // angefangen (0<%<100) ganz oben -> nicht angefangen (0%) Mitte -> fertig (MAX) unten
+    var grid = document.querySelector('.categories-grid');
+    if (grid) {
+      var rank = function (p) { return p >= 100 ? 2 : (p > 0 ? 0 : 1); };
+      var cards = Array.prototype.slice.call(grid.querySelectorAll('[data-category-id]'));
+      cards.sort(function (a, b) { return rank(a.__treePct || 0) - rank(b.__treePct || 0); });
+      cards.forEach(function (c) { grid.appendChild(c); });
+    }
   }
 
   if (document.readyState === 'loading') {
