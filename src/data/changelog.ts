@@ -8,6 +8,11 @@ export const changelog: ChangelogEntry[] = [
   // ── July 2026 ───────────────────────────────────────────────────────────
   {
     date: '2026-07-01',
+    time: '20:15',
+    text: 'Research: the level picker now shows the research time per level (and a cumulative total), with a Lab-Speed field — enter your research-speed bonus % to see the real duration',
+  },
+  {
+    date: '2026-07-01',
     time: '20:00',
     text: 'Research: corrected the prerequisites and required levels across all trees — the target (badges-to-reach) calculation is now accurate, so a node deeper in a tree always costs more than an earlier one (fixes cases like Age of Steel where a late node showed a lower cost than an earlier one)',
   },

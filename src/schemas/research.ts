@@ -37,6 +37,7 @@ export const TechnologySchema = z.object({
   combatPower: z.array(z.number().nonnegative().int()).optional(),// Kampfkraft je Stufe
   badges: z.array(z.number().nonnegative().int()).optional(),
   bonuses: z.array(BonusSchema).optional(), // Effekte/Boni je Stufe
+  times: z.array(z.number().nonnegative()).optional(), // Basis-Forschungszeit je Stufe (Sekunden)
   unlocks: z.array(UnlockSchema).optional(), // Freischaltungen (Gebäude/Funktion/Einheit)
   icon: z.string().optional(),
   prerequisites: z.array(PrerequisiteSchema),

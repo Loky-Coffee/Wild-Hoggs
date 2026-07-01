@@ -155,6 +155,42 @@
   font-weight: 600;
 }
 
+/* Lab-Speed-Eingabe */
+.rls-speed {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0.5rem 0;
+  padding: 0.5rem 0.6rem;
+  background: rgba(124, 197, 255, 0.08);
+  border: 1px solid rgba(124, 197, 255, 0.3);
+  border-radius: 8px;
+  font-size: 0.85rem;
+}
+.rls-speed-label { color: #7cc5ff; font-weight: 600; white-space: nowrap; }
+.rls-speed input {
+  width: 5rem;
+  padding: 0.3rem 0.4rem;
+  background: #1a1a1a;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  text-align: right;
+}
+.rls-speed-pct { color: rgba(255, 255, 255, 0.6); }
+.rls-speed-hint { color: rgba(255, 255, 255, 0.4); font-size: 0.78rem; margin-left: auto; }
+
+/* Zeit pro Level-Zeile */
+.rls-row-time {
+  grid-column: 1 / -1;
+  font-size: 0.78rem;
+  color: #9db4d0;
+  padding-top: 0.15rem;
+  font-variant-numeric: tabular-nums;
+}
+.rls-total-timeval { color: #9db4d0 !important; }
+
 .rls-row span,
 .rls-table-head span,
 .rls-total span {

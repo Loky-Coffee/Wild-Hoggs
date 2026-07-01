@@ -1,4 +1,4 @@
-import { useEffect } from 'preact/hooks';
+import { useEffect, useState } from 'preact/hooks';
 import { createPortal } from 'preact/compat';
 import type { Technology } from '../../schemas/research';
 import { useTranslations } from '../../i18n/utils';
@@ -22,6 +22,17 @@ function fc(n: number): string {
   } catch {
     return String(n);
   }
+}
+
+// Sekunden -> "Xd HH:MM:SS"
+function fmtTime(s: number): string {
+  s = Math.max(0, Math.round(s));
+  const d = Math.floor(s / 86400);
+  const h = Math.floor((s % 86400) / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const sec = s % 60;
+  const p = (n: number) => String(n).padStart(2, '0');
+  return (d > 0 ? `${d}d ` : '') + `${p(h)}:${p(m)}:${p(sec)}`;
 }
 
 interface ResearchLevelSheetProps {
@@ -82,15 +93,35 @@ export default function ResearchLevelSheet({
     .map((u) => (u.target ? `${uText(u.type)} ${uText(u.target)}` : u.amount != null ? `${uText(u.type)} +${u.amount}` : uText(u.type)))
     .join(' · ');
 
+  // Forschungszeiten (Basis in Sekunden) + Lab-Speed-% (persistiert in localStorage)
+  const [labSpeed, setLabSpeed] = useState<number>(() => {
+    try {
+      const v = Number(localStorage.getItem('wh-lab-speed'));
+      return Number.isFinite(v) && v >= 0 ? v : 0;
+    } catch {
+      return 0;
+    }
+  });
+  const setSpeed = (v: number) => {
+    const s = Number.isFinite(v) && v >= 0 ? v : 0;
+    setLabSpeed(s);
+    try { localStorage.setItem('wh-lab-speed', String(s)); } catch { /* ignore */ }
+  };
+  const hasTimes = Array.isArray(tech.times) && tech.times.length > 0;
+  const timeAt = (lvl: number) => (tech.times?.[lvl - 1] ?? 0) / (1 + labSpeed / 100);
+
   // Cumulative totals up to the currently selected level
   let cs = 0;
   let cz = 0;
   let cb = 0;
+  let ctSec = 0;
   for (let i = 0; i < currentLevel; i++) {
     cs += strom(i);
     cz += zent(i);
     cb += badge(i);
+    ctSec += tech.times?.[i] ?? 0;
   }
+  const ct = ctSec / (1 + labSpeed / 100);
 
   const rows = [];
   for (let lvl = 1; lvl <= tech.maxLevel; lvl++) {
@@ -108,6 +139,7 @@ export default function ResearchLevelSheet({
         <span><img src={ICON.strom} class="rls-ico" alt="" />{fc(strom(i))}</span>
         <span><img src={ICON.zent} class="rls-ico" alt="" />{fc(zent(i))}</span>
         <span>{hasBadges ? (<><img src={ICON.badge} class="rls-ico" alt="" />{fc(badge(i))}</>) : '–'}</span>
+        {hasTimes && <span class="rls-row-time">⏱ {fmtTime(timeAt(lvl))}</span>}
         {bonusList.length > 0 && <span class="rls-row-bonus">{bonusFull(lvl)}</span>}
       </button>,
     );
@@ -128,6 +160,21 @@ export default function ResearchLevelSheet({
         )}
         {tech.labLevel ? <div class="rls-note">🔬 Labor-Level {tech.labLevel}</div> : null}
         {unlockList.length > 0 && <div class="rls-note rls-unlock">🔓 {unlockStr}</div>}
+
+        {hasTimes && (
+          <div class="rls-speed">
+            <span class="rls-speed-label">⏱ {lang === 'de' ? 'Lab-Speed' : 'Lab speed'}</span>
+            <input
+              type="number"
+              min="0"
+              inputMode="numeric"
+              value={labSpeed}
+              onInput={(e) => setSpeed(Number((e.target as HTMLInputElement).value))}
+            />
+            <span class="rls-speed-pct">%</span>
+            <span class="rls-speed-hint">{lang === 'de' ? '→ echte Zeit' : '→ real time'}</span>
+          </div>
+        )}
 
         <div class="rls-table-head">
           <span>Lvl</span>
@@ -155,6 +202,7 @@ export default function ResearchLevelSheet({
           <span><img src={ICON.strom} class="rls-ico" alt="" />{fc(cs)}</span>
           <span><img src={ICON.zent} class="rls-ico" alt="" />{fc(cz)}</span>
           {hasBadges && <span><img src={ICON.badge} class="rls-ico" alt="" />{fc(cb)}</span>}
+          {hasTimes && <span class="rls-total-timeval">⏱ {fmtTime(ct)}</span>}
         </div>
       </div>
     </div>,
