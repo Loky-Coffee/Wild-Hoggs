@@ -7,6 +7,7 @@ import researchEffects from '../../data/research-effects.json';
 import researchUnlocks from '../../data/research-unlocks.json';
 import labSpeedHelp from '../../data/lab-speed-help.json';
 import { type LabSpeed, effectiveLabSpeed } from '../../utils/labSpeed';
+import { useSheetDrag } from '../../hooks/useSheetDrag';
 import './ResearchLevelSheet.css';
 
 const EFFECTS = researchEffects as Record<string, { format: string; names: Record<string, string> }>;
@@ -65,6 +66,7 @@ export default function ResearchLevelSheet({
 }: ResearchLevelSheetProps) {
   const t = useTranslations(translationData);
   const name = t(tech.nameKey as TranslationKey) || (tech as { name?: string }).name || tech.id;
+  const { handleRef, sheetRef } = useSheetDrag(onClose);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -152,8 +154,8 @@ export default function ResearchLevelSheet({
 
   return createPortal(
     <div class="rls-backdrop" onClick={onClose}>
-      <div class="rls-sheet" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-label={name}>
-        <div class="rls-handle" />
+      <div class="rls-sheet" ref={sheetRef} onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-label={name}>
+        <div class="rls-handle" ref={handleRef} />
         <div class="rls-header">
           <strong>{name}</strong>
           <span class="rls-level">Level {currentLevel} / {tech.maxLevel}</span>

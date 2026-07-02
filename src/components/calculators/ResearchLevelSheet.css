@@ -33,11 +33,20 @@
 }
 
 .rls-handle {
-  width: 42px;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 2px;
-  margin: 0.4rem auto 0.9rem;
+  height: 22px;
+  margin: 0.2rem 0 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: none;   /* Ziehen zum Schließen, kein Scroll */
+  cursor: grab;
+}
+.rls-handle::before {
+  content: '';
+  width: 60px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: 3px;
 }
 
 .rls-header {

@@ -1,268 +1,318 @@
-import { useState, useMemo } from 'preact/hooks';
+import { useState, useEffect, useMemo } from 'preact/hooks';
+import { createPortal } from 'preact/compat';
 import { validatedBuildings as buildingsData } from '../../data/validated/buildings';
 import { useTranslations } from '../../i18n/utils';
-import { formatNumber } from '../../utils/formatters';
 import type { TranslationData, TranslationKey } from '../../i18n/index';
-import type { BuildingCost, Building } from '../../schemas/buildings';
-import CustomSelect from './CustomSelect';
+import type { Building } from '../../schemas/buildings';
+import buildingNames from '../../data/buildings-names.json';
+import buildingBonuses from '../../data/buildings-bonuses.json';
+import buildingUnlocks from '../../data/buildings-unlocks.json';
+import { LAB_SPEED_DEFAULT, effectiveLabSpeed, type LabSpeed } from '../../utils/labSpeed';
 import { useCalculatorState } from '../../hooks/useCalculatorState';
 import { useProfile } from '../../hooks/useProfile';
+import { useSheetDrag } from '../../hooks/useSheetDrag';
 import './Calculator.css';
+import './BuildingCalculator.css';
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const BNAMES = buildingNames as any;
+interface Bonus { key: string; name: Record<string, string>; fmt: 'percent' | 'plus' | 'flat'; values: number[]; }
+const BONUSES = buildingBonuses as unknown as Record<string, Bonus[]>;
+interface Unlock { level: number; name: Record<string, string>; }
+const UNLOCKS = buildingUnlocks as unknown as Record<string, Unlock[]>;
+
+// Gebäude, die es in der Stadt mehrfach gibt (jedes Exemplar zählt zur Gesamt-Kampfkraft)
+const COUNTS: Record<string, number> = {
+  residence: 6, 'steel-plant': 5, 'smelting-plant': 4, lumberyard: 4,
+  'wind-turbine': 4, 'training-ground': 4, warehouse: 3,
+};
+
+interface Inst { iid: string; b: Building; num: number; }
+const INSTANCES: Inst[] = buildingsData.flatMap((b) => {
+  const n = COUNTS[b.id] ?? 1;
+  if (n <= 1) return [{ iid: b.id, b, num: 0 }];
+  return Array.from({ length: n }, (_, i) => ({ iid: `${b.id}#${i + 1}`, b, num: i + 1 }));
+});
+
+// Farben + Icons pro Bonus (damit man Boni unterscheiden kann)
+const BONUS_COLORS = ['#6ee7a0', '#7cc5ff', '#c792ea', '#f78c6c'];
+function bonusIcon(name: string): string {
+  const n = name.toLowerCase();
+  if (/atk|angriff/.test(n)) return '⚔️';
+  if (/def|verteidig/.test(n)) return '🛡️';
+  if (/produktion|yield|prod/.test(n)) return '📈';
+  if (/geschwindig|speed|ausspäh/.test(n)) return '⚡';
+  if (/levelgrenze|hero|helden/.test(n)) return '🦸';
+  if (/haltbar|durab/.test(n)) return '🧱';
+  if (/schutz|protect/.test(n)) return '🔒';
+  if (/soldat|unit|menge|grenze|cap|truppe|kapaz|gruppe/.test(n)) return '👥';
+  return '✨';
+}
+
+function fcCompact(n: number, lang: 'de' | 'en'): string {
+  try {
+    return new Intl.NumberFormat(lang === 'de' ? 'de-DE' : 'en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(n);
+  } catch { return String(n); }
+}
+function fmtDur(sec: number): string {
+  sec = Math.max(0, Math.round(sec));
+  const d = Math.floor(sec / 86400);
+  const h = Math.floor((sec % 86400) / 3600);
+  const m = Math.floor((sec % 3600) / 60);
+  const p = (n: number) => String(n).padStart(2, '0');
+  return (d > 0 ? `${d}d ` : '') + `${p(h)}:${p(m)}`;
+}
+
+// Echte Ressourcen-Icons (Steel hat kein Icon -> ⚙️)
+const RES_ICON: Record<string, string> = {
+  food: '/images/res-icons/food.webp',
+  wood: '/images/res-icons/wood.webp',
+  zent: '/images/res-icons/zent.webp',
+  steel: '/images/res-icons/steel.webp',
+};
+function ric(res: string) {
+  return <img src={RES_ICON[res]} class="res-ic" alt="" width={16} height={16} />;
+}
+
+interface BuildingState { levels: Record<string, number> }
+const BUILDING_DEFAULT: BuildingState = { levels: {} };
 
 interface BuildingCalculatorProps {
-  readonly lang: 'de' | 'en';
+  readonly lang: string;
   readonly translationData: TranslationData;
 }
 
-const buildings = buildingsData;
-
-interface BuildingState {
-  selectedBuilding: string;
-  currentLevel: number;
-  targetLevel: number;
-}
-
-const BUILDING_DEFAULT: BuildingState = {
-  selectedBuilding: buildings[0].id,
-  currentLevel: 1,
-  targetLevel: 5,
-};
-
 export default function BuildingCalculator({ lang, translationData }: BuildingCalculatorProps) {
   const { activeProfile } = useProfile();
-
   const [stored, setStored] = useCalculatorState<BuildingState>('building', 'main', BUILDING_DEFAULT, activeProfile.id);
-  const [calculated, setCalculated] = useState(false);
+  const [storedSpeed] = useCalculatorState<LabSpeed>('buildspeed', 'main', LAB_SPEED_DEFAULT, activeProfile.id);
+  const [overrideSpeed, setOverrideSpeed] = useState<LabSpeed | null>(null);
+  const [openIid, setOpenIid] = useState<string | null>(null);
 
-  const selectedBuilding = stored.selectedBuilding;
-  const currentLevel = stored.currentLevel;
-  const targetLevel = stored.targetLevel;
-
-  const setSelectedBuilding = (v: string) => setStored(s => ({ ...s, selectedBuilding: v }));
-  const setCurrentLevel     = (v: number) => setStored(s => ({ ...s, currentLevel: v }));
-  const setTargetLevel      = (v: number) => setStored(s => ({ ...s, targetLevel:  v }));
+  // Bau-Speed wird vom Button ÜBER der Analyse gesetzt; live via Event, sonst aus Cache/Server
+  useEffect(() => {
+    const h = (e: Event) => setOverrideSpeed((e as CustomEvent).detail as LabSpeed);
+    window.addEventListener('wh-buildspeed-change', h);
+    return () => window.removeEventListener('wh-buildspeed-change', h);
+  }, []);
 
   const t = useTranslations(translationData);
+  const numLang: 'de' | 'en' = lang === 'de' ? 'de' : 'en';
+  const kampfkraft = lang === 'de' ? 'Kampfkraft' : 'Power';
+  const buildSpeed = overrideSpeed ?? storedSpeed;
+  const eff = effectiveLabSpeed(buildSpeed);
+  const applySpeed = (sec: number) => sec / (1 + eff / 100);
+  const bName = (id: string) => BNAMES[id]?.[lang] || BNAMES[id]?.en || id;
+  const resName = (r: string) => BNAMES.__resources__?.[r]?.[lang] || BNAMES.__resources__?.[r]?.en || r;
 
-  const selectedBuildingData = useMemo(() => {
-    return buildings.find((b) => b.id === selectedBuilding) || buildings[0];
-  }, [selectedBuilding]);
+  const capOf = (b: Building) => b.displayMaxLevel ?? b.maxLevel;
+  const levelOf = (iid: string): number => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const v: any = (stored.levels ?? {})[iid];
+    return typeof v === 'number' ? v : (v?.current ?? 1);
+  };
+  const curOf = (inst: Inst) => Math.max(1, Math.min(levelOf(inst.iid), capOf(inst.b)));
+  const setLevel = (iid: string, lvl: number) =>
+    setStored((s) => ({ ...s, levels: { ...(s.levels ?? {}), [iid]: lvl } }));
+  const instName = (inst: Inst) => bName(inst.b.id) + (inst.num ? ` ${inst.num}` : '');
 
-  const maxLevel = selectedBuildingData.maxLevel;
+  const open = openIid ? INSTANCES.find((x) => x.iid === openIid) ?? null : null;
 
-  const calculatedResults = useMemo(() => {
-    if (currentLevel >= targetLevel || currentLevel < 1 || currentLevel > maxLevel || targetLevel > maxLevel) {
-      return null;
-    }
-
-    let totalWood = 0;
-    let totalFood = 0;
-    let totalSteel = 0;
-    let totalZinc = 0;
-    let totalTime = 0;
-    let totalPower = 0;
-    const breakdown: BuildingCost[] = [];
-
-    for (let level = currentLevel; level < targetLevel; level++) {
-      const cost = selectedBuildingData.costs[level - 1];
-      if (cost) {
-        totalWood += cost.wood;
-        totalFood += cost.food;
-        totalSteel += cost.steel;
-        totalZinc += cost.zinc;
-        totalTime += cost.time;
-        if (cost.power) totalPower += cost.power;
-        breakdown.push(cost);
+  const overview = useMemo(() => {
+    let power = 0, curSum = 0, maxSum = 0, food = 0, wood = 0, zent = 0, steel = 0, time = 0;
+    for (const inst of INSTANCES) {
+      const cap = capOf(inst.b);
+      const cur = curOf(inst);
+      power += inst.b.costs[cur - 1]?.power ?? 0;
+      curSum += cur; maxSum += cap;
+      for (let lvl = cur + 1; lvl <= cap; lvl++) {
+        const c = inst.b.costs[lvl - 1];
+        if (c) { food += c.food; wood += c.wood; zent += c.zent; steel += c.steel; time += c.time; }
       }
     }
-
-    // Get target level data for required buildings and hero cap
-    const targetLevelData = selectedBuildingData.costs[targetLevel - 1];
-
-    return {
-      totalWood,
-      totalFood,
-      totalSteel,
-      totalZinc,
-      totalTime,
-      totalPower,
-      breakdown,
-      targetRequiredBuildings: targetLevelData?.requiredBuildings,
-      targetHeroLevelCap: targetLevelData?.heroLevelCap,
-    };
-  }, [selectedBuilding, currentLevel, targetLevel, selectedBuildingData, maxLevel]);
-
-  const handleReset = () => {
-    setStored(BUILDING_DEFAULT);
-    setCalculated(false);
-  };
+    return { power, pct: maxSum > 0 ? Math.round((curSum / maxSum) * 100) : 0, food, wood, zent, steel, time };
+  }, [stored.levels]);
 
   return (
-    <div className={`calc-split${calculated ? ' has-results' : ''}`}>
-      <div className="calc-controls">
-
-        {/* Step 1: Building Selection */}
-        <div className="calc-step">
-          <div className="calc-step-label">{t('calc.building.selectBuilding')}</div>
-          <div className="form-group">
-            <CustomSelect
-              id="building-select"
-              value={selectedBuilding}
-              options={buildings.map((b) => ({ value: b.id, label: t(b.nameKey as TranslationKey) }))}
-              onChange={setSelectedBuilding}
-              label={t('calc.building.selectBuilding')}
-            />
-          </div>
+    <div class="bld-wrap">
+      <div class="bld-overview">
+        <div class="bld-ov-item">
+          <span class="bld-ov-label">{kampfkraft}</span>
+          <span class="bld-ov-val">{fcCompact(overview.power, numLang)}</span>
         </div>
+        <div class="bld-ov-item">
+          <span class="bld-ov-label">{lang === 'de' ? 'Fortschritt' : 'Progress'}</span>
+          <span class="bld-ov-val">{overview.pct}%</span>
+        </div>
+        <div class="bld-ov-item bld-ov-rest">
+          <span class="bld-ov-label">{lang === 'de' ? 'Rest bis Max' : 'Remaining to max'}</span>
+          <span class="bld-ov-rest-vals">
+            {ric('food')} {fcCompact(overview.food, numLang)} {ric('wood')} {fcCompact(overview.wood, numLang)} {ric('zent')} {fcCompact(overview.zent, numLang)} {ric('steel')} {fcCompact(overview.steel, numLang)} ⏱ {fmtDur(applySpeed(overview.time))}
+          </span>
+        </div>
+      </div>
 
-        {/* Step 2: Level Range */}
-        <div className="calc-step">
-          <div className="calc-step-label">{t('calc.building.levelRange')}</div>
-          <div className="form-row">
-            <div className="form-group">
-              <label htmlFor="current-level">{t('calc.building.currentLevel')}:</label>
-              <input
-                id="current-level"
-                type="number"
-                min="1"
-                max={maxLevel - 1}
-                value={currentLevel}
-                onChange={(e) => setCurrentLevel(Number.parseInt((e.target as HTMLInputElement).value, 10) || 1)}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="target-level">{t('calc.building.targetLevel')}:</label>
-              <input
-                id="target-level"
-                type="number"
-                min={currentLevel + 1}
-                max={maxLevel}
-                value={targetLevel}
-                onChange={(e) => setTargetLevel(Number.parseInt((e.target as HTMLInputElement).value, 10) || currentLevel + 1)}
-              />
-            </div>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <button onClick={handleReset} className="btn-secondary">
-              {t('calc.building.reset')}
+      <div class="bld-grid">
+        {INSTANCES.map((inst) => {
+          const cap = capOf(inst.b);
+          const cur = curOf(inst);
+          const pct = Math.round((cur / cap) * 100);
+          const maxed = cur >= cap;
+          return (
+            <button key={inst.iid} type="button" class={`bld-card${maxed ? ' maxed' : ''}`} onClick={() => setOpenIid(inst.iid)}>
+              {inst.b.image && <img src={inst.b.image} alt="" loading="lazy" width={96} height={96} />}
+              <span class="bld-card-name">{instName(inst)}</span>
+              <span class="bld-card-lvl">{maxed ? 'MAX' : `Lv ${cur} / ${cap}`}</span>
+              <div class="bld-card-bar"><div class="bld-card-bar-fill" style={{ width: `${pct}%` }} /></div>
+              <span class="bld-card-power">{kampfkraft} {fcCompact(inst.b.costs[cur - 1]?.power ?? 0, numLang)}</span>
             </button>
+          );
+        })}
+      </div>
+
+      {open && (
+        <BuildingSheet
+          building={open.b}
+          cap={capOf(open.b)}
+          current={curOf(open)}
+          name={instName(open)}
+          numLang={numLang}
+          lang={lang}
+          kampfkraft={kampfkraft}
+          applySpeed={applySpeed}
+          onSetLevel={(lvl) => setLevel(open.iid, lvl)}
+          onClose={() => setOpenIid(null)}
+        />
+      )}
+
+    </div>
+  );
+}
+
+interface SheetProps {
+  readonly building: Building;
+  readonly cap: number;
+  readonly current: number;
+  readonly name: string;
+  readonly numLang: 'de' | 'en';
+  readonly lang: string;
+  readonly kampfkraft: string;
+  readonly applySpeed: (sec: number) => number;
+  readonly onSetLevel: (lvl: number) => void;
+  readonly onClose: () => void;
+}
+
+function BuildingSheet({ building, cap, current, name, numLang, lang, kampfkraft, applySpeed, onSetLevel, onClose }: SheetProps) {
+  const { handleRef, sheetRef } = useSheetDrag(onClose);
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', onKey);
+    document.body.style.overflow = 'hidden';
+    return () => { document.removeEventListener('keydown', onKey); document.body.style.overflow = ''; };
+  }, [onClose]);
+
+  const fc = (n: number) => fcCompact(n, numLang);
+  const bonuses = BONUSES[building.id] ?? [];
+  const unlocks = UNLOCKS[building.id] ?? [];
+  const unlockAt = (lvl: number) => unlocks.find((u) => u.level === lvl);
+  const reqName = (r: { id?: string; name?: string }) =>
+    r.id ? (BNAMES[r.id]?.[lang] || BNAMES[r.id]?.en || r.id) : (r.name || '');
+  const bonusName = (b: Bonus) => b.name[lang] || b.name.en || '';
+  const bColor = (i: number) => BONUS_COLORS[i % BONUS_COLORS.length];
+  const bonusFmt = (b: Bonus, lvl: number) => {
+    const v = b.values[Math.min(lvl, b.values.length) - 1] ?? 0;
+    return b.fmt === 'percent' ? `+${v}%` : b.fmt === 'plus' ? `+${fc(v)}` : String(fc(v));
+  };
+
+  const rem = useMemo(() => {
+    let food = 0, wood = 0, zent = 0, steel = 0, time = 0;
+    for (let lvl = current + 1; lvl <= cap; lvl++) {
+      const c = building.costs[lvl - 1];
+      if (c) { food += c.food; wood += c.wood; zent += c.zent; steel += c.steel; time += c.time; }
+    }
+    return { food, wood, zent, steel, time };
+  }, [building, current, cap]);
+
+  const maxed = current >= cap;
+
+  return createPortal(
+    <div class="bld-backdrop" onClick={onClose}>
+      <div class="bld-sheet" ref={sheetRef} onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-label={name}>
+        <div class="bld-handle" ref={handleRef} />
+        <div class="bld-sheet-head">
+          {building.image && <img src={building.image} alt="" width={54} height={54} />}
+          <div class="bld-sheet-title">
+            <strong>{name}</strong>
+            <span>{maxed ? 'MAX' : `Level ${current} / ${cap}`}</span>
           </div>
+          <button class="bld-close" onClick={onClose} aria-label="Close">✕</button>
         </div>
 
-        {/* Calculate Button */}
-        <button
-          type="button"
-          className={`calc-btn${calculated ? ' done' : ''}`}
-          onClick={() => setCalculated(true)}
-          disabled={calculated}
-        >
-          {calculated ? `✓ ${t('calc.building.autoCalculate')}` : t('calc.building.calculate')}
-        </button>
+        <p class="bld-pick-hint">{lang === 'de' ? '👇 Tippe dein aktuelles Level an' : '👇 Tap your current level'}</p>
 
-      </div>
-
-      <div className="calc-results">
-        {calculated && (
-          calculatedResults ? (
-            <>
-              <div className="resource-grid">
-                {calculatedResults.totalWood > 0 && (
-                  <div className="resource-card">
-                    <div className="resource-label">{t('calc.building.wood')}</div>
-                    <div className="resource-value">{formatNumber(calculatedResults.totalWood, lang)}</div>
-                  </div>
-                )}
-                {calculatedResults.totalFood > 0 && (
-                  <div className="resource-card">
-                    <div className="resource-label">{t('calc.building.food')}</div>
-                    <div className="resource-value">{formatNumber(calculatedResults.totalFood, lang)}</div>
-                  </div>
-                )}
-                {calculatedResults.totalSteel > 0 && (
-                  <div className="resource-card">
-                    <div className="resource-label">{t('calc.building.steel')}</div>
-                    <div className="resource-value">{formatNumber(calculatedResults.totalSteel, lang)}</div>
-                  </div>
-                )}
-                {calculatedResults.totalZinc > 0 && (
-                  <div className="resource-card">
-                    <div className="resource-label">{t('calc.building.zinc')}</div>
-                    <div className="resource-value">{formatNumber(calculatedResults.totalZinc, lang)}</div>
-                  </div>
-                )}
-              </div>
-
-              {(calculatedResults.totalPower > 0 || calculatedResults.targetHeroLevelCap || (calculatedResults.targetRequiredBuildings && calculatedResults.targetRequiredBuildings !== 'None')) && (
-                <div className="meta-row">
-                  {calculatedResults.totalPower > 0 && (
-                    <div className="meta-card highlight">
-                      <span className="meta-label">{t('calc.building.powerGain')}</span>
-                      <span className="meta-value">{formatNumber(calculatedResults.totalPower, lang)}</span>
-                    </div>
-                  )}
-                  {calculatedResults.targetHeroLevelCap && (
-                    <div className="meta-card">
-                      <span className="meta-label">{t('calc.building.heroLevelCap')}</span>
-                      <span className="meta-value">{calculatedResults.targetHeroLevelCap}</span>
-                    </div>
-                  )}
-                  {calculatedResults.targetRequiredBuildings && calculatedResults.targetRequiredBuildings !== 'None' && (
-                    <div className="meta-card">
-                      <span className="meta-label">{t('calc.building.requiredBuildings')}</span>
-                      <span className="meta-value" style={{ fontSize: '0.85rem' }}>{calculatedResults.targetRequiredBuildings}</span>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              <div className="breakdown">
-                <h4>{t('calc.building.perLevel')}</h4>
-                <div className="breakdown-list">
-                  {calculatedResults.breakdown.map((item) => (
-                    <div key={item.level} className="breakdown-item">
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                        <span className="breakdown-level">Level {item.level}</span>
-                        {item.power && (
-                          <span style={{ fontSize: '0.85rem', color: '#ffa500' }}>
-                            ⭐ +{formatNumber(item.power, lang)} Power
-                          </span>
-                        )}
-                        {item.heroLevelCap && (
-                          <span style={{ fontSize: '0.85rem', color: 'rgba(255, 255, 255, 0.5)' }}>
-                            Hero Cap: {item.heroLevelCap}
-                          </span>
-                        )}
-                      </div>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', alignItems: 'flex-end' }}>
-                        <div style={{ display: 'flex', gap: '1rem', fontSize: '0.9rem' }}>
-                          {item.wood > 0 && <span>🪵 {formatNumber(item.wood, lang)}</span>}
-                          {item.food > 0 && <span>🌾 {formatNumber(item.food, lang)}</span>}
-                          {item.steel > 0 && <span>⚙️ {formatNumber(item.steel, lang)}</span>}
-                          {item.zinc > 0 && <span>⚡ {formatNumber(item.zinc, lang)}</span>}
-                        </div>
-                        {item.requiredBuildings && item.requiredBuildings !== 'None' && (
-                          <span style={{ fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.4)', textAlign: 'right' }}>
-                            {item.requiredBuildings}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </>
-          ) : (
-            <div
-              className="calculator-error"
-              role="alert"
-              aria-live="assertive"
-              aria-atomic="true"
-            >
-              {t('calc.building.errorTargetLevel')}
-            </div>
-          )
+        {!maxed && (
+          <div class="bld-rem">
+            <span class="bld-rem-label">{lang === 'de' ? 'Rest bis Max:' : 'Remaining to max:'}</span>
+            {rem.food > 0 && <span>{ric('food')} {fc(rem.food)}</span>}
+            {rem.wood > 0 && <span>{ric('wood')} {fc(rem.wood)}</span>}
+            {rem.zent > 0 && <span>{ric('zent')} {fc(rem.zent)}</span>}
+            {rem.steel > 0 && <span>{ric('steel')} {fc(rem.steel)}</span>}
+            {rem.time > 0 && <span class="bld-brow-time">⏱ {fmtDur(applySpeed(rem.time))}</span>}
+          </div>
         )}
+
+        {/* Bonus-Legende: je Bonus eine Zeile mit Icon + Farbe */}
+        {bonuses.length > 0 && (
+          <div class="bld-legend">
+            {bonuses.map((bo, i) => (
+              <div key={bo.key} class="bld-legend-row" style={{ color: bColor(i) }}>
+                <span>{bonusIcon(bonusName(bo))}</span> {bonusName(bo)}
+              </div>
+            ))}
+          </div>
+        )}
+
+        <div class="bld-levels">
+          {Array.from({ length: cap }, (_, i) => i + 1).map((N) => {
+            const item = building.costs[N - 1];
+            const u = unlockAt(N);
+            const isCur = N === current;
+            const done = N < current;
+            return (
+              <button
+                key={N}
+                type="button"
+                class={`bld-brow bld-lrow${isCur ? ' current' : ''}${done ? ' done' : ''}`}
+                onClick={() => onSetLevel(N)}
+              >
+                <span class="bld-brow-lvl">{isCur ? '📍' : done ? '✓' : ''} Lv {N}</span>
+                <div class="bld-brow-body">
+                  <div class="bld-brow-stats">
+                    {bonuses.map((bo, i) => (
+                      <span key={bo.key} class="bld-stat" style={{ color: bColor(i), background: bColor(i) + '22' }}>
+                        {bonusIcon(bonusName(bo))} {bonusFmt(bo, N)}
+                      </span>
+                    ))}
+                    {item?.power ? <span class="bld-stat bld-stat-power">{kampfkraft} {fc(item.power)}</span> : null}
+                  </div>
+                  <div class="bld-brow-costs">
+                    {item && item.food > 0 && <span>{ric('food')} {fc(item.food)}</span>}
+                    {item && item.wood > 0 && <span>{ric('wood')} {fc(item.wood)}</span>}
+                    {item && item.zent > 0 && <span>{ric('zent')} {fc(item.zent)}</span>}
+                    {item && item.steel > 0 && <span>{ric('steel')} {fc(item.steel)}</span>}
+                    {item && item.time > 0 && <span class="bld-brow-time">⏱ {fmtDur(applySpeed(item.time))}</span>}
+                  </div>
+                  {item?.requires && item.requires.length > 0 && (
+                    <div class="bld-brow-req">🔒 {item.requires.map((r) => `${reqName(r)} Lv ${r.level}`).join(' · ')}</div>
+                  )}
+                  {u && <div class="bld-brow-unlock">🔓 {u.name[lang] || u.name.en}</div>}
+                </div>
+              </button>
+            );
+          })}
+        </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

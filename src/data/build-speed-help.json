@@ -1,0 +1,167 @@
+{
+  "de": {
+    "title": "Baugeschwindigkeit",
+    "base": "Erhöhte Baugeschwindigkeit",
+    "placeholder": "z.B. 288.1",
+    "howto": "Wo finde ich diesen Wert?",
+    "help": "So findest du deinen Wert: Öffne ein beliebiges Gebäude, das noch nicht auf Max ist, und tippe dann auf das ℹ️-Symbol (direkt neben dem 'Upgrade'-Button — bitte nicht versehentlich auf 'Upgrade' tippen). Ganz oben steht deine gesamte 'Erhöhte Baugeschwindigkeit'. Trage diesen Wert hier ein — die Bauzeiten passen sich an.",
+    "buffsNote": "Optionale Buffs — werden zum Basis-% addiert:",
+    "generalG": "Verwaltungskommandant",
+    "minister": "Bauminister-Buff",
+    "rose": "Rosen-Buff (1 oder 8 Rosen senden)"
+  },
+  "en": {
+    "title": "Build speed",
+    "base": "Increased Construction Speed",
+    "placeholder": "e.g. 288.1",
+    "howto": "Where do I find this value?",
+    "help": "To find your value: open any building that is not maxed yet, then tap the ℹ️ info icon (right next to the 'Upgrade' button — be careful not to tap 'Upgrade' by mistake). At the very top it shows your total increased construction speed. Enter that value here and the build times update accordingly.",
+    "buffsNote": "Optional buffs — added on top of your base %:",
+    "generalG": "Administrative Commander",
+    "minister": "Secretary of Construction",
+    "rose": "Rose buff (send 1 or 8 roses)"
+  },
+  "fr": {
+    "title": "Vitesse de construction",
+    "base": "Vitesse de construction accrue",
+    "placeholder": "ex. 288.1",
+    "howto": "Où trouver cette valeur ?",
+    "help": "Pour trouver ta valeur : ouvre n'importe quel bâtiment pas encore au max, puis touche l'icône ℹ️ (juste à côté du bouton « Améliorer » — attention à ne pas toucher « Améliorer » par erreur). Tout en haut s'affiche ta vitesse de construction accrue totale. Saisis cette valeur ici et les durées de construction s'ajustent.",
+    "buffsNote": "Buffs optionnels — ajoutés à ton % de base :",
+    "generalG": "Dirigeant politique",
+    "minister": "Ministre de la construction",
+    "rose": "Buff Rose (envoyer 1 ou 8 roses)"
+  },
+  "es": {
+    "title": "Velocidad de construcción",
+    "base": "Velocidad de construcción aumentada",
+    "placeholder": "p. ej. 288.1",
+    "howto": "¿Dónde encuentro este valor?",
+    "help": "Para encontrar tu valor: abre cualquier edificio que aún no esté al máximo y toca el icono ℹ️ (justo al lado del botón 'Mejorar' — ten cuidado de no tocar 'Mejorar' por error). Arriba del todo se muestra tu velocidad de construcción aumentada total. Introduce ese valor aquí y los tiempos de construcción se ajustan.",
+    "buffsNote": "Buffs opcionales — se suman a tu % base:",
+    "generalG": "Comandante Civil",
+    "minister": "Buff del Ministro de Construcción",
+    "rose": "Buff de Rosa (enviar 1 o 8 rosas)"
+  },
+  "pt": {
+    "title": "Velocidade de construção",
+    "base": "Velocidade de construção aumentada",
+    "placeholder": "ex. 288.1",
+    "howto": "Onde encontro este valor?",
+    "help": "Para encontrar o seu valor: abra qualquer edifício que ainda não esteja no máximo e toque no ícone ℹ️ (bem ao lado do botão 'Atualiz.' — cuidado para não tocar em 'Atualiz.' por engano). No topo aparece a sua velocidade de construção aumentada total. Insira esse valor aqui e os tempos de construção ajustam-se.",
+    "buffsNote": "Buffs opcionais — somados ao seu % base:",
+    "generalG": "Líder Político",
+    "minister": "Ministro da Construção",
+    "rose": "Buff da Rosa (enviar 1 ou 8 rosas)"
+  },
+  "it": {
+    "title": "Velocità di costruzione",
+    "base": "Velocità di costruzione aumentata",
+    "placeholder": "es. 288.1",
+    "howto": "Dove trovo questo valore?",
+    "help": "Per trovare il tuo valore: apri un edificio non ancora al massimo e tocca l'icona ℹ️ (proprio accanto al pulsante 'Migliora' — attenzione a non toccare 'Migliora' per sbaglio). In cima appare la tua velocità di costruzione aumentata totale. Inserisci quel valore qui e i tempi di costruzione si adeguano.",
+    "buffsNote": "Buff opzionali — aggiunti al tuo % base:",
+    "generalG": "Comandante Civile",
+    "minister": "Ministro dell'edilizia",
+    "rose": "Buff Rosa (invia 1 o 8 rose)"
+  },
+  "ja": {
+    "title": "建設速度",
+    "base": "建設速度アップ",
+    "placeholder": "例: 288.1",
+    "howto": "この値はどこで見つかりますか？",
+    "help": "値の見つけ方：まだ最大でない建物を開き、ℹ️アイコンをタップします（「レベルアップ」ボタンのすぐ隣です。間違えて「レベルアップ」を押さないよう注意）。一番上に合計の建設速度アップが表示されます。その値をここに入力すると建設時間が調整されます。",
+    "buffsNote": "任意バフ — 基本％に加算されます：",
+    "generalG": "政務統帥",
+    "minister": "建設長官",
+    "rose": "バラバフ（バラを1本または8本送る）"
+  },
+  "ko": {
+    "title": "건설 속도",
+    "base": "건설 속도 증가",
+    "placeholder": "예: 288.1",
+    "howto": "이 값은 어디서 찾나요?",
+    "help": "값을 찾는 방법: 아직 최대가 아닌 건물을 열고 ℹ️ 아이콘을 누르세요('레벨업' 버튼 바로 옆이니 실수로 '레벨업'를 누르지 않도록 주의하세요). 맨 위에 총 건설 속도 증가가 표시됩니다. 그 값을 여기에 입력하면 건설 시간이 조정됩니다.",
+    "buffsNote": "선택 버프 — 기본 %에 더해집니다:",
+    "generalG": "정무 총수",
+    "minister": "건설부장",
+    "rose": "장미 버프 (장미 1개 또는 8개 보내기)"
+  },
+  "zh-CN": {
+    "title": "建造速度",
+    "base": "建造速度提升",
+    "placeholder": "例如 288.1",
+    "howto": "在哪里找到这个数值？",
+    "help": "查找方法：打开任意一个尚未满级的建筑，然后点击 ℹ️ 图标（就在“升级”按钮旁边——注意别误点“升级”）。最上方会显示你的总建造速度提升。在此输入该数值，建造时间会相应调整。",
+    "buffsNote": "可选增益 — 会加到你的基础 %：",
+    "generalG": "政务统帅",
+    "minister": "建设部长",
+    "rose": "玫瑰增益（赠送1或8朵玫瑰）"
+  },
+  "zh-TW": {
+    "title": "建造速度",
+    "base": "建造速度提升",
+    "placeholder": "例如 288.1",
+    "howto": "在哪裡找到這個數值？",
+    "help": "查找方法：開啟任一尚未滿級的建築，然後點擊 ℹ️ 圖示（就在「升級」按鈕旁邊——注意別誤點「升級」）。最上方會顯示你的總建造速度提升。在此輸入該數值，建造時間會相應調整。",
+    "buffsNote": "可選增益 — 會加到你的基礎 %：",
+    "generalG": "政務統帥",
+    "minister": "建設部長",
+    "rose": "玫瑰增益（贈送1或8朵玫瑰）"
+  },
+  "th": {
+    "title": "ความเร็วการก่อสร้าง",
+    "base": "ความเร็วการก่อสร้างที่เพิ่มขึ้น",
+    "placeholder": "เช่น 288.1",
+    "howto": "หาค่านี้ได้ที่ไหน?",
+    "help": "วิธีหาค่า: เปิดสิ่งก่อสร้างใดก็ได้ที่ยังไม่เต็ม แล้วแตะไอคอน ℹ️ (อยู่ข้างปุ่ม 'อัปเกรด' — ระวังอย่าแตะ 'อัปเกรด' โดยบังเอิญ) ด้านบนสุดจะแสดงความเร็วการก่อสร้างที่เพิ่มขึ้นรวมของคุณ กรอกค่านี้ที่นี่แล้วเวลาก่อสร้างจะปรับตาม",
+    "buffsNote": "บัฟเสริม — บวกเข้ากับ % พื้นฐานของคุณ:",
+    "generalG": "จอมพลทางการเมือง",
+    "minister": "บัฟรัฐมนตรีอาคาร",
+    "rose": "บัฟกุหลาบ (ส่งกุหลาบ 1 หรือ 8 ดอก)"
+  },
+  "tr": {
+    "title": "İnşa hızı",
+    "base": "Artırılmış inşa hızı",
+    "placeholder": "örn. 288.1",
+    "howto": "Bu değeri nerede bulurum?",
+    "help": "Değerini bulmak için: henüz maks olmayan herhangi bir binayı aç, sonra ℹ️ simgesine dokun ('Yükselt' düğmesinin hemen yanında — yanlışlıkla 'Yükselt'e dokunmamaya dikkat et). En üstte toplam artırılmış inşa hızın görünür. Bu değeri buraya gir, inşa süreleri buna göre güncellenir.",
+    "buffsNote": "İsteğe bağlı buff'lar — temel %'ne eklenir:",
+    "generalG": "İdari Komutan",
+    "minister": "İnşaat Bakanı buff'ı",
+    "rose": "Gül buff'ı (1 veya 8 gül gönder)"
+  },
+  "id": {
+    "title": "Kecepatan konstruksi",
+    "base": "Kecepatan konstruksi meningkat",
+    "placeholder": "mis. 288.1",
+    "howto": "Di mana menemukan nilai ini?",
+    "help": "Cara menemukan nilaimu: buka bangunan apa pun yang belum maks, lalu ketuk ikon ℹ️ (tepat di sebelah tombol 'Upgrade' — hati-hati jangan sampai menekan 'Upgrade'). Di paling atas tertera total kecepatan konstruksi meningkat-mu. Masukkan nilai itu di sini dan waktu konstruksinya menyesuaikan.",
+    "buffsNote": "Buff opsional — ditambahkan ke % dasarmu:",
+    "generalG": "Komandan Politik",
+    "minister": "Menteri Pembangunan",
+    "rose": "Buff Mawar (kirim 1 atau 8 mawar)"
+  },
+  "ar": {
+    "title": "سرعة البناء",
+    "base": "زيادة سرعة البناء",
+    "placeholder": "مثال 288.1",
+    "howto": "أين أجد هذه القيمة؟",
+    "help": "للعثور على قيمتك: افتح أي مبنى لم يصل للحد الأقصى بعد، ثم اضغط على أيقونة ℹ️ (بجوار زر 'ترقية' مباشرة — احذر ألا تضغط 'ترقية' بالخطأ). في الأعلى تظهر زيادة سرعة البناء الإجمالية لديك. أدخل هذه القيمة هنا وستتعدّل أوقات البناء تلقائياً.",
+    "buffsNote": "تعزيزات اختيارية — تُضاف إلى نسبتك الأساسية:",
+    "generalG": "حاكم الشؤون العامة",
+    "minister": "وزير البناء",
+    "rose": "تعزيز الوردة (أرسل 1 أو 8 ورود)"
+  },
+  "vi": {
+    "title": "Tốc độ xây dựng",
+    "base": "Tốc độ xây dựng tăng thêm",
+    "placeholder": "vd. 288.1",
+    "howto": "Tìm giá trị này ở đâu?",
+    "help": "Cách tìm giá trị: mở bất kỳ công trình nào chưa đạt tối đa, rồi chạm biểu tượng ℹ️ (ngay cạnh nút 'Tăng Cấp' — cẩn thận đừng chạm nhầm 'Tăng Cấp'). Trên cùng hiển thị tổng tốc độ xây dựng tăng thêm của bạn. Nhập giá trị đó vào đây và thời gian xây dựng sẽ được điều chỉnh.",
+    "buffsNote": "Buff tùy chọn — cộng thêm vào % cơ bản của bạn:",
+    "generalG": "Thống Soái Chính Vụ",
+    "minister": "Bộ Trưởng Xây Dựng",
+    "rose": "Buff Hoa hồng (gửi 1 hoặc 8 hoa hồng)"
+  }
+}

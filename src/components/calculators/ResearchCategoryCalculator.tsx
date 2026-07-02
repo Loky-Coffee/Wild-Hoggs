@@ -372,6 +372,11 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
     isInfoBoxCollapsedRef.current = isInfoBoxCollapsed;
   }, [isInfoBoxCollapsed]);
 
+  // Mobil: Info-Panel standardmäßig eingeklappt (nach Mount -> kein Hydration-Mismatch)
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.innerWidth <= 768) setIsInfoBoxCollapsed(true);
+  }, []);
+
   // Auto-collapse info box when user interacts with tree (mobile only)
   useEffect(() => {
     const treeContainer = treeContainerRef.current;

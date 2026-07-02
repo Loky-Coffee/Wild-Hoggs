@@ -5,17 +5,25 @@ export const BuildingCostSchema = z.object({
   wood: z.number().nonnegative().int(),
   food: z.number().nonnegative().int(),
   steel: z.number().nonnegative().int(),
-  zinc: z.number().nonnegative().int(),
+  zent: z.number().nonnegative().int(),
   time: z.number().nonnegative().int(),
   requiredBuildings: z.string().optional(),
-  heroLevelCap: z.number().positive().int().optional(),
+  requires: z.array(z.object({
+    id: z.string().optional(),
+    name: z.string().optional(),
+    level: z.number().int(),
+  })).optional(),
+  heroLevelCap: z.number().nonnegative().int().optional(),
   power: z.number().nonnegative().int().optional(),
 });
 
 export const SingleBuildingSchema = z.object({
   id: z.string(),
   nameKey: z.string(),
+  gameNameKey: z.string().optional(),
+  image: z.string().optional(),
   maxLevel: z.number().positive().int(),
+  displayMaxLevel: z.number().positive().int().optional(),
   costs: z.array(BuildingCostSchema),
 }).refine(
   (building) => building.costs.length === building.maxLevel,

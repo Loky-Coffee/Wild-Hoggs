@@ -1,0 +1,104 @@
+{
+  "radar": [
+    {
+      "level": 1,
+      "name": {
+        "de": "Infos der plünderbaren Ressourcen",
+        "en": "Lootable Resources",
+        "fr": "Détails des ressources récupérables",
+        "es": "Detalles de los recursos saqueables",
+        "pt": "Detalhes de Recursos Saqueáveis",
+        "it": "Risorse saccheggiabili",
+        "ja": "略奪可能な資源の詳細情報",
+        "ko": "약탈 가능 자원 상세 정보",
+        "zh-CN": "可掠夺资源详细信息",
+        "zh-TW": "可掠奪資源詳細資訊",
+        "th": "รายละเอียดข่าวสารทรัพยากรที่ปล้นได้",
+        "tr": "Yağmalanabilir Kaynakların Ayrıntıları",
+        "id": "Detail Sumber Daya yang Bisa Direbut",
+        "ar": "تفاصيل الموارد القابلة للنهب",
+        "vi": "Thông tin tài nguyên có thể cướp"
+      }
+    },
+    {
+      "level": 7,
+      "name": {
+        "de": "Heldendetails & Zusammenfassung der Soldatentypen der Verteidigungstruppe",
+        "en": "Defensive Forces' Hero Info & Unit Type Summary",
+        "fr": "Informations sur les héros de la force défensive et résumé de la classification des unités",
+        "es": "Información de héroes de las tropas de defensa y resumen de la clasificación de tipos de unidades.",
+        "pt": "Heróis Defensores & Resumo de Unidades",
+        "it": "Informazioni sugli Eroi Difensivi e Riepilogo Classificazione delle Unità",
+        "ja": "防衛部隊のヒーロー情報＆兵種情報",
+        "ko": "수비 부대 영웅 정보 & 병종 분류 통계",
+        "zh-CN": "防守部队英雄信息&兵种分类汇总",
+        "zh-TW": "防守部隊英雄資訊&兵種分類匯總",
+        "th": "รายละเอียดฮีโร่ทัพคุ้มกัน&ประเภททหารรวม",
+        "tr": "Savunma Birliklerinin Kahraman Bilgileri & Tümen Sınıflandırması Toplamı",
+        "id": "Informasi Hero Pasukan Pertahanan & Ringkasan Kategori Prajurit",
+        "ar": "معلومات أبطال قوات الدفاع وتصنيف الوحدات",
+        "vi": "Thông tin Tướng & phân loại Binh Chủng của Bộ Đội Phòng Thủ"
+      }
+    },
+    {
+      "level": 10,
+      "name": {
+        "de": "Heldendetails & Zusammenfassung der Soldatentypen der Verstärkung",
+        "en": "Reinforcements' Hero Info & Unit Type Summary",
+        "fr": "Informations sur les héros des renforts et résumé de la classification des unités",
+        "es": "Información de héroes de las tropas de refuerzo y resumen de clasificación de unidades.",
+        "pt": "Heróis de Reforço & Resumo de Unidades",
+        "it": "Informazioni sugli Eroi di Rinforzo e Riepilogo Classificazione delle Unità",
+        "ja": "援軍部隊のヒーロー情報＆兵種情報",
+        "ko": "지원 부대 영웅 정보 & 병종 분류 통계",
+        "zh-CN": "援军部队英雄信息&兵种分类汇总",
+        "zh-TW": "援軍部隊英雄資訊&兵種分類匯總",
+        "th": "รายละเอียดฮีโร่ทัพทหารเสริม&ประเภททหารรวม",
+        "tr": "Destek Birliklerinin Kahraman Bilgileri & Tümen Sınıflandırması Toplamı",
+        "id": "Informasi Hero Pasukan Bantuan & Ringkasan Kategori Prajurit",
+        "ar": "معلومات أبطال قوات الدعم وتصنيف الوحدات",
+        "vi": "Thông tin Tướng & phân loại Binh Chủng của Bộ Đội Viện Quân"
+      }
+    },
+    {
+      "level": 13,
+      "name": {
+        "de": "Details zu den Soldaten der Verteidigungstruppe",
+        "en": "Defensive Forces Details",
+        "fr": "Détails de la force de défense",
+        "es": "Detalle de la fuerza de las tropas de defensa.",
+        "pt": "Detalhes das Tropas Defensivas",
+        "it": "Dettagli sulle Unità di Forze Difensive",
+        "ja": "防衛部隊の兵力詳細",
+        "ko": "수비 부대 병력 상세",
+        "zh-CN": "防守部队兵力明细",
+        "zh-TW": "防守部隊兵力明細",
+        "th": "รายละเอียดหน่วยทัพคุ้มกัน",
+        "tr": "Savunma Birliklerinin Detayları",
+        "id": "Detail Kekuatan Pasukan Pertahanan",
+        "ar": "تفاصيل قوة قوات الدفاع",
+        "vi": "Chi tiết Binh Lực của Bộ Đội Phòng Thủ"
+      }
+    },
+    {
+      "level": 17,
+      "name": {
+        "de": "Details zu den Soldaten der Verstärkung",
+        "en": "Reinforcements Details",
+        "fr": "Détails de la force des troupes de renfort",
+        "es": "Detalles de las tropas de refuerzo",
+        "pt": "Detalhes das Tropas de Reforço",
+        "it": "Dettagli sulle Unità di Rinforzo",
+        "ja": "援軍部隊の兵力詳細",
+        "ko": "지원 부대 병력 상세",
+        "zh-CN": "援军部队兵力明细",
+        "zh-TW": "援軍部隊兵力明細",
+        "th": "รายละเอียดหน่วยทัพทหารเสริม",
+        "tr": "Destek Birliklerinin Güç Ayrıntıları",
+        "id": "Detail Kekuatan Pasukan Bantuan",
+        "ar": "تفاصيل قوة قوات الدعم",
+        "vi": "Chi tiết Binh Lực của Bộ Đội Viện Quân"
+      }
+    }
+  ]
+}

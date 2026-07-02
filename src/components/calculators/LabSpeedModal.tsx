@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'preact/hooks';
 import { createPortal } from 'preact/compat';
 import { type LabSpeed, effectiveLabSpeed } from '../../utils/labSpeed';
+import { useSheetDrag } from '../../hooks/useSheetDrag';
 import labSpeedHelp from '../../data/lab-speed-help.json';
 import './ResearchLevelSheet.css';
 
@@ -11,11 +12,15 @@ interface Props {
   readonly onChange: (v: LabSpeed) => void;
   readonly onClose: () => void;
   readonly lang: string;
+  // Optional: andere Hilfe-Daten + Bild (z.B. Bau-Geschwindigkeit statt Forschung)
+  readonly helpData?: Record<string, Record<string, string>>;
+  readonly helpImage?: string;
 }
 
-export default function LabSpeedModal({ labSpeed, onChange, onClose, lang }: Props) {
-  const H = HELP[lang] || HELP.en;
+export default function LabSpeedModal({ labSpeed, onChange, onClose, lang, helpData, helpImage }: Props) {
+  const H = (helpData ?? HELP)[lang] || (helpData ?? HELP).en;
   const eff = effectiveLabSpeed(labSpeed);
+  const { handleRef, sheetRef } = useSheetDrag(onClose);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -42,8 +47,8 @@ export default function LabSpeedModal({ labSpeed, onChange, onClose, lang }: Pro
 
   return createPortal(
     <div class="rls-backdrop" onClick={onClose}>
-      <div class="rls-sheet ls-modal" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-label={H.title}>
-        <div class="rls-handle" />
+      <div class="rls-sheet ls-modal" ref={sheetRef} onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-label={H.title}>
+        <div class="rls-handle" ref={handleRef} />
         <div class="rls-header">
           <strong>⏱ {H.title}</strong>
           <button class="rls-close" onClick={onClose} aria-label="Close">✕</button>
@@ -73,7 +78,7 @@ export default function LabSpeedModal({ labSpeed, onChange, onClose, lang }: Pro
         <div class="ls-help">
           <p class="ls-help-title">ℹ️ {H.howto}</p>
           <p class="rls-help-text">{H.help}</p>
-          <img src="/help/lab-speed-help.png" alt="" class="ls-help-img" loading="lazy" />
+          <img src={helpImage ?? '/help/lab-speed-help.png'} alt="" class="ls-help-img" loading="lazy" />
         </div>
       </div>
     </div>,

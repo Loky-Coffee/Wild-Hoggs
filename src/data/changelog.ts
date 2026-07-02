@@ -7,6 +7,21 @@ export interface ChangelogEntry {
 export const changelog: ChangelogEntry[] = [
   // ── July 2026 ───────────────────────────────────────────────────────────
   {
+    date: '2026-07-02',
+    time: '22:30',
+    text: 'Building & Research sheets: on mobile you can now pull a sheet down by its top handle to close it (before, the content just scrolled). The research info panel also starts collapsed on mobile for more room',
+  },
+  {
+    date: '2026-07-02',
+    time: '22:00',
+    text: 'Building calculator: added a global Build-Speed setting — a button above the calculator where you enter your base build-speed % plus optional Administrative Commander / Construction-Minister / Rose buff checkboxes (with an in-game how-to and screenshot); every build time then updates live. The matching Capitol buff in the Lab-Speed setting was renamed to "Administrative Commander". Saved to your account (synced when logged in), in 15 languages',
+  },
+  {
+    date: '2026-07-02',
+    time: '21:30',
+    text: 'Building calculator, completely reworked: a grid of buildings with pictures — tap one to set your current level. Each level shows its upgrade cost, build time, bonuses (colour-coded per bonus) and power, plus the buildings you need first. Buildings that exist multiple times (residences, steel plants, lumberyards, wind turbines …) are listed and numbered individually so the total power adds up correctly. An overview bar shows total power, overall progress % and the resources/time still needed to reach max. Saved to your account (synced when logged in), in 15 languages',
+  },
+  {
     date: '2026-07-01',
     time: '22:20',
     text: 'Tactical Master tree: Recharge Shield now requires Interceptions, so the Interceptions node connects cleanly into the tree instead of hanging as a dead-end (mirrors the second-tier layout)',
