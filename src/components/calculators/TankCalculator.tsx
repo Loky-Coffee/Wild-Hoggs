@@ -251,8 +251,8 @@ export default function TankCalculator({ lang, translationData }: TankCalculator
 
       </div>
 
-      {/* View Container */}
-      <div ref={treeContainerRef} style={{ flex: 1, minHeight: 0 }}>
+      {/* View Container (minWidth:0 -> Flex-Item wächst nicht über die sichtbare Breite hinaus) */}
+      <div ref={treeContainerRef} style={{ flex: 1, minWidth: 0, minHeight: 0 }}>
 
         {viewMode === 'tree' ? (
           <TankModificationTree

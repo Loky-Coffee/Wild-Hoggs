@@ -1,9 +1,8 @@
 import { useMemo, useRef, useCallback, useEffect, useState } from 'preact/hooks';
-import { useTreeZoom, calculateMobileZoom, TREE_ZOOM_DEFAULTS } from '../../hooks/useTreeZoom';
+import { useTreeZoom, calculateMobileZoom, calculateFitZoom, TREE_ZOOM_DEFAULTS } from '../../hooks/useTreeZoom';
 import TankModificationNode from './TankModificationNode';
 import TankLevelSheet from './TankLevelSheet';
 import TankModificationConnections from './TankModificationConnections';
-import TreeControls from './TreeControls';
 import { formatNumber as sharedFormatNumber } from '../../utils/formatters';
 import type { TranslationData } from '../../i18n/index';
 import {
@@ -60,14 +59,13 @@ export default function TankModificationTree({
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
 
-  const { zoomLevel, setZoomLevel, handleZoomIn, handleZoomOut,
-    handleScrollLeft, handleScrollRight, handleScrollUp, handleScrollDown,
-    resetView } = useTreeZoom(scrollContainerRef);
+  const { zoomLevel, setZoomLevel } = useTreeZoom(scrollContainerRef);
 
   const [focusedNodeLevel, setFocusedNodeLevel] = useState<number | null>(null);
   const [sheetLevel, setSheetLevel] = useState<number | null>(null);
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [resizeTick, setResizeTick] = useState(0);
 
   const formatNumber = (num: number) => sharedFormatNumber(num, lang);
 
@@ -78,6 +76,7 @@ export default function TankModificationTree({
     const handleResize = () => {
       const mobile = window.innerWidth < BREAKPOINT_MOBILE;
       setIsMobile(mobile);
+      setResizeTick((t) => t + 1); // Zoom bei jeder Größenänderung neu berechnen
     };
 
     // Immediate check on mount
@@ -136,15 +135,15 @@ export default function TankModificationTree({
     }
   }, [modifications, focusedNodeLevel, nodePositions]);
 
-  // Calculate initial zoom to fit content perfectly on mobile
+  // Zoom dynamisch an den Bildschirm anpassen (Mobile: Breite; Desktop: ganzer Baum ins Sichtfeld)
   useEffect(() => {
     if (!scrollContainerRef.current || !mounted) return;
     if (isMobile) {
       setZoomLevel(calculateMobileZoom(scrollContainerRef.current, NODE_SPACING_X * 3));
     } else {
-      setZoomLevel(1);
+      setZoomLevel(calculateFitZoom(scrollContainerRef.current, svgDimensions.width, TREE_ZOOM_DEFAULTS.MIN_ZOOM, 1.5));
     }
-  }, [svgDimensions, mounted, isMobile]);
+  }, [svgDimensions, mounted, isMobile, resizeTick]);
 
   // Sheet-Auswahl: Sub-Level setzen + kaskadierende Auto-Entsperrung — alles in
   // EINEM State-Update (sonst würde der 2. Setter mit stale State den 1. überschreiben).
@@ -304,7 +303,7 @@ export default function TankModificationTree({
         backgroundSize: '30px 30px',
         borderRadius: '12px',
         padding: (mounted && isMobile) ? `${TREE_ZOOM_DEFAULTS.CONTAINER_PADDING_MOBILE}rem` : `${TREE_ZOOM_DEFAULTS.CONTAINER_PADDING_DESKTOP}rem`,
-        paddingBottom: (mounted && isMobile) ? '120px' : '140px',
+        paddingBottom: (mounted && isMobile) ? '2.5rem' : '1.5rem',
         WebkitOverflowScrolling: 'touch' as const,
         touchAction: 'pan-x pan-y pinch-zoom',
         cursor: 'grab',
@@ -317,7 +316,7 @@ export default function TankModificationTree({
           width={svgDimensions.width * zoomLevel}
           height={svgDimensions.height * zoomLevel}
           viewBox={`0 0 ${svgDimensions.width} ${svgDimensions.height}`}
-          style={{ display: 'block' }}
+          style={{ display: 'block', margin: '0 auto' }}
         >
           {/* Connections */}
           <TankModificationConnections
@@ -357,16 +356,6 @@ export default function TankModificationTree({
         </svg>
 
     </div>
-      <TreeControls
-        zoomLevel={zoomLevel}
-        onZoomIn={handleZoomIn}
-        onZoomOut={handleZoomOut}
-        onResetView={() => resetView((mounted && isMobile) ? () => NODE_SPACING_X * 3 : undefined)}
-        onScrollUp={handleScrollUp}
-        onScrollDown={handleScrollDown}
-        onScrollLeft={handleScrollLeft}
-        onScrollRight={handleScrollRight}
-      />
       {sheetLevel !== null && (() => {
         const m = modifications.find(mm => mm.level === sheetLevel);
         if (!m) return null;

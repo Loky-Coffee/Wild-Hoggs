@@ -24,6 +24,40 @@ export function calculateMobileZoom(
   return Math.max(Math.min(result, 1), minZoom);
 }
 
+/**
+ * Fit-to-Width: skaliert den Baum so, dass er die verfügbare BREITE füllt (darf auch
+ * vergrößern, bis maxZoom). Höhe bleibt scrollbar. Passt sich so an die Monitorbreite an.
+ */
+export function calculateFitZoom(
+  container: HTMLElement,
+  contentWidth: number,
+  minZoom: number = TREE_ZOOM_DEFAULTS.MIN_ZOOM,
+  maxZoom: number = TREE_ZOOM_DEFAULTS.MAX_ZOOM
+): number {
+  const cs = window.getComputedStyle(container);
+  const padX = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight);
+  const availW = container.clientWidth - padX;
+  if (availW <= 0 || contentWidth <= 0) return 1;
+  return Math.max(Math.min(availW / contentWidth, maxZoom), minZoom);
+}
+
+/**
+ * Fit-to-Height: skaliert den Baum so, dass er die verfügbare HÖHE füllt (bis maxZoom).
+ * Für horizontale Layouts (breit-aber-flach) — Breite bleibt scrollbar.
+ */
+export function calculateFitHeightZoom(
+  container: HTMLElement,
+  contentHeight: number,
+  minZoom: number = TREE_ZOOM_DEFAULTS.MIN_ZOOM,
+  maxZoom: number = TREE_ZOOM_DEFAULTS.MAX_ZOOM
+): number {
+  const cs = window.getComputedStyle(container);
+  const padY = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
+  const availH = container.clientHeight - padY;
+  if (availH <= 0 || contentHeight <= 0) return 1;
+  return Math.max(Math.min(availH / contentHeight, maxZoom), minZoom);
+}
+
 export function useTreeZoom(scrollContainerRef: RefObject<HTMLElement>) {
   const [zoomLevel, setZoomLevel] = useState(1);
 

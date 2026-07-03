@@ -503,19 +503,19 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
             )}
           </div>
 
-          {/* Right: Controls */}
-          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center' }}>
+          {/* Right: Controls — gestapelt + full-width wie beim Tank */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
             <button
               onClick={() => setLayoutDirection(layoutDirection === 'horizontal' ? 'vertical' : 'horizontal')}
               className="btn-secondary layout-toggle-btn"
-              style={{ padding: '0.6rem 1rem', fontSize: '0.9rem' }}
+              style={{ padding: '0.6rem 1rem', fontSize: '0.9rem', width: '100%', textAlign: 'left' }}
             >
               {layoutDirection === 'horizontal' ? '⇅' : '⇄'} Layout
             </button>
-            <button onClick={selectAllToMax} className="btn-secondary" style={{ padding: '0.6rem 1rem', fontSize: '0.9rem' }}>
+            <button onClick={selectAllToMax} className="btn-secondary" style={{ padding: '0.6rem 1rem', fontSize: '0.9rem', width: '100%', textAlign: 'left' }}>
               {t('calc.research.selectAll')}
             </button>
-            <button onClick={handleReset} className="btn-secondary" style={{ padding: '0.6rem 1rem', fontSize: '0.9rem' }}>
+            <button onClick={handleReset} className="btn-secondary" style={{ padding: '0.6rem 1rem', fontSize: '0.9rem', width: '100%', textAlign: 'left' }}>
               {t('calc.research.reset')}
             </button>
           </div>

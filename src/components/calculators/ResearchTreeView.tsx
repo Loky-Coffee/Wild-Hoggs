@@ -1,5 +1,5 @@
 import { useMemo, useCallback, useEffect, useRef, useState } from 'preact/hooks';
-import { useTreeZoom, calculateMobileZoom, TREE_ZOOM_DEFAULTS } from '../../hooks/useTreeZoom';
+import { useTreeZoom, calculateMobileZoom, calculateFitZoom, calculateFitHeightZoom, TREE_ZOOM_DEFAULTS } from '../../hooks/useTreeZoom';
 import type { Technology } from '../../schemas/research';
 import { formatNumber as sharedFormatNumber } from '../../utils/formatters';
 import type { TranslationData } from '../../i18n/index';
@@ -7,7 +7,6 @@ import ResearchTreeNode from './ResearchTreeNode';
 import ResearchLevelSheet from './ResearchLevelSheet';
 import { type LabSpeed } from '../../utils/labSpeed';
 import ResearchTreeConnections from './ResearchTreeConnections';
-import TreeControls from './TreeControls';
 import {
   NODE_WIDTH,
   NODE_HEIGHT,
@@ -52,9 +51,7 @@ export default function ResearchTreeView({
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  const { zoomLevel, setZoomLevel, handleZoomIn, handleZoomOut,
-    handleScrollLeft, handleScrollRight, handleScrollUp, handleScrollDown,
-    resetView } = useTreeZoom(scrollContainerRef);
+  const { zoomLevel, setZoomLevel } = useTreeZoom(scrollContainerRef);
 
   // Im horizontalen Layout: vertikales Mausrad -> horizontales Scrollen (links/rechts)
   useEffect(() => {
@@ -76,10 +73,17 @@ export default function ResearchTreeView({
   const [sheetTech, setSheetTech] = useState<Technology | null>(null);
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [resizeTick, setResizeTick] = useState(0);
 
   useEffect(() => {
     setMounted(true);
-    setIsMobile(window.innerWidth < BREAKPOINT_MOBILE);
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < BREAKPOINT_MOBILE);
+      setResizeTick((t) => t + 1); // Zoom bei Größenänderung neu berechnen
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const tiers = useMemo((): Map<string, number> => {
@@ -157,32 +161,25 @@ export default function ResearchTreeView({
   // Horizontal mode: fit the tree HEIGHT into the container — avoids tiny/empty tree
   //   because the horizontal SVG is tall-but-narrow in container perspective.
   useEffect(() => {
-    if (!scrollContainerRef.current || !mounted) return;
-    if (isMobile) {
-      const container = scrollContainerRef.current;
-      if (layoutDirection === 'horizontal') {
-        // Use rAF so iOS Safari has time to finish the flex layout pass
-        // before we read clientHeight. Without this, clientHeight = 0 on real
-        // devices → zoom clamps to MIN_ZOOM (tree appears tiny).
-        const svgH = svgDimensions.height;
-        const rafId = requestAnimationFrame(() => {
-          const computedStyle = window.getComputedStyle(container);
-          const paddingTop = parseFloat(computedStyle.paddingTop);
-          const paddingBottom = parseFloat(computedStyle.paddingBottom);
-          const availableHeight = container.clientHeight - paddingTop - paddingBottom;
-          if (availableHeight > 0) {
-            const zoom = Math.max(Math.min(availableHeight / svgH, 1), TREE_ZOOM_DEFAULTS.MIN_ZOOM);
-            setZoomLevel(zoom);
-          }
-        });
-        return () => cancelAnimationFrame(rafId);
-      } else {
-        setZoomLevel(calculateMobileZoom(container, NODE_SPACING * 3));
-      }
-    } else {
-      setZoomLevel(1);
+    const container = scrollContainerRef.current;
+    if (!container || !mounted) return;
+    if (layoutDirection === 'horizontal') {
+      // Horizontal (breit-aber-flach): an die HÖHE anpassen. Mobil bis 1:1, Desktop bis 1.5.
+      // rAF, damit die Flex-Layout-Höhe (v.a. iOS Safari) fertig ist, bevor wir clientHeight lesen.
+      const svgH = svgDimensions.height;
+      const cap = isMobile ? 1 : 1.5;
+      const rafId = requestAnimationFrame(() => {
+        setZoomLevel(calculateFitHeightZoom(container, svgH, TREE_ZOOM_DEFAULTS.MIN_ZOOM, cap));
+      });
+      return () => cancelAnimationFrame(rafId);
     }
-  }, [mounted, isMobile, layoutDirection, svgDimensions.height]);
+    // Vertikal (hoch-aber-schmal): an die BREITE anpassen. Mobil bis 1:1, Desktop bis 1.5.
+    if (isMobile) {
+      setZoomLevel(calculateMobileZoom(container, NODE_SPACING * 3));
+    } else {
+      setZoomLevel(calculateFitZoom(container, svgDimensions.width, TREE_ZOOM_DEFAULTS.MIN_ZOOM, 1.5));
+    }
+  }, [mounted, isMobile, layoutDirection, svgDimensions.height, svgDimensions.width, resizeTick]);
 
   const isUnlocked = (tech: Technology): boolean => {
     if (tech.prerequisites.length === 0) return true;
@@ -471,7 +468,7 @@ export default function ResearchTreeView({
         backgroundSize: '30px 30px',
         borderRadius: '12px',
         padding: (mounted && isMobile) ? `${TREE_ZOOM_DEFAULTS.CONTAINER_PADDING_MOBILE}rem` : `${TREE_ZOOM_DEFAULTS.CONTAINER_PADDING_DESKTOP}rem`,
-        paddingBottom: (mounted && isMobile) ? '120px' : '140px',
+        paddingBottom: (mounted && isMobile) ? '2.5rem' : '1.5rem',
         WebkitOverflowScrolling: 'touch' as const,
         touchAction: 'pan-x pan-y pinch-zoom',
         cursor: 'grab',
@@ -541,29 +538,6 @@ export default function ResearchTreeView({
           </div>
 
     </div>
-      <TreeControls
-        zoomLevel={zoomLevel}
-        onZoomIn={handleZoomIn}
-        onZoomOut={handleZoomOut}
-        onResetView={() => {
-          if (isMobile && layoutDirection === 'horizontal' && scrollContainerRef.current) {
-            const container = scrollContainerRef.current;
-            const computedStyle = window.getComputedStyle(container);
-            const paddingTop = parseFloat(computedStyle.paddingTop);
-            const paddingBottom = parseFloat(computedStyle.paddingBottom);
-            const availableHeight = container.clientHeight - paddingTop - paddingBottom;
-            const zoom = Math.max(Math.min(availableHeight / svgDimensions.height, 1), TREE_ZOOM_DEFAULTS.MIN_ZOOM);
-            setZoomLevel(zoom);
-            container.scrollTo({ left: 0, top: 0, behavior: 'smooth' });
-          } else {
-            resetView(isMobile ? () => NODE_SPACING * 3 : undefined);
-          }
-        }}
-        onScrollUp={handleScrollUp}
-        onScrollDown={handleScrollDown}
-        onScrollLeft={handleScrollLeft}
-        onScrollRight={handleScrollRight}
-      />
       {sheetTech && (
         <ResearchLevelSheet
           tech={sheetTech}

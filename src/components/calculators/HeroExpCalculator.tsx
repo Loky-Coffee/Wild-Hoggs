@@ -1,160 +1,110 @@
-import { useState, useMemo } from 'preact/hooks';
-import { validatedHeroExpTable } from '../../data/validated/hero-exp';
+import { useMemo } from 'preact/hooks';
+import heroExpTable from '../../data/hero-exp-table.json';
 import { useTranslations } from '../../i18n/utils';
-import { formatNumber } from '../../utils/formatters';
-import type { TranslationData } from '../../i18n/index';
+import type { TranslationData, TranslationKey } from '../../i18n/index';
 import { useCalculatorState } from '../../hooks/useCalculatorState';
 import { useProfile } from '../../hooks/useProfile';
-import './Calculator.css';
+import './HeroExpCalculator.css';
 
-interface HeroExpCalculatorProps {
+const TABLE = heroExpTable as number[];
+const MAX_LEVEL = TABLE.length; // 175
+
+// Spiel-Schreibweise: K / M / G (Milliarde)
+function fmtShort(n: number): string {
+  if (n >= 1e9) return `${(n / 1e9).toFixed(2)}G`;
+  if (n >= 1e6) return `${(n / 1e6).toFixed(1)}M`;
+  if (n >= 1e3) return `${(n / 1e3).toFixed(0)}K`;
+  return String(n);
+}
+function clamp(v: number, lo: number, hi: number): number {
+  return Math.max(lo, Math.min(hi, Math.round(v) || lo));
+}
+
+interface HeroExpState { currentLevel: number; targetLevel: number }
+const DEFAULT: HeroExpState = { currentLevel: 1, targetLevel: MAX_LEVEL };
+
+interface Props {
   readonly lang: 'de' | 'en';
   readonly translationData: TranslationData;
 }
 
-const heroExpTable = validatedHeroExpTable;
-
-interface HeroExpState {
-  currentLevel: number;
-  targetLevel: number;
-}
-
-const HERO_EXP_DEFAULT: HeroExpState = {
-  currentLevel: 1,
-  targetLevel: 10,
-};
-
-export default function HeroExpCalculator({ lang, translationData }: HeroExpCalculatorProps) {
+export default function HeroExpCalculator({ lang, translationData }: Props) {
   const { activeProfile } = useProfile();
-
-  const [stored, setStored] = useCalculatorState<HeroExpState>('hero-exp', 'main', HERO_EXP_DEFAULT, activeProfile.id);
-  const [calculated, setCalculated] = useState(false);
-
-  const currentLevel = stored.currentLevel;
-  const targetLevel = stored.targetLevel;
-
-  const setCurrentLevel = (v: number) => setStored(s => ({ ...s, currentLevel: v }));
-  const setTargetLevel  = (v: number) => setStored(s => ({ ...s, targetLevel:  v }));
-
+  const [stored, setStored] = useCalculatorState<HeroExpState>('hero-exp', 'main', DEFAULT, activeProfile.id);
   const t = useTranslations(translationData);
+  const k = (s: string) => t(s as TranslationKey);
+  const numLocale = lang === 'de' ? 'de-DE' : 'en-US';
 
-  const maxLevel = heroExpTable.length; // derived from actual data, not hardcoded
+  const current = clamp(stored.currentLevel, 1, MAX_LEVEL - 1);
+  const target = clamp(stored.targetLevel, current + 1, MAX_LEVEL);
 
-  const calculatedResults = useMemo(() => {
-    if (currentLevel > maxLevel || targetLevel > maxLevel) {
-      return { error: 'maxLevel' } as const;
-    }
-    if (currentLevel >= targetLevel || currentLevel < 1) {
-      return null;
-    }
-
-    let totalExp = 0;
-    const breakdown: { level: number; exp: number }[] = [];
-
-    for (let level = currentLevel; level < targetLevel && level < heroExpTable.length; level++) {
-      const expNeeded = heroExpTable[level];
-      totalExp += expNeeded;
-      breakdown.push({ level: level + 1, exp: expNeeded });
-    }
-
-    return { totalExp, breakdown };
-  }, [currentLevel, targetLevel]);
-
-  const handleReset = () => {
-    setStored(HERO_EXP_DEFAULT);
-    setCalculated(false);
+  const setCurrent = (v: number) => {
+    const c = clamp(v, 1, MAX_LEVEL - 1);
+    setStored((s) => ({ currentLevel: c, targetLevel: Math.max(c + 1, clamp(s.targetLevel, 2, MAX_LEVEL)) }));
   };
+  const setTarget = (v: number) => setStored((s) => ({ ...s, targetLevel: clamp(v, current + 1, MAX_LEVEL) }));
+
+  const total = useMemo(() => {
+    let sum = 0;
+    for (let n = current; n < target; n++) sum += TABLE[n] ?? 0;
+    return sum;
+  }, [current, target]);
+
+  const rows = useMemo(() => {
+    const r: { level: number; exp: number }[] = [];
+    for (let n = current; n < target; n++) r.push({ level: n, exp: TABLE[n] ?? 0 });
+    return r;
+  }, [current, target]);
+
+  const pct = Math.round(((current - 1) / (MAX_LEVEL - 1)) * 100);
 
   return (
-    <div className={`calc-split${calculated ? ' has-results' : ''}`}>
-      <div className="calc-controls">
-
-        {/* Info */}
-        <div className="info-box">
-          <p>{t('calc.hero.infoText')}</p>
-        </div>
-
-        {/* Level Range */}
-        <div className="calc-step">
-          <div className="calc-step-label">{t('calc.hero.levelRange')}</div>
-          <div className="form-row">
-            <div className="form-group">
-              <label htmlFor="current-level">{t('calc.hero.currentLevel')}:</label>
-              <input
-                id="current-level"
-                type="number"
-                min="1"
-                max={maxLevel - 1}
-                value={currentLevel}
-                onChange={(e) => setCurrentLevel(Number.parseInt((e.target as HTMLInputElement).value, 10) || 1)}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="target-level">{t('calc.hero.targetLevel')}:</label>
-              <input
-                id="target-level"
-                type="number"
-                min={currentLevel + 1}
-                max={maxLevel}
-                value={targetLevel}
-                onChange={(e) => setTargetLevel(Number.parseInt((e.target as HTMLInputElement).value, 10) || currentLevel + 1)}
-              />
-            </div>
+    <div class="hx-wrap">
+      <div class="hx-card">
+        <div class="hx-levels">
+          <div class="hx-lvl">
+            <span class="hx-lvl-label">{k('calc.hero.currentLevel')}</span>
+            <input class="hx-lvl-num" type="number" min={1} max={MAX_LEVEL - 1} value={current}
+              onChange={(e) => setCurrent(Number((e.target as HTMLInputElement).value))} />
+            <input class="hx-slider" type="range" min={1} max={MAX_LEVEL - 1} value={current}
+              onInput={(e) => setCurrent(Number((e.target as HTMLInputElement).value))} aria-label={k('calc.hero.currentLevel')} />
           </div>
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <button onClick={handleReset} className="btn-secondary">
-              {t('calc.hero.reset')}
-            </button>
+
+          <div class="hx-arrow">→</div>
+
+          <div class="hx-lvl">
+            <span class="hx-lvl-label">{k('calc.hero.targetLevel')}</span>
+            <input class="hx-lvl-num" type="number" min={2} max={MAX_LEVEL} value={target}
+              onChange={(e) => setTarget(Number((e.target as HTMLInputElement).value))} />
+            <input class="hx-slider" type="range" min={2} max={MAX_LEVEL} value={target}
+              onInput={(e) => setTarget(Number((e.target as HTMLInputElement).value))} aria-label={k('calc.hero.targetLevel')} />
           </div>
         </div>
 
-        {/* Calculate Button */}
-        <button
-          type="button"
-          className={`calc-btn${calculated ? ' done' : ''}`}
-          onClick={() => setCalculated(true)}
-          disabled={calculated}
-        >
-          {calculated ? `✓ ${t('calc.hero.autoCalculate')}` : t('calc.hero.calculate')}
-        </button>
+        <div class="hx-result">
+          <span class="hx-result-label">🎖️ {k('calc.hero.totalExp')}</span>
+          <span class="hx-result-val">{fmtShort(total)}</span>
+          <span class="hx-result-sub">
+            {new Intl.NumberFormat(numLocale).format(total)} · {target - current} {lang === 'de' ? 'Level' : 'levels'}
+          </span>
+        </div>
 
+        <div class="hx-progress" title={`${pct}%`}>
+          <div class="hx-progress-fill" style={{ width: `${pct}%` }} />
+        </div>
       </div>
 
-      <div className="calc-results">
-        {calculated && (
-          calculatedResults && !('error' in calculatedResults) ? (
-            <>
-              <div className="result-card highlight">
-                <div className="result-label">{t('calc.hero.totalExp')}</div>
-                <div className="result-value">{formatNumber(calculatedResults.totalExp, lang)}</div>
-              </div>
-
-              <div className="breakdown">
-                <h4>{t('calc.hero.expPerLevel')}</h4>
-                <div className="breakdown-list">
-                  {calculatedResults.breakdown.map((item) => (
-                    <div key={item.level} className="breakdown-item">
-                      <span className="breakdown-level">Level {item.level}</span>
-                      <span className="breakdown-exp">{formatNumber(item.exp, lang)} EXP</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </>
-          ) : (
-            <div
-              className="calculator-error"
-              role="alert"
-              aria-live="assertive"
-              aria-atomic="true"
-            >
-              {calculatedResults?.error === 'maxLevel'
-                ? t('calc.hero.errorMaxLevel')
-                : t('calc.hero.errorTargetLevel')}
+      <details class="hx-details">
+        <summary>{k('calc.hero.expPerLevel')} · Lv {current} → {target}</summary>
+        <div class="hx-table">
+          {rows.map((r) => (
+            <div key={r.level} class="hx-row">
+              <span class="hx-row-lvl">Lv {r.level} → {r.level + 1}</span>
+              <span class="hx-row-exp">{fmtShort(r.exp)}</span>
             </div>
-          )
-        )}
-      </div>
+          ))}
+        </div>
+      </details>
     </div>
   );
 }

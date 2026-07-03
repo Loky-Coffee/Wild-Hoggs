@@ -1,46 +1,29 @@
 ---
-import PageLayout from '../../../layouts/PageLayout.astro';
-import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../../i18n/utils';
+// Alte Tool-URL — jetzt Teil des Helden-Hubs (/heroes, Tab „EXP"). Weiterleitung dorthin.
+import { getLangFromUrl, getLocalizedPath } from '../../../i18n/utils';
 import { getLanguagePaths } from '../../../i18n/static-paths';
-import { loadTranslations } from '../../../i18n/index';
-import HeroExpCalculator from '../../../components/calculators/HeroExpCalculator';
-import { ErrorBoundary } from '../../../components/ErrorBoundary';
-import '../../../styles/shared-layouts.css';
 
 export function getStaticPaths() {
   return getLanguagePaths();
 }
 
 const lang = getLangFromUrl(Astro.url);
-const translationData = await loadTranslations(lang);
-const t = useTranslations(translationData);
-
-const breadcrumbItems = [
-  { label: t('nav.home'), href: getLocalizedPath('', lang) },
-  { label: t('nav.tools'), href: getLocalizedPath('tools', lang) },
-  { label: t('tools.hero.title') }
-];
+const heroesPath = getLocalizedPath('heroes', lang);
+const target = `${heroesPath}#exp`;
 ---
 
-<PageLayout
-  title={t('seo.hero-exp.title')}
-  description={t('seo.hero-exp.description')}
-  breadcrumbs={breadcrumbItems}
-  image="/og-hero.webp"
-  imageAlt={t('tools.hero.title')}
->
-
-  <div class="page-header">
-    <h1>{t('tools.hero.title')}</h1>
-    <p class="subtitle">{t('tools.hero.description')}</p>
-  </div>
-
-  <!-- client:load ist hier ABSICHTLICH (nicht client:visible):
-       IntersectionObserver (genutzt von client:visible) erkennt die Komponente
-       im aktuellen Layout-Kontext nie als sichtbar → Hydration startet nie →
-       Calculate-Button funktioniert nicht. Gleiches Problem wie tank.astro (9aaeb6f). -->
-  <ErrorBoundary lang={lang} client:load>
-    <HeroExpCalculator lang={lang} translationData={translationData} client:load />
-  </ErrorBoundary>
-</PageLayout>
-
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="refresh" content={`0; url=${target}`} />
+    <link rel="canonical" href={heroesPath} />
+    <meta name="robots" content="noindex, follow" />
+    <title>Redirecting…</title>
+    <script is:inline set:html={`location.replace(${JSON.stringify(target)});`} />
+  </head>
+  <body>
+    <p>→ <a href={target}>Hero EXP</a></p>
+  </body>
+</html>

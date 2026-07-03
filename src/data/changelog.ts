@@ -7,6 +7,26 @@ export interface ChangelogEntry {
 export const changelog: ChangelogEntry[] = [
   // ── July 2026 ───────────────────────────────────────────────────────────
   {
+    date: '2026-07-03',
+    time: '17:50',
+    text: 'The Heroes page is now a hub with tabs: the hero database (shown by default) plus a Hero-EXP calculator. The EXP calculator lives here now — the old standalone tool link redirects to it, or open it directly via Heroes → the "Hero EXP" tab',
+  },
+  {
+    date: '2026-07-03',
+    time: '16:10',
+    text: 'Hero-EXP calculator: pick your current and target level (up to 175) with live sliders and instantly see the total EXP needed — shown in compact K/M/G notation with the full number and a per-level breakdown. Corrected the level-up cost values',
+  },
+  {
+    date: '2026-07-03',
+    time: '14:20',
+    text: 'Tank & Research trees now adapt to your screen automatically — the tree scales to fit the width (vertical layout) or height (horizontal layout), stays centered, and recalculates when you resize the window. The manual zoom and arrow buttons are gone (just drag or use the mouse wheel to move around), and the empty space that used to sit below the tree is removed',
+  },
+  {
+    date: '2026-07-03',
+    time: '13:00',
+    text: 'Tank calculator: the stats panel now matches the Research panel look (blue, consistent width), and its Max-All / Reset-All buttons are stacked full-width',
+  },
+  {
     date: '2026-07-02',
     time: '22:30',
     text: 'Building & Research sheets: on mobile you can now pull a sheet down by its top handle to close it (before, the content just scrolled). The research info panel also starts collapsed on mobile for more room',

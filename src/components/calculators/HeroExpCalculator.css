@@ -1,0 +1,178 @@
+.hx-wrap {
+  max-width: 640px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.hx-card {
+  background: rgba(52, 152, 219, 0.08);
+  border: 1px solid rgba(52, 152, 219, 0.28);
+  border-radius: 14px;
+  padding: 1.4rem 1.5rem 1.2rem;
+}
+
+/* ── Level-Eingaben ─────────────────────────────────────────── */
+.hx-levels {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+}
+.hx-lvl {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.hx-lvl-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  font-weight: 700;
+  text-align: center;
+}
+.hx-lvl-num {
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #ffcb6b;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 203, 107, 0.35);
+  border-radius: 10px;
+  padding: 0.35rem 0.4rem;
+  font-variant-numeric: tabular-nums;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+.hx-lvl-num:focus {
+  outline: none;
+  border-color: rgba(255, 203, 107, 0.7);
+}
+.hx-lvl-num::-webkit-outer-spin-button,
+.hx-lvl-num::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+.hx-arrow {
+  font-size: 1.6rem;
+  color: rgba(255, 255, 255, 0.4);
+  padding-bottom: 0.9rem;
+  flex-shrink: 0;
+}
+
+/* ── Slider ─────────────────────────────────────────────────── */
+.hx-slider {
+  width: 100%;
+  height: 6px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  outline: none;
+  cursor: pointer;
+}
+.hx-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: #ffcb6b;
+  border: 2px solid #1a1a1a;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+.hx-slider::-moz-range-thumb {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: #ffcb6b;
+  border: 2px solid #1a1a1a;
+  cursor: pointer;
+}
+
+/* ── Ergebnis ───────────────────────────────────────────────── */
+.hx-result {
+  margin-top: 1.3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 1.1rem 1rem;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(255, 203, 107, 0.14), rgba(255, 165, 0, 0.06));
+  border: 1px solid rgba(255, 203, 107, 0.25);
+}
+.hx-result-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.7);
+}
+.hx-result-val {
+  font-size: 2.6rem;
+  font-weight: 900;
+  line-height: 1.05;
+  color: #ffcb6b;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 2px 10px rgba(255, 165, 0, 0.25);
+}
+.hx-result-sub {
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.5);
+  font-variant-numeric: tabular-nums;
+}
+
+.hx-progress {
+  margin-top: 1rem;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.hx-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ffa500, #ffcb6b);
+  border-radius: 999px;
+  transition: width 0.15s ease;
+}
+
+/* ── Aufschlüsselung ────────────────────────────────────────── */
+.hx-details {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 0 0.9rem;
+}
+.hx-details summary {
+  cursor: pointer;
+  padding: 0.8rem 0.1rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.85);
+  user-select: none;
+}
+.hx-details summary:hover { color: #ffcb6b; }
+.hx-table {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 0.6rem;
+  max-height: 340px;
+  overflow-y: auto;
+}
+.hx-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.4rem 0.5rem;
+  border-radius: 7px;
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+}
+.hx-row:nth-child(even) { background: rgba(255, 255, 255, 0.03); }
+.hx-row-lvl { color: rgba(255, 255, 255, 0.7); }
+.hx-row-exp { color: #ffcb6b; font-weight: 700; }
+
+@media (max-width: 560px) {
+  .hx-result-val { font-size: 2.1rem; }
+  .hx-lvl-num { font-size: 1.5rem; }
+}

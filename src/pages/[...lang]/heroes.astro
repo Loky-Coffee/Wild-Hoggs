@@ -5,6 +5,7 @@ import { getLanguagePaths } from '../../i18n/static-paths';
 import { loadTranslations } from '../../i18n/index';
 import PageHeader from '../../components/PageHeader.astro';
 import HeroGrid from '../../components/HeroGrid';
+import HeroExpCalculator from '../../components/calculators/HeroExpCalculator';
 import { heroes } from '../../data/heroes';
 
 export function getStaticPaths() {
@@ -53,5 +54,75 @@ const heroesSchema = {
     subtitle={t('heroes.subtitle')}
   />
 
-  <HeroGrid heroes={heroes} clearLabel={t('heroes.clearFilters')} client:visible />
+  <div class="hero-hub-tabs" role="tablist">
+    <button class="hh-tab active" data-tab="database" role="tab" aria-selected="true" type="button">
+      {t('nav.heroes')}
+    </button>
+    <button class="hh-tab" data-tab="exp" role="tab" aria-selected="false" type="button">
+      🎖️ {t('calc.hero.title')}
+    </button>
+  </div>
+
+  <div class="hh-panel" data-panel="database" role="tabpanel">
+    <HeroGrid heroes={heroes} clearLabel={t('heroes.clearFilters')} client:visible />
+  </div>
+  <div class="hh-panel" data-panel="exp" role="tabpanel" hidden>
+    <HeroExpCalculator lang={lang} translationData={translationData} client:load />
+  </div>
 </PageLayout>
+
+<script>
+  // Läuft bei jedem Laden UND jeder View-Transition-Navigation (astro:page-load),
+  // damit /heroes#exp (z.B. von der Tools-Karte) direkt den EXP-Tab öffnet.
+  function setupHeroTabs() {
+    const tabs = Array.from(document.querySelectorAll('.hh-tab'));
+    const panels = Array.from(document.querySelectorAll('.hh-panel'));
+    if (!tabs.length) return;
+    const show = (name) => {
+      tabs.forEach((b) => {
+        const on = b.dataset.tab === name;
+        b.classList.toggle('active', on);
+        b.setAttribute('aria-selected', String(on));
+      });
+      panels.forEach((p) => { p.hidden = p.dataset.panel !== name; });
+    };
+    tabs.forEach((b) => {
+      if (b.dataset.bound) return;
+      b.dataset.bound = '1';
+      b.addEventListener('click', () => {
+        const name = b.dataset.tab;
+        show(name);
+        history.replaceState(null, '', name === 'database' ? location.pathname : '#' + name);
+      });
+    });
+    show(location.hash === '#exp' ? 'exp' : 'database');
+  }
+  document.addEventListener('astro:page-load', setupHeroTabs);
+</script>
+
+<style>
+  .hero-hub-tabs {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    margin: 0 0 1.5rem;
+    flex-wrap: wrap;
+  }
+  .hh-tab {
+    padding: 0.6rem 1.4rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 165, 0, 0.3);
+    background: rgba(255, 255, 255, 0.03);
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+  }
+  .hh-tab:hover { border-color: rgba(255, 165, 0, 0.5); color: #fff; }
+  .hh-tab.active {
+    background: rgba(255, 165, 0, 0.15);
+    border-color: #ffa500;
+    color: #ffcb6b;
+  }
+</style>
