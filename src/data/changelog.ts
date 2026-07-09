@@ -8,6 +8,11 @@ export const changelog: ChangelogEntry[] = [
   // ── July 2026 ───────────────────────────────────────────────────────────
   {
     date: '2026-07-09',
+    time: '20:35',
+    text: 'Research level picker (the pop-up when you tap a node): rows now alternate colour so the lines are easy to tell apart, and the level number sits larger and vertically centered on the left — matching the building calculator style',
+  },
+  {
+    date: '2026-07-09',
     time: '20:05',
     text: 'Research calculator: the horizontal/vertical layout switch is now available on mobile too (open the info panel to switch) — so you can pick a top-to-bottom (vertical) or left-to-right (horizontal) tree. The default stays vertical',
   },

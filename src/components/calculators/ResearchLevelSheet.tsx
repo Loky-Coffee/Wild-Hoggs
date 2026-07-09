@@ -138,16 +138,18 @@ export default function ResearchLevelSheet({
         class={`rls-row${selected ? ' selected' : ''}${!reachable ? ' needs-unlock' : ''}`}
         onClick={() => onSelect(lvl)}
       >
-        <span class="rls-lvl">{selected ? '✓ ' : (!reachable ? '🔒 ' : '')}{lvl}</span>
-        <span><img src={ICON.strom} class="rls-ico" alt="" />{fc(strom(i))}</span>
-        <span><img src={ICON.zent} class="rls-ico" alt="" />{fc(zent(i))}</span>
-        <span>{hasBadges ? (<><img src={ICON.badge} class="rls-ico" alt="" />{fc(badge(i))}</>) : '–'}</span>
-        {hasTimes && (
-          <span class="rls-row-time">
-            ⏱ {eff > 0 && <s class="rls-time-base">{fmtTime(baseTime(lvl))}</s>} <b>{fmtTime(timeAt(lvl))}</b>
-          </span>
-        )}
-        {bonusList.length > 0 && <span class="rls-row-bonus">{bonusFull(lvl)}</span>}
+        <span class="rls-lvl">{selected ? '✓' : (!reachable ? '🔒' : '')}{lvl}</span>
+        <div class="rls-row-main">
+          <span><img src={ICON.strom} class="rls-ico" alt="" />{fc(strom(i))}</span>
+          <span><img src={ICON.zent} class="rls-ico" alt="" />{fc(zent(i))}</span>
+          <span>{hasBadges ? (<><img src={ICON.badge} class="rls-ico" alt="" />{fc(badge(i))}</>) : '–'}</span>
+          {hasTimes && (
+            <span class="rls-row-time">
+              ⏱ {eff > 0 && <s class="rls-time-base">{fmtTime(baseTime(lvl))}</s>} <b>{fmtTime(timeAt(lvl))}</b>
+            </span>
+          )}
+          {bonusList.length > 0 && <span class="rls-row-bonus">{bonusFull(lvl)}</span>}
+        </div>
       </button>,
     );
   }
@@ -175,10 +177,12 @@ export default function ResearchLevelSheet({
         )}
 
         <div class="rls-table-head">
-          <span>Lvl</span>
-          <span><img src={ICON.strom} class="rls-ico" alt="Strom" /></span>
-          <span><img src={ICON.zent} class="rls-ico" alt="Zent" /></span>
-          <span>{hasBadges ? <img src={ICON.badge} class="rls-ico" alt="Badges" /> : ''}</span>
+          <span class="rls-lvl-head">Lvl</span>
+          <div class="rls-row-main">
+            <span><img src={ICON.strom} class="rls-ico" alt="Strom" /></span>
+            <span><img src={ICON.zent} class="rls-ico" alt="Zent" /></span>
+            <span>{hasBadges ? <img src={ICON.badge} class="rls-ico" alt="Badges" /> : ''}</span>
+          </div>
         </div>
 
         <div class="rls-rows">
@@ -188,9 +192,11 @@ export default function ResearchLevelSheet({
             onClick={() => onSelect(0)}
           >
             <span class="rls-lvl">0</span>
-            <span>–</span>
-            <span>–</span>
-            <span>–</span>
+            <div class="rls-row-main">
+              <span>–</span>
+              <span>–</span>
+              <span>–</span>
+            </div>
           </button>
           {rows}
         </div>

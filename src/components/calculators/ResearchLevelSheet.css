@@ -94,11 +94,20 @@
 
 .rls-table-head,
 .rls-row {
-  display: grid;
-  grid-template-columns: 4rem 1fr 1fr 1fr;
+  display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.6rem;
   font-variant-numeric: tabular-nums;
+}
+/* Datenspalten (Strom/Zent/Badges) als Grid -> bleiben mit dem Kopf ausgerichtet;
+   Zeit/Bonus liegen als volle Zeile darunter. */
+.rls-row-main {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  gap: 0.2rem 0.4rem;
 }
 
 .rls-table-head {
@@ -129,6 +138,10 @@
   font-size: 0.9rem;
   text-align: left;
 }
+
+/* abwechselnde Zeilenfarben (jede 2. Zeile) */
+.rls-row:nth-child(even) { background: rgba(124, 197, 255, 0.07); }
+.rls-row:nth-child(odd)  { background: rgba(255, 255, 255, 0.02); }
 
 .rls-row:hover:not(.locked) {
   background: rgba(255, 165, 0, 0.1);
@@ -360,7 +373,17 @@
 }
 
 .rls-lvl {
-  font-weight: 700;
+  flex-shrink: 0;
+  justify-content: center;
+  min-width: 2.8rem;
+  font-weight: 800;
+  font-size: 1.35rem;
+  color: #ffa500;
+}
+.rls-lvl-head {
+  flex-shrink: 0;
+  min-width: 2.8rem;
+  justify-content: center;
 }
 
 .rls-total {
