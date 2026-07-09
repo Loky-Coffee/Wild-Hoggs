@@ -7,6 +7,11 @@ export interface ChangelogEntry {
 export const changelog: ChangelogEntry[] = [
   // ── July 2026 ───────────────────────────────────────────────────────────
   {
+    date: '2026-07-09',
+    time: '20:05',
+    text: 'Research calculator: the horizontal/vertical layout switch is now available on mobile too (open the info panel to switch) — so you can pick a top-to-bottom (vertical) or left-to-right (horizontal) tree. The default stays vertical',
+  },
+  {
     date: '2026-07-03',
     time: '17:50',
     text: 'The Heroes page is now a hub with tabs: the hero database (shown by default) plus a Hero-EXP calculator. The EXP calculator lives here now — the old standalone tool link redirects to it, or open it directly via Heroes → the "Hero EXP" tab',

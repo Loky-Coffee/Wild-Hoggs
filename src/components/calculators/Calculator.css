@@ -569,10 +569,8 @@
     margin-bottom: 0;
   }
 
-  /* Hide layout toggle button on mobile (only vertical layout) */
-  .layout-toggle-btn {
-    display: none !important;
-  }
+  /* Layout-Umschalter ist auf Mobile jetzt sichtbar (im Panel-Inhalt) — Nutzer
+     kann zwischen vertikal (Standard) und horizontal wählen. */
 }
 
 
