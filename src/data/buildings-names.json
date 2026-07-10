@@ -237,23 +237,6 @@
     "ar": "معسكر تدريب الدراجات",
     "vi": "Doanh Trại Huấn Luyện Motor"
   },
-  "formation-i": {
-    "de": "Formation I",
-    "en": "Formation I",
-    "fr": "Formation I",
-    "es": "Formación I",
-    "pt": "Formação I",
-    "it": "Formazione I",
-    "ja": "編成I",
-    "ko": "부대I",
-    "zh-CN": "编队I",
-    "zh-TW": "編隊I",
-    "th": "จัดทัพ I",
-    "tr": "Oluşum I",
-    "id": "Formasi I",
-    "ar": "التشكيل I",
-    "vi": "Đội 1"
-  },
   "warehouse": {
     "de": "Lagerhaus",
     "en": "Warehouse",
@@ -441,57 +424,6 @@
     "ar": "سور المدينة",
     "vi": "Tường Thành"
   },
-  "formation-ii": {
-    "de": "Formation II",
-    "en": "Formation Ⅱ",
-    "fr": "Formation II",
-    "es": "Formación II",
-    "pt": "Formação II",
-    "it": "Formazione II",
-    "ja": "編成II",
-    "ko": "부대II",
-    "zh-CN": "编队II",
-    "zh-TW": "編隊II",
-    "th": "จัดทัพ II",
-    "tr": "Oluşum II",
-    "id": "Formasi II",
-    "ar": "التشكيل II",
-    "vi": "Đội 2"
-  },
-  "formation-iii": {
-    "de": "Formation III",
-    "en": "Formation Ⅲ",
-    "fr": "Formation III",
-    "es": "Formación III",
-    "pt": "Formação III",
-    "it": "Formazione III",
-    "ja": "編成III",
-    "ko": "부대III",
-    "zh-CN": "编队III",
-    "zh-TW": "編隊III",
-    "th": "จัดทัพ III",
-    "tr": "Oluşum III",
-    "id": "Formasi III",
-    "ar": "التشكيل III",
-    "vi": "Đội 3"
-  },
-  "formation-iv": {
-    "de": "Formation IV",
-    "en": "Formation Ⅳ",
-    "fr": "Formation IV",
-    "es": "Formación IV",
-    "pt": "Formação IV",
-    "it": "Formazione IV",
-    "ja": "編成IV",
-    "ko": "부대IV",
-    "zh-CN": "编队IV",
-    "zh-TW": "編隊IV",
-    "th": "จัดทัพ IV",
-    "tr": "Oluşum IV",
-    "id": "Formasi IV",
-    "ar": "التشكيل IV",
-    "vi": "Đội 4"
-  },
   "military-center": {
     "de": "Militärzentrum",
     "en": "Military Center",
@@ -663,5 +595,22 @@
       "ar": "فُولاَذ",
       "vi": "Thép"
     }
+  },
+  "formation": {
+    "de": "Formation",
+    "en": "Formation",
+    "fr": "Formation",
+    "es": "Formación",
+    "pt": "Formação",
+    "it": "Formazione",
+    "ja": "編成",
+    "ko": "부대",
+    "zh-CN": "编队",
+    "zh-TW": "編隊",
+    "th": "จัดทัพ",
+    "tr": "Oluşum",
+    "id": "Formasi",
+    "ar": "التشكيل",
+    "vi": "Đội"
   }
 }

@@ -115,6 +115,13 @@ export default {
   'research.noBadgesNeeded': 'No badges needed',
   // Calculator: Building
   'calc.building.title': 'Building Calculator',
+  'calc.done': 'Done',
+  'calc.building.hideDuplicates': 'Hide duplicates',
+  'calc.building.showAll': 'Show all buildings',
+  'calc.building.power': 'Power',
+  'calc.building.progress': 'Progress',
+  'calc.building.remainingToMax': 'Remaining to max',
+  'calc.building.tapLevel': '👇 Tap your current level',
   'calc.building.selectBuilding': 'Select Building',
   'calc.building.currentLevel': 'Current Level',
   'calc.building.targetLevel': 'Target Level',
@@ -141,6 +148,7 @@ export default {
   'calc.building.errorTargetLevel': 'Target level must be higher than current level.',
   // Calculator: Hero EXP
   'calc.hero.title': 'Hero EXP Calculator',
+  'calc.hero.levels': 'levels',
   'calc.hero.currentLevel': 'Current Level',
   'calc.hero.targetLevel': 'Target Level',
   'calc.hero.calculate': 'Calculate',

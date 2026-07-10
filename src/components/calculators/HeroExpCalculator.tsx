@@ -33,7 +33,7 @@ export default function HeroExpCalculator({ lang, translationData }: Props) {
   const [stored, setStored] = useCalculatorState<HeroExpState>('hero-exp', 'main', DEFAULT, activeProfile.id);
   const t = useTranslations(translationData);
   const k = (s: string) => t(s as TranslationKey);
-  const numLocale = lang === 'de' ? 'de-DE' : 'en-US';
+  const numLocale = lang; // echte Sprach-Locale (statt hartkodiert de-DE/en-US)
 
   const current = clamp(stored.currentLevel, 1, MAX_LEVEL - 1);
   const target = clamp(stored.targetLevel, current + 1, MAX_LEVEL);
@@ -85,7 +85,7 @@ export default function HeroExpCalculator({ lang, translationData }: Props) {
           <span class="hx-result-label">🎖️ {k('calc.hero.totalExp')}</span>
           <span class="hx-result-val">{fmtShort(total)}</span>
           <span class="hx-result-sub">
-            {new Intl.NumberFormat(numLocale).format(total)} · {target - current} {lang === 'de' ? 'Level' : 'levels'}
+            {new Intl.NumberFormat(numLocale).format(total)} · {target - current} {k('calc.hero.levels')}
           </span>
         </div>
 

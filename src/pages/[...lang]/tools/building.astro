@@ -5,6 +5,7 @@ import { getLanguagePaths } from '../../../i18n/static-paths';
 import { loadTranslations } from '../../../i18n/index';
 import BuildingCalculator from '../../../components/calculators/BuildingCalculator';
 import BuildSpeedButton from '../../../components/calculators/BuildSpeedButton';
+import HideDuplicatesButton from '../../../components/calculators/HideDuplicatesButton';
 import { ErrorBoundary } from '../../../components/ErrorBoundary';
 import '../../../styles/shared-layouts.css';
 
@@ -27,7 +28,10 @@ const breadcrumbItems = [
   <div class="page-header">
     <h1>{t('tools.building.title')}</h1>
     <p class="subtitle">{t('tools.building.description')}</p>
-    <BuildSpeedButton lang={lang} client:load />
+    <div class="bld-header-controls">
+      <BuildSpeedButton lang={lang} client:load />
+      <HideDuplicatesButton labelHide={t('calc.building.hideDuplicates')} labelShow={t('calc.building.showAll')} client:load />
+    </div>
   </div>
 
   <!-- client:load ist hier ABSICHTLICH (nicht client:visible):
@@ -43,5 +47,11 @@ const breadcrumbItems = [
   /* Bau-Speed-Button sitzt im Header -> weniger Abstand zum Rechner (Research hat die
      Übersicht im Header, hier ist der Rechner separat). */
   .page-header { margin-bottom: 1.2rem; }
+  .bld-header-controls {
+    display: flex;
+    gap: 0.6rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
 </style>
 

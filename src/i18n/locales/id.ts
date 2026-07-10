@@ -269,6 +269,13 @@ export default {
   "research.hq_management.hospital-expansion": "Ekspansi Rumah Sakit",
   // Calculator: Building
   'calc.building.title': 'Kalkulator Bangunan',
+  'calc.done': 'Selesai',
+  'calc.building.hideDuplicates': 'Sembunyikan duplikat',
+  'calc.building.showAll': 'Tampilkan semua bangunan',
+  'calc.building.power': 'CP',
+  'calc.building.progress': 'Kemajuan',
+  'calc.building.remainingToMax': 'Sisa hingga maks',
+  'calc.building.tapLevel': '👇 Ketuk level-mu saat ini',
   'calc.building.selectBuilding': 'Pilih bangunan',
   'calc.building.currentLevel': 'Level saat ini',
   'calc.building.targetLevel': 'Level target',
@@ -295,6 +302,7 @@ export default {
   'calc.building.errorTargetLevel': 'Level target harus lebih tinggi daripada level saat ini.',
   // Calculator: Hero EXP
   'calc.hero.title': 'Kalkulator EXP Pahlawan',
+  'calc.hero.levels': 'level',
   'calc.hero.currentLevel': 'Level saat ini',
   'calc.hero.targetLevel': 'Level target',
   'calc.hero.calculate': 'Hitung',

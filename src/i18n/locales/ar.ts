@@ -269,6 +269,13 @@ export default {
   "research.hq_management.hospital-expansion": "توسعة المستشفى",
   // Calculator: Building
   'calc.building.title': 'حاسبة المباني',
+  'calc.done': 'تم',
+  'calc.building.hideDuplicates': 'إخفاء المكرر',
+  'calc.building.showAll': 'إظهار كل المباني',
+  'calc.building.power': 'قوة القتال',
+  'calc.building.progress': 'التقدم',
+  'calc.building.remainingToMax': 'المتبقي حتى الحد الأقصى',
+  'calc.building.tapLevel': '👇 اضغط على مستواك الحالي',
   'calc.building.selectBuilding': 'اختر مبنى',
   'calc.building.currentLevel': 'المستوى الحالي',
   'calc.building.targetLevel': 'المستوى المستهدف',
@@ -295,6 +302,7 @@ export default {
   'calc.building.errorTargetLevel': 'يجب أن يكون المستوى المستهدف أعلى من المستوى الحالي.',
   // Calculator: Hero EXP
   'calc.hero.title': 'حاسبة خبرة الأبطال',
+  'calc.hero.levels': 'مستوى',
   'calc.hero.currentLevel': 'المستوى الحالي',
   'calc.hero.targetLevel': 'المستوى المستهدف',
   'calc.hero.calculate': 'احسب',

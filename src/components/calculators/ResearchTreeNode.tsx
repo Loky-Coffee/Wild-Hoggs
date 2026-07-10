@@ -4,6 +4,7 @@ import type { Technology } from '../../schemas/research';
 import { useTranslations } from '../../i18n/utils';
 import type { TranslationData, TranslationKey } from '../../i18n/index';
 import { NODE_WIDTH, NODE_HEIGHT } from '../../utils/treeNodeConfig';
+import CompletedRibbon from './CompletedRibbon';
 
 interface ResearchTreeNodeProps {
   readonly tech: Technology;
@@ -172,8 +173,8 @@ function ResearchTreeNode({
         }}
       />
 
-      {/* Target button (top-left corner) */}
-      {onSetTarget && (
+      {/* Target button (top-left corner) — nicht bei fertigen Knoten (kein Sinn als Ziel) */}
+      {onSetTarget && selectedLevel < tech.maxLevel && (
         <g
           onClick={onSetTarget}
           onKeyDown={(e: React.KeyboardEvent<Element>) => {
@@ -306,6 +307,23 @@ function ResearchTreeNode({
           opacity={bright ? 1 : 0.4}
           data-node-element="true"
         />
+        {/* Striche pro Level (Trennlinien) */}
+        {tech.maxLevel > 1 && Array.from({ length: tech.maxLevel - 1 }, (_, i) => {
+          const tx = -NODE_WIDTH / 2 + 15 + ((i + 1) / tech.maxLevel) * (NODE_WIDTH - 30);
+          return (
+            <line
+              key={i}
+              x1={tx}
+              y1={-NODE_HEIGHT / 2 + 122}
+              x2={tx}
+              y2={-NODE_HEIGHT / 2 + 130}
+              stroke="rgba(0, 0, 0, 0.4)"
+              strokeWidth={1}
+              opacity={bright ? 1 : 0.4}
+              data-node-element="true"
+            />
+          );
+        })}
       </g>
 
       {/* Badge cost - Current / Total */}
@@ -333,6 +351,9 @@ function ResearchTreeNode({
       >
         {selectedLevel < tech.maxLevel ? `${t('calc.research.next')}: ${formatNumber(tech.badgeCosts[selectedLevel])} 🎖️` : ''}
       </text>
+      {tech.maxLevel > 0 && selectedLevel >= tech.maxLevel && (
+        <CompletedRibbon label={t('calc.done' as TranslationKey)} />
+      )}
     </g>
   );
 }

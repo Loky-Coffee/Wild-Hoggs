@@ -269,6 +269,13 @@ export default {
   "research.hq_management.hospital-expansion": "Hastane Genişletilmesi",
   // Calculator: Building
   'calc.building.title': 'Bina Hesaplayıcı',
+  'calc.done': 'Tamam',
+  'calc.building.hideDuplicates': 'Kopyaları gizle',
+  'calc.building.showAll': 'Tüm binaları göster',
+  'calc.building.power': 'CP',
+  'calc.building.progress': 'İlerleme',
+  'calc.building.remainingToMax': 'Maks\'a kalan',
+  'calc.building.tapLevel': '👇 Mevcut seviyene dokun',
   'calc.building.selectBuilding': 'Bina seçin',
   'calc.building.currentLevel': 'Mevcut seviye',
   'calc.building.targetLevel': 'Hedef seviye',
@@ -295,6 +302,7 @@ export default {
   'calc.building.errorTargetLevel': 'Hedef seviye mevcut seviyeden yüksek olmalıdır.',
   // Calculator: Hero EXP
   'calc.hero.title': 'Kahraman EXP Hesaplayıcı',
+  'calc.hero.levels': 'seviye',
   'calc.hero.currentLevel': 'Mevcut seviye',
   'calc.hero.targetLevel': 'Hedef seviye',
   'calc.hero.calculate': 'Hesapla',

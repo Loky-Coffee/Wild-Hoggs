@@ -20,12 +20,12 @@ const ICON = {
   badge: '/images/research-icons/badge.webp',
 };
 
+// Spiel-Schreibweise: K / M / G (Milliarde) — kompakter als "Mio."/"Mrd."
 function fc(n: number): string {
-  try {
-    return new Intl.NumberFormat(undefined, { notation: 'compact', maximumFractionDigits: 1 }).format(n);
-  } catch {
-    return String(n);
-  }
+  if (n >= 1e9) return `${(n / 1e9).toFixed(2)}G`;
+  if (n >= 1e6) return `${(n / 1e6).toFixed(1)}M`;
+  if (n >= 1e3) return `${(n / 1e3).toFixed(1)}K`;
+  return String(n);
 }
 
 // Sekunden -> "Xd HH:MM:SS"
@@ -109,7 +109,7 @@ export default function ResearchLevelSheet({
   const baseTime = (lvl: number) => tech.times?.[lvl - 1] ?? 0;
   const timeAt = (lvl: number) => baseTime(lvl) / (1 + eff / 100);
 
-  // Cumulative totals up to the currently selected level (Ressourcen = feste Kosten -> "benutzt" ist gültig)
+  // Benutzt (0 -> aktuelles Level) — Ressourcen sind feste Kosten, daher gültig.
   let cs = 0;
   let cz = 0;
   let cb = 0;
@@ -118,10 +118,16 @@ export default function ResearchLevelSheet({
     cz += zent(i);
     cb += badge(i);
   }
-  // Verbleibende Zeit (currentLevel -> max) mit aktuellem Lab-Speed. Die bereits gemachte Zeit
-  // zeigen wir NICHT an: der damalige Rabatt ist unbekannt, nur die verbleibende ist berechenbar.
+  // Verbleibend (aktuelles Level -> max): Ressourcen + Zeit. Bei Level 0 = der ganze Knoten.
+  // Die bereits GEMACHTE Zeit zeigen wir NICHT (damaliger Lab-Speed-Rabatt unbekannt).
+  let rs = 0;
+  let rz = 0;
+  let rb = 0;
   let remSec = 0;
   for (let i = currentLevel; i < tech.maxLevel; i++) {
+    rs += strom(i);
+    rz += zent(i);
+    rb += badge(i);
     remSec += tech.times?.[i] ?? 0;
   }
   const remTime = remSec / (1 + eff / 100);
@@ -201,20 +207,25 @@ export default function ResearchLevelSheet({
           {rows}
         </div>
 
-        <div class="rls-total">
-          <span class="rls-total-label">Gesamt bis Lv {currentLevel}:</span>
-          <span><img src={ICON.strom} class="rls-ico" alt="" />{fc(cs)}</span>
-          <span><img src={ICON.zent} class="rls-ico" alt="" />{fc(cz)}</span>
-          {hasBadges && <span><img src={ICON.badge} class="rls-ico" alt="" />{fc(cb)}</span>}
-        </div>
-        {hasTimes && currentLevel < tech.maxLevel && (
-          <div class="rls-remtime">
-            <span class="rls-total-label">⏱ {lang === 'de' ? 'Verbleibende Zeit' : 'Remaining time'}:</span>
-            <span class="rls-remtime-val">
-              {eff > 0 && <s class="rls-time-base">{fmtTime(remSec)}</s>} {fmtTime(remTime)}
-            </span>
+        <div class="rls-totals">
+          <div class="rls-total rls-total-used">
+            <span class="rls-total-label">{t('calc.research.used' as TranslationKey)}</span>
+            <span><img src={ICON.strom} class="rls-ico" alt="" />{fc(cs)}</span>
+            <span><img src={ICON.zent} class="rls-ico" alt="" />{fc(cz)}</span>
+            {hasBadges && <span><img src={ICON.badge} class="rls-ico" alt="" />{fc(cb)}</span>}
           </div>
-        )}
+          <div class="rls-total rls-total-rem">
+            <span class="rls-total-label">{t('calc.research.remaining' as TranslationKey)}</span>
+            <span><img src={ICON.strom} class="rls-ico" alt="" />{fc(rs)}</span>
+            <span><img src={ICON.zent} class="rls-ico" alt="" />{fc(rz)}</span>
+            {hasBadges && <span><img src={ICON.badge} class="rls-ico" alt="" />{fc(rb)}</span>}
+            {hasTimes && (
+              <span class="rls-remtime-val">
+                ⏱ {eff > 0 && <s class="rls-time-base">{fmtTime(remSec)}</s>} {fmtTime(remTime)}
+              </span>
+            )}
+          </div>
+        </div>
       </div>
     </div>,
     document.body,

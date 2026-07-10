@@ -269,6 +269,13 @@ export default {
   "research.hq_management.hospital-expansion": "ขยายโรงพยาบาล",
   // Calculator: Building
   'calc.building.title': 'ตัวคำนวณสิ่งปลูกสร้าง',
+  'calc.done': 'เสร็จ',
+  'calc.building.hideDuplicates': 'ซ่อนรายการซ้ำ',
+  'calc.building.showAll': 'แสดงสิ่งก่อสร้างทั้งหมด',
+  'calc.building.power': 'พลังรบ',
+  'calc.building.progress': 'ความคืบหน้า',
+  'calc.building.remainingToMax': 'เหลือถึงระดับสูงสุด',
+  'calc.building.tapLevel': '👇 แตะระดับปัจจุบันของคุณ',
   'calc.building.selectBuilding': 'เลือกสิ่งปลูกสร้าง',
   'calc.building.currentLevel': 'เลเวลปัจจุบัน',
   'calc.building.targetLevel': 'เลเวลเป้าหมาย',
@@ -295,6 +302,7 @@ export default {
   'calc.building.errorTargetLevel': 'เลเวลเป้าหมายต้องมากกว่าเลเวลปัจจุบัน',
   // Calculator: Hero EXP
   'calc.hero.title': 'ตัวคำนวณ EXP ฮีโร่',
+  'calc.hero.levels': 'เลเวล',
   'calc.hero.currentLevel': 'เลเวลปัจจุบัน',
   'calc.hero.targetLevel': 'เลเวลเป้าหมาย',
   'calc.hero.calculate': 'คำนวณ',

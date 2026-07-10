@@ -269,6 +269,13 @@ export default {
   "research.hq_management.hospital-expansion": "Hospital Expansion",
   // Calculator: Building
   'calc.building.title': 'Bộ tính công trình',
+  'calc.done': 'Xong',
+  'calc.building.hideDuplicates': 'Ẩn bản sao',
+  'calc.building.showAll': 'Hiện tất cả công trình',
+  'calc.building.power': 'Lực Chiến',
+  'calc.building.progress': 'Tiến độ',
+  'calc.building.remainingToMax': 'Còn lại đến tối đa',
+  'calc.building.tapLevel': '👇 Chạm vào cấp hiện tại của bạn',
   'calc.building.selectBuilding': 'Chọn công trình',
   'calc.building.currentLevel': 'Cấp hiện tại',
   'calc.building.targetLevel': 'Cấp mục tiêu',
@@ -295,6 +302,7 @@ export default {
   'calc.building.errorTargetLevel': 'Cấp mục tiêu phải cao hơn cấp hiện tại.',
   // Calculator: Hero EXP
   'calc.hero.title': 'Bộ tính EXP anh hùng',
+  'calc.hero.levels': 'cấp',
   'calc.hero.currentLevel': 'Cấp hiện tại',
   'calc.hero.targetLevel': 'Cấp mục tiêu',
   'calc.hero.calculate': 'Tính',

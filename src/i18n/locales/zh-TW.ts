@@ -269,6 +269,13 @@ export default {
   "research.hq_management.hospital-expansion": "醫院擴建",
   // Calculator: Building
   'calc.building.title': '建築計算器',
+  'calc.done': '完成',
+  'calc.building.hideDuplicates': '隱藏重複',
+  'calc.building.showAll': '顯示所有建築',
+  'calc.building.power': '戰力',
+  'calc.building.progress': '進度',
+  'calc.building.remainingToMax': '距滿級還需',
+  'calc.building.tapLevel': '👇 點擊你目前的等級',
   'calc.building.selectBuilding': '選擇建築',
   'calc.building.currentLevel': '當前等級',
   'calc.building.targetLevel': '目標等級',
@@ -295,6 +302,7 @@ export default {
   'calc.building.errorTargetLevel': '目標等級必須高於當前等級。',
   // Calculator: Hero EXP
   'calc.hero.title': '英雄 EXP 計算器',
+  'calc.hero.levels': '級',
   'calc.hero.currentLevel': '當前等級',
   'calc.hero.targetLevel': '目標等級',
   'calc.hero.calculate': '計算',

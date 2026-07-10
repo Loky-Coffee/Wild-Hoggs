@@ -269,6 +269,13 @@ export default {
   "research.hq_management.hospital-expansion": "병원 확충",
   // Calculator: Building
   'calc.building.title': '건물 계산기',
+  'calc.done': '완료',
+  'calc.building.hideDuplicates': '중복 숨기기',
+  'calc.building.showAll': '모든 건물 표시',
+  'calc.building.power': '전투력',
+  'calc.building.progress': '진행도',
+  'calc.building.remainingToMax': '최대까지 남음',
+  'calc.building.tapLevel': '👇 현재 레벨을 탭하세요',
   'calc.building.selectBuilding': '건물 선택',
   'calc.building.currentLevel': '현재 레벨',
   'calc.building.targetLevel': '목표 레벨',
@@ -295,6 +302,7 @@ export default {
   'calc.building.errorTargetLevel': '목표 레벨은 현재 레벨보다 높아야 합니다.',
   // Calculator: Hero EXP
   'calc.hero.title': '영웅 EXP 계산기',
+  'calc.hero.levels': '레벨',
   'calc.hero.currentLevel': '현재 레벨',
   'calc.hero.targetLevel': '목표 레벨',
   'calc.hero.calculate': '계산',

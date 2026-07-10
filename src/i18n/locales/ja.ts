@@ -269,6 +269,13 @@ export default {
   "research.hq_management.hospital-expansion": "病院拡張",
   // Calculator: Building
   'calc.building.title': '建築計算機',
+  'calc.done': '完了',
+  'calc.building.hideDuplicates': '重複を非表示',
+  'calc.building.showAll': 'すべての建物を表示',
+  'calc.building.power': '戦力',
+  'calc.building.progress': '進捗',
+  'calc.building.remainingToMax': '最大までの残り',
+  'calc.building.tapLevel': '👇 現在のレベルをタップ',
   'calc.building.selectBuilding': '建物を選択',
   'calc.building.currentLevel': '現在のレベル',
   'calc.building.targetLevel': '目標レベル',
@@ -295,6 +302,7 @@ export default {
   'calc.building.errorTargetLevel': '目標レベルは現在のレベルより高くなければなりません。',
   // Calculator: Hero EXP
   'calc.hero.title': 'ヒーロー EXP 計算機',
+  'calc.hero.levels': 'レベル',
   'calc.hero.currentLevel': '現在のレベル',
   'calc.hero.targetLevel': '目標レベル',
   'calc.hero.calculate': '計算',

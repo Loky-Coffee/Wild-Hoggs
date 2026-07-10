@@ -270,6 +270,13 @@ export default {
   'research.noBadgesNeeded': 'Keine Badges nötig',
   // Calculator: Building
   'calc.building.title': 'Gebäude Rechner',
+  'calc.done': 'Fertig',
+  'calc.building.hideDuplicates': 'Doppelte ausblenden',
+  'calc.building.showAll': 'Alle Gebäude einblenden',
+  'calc.building.power': 'Kampfkraft',
+  'calc.building.progress': 'Fortschritt',
+  'calc.building.remainingToMax': 'Rest bis Max',
+  'calc.building.tapLevel': '👇 Tippe dein aktuelles Level an',
   'calc.building.selectBuilding': 'Gebäude auswählen',
   'calc.building.currentLevel': 'Aktuelles Level',
   'calc.building.targetLevel': 'Ziel Level',
@@ -296,6 +303,7 @@ export default {
   'calc.building.errorTargetLevel': 'Das Ziel-Level muss höher sein als das aktuelle Level.',
   // Calculator: Hero EXP
   'calc.hero.title': 'Hero EXP Rechner',
+  'calc.hero.levels': 'Level',
   'calc.hero.currentLevel': 'Aktuelles Level',
   'calc.hero.targetLevel': 'Ziel Level',
   'calc.hero.calculate': 'Berechnen',

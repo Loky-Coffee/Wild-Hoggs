@@ -269,6 +269,13 @@ export default {
   "research.hq_management.hospital-expansion": "Expansão de Hospital",
   // Calculator: Building
   'calc.building.title': 'Calculadora de construções',
+  'calc.done': 'Pronto',
+  'calc.building.hideDuplicates': 'Ocultar duplicados',
+  'calc.building.showAll': 'Mostrar todos os edifícios',
+  'calc.building.power': 'PC',
+  'calc.building.progress': 'Progresso',
+  'calc.building.remainingToMax': 'Restante até o máx.',
+  'calc.building.tapLevel': '👇 Toca no teu nível atual',
   'calc.building.selectBuilding': 'Selecionar construção',
   'calc.building.currentLevel': 'Nível atual',
   'calc.building.targetLevel': 'Nível alvo',
@@ -295,6 +302,7 @@ export default {
   'calc.building.errorTargetLevel': 'O nível alvo deve ser maior que o nível atual.',
   // Calculator: Hero EXP
   'calc.hero.title': 'Calculadora de EXP de herói',
+  'calc.hero.levels': 'níveis',
   'calc.hero.currentLevel': 'Nível atual',
   'calc.hero.targetLevel': 'Nível alvo',
   'calc.hero.calculate': 'Calcular',

@@ -2,6 +2,7 @@ import { memo } from 'preact/compat';
 import { useTranslations } from '../../i18n/utils';
 import type { TranslationData, TranslationKey } from '../../i18n/index';
 import { NODE_WIDTH, NODE_HEIGHT } from '../../utils/treeNodeConfig';
+import CompletedRibbon from './CompletedRibbon';
 
 interface TankModification {
   level: number;
@@ -115,8 +116,8 @@ function TankModificationNode({
         className="node-background"
       />
 
-      {/* Target button (top-left corner) */}
-      {onSetTarget && (
+      {/* Target button (top-left corner) — nicht bei fertigen Knoten (kein Sinn als Ziel) */}
+      {onSetTarget && currentSubLevel < maxSubLevel && (
         <g
           onClick={onSetTarget}
           onKeyDown={(e: React.KeyboardEvent<Element>) => {
@@ -269,6 +270,23 @@ function TankModificationNode({
           opacity={unlocked ? 1 : 0.4}
           data-node-element="true"
         />
+        {/* Striche pro Sub-Level (Trennlinien) */}
+        {maxSubLevel > 1 && Array.from({ length: maxSubLevel - 1 }, (_, i) => {
+          const tx = -NODE_WIDTH / 2 + 15 + ((i + 1) / maxSubLevel) * (NODE_WIDTH - 30);
+          return (
+            <line
+              key={i}
+              x1={tx}
+              y1={-NODE_HEIGHT / 2 + 122}
+              x2={tx}
+              y2={-NODE_HEIGHT / 2 + 130}
+              stroke="rgba(0, 0, 0, 0.4)"
+              strokeWidth={1}
+              opacity={unlocked ? 1 : 0.4}
+              data-node-element="true"
+            />
+          );
+        })}
       </g>
 
       {/* Total wrenches for current sub-level */}
@@ -295,6 +313,9 @@ function TankModificationNode({
       >
         {t('tank.total')}: 🔧 {formatNumber(mod.cumulativeTotal)}
       </text>
+      {maxSubLevel > 0 && currentSubLevel >= maxSubLevel && (
+        <CompletedRibbon label={t('calc.done' as TranslationKey)} />
+      )}
     </g>
   );
 }

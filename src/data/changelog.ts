@@ -7,6 +7,26 @@ export interface ChangelogEntry {
 export const changelog: ChangelogEntry[] = [
   // ── July 2026 ───────────────────────────────────────────────────────────
   {
+    date: '2026-07-11',
+    time: '01:40',
+    text: 'Research & Tank trees: a node that is fully maxed now shows a green "Done" ribbon and can no longer be picked as a target (there is nothing left to reach). Each node\'s progress bar also shows a tick per level so you can read the granularity at a glance',
+  },
+  {
+    date: '2026-07-11',
+    time: '00:30',
+    text: 'Building calculator: new "Hide duplicates" button (next to Build-Speed) collapses the numbered copies to just the first of each (e.g. Residence 2–6, Steel Plant 2–5) — on by default, and it flips to "Show all buildings" when active. The Formation buildings are now correctly one building with 4 identical copies instead of four separate entries',
+  },
+  {
+    date: '2026-07-10',
+    time: '22:00',
+    text: 'Research level picker: the bottom now shows two clear lines — "Used" (spent up to your current level) and "Remaining" (what is left to max; with nothing selected it shows the whole node) — and numbers use compact K/M/G notation so everything fits on one line',
+  },
+  {
+    date: '2026-07-10',
+    time: '21:00',
+    text: 'Fixed calculator labels that previously only appeared in German or English — the building, hero and research calculators now show their labels in all 15 languages, and numbers respect your language',
+  },
+  {
     date: '2026-07-09',
     time: '20:35',
     text: 'Research level picker (the pop-up when you tap a node): rows now alternate colour so the lines are easy to tell apart, and the level number sits larger and vertically centered on the left — matching the building calculator style',
