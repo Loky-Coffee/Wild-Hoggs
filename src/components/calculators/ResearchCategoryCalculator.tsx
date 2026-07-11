@@ -24,12 +24,14 @@ interface ResearchCategoryCalculatorProps {
 interface ResearchState {
   selectedTechnologies: Record<string, number>;
   targetTechId: string | null;
+  targetLevel: number | null; // Ziel-Level (null = bis Max)
   layoutDirection: 'horizontal' | 'vertical';
 }
 
 const RESEARCH_DEFAULT: ResearchState = {
   selectedTechnologies: {},
   targetTechId: null,
+  targetLevel: null,
   layoutDirection: 'vertical',
 };
 
@@ -214,6 +216,7 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
   // Runtime Map aus gespeichertem Record rekonstruieren
   const selectedTechnologies = new Map(Object.entries(stored.selectedTechnologies));
   const targetTechId         = stored.targetTechId;
+  const targetLevel          = stored.targetLevel;
 
   const t = useTranslations(translationData);
 
@@ -253,10 +256,15 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
   };
 
   const handleReset = () => {
-    setStored(s => ({ ...s, selectedTechnologies: {}, targetTechId: null }));
+    setStored(s => ({ ...s, selectedTechnologies: {}, targetTechId: null, targetLevel: null }));
   };
 
-  const setTargetTechId = (id: string | null) => setStored(s => ({ ...s, targetTechId: id }));
+  // Ziel löschen (id=null) räumt auch das Ziel-Level auf
+  const setTargetTechId = (id: string | null) =>
+    setStored(s => ({ ...s, targetTechId: id, targetLevel: id === null ? null : s.targetLevel }));
+  // Ziel mit konkretem Level setzen (aus dem Ziel-Level-Modal)
+  const setTarget = (id: string, level: number) =>
+    setStored(s => ({ ...s, targetTechId: id, targetLevel: level }));
 
   const getInfoBoxAriaLabel = (collapsed: boolean): string =>
     collapsed ? t('calc.research.infoExpand') : t('calc.research.infoCollapse');
@@ -306,8 +314,8 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
       });
     };
 
-    // Collect all required levels starting from target
-    collectRequiredLevels(targetTech, targetTech.maxLevel);
+    // Collect all required levels starting from target (bis zum gewählten Ziel-Level, sonst Max)
+    collectRequiredLevels(targetTech, Math.min(targetLevel ?? targetTech.maxLevel, targetTech.maxLevel));
 
     // Summiere alle 4 Ressourcen bis zum Ziel (jede Tech nur einmal, ab aktuellem Level)
     let nBadges = 0;
@@ -330,7 +338,7 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
     });
 
     return { badges: nBadges, strom: nStrom, zent: nZent, timeSec: nTimeSec };
-  }, [targetTech, selectedTechnologies, category]);
+  }, [targetTech, targetLevel, selectedTechnologies, category]);
 
   if (!category) {
     return (
@@ -485,7 +493,7 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
                   🎯 {t('tank.target')}
                   <button onClick={() => setTargetTechId(null)} style={{ marginLeft: 'auto', padding: '0.05rem 0.35rem', fontSize: '0.72rem', background: 'rgba(231,76,60,0.2)', border: '1px solid rgba(231,76,60,0.5)', borderRadius: '4px', color: '#e74c3c', cursor: 'pointer' }}>✕</button>
                 </div>
-                <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#e74c3c', marginBottom: '0.25rem' }}>{t(targetTech.nameKey as TranslationKey)}</div>
+                <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#e74c3c', marginBottom: '0.25rem' }}>{t(targetTech.nameKey as TranslationKey)} · Lv {targetLevel ?? targetTech.maxLevel}</div>
                 <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', columnGap: '0.7rem', fontVariantNumeric: 'tabular-nums' }}>
                   {[
                     { k: 'badges', ic: '🎖️', label: 'Badges', val: fcCompact(targetTotals.badges, lang), show: true },
@@ -530,7 +538,8 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
           onLevelChange={setTechnologyLevel}
           onBatchLevelChange={setMultipleTechnologyLevels}
           targetTechId={targetTechId}
-          onTargetTechIdChange={setTargetTechId}
+          targetLevel={targetLevel}
+          onTargetChange={setTarget}
           layoutDirection={layoutDirection}
           iconMap={iconMap}
           labSpeed={labSpeed}

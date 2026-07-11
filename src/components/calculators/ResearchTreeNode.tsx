@@ -14,6 +14,7 @@ interface ResearchTreeNodeProps {
   readonly maxAvailable: number;
   readonly unlocked: boolean;
   readonly isTarget?: boolean;
+  readonly targetLevel?: number | null;
   readonly formatNumber: (num: number) => string;
   readonly onLevelChange: (techId: string, level: number) => void;
   readonly onOpenSheet?: (tech: Technology) => void;
@@ -55,6 +56,7 @@ function ResearchTreeNode({
   maxAvailable,
   unlocked,
   isTarget = false,
+  targetLevel = null,
   formatNumber,
   onLevelChange,
   onOpenSheet,
@@ -234,7 +236,7 @@ function ResearchTreeNode({
             fontWeight="600"
             data-node-element="true"
           >
-            {isTarget ? t('tank.targetSet') : t('tank.setTarget')}
+            {isTarget ? `Lv ${targetLevel ?? tech.maxLevel}` : t('tank.setTarget')}
           </text>
         </g>
       )}

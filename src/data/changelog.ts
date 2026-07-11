@@ -8,6 +8,11 @@ export const changelog: ChangelogEntry[] = [
   // ── July 2026 ───────────────────────────────────────────────────────────
   {
     date: '2026-07-11',
+    time: '02:05',
+    text: 'Research target: setting a target on a node now asks which level you want to aim for (a quick pop-up) instead of always aiming for max. The target summary on the left recalculates to exactly that level, and the node\'s target button shows the chosen level',
+  },
+  {
+    date: '2026-07-11',
     time: '01:40',
     text: 'Research & Tank trees: a node that is fully maxed now shows a green "Done" ribbon and can no longer be picked as a target (there is nothing left to reach). Each node\'s progress bar also shows a tick per level so you can read the granularity at a glance',
   },

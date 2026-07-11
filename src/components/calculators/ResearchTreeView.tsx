@@ -5,6 +5,7 @@ import { formatNumber as sharedFormatNumber } from '../../utils/formatters';
 import type { TranslationData } from '../../i18n/index';
 import ResearchTreeNode from './ResearchTreeNode';
 import ResearchLevelSheet from './ResearchLevelSheet';
+import TargetLevelSheet from './TargetLevelSheet';
 import { type LabSpeed } from '../../utils/labSpeed';
 import ResearchTreeConnections from './ResearchTreeConnections';
 import {
@@ -24,7 +25,8 @@ interface ResearchTreeViewProps {
   readonly onLevelChange: (techId: string, level: number) => void;
   readonly onBatchLevelChange: (updates: Map<string, number>) => void;
   readonly targetTechId: string | null;
-  readonly onTargetTechIdChange: (techId: string | null) => void;
+  readonly targetLevel: number | null;
+  readonly onTargetChange: (techId: string, level: number) => void;
   readonly layoutDirection: 'horizontal' | 'vertical';
   readonly iconMap?: Record<string, string>;
   readonly labSpeed: LabSpeed;
@@ -40,7 +42,8 @@ export default function ResearchTreeView({
   onLevelChange,
   onBatchLevelChange,
   targetTechId,
-  onTargetTechIdChange,
+  targetLevel,
+  onTargetChange,
   layoutDirection,
   iconMap,
   labSpeed,
@@ -71,6 +74,7 @@ export default function ResearchTreeView({
 
   const [focusedNodeId, setFocusedNodeId] = useState<string | null>(null);
   const [sheetTech, setSheetTech] = useState<Technology | null>(null);
+  const [targetPickerTech, setTargetPickerTech] = useState<Technology | null>(null);
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [resizeTick, setResizeTick] = useState(0);
@@ -520,12 +524,13 @@ export default function ResearchTreeView({
                   maxAvailable={maxAvailable}
                   unlocked={unlocked}
                   isTarget={targetTechId === tech.id}
+                  targetLevel={targetTechId === tech.id ? (targetLevel ?? tech.maxLevel) : null}
                   formatNumber={formatNumber}
                   onLevelChange={onLevelChange}
                   onOpenSheet={setSheetTech}
                   iconMap={iconMap}
                   onUnlockClick={unlockWithPrerequisites}
-                  onSetTarget={() => onTargetTechIdChange(tech.id)}
+                  onSetTarget={() => setTargetPickerTech(tech)}
                   onFocus={() => {
                     setFocusedNodeId(tech.id);
                   }}
@@ -571,6 +576,15 @@ export default function ResearchTreeView({
           labSpeed={labSpeed}
           onOpenLabSpeed={onOpenLabSpeed}
           lang={lang}
+          translationData={translationData}
+        />
+      )}
+      {targetPickerTech && (
+        <TargetLevelSheet
+          tech={targetPickerTech}
+          currentTarget={targetTechId === targetPickerTech.id ? targetLevel : null}
+          onSelect={(level) => onTargetChange(targetPickerTech.id, level)}
+          onClose={() => setTargetPickerTech(null)}
           translationData={translationData}
         />
       )}
