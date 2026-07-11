@@ -45,6 +45,7 @@ interface TankState {
   subLevels: Record<string, number>;
   viewMode: 'tree' | 'list';
   targetLevel: number | null;
+  targetSubLevel: number | null; // Ziel-Sub-Level im Ziel-Knoten (null = bis Max)
 }
 
 const TANK_DEFAULT: TankState = {
@@ -52,6 +53,7 @@ const TANK_DEFAULT: TankState = {
   subLevels: { '0': 0 },
   viewMode: 'tree',
   targetLevel: null,
+  targetSubLevel: null,
 };
 
 // Hilfsfunktionen: JSON-typen ↔ Runtime-typen
@@ -80,6 +82,7 @@ export default function TankCalculator({ lang, translationData }: TankCalculator
   const subLevels      = toMap(stored.subLevels);
   const viewMode       = stored.viewMode;
   const targetLevel    = stored.targetLevel;
+  const targetSubLevel = stored.targetSubLevel;
 
   // Wrapper-Setter die die ursprüngliche API nachbilden
   const setUnlockedLevels = (updater: Set<number> | ((prev: Set<number>) => Set<number>)) => {
@@ -99,7 +102,9 @@ export default function TankCalculator({ lang, translationData }: TankCalculator
   };
 
   const setViewMode    = (v: 'tree' | 'list')   => setStored(s => ({ ...s, viewMode: v }));
-  const setTargetLevel = (v: number | null)      => setStored(s => ({ ...s, targetLevel: v }));
+  const setTargetLevel = (v: number | null)      => setStored(s => ({ ...s, targetLevel: v, targetSubLevel: v === null ? null : s.targetSubLevel }));
+  // Ziel mit konkretem Sub-Level setzen (aus dem Ziel-Level-Modal)
+  const setTarget = (level: number, subLevel: number) => setStored(s => ({ ...s, targetLevel: level, targetSubLevel: subLevel }));
 
   const treeContainerRef = useRef<HTMLDivElement>(null);
 
@@ -115,6 +120,19 @@ export default function TankCalculator({ lang, translationData }: TankCalculator
   const remainingTotal  = maxWrenches - totalWrenchesUsed;
   const completionPct   = maxWrenches > 0 ? Math.round((totalWrenchesUsed / maxWrenches) * 1000) / 10 : 0;
   const totalMods       = modifications.length;
+
+  // Schrauben bis zum Ziel: alle Mods bis zum Ziel-Level maxen + Ziel-Mod auf Sub-X (ab aktuellem Stand)
+  const targetMod = targetLevel === null ? null : (modifications.find(m => m.level === targetLevel) ?? null);
+  let targetWrenches = 0;
+  if (targetMod) {
+    const goalSub = targetSubLevel ?? targetMod.subLevels;
+    for (const mod of modifications) {
+      if (mod.level > targetMod.level) continue;
+      const neededSub  = mod.level < targetMod.level ? mod.subLevels : Math.min(goalSub, mod.subLevels);
+      const currentSub = subLevels.get(mod.level) || 0;
+      if (currentSub < neededSub) targetWrenches += (neededSub - currentSub) * mod.wrenchesPerSub;
+    }
+  }
 
   const unlockedCount = useMemo(() => unlockedLevels.size, [unlockedLevels]);
 
@@ -230,6 +248,21 @@ export default function TankCalculator({ lang, translationData }: TankCalculator
               <span style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.9)', fontWeight: 600, textAlign: 'right' }}>{value}</span>
             </div>
           ))}
+
+          {/* Gruppe: Ziel — Schrauben bis zum gewählten Ziel(-Sub-Level) */}
+          {targetMod && (
+            <>
+              <div style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: '#e74c3c', margin: '0.6rem 0 0.2rem', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                🎯 {t('tank.target')}
+                <button onClick={() => setTargetLevel(null)} style={{ marginLeft: 'auto', padding: '0.05rem 0.35rem', fontSize: '0.72rem', background: 'rgba(231,76,60,0.2)', border: '1px solid rgba(231,76,60,0.5)', borderRadius: '4px', color: '#e74c3c', cursor: 'pointer' }}>✕</button>
+              </div>
+              <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#e74c3c', marginBottom: '0.15rem' }}>{t(targetMod.nameKey as TranslationKey)} · Sub {targetSubLevel ?? targetMod.subLevels}</div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '0.5rem', padding: '0.18rem 0', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.55)' }}>{t('tank.widget.remaining')}</span>
+                <span style={{ fontSize: '0.82rem', color: '#e74c3c', fontWeight: 700, textAlign: 'right' }}>{formatNumber(targetWrenches, lang)} 🔧</span>
+              </div>
+            </>
+          )}
         </div>
 
         {/* ── Buttons (immer ganz unten) ── */}
@@ -262,7 +295,9 @@ export default function TankCalculator({ lang, translationData }: TankCalculator
             onUnlockedLevelsChange={setUnlockedLevels}
             onSubLevelsChange={setSubLevels}
             targetLevel={targetLevel}
+            targetSubLevel={targetSubLevel}
             onTargetLevelChange={setTargetLevel}
+            onTargetChange={setTarget}
             lang={lang}
             translationData={translationData}
           />

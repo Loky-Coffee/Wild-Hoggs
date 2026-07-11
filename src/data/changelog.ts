@@ -8,6 +8,11 @@ export const changelog: ChangelogEntry[] = [
   // ── July 2026 ───────────────────────────────────────────────────────────
   {
     date: '2026-07-11',
+    time: '02:40',
+    text: 'Target level now works on the Tank too: setting a target on a modification asks which sub-level to aim for, and the panel shows the wrenches needed to reach it (plus a button to clear the target). In both the research and tank target pickers, levels you have already reached are greyed out — you can only aim higher',
+  },
+  {
+    date: '2026-07-11',
     time: '02:05',
     text: 'Research target: setting a target on a node now asks which level you want to aim for (a quick pop-up) instead of always aiming for max. The target summary on the left recalculates to exactly that level, and the node\'s target button shows the chosen level',
   },

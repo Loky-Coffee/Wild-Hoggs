@@ -581,7 +581,9 @@ export default function ResearchTreeView({
       )}
       {targetPickerTech && (
         <TargetLevelSheet
-          tech={targetPickerTech}
+          nameKey={targetPickerTech.nameKey}
+          maxLevel={targetPickerTech.maxLevel}
+          currentLevel={selectedLevels.get(targetPickerTech.id) || 0}
           currentTarget={targetTechId === targetPickerTech.id ? targetLevel : null}
           onSelect={(level) => onTargetChange(targetPickerTech.id, level)}
           onClose={() => setTargetPickerTech(null)}

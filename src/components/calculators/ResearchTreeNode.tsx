@@ -368,6 +368,7 @@ export default memo(ResearchTreeNode, (prevProps, nextProps) => {
     prevProps.maxAvailable === nextProps.maxAvailable &&
     prevProps.unlocked === nextProps.unlocked &&
     prevProps.isTarget === nextProps.isTarget &&
+    prevProps.targetLevel === nextProps.targetLevel &&
     prevProps.x === nextProps.x &&
     prevProps.y === nextProps.y &&
     prevProps.lang === nextProps.lang

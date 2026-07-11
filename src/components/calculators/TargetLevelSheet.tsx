@@ -1,6 +1,5 @@
 import { useEffect } from 'preact/hooks';
 import { createPortal } from 'preact/compat';
-import type { Technology } from '../../schemas/research';
 import { useTranslations } from '../../i18n/utils';
 import type { TranslationData, TranslationKey } from '../../i18n/index';
 import { useSheetDrag } from '../../hooks/useSheetDrag';
@@ -8,7 +7,9 @@ import './ResearchLevelSheet.css';
 import './TargetLevelSheet.css';
 
 interface Props {
-  readonly tech: Technology;
+  readonly nameKey: string;              // Übersetzungs-Key des Knotennamens
+  readonly maxLevel: number;             // Anzahl wählbarer Level (Research: maxLevel, Tank: maxSubLevel)
+  readonly currentLevel: number;         // schon erreichtes Level -> nicht als Ziel wählbar
   readonly currentTarget: number | null; // aktuell gesetztes Ziel-Level (falls dieser Knoten Ziel ist)
   readonly onSelect: (level: number) => void;
   readonly onClose: () => void;
@@ -16,9 +17,9 @@ interface Props {
 }
 
 // Modal beim Ziel-Klick: „Bis welches Level als Ziel?" — Level antippen setzt das Ziel.
-export default function TargetLevelSheet({ tech, currentTarget, onSelect, onClose, translationData }: Props) {
+export default function TargetLevelSheet({ nameKey, maxLevel, currentLevel, currentTarget, onSelect, onClose, translationData }: Props) {
   const t = useTranslations(translationData);
-  const name = t(tech.nameKey as TranslationKey) || (tech as { name?: string }).name || tech.id;
+  const name = t(nameKey as TranslationKey) || nameKey;
   const { handleRef, sheetRef } = useSheetDrag(onClose);
 
   useEffect(() => {
@@ -38,16 +39,20 @@ export default function TargetLevelSheet({ tech, currentTarget, onSelect, onClos
           <button class="rls-close" onClick={onClose} aria-label="Close">✕</button>
         </div>
         <div class="tls-grid">
-          {Array.from({ length: tech.maxLevel }, (_, i) => i + 1).map((lvl) => (
-            <button
-              key={lvl}
-              type="button"
-              class={`tls-lvl${lvl === currentTarget ? ' active' : ''}`}
-              onClick={() => { onSelect(lvl); onClose(); }}
-            >
-              {lvl}
-            </button>
-          ))}
+          {Array.from({ length: maxLevel }, (_, i) => i + 1).map((lvl) => {
+            const done = lvl <= currentLevel; // schon erreicht -> nicht als Ziel wählbar
+            return (
+              <button
+                key={lvl}
+                type="button"
+                disabled={done}
+                class={`tls-lvl${lvl === currentTarget ? ' active' : ''}${done ? ' done' : ''}`}
+                onClick={() => { if (!done) { onSelect(lvl); onClose(); } }}
+              >
+                {done ? '✓' : lvl}
+              </button>
+            );
+          })}
         </div>
       </div>
     </div>,

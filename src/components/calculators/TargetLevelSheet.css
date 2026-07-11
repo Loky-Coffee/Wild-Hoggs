@@ -25,3 +25,10 @@
   border-color: #e74c3c;
   color: #fff;
 }
+.tls-lvl.done {
+  opacity: 0.4;
+  cursor: not-allowed;
+  color: #6ee7a0;
+  border-color: rgba(110, 231, 160, 0.2);
+}
+.tls-lvl:disabled { pointer-events: none; }

@@ -3,6 +3,7 @@ import { useTreeZoom, calculateMobileZoom, calculateFitZoom, TREE_ZOOM_DEFAULTS 
 import TankModificationNode from './TankModificationNode';
 import TankLevelSheet from './TankLevelSheet';
 import TankModificationConnections from './TankModificationConnections';
+import TargetLevelSheet from './TargetLevelSheet';
 import { formatNumber as sharedFormatNumber } from '../../utils/formatters';
 import type { TranslationData } from '../../i18n/index';
 import {
@@ -39,7 +40,9 @@ interface TankModificationTreeProps {
   readonly onUnlockedLevelsChange: (levels: Set<number>) => void;
   readonly onSubLevelsChange: (levels: Map<number, number>) => void;
   readonly targetLevel: number | null;
+  readonly targetSubLevel: number | null;
   readonly onTargetLevelChange: (level: number | null) => void;
+  readonly onTargetChange: (level: number, subLevel: number) => void;
   readonly lang: 'de' | 'en';
   readonly translationData: TranslationData;
 }
@@ -52,7 +55,9 @@ export default function TankModificationTree({
   onUnlockedLevelsChange,
   onSubLevelsChange,
   targetLevel,
+  targetSubLevel,
   onTargetLevelChange,
+  onTargetChange,
   lang,
   translationData
 }: TankModificationTreeProps) {
@@ -63,6 +68,7 @@ export default function TankModificationTree({
 
   const [focusedNodeLevel, setFocusedNodeLevel] = useState<number | null>(null);
   const [sheetLevel, setSheetLevel] = useState<number | null>(null);
+  const [targetPickerMod, setTargetPickerMod] = useState<TankModification | null>(null);
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [resizeTick, setResizeTick] = useState(0);
@@ -344,9 +350,10 @@ export default function TankModificationTree({
                 maxSubLevel={mod.subLevels}
                 unlocked={isUnlocked}
                 isTarget={targetLevel === mod.level}
+                targetSubLevel={targetLevel === mod.level ? (targetSubLevel ?? mod.subLevels) : null}
                 formatNumber={formatNumber}
                 onOpenSheet={(m) => setSheetLevel(m.level)}
-                onSetTarget={() => onTargetLevelChange(mod.level)}
+                onSetTarget={() => setTargetPickerMod(mod)}
                 onFocus={() => setFocusedNodeLevel(mod.level)}
                 lang={lang}
                 translationData={translationData}
@@ -371,6 +378,17 @@ export default function TankModificationTree({
           />
         );
       })()}
+      {targetPickerMod && (
+        <TargetLevelSheet
+          nameKey={targetPickerMod.nameKey}
+          maxLevel={targetPickerMod.subLevels}
+          currentLevel={subLevels.get(targetPickerMod.level) || 0}
+          currentTarget={targetLevel === targetPickerMod.level ? targetSubLevel : null}
+          onSelect={(subLevel) => onTargetChange(targetPickerMod.level, subLevel)}
+          onClose={() => setTargetPickerMod(null)}
+          translationData={translationData}
+        />
+      )}
     </div>
   );
 }

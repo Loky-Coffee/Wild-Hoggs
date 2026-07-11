@@ -22,6 +22,7 @@ interface TankModificationNodeProps {
   readonly maxSubLevel: number;
   readonly unlocked: boolean;
   readonly isTarget?: boolean;
+  readonly targetSubLevel?: number | null;
   readonly formatNumber: (num: number) => string;
   readonly onOpenSheet?: (mod: TankModification) => void;
   readonly onSetTarget?: () => void;
@@ -38,6 +39,7 @@ function TankModificationNode({
   maxSubLevel,
   unlocked,
   isTarget = false,
+  targetSubLevel = null,
   formatNumber,
   onOpenSheet,
   onSetTarget,
@@ -177,7 +179,7 @@ function TankModificationNode({
             fontWeight="600"
             data-node-element="true"
           >
-            {isTarget ? t('tank.targetSet') : t('tank.setTarget')}
+            {isTarget ? `Sub ${targetSubLevel ?? maxSubLevel}` : t('tank.setTarget')}
           </text>
         </g>
       )}
