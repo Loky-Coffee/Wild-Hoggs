@@ -52,9 +52,11 @@ function TankModificationConnections({
     // Check if connection is unlocked (current mod is unlocked)
     const isUnlocked = unlockedLevels.has(currentMod.level);
 
-    // Rote Ziel-Linie: Kante auf dem Pfad zum Ziel (nächster Mod <= Ziel-Level) UND noch NICHT fertig
+    // Rote Ziel-Linie: Kante auf dem Pfad zum Ziel (nächster Mod <= Ziel-Level) und BEIDE Enden
+    // noch NICHT fertig -> keine rote Linie an/aus einem bereits fertigen Knoten.
     const onTargetPath = targetLevel !== null
       && nextMod.level <= targetLevel
+      && (subLevels.get(currentMod.level) || 0) < currentMod.subLevels
       && (subLevels.get(nextMod.level) || 0) < nextMod.subLevels;
 
     // Determine if we're on the same row or different rows

@@ -26,6 +26,7 @@ function ResearchTreeConnections({
   targetPath
 }: ResearchTreeConnectionsProps) {
   const connections: VNode[] = [];
+  const byId = new Map(technologies.map((tt) => [tt.id, tt]));
 
   // Direct Parent-Child Connections (klassische Baumstruktur)
   // Für jede Technology, zeichne direkte Linien zu allen Prerequisites
@@ -87,10 +88,12 @@ function ResearchTreeConnections({
         />
       );
 
-      // Rote Ziel-Linie: Kante auf dem Pfad zum Ziel UND Zielknoten noch NICHT fertig (gemaxt).
+      // Rote Ziel-Linie: Kante auf dem Pfad zum Ziel; BEIDE Enden (Voraussetzung + Kind) noch NICHT
+      // fertig (gemaxt) -> keine rote Linie an einem fertigen Knoten.
       // Eigener versetzter Pfad (jedes Segment senkrecht versetzt) -> kollidiert NICHT mit der blauen Linie.
       // Seite = die des Knotens (Kind links -> rote Linie rechts der Blauen, Kind rechts -> links).
-      if (targetPath.has(tech.id) && (selectedLevels.get(tech.id) || 0) < tech.maxLevel) {
+      const prereqNotMaxed = (selectedLevels.get(prereqId) || 0) < (byId.get(prereqId)?.maxLevel ?? Infinity);
+      if (targetPath.has(tech.id) && (selectedLevels.get(tech.id) || 0) < tech.maxLevel && prereqNotMaxed) {
         const off = 5;
         let redPath: string;
         if (layoutDirection === 'horizontal') {
