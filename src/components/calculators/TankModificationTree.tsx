@@ -329,6 +329,8 @@ export default function TankModificationTree({
             modifications={modifications}
             nodePositions={nodePositions}
             unlockedLevels={unlockedLevels}
+            subLevels={subLevels}
+            targetLevel={targetLevel}
             svgDimensions={svgDimensions}
           />
 

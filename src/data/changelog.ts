@@ -8,6 +8,11 @@ export const changelog: ChangelogEntry[] = [
   // ── July 2026 ───────────────────────────────────────────────────────────
   {
     date: '2026-07-11',
+    time: '16:05',
+    text: 'Setting a target now draws a red trail alongside the blue connection lines — it follows the whole path (all prerequisites) you still need to complete to reach the target, and skips nodes that are already maxed. Works in both the research and tank trees',
+  },
+  {
+    date: '2026-07-11',
     time: '02:40',
     text: 'Target level now works on the Tank too: setting a target on a modification asks which sub-level to aim for, and the panel shows the wrenches needed to reach it (plus a button to clear the target). In both the research and tank target pickers, levels you have already reached are greyed out — you can only aim higher',
   },

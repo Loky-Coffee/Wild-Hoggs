@@ -14,6 +14,7 @@ interface ResearchTreeConnectionsProps {
   readonly selectedLevels: Map<string, number>;
   readonly svgDimensions: SVGDimensions;
   readonly layoutDirection: 'horizontal' | 'vertical';
+  readonly targetPath: Set<string>;
 }
 
 function ResearchTreeConnections({
@@ -21,7 +22,8 @@ function ResearchTreeConnections({
   nodePositions,
   selectedLevels,
   svgDimensions,
-  layoutDirection
+  layoutDirection,
+  targetPath
 }: ResearchTreeConnectionsProps) {
   const connections: VNode[] = [];
 
@@ -84,6 +86,33 @@ function ResearchTreeConnections({
           fill="none"
         />
       );
+
+      // Rote Ziel-Linie: Kante auf dem Pfad zum Ziel UND Zielknoten noch NICHT fertig (gemaxt).
+      // Eigener versetzter Pfad (jedes Segment senkrecht versetzt) -> kollidiert NICHT mit der blauen Linie.
+      // Seite = die des Knotens (Kind links -> rote Linie rechts der Blauen, Kind rechts -> links).
+      if (targetPath.has(tech.id) && (selectedLevels.get(tech.id) || 0) < tech.maxLevel) {
+        const off = 5;
+        let redPath: string;
+        if (layoutDirection === 'horizontal') {
+          const midX = (startX + endX) / 2;
+          const sy = endY < startY ? off : -off;               // Seite (oben/unten)
+          redPath = `M ${startX} ${startY + sy} L ${midX + off} ${startY + sy} L ${midX + off} ${endY + sy} L ${endX} ${endY + sy}`;
+        } else {
+          const midY = (startY + endY) / 2;
+          const sx = endX < startX ? off : -off;                // Seite (links/rechts)
+          redPath = `M ${startX + sx} ${startY} L ${startX + sx} ${midY + off} L ${endX + sx} ${midY + off} L ${endX + sx} ${endY}`;
+        }
+        connections.push(
+          <path
+            key={`target-${prereqId}-${tech.id}`}
+            d={redPath}
+            stroke="#e74c3c"
+            strokeWidth={2.5}
+            fill="none"
+            opacity={0.9}
+          />
+        );
+      }
     });
   });
 
@@ -96,6 +125,12 @@ export default memo(ResearchTreeConnections, (prevProps, nextProps) => {
   if (prevProps.selectedLevels.size !== nextProps.selectedLevels.size) return false;
   for (const [key, value] of prevProps.selectedLevels) {
     if (nextProps.selectedLevels.get(key) !== value) return false;
+  }
+
+  // Check if targetPath changed (rote Linie)
+  if (prevProps.targetPath.size !== nextProps.targetPath.size) return false;
+  for (const id of prevProps.targetPath) {
+    if (!nextProps.targetPath.has(id)) return false;
   }
 
   return (

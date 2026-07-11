@@ -160,6 +160,22 @@ export default function ResearchTreeView({
     return calculateSVGDimensions(nodePositions, TREE_ZOOM_DEFAULTS.SVG_PADDING);
   }, [nodePositions]);
 
+  // Ziel-Pfad: Ziel-Tech + alle rekursiven Voraussetzungen (für die rote Linie)
+  const targetPath = useMemo(() => {
+    const set = new Set<string>();
+    if (!targetTechId) return set;
+    const byId = new Map(technologies.map((tt) => [tt.id, tt]));
+    const visit = (id: string) => {
+      if (set.has(id)) return;
+      const tech = byId.get(id);
+      if (!tech) return;
+      set.add(id);
+      tech.prerequisites.forEach((p) => visit(typeof p === 'string' ? p : p.id));
+    };
+    visit(targetTechId);
+    return set;
+  }, [targetTechId, technologies]);
+
   // Calculate initial zoom to fit content perfectly on mobile.
   // Vertical mode: fit 3 nodes horizontally (NODE_SPACING * 3).
   // Horizontal mode: fit the tree HEIGHT into the container — avoids tiny/empty tree
@@ -503,6 +519,7 @@ export default function ResearchTreeView({
               selectedLevels={selectedLevels}
               svgDimensions={svgDimensions}
               layoutDirection={layoutDirection}
+              targetPath={targetPath}
             />
 
             {/* Nodes - extracted to separate component with memoization */}
