@@ -193,6 +193,22 @@ const websiteSchema = {
 </html>
 
 <style is:global>
+  /* ── Seitenwechsel ohne Ueberblendung ──────────────────────────────────────
+     Der Browser blendet bei View Transitions standardmaessig alte und neue
+     Seite ineinander — und mischt sie dabei mit `mix-blend-mode: plus-lighter`,
+     was die Helligkeiten ADDIERT. Auf diesem dunklen Design hellt das fuer
+     ~250ms sichtbar auf: es sieht aus, als blitze kurz eine fremde Seite auf.
+     Deshalb: harter, sofortiger Wechsel. Die Navigation bleibt eine SPA-
+     Navigation (kein Neuladen), nur eben ohne das Flackern. */
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+    mix-blend-mode: normal !important;
+  }
+  ::view-transition-group(root) {
+    animation: none !important;
+  }
+
   * {
     margin: 0;
     padding: 0;
