@@ -12,8 +12,11 @@ import './ChatWindow.css';
 
 type ChatType = 'global' | 'global-lang' | 'server' | 'server-lang';
 
-const POLL_MS     = 5_000;
-const PRESENCE_MS = 20_000;
+const POLL_MS = 5_000;
+// Presence (last_seen-Write + Online-Liste) läuft nur bei jedem 4. Sync-Durchlauf,
+// also alle 20 s. Der Server wertet Nutzer 5 Minuten lang als online — das reicht
+// also mit großem Abstand.
+const PRESENCE_EVERY = 4;
 // Obergrenze für die im Speicher gehaltenen Nachrichten. Ohne Limit wächst die
 // Liste (und damit DOM + Render-Aufwand) linear mit der Laufzeit des Tabs —
 // nach ein paar Stunden friert der Tab sonst ein.
@@ -82,13 +85,12 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
   const [sidebarOpen,  setSidebarOpen]  = useState(false);
 
   const pmInboxSince = useRef<string | null>(null);
-  const inboxRef     = useRef<ReturnType<typeof setInterval> | null>(null);
   const openPMRef    = useRef<string | null>(null);
 
   const lastCreatedAt = useRef<string | null>(null);
-  const pollRef       = useRef<ReturnType<typeof setInterval> | null>(null);
-  const presenceRef   = useRef<ReturnType<typeof setInterval> | null>(null);
-  const bgPollRef     = useRef<ReturnType<typeof setInterval> | null>(null);
+  const syncRef       = useRef<ReturnType<typeof setInterval> | null>(null);
+  const syncTick      = useRef(0);
+  const serverRef     = useRef<string | null>(null);
   const chatTypeRef   = useRef<ChatType>(chatType);
   const prevTypeRef   = useRef<ChatType>(chatType);
 
@@ -132,79 +134,108 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
   const langCode  = user?.language?.toUpperCase() ?? '';
   const serverName = activeProfile.server;
 
-  // ── Presence polling ─────────────────────────────────────────────────────
+  // ── Ein Sync-Poll für alles ───────────────────────────────────────────────
+  // Bündelt, was früher vier getrennte Requests waren: Nachrichten des aktiven
+  // Kanals, Ungelesen-Zähler der anderen Tabs, PM-Inbox und Presence.
+  // Werte, die sich ändern können, laufen über Refs — damit muss das Intervall
+  // nicht bei jedem Kanal- oder Profilwechsel neu aufgesetzt werden.
+  useEffect(() => { serverRef.current = serverName; }, [serverName]);
+
   useEffect(() => {
     if (!isLoggedIn || !token) return;
 
-    const fetchPresence = async () => {
-      try {
-        const res = await fetch('/api/presence', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (res.ok) {
-          const data = await res.json() as { users: OnlineUser[] };
-          // Nur setzen, wenn sich die Liste wirklich geändert hat — sonst löst
-          // jeder Poll einen kompletten Rerender der Nachrichtenliste aus.
-          setOnlineUsers(prev => sameOnlineUsers(prev, data.users) ? prev : data.users);
-        }
-      } catch { /* ignore */ }
-    };
-
-    fetchPresence();
-    presenceRef.current = setInterval(fetchPresence, PRESENCE_MS);
-    return () => {
-      if (presenceRef.current) clearInterval(presenceRef.current);
-    };
-  }, [isLoggedIn, token]);
-
-  // ── PM Inbox polling (detect incoming PMs) ───────────────────────────────
-  useEffect(() => {
-    if (!isLoggedIn || !token) return;
-
-    const pollInbox = async () => {
+    const runSync = async () => {
       if (document.visibilityState === 'hidden') return;
+
+      // Presence ist deutlich träger als der Nachrichten-Poll: nur bei jedem
+      // n-ten Durchlauf mitschicken, sonst gäbe es alle 5 s einen D1-Write.
+      const wantPresence = syncTick.current % PRESENCE_EVERY === 0;
+      syncTick.current++;
+
+      const tabs: Record<string, string> = {};
+      (['global', 'global-lang', 'server', 'server-lang'] as ChatType[]).forEach(t => {
+        if (t === chatTypeRef.current) return;
+        const since = tabSince.current[t];
+        if (since) tabs[t] = since;
+      });
+
       try {
-        const params = pmInboxSince.current
-          ? `?since=${encodeURIComponent(pmInboxSince.current)}`
-          : '';
-        const res = await fetch(`/api/chat/pm-inbox${params}`, {
-          headers: { Authorization: `Bearer ${token}` },
+        const res = await fetch('/api/chat/sync', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+          body:    JSON.stringify({
+            active:   { type: chatTypeRef.current, since: lastCreatedAt.current },
+            server:   serverRef.current,
+            tabs,
+            pm_since: pmInboxSince.current,
+            presence: wantPresence,
+            limit:    50,
+          }),
         });
         if (!res.ok) return;
-        const data = await res.json() as { senders: { sender_username: string; last_created_at: string; count: number }[]; server_time: string };
+        const data = await res.json() as {
+          messages: Message[];
+          unread:   Record<string, { count: number; last_ts: string | null }>;
+          pm:       { senders: { sender_username: string; count: number }[] };
+          online:   OnlineUser[] | null;
+          server_time: string;
+        };
 
-        if (data.server_time) pmInboxSince.current = data.server_time;
+        // 1) Neue Nachrichten im aktiven Kanal
+        if (data.messages?.length > 0) {
+          setMessages(prev => {
+            const known = new Set(prev.map(m => m.id));
+            const fresh = data.messages.filter(m => !known.has(m.id));
+            return fresh.length > 0 ? [...prev, ...fresh].slice(-MAX_MESSAGES) : prev;
+          });
+          lastCreatedAt.current = data.messages[data.messages.length - 1].created_at;
+        }
 
-        if (data.senders.length > 0) {
-          data.senders.forEach(({ sender_username, count }) => {
-            // Add to DM contacts list
-            setPmContacts(prev => {
-              const next = [sender_username, ...prev.filter(n => n !== sender_username)].slice(0, 10);
-              localStorage.setItem('wh-pm-contacts', JSON.stringify(next));
-              return next;
+        // 2) Ungelesen-Zähler der übrigen Tabs
+        const unread = data.unread ?? {};
+        if (Object.keys(unread).length > 0) {
+          setUnreadCounts(prev => {
+            const next = new Map(prev);
+            Object.entries(unread).forEach(([type, info]) => {
+              if (info.last_ts) tabSince.current[type as ChatType] = info.last_ts;
+              next.set(type as ChatType, (next.get(type as ChatType) ?? 0) + info.count);
             });
-            if (openPMRef.current === sender_username) return; // already open, PMPanel polls itself
-            // Auto-open if no panel is currently open
-            if (openPMRef.current === null) {
-              setOpenPM(sender_username);
-              openPMRef.current = sender_username;
-            } else {
-              // Another panel is open — show unread count badge
-              setPmUnread(prev => {
-                const next = new Map(prev);
-                next.set(sender_username, (prev.get(sender_username) ?? 0) + (count ?? 1));
-                return next;
-              });
-            }
+            return next;
           });
         }
-      } catch { /* ignore */ }
+
+        // 3) Eingehende PMs
+        data.pm?.senders?.forEach(({ sender_username, count }) => {
+          setPmContacts(prev => {
+            const next = [sender_username, ...prev.filter(n => n !== sender_username)].slice(0, 10);
+            localStorage.setItem('wh-pm-contacts', JSON.stringify(next));
+            return next;
+          });
+          if (openPMRef.current === sender_username) return; // offen — PMPanel pollt selbst
+          if (openPMRef.current === null) {
+            setOpenPM(sender_username);
+            openPMRef.current = sender_username;
+          } else {
+            setPmUnread(prev => {
+              const next = new Map(prev);
+              next.set(sender_username, (prev.get(sender_username) ?? 0) + (count ?? 1));
+              return next;
+            });
+          }
+        });
+
+        // 4) Online-Liste (nur in Presence-Durchläufen enthalten)
+        if (data.online) {
+          setOnlineUsers(prev => sameOnlineUsers(prev, data.online!) ? prev : data.online!);
+        }
+
+        if (data.server_time) pmInboxSince.current = data.server_time;
+      } catch { /* transiente Fehler ignorieren */ }
     };
 
-    // Kick off immediately to get server_time baseline, then poll
-    pollInbox();
-    inboxRef.current = setInterval(pollInbox, POLL_MS);
-    return () => { if (inboxRef.current) clearInterval(inboxRef.current); };
+    runSync();
+    syncRef.current = setInterval(runSync, POLL_MS);
+    return () => { if (syncRef.current) clearInterval(syncRef.current); };
   }, [isLoggedIn, token]);
 
   // Filter online users by currently visible channel
@@ -234,10 +265,6 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
     return allParams ? `${base}?${allParams}` : base;
   }, [serverName, user?.language]);
 
-  const stopPolling = useCallback(() => {
-    if (pollRef.current) { clearInterval(pollRef.current); pollRef.current = null; }
-  }, []);
-
   const loadInitial = useCallback(async (type: ChatType) => {
     if (!token) return;
     setLoading(true);
@@ -265,34 +292,11 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
     }
   }, [token, buildUrl]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const poll = useCallback(async () => {
-    if (!token || !lastCreatedAt.current) return;
-    try {
-      const since = encodeURIComponent(lastCreatedAt.current);
-      const res = await fetch(buildUrl(chatTypeRef.current, `since=${since}&limit=50`), {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!res.ok) return;
-      const data = await res.json() as { messages: Message[] };
-      if (data.messages.length > 0) {
-        setMessages(prev => {
-          const known = new Set(prev.map(m => m.id));
-          const fresh = data.messages.filter(m => !known.has(m.id));
-          return fresh.length > 0 ? [...prev, ...fresh].slice(-MAX_MESSAGES) : prev;
-        });
-        lastCreatedAt.current = data.messages[data.messages.length - 1].created_at;
-      }
-    } catch { /* ignore transient errors */ }
-  }, [token, buildUrl]);
-
+  // Kanalwechsel: Historie neu laden. Das laufende Nachrichten-Update erledigt
+  // der Sync-Poll weiter oben — er liest den aktiven Kanal aus chatTypeRef.
   useEffect(() => {
     if (!isLoggedIn || !token) return;
     loadInitial(chatType);
-    stopPolling();
-    pollRef.current = setInterval(() => {
-      if (document.visibilityState !== 'hidden') poll();
-    }, POLL_MS);
-    return stopPolling;
   }, [isLoggedIn, token, chatType]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Init baselines for inactive tabs ──────────────────────────────────────
@@ -315,46 +319,6 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
         .catch(() => {});
     });
   }, [isLoggedIn, token]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  // ── Background poll for inactive tabs (10 s) ──────────────────────────────
-  useEffect(() => {
-    if (!isLoggedIn || !token) return;
-
-    const bgPoll = async () => {
-      if (document.visibilityState === 'hidden') return;
-      const allTypes: ChatType[] = ['global', 'global-lang', 'server', 'server-lang'];
-      const inactive = allTypes.filter(t => {
-        if (t === chatTypeRef.current) return false;
-        if (t === 'global-lang' && !hasLang) return false;
-        if (t === 'server' && !hasServer) return false;
-        if (t === 'server-lang' && (!hasServer || !hasLang)) return false;
-        return true;
-      });
-      await Promise.all(inactive.map(async type => {
-        const since = tabSince.current[type];
-        if (!since) return;
-        try {
-          const res = await fetch(
-            buildUrl(type, `since=${encodeURIComponent(since)}&limit=50`),
-            { headers: { Authorization: `Bearer ${token}` } },
-          );
-          if (!res.ok) return;
-          const data = await res.json() as { messages: { created_at: string }[] };
-          if (data.messages.length > 0) {
-            tabSince.current[type] = data.messages[data.messages.length - 1].created_at;
-            setUnreadCounts(prev => {
-              const next = new Map(prev);
-              next.set(type, (next.get(type) ?? 0) + data.messages.length);
-              return next;
-            });
-          }
-        } catch { /* ignore */ }
-      }));
-    };
-
-    bgPollRef.current = setInterval(bgPoll, 10_000);
-    return () => { if (bgPollRef.current) { clearInterval(bgPollRef.current); bgPollRef.current = null; } };
-  }, [isLoggedIn, token, buildUrl, hasLang, hasServer]);
 
   // ── On mount: restore unread-tab state from GlobalChatPoller (cross-page nav) ─
   useEffect(() => {
