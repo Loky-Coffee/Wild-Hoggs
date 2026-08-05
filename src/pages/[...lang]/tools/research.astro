@@ -644,7 +644,8 @@ const breadcrumbItems = [
       if (lsRaw) {
         var lsParsed = JSON.parse(lsRaw);
         var ls = (lsParsed && lsParsed.state) ? lsParsed.state : lsParsed;
-        if (ls) eff = (ls.base || 0) + (ls.generalG ? 20 : 0) + (ls.minister ? 15 : 0) + (ls.rose ? 20 : 0);
+        if (ls) eff = (ls.base || 0) + (ls.generalG ? 20 : 0) + (ls.minister ? 15 : 0) + (ls.rose ? 20 : 0)
+          + (ls.spec === 1 ? 10 : ls.spec === 2 ? 15 : 0);
       }
     } catch (e) { /* ignore */ }
     var remSec = Math.max(0, gTotTimeSec - gUsedTimeSec) / (1 + eff / 100);

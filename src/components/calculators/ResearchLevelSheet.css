@@ -227,7 +227,16 @@
   font-size: 0.83rem;
 }
 .rls-buff input { width: auto; accent-color: #7cc5ff; }
-.rls-buff b { color: #7cc5ff; margin-left: auto; }
+.rls-buff b { color: #7cc5ff; margin-left: auto; padding-left: 0.4rem; }
+.rls-buff-lv {
+  flex-shrink: 0;
+  padding: 0.05rem 0.3rem;
+  border-radius: 5px;
+  background: rgba(124, 197, 255, 0.14);
+  color: #7cc5ff;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
 
 /* Hilfe-Overlay (Anleitung + Bild) */
 .rls-help-overlay {

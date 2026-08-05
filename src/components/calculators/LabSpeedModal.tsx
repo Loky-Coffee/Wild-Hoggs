@@ -44,6 +44,8 @@ export default function LabSpeedModal({ labSpeed, onChange, onClose, lang, helpD
   const toggleGeneralG = () => onChange({ ...labSpeed, generalG: !labSpeed.generalG, minister: false });
   const toggleMinister = () => onChange({ ...labSpeed, minister: !labSpeed.minister, generalG: false });
   const toggleRose = () => onChange({ ...labSpeed, rose: !labSpeed.rose });
+  // Saison-Spezialisierung: Lv.1 und Lv.2 schließen sich gegenseitig aus
+  const toggleSpec = (lv: 1 | 2) => onChange({ ...labSpeed, spec: labSpeed.spec === lv ? 0 : lv });
 
   return createPortal(
     <div class="rls-backdrop" onClick={onClose}>
@@ -71,6 +73,8 @@ export default function LabSpeedModal({ labSpeed, onChange, onClose, lang, helpD
             <label class="rls-buff"><input type="checkbox" checked={labSpeed.generalG} onChange={toggleGeneralG} /> {H.generalG} <b>+20%</b></label>
             <label class="rls-buff"><input type="checkbox" checked={labSpeed.minister} onChange={toggleMinister} /> {H.minister} <b>+15%</b></label>
             <label class="rls-buff"><input type="checkbox" checked={labSpeed.rose} onChange={toggleRose} /> {H.rose} <b>+20%</b></label>
+            <label class="rls-buff"><input type="checkbox" checked={labSpeed.spec === 1} onChange={() => toggleSpec(1)} /> {H.spec} <span class="rls-buff-lv">Lv.1</span> <b>+10%</b></label>
+            <label class="rls-buff"><input type="checkbox" checked={labSpeed.spec === 2} onChange={() => toggleSpec(2)} /> {H.spec} <span class="rls-buff-lv">Lv.2</span> <b>+15%</b></label>
           </div>
           <div class="rls-speed-eff-total">= <b>{eff}%</b></div>
         </div>

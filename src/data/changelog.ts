@@ -5,6 +5,12 @@ export interface ChangelogEntry {
 }
 
 export const changelog: ChangelogEntry[] = [
+  // ── August 2026 ─────────────────────────────────────────────────────────
+  {
+    date: '2026-08-05',
+    time: '16:20',
+    text: 'New buff in the speed settings: the seasonal specialisation "Support" (available from the second season / Ice Season onwards) can now be ticked at Lv.1 (+10%) or Lv.2 (+15%) — in both the research speed and the build speed pop-up, so research and construction times take it into account. Thanks to Xcorpia07 for the suggestion',
+  },
   // ── July 2026 ───────────────────────────────────────────────────────────
   {
     date: '2026-07-11',

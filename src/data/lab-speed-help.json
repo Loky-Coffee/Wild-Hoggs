@@ -8,7 +8,8 @@
     "buffsNote": "Optional buffs — added on top of your base %:",
     "generalG": "Administrative Commander",
     "minister": "Research Minister buff",
-    "rose": "Rose buff (send 5 or 9 roses)"
+    "rose": "Rose buff (send 5 or 9 roses)",
+    "spec": "Seasonal specialisation (Support)"
   },
   "de": {
     "title": "Forschungsgeschwindigkeit",
@@ -19,7 +20,8 @@
     "buffsNote": "Optionale Buffs — werden zum Basis-% addiert:",
     "generalG": "Verwaltungskommandant",
     "minister": "Forschungsminister-Buff",
-    "rose": "Rosen-Buff (5 oder 9 Rosen senden)"
+    "rose": "Rosen-Buff (5 oder 9 Rosen senden)",
+    "spec": "Saison-Spezialisierung (Unterstützung)"
   },
   "fr": {
     "title": "Vitesse de recherche",
@@ -30,7 +32,8 @@
     "buffsNote": "Buffs optionnels — ajoutés à ton % de base :",
     "generalG": "Dirigeant politique",
     "minister": "Buff Ministre de la Recherche",
-    "rose": "Buff Rose (envoyer 5 ou 9 roses)"
+    "rose": "Buff Rose (envoyer 5 ou 9 roses)",
+    "spec": "Spécialisation saisonnière (Soutien)"
   },
   "es": {
     "title": "Velocidad de investigación",
@@ -41,7 +44,8 @@
     "buffsNote": "Buffs opcionales — se suman a tu % base:",
     "generalG": "Comandante Civil",
     "minister": "Buff del Ministro de Investigación",
-    "rose": "Buff de Rosa (enviar 5 o 9 rosas)"
+    "rose": "Buff de Rosa (enviar 5 o 9 rosas)",
+    "spec": "Especialización de temporada (Apoyo)"
   },
   "pt": {
     "title": "Velocidade de pesquisa",
@@ -52,7 +56,8 @@
     "buffsNote": "Buffs opcionais — somados ao seu % base:",
     "generalG": "Líder Político",
     "minister": "Buff do Ministro de Pesquisa",
-    "rose": "Buff da Rosa (enviar 5 ou 9 rosas)"
+    "rose": "Buff da Rosa (enviar 5 ou 9 rosas)",
+    "spec": "Especialização de temporada (Apoio)"
   },
   "it": {
     "title": "Velocità di ricerca",
@@ -63,7 +68,8 @@
     "buffsNote": "Buff opzionali — aggiunti al tuo % base:",
     "generalG": "Comandante Civile",
     "minister": "Buff del Ministro della Ricerca",
-    "rose": "Buff Rosa (invia 5 o 9 rose)"
+    "rose": "Buff Rosa (invia 5 o 9 rose)",
+    "spec": "Specializzazione stagionale (Supporto)"
   },
   "ja": {
     "title": "研究速度",
@@ -74,7 +80,8 @@
     "buffsNote": "任意バフ — 基本％に加算されます：",
     "generalG": "政務統帥",
     "minister": "研究大臣バフ",
-    "rose": "バラバフ（バラを5本または9本送る）"
+    "rose": "バラバフ（バラを5本または9本送る）",
+    "spec": "シーズン専門化（サポート）"
   },
   "ko": {
     "title": "연구 속도",
@@ -85,7 +92,8 @@
     "buffsNote": "선택 버프 — 기본 %에 더해집니다:",
     "generalG": "정무 총수",
     "minister": "연구 장관 버프",
-    "rose": "장미 버프 (장미 5개 또는 9개 보내기)"
+    "rose": "장미 버프 (장미 5개 또는 9개 보내기)",
+    "spec": "시즌 특화 (지원)"
   },
   "zh-CN": {
     "title": "研究速度",
@@ -96,7 +104,8 @@
     "buffsNote": "可选增益 — 会加到你的基础 %：",
     "generalG": "政务统帅",
     "minister": "研究部长增益",
-    "rose": "玫瑰增益（赠送5或9朵玫瑰）"
+    "rose": "玫瑰增益（赠送5或9朵玫瑰）",
+    "spec": "赛季专精（支援）"
   },
   "zh-TW": {
     "title": "研究速度",
@@ -107,7 +116,8 @@
     "buffsNote": "可選增益 — 會加到你的基礎 %：",
     "generalG": "政務統帥",
     "minister": "研究部長增益",
-    "rose": "玫瑰增益（贈送5或9朵玫瑰）"
+    "rose": "玫瑰增益（贈送5或9朵玫瑰）",
+    "spec": "賽季專精（支援）"
   },
   "th": {
     "title": "ความเร็วการวิจัย",
@@ -118,7 +128,8 @@
     "buffsNote": "บัฟเสริม — บวกเข้ากับ % พื้นฐานของคุณ:",
     "generalG": "จอมพลทางการเมือง",
     "minister": "บัฟรัฐมนตรีวิจัย",
-    "rose": "บัฟกุหลาบ (ส่งกุหลาบ 5 หรือ 9 ดอก)"
+    "rose": "บัฟกุหลาบ (ส่งกุหลาบ 5 หรือ 9 ดอก)",
+    "spec": "ความเชี่ยวชาญประจำฤดูกาล (สนับสนุน)"
   },
   "tr": {
     "title": "Araştırma hızı",
@@ -129,7 +140,8 @@
     "buffsNote": "İsteğe bağlı buff'lar — temel %'ne eklenir:",
     "generalG": "İdari Komutan",
     "minister": "Araştırma Bakanı buff'ı",
-    "rose": "Gül buff'ı (5 veya 9 gül gönder)"
+    "rose": "Gül buff'ı (5 veya 9 gül gönder)",
+    "spec": "Sezon uzmanlığı (Destek)"
   },
   "id": {
     "title": "Kecepatan riset",
@@ -140,7 +152,8 @@
     "buffsNote": "Buff opsional — ditambahkan ke % dasarmu:",
     "generalG": "Komandan Politik",
     "minister": "Buff Menteri Riset",
-    "rose": "Buff Mawar (kirim 5 atau 9 mawar)"
+    "rose": "Buff Mawar (kirim 5 atau 9 mawar)",
+    "spec": "Spesialisasi musim (Dukungan)"
   },
   "ar": {
     "title": "سرعة البحث",
@@ -151,7 +164,8 @@
     "buffsNote": "تعزيزات اختيارية — تُضاف إلى نسبتك الأساسية:",
     "generalG": "حاكم الشؤون العامة",
     "minister": "تعزيز وزير البحث",
-    "rose": "تعزيز الوردة (أرسل 5 أو 9 ورود)"
+    "rose": "تعزيز الوردة (أرسل 5 أو 9 ورود)",
+    "spec": "تخصص الموسم (الدعم)"
   },
   "vi": {
     "title": "Tốc độ nghiên cứu",
@@ -162,6 +176,7 @@
     "buffsNote": "Buff tùy chọn — cộng thêm vào % cơ bản của bạn:",
     "generalG": "Thống Soái Chính Vụ",
     "minister": "Buff Bộ trưởng Nghiên cứu",
-    "rose": "Buff Hoa hồng (gửi 5 hoặc 9 hoa hồng)"
+    "rose": "Buff Hoa hồng (gửi 5 hoặc 9 hoa hồng)",
+    "spec": "Chuyên môn hóa mùa (Hỗ trợ)"
   }
 }

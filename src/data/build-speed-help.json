@@ -8,7 +8,8 @@
     "buffsNote": "Optionale Buffs — werden zum Basis-% addiert:",
     "generalG": "Verwaltungskommandant",
     "minister": "Bauminister-Buff",
-    "rose": "Rosen-Buff (1 oder 8 Rosen senden)"
+    "rose": "Rosen-Buff (1 oder 8 Rosen senden)",
+    "spec": "Saison-Spezialisierung (Unterstützung)"
   },
   "en": {
     "title": "Build speed",
@@ -19,7 +20,8 @@
     "buffsNote": "Optional buffs — added on top of your base %:",
     "generalG": "Administrative Commander",
     "minister": "Secretary of Construction",
-    "rose": "Rose buff (send 1 or 8 roses)"
+    "rose": "Rose buff (send 1 or 8 roses)",
+    "spec": "Seasonal specialisation (Support)"
   },
   "fr": {
     "title": "Vitesse de construction",
@@ -30,7 +32,8 @@
     "buffsNote": "Buffs optionnels — ajoutés à ton % de base :",
     "generalG": "Dirigeant politique",
     "minister": "Ministre de la construction",
-    "rose": "Buff Rose (envoyer 1 ou 8 roses)"
+    "rose": "Buff Rose (envoyer 1 ou 8 roses)",
+    "spec": "Spécialisation saisonnière (Soutien)"
   },
   "es": {
     "title": "Velocidad de construcción",
@@ -41,7 +44,8 @@
     "buffsNote": "Buffs opcionales — se suman a tu % base:",
     "generalG": "Comandante Civil",
     "minister": "Buff del Ministro de Construcción",
-    "rose": "Buff de Rosa (enviar 1 o 8 rosas)"
+    "rose": "Buff de Rosa (enviar 1 o 8 rosas)",
+    "spec": "Especialización de temporada (Apoyo)"
   },
   "pt": {
     "title": "Velocidade de construção",
@@ -52,7 +56,8 @@
     "buffsNote": "Buffs opcionais — somados ao seu % base:",
     "generalG": "Líder Político",
     "minister": "Ministro da Construção",
-    "rose": "Buff da Rosa (enviar 1 ou 8 rosas)"
+    "rose": "Buff da Rosa (enviar 1 ou 8 rosas)",
+    "spec": "Especialização de temporada (Apoio)"
   },
   "it": {
     "title": "Velocità di costruzione",
@@ -63,7 +68,8 @@
     "buffsNote": "Buff opzionali — aggiunti al tuo % base:",
     "generalG": "Comandante Civile",
     "minister": "Ministro dell'edilizia",
-    "rose": "Buff Rosa (invia 1 o 8 rose)"
+    "rose": "Buff Rosa (invia 1 o 8 rose)",
+    "spec": "Specializzazione stagionale (Supporto)"
   },
   "ja": {
     "title": "建設速度",
@@ -74,7 +80,8 @@
     "buffsNote": "任意バフ — 基本％に加算されます：",
     "generalG": "政務統帥",
     "minister": "建設長官",
-    "rose": "バラバフ（バラを1本または8本送る）"
+    "rose": "バラバフ（バラを1本または8本送る）",
+    "spec": "シーズン専門化（サポート）"
   },
   "ko": {
     "title": "건설 속도",
@@ -85,7 +92,8 @@
     "buffsNote": "선택 버프 — 기본 %에 더해집니다:",
     "generalG": "정무 총수",
     "minister": "건설부장",
-    "rose": "장미 버프 (장미 1개 또는 8개 보내기)"
+    "rose": "장미 버프 (장미 1개 또는 8개 보내기)",
+    "spec": "시즌 특화 (지원)"
   },
   "zh-CN": {
     "title": "建造速度",
@@ -96,7 +104,8 @@
     "buffsNote": "可选增益 — 会加到你的基础 %：",
     "generalG": "政务统帅",
     "minister": "建设部长",
-    "rose": "玫瑰增益（赠送1或8朵玫瑰）"
+    "rose": "玫瑰增益（赠送1或8朵玫瑰）",
+    "spec": "赛季专精（支援）"
   },
   "zh-TW": {
     "title": "建造速度",
@@ -107,7 +116,8 @@
     "buffsNote": "可選增益 — 會加到你的基礎 %：",
     "generalG": "政務統帥",
     "minister": "建設部長",
-    "rose": "玫瑰增益（贈送1或8朵玫瑰）"
+    "rose": "玫瑰增益（贈送1或8朵玫瑰）",
+    "spec": "賽季專精（支援）"
   },
   "th": {
     "title": "ความเร็วการก่อสร้าง",
@@ -118,7 +128,8 @@
     "buffsNote": "บัฟเสริม — บวกเข้ากับ % พื้นฐานของคุณ:",
     "generalG": "จอมพลทางการเมือง",
     "minister": "บัฟรัฐมนตรีอาคาร",
-    "rose": "บัฟกุหลาบ (ส่งกุหลาบ 1 หรือ 8 ดอก)"
+    "rose": "บัฟกุหลาบ (ส่งกุหลาบ 1 หรือ 8 ดอก)",
+    "spec": "ความเชี่ยวชาญประจำฤดูกาล (สนับสนุน)"
   },
   "tr": {
     "title": "İnşa hızı",
@@ -129,7 +140,8 @@
     "buffsNote": "İsteğe bağlı buff'lar — temel %'ne eklenir:",
     "generalG": "İdari Komutan",
     "minister": "İnşaat Bakanı buff'ı",
-    "rose": "Gül buff'ı (1 veya 8 gül gönder)"
+    "rose": "Gül buff'ı (1 veya 8 gül gönder)",
+    "spec": "Sezon uzmanlığı (Destek)"
   },
   "id": {
     "title": "Kecepatan konstruksi",
@@ -140,7 +152,8 @@
     "buffsNote": "Buff opsional — ditambahkan ke % dasarmu:",
     "generalG": "Komandan Politik",
     "minister": "Menteri Pembangunan",
-    "rose": "Buff Mawar (kirim 1 atau 8 mawar)"
+    "rose": "Buff Mawar (kirim 1 atau 8 mawar)",
+    "spec": "Spesialisasi musim (Dukungan)"
   },
   "ar": {
     "title": "سرعة البناء",
@@ -151,7 +164,8 @@
     "buffsNote": "تعزيزات اختيارية — تُضاف إلى نسبتك الأساسية:",
     "generalG": "حاكم الشؤون العامة",
     "minister": "وزير البناء",
-    "rose": "تعزيز الوردة (أرسل 1 أو 8 ورود)"
+    "rose": "تعزيز الوردة (أرسل 1 أو 8 ورود)",
+    "spec": "تخصص الموسم (الدعم)"
   },
   "vi": {
     "title": "Tốc độ xây dựng",
@@ -162,6 +176,7 @@
     "buffsNote": "Buff tùy chọn — cộng thêm vào % cơ bản của bạn:",
     "generalG": "Thống Soái Chính Vụ",
     "minister": "Bộ Trưởng Xây Dựng",
-    "rose": "Buff Hoa hồng (gửi 1 hoặc 8 hoa hồng)"
+    "rose": "Buff Hoa hồng (gửi 1 hoặc 8 hoa hồng)",
+    "spec": "Chuyên môn hóa mùa (Hỗ trợ)"
   }
 }
