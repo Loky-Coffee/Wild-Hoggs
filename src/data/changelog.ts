@@ -8,6 +8,11 @@ export const changelog: ChangelogEntry[] = [
   // ── August 2026 ─────────────────────────────────────────────────────────
   {
     date: '2026-08-05',
+    time: '17:05',
+    text: 'Fixed the site slowly grinding to a halt when you left it open for a long time (a few hours would eventually freeze the tab). The chat was keeping every single message it had ever received, so the page got heavier the longer it ran — it now holds the most recent 200, and the animated name tags only shimmer on the newest messages instead of all of them at once. The menu and the language picker were also leaving something behind on every page change. Everything works as before, it just stays fast now',
+  },
+  {
+    date: '2026-08-05',
     time: '16:20',
     text: 'New buff in the speed settings: the seasonal specialisation "Support" (available from the second season / Ice Season onwards) can now be ticked at Lv.1 (+10%) or Lv.2 (+15%) — in both the research speed and the build speed pop-up, so research and construction times take it into account. Thanks to Xcorpia07 for the suggestion',
   },
