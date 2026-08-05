@@ -1,11 +1,35 @@
 export interface ChangelogEntry {
   date: string; // "2026-03-21"
   time: string; // "HH:MM"
+  /**
+   * Fliesstext. **Doppelte Sternchen** heben etwas hervor — fuer Namen,
+   * Zahlen oder Begriffe, die ins Auge springen sollen:
+   *     text: 'Danke an **Xcorpia07** fuer den Vorschlag'
+   */
   text: string;
+}
+
+/**
+ * Wandelt **…** in <strong> um. Alles andere wird vorher escaped, damit im
+ * Changelog kein rohes HTML landen kann — auch wenn der Text aus dem Repo
+ * kommt und nicht von Nutzern.
+ */
+export function renderChangelogText(text: string): string {
+  const escaped = text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+  return escaped.replace(/\*\*([^*]+)\*\*/g, '<strong class="changelog-hl">$1</strong>');
 }
 
 export const changelog: ChangelogEntry[] = [
   // ── August 2026 ─────────────────────────────────────────────────────────
+  {
+    date: '2026-08-05',
+    time: '19:55',
+    text: 'Two things that flickered are now calm. Switching pages briefly faded the old and the new page into each other, which on a dark theme looks like a **stray page flashing up** before the right one — the switch is instant now. And on the **Roses** page, rose 10 lit up for a moment before jumping to the one actually set; now nothing is highlighted until the real answer arrives, because showing nothing beats showing the wrong one',
+  },
   {
     date: '2026-08-05',
     time: '17:05',
@@ -14,7 +38,7 @@ export const changelog: ChangelogEntry[] = [
   {
     date: '2026-08-05',
     time: '16:20',
-    text: 'New buff in the speed settings: the seasonal specialisation "Support" (available from the second season / Ice Season onwards) can now be ticked at Lv.1 (+10%) or Lv.2 (+15%) — in both the research speed and the build speed pop-up, so research and construction times take it into account. Thanks to Xcorpia07 for the suggestion',
+    text: 'New buff in the speed settings: the seasonal specialisation "Support" (available from the second season / Ice Season onwards) can now be ticked at Lv.1 (+10%) or Lv.2 (+15%) — in both the research speed and the build speed pop-up, so research and construction times take it into account. Thanks to **Xcorpia07** for the suggestion',
   },
   // ── July 2026 ───────────────────────────────────────────────────────────
   {

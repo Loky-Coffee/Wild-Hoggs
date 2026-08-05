@@ -3,7 +3,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
 import { useTranslations } from '../../i18n/utils';
 import { languages, loadTranslations } from '../../i18n/index';
 import type { Language } from '../../i18n/index';
-import { changelog } from '../../data/changelog';
+import { changelog, renderChangelogText } from '../../data/changelog';
 
 export function getStaticPaths() {
   const languagePaths = Object.keys(languages)
@@ -60,7 +60,7 @@ const t = useTranslations(translationData);
                 <time class="changelog-date" datetime={entry.date}>
                   {entry.date} — {entry.time}
                 </time>
-                <span class="changelog-text">{entry.text}</span>
+                <span class="changelog-text" set:html={renderChangelogText(entry.text)} />
               </li>
             ))}
           </ul>
@@ -352,6 +352,12 @@ const t = useTranslations(translationData);
     color: rgba(255, 255, 255, 0.72);
     font-size: 0.875rem;
     line-height: 1.4;
+  }
+
+  /* Hervorhebung im Changelog: **so markierter** Text (Namen, Zahlen, Begriffe) */
+  .changelog-text :global(.changelog-hl) {
+    color: var(--color-primary);
+    font-weight: 700;
   }
 
   /* Support / Buy me a coffee — compact, no grow */
