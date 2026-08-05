@@ -26,3 +26,9 @@ bucket_name = "wild-hoggs-files"
 name = "CHAT_HUB"
 class_name = "ChatRoom"
 script_name = "wild-hoggs-chat-hub"
+
+[vars]
+# Adresse des Chat-Hubs. Wird dem Client zusammen mit dem Ticket ausgeliefert,
+# damit im Frontend keine URL hartkodiert ist. HUB_SECRET liegt daneben als
+# Secret (nicht hier — nie ins Repo).
+HUB_URL = "https://wild-hoggs-chat-hub.alatzas5564.workers.dev"

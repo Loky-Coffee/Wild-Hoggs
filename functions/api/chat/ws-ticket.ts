@@ -12,17 +12,19 @@ const ALL_TYPES: ChatType[] = ['global', 'global-lang', 'server', 'server-lang']
 
 export async function onRequestPost(ctx: any) {
   const { DB, HUB_SECRET, HUB_URL } = ctx.env;
-  // Ohne Secret ODER URL gibt es keinen WebSocket — der Client bleibt dann
-  // einfach beim Polling. Deshalb 503 statt eines Fehlers: "gibt es hier nicht".
-  if (!HUB_SECRET || !HUB_URL) {
-    return Response.json({ error: 'Hub nicht konfiguriert' }, { status: 503 });
-  }
 
+  // Anmeldung zuerst prüfen — der Konfigurationszustand geht Unangemeldete nichts an.
   const token = getToken(ctx.request);
   if (!token) return Response.json({ error: 'Nicht angemeldet' }, { status: 401 });
 
   const user = await validateSession(DB, token);
   if (!user) return Response.json({ error: 'Sitzung abgelaufen' }, { status: 401 });
+
+  // Ohne Secret ODER URL gibt es keinen WebSocket — der Client bleibt dann
+  // einfach beim Polling. Deshalb 503: "gibt es hier nicht", kein Fehler.
+  if (!HUB_SECRET || !HUB_URL) {
+    return Response.json({ error: 'Hub nicht konfiguriert' }, { status: 503 });
+  }
 
   let body: any;
   try { body = await ctx.request.json(); }
