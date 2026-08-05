@@ -20,9 +20,11 @@ export async function onRequestPost(ctx: any) {
   const user = await validateSession(DB, token);
   if (!user) return Response.json({ error: 'Sitzung abgelaufen' }, { status: 401 });
 
-  // Ohne Secret ODER URL gibt es keinen WebSocket — der Client bleibt dann
-  // einfach beim Polling. Deshalb 503: "gibt es hier nicht", kein Fehler.
-  if (!HUB_SECRET || !HUB_URL) {
+  // Nur ein Ticket ausgeben, wenn der Hub WIRKLICH vollständig eingerichtet ist.
+  // Das CHAT_HUB-Binding gehört zwingend dazu: Ohne es kann die Sendeseite
+  // nicht broadcasten. Der Client würde sich sonst erfolgreich verbinden, das
+  // Nachrichten-Polling aussetzen — und nie etwas empfangen.
+  if (!HUB_SECRET || !HUB_URL || !ctx.env.CHAT_HUB) {
     return Response.json({ error: 'Hub nicht konfiguriert' }, { status: 503 });
   }
 
