@@ -11,24 +11,24 @@ binding = "FILES"
 bucket_name = "wild-hoggs-files"
 
 # ── Chat-Hub (WebSocket-Broadcast, Verzeichnis chat-hub/) ────────────────────
-# Cloudflare erlaubt es nicht, Durable Objects innerhalb eines Pages-Projekts zu
-# definieren — deshalb liegt die Klasse im eigenen Worker und wird hier über
-# script_name eingebunden.
 #
-# Voraussetzung: `cd chat-hub && npx wrangler deploy` wurde ausgeführt.
-# Ausserdem muss HUB_SECRET in BEIDEN Projekten als Secret gesetzt sein
-# (Worker: `npx wrangler secret put HUB_SECRET`,
-#  Pages:  Dashboard → Settings → Environment Variables → als Secret).
+# ACHTUNG: Diese Datei wird von Cloudflare NICHT gelesen. Pages zieht die
+# Konfiguration erst aus einer Wrangler-Datei, wenn `pages_build_output_dir`
+# gesetzt ist — hier ist es das nicht, also gilt ausschliesslich das, was im
+# Dashboard steht. Die Bindings unten dienen `wrangler pages dev` lokal.
+# Aktuellen Ist-Stand jederzeit abrufbar mit:
+#     npx wrangler pages download config wild-hoggs
 #
-# Fehlt eines von beidem, läuft die Seite unverändert weiter — der Broadcast
-# wird dann still übersprungen (siehe functions/_lib/chat-hub.ts).
+# In der PRODUKTION ist entsprechend im Dashboard gesetzt
+# (Pages → wild-hoggs → Settings → Bindings bzw. Variables):
+#   • Durable Object  CHAT_HUB → ChatRoom aus Worker "wild-hoggs-chat-hub"
+#   • Secret          HUB_SECRET   (identisch mit dem Secret des Workers)
+#   • Secret          HUB_URL      (Adresse des Workers)
+#
+# Fehlt davon etwas, läuft die Seite unverändert weiter: /api/chat/ws-ticket
+# antwortet mit 503, der Client bleibt beim Polling
+# (siehe functions/_lib/chat-hub.ts).
 [[durable_objects.bindings]]
 name = "CHAT_HUB"
 class_name = "ChatRoom"
 script_name = "wild-hoggs-chat-hub"
-
-[vars]
-# Adresse des Chat-Hubs. Wird dem Client zusammen mit dem Ticket ausgeliefert,
-# damit im Frontend keine URL hartkodiert ist. HUB_SECRET liegt daneben als
-# Secret (nicht hier — nie ins Repo).
-HUB_URL = "https://wild-hoggs-chat-hub.alatzas5564.workers.dev"
