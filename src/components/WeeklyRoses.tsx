@@ -21,7 +21,13 @@ interface WeeklyRosesProps {
 
 export default function WeeklyRoses({ lang, roses, translationData }: WeeklyRosesProps) {
   const [timeLeft, setTimeLeft] = useState('');
-  const [activeNumber, setActiveNumber] = useState(10);
+  // Welche Rose aktiv ist, steht in der Datenbank und kann erst nach dem Laden
+  // geholt werden. Vorher stand hier fest eine 10 — dadurch leuchtete beim
+  // Seitenaufbau kurz die FALSCHE Rose auf, bis die Antwort kam.
+  // Jetzt: null bis die Antwort da ist. Lieber kurz keine hervorgehoben als
+  // eine falsche. Bewusst auch kein zwischengespeicherter Wert — der waere
+  // nach einem Wochenwechsel veraltet und wuerde genau denselben Fehler zeigen.
+  const [activeNumber, setActiveNumber] = useState<number | null>(null);
 
   const t = useTranslations(translationData);
 
@@ -32,7 +38,7 @@ export default function WeeklyRoses({ lang, roses, translationData }: WeeklyRose
       .then((data: any) => {
         if (typeof data.active === 'number') setActiveNumber(data.active);
       })
-      .catch(() => { /* keep fallback */ });
+      .catch(() => { /* keine Antwort -> keine Rose hervorheben */ });
   }, []);
 
   // Calculate time until next Sunday 23:59:59 in Apocalypse Time (UTC-2)
