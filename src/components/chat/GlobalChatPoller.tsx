@@ -8,9 +8,18 @@ import { useEffect, useRef, useCallback } from 'preact/hooks';
 import { useAuth } from '../../hooks/useAuth';
 import { useProfile } from '../../hooks/useProfile';
 
+// Ein einziger, wiederverwendeter AudioContext. Vorher wurde pro Ton ein neuer
+// erzeugt und über osc.onended geschlossen — das greift aber nur, wenn der Ton
+// tatsächlich läuft. Blockiert der Browser die Autoplay-Policy, bleibt der
+// Context in 'suspended', onended feuert nie und der Context bleibt offen
+// (Chrome erlaubt nur ~6 gleichzeitig, danach schlägt jeder Ton fehl).
+let sharedAudioCtx: AudioContext | null = null;
+
 function playNotificationSound(volume: number) {
   try {
-    const ctx = new AudioContext();
+    if (!sharedAudioCtx) sharedAudioCtx = new AudioContext();
+    const ctx = sharedAudioCtx;
+    if (ctx.state === 'suspended') { ctx.resume().catch(() => {}); }
     const osc  = ctx.createOscillator();
     const gain = ctx.createGain();
     osc.connect(gain);
@@ -22,8 +31,8 @@ function playNotificationSound(volume: number) {
     gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
     osc.start(ctx.currentTime);
     osc.stop(ctx.currentTime + 0.5);
-    // AudioContext auto-closes after sound ends (no leak)
-    osc.onended = () => ctx.close();
+    // Nur die Nodes trennen — der Context selbst bleibt für den nächsten Ton bestehen.
+    osc.onended = () => { osc.disconnect(); gain.disconnect(); };
   } catch { /* browser may block autoplay */ }
 }
 
@@ -122,6 +131,7 @@ export default function GlobalChatPoller() {
 
     const poll = async () => {
       if (isOnCommunity()) return; // ChatWindow is handling it
+      if (document.visibilityState === 'hidden') return; // Tab im Hintergrund — nichts zu aktualisieren
 
       let added = 0;
 

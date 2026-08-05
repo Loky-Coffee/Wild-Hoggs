@@ -819,7 +819,6 @@ body:has(.chat-login-wall) > main > astro-island {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: admin-text-snake 2s linear infinite;
   margin-bottom: 0.15rem;
 }
 
@@ -848,7 +847,6 @@ body:has(.chat-login-wall) > main > astro-island {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: mod-text-snake 2.5s linear infinite;
   margin-bottom: 0.15rem;
 }
 
@@ -872,7 +870,6 @@ body:has(.chat-login-wall) > main > astro-island {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: user-text-snake 3s linear infinite;
   margin-bottom: 0.15rem;
 }
 
@@ -882,6 +879,31 @@ body:has(.chat-login-wall) > main > astro-island {
 }
 
 .chat-user-label-own { text-align: right; }
+
+/* ── Label-Animationen: nur die letzten Nachrichten ──────────────────────────
+   Die Rollen-Labels animieren `background-position` auf `background-clip: text`.
+   Das ist nicht GPU-beschleunigt: jedes animierte Label kostet 60x pro Sekunde
+   einen Repaint — auch weit außerhalb des sichtbaren Bereichs. Bei einer langen
+   Chat-Historie summiert sich das, bis der Tab einfriert. Deshalb laufen die
+   Animationen nur auf den letzten 12 Nachrichten; alle älteren behalten den
+   Farbverlauf, stehen aber still. */
+.chat-messages > .chat-msg-row:nth-last-child(-n + 12) .chat-admin-label {
+  animation: admin-text-snake 2s linear infinite;
+}
+.chat-messages > .chat-msg-row:nth-last-child(-n + 12) .chat-mod-label {
+  animation: mod-text-snake 2.5s linear infinite;
+}
+.chat-messages > .chat-msg-row:nth-last-child(-n + 12) .chat-user-label {
+  animation: user-text-snake 3s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chat-messages > .chat-msg-row .chat-admin-label,
+  .chat-messages > .chat-msg-row .chat-mod-label,
+  .chat-messages > .chat-msg-row .chat-user-label {
+    animation: none;
+  }
+}
 
 /* ── Sidebar toggle button (hidden on desktop) ───────────────────────────── */
 

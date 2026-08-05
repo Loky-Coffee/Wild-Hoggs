@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'preact/hooks';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'preact/hooks';
 import { useTranslations } from '../../i18n/utils';
 import type { TranslationData } from '../../i18n/index';
 import MessageList from './MessageList';
@@ -16,6 +16,8 @@ interface PMPanelProps {
 }
 
 const POLL_MS = 5_000;
+// Siehe ChatWindow: ohne Obergrenze wächst die Liste unbegrenzt weiter.
+const MAX_MESSAGES = 200;
 
 export default function PMPanel({ username, currentUsername, token, onClose, ago, isAdmin, translationData }: PMPanelProps) {
   const t = useTranslations(translationData);
@@ -30,12 +32,13 @@ export default function PMPanel({ username, currentUsername, token, onClose, ago
   const lastCreatedAt = useRef<string | null>(null);
   const pollRef       = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const strings: MessageStrings = {
+  const strings: MessageStrings = useMemo(() => ({
     reply:         t('chat.action.reply'),
     pm:            t('chat.action.pm'),
     delete:        t('chat.action.delete'),
     admin:         t('chat.role.admin'),
     mod:           t('chat.role.moderator'),
+    survivor:      t('chat.role.survivor'),
     deleteTitle:   t('chat.delete.title'),
     deleteConfirm: t('chat.delete.confirm'),
     deleteButton:  t('chat.delete.button'),
@@ -51,7 +54,7 @@ export default function PMPanel({ username, currentUsername, token, onClose, ago
       { value: 'hate',   icon: '💢', label: t('chat.report.reason.hate') },
       { value: 'other',  icon: '⚠️', label: t('chat.report.reason.other') },
     ],
-  };
+  }), [translationData]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const loadInitial = useCallback(async () => {
     setLoading(true);
@@ -83,7 +86,7 @@ export default function PMPanel({ username, currentUsername, token, onClose, ago
         setMessages(prev => {
           const known = new Set(prev.map(m => m.id));
           const fresh = data.messages.filter(m => !known.has(m.id));
-          return fresh.length > 0 ? [...prev, ...fresh] : prev;
+          return fresh.length > 0 ? [...prev, ...fresh].slice(-MAX_MESSAGES) : prev;
         });
         lastCreatedAt.current = data.messages[data.messages.length - 1].created_at;
       }
@@ -118,7 +121,7 @@ export default function PMPanel({ username, currentUsername, token, onClose, ago
       const newMsg = data as Message;
       setMessages(prev => {
         const known = new Set(prev.map(m => m.id));
-        return known.has(newMsg.id) ? prev : [...prev, newMsg];
+        return known.has(newMsg.id) ? prev : [...prev, newMsg].slice(-MAX_MESSAGES);
       });
       lastCreatedAt.current = newMsg.created_at;
       setText('');

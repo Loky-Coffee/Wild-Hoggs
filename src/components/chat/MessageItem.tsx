@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'preact/hooks';
+import { memo } from 'preact/compat';
 import ServerBadge from './ServerBadge';
 import ConfirmDialog from './ConfirmDialog';
 
@@ -93,7 +94,7 @@ function radialPos(side: 'left' | 'right', idx: number, total: number) {
   return { x: side === 'right' ? x : -x, y };
 }
 
-export default function MessageItem({
+function MessageItem({
   msg, currentUsername, onReport, reportedIds,
   ago, isAdmin, onDelete, onReply, onPM, strings,
 }: MessageItemProps) {
@@ -283,3 +284,7 @@ export default function MessageItem({
     </div>
   );
 }
+
+// Memoisiert: die Nachrichtenliste rendert bei jedem Poll neu — ohne memo würde
+// jede einzelne Nachricht dabei komplett neu aufgebaut werden.
+export default memo(MessageItem);

@@ -32,16 +32,20 @@ export default function MessageList({
     return () => el.removeEventListener('scroll', onScroll);
   }, []);
 
+  // Ohne 'instant' startet der Container wegen `scroll-behavior: smooth` bei
+  // jeder neuen Nachricht eine animierte Scroll-Fahrt — die überlappt mit der
+  // nächsten und erzwingt dabei laufend Layout-Neuberechnungen.
+  const scrollToBottom = () => {
+    const el = listRef.current;
+    if (el) el.scrollTo({ top: el.scrollHeight, behavior: 'instant' as ScrollBehavior });
+  };
+
   useEffect(() => {
-    if (atBottomRef.current && listRef.current) {
-      listRef.current.scrollTop = listRef.current.scrollHeight;
-    }
+    if (atBottomRef.current) scrollToBottom();
   }, [messages]);
 
   useEffect(() => {
-    if (listRef.current) {
-      listRef.current.scrollTop = listRef.current.scrollHeight;
-    }
+    scrollToBottom();
   }, []);
 
   return (

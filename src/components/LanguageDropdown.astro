@@ -226,9 +226,37 @@ const getLanguageUrl = (targetLang: string) => {
 
 <script>
   const dropdownClickHandlers = new WeakMap<Element, EventListener>();
-  const dropdownOutsideHandlers = new WeakMap<Element, EventListener>();
   const dropdownMenuKeydownHandlers = new WeakMap<Element, EventListener>();
-  const dropdownDocumentKeydownHandlers = new WeakMap<Element, EventListener>();
+  const dropdownItemHandlers = new WeakMap<Element, EventListener>();
+
+  // Schließt das Dropdown per Klick daneben bzw. per Escape.
+  // Genau EINMAL pro Seiten-Session registrieren und die Elemente erst im
+  // Handler auflösen: nach einer View Transition tauscht Astro den <body> aus,
+  // eine per-Element gespeicherte Referenz (WeakMap) greift danach nicht mehr —
+  // der alte document-Listener bliebe hängen und hielte über seine Closure das
+  // komplette alte Seiten-DOM im Speicher fest.
+  function registerDropdownGlobals() {
+    if ((window as any).__whLangDropdownGlobals) return;
+    (window as any).__whLangDropdownGlobals = true;
+
+    const close = () => {
+      const dd = document.querySelector('.language-dropdown');
+      const tg = dd?.querySelector('.dropdown-toggle');
+      if (!dd || !tg || !dd.classList.contains('open')) return null;
+      dd.classList.remove('open');
+      tg.setAttribute('aria-expanded', 'false');
+      return tg as HTMLElement;
+    };
+
+    document.addEventListener('click', (e) => {
+      const dd = document.querySelector('.language-dropdown');
+      if (dd && !dd.contains(e.target as Node)) close();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if ((e as KeyboardEvent).key === 'Escape') close()?.focus();
+    });
+  }
 
   function setupLanguageDropdown() {
     const dropdown = document.querySelector('.language-dropdown');
@@ -242,17 +270,9 @@ const getLanguageUrl = (targetLang: string) => {
     if (oldClickHandler) {
       toggle.removeEventListener('click', oldClickHandler);
     }
-    const oldOutsideHandler = dropdownOutsideHandlers.get(toggle);
-    if (oldOutsideHandler) {
-      document.removeEventListener('click', oldOutsideHandler);
-    }
     const oldMenuKeydownHandler = dropdownMenuKeydownHandlers.get(menu);
     if (oldMenuKeydownHandler) {
       menu.removeEventListener('keydown', oldMenuKeydownHandler);
-    }
-    const oldDocumentKeydownHandler = dropdownDocumentKeydownHandlers.get(dropdown);
-    if (oldDocumentKeydownHandler) {
-      document.removeEventListener('keydown', oldDocumentKeydownHandler);
     }
 
     // Toggle dropdown
@@ -260,14 +280,6 @@ const getLanguageUrl = (targetLang: string) => {
       e.stopPropagation();
       const isOpen = dropdown.classList.toggle('open');
       toggle.setAttribute('aria-expanded', String(isOpen));
-    };
-
-    // Close on outside click
-    const outsideHandler = (e: Event) => {
-      if (!dropdown.contains(e.target as Node)) {
-        dropdown.classList.remove('open');
-        toggle.setAttribute('aria-expanded', 'false');
-      }
     };
 
     // Keyboard navigation (Escape + ArrowUp/Down for ARIA menu pattern)
@@ -296,31 +308,27 @@ const getLanguageUrl = (targetLang: string) => {
       }
     };
 
-    // Close on escape key (also when focus is outside menu)
-    const documentKeydownHandler: EventListener = (e) => {
-      const ke = e as KeyboardEvent;
-      if (ke.key === 'Escape' && dropdown.classList.contains('open')) {
-        dropdown.classList.remove('open');
-        toggle.setAttribute('aria-expanded', 'false');
-        (toggle as HTMLElement).focus();
-      }
-    };
-
-    // Store all handlers for cleanup on next call
+    // Store handlers for cleanup on next call
     dropdownClickHandlers.set(toggle, clickHandler);
-    dropdownOutsideHandlers.set(toggle, outsideHandler);
     dropdownMenuKeydownHandlers.set(menu, menuKeydownHandler);
-    dropdownDocumentKeydownHandlers.set(dropdown, documentKeydownHandler);
 
     // Add listeners
     toggle.addEventListener('click', clickHandler);
-    document.addEventListener('click', outsideHandler);
     menu.addEventListener('keydown', menuKeydownHandler);
-    document.addEventListener('keydown', documentKeydownHandler);
+
+    // Die beiden document-weiten Listener (Klick daneben / Escape) hängen nicht
+    // an diesen Elementen — sie werden einmalig global registriert.
+    registerDropdownGlobals();
 
     // Save language preference when user clicks a language item
     menu.querySelectorAll<HTMLElement>('.dropdown-item[data-lang]').forEach(item => {
-      item.addEventListener('click', () => {
+      // setupLanguageDropdown läuft über DOMContentLoaded UND astro:page-load —
+      // ohne diese Prüfung bekäme jedes Item zwei identische Handler und der
+      // Sprachwechsel würde zwei PATCH-Requests abfeuern.
+      const oldItemHandler = dropdownItemHandlers.get(item);
+      if (oldItemHandler) item.removeEventListener('click', oldItemHandler);
+
+      const itemHandler = () => {
         const lang = item.getAttribute('data-lang');
         const token = localStorage.getItem('wh-auth-token');
         if (!lang || !token) return;
@@ -344,7 +352,10 @@ const getLanguageUrl = (targetLang: string) => {
           headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
           body: JSON.stringify({ language: lang }),
         }).catch(() => { /* ignore */ });
-      });
+      };
+
+      dropdownItemHandlers.set(item, itemHandler);
+      item.addEventListener('click', itemHandler);
     });
   }
 

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'preact/hooks';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'preact/hooks';
 import { useAuth } from '../../hooks/useAuth';
 import { useProfile } from '../../hooks/useProfile';
 import { useTranslations } from '../../i18n/utils';
@@ -13,7 +13,11 @@ import './ChatWindow.css';
 type ChatType = 'global' | 'global-lang' | 'server' | 'server-lang';
 
 const POLL_MS     = 5_000;
-const PRESENCE_MS = 5_000;
+const PRESENCE_MS = 20_000;
+// Obergrenze für die im Speicher gehaltenen Nachrichten. Ohne Limit wächst die
+// Liste (und damit DOM + Render-Aufwand) linear mit der Laufzeit des Tabs —
+// nach ein paar Stunden friert der Tab sonst ein.
+const MAX_MESSAGES = 200;
 
 interface ChatWindowProps {
   translationData: TranslationData;
@@ -36,6 +40,17 @@ const FACTION_COLORS: Record<string, string> = {
 
 function factionColor(faction: string | null): string {
   return faction ? (FACTION_COLORS[faction] ?? 'rgba(255,255,255,0.6)') : 'rgba(255,255,255,0.6)';
+}
+
+// Flacher Vergleich der Online-Liste: verhindert einen Rerender, wenn der
+// Presence-Poll dieselben Nutzer zurückgibt (nur eine neue Array-Instanz).
+function sameOnlineUsers(a: OnlineUser[], b: OnlineUser[]): boolean {
+  if (a.length !== b.length) return false;
+  return a.every((u, i) =>
+    u.username === b[i].username
+    && u.server === b[i].server
+    && u.language === b[i].language
+    && u.faction === b[i].faction);
 }
 
 export default function ChatWindow({ translationData }: ChatWindowProps) {
@@ -128,7 +143,9 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
         });
         if (res.ok) {
           const data = await res.json() as { users: OnlineUser[] };
-          setOnlineUsers(data.users);
+          // Nur setzen, wenn sich die Liste wirklich geändert hat — sonst löst
+          // jeder Poll einen kompletten Rerender der Nachrichtenliste aus.
+          setOnlineUsers(prev => sameOnlineUsers(prev, data.users) ? prev : data.users);
         }
       } catch { /* ignore */ }
     };
@@ -261,7 +278,7 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
         setMessages(prev => {
           const known = new Set(prev.map(m => m.id));
           const fresh = data.messages.filter(m => !known.has(m.id));
-          return fresh.length > 0 ? [...prev, ...fresh] : prev;
+          return fresh.length > 0 ? [...prev, ...fresh].slice(-MAX_MESSAGES) : prev;
         });
         lastCreatedAt.current = data.messages[data.messages.length - 1].created_at;
       }
@@ -417,7 +434,7 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
       const newMsg = data as Message;
       setMessages(prev => {
         const known = new Set(prev.map(m => m.id));
-        return known.has(newMsg.id) ? prev : [...prev, newMsg];
+        return known.has(newMsg.id) ? prev : [...prev, newMsg].slice(-MAX_MESSAGES);
       });
       lastCreatedAt.current = newMsg.created_at;
       setReplyTo(null);
@@ -489,25 +506,16 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
     } catch { /* ignore */ }
   }, [token, chatType]);
 
-  // ── Not logged in ─────────────────────────────────────────────────────────
-  if (!isLoggedIn || !user) {
-    return (
-      <div class="chat-login-wall">
-        <div class="chat-login-icon">💬</div>
-        <p class="chat-login-text">{t('chat.login_required')}</p>
-        <p class="chat-login-hint">{t('chat.login_hint')}</p>
-      </div>
-    );
-  }
-
-  const ago = {
+  // Stabile Objekt-Identität, damit das memoisierte MessageItem nicht bei jedem
+  // Render neu zeichnet. Muss vor dem frühen Return stehen (Hook-Regeln).
+  const ago = useMemo(() => ({
     seconds: t('chat.ago_seconds'),
     minutes: t('chat.ago_minutes'),
     hours:   t('chat.ago_hours'),
     days:    t('chat.ago_days'),
-  };
+  }), [translationData]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const messageStrings: MessageStrings = {
+  const messageStrings: MessageStrings = useMemo(() => ({
     reply:         t('chat.action.reply'),
     pm:            t('chat.action.pm'),
     delete:        t('chat.action.delete'),
@@ -529,7 +537,18 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
       { value: 'hate',   icon: '💢', label: t('chat.report.reason.hate') },
       { value: 'other',  icon: '⚠️', label: t('chat.report.reason.other') },
     ],
-  };
+  }), [translationData]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ── Not logged in ─────────────────────────────────────────────────────────
+  if (!isLoggedIn || !user) {
+    return (
+      <div class="chat-login-wall">
+        <div class="chat-login-icon">💬</div>
+        <p class="chat-login-text">{t('chat.login_required')}</p>
+        <p class="chat-login-hint">{t('chat.login_hint')}</p>
+      </div>
+    );
+  }
 
   // ── Tab config ────────────────────────────────────────────────────────────
   type TabDef = { type: ChatType; label: string; disabled?: boolean; title?: string };
