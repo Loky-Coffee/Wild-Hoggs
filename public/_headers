@@ -13,7 +13,10 @@
   # Risiko gering: keine User-Inputs werden gerendert, alle Daten sind intern und Zod-validiert
   # cloudflareinsights.com: Cloudflare injiziert automatisch beacon.min.js auf allen CF Pages-Sites.
   # Das ist First-Party (eigener Hosting-Provider), kein Drittanbieter → sicher whitelisted.
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' data: https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://static.cloudflareinsights.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+  # wss://wild-hoggs-chat-hub...: der Live-Chat-Hub (eigener Worker, Verzeichnis chat-hub/).
+  # Nur dieser eine Host, nur ueber wss — ohne den Eintrag blockiert die CSP die
+  # WebSocket-Verbindung und der Chat faellt auf Polling zurueck.
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' data: https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://static.cloudflareinsights.com wss://wild-hoggs-chat-hub.alatzas5564.workers.dev; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
   # levelgeeks.org wurde entfernt - alle Bilder sind self-hosted
   Strict-Transport-Security: max-age=15552000; includeSubDomains; preload
 
