@@ -5,6 +5,7 @@
 
 import { getToken, validateSession } from '../../../_lib/auth';
 import { checkRateLimit } from '../../../_lib/chat-ratelimit';
+import { broadcast, channelKey } from '../../../_lib/chat-hub';
 
 const MAX_LEN       = 500;
 const DEFAULT_LIMIT = 50;
@@ -132,5 +133,10 @@ export async function onRequestPost(ctx: any) {
      WHERE cs.id = ?`
   ).bind(id).first() as any;
 
-  return Response.json({ ...created, is_admin: user.is_admin, is_moderator: user.is_moderator }, { status: 201 });
+  const full = { ...created, is_admin: user.is_admin, is_moderator: user.is_moderator };
+
+  // Rein additiv — siehe global.ts.
+  broadcast(ctx, channelKey('server', serverName, lang), full);
+
+  return Response.json(full, { status: 201 });
 }

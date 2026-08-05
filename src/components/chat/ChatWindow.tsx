@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'preact/hooks';
 import { useAuth } from '../../hooks/useAuth';
 import { useProfile } from '../../hooks/useProfile';
+import { useChatSocket } from '../../hooks/useChatSocket';
 import { useTranslations } from '../../i18n/utils';
 import type { TranslationData } from '../../i18n/index';
 import MessageList from './MessageList';
@@ -134,6 +135,27 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
   const langCode  = user?.language?.toUpperCase() ?? '';
   const serverName = activeProfile.server;
 
+  // ── Live-Verbindung zum aktiven Kanal ─────────────────────────────────────
+  // Steht sie, kommen neue Nachrichten sofort und der Nachrichten-Teil des
+  // Sync-Polls wird übersprungen. Steht sie nicht (Hub aus, Verbindung weg,
+  // Netz zickt), läuft alles unverändert über das Polling weiter.
+  const wsConnected = useChatSocket(
+    { type: chatType, server: serverName },
+    token,
+    (msg: Message) => {
+      setMessages(prev => {
+        if (prev.some(m => m.id === msg.id)) return prev;   // gleiche Dedup wie beim Poll
+        return [...prev, msg].slice(-MAX_MESSAGES);
+      });
+      if (msg.created_at) lastCreatedAt.current = msg.created_at;
+    },
+  );
+
+  // Als Ref mitführen, damit das Sync-Intervall bei einem Verbindungswechsel
+  // nicht neu aufgesetzt werden muss.
+  const wsConnectedRef = useRef(false);
+  useEffect(() => { wsConnectedRef.current = wsConnected; }, [wsConnected]);
+
   // ── Ein Sync-Poll für alles ───────────────────────────────────────────────
   // Bündelt, was früher vier getrennte Requests waren: Nachrichten des aktiven
   // Kanals, Ungelesen-Zähler der anderen Tabs, PM-Inbox und Presence.
@@ -164,7 +186,12 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
           method:  'POST',
           headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
           body:    JSON.stringify({
-            active:   { type: chatTypeRef.current, since: lastCreatedAt.current },
+            // Steht die Live-Verbindung, liefert sie die Nachrichten — dann
+            // spart der Poll diese Abfrage. Bricht sie ab, holt der nächste
+            // Poll über lastCreatedAt automatisch alles Verpasste nach.
+            active: wsConnectedRef.current
+              ? { type: chatTypeRef.current, since: null }
+              : { type: chatTypeRef.current, since: lastCreatedAt.current },
             server:   serverRef.current,
             tabs,
             pm_since: pmInboxSince.current,

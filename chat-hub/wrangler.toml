@@ -1,0 +1,20 @@
+name = "wild-hoggs-chat-hub"
+main = "src/index.ts"
+compatibility_date = "2026-05-01"
+
+# Broadcast-Relay für den Chat. Hält die WebSocket-Verbindungen und schickt
+# neue Nachrichten weiter — speichert selbst nichts, die Nachrichten liegen
+# unverändert in D1 (siehe functions/api/chat/*).
+
+[[durable_objects.bindings]]
+name = "CHAT_ROOM"
+class_name = "ChatRoom"
+
+# new_sqlite_classes (nicht new_classes): nur das SQLite-Backend ist im
+# Cloudflare-Free-Plan verfügbar.
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["ChatRoom"]
+
+[observability]
+enabled = true

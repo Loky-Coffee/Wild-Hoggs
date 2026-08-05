@@ -1,0 +1,16 @@
+{
+  "name": "wild-hoggs-chat-hub",
+  "version": "1.0.0",
+  "private": true,
+  "description": "WebSocket broadcast relay for the Wild Hoggs chat (Cloudflare Durable Object)",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260801.1",
+    "typescript": "^5.9.3",
+    "wrangler": "^4.119.0"
+  }
+}

@@ -9,3 +9,20 @@ database_id = "1c0e2139-6bec-43b7-9a18-b6ba0b6c97d7"
 [[r2_buckets]]
 binding = "FILES"
 bucket_name = "wild-hoggs-files"
+
+# ── Chat-Hub (WebSocket-Broadcast, Verzeichnis chat-hub/) ────────────────────
+# Cloudflare erlaubt es nicht, Durable Objects innerhalb eines Pages-Projekts zu
+# definieren — deshalb liegt die Klasse im eigenen Worker und wird hier über
+# script_name eingebunden.
+#
+# Voraussetzung: `cd chat-hub && npx wrangler deploy` wurde ausgeführt.
+# Ausserdem muss HUB_SECRET in BEIDEN Projekten als Secret gesetzt sein
+# (Worker: `npx wrangler secret put HUB_SECRET`,
+#  Pages:  Dashboard → Settings → Environment Variables → als Secret).
+#
+# Fehlt eines von beidem, läuft die Seite unverändert weiter — der Broadcast
+# wird dann still übersprungen (siehe functions/_lib/chat-hub.ts).
+[[durable_objects.bindings]]
+name = "CHAT_HUB"
+class_name = "ChatRoom"
+script_name = "wild-hoggs-chat-hub"

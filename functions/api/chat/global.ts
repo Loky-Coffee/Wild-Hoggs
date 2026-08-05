@@ -5,6 +5,7 @@
 
 import { getToken, validateSession } from '../../_lib/auth';
 import { checkRateLimit } from '../../_lib/chat-ratelimit';
+import { broadcast, channelKey } from '../../_lib/chat-hub';
 
 const MAX_LEN       = 500;
 const DEFAULT_LIMIT = 50;
@@ -112,5 +113,11 @@ export async function onRequestPost(ctx: any) {
      WHERE cg.id = ?`
   ).bind(id).first() as any;
 
-  return Response.json({ ...created, is_admin: user.is_admin, is_moderator: user.is_moderator }, { status: 201 });
+  const full = { ...created, is_admin: user.is_admin, is_moderator: user.is_moderator };
+
+  // Sofort an alle verbundenen Clients weiterreichen. Rein additiv — schlägt es
+  // fehl, holen die Clients die Nachricht beim nächsten /api/chat/sync.
+  broadcast(ctx, channelKey('global', null, lang), full);
+
+  return Response.json(full, { status: 201 });
 }
