@@ -27,6 +27,11 @@ export const changelog: ChangelogEntry[] = [
   // ── August 2026 ─────────────────────────────────────────────────────────
   {
     date: '2026-08-06',
+    time: '14:30',
+    text: 'The site now notices by itself when a newer version is available and offers to reload — no more sitting on an old version for days without knowing. If the tab is in the background it just refreshes quietly, so nothing you were typing can get lost. There is also a **notice bar** now for occasional announcements, for things like planned maintenance',
+  },
+  {
+    date: '2026-08-06',
     time: '12:05',
     text: 'The chat is now **fully live**. Messages, the unread badges on the other tabs, private messages and the online list all arrive **the moment they happen** instead of being fetched every few seconds — the page no longer asks the server at all while the connection holds. If the live connection cannot be established (restrictive network, or the service is down), everything falls back to the old behaviour on its own, so the chat keeps working either way',
   },

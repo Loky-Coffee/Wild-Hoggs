@@ -70,7 +70,14 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
   const [sendError,    setSendError]    = useState<string | null>(null);
   const [reportedIds,  setReportedIds]  = useState<Set<string>>(new Set());
   const [replyTo,      setReplyTo]      = useState<ReplyTarget | null>(null);
-  const [onlineUsers,  setOnlineUsers]  = useState<OnlineUser[]>([]);
+  // Die Online-Liste hat zwei Quellen, und beide werden gebraucht:
+  //   • dbUsers      — ALLE eingeloggten Leute (auch auf anderen Seiten als dem
+  //                    Chat). Kommt vom Heartbeat, der ohnehin jede Minute läuft.
+  //   • socketUsers  — wer gerade im Chat-Fenster hängt. Kommt sofort über die
+  //                    Live-Verbindung, ist aber nur ein Ausschnitt.
+  // Angezeigt wird die Vereinigung: vollständig UND sofort aktuell.
+  const [dbUsers,     setDbUsers]     = useState<OnlineUser[]>([]);
+  const [socketUsers, setSocketUsers] = useState<OnlineUser[]>([]);
   const [openPM,       setOpenPM]       = useState<string | null>(null);
   const [pmContacts,   setPmContacts]   = useState<string[]>(() => {
     try { return JSON.parse(localStorage.getItem('wh-pm-contacts') ?? '[]'); }
@@ -128,6 +135,23 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
       });
     }
   }, [openPM]);
+
+  const onlineUsers = useMemo(() => {
+    const byName = new Map<string, OnlineUser>();
+    for (const u of dbUsers)     byName.set(u.username, u);
+    for (const u of socketUsers) byName.set(u.username, u);
+    return [...byName.values()].sort((a, b) => a.username.localeCompare(b.username));
+  }, [dbUsers, socketUsers]);
+
+  // Vollständige Liste vom Heartbeat (siehe PresenceHeartbeat).
+  useEffect(() => {
+    const onPresence = (e: Event) => {
+      const users = (e as CustomEvent).detail as OnlineUser[];
+      if (Array.isArray(users)) setDbUsers(prev => sameOnlineUsers(prev, users) ? prev : users);
+    };
+    window.addEventListener('wh-presence', onPresence);
+    return () => window.removeEventListener('wh-presence', onPresence);
+  }, []);
 
   const isAdmin   = user?.is_admin === 1 || user?.is_moderator === 1;
   const hasLang   = !!(user?.language && user.language.trim());
@@ -192,9 +216,16 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
         setMessages(prev => prev.filter(m => m.id !== ev.id));
         break;
 
+      // Ankündigung des Betreibers — der Hinweisbalken zeigt sie an
+      case 'announce':
+        try {
+          window.dispatchEvent(new CustomEvent('wh-announcement', { detail: ev.announcement }));
+        } catch { /* ignore */ }
+        break;
+
       // Online-Liste — kommt bei jedem Kommen und Gehen
       case 'presence':
-        setOnlineUsers(prev => sameOnlineUsers(prev, ev.users) ? prev : ev.users);
+        setSocketUsers(prev => sameOnlineUsers(prev, ev.users) ? prev : ev.users);
         break;
     }
   });
@@ -305,7 +336,7 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
 
         // 4) Online-Liste (nur in Presence-Durchläufen enthalten)
         if (data.online) {
-          setOnlineUsers(prev => sameOnlineUsers(prev, data.online!) ? prev : data.online!);
+          setDbUsers(prev => sameOnlineUsers(prev, data.online!) ? prev : data.online!);
         }
 
         if (data.server_time) pmInboxSince.current = data.server_time;

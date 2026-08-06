@@ -1,0 +1,72 @@
+/* Hinweis auf eine neue Fassung — unten rechts, dezent, überdeckt nichts Wichtiges. */
+.update-notice {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--color-primary-alpha-40, rgba(255, 165, 0, 0.4));
+  border-radius: 10px;
+  background: rgba(20, 20, 20, 0.96);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
+  animation: update-notice-in 0.25s ease-out;
+}
+
+@keyframes update-notice-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .update-notice { animation: none; }
+}
+
+.update-notice-text {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.875rem;
+}
+
+.update-notice-btn {
+  flex-shrink: 0;
+  padding: 0.35rem 0.8rem;
+  border: none;
+  border-radius: 7px;
+  background: var(--color-primary, #ffa500);
+  color: #1a1a1a;
+  font-size: 0.83rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.update-notice-btn:hover { filter: brightness(1.1); }
+
+@media (max-width: 480px) {
+  .update-notice {
+    left: 1rem;
+    right: 1rem;
+    justify-content: space-between;
+  }
+}
+
+/* Ankündigung: etwas prominenter als der Versions-Hinweis */
+.update-notice-announce {
+  border-color: var(--color-primary, #ffa500);
+  max-width: min(28rem, calc(100vw - 2rem));
+}
+
+.update-notice-close {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.update-notice-close:hover { background: rgba(255, 255, 255, 0.18); }

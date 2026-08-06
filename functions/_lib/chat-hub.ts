@@ -79,3 +79,8 @@ export function broadcastPM(ctx: any, to: string, from: string, message: unknown
 export function broadcastDelete(ctx: any, id: string): void {
   post(ctx, '/broadcast/delete', { id });
 }
+
+/** Ankündigung an alle verbundenen Clients. */
+export function broadcastAnnounce(ctx: any, announcement: unknown): void {
+  post(ctx, '/broadcast/announce', { announcement });
+}

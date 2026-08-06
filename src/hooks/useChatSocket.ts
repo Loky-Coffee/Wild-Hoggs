@@ -25,7 +25,8 @@ export type ChatSocketEvent =
   | { type: 'unread';   channel: string }
   | { type: 'pm';       from: string; message: any }
   | { type: 'delete';   id: string }
-  | { type: 'presence'; users: any[] };
+  | { type: 'presence'; users: any[] }
+  | { type: 'announce'; announcement: any };
 
 export function useChatSocket(
   chatType: string | null,

@@ -6,6 +6,7 @@ import ApocalypseTimeClock from './ApocalypseTimeClock';
 import UserMenu from './auth/UserMenu';
 import PresenceHeartbeat from './chat/PresenceHeartbeat';
 import GlobalChatPoller from './chat/GlobalChatPoller';
+import UpdateNotice from './UpdateNotice';
 
 const lang = getLangFromUrl(Astro.url);
 const translationData = await loadTranslations(lang);
@@ -72,6 +73,7 @@ const currentPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : r
       <UserMenu translationData={translationData} client:only="preact" />
       <PresenceHeartbeat client:only="preact" />
       <GlobalChatPoller client:only="preact" />
+      <UpdateNotice label={t('update.available')} action={t('update.reload')} client:idle />
     </div>
 
     <div class="lang-switcher">

@@ -105,6 +105,13 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
   const [fRegFrom, setFRegFrom]   = useState('');
   const [fRegTo, setFRegTo]       = useState('');
 
+  // Settings state — Ankuendigung an alle
+  const [announceText,   setAnnounceText]   = useState('');
+  const [announceReload, setAnnounceReload] = useState(false);
+  const [announceBusy,   setAnnounceBusy]   = useState(false);
+  const [announceInfo,   setAnnounceInfo]   = useState<string | null>(null);
+  const [announceActive, setAnnounceActive] = useState<{ id: string; text: string } | null>(null);
+
   // Settings state — Lucky Rose
   const [luckyRose, setLuckyRose]         = useState(10);
   const [luckyRoseSaved, setLuckyRoseSaved] = useState(false);
@@ -153,6 +160,12 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
   // Load settings
   useEffect(() => {
     if (activeTab !== 'settings' || !isAdmin) return;
+    // Laufende Ankuendigung
+    fetch('/api/announcement')
+      .then(r => r.ok ? r.json() : null)
+      .then((data: any) => { if (data?.announcement) setAnnounceActive(data.announcement); })
+      .catch(() => {});
+
     // Lucky Rose
     fetch('/api/settings/lucky-rose')
       .then(r => r.json())
@@ -257,6 +270,39 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
   };
 
   // Settings handlers
+  const handleSendAnnouncement = async () => {
+    const text = announceText.trim();
+    if (!text) return;
+    setAnnounceBusy(true);
+    setAnnounceInfo(null);
+    try {
+      const res = await fetch('/api/announcement', {
+        method:  'PUT',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body:    JSON.stringify({ text, reload: announceReload }),
+      });
+      const data = await res.json() as any;
+      if (!res.ok) { setAnnounceInfo(data.error ?? 'Fehler'); return; }
+      setAnnounceActive(data.announcement);
+      setAnnounceText('');
+      setAnnounceInfo('✓');
+    } catch {
+      setAnnounceInfo('Fehler');
+    } finally {
+      setAnnounceBusy(false);
+    }
+  };
+
+  const handleClearAnnouncement = async () => {
+    setAnnounceBusy(true);
+    try {
+      const res = await fetch('/api/announcement', {
+        method: 'DELETE', headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok) { setAnnounceActive(null); setAnnounceInfo(null); }
+    } catch { /* ignore */ } finally { setAnnounceBusy(false); }
+  };
+
   const handleSaveLuckyRose = async () => {
     setLuckyRoseBusy(true);
     try {
@@ -606,6 +652,57 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
         {/* ── Settings Tab (admin only) ── */}
         {activeTab === 'settings' && isAdmin && (
           <div class="admin-settings">
+
+            {/* Ankuendigung an alle */}
+            <section class="admin-settings-section">
+              <h2 class="admin-settings-title">📢 {t('admin.settings.announce')}</h2>
+
+              {announceActive && (
+                <div class="admin-announce-active">
+                  <span class="admin-announce-active-text">{announceActive.text}</span>
+                  <button
+                    class="admin-btn-demote"
+                    onClick={handleClearAnnouncement}
+                    disabled={announceBusy}
+                  >
+                    {t('admin.settings.announce_clear')}
+                  </button>
+                </div>
+              )}
+
+              <div class="admin-settings-row">
+                <label class="admin-filter-label" for="announce-text">
+                  {t('admin.settings.announce_text')}
+                </label>
+                <textarea
+                  id="announce-text"
+                  class="admin-filter-input admin-announce-input"
+                  maxLength={300}
+                  rows={2}
+                  placeholder={t('admin.settings.announce_ph')}
+                  value={announceText}
+                  onInput={e => setAnnounceText((e.target as HTMLTextAreaElement).value)}
+                />
+                <label class="admin-announce-check">
+                  <input
+                    type="checkbox"
+                    checked={announceReload}
+                    onChange={e => setAnnounceReload((e.target as HTMLInputElement).checked)}
+                  />
+                  {t('admin.settings.announce_reload')}
+                </label>
+                <div class="admin-rose-select-row">
+                  <button
+                    class="admin-btn-promote admin-settings-save-btn"
+                    onClick={handleSendAnnouncement}
+                    disabled={announceBusy || !announceText.trim()}
+                  >
+                    {t('admin.settings.announce_send')}
+                  </button>
+                  {announceInfo && <span class="admin-upload-status">{announceInfo}</span>}
+                </div>
+              </div>
+            </section>
 
             {/* Lucky Rose Section */}
             <section class="admin-settings-section">

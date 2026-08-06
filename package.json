@@ -7,9 +7,12 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && node format-sitemap.js",
+    "build": "astro build && node format-sitemap.js && node write-version.js",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "dev:seed": "node dev-seed.js",
+    "dev:local": "npm run build && wrangler pages dev dist --port 8788 --binding HUB_SECRET=localsecret HUB_URL=http://localhost:8799",
+    "dev:hub": "cd chat-hub && wrangler dev --port 8799 --var HUB_SECRET:localsecret"
   },
   "dependencies": {
     "@astrojs/preact": "^4.1.3",

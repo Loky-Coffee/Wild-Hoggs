@@ -58,6 +58,13 @@ export default defineConfig({
     inlineStylesheets: 'auto',
   },
   vite: {
+    // Kennung dieses Builds. Der Client vergleicht sie mit /version.json und
+    // weist auf eine neue Fassung hin, wenn jemand die Seite lange offen hat.
+    // Auf Cloudflare Pages liefert CF_PAGES_COMMIT_SHA den Commit; lokal bleibt
+    // es 'dev', damit beim Entwickeln kein Fehlalarm entsteht.
+    define: {
+      __BUILD_ID__: JSON.stringify(process.env.CF_PAGES_COMMIT_SHA || 'dev'),
+    },
     build: {
       cssCodeSplit: true,
       minify: 'esbuild',

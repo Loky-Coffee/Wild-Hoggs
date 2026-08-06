@@ -226,6 +226,17 @@ export class ChatRoom {
       return Response.json({ delivered });
     }
 
+    // ── Ankündigung vom Betreiber ───────────────────────────────────────────
+    if (url.pathname === '/broadcast/announce') {
+      const body = await request.json() as { announcement: any };
+      let delivered = 0;
+      for (const ws of this.ctx.getWebSockets()) {
+        this.send(ws, { type: 'announce', announcement: body.announcement });
+        delivered++;
+      }
+      return Response.json({ delivered });
+    }
+
     // ── Gelöschte Nachricht ─────────────────────────────────────────────────
     if (url.pathname === '/broadcast/delete') {
       const body = await request.json() as { id: string };
