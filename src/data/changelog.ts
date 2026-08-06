@@ -27,6 +27,11 @@ export const changelog: ChangelogEntry[] = [
   // ── August 2026 ─────────────────────────────────────────────────────────
   {
     date: '2026-08-06',
+    time: '16:05',
+    text: 'The Heroes page no longer freezes when you open a hero. A blur effect was being applied across the whole screen on top of 250 shadow effects — and it was invisible anyway behind the dark overlay. Opening a hero went from **locking up the tab** to **41 milliseconds**. The page also loads **37% less image data** now, so it appears faster and is easier on mobile data',
+  },
+  {
+    date: '2026-08-06',
     time: '14:30',
     text: 'The site now notices by itself when a newer version is available and offers to reload — no more sitting on an old version for days without knowing. If the tab is in the background it just refreshes quietly, so nothing you were typing can get lost. There is also a **notice bar** now for occasional announcements, for things like planned maintenance',
   },
