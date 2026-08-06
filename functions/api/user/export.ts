@@ -28,7 +28,7 @@ export async function onRequestGet(ctx: any) {
                        last_seen, created_at
                 FROM users WHERE id = ?`).bind(id),
     DB.prepare(`SELECT id, name, server, faction, created_at FROM game_profiles WHERE user_id = ?`).bind(id),
-    DB.prepare(`SELECT profile_id, calc_type, category, state, updated_at
+    DB.prepare(`SELECT profile_id, calc_type, calc_key, state_json, updated_at
                 FROM calculator_states WHERE user_id = ?`).bind(id),
     DB.prepare(`SELECT id, message, lang, created_at FROM chat_global WHERE user_id = ? ORDER BY created_at`).bind(id),
     DB.prepare(`SELECT id, server, message, lang, created_at FROM chat_server WHERE user_id = ? ORDER BY created_at`).bind(id),
@@ -46,8 +46,8 @@ export async function onRequestGet(ctx: any) {
     konto:            konto.results?.[0] ?? null,
     spielprofile:     profile.results ?? [],
     rechner_staende:  (staende.results ?? []).map((r: any) => {
-      // Der Zustand liegt als JSON-Text in der Spalte — lesbar ausgeben.
-      try { return { ...r, state: JSON.parse(r.state) }; } catch { return r; }
+      // Der Zustand liegt als JSON-Text in state_json — lesbar ausgeben.
+      try { return { ...r, state_json: JSON.parse(r.state_json) }; } catch { return r; }
     }),
     nachrichten: {
       global:        global.results ?? [],

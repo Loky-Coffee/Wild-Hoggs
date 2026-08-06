@@ -64,9 +64,12 @@ const sql = [
   `CREATE TABLE app_settings (key TEXT PRIMARY KEY, value TEXT NOT NULL,
      updated_at TEXT NOT NULL DEFAULT (datetime('now')));`,
 
-  `CREATE TABLE calculator_states (user_id TEXT REFERENCES users(id) ON DELETE CASCADE, profile_id TEXT, calc_type TEXT, category TEXT,
-     state TEXT, updated_at TEXT DEFAULT (datetime('now')),
-     PRIMARY KEY (user_id, profile_id, calc_type, category));`,
+  // Spaltennamen exakt wie in der Produktion — calc_key und state_json, nicht
+  // category und state. Eine Abweichung hier hat schon zweimal eine falsche
+  // Diagnose erzeugt.
+  `CREATE TABLE calculator_states (user_id TEXT REFERENCES users(id) ON DELETE CASCADE, profile_id TEXT,
+     calc_type TEXT, calc_key TEXT, state_json TEXT, updated_at TEXT DEFAULT (datetime('now')),
+     PRIMARY KEY (user_id, profile_id, calc_type, calc_key));`,
 
   `INSERT INTO app_settings (key, value) VALUES ('lucky_rose_active', '6');`,
 ];
