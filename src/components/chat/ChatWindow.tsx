@@ -18,6 +18,11 @@ const POLL_MS = 5_000;
 // also alle 20 s. Der Server wertet Nutzer 5 Minuten lang als online — das reicht
 // also mit großem Abstand.
 const PRESENCE_EVERY = 4;
+// Steht die Live-Verbindung, kommen die Nachrichten über den Socket. Der Sync
+// holt dann nur noch Ungelesen-Zähler der anderen Tabs, den PM-Posteingang und
+// die Online-Liste — nichts davon muss im 5-Sekunden-Takt kommen. Also nur noch
+// jeder 4. Durchlauf, das sind 20 s statt 5 s.
+const SLOW_EVERY = 4;
 // Obergrenze für die im Speicher gehaltenen Nachrichten. Ohne Limit wächst die
 // Liste (und damit DOM + Render-Aufwand) linear mit der Laufzeit des Tabs —
 // nach ein paar Stunden friert der Tab sonst ein.
@@ -169,10 +174,16 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
     const runSync = async () => {
       if (document.visibilityState === 'hidden') return;
 
+      const tick = syncTick.current++;
+
+      // Mit stehendem Socket kommen die Nachrichten live — dann reicht es, den
+      // Rest alle 20 s abzuholen statt alle 5 s. Bricht die Verbindung ab,
+      // greift ab dem nächsten Durchlauf automatisch wieder der schnelle Takt.
+      if (wsConnectedRef.current && tick % SLOW_EVERY !== 0) return;
+
       // Presence ist deutlich träger als der Nachrichten-Poll: nur bei jedem
       // n-ten Durchlauf mitschicken, sonst gäbe es alle 5 s einen D1-Write.
-      const wantPresence = syncTick.current % PRESENCE_EVERY === 0;
-      syncTick.current++;
+      const wantPresence = tick % PRESENCE_EVERY === 0;
 
       const tabs: Record<string, string> = {};
       (['global', 'global-lang', 'server', 'server-lang'] as ChatType[]).forEach(t => {
