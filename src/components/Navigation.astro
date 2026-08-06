@@ -73,7 +73,14 @@ const currentPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : r
       <UserMenu translationData={translationData} client:only="preact" />
       <PresenceHeartbeat client:only="preact" />
       <GlobalChatPoller client:only="preact" />
-      <UpdateNotice label={t('update.available')} action={t('update.reload')} client:idle />
+      <UpdateNotice
+        label={t('update.available')}
+        hint={t('update.hint')}
+        action={t('update.reload')}
+        later={t('update.later')}
+        close={t('update.close')}
+        client:idle
+      />
     </div>
 
     <div class="lang-switcher">

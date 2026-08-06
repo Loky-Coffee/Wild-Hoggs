@@ -1,72 +1,144 @@
-/* Hinweis auf eine neue Fassung — unten rechts, dezent, überdeckt nichts Wichtiges. */
-.update-notice {
+/* ── Hinweis-Karte, mittig ─────────────────────────────────────────────────
+   Ankündigungen des Betreibers und der Hinweis auf eine neue Fassung.
+   Bewusst in der Bildschirmmitte: Beides erscheint selten, soll dann aber
+   auch wirklich gesehen werden. */
+
+.update-backdrop {
   position: fixed;
-  right: 1rem;
-  bottom: 1rem;
+  inset: 0;
   z-index: 3000;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.7rem 0.9rem;
-  border: 1px solid var(--color-primary-alpha-40, rgba(255, 165, 0, 0.4));
-  border-radius: 10px;
-  background: rgba(20, 20, 20, 0.96);
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
-  animation: update-notice-in 0.25s ease-out;
+  justify-content: center;
+  padding: 1.25rem;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(3px);
+  animation: update-backdrop-in 0.2s ease;
 }
 
-@keyframes update-notice-in {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
+.update-card {
+  position: relative;
+  width: 100%;
+  max-width: 26rem;
+  padding: 1.75rem 1.5rem 1.35rem;
+  border: 1px solid rgba(255, 165, 0, 0.35);
+  border-radius: 16px;
+  background: linear-gradient(160deg, #232323 0%, #1a1a1a 100%);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+  text-align: center;
+  animation: update-card-in 0.25s cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+
+@keyframes update-backdrop-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes update-card-in {
+  from { opacity: 0; transform: translateY(14px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .update-notice { animation: none; }
+  .update-backdrop,
+  .update-card { animation: none; }
 }
 
-.update-notice-text {
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 0.875rem;
+/* Symbol oben in der Karte — bewusst innerhalb, damit nichts am
+   Bildschirmrand abgeschnitten werden kann */
+.update-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 0.9rem;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 165, 0, 0.3);
+  background: radial-gradient(circle at 50% 35%, rgba(255, 165, 0, 0.16), rgba(255, 165, 0, 0.04));
+  font-size: 1.5rem;
+  line-height: 1;
 }
 
-.update-notice-btn {
-  flex-shrink: 0;
-  padding: 0.35rem 0.8rem;
+.update-title {
+  margin: 0 0 0.4rem;
+  color: #ffa500;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.update-text {
+  margin: 0 0 1.25rem;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  /* Lange Wörter dürfen die Karte nicht sprengen */
+  overflow-wrap: anywhere;
+}
+
+.update-actions {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: center;
+}
+
+.update-btn {
+  padding: 0.55rem 1.35rem;
   border: none;
-  border-radius: 7px;
-  background: var(--color-primary, #ffa500);
+  border-radius: 9px;
+  background: linear-gradient(180deg, #ffb733 0%, #ffa500 100%);
   color: #1a1a1a;
-  font-size: 0.83rem;
+  font-size: 0.9rem;
   font-weight: 700;
   cursor: pointer;
+  transition: filter 0.15s ease, transform 0.1s ease;
 }
 
-.update-notice-btn:hover { filter: brightness(1.1); }
+.update-btn:hover  { filter: brightness(1.08); }
+.update-btn:active { transform: translateY(1px); }
+
+.update-btn-ghost {
+  padding: 0.55rem 1.1rem;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 9px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.update-btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.07);
+  color: #fff;
+}
+
+/* Schließen-Kreuz oben rechts */
+.update-close {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.update-close:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
 
 @media (max-width: 480px) {
-  .update-notice {
-    left: 1rem;
-    right: 1rem;
-    justify-content: space-between;
-  }
+  .update-card { padding: 1.6rem 1.15rem 1.2rem; }
+  .update-actions { flex-direction: column-reverse; }
+  .update-btn,
+  .update-btn-ghost { width: 100%; }
 }
-
-/* Ankündigung: etwas prominenter als der Versions-Hinweis */
-.update-notice-announce {
-  border-color: var(--color-primary, #ffa500);
-  max-width: min(28rem, calc(100vw - 2rem));
-}
-
-.update-notice-close {
-  flex-shrink: 0;
-  width: 26px;
-  height: 26px;
-  border: none;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.75);
-  font-size: 0.8rem;
-  cursor: pointer;
-}
-
-.update-notice-close:hover { background: rgba(255, 255, 255, 0.18); }

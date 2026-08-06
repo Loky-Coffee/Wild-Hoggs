@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from 'preact/hooks';
+import { createPortal } from 'preact/compat';
+import { useAuth } from '../hooks/useAuth';
 import './UpdateNotice.css';
 
 // Hinweisbalken unten rechts. Zeigt zweierlei:
@@ -27,10 +29,14 @@ interface Announcement {
 
 interface Props {
   readonly label:  string;   // "Neue Version verfügbar"
+  readonly hint:   string;   // "Lade die Seite neu, um sie zu nutzen."
   readonly action: string;   // "Neu laden"
+  readonly later:  string;   // "Später"
+  readonly close:  string;   // "Schließen"
 }
 
-export default function UpdateNotice({ label, action }: Props) {
+export default function UpdateNotice({ label, hint, action, later, close }: Props) {
+  const { isLoggedIn } = useAuth();
   const [outdated, setOutdated] = useState(false);
   const [announcement, setAnnouncement] = useState<Announcement | null>(null);
   const outdatedRef = useRef(false);
@@ -53,12 +59,26 @@ export default function UpdateNotice({ label, action }: Props) {
     setAnnouncement(a);
   };
 
-  const dismiss = () => {
+  // Merkt sich, dass diese Ankündigung erledigt ist. Ohne das erscheint sie
+  // nach jedem Neuladen wieder, solange sie in der Datenbank steht.
+  const markSeen = () => {
     try { if (announcement) localStorage.setItem(SEEN_KEY, announcement.id); } catch { /* ignore */ }
+  };
+
+  const dismiss = () => {
+    markSeen();
     setAnnouncement(null);
   };
 
+  // Auch der Neu-laden-Knopf muss sie abhaken — sonst begrüßt sie einen die
+  // frisch geladene Seite sofort wieder.
+  const reloadAndDismiss = () => {
+    markSeen();
+    location.reload();
+  };
+
   useEffect(() => {
+    if (!isLoggedIn) return;
     let stopped = false;
 
     const check = async () => {
@@ -101,32 +121,68 @@ export default function UpdateNotice({ label, action }: Props) {
       clearInterval(timer);
       document.removeEventListener('visibilitychange', onVisible);
     };
-  }, []);
+  }, [isLoggedIn]);
+
+  if (!isLoggedIn) return null;
 
   // Eine Ankündigung geht vor — sie ist die bewusste Botschaft.
   if (announcement) {
-    return (
-      <div class="update-notice update-notice-announce" role="status">
-        <span class="update-notice-text">{announcement.text}</span>
-        {announcement.reload ? (
-          <button type="button" class="update-notice-btn" onClick={() => location.reload()}>
-            {action}
-          </button>
-        ) : (
-          <button type="button" class="update-notice-close" onClick={dismiss} aria-label="OK">✕</button>
-        )}
-      </div>
+    return createPortal(
+      <div class="update-backdrop" onClick={dismiss}>
+        <div
+          class="update-card"
+          role="dialog"
+          aria-modal="true"
+          onClick={e => e.stopPropagation()}
+        >
+          <button type="button" class="update-close" onClick={dismiss} aria-label="OK">✕</button>
+          <div class="update-icon" aria-hidden="true">📢</div>
+          <p class="update-text">{announcement.text}</p>
+          <div class="update-actions">
+            {announcement.reload && (
+              <button type="button" class="update-btn" onClick={reloadAndDismiss}>
+                {action}
+              </button>
+            )}
+            {/* Immer ein Weg heraus — auch bei einer Neu-laden-Aufforderung.
+                Wer gerade mitten im Schreiben ist, soll nicht festsitzen. */}
+            <button type="button" class="update-btn-ghost" onClick={dismiss}>{close}</button>
+          </div>
+        </div>
+      </div>,
+      document.body,
     );
   }
 
   if (!outdated) return null;
 
-  return (
-    <div class="update-notice" role="status">
-      <span class="update-notice-text">{label}</span>
-      <button type="button" class="update-notice-btn" onClick={() => location.reload()}>
-        {action}
-      </button>
-    </div>
+  return createPortal(
+    <div class="update-backdrop" onClick={() => setOutdated(false)}>
+      <div
+        class="update-card"
+        role="dialog"
+        aria-modal="true"
+        onClick={e => e.stopPropagation()}
+      >
+        <button
+          type="button"
+          class="update-close"
+          onClick={() => setOutdated(false)}
+          aria-label={close}
+        >✕</button>
+        <div class="update-icon" aria-hidden="true">✨</div>
+        <p class="update-title">{label}</p>
+        <p class="update-text">{hint}</p>
+        <div class="update-actions">
+          <button type="button" class="update-btn" onClick={() => location.reload()}>
+            {action}
+          </button>
+          <button type="button" class="update-btn-ghost" onClick={() => setOutdated(false)}>
+            {later}
+          </button>
+        </div>
+      </div>
+    </div>,
+    document.body,
   );
 }
