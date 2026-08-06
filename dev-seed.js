@@ -39,9 +39,9 @@ const sql = [
      notification_sound INTEGER DEFAULT 1, notification_volume REAL DEFAULT 1.5,
      last_seen TEXT, created_at TEXT DEFAULT (datetime('now')));`,
 
-  `CREATE TABLE sessions (token TEXT PRIMARY KEY, user_id TEXT, expires_at TEXT);`,
+  `CREATE TABLE sessions (token TEXT PRIMARY KEY, user_id TEXT REFERENCES users(id) ON DELETE CASCADE, expires_at TEXT);`,
 
-  `CREATE TABLE game_profiles (id TEXT PRIMARY KEY, user_id TEXT, name TEXT, server TEXT, faction TEXT,
+  `CREATE TABLE game_profiles (id TEXT PRIMARY KEY, user_id TEXT REFERENCES users(id) ON DELETE CASCADE, name TEXT, server TEXT, faction TEXT,
      formation_power_br INTEGER, formation_power_wd INTEGER, formation_power_go INTEGER,
      created_at TEXT DEFAULT (datetime('now')));`,
 
@@ -63,7 +63,7 @@ const sql = [
   `CREATE TABLE app_settings (key TEXT PRIMARY KEY, value TEXT NOT NULL,
      updated_at TEXT NOT NULL DEFAULT (datetime('now')));`,
 
-  `CREATE TABLE calculator_states (user_id TEXT, profile_id TEXT, calc_type TEXT, category TEXT,
+  `CREATE TABLE calculator_states (user_id TEXT REFERENCES users(id) ON DELETE CASCADE, profile_id TEXT, calc_type TEXT, category TEXT,
      state TEXT, updated_at TEXT DEFAULT (datetime('now')),
      PRIMARY KEY (user_id, profile_id, calc_type, category));`,
 
