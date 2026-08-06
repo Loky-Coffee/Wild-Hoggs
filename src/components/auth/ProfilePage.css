@@ -397,3 +397,166 @@
   .pp-fcard-input-wrap { flex: 1; }
   .pp-fcard-main-btn { width: auto; padding: 0.35rem 0.75rem; margin-top: 0; flex-shrink: 0; }
 }
+
+/* ── Tabs ─────────────────────────────────────────────────────────────────── */
+.pp-tabs {
+  display: flex;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.pp-tabs::-webkit-scrollbar { display: none; }
+
+.pp-tab {
+  flex-shrink: 0;
+  padding: 0.6rem 1.1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.pp-tab:hover { background: rgba(255, 165, 0, 0.08); color: #fff; }
+.pp-tab-on {
+  border-color: rgba(255, 165, 0, 0.5);
+  background: rgba(255, 165, 0, 0.14);
+  color: #ffa500;
+}
+
+/* ── Fraktionsauswahl, kompakt ────────────────────────────────────────────── */
+.pp-faction-pick { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+.pp-fpick {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+.pp-fpick:hover { color: #fff; }
+.pp-fpick-img { object-fit: contain; }
+
+.pp-fpick-blood-rose.pp-fpick-on     { border-color: #e74c3c; background: rgba(231, 76, 60, 0.14);  color: #fff; }
+.pp-fpick-wings-of-dawn.pp-fpick-on  { border-color: #4a9eda; background: rgba(74, 158, 218, 0.14); color: #fff; }
+.pp-fpick-guard-of-order.pp-fpick-on { border-color: #ffd500; background: rgba(255, 213, 0, 0.14);  color: #fff; }
+
+.pp-fpower-row { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+.pp-fpower {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex: 1 1 10rem;
+}
+.pp-fpower img { flex-shrink: 0; object-fit: contain; }
+
+/* ── Spielprofile ─────────────────────────────────────────────────────────── */
+.pp-profiles { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.1rem; }
+
+.pp-profile-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.15rem 0.15rem 0.15rem 0;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.02);
+}
+.pp-profile-row-active { border-color: rgba(255, 165, 0, 0.45); background: rgba(255, 165, 0, 0.07); }
+
+.pp-profile-pick {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.9rem;
+  border: none;
+  background: none;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.9rem;
+  text-align: left;
+  cursor: pointer;
+}
+.pp-profile-name   { font-weight: 600; }
+.pp-profile-server { color: rgba(255, 255, 255, 0.5); font-size: 0.82rem; }
+.pp-profile-badge {
+  margin-left: auto;
+  padding: 0.1rem 0.5rem;
+  border-radius: 6px;
+  background: rgba(255, 165, 0, 0.2);
+  color: #ffa500;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+.pp-profile-del {
+  flex-shrink: 0;
+  width: 30px; height: 30px;
+  margin-right: 0.4rem;
+  border: none; border-radius: 7px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+}
+.pp-profile-del:hover { background: rgba(231, 76, 60, 0.15); color: #e74c3c; }
+.pp-profile-confirm { display: flex; gap: 0.35rem; margin-right: 0.4rem; }
+
+.pp-input-sm { max-width: 7rem; }
+
+/* ── Konto: Gefahrenbereich ───────────────────────────────────────────────── */
+.pp-hint { margin: 0 0 0.7rem; color: rgba(255, 255, 255, 0.5); font-size: 0.83rem; line-height: 1.45; }
+.pp-muted { color: rgba(255, 255, 255, 0.5); font-size: 0.9rem; }
+.pp-stat-sub { color: rgba(255, 255, 255, 0.42); font-size: 0.78rem; margin-top: 0.1rem; }
+
+.pp-danger-zone {
+  margin-top: 1.6rem;
+  padding: 1.1rem;
+  border: 1px solid rgba(231, 76, 60, 0.35);
+  border-radius: 12px;
+  background: rgba(231, 76, 60, 0.05);
+}
+.pp-danger-title { margin: 0 0 0.4rem; color: #e74c3c; font-size: 1rem; font-weight: 700; }
+.pp-danger-warn  { margin: 0 0 0.7rem; color: #ffb4ac; font-size: 0.85rem; }
+.pp-danger-actions { display: flex; gap: 0.5rem; justify-content: flex-end; }
+
+.pp-btn-danger,
+.pp-btn-danger-sm {
+  border: none;
+  border-radius: 8px;
+  background: #e74c3c;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+.pp-btn-danger    { padding: 0.55rem 1.2rem; font-size: 0.9rem; }
+.pp-btn-danger-sm { padding: 0.3rem 0.7rem;  font-size: 0.78rem; }
+.pp-btn-danger:hover, .pp-btn-danger-sm:hover { filter: brightness(1.1); }
+.pp-btn-danger:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.pp-btn-ghost,
+.pp-btn-ghost-sm {
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+}
+.pp-btn-ghost    { padding: 0.55rem 1.1rem; font-size: 0.9rem; }
+.pp-btn-ghost-sm { padding: 0.3rem 0.7rem;  font-size: 0.78rem; }
+.pp-btn-ghost:hover, .pp-btn-ghost-sm:hover { background: rgba(255, 255, 255, 0.07); color: #fff; }
+
+.pp-logout-row { margin-top: 1.6rem; }
+
+@media (max-width: 600px) {
+  .pp-fpower { flex: 1 1 100%; }
+  .pp-danger-actions { flex-direction: column-reverse; }
+  .pp-danger-actions button { width: 100%; }
+}

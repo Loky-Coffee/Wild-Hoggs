@@ -127,7 +127,17 @@ export function useProfile() {
     } catch { return null; }
   }
 
-  async function updateProfile(profileId: string, patch: { name?: string; server?: string | null; faction?: string | null }): Promise<boolean> {
+  // Die Formations-Stärke gehört mit in den Typ: sie wird auf der Profilseite
+  // gepflegt und vom Karawanen-Rechner ausgelesen. Bisher fehlte sie hier,
+  // weshalb TypeScript den Aufruf in ProfilePage.tsx bemängelte.
+  async function updateProfile(profileId: string, patch: {
+    name?: string;
+    server?: string | null;
+    faction?: string | null;
+    formation_power_br?: number | null;
+    formation_power_wd?: number | null;
+    formation_power_go?: number | null;
+  }): Promise<boolean> {
     const t = token ?? localStorage.getItem(AUTH_TOKEN_KEY);
     if (!t) return false;
     try {

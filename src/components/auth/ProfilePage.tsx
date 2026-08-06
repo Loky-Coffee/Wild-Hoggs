@@ -4,11 +4,14 @@ import type { AuthUser } from '../../hooks/useAuth';
 import { useProfile } from '../../hooks/useProfile';
 import { useTranslations } from '../../i18n/utils';
 import type { TranslationData } from '../../i18n/index';
+import { StatsOverview, AccountTab, ProfilesList, type UserStats } from './ProfileTabs';
 import './ProfilePage.css';
 
 interface ProfilePageProps {
   translationData: TranslationData;
 }
+
+type Tab = 'overview' | 'profiles' | 'settings' | 'account';
 
 // ── Calculator state reader — profile-aware ──────────────────────────────────
 function readCalcState<T>(profileId: string, calcType: string, calcKey = 'main'): T | null {
@@ -64,7 +67,19 @@ function getLangFromPath(): string {
 export default function ProfilePage({ translationData }: ProfilePageProps) {
   const t = useTranslations(translationData);
   const { user, token, isLoggedIn } = useAuth();
-  const { activeProfile, updateProfile } = useProfile();
+  const { profiles, activeProfile, updateProfile, createProfile, deleteProfile, switchProfile } = useProfile();
+
+  const [tab, setTab] = useState<Tab>('overview');
+  const [stats, setStats] = useState<UserStats | null>(null);
+
+  // Kennzahlen fuer die Uebersicht — einmal beim Oeffnen.
+  useEffect(() => {
+    if (!token) return;
+    fetch('/api/user/stats', { headers: { Authorization: `Bearer ${token}` } })
+      .then(r => r.ok ? r.json() : null)
+      .then(d => { if (d) setStats(d as UserStats); })
+      .catch(() => {});
+  }, [token]);
 
   // ── Account form state ─────────────────────────────────────────────────────
   const [username, setUsername]           = useState('');
@@ -282,67 +297,34 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
         </div>
       </div>
 
-      {/* ── Faction & Formation Power — 3 cards ── */}
-      <div class="pp-card">
-        <h2 class="pp-section-title">{t('profile.faction')}</h2>
-        <div class="pp-faction-cards">
-          {([
-            { key: 'blood-rose',     field: formationBr, setter: setFormationBr },
-            { key: 'wings-of-dawn',  field: formationWd, setter: setFormationWd },
-            { key: 'guard-of-order', field: formationGo, setter: setFormationGo },
-          ] as const).map(({ key, field, setter }) => {
-            const isActive = selectedFaction === key;
-            return (
-              <div
-                key={key}
-                class={[
-                  'pp-fcard',
-                  `pp-fcard-${key}`,
-                  isActive ? 'pp-fcard-active' : '',
-                ].filter(Boolean).join(' ')}
-              >
-                <img
-                  src={FACTION_IMG[key]}
-                  alt={FACTION_LABELS[key].label}
-                  class="pp-fcard-img"
-                />
-                <span class="pp-fcard-name">{FACTION_LABELS[key].label}</span>
-
-                <div class="pp-fcard-input-wrap">
-                  <span class="pp-fcard-input-label">{t('profile.formations')}</span>
-                  <input
-                    class="pp-input"
-                    type="text"
-                    placeholder={t('profile.formations.placeholder')}
-                    value={field}
-                    onInput={e => setter((e.target as HTMLInputElement).value)}
-                  />
-                </div>
-
-                <button
-                  type="button"
-                  class={`pp-fcard-main-btn${isActive ? ' active' : ''}`}
-                  onClick={() => setSelectedFaction(isActive ? null : key)}
-                  disabled={factionSaving}
-                >
-                  {isActive ? `✓ ${t('profile.faction')}` : t('profile.faction.setMain')}
-                </button>
-              </div>
-            );
-          })}
-        </div>
-        <div class="pp-formations-footer">
-          {factionMsg && <p class={`pp-msg pp-msg-${factionMsg.type}`}>{factionMsg.text}</p>}
+      {/* ── Tabs ── */}
+      <div class="pp-tabs" role="tablist">
+        {([
+          { id: 'overview', label: t('profile.tab.overview'), icon: '📊' },
+          { id: 'profiles', label: t('profile.tab.profiles'), icon: '🎮' },
+          { id: 'settings', label: t('profile.tab.settings'), icon: '⚙️' },
+          { id: 'account',  label: t('profile.tab.account'),  icon: '🔐' },
+        ] as const).map(x => (
           <button
-            class="pp-btn-save"
-            onClick={handleSaveFactions}
-            disabled={factionSaving}
+            key={x.id}
+            type="button"
+            role="tab"
+            aria-selected={tab === x.id}
+            class={`pp-tab${tab === x.id ? ' pp-tab-on' : ''}`}
+            onClick={() => setTab(x.id)}
           >
-            {factionSaving ? t('profile.saving') : t('profile.save')}
+            <span aria-hidden="true">{x.icon}</span> {x.label}
           </button>
-        </div>
+        ))}
       </div>
 
+      {/* ── Übersicht ── */}
+      {tab === 'overview' && (
+        <>
+          <div class="pp-card">
+            <h2 class="pp-section-title">{t('profile.tab.overview')}</h2>
+            <StatsOverview stats={stats} lang={getLangFromPath()} translationData={translationData} />
+          </div>
       {/* ── Calculator Progress ── */}
       <div class="pp-card">
         <h2 class="pp-section-title">{t('profile.progress')}</h2>
@@ -414,10 +396,27 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
         </div>
       </div>
 
-      {/* ── Settings ── */}
-      <div class="pp-card">
-        <h2 class="pp-section-title">{t('profile.settings')}</h2>
+        </>
+      )}
 
+      {/* ── Spielprofile ── */}
+      {tab === 'profiles' && (
+        <>
+          <div class="pp-card">
+            <h2 class="pp-section-title">{t('profile.tab.profiles')}</h2>
+            <p class="pp-hint">{t('profile.profiles.hint')}</p>
+            <ProfilesList
+              profiles={profiles}
+              activeId={activeProfile.id}
+              translationData={translationData}
+              onSwitch={switchProfile}
+              onCreate={async (name, srv) => { await createProfile(name, srv || undefined); }}
+              onDelete={async (id) => { await deleteProfile(id); }}
+            />
+          </div>
+
+          <div class="pp-card">
+            <h2 class="pp-section-title">{t('profile.serverLabel')}</h2>
         {/* Server */}
         <div class="pp-setting-block">
           <label class="pp-setting-label">{t('profile.serverLabel')}</label>
@@ -441,6 +440,73 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
           </div>
           {serverMsg && <p class={`pp-msg pp-msg-${serverMsg.type}`}>{serverMsg.text}</p>}
         </div>
+
+          </div>
+
+      {/* ── Fraktion & Formations-Stärke ──
+          Kompakt gehalten: Das trägt man einmal ein, danach liest es nur noch
+          der Karawanen-Rechner aus. Früher nahmen drei bildschirmbreite Karten
+          dafür fast den halben Bildschirm ein. */}
+      <div class="pp-card">
+        <h2 class="pp-section-title">{t('profile.faction')}</h2>
+
+        <div class="pp-setting-block">
+          <label class="pp-setting-label">{t('profile.faction.setMain')}</label>
+          <div class="pp-faction-pick">
+            {(['blood-rose', 'wings-of-dawn', 'guard-of-order'] as const).map(key => (
+              <button
+                key={key}
+                type="button"
+                class={`pp-fpick pp-fpick-${key}${selectedFaction === key ? ' pp-fpick-on' : ''}`}
+                onClick={() => setSelectedFaction(selectedFaction === key ? null : key)}
+                disabled={factionSaving}
+                aria-pressed={selectedFaction === key}
+              >
+                <img src={FACTION_IMG[key]} alt="" class="pp-fpick-img" width={28} height={28} />
+                <span>{FACTION_LABELS[key].label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div class="pp-setting-block">
+          <label class="pp-setting-label">{t('profile.formations')}</label>
+          <p class="pp-hint">{t('profile.formations.hint')}</p>
+          <div class="pp-fpower-row">
+            {([
+              { key: 'blood-rose',     field: formationBr, setter: setFormationBr },
+              { key: 'wings-of-dawn',  field: formationWd, setter: setFormationWd },
+              { key: 'guard-of-order', field: formationGo, setter: setFormationGo },
+            ] as const).map(({ key, field, setter }) => (
+              <label key={key} class="pp-fpower">
+                <img src={FACTION_IMG[key]} alt={FACTION_LABELS[key].label} width={20} height={20} />
+                <input
+                  class="pp-input"
+                  type="text"
+                  placeholder={t('profile.formations.placeholder')}
+                  value={field}
+                  onInput={e => setter((e.target as HTMLInputElement).value)}
+                />
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <div class="pp-formations-footer">
+          {factionMsg && <p class={`pp-msg pp-msg-${factionMsg.type}`}>{factionMsg.text}</p>}
+          <button class="pp-btn-save" onClick={handleSaveFactions} disabled={factionSaving}>
+            {factionSaving ? t('profile.saving') : t('profile.save')}
+          </button>
+        </div>
+      </div>
+
+        </>
+      )}
+
+      {/* ── Einstellungen ── */}
+      {tab === 'settings' && (
+        <div class="pp-card">
+        <h2 class="pp-section-title">{t('profile.settings')}</h2>
 
         {/* Username */}
         <div class="pp-setting-block">
@@ -538,12 +604,26 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
         </div>
       </div>
 
-      {/* ── Logout ── */}
-      <div class="pp-card pp-logout-card">
-        <button class="pp-btn-logout" onClick={handleLogout}>
-          {t('auth.logout')}
-        </button>
-      </div>
+      )}
+
+      {/* ── Konto ── */}
+      {tab === 'account' && (
+        <div class="pp-card">
+          <h2 class="pp-section-title">{t('profile.tab.account')}</h2>
+          <AccountTab
+            token={token!}
+            username={user.username}
+            translationData={translationData}
+            onDeleted={() => { clearAuthState(); const l = getLangFromPath(); window.location.href = l === 'en' ? '/' : `/${l}/`; }}
+          />
+
+          <div class="pp-logout-row">
+            <button class="pp-btn-logout" onClick={handleLogout}>
+              {t('auth.logout')}
+            </button>
+          </div>
+        </div>
+      )}
 
     </div>
   );
