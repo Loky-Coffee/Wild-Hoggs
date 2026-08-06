@@ -1,4 +1,5 @@
 import { getToken, validateSession } from '../../../_lib/auth';
+import { broadcastDelete } from '../../../_lib/chat-hub';
 
 const VALID_CHAT_TYPES = ['global', 'global-lang', 'server', 'server-lang'] as const;
 
@@ -51,6 +52,9 @@ export async function onRequestDelete(ctx: any) {
   await DB.prepare(
     `UPDATE chat_reports SET status='resolved' WHERE message_id = ?`
   ).bind(message_id).run();
+
+  // Aus allen offenen Fenstern entfernen.
+  broadcastDelete(ctx, message_id);
 
   return Response.json({ success: true });
 }

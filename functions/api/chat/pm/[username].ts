@@ -3,6 +3,7 @@
 
 import { getToken, validateSession } from '../../../_lib/auth';
 import { checkRateLimit } from '../../../_lib/chat-ratelimit';
+import { broadcastPM } from '../../../_lib/chat-hub';
 
 const MAX_LEN       = 500;
 const DEFAULT_LIMIT = 50;
@@ -108,6 +109,9 @@ export async function onRequestPost(ctx: any) {
      JOIN users u ON p.sender_id = u.id
      WHERE p.id = ?`
   ).bind(id).first() as any;
+
+  // Direkt beim Empfaenger zustellen, falls er gerade verbunden ist.
+  broadcastPM(ctx, username, user.username, created);
 
   return Response.json(created, { status: 201 });
 }

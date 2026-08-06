@@ -5,7 +5,7 @@
 
 import { getToken, validateSession } from '../../_lib/auth';
 import { checkRateLimit } from '../../_lib/chat-ratelimit';
-import { broadcast, channelKey } from '../../_lib/chat-hub';
+import { broadcastMessage } from '../../_lib/chat-hub';
 
 const MAX_LEN       = 500;
 const DEFAULT_LIMIT = 50;
@@ -117,7 +117,7 @@ export async function onRequestPost(ctx: any) {
 
   // Sofort an alle verbundenen Clients weiterreichen. Rein additiv — schlägt es
   // fehl, holen die Clients die Nachricht beim nächsten /api/chat/sync.
-  broadcast(ctx, channelKey('global', null, lang), full);
+  broadcastMessage(ctx, 'global', null, lang, full);
 
   return Response.json(full, { status: 201 });
 }

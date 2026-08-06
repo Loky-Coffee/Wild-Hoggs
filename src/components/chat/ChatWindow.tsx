@@ -18,11 +18,6 @@ const POLL_MS = 5_000;
 // also alle 20 s. Der Server wertet Nutzer 5 Minuten lang als online — das reicht
 // also mit großem Abstand.
 const PRESENCE_EVERY = 4;
-// Steht die Live-Verbindung, kommen die Nachrichten über den Socket. Der Sync
-// holt dann nur noch Ungelesen-Zähler der anderen Tabs, den PM-Posteingang und
-// die Online-Liste — nichts davon muss im 5-Sekunden-Takt kommen. Also nur noch
-// jeder 4. Durchlauf, das sind 20 s statt 5 s.
-const SLOW_EVERY = 4;
 // Obergrenze für die im Speicher gehaltenen Nachrichten. Ohne Limit wächst die
 // Liste (und damit DOM + Render-Aufwand) linear mit der Laufzeit des Tabs —
 // nach ein paar Stunden friert der Tab sonst ein.
@@ -140,21 +135,69 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
   const langCode  = user?.language?.toUpperCase() ?? '';
   const serverName = activeProfile.server;
 
-  // ── Live-Verbindung zum aktiven Kanal ─────────────────────────────────────
-  // Steht sie, kommen neue Nachrichten sofort und der Nachrichten-Teil des
-  // Sync-Polls wird übersprungen. Steht sie nicht (Hub aus, Verbindung weg,
-  // Netz zickt), läuft alles unverändert über das Polling weiter.
-  const wsConnected = useChatSocket(
-    { type: chatType, server: serverName },
-    token,
-    (msg: Message) => {
-      setMessages(prev => {
-        if (prev.some(m => m.id === msg.id)) return prev;   // gleiche Dedup wie beim Poll
-        return [...prev, msg].slice(-MAX_MESSAGES);
-      });
-      if (msg.created_at) lastCreatedAt.current = msg.created_at;
-    },
-  );
+  // ── Live-Verbindung ───────────────────────────────────────────────────────
+  // Eine Verbindung deckt alles ab: Nachrichten, Ungelesen-Hinweise der anderen
+  // Tabs, private Nachrichten, Löschungen und die Online-Liste. Steht sie, wird
+  // gar nicht mehr gepollt. Steht sie nicht (Hub aus, Netz zickt), übernimmt
+  // der Poll unverändert.
+  const wsConnected = useChatSocket(chatType, serverName, token, (ev) => {
+    switch (ev.type) {
+      // Neue Nachricht im offenen Tab
+      case 'message': {
+        const msg = ev.message as Message;
+        setMessages(prev => {
+          if (prev.some(m => m.id === msg.id)) return prev;   // gleiche Dedup wie beim Poll
+          return [...prev, msg].slice(-MAX_MESSAGES);
+        });
+        if (msg.created_at) lastCreatedAt.current = msg.created_at;
+        break;
+      }
+
+      // Nachricht in einem anderen Tab — nur der Zähler, nicht der Inhalt
+      case 'unread': {
+        const t = ev.channel as ChatType;
+        if (t === chatTypeRef.current) break;
+        setUnreadCounts(prev => {
+          const next = new Map(prev);
+          next.set(t, (next.get(t) ?? 0) + 1);
+          return next;
+        });
+        break;
+      }
+
+      // Private Nachricht
+      case 'pm': {
+        const from = ev.from;
+        setPmContacts(prev => {
+          const next = [from, ...prev.filter(n => n !== from)].slice(0, 10);
+          localStorage.setItem('wh-pm-contacts', JSON.stringify(next));
+          return next;
+        });
+        if (openPMRef.current === from) break;   // offen — PMPanel holt es selbst
+        if (openPMRef.current === null) {
+          setOpenPM(from);
+          openPMRef.current = from;
+        } else {
+          setPmUnread(prev => {
+            const next = new Map(prev);
+            next.set(from, (prev.get(from) ?? 0) + 1);
+            return next;
+          });
+        }
+        break;
+      }
+
+      // Von einem Moderator gelöscht
+      case 'delete':
+        setMessages(prev => prev.filter(m => m.id !== ev.id));
+        break;
+
+      // Online-Liste — kommt bei jedem Kommen und Gehen
+      case 'presence':
+        setOnlineUsers(prev => sameOnlineUsers(prev, ev.users) ? prev : ev.users);
+        break;
+    }
+  });
 
   // Als Ref mitführen, damit das Sync-Intervall bei einem Verbindungswechsel
   // nicht neu aufgesetzt werden muss.
@@ -176,10 +219,13 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
 
       const tick = syncTick.current++;
 
-      // Mit stehendem Socket kommen die Nachrichten live — dann reicht es, den
-      // Rest alle 20 s abzuholen statt alle 5 s. Bricht die Verbindung ab,
-      // greift ab dem nächsten Durchlauf automatisch wieder der schnelle Takt.
-      if (wsConnectedRef.current && tick % SLOW_EVERY !== 0) return;
+      // Steht die Live-Verbindung, kommt ALLES über sie — Nachrichten,
+      // Ungelesen-Zähler, private Nachrichten und die Online-Liste. Dann gibt
+      // es hier nichts mehr zu holen. Bricht sie ab, läuft der Poll ab dem
+      // nächsten Durchlauf automatisch wieder an.
+      // Der erste Durchlauf läuft immer: er stellt den Ausgangszustand her
+      // (was wurde verpasst, während die Seite zu war).
+      if (wsConnectedRef.current && tick > 0) return;
 
       // Presence ist deutlich träger als der Nachrichten-Poll: nur bei jedem
       // n-ten Durchlauf mitschicken, sonst gäbe es alle 5 s einen D1-Write.
@@ -197,12 +243,7 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
           method:  'POST',
           headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
           body:    JSON.stringify({
-            // Steht die Live-Verbindung, liefert sie die Nachrichten — dann
-            // spart der Poll diese Abfrage. Bricht sie ab, holt der nächste
-            // Poll über lastCreatedAt automatisch alles Verpasste nach.
-            active: wsConnectedRef.current
-              ? { type: chatTypeRef.current, since: null }
-              : { type: chatTypeRef.current, since: lastCreatedAt.current },
+            active: { type: chatTypeRef.current, since: lastCreatedAt.current },
             server:   serverRef.current,
             tabs,
             pm_since: pmInboxSince.current,

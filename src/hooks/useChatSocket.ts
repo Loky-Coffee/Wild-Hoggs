@@ -1,49 +1,63 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
 
-// WebSocket-Anbindung an den Chat-Hub.
+// Live-Verbindung zum Chat-Hub.
+//
+// Eine Verbindung pro Person deckt alles ab: Nachrichten des offenen Tabs,
+// Ungelesen-Hinweise der anderen Tabs, private Nachrichten, gelöschte
+// Nachrichten und die Online-Liste. Welcher Tab offen ist, wird über die
+// bestehende Verbindung gemeldet — dafür wird NICHT neu verbunden.
 //
 // Rückgabewert `connected` steuert den Fallback: solange er false ist, muss der
-// Aufrufer weiter pollen. Damit kann hier nichts kaputtgehen — im schlimmsten
-// Fall verhält sich der Chat exakt wie vorher.
-//
-// Ist der Hub nicht konfiguriert (kein HUB_URL/HUB_SECRET in der Umgebung),
-// antwortet /api/chat/ws-ticket mit 503 und wir versuchen es gar nicht erst
-// weiter.
+// Aufrufer pollen. Damit kann hier nichts kaputtgehen — im schlimmsten Fall
+// verhält sich der Chat wie vor der Umstellung.
 
 const MAX_RETRIES = 5;
 const PING_MS     = 30_000;
 const MAX_BACKOFF = 30_000;
+// Der Hub schickt direkt nach dem Verbinden die Online-Liste. Bleibt sie aus,
+// ist am anderen Ende etwas, mit dem wir nicht reden können (z.B. während eines
+// Deployments eine ältere Fassung) — dann lieber trennen und weiter pollen,
+// statt still nichts mehr zu empfangen.
+const HELLO_TIMEOUT_MS = 8_000;
 
-export interface ChatSocketTarget {
-  type:   string;         // ChatType — der Server bestimmt daraus den Kanal
-  server: string | null;
-}
+export type ChatSocketEvent =
+  | { type: 'message';  message: any }
+  | { type: 'unread';   channel: string }
+  | { type: 'pm';       from: string; message: any }
+  | { type: 'delete';   id: string }
+  | { type: 'presence'; users: any[] };
 
 export function useChatSocket(
-  target:    ChatSocketTarget | null,
-  token:     string | null,
-  onMessage: (msg: any) => void,
+  chatType: string | null,
+  server:   string | null,
+  token:    string | null,
+  onEvent:  (e: ChatSocketEvent) => void,
 ): boolean {
   const [connected, setConnected] = useState(false);
 
-  // Callback über eine Ref, damit ein neuer Handler nicht die Verbindung neu aufbaut.
-  const onMessageRef = useRef(onMessage);
-  onMessageRef.current = onMessage;
+  // Über Refs, damit ein neuer Handler nicht die Verbindung neu aufbaut.
+  const onEventRef = useRef(onEvent);
+  onEventRef.current = onEvent;
+  const wsRef = useRef<WebSocket | null>(null);
+  const chatTypeRef = useRef(chatType);
+  chatTypeRef.current = chatType;
 
-  const type   = target?.type   ?? null;
-  const server = target?.server ?? null;
-
+  // ── Verbindung ────────────────────────────────────────────────────────────
+  // Hängt bewusst NICHT am Tab: der wird über die offene Verbindung gemeldet.
   useEffect(() => {
-    if (!type || !token) return;
+    if (!token) return;
 
-    let ws: WebSocket | null = null;
     let pingTimer:  ReturnType<typeof setInterval> | null = null;
     let retryTimer: ReturnType<typeof setTimeout>  | null = null;
+    let helloTimer: ReturnType<typeof setTimeout>  | null = null;
     let retries = 0;
     let closed  = false;   // Unmount-Flag — verhindert Reconnects nach dem Cleanup
 
     const clearPing = () => {
       if (pingTimer) { clearInterval(pingTimer); pingTimer = null; }
+    };
+    const clearHello = () => {
+      if (helloTimer) { clearTimeout(helloTimer); helloTimer = null; }
     };
 
     // Exponentielles Backoff. Nach MAX_RETRIES wird aufgegeben: `connected`
@@ -61,45 +75,56 @@ export function useChatSocket(
         const res = await fetch('/api/chat/ws-ticket', {
           method:  'POST',
           headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-          body:    JSON.stringify({ type, server }),
+          body:    JSON.stringify({ type: chatTypeRef.current ?? 'global', server }),
         });
 
-        // 503 = Hub nicht eingerichtet, 403 = kein Zugriff auf den Kanal.
-        // Beides ist dauerhaft — nicht erneut versuchen, Polling reicht.
+        // 503 = Hub nicht eingerichtet, 403 = kein Zugriff. Beides ist dauerhaft
+        // — nicht erneut versuchen, Polling reicht.
         if (res.status === 503 || res.status === 403) return;
         if (!res.ok) return scheduleRetry();
 
         const data = await res.json() as { ticket: string; url: string };
         if (closed || !data.ticket || !data.url) return;
 
-        ws = new WebSocket(`${data.url}?t=${encodeURIComponent(data.ticket)}`);
+        const ws = new WebSocket(`${data.url}?t=${encodeURIComponent(data.ticket)}`);
+        wsRef.current = ws;
 
         ws.onopen = () => {
-          if (closed) { try { ws?.close(); } catch { /* ignore */ } return; }
-          retries = 0;
-          setConnected(true);
+          if (closed) { try { ws.close(); } catch { /* ignore */ } return; }
           pingTimer = setInterval(() => {
-            try { ws?.send('ping'); } catch { /* ignore */ }
+            try { ws.send('ping'); } catch { /* ignore */ }
           }, PING_MS);
+          // Noch NICHT als verbunden melden: erst wenn das Gegenüber sich
+          // erwartungsgemäß meldet. Bis dahin läuft das Polling weiter.
+          helloTimer = setTimeout(() => {
+            try { ws.close(); } catch { /* ignore */ }
+          }, HELLO_TIMEOUT_MS);
         };
 
         ws.onmessage = (e) => {
-          if (e.data === 'pong') return;
           try {
             const payload = JSON.parse(e.data as string);
-            if (payload?.type === 'message' && payload.message) {
-              onMessageRef.current(payload.message);
+            if (!payload?.type || payload.type === 'pong') return;
+
+            // Erstes verwertbares Ereignis = Handschlag geglückt.
+            if (helloTimer) {
+              clearHello();
+              retries = 0;
+              setConnected(true);
             }
+            onEventRef.current(payload as ChatSocketEvent);
           } catch { /* kaputte Nachricht ignorieren */ }
         };
 
         ws.onclose = () => {
+          if (wsRef.current === ws) wsRef.current = null;
           setConnected(false);
           clearPing();
+          clearHello();
           scheduleRetry();
         };
 
-        ws.onerror = () => { try { ws?.close(); } catch { /* ignore */ } };
+        ws.onerror = () => { try { ws.close(); } catch { /* ignore */ } };
       } catch {
         scheduleRetry();
       }
@@ -110,11 +135,22 @@ export function useChatSocket(
     return () => {
       closed = true;
       clearPing();
+      clearHello();
       if (retryTimer) clearTimeout(retryTimer);
-      try { ws?.close(); } catch { /* ignore */ }
+      try { wsRef.current?.close(); } catch { /* ignore */ }
+      wsRef.current = null;
       setConnected(false);
     };
-  }, [type, server, token]);
+  }, [token, server]);
+
+  // ── Tabwechsel melden ─────────────────────────────────────────────────────
+  // Ab dann kommen Nachrichten dieses Kanals als 'message' statt als 'unread'.
+  useEffect(() => {
+    if (!connected || !chatType) return;
+    try {
+      wsRef.current?.send(JSON.stringify({ type: 'channel', c: chatType }));
+    } catch { /* ignore */ }
+  }, [chatType, connected]);
 
   return connected;
 }

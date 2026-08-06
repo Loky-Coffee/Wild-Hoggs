@@ -26,6 +26,11 @@ export function renderChangelogText(text: string): string {
 export const changelog: ChangelogEntry[] = [
   // ── August 2026 ─────────────────────────────────────────────────────────
   {
+    date: '2026-08-06',
+    time: '12:05',
+    text: 'The chat is now **fully live**. Messages, the unread badges on the other tabs, private messages and the online list all arrive **the moment they happen** instead of being fetched every few seconds — the page no longer asks the server at all while the connection holds. If the live connection cannot be established (restrictive network, or the service is down), everything falls back to the old behaviour on its own, so the chat keeps working either way',
+  },
+  {
     date: '2026-08-05',
     time: '19:55',
     text: 'Two things that flickered are now calm. Switching pages briefly faded the old and the new page into each other, which on a dark theme looks like a **stray page flashing up** before the right one — the switch is instant now. And on the **Roses** page, rose 10 lit up for a moment before jumping to the one actually set; now nothing is highlighted until the real answer arrives, because showing nothing beats showing the wrong one',
