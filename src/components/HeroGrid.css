@@ -296,10 +296,10 @@
   margin: 0;
   padding: 0;
   display: block;
-  filter:
-    drop-shadow(0 0 12px rgba(206, 147, 216, 0.85))
-    drop-shadow(0 0 4px  rgba(206, 147, 216, 0.5))
-    drop-shadow(0 2px 6px rgba(0, 0, 0, 1));
+  /* Frueher drei gestapelte drop-shadows. Jeder einzelne zwingt den Browser,
+     die Alpha-Maske des Bildes neu zu berechnen — mal 36 Karten summierte sich
+     das spuerbar. Einer reicht optisch voellig. */
+  filter: drop-shadow(0 0 10px rgba(206, 147, 216, 0.8));
   z-index: 2;
   pointer-events: none;
 }
@@ -322,9 +322,7 @@
   height: 40px;
   object-fit: contain;
   display: block;
-  filter:
-    drop-shadow(0 1px 4px rgba(0,0,0,1))
-    drop-shadow(0 0 2px rgba(0,0,0,0.9));
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.95));
 }
 
 .hg-card-duo-line {
@@ -378,13 +376,12 @@
   padding: 1rem;
   animation: hg-backdrop-in 0.2s ease;
 }
-@supports (backdrop-filter: blur(1px)) {
-  .hg-backdrop {
-    background: rgba(0, 0, 0, 0.82);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-  }
-}
+/* Hier stand ein bildschirmfuellendes backdrop-filter: blur(10px).
+   Dahinter liegen 36 Heldenkarten mit zusammen ueber 250 drop-shadow-Filtern —
+   der Browser musste die komplette Seite samt aller Filter rastern und dann
+   weichzeichnen, und das pro Frame der Einblendung. Das liess den Tab beim
+   Oeffnen einer Karte sekundenlang einfrieren.
+   Sichtbar war davon ohnehin fast nichts: Der Hintergrund deckt zu 92 %. */
 
 .hg-split {
   position: relative;
@@ -843,12 +840,6 @@
 
   .hg-hero-name { font-size: 1.45rem; }
 
-  @supports (backdrop-filter: blur(1px)) {
-    .hg-backdrop {
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-    }
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
