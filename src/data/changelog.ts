@@ -27,6 +27,11 @@ export const changelog: ChangelogEntry[] = [
   // ── August 2026 ─────────────────────────────────────────────────────────
   {
     date: '2026-08-06',
+    time: '17:15',
+    text: 'Your profile page is now organised in **four tabs** instead of one long column. **Overview** shows how long you have been here and how active you are, **Game profiles** lets you manage several accounts side by side (this used to hide in the menu at the top right), **Settings** holds your name, password and notification sound, and **Account** is new: you can now **download all your data** and **delete your account** yourself. The faction picker takes a quarter of the space it used to, and changing your faction now also updates your name colour in chat — which it never did before',
+  },
+  {
+    date: '2026-08-06',
     time: '16:05',
     text: 'The Heroes page no longer freezes when you open a hero. A blur effect was being applied across the whole screen on top of 250 shadow effects — and it was invisible anyway behind the dark overlay. Opening a hero went from **locking up the tab** to **41 milliseconds**. The page also loads **37% less image data** now, so it appears faster and is easier on mobile data',
   },

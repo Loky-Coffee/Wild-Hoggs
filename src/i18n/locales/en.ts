@@ -941,7 +941,6 @@ export default {
   'profile.profiles.add': 'Create',
   'profile.profiles.delete': 'Remove profile',
   'profile.profiles.reallyDelete': 'Really remove',
-  'profile.formations.hint': 'Filled in automatically in the caravan calculator.',
   'profile.export.title': 'Download my data',
   'profile.export.hint': 'Everything stored for your account, as a file — without your password.',
   'profile.export.button': 'Download',

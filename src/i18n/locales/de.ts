@@ -941,7 +941,6 @@ export default {
   'profile.profiles.add': 'Anlegen',
   'profile.profiles.delete': 'Profil entfernen',
   'profile.profiles.reallyDelete': 'Wirklich entfernen',
-  'profile.formations.hint': 'Wird im Karawanen-Rechner automatisch übernommen.',
   'profile.export.title': 'Meine Daten herunterladen',
   'profile.export.hint': 'Alles, was zu deinem Konto gespeichert ist, als Datei — ohne Passwort.',
   'profile.export.button': 'Herunterladen',

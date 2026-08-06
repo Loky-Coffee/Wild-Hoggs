@@ -37,7 +37,8 @@ const sql = [
      formation_power_br INTEGER, formation_power_wd INTEGER, formation_power_go INTEGER,
      is_admin INTEGER DEFAULT 0, is_moderator INTEGER DEFAULT 0,
      notification_sound INTEGER DEFAULT 1, notification_volume REAL DEFAULT 1.5,
-     last_seen TEXT, created_at TEXT DEFAULT (datetime('now')));`,
+     last_seen TEXT, updated_at TEXT DEFAULT (datetime('now')),
+     created_at TEXT DEFAULT (datetime('now')));`,
 
   `CREATE TABLE sessions (token TEXT PRIMARY KEY, user_id TEXT REFERENCES users(id) ON DELETE CASCADE, expires_at TEXT);`,
 

@@ -103,8 +103,47 @@ export function useProfile() {
 
   const activeProfile = profiles.find(p => p.id === activeProfileId) ?? profiles[0] ?? LOCAL_PROFILE;
 
+  /**
+   * Schreibt die Fraktion des aktiven Spielprofils auf das Konto.
+   *
+   * Die Fraktion steht an zwei Stellen: am Spielprofil (davon liest der
+   * Karawanen-Rechner) und am Konto (davon liest der Chat für die Namensfarbe).
+   * Die Profilseite pflegte bisher nur das Spielprofil — wer die Fraktion
+   * wechselte, behielt im Chat für immer die alte Farbe, und wer sich ohne
+   * Fraktion registriert hatte, blieb dort dauerhaft farblos.
+   *
+   * Läuft im Hintergrund: schlägt es fehl, ist nur die Farbe veraltet, nicht
+   * die eigentliche Aktion kaputt.
+   */
+  async function syncAccountFaction(faction: string | null | undefined) {
+    const t = token ?? localStorage.getItem(AUTH_TOKEN_KEY);
+    if (!t || faction === undefined) return;
+    try {
+      const res = await fetch('/api/user/profile', {
+        method:  'PATCH',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${t}` },
+        body:    JSON.stringify({ faction: faction ?? null }),
+      });
+      if (!res.ok) return;
+      const updated = await res.json();
+      // Angemeldeten Nutzer im Speicher nachziehen, damit die Farbe sofort passt.
+      try {
+        const raw = localStorage.getItem('wh-auth-user');
+        if (raw) {
+          const u = JSON.parse(raw);
+          u.faction = updated.faction ?? null;
+          localStorage.setItem('wh-auth-user', JSON.stringify(u));
+          window.dispatchEvent(new CustomEvent('wh-auth-change', { detail: { user: u, token: t } }));
+        }
+      } catch { /* ignore */ }
+    } catch { /* ignore */ }
+  }
+
   function switchProfile(profileId: string) {
     broadcastProfileChange(profileId);
+    // Beim Wechsel gilt die Fraktion des neuen Profils.
+    const ziel = profiles.find(p => p.id === profileId);
+    if (ziel) void syncAccountFaction(ziel.faction);
   }
 
   async function createProfile(name: string, server?: string, faction?: string): Promise<GameProfile | null> {
@@ -152,6 +191,11 @@ export function useProfile() {
         saveCachedProfiles(next);
         return next;
       });
+      // Fraktion des aktiven Profils auch aufs Konto — sonst bleibt die
+      // Chat-Farbe auf dem alten Stand.
+      if (profileId === activeProfileId && patch.faction !== undefined) {
+        void syncAccountFaction(patch.faction);
+      }
       return true;
     } catch { return false; }
   }
