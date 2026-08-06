@@ -9,6 +9,37 @@ const rarityIcon  = (r: string)  => `${SYM}/${r.toLowerCase()}.webp`;
 const factionIcon = (f: string)  => `${SYM}/${f}.webp`;
 const roleIcon    = (r: string)  => `${SYM}/${r}.webp`;
 
+/**
+ * Bild mit AVIF-Fassung und WebP als Rückfallebene.
+ *
+ * Neben jeder .webp liegt eine gleichnamige .avif (siehe make-avif.js). Wer
+ * AVIF kann, lädt die kleinere Datei; alle anderen bekommen weiterhin die
+ * WebP. Zusammen spart das rund ein Drittel der Bilddaten dieser Seite.
+ *
+ * Das <picture> steht per `display: contents` nicht im Layout — die CSS-Regeln
+ * greifen unverändert am <img>.
+ */
+function Pic({ src, alt, className, width, height, onError }: {
+  src: string; alt: string; className?: string;
+  width?: number; height?: number;
+  onError?: (e: Event) => void;
+}) {
+  return (
+    <picture class="hg-pic">
+      <source srcSet={src.replace(/\.webp$/, '.avif')} type="image/avif" />
+      <img
+        src={src}
+        alt={alt}
+        className={className}
+        width={width}
+        height={height}
+        loading="lazy"
+        onError={onError}
+      />
+    </picture>
+  );
+}
+
 const TYPE_COLOR: Record<HeroSkill['type'], string> = {
   normal:    'skill-normal',
   active:    'skill-active',
@@ -133,7 +164,7 @@ function HeroModal({ hero, onClose }: { hero: Hero; onClose: () => void }) {
 
         {/* Left — portrait */}
         <div className="hg-split-img-col">
-          <img src={hero.image} alt={hero.name} className="hg-split-img" width={400} height={600} loading="lazy" onError={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = '0'; }} />
+          <Pic src={hero.image} alt={hero.name} className="hg-split-img" width={400} height={600} onError={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = '0'; }} />
         </div>
 
         {/* Right — info */}
@@ -144,15 +175,15 @@ function HeroModal({ hero, onClose }: { hero: Hero; onClose: () => void }) {
             <h2 className="hg-hero-name" id="hg-hero-modal-title">{hero.name}</h2>
             <div className="hg-hero-tags">
               <span className={`hg-rarity-badge hg-rarity-${RARITY_COLOR[hero.rarity]}`}>
-                <img src={rarityIcon(hero.rarity)} alt={hero.rarity} className="hg-badge-icon" width={16} height={16} loading="lazy" />
+                <Pic src={rarityIcon(hero.rarity)} alt={hero.rarity} className="hg-badge-icon" width={16} height={16} />
                 {hero.rarity}
               </span>
               <span className="hg-tag">
-                <img src={factionIcon(hero.faction)} alt={FACTIONS[hero.faction].name} className="hg-badge-icon" width={16} height={16} loading="lazy" />
+                <Pic src={factionIcon(hero.faction)} alt={FACTIONS[hero.faction].name} className="hg-badge-icon" width={16} height={16} />
                 {FACTIONS[hero.faction].name}
               </span>
               <span className="hg-tag hg-tag-role">
-                <img src={roleIcon(hero.role)} alt={hero.role} className="hg-badge-icon" width={16} height={16} loading="lazy" />
+                <Pic src={roleIcon(hero.role)} alt={hero.role} className="hg-badge-icon" width={16} height={16} />
                 {hero.role.charAt(0).toUpperCase() + hero.role.slice(1)}
               </span>
               {hero.globalPassive && (
@@ -291,7 +322,7 @@ export default function HeroGrid({ heroes, clearLabel = 'Reset all filters' }: {
                   onClick={() => setFilterRole(prev => toggle(prev, r))}
                   aria-label={ROLE_LABEL[r]}
                 >
-                  <img src={roleIcon(r)} alt={ROLE_LABEL[r]} className="hg-chip-icon-lg" width={28} height={28} />
+                  <Pic src={roleIcon(r)} alt={ROLE_LABEL[r]} className="hg-chip-icon-lg" width={28} height={28} />
                 </button>
               ))}
             </div>
@@ -328,7 +359,7 @@ export default function HeroGrid({ heroes, clearLabel = 'Reset all filters' }: {
                   onClick={() => setFilterFaction(prev => toggle(prev, f))}
                   aria-label={FACTIONS[f].name}
                 >
-                  <img src={factionIcon(f)} alt={FACTIONS[f].name} className="hg-chip-icon-lg" width={28} height={28} />
+                  <Pic src={factionIcon(f)} alt={FACTIONS[f].name} className="hg-chip-icon-lg" width={28} height={28} />
                 </button>
               ))}
             </div>
@@ -371,14 +402,14 @@ export default function HeroGrid({ heroes, clearLabel = 'Reset all filters' }: {
             onClick={() => setSelected(hero)}
             aria-label={hero.name}
           >
-            <img src={hero.image} alt={hero.name} className="hg-card-img" loading="lazy" width={300} height={450} onError={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = '0'; }} />
+            <Pic src={hero.image} alt={hero.name} className="hg-card-img" width={300} height={450} onError={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = '0'; }} />
 
-            <img src={rarityIcon(hero.rarity)} alt={hero.rarity} className="hg-card-rarity" width={155} height={155} loading="lazy" />
+            <Pic src={rarityIcon(hero.rarity)} alt={hero.rarity} className="hg-card-rarity" width={155} height={155} />
 
             <div className="hg-card-duo">
-              <img src={factionIcon(hero.faction)} alt={FACTIONS[hero.faction].name} className="hg-card-duo-icon" width={40} height={40} loading="lazy" />
+              <Pic src={factionIcon(hero.faction)} alt={FACTIONS[hero.faction].name} className="hg-card-duo-icon" width={40} height={40} />
               <div className="hg-card-duo-line" />
-              <img src={roleIcon(hero.role)} alt={hero.role} className="hg-card-duo-icon" width={40} height={40} loading="lazy" />
+              <Pic src={roleIcon(hero.role)} alt={hero.role} className="hg-card-duo-icon" width={40} height={40} />
             </div>
 
             {(!hero.skills || hero.skills.length === 0) && (

@@ -12,7 +12,8 @@
     "astro": "astro",
     "dev:seed": "node dev-seed.js",
     "dev:local": "npm run build && wrangler pages dev dist --port 8788 --binding HUB_SECRET=localsecret HUB_URL=http://localhost:8799",
-    "dev:hub": "cd chat-hub && wrangler dev --port 8799 --var HUB_SECRET:localsecret"
+    "dev:hub": "cd chat-hub && wrangler dev --port 8799 --var HUB_SECRET:localsecret",
+    "images:avif": "node make-avif.js"
   },
   "dependencies": {
     "@astrojs/preact": "^4.1.3",

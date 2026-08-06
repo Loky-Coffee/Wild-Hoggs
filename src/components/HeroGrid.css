@@ -283,6 +283,10 @@
 }
 .hg-card:hover .hg-card-img { transform: scale(1.04); }
 
+/* <picture> soll das Layout nicht beeinflussen: display:contents laesst den
+   Wrapper verschwinden, alle Regeln greifen unveraendert am <img> darin. */
+.hg-pic { display: contents; }
+
 /* ── Card icons — Variant 11 ── */
 
 /* Rarity: top-left, -20px offset, clipped by card overflow:hidden */
