@@ -3,7 +3,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
 import { getLangFromUrl, useTranslations, getCurrentMonth, getCurrentYear, getLocalizedPath } from '../../i18n/utils';
 import { getLanguagePaths } from '../../i18n/static-paths';
 import { loadTranslations } from '../../i18n/index';
-import RewardCodesLocal, { giftCenterUrl } from '../../components/RewardCodesLocal';
+import RewardCodesLocal from '../../components/RewardCodesLocal';
 import '../../styles/shared-layouts.css';
 
 export function getStaticPaths() {
@@ -78,20 +78,13 @@ const howToSchema = {
             <li>{t('codes.howto.step3')}</li>
           </ol>
         </div>
-        <a
-          href={giftCenterUrl(lang)}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="redemption-link"
-          aria-label={t('codes.giftCenter.ariaLabel')}
-        >
-          {t('codes.giftCenter')} →
-        </a>
-
-        {/* Warum es keinen Knopf gibt, der alles von allein erledigt. Steht
-            bewusst hier und nicht im Kleingedruckten: Wer den Vergleich mit
-            anderen Seiten zieht, soll den Grund kennen. */}
-        <p class="howto-note">{t('codes.howto.noAuto')}</p>
+        {/* Warum es keinen Knopf gibt, der alles von allein erledigt.
+            Zugeklappt, weil es die wenigsten interessiert — aber auffindbar
+            für alle, die den Vergleich mit anderen Seiten ziehen. */}
+        <details class="howto-note">
+          <summary>{t('codes.howto.noAutoTitle')}</summary>
+          <p>{t('codes.howto.noAuto')}</p>
+        </details>
       </div>
 
       <RewardCodesLocal lang={lang} translationData={translationData} client:visible />
@@ -112,56 +105,56 @@ const howToSchema = {
     padding: 2rem;
   }
 
+  /* Bewusst gedrungen: Die Anleitung liest man einmal, die Codes darunter
+     sind der Grund fuer den Besuch. */
   .howto-card {
     background: rgba(255, 165, 0, 0.05);
     border: 1px solid rgba(255, 165, 0, 0.2);
     border-radius: 8px;
-    padding: 1.5rem;
-    margin-bottom: 2rem;
+    padding: 0.9rem 1.1rem;
+    margin-bottom: 1.25rem;
   }
 
   .howto-card h3 {
     color: #ffa500;
-    font-size: 1.3rem;
-    margin-bottom: 1rem;
-  }
-
-  .howto-steps ol {
-    color: rgba(255, 255, 255, 0.8);
-    line-height: 1.8;
-    margin: 0 0 1.5rem 0;
-    padding-left: 1.5rem;
-  }
-
-  .howto-steps li {
+    font-size: 1.05rem;
     margin-bottom: 0.5rem;
   }
 
-  .redemption-link {
-    display: inline-block;
-    color: #52be80;
-    text-decoration: none;
-    font-weight: 600;
-    padding: 0.5rem 1rem;
-    background: rgba(39, 174, 96, 0.1);
-    border: 1px solid rgba(39, 174, 96, 0.3);
-    border-radius: 4px;
-    transition: all 0.3s ease;
+  .howto-steps ol {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0;
+    padding-left: 1.2rem;
   }
 
-  .redemption-link:hover {
-    background: rgba(39, 174, 96, 0.2);
-    border-color: rgba(39, 174, 96, 0.5);
-    transform: translateX(4px);
+  .howto-steps li {
+    margin-bottom: 0.2rem;
   }
 
+
+  /* Zugeklappt kostet der Hinweis eine Zeile statt vier. */
   .howto-note {
-    margin: 1.25rem 0 0;
-    padding-top: 1rem;
+    margin: 0.75rem 0 0;
+    padding-top: 0.65rem;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
-    font-size: 0.85rem;
-    line-height: 1.6;
-    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.8rem;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  .howto-note summary {
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .howto-note summary:hover {
+    color: #ffa500;
+  }
+
+  .howto-note p {
+    margin: 0.5rem 0 0;
   }
 
   @media (max-width: 768px) {

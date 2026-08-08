@@ -145,7 +145,6 @@ export default function RewardCodesLocal({ lang, translationData }: RewardCodesL
           <h3 className="section-title">
             🎁 {t('codes.active')} ({activeCodes.length})
           </h3>
-          <p className="redeem-hint">{t('codes.redeemHint')}</p>
           <div className="codes-grid">
             {activeCodes.map((item) => {
               const timeRemaining = getTimeRemaining(item.expires_at);
