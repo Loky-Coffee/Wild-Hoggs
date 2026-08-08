@@ -771,9 +771,10 @@ export default {
   // Codes Page
   'codes.subtitle': 'Last Z için aktif ödül kodları - düzenli olarak güncellenir',
   'codes.howto.title': 'Kodlar Nasıl Kullanılır',
-  'codes.howto.step1': 'Last Z: Survival Shooter\'ı açın',
-  'codes.howto.step2': 'Profil > Ayarlar > Hediye Kodu\'na dokunun',
-  'codes.howto.step3': 'Kodu girin ve ödülleri toplayın',
+  'codes.howto.step1': "Bir kodda “Kullan” düğmesine dokun — kod kopyalanır ve Gift Center açılır",
+  'codes.howto.step2': "Gift Center’a bir kez Oyuncu Kimliğinle giriş yap",
+  'codes.howto.step3': "Kodu yapıştır ve onayla — ödül oyun içi postana gelir",
+  'codes.howto.noAuto': "Kodları neden senin yerine otomatik kullanmıyoruz? Last Z’nin kullanım koşulları oyuna otomatik erişimi yasaklıyor. Buna rağmen bunu sunan hizmetler hesabını yasaklanma riskine atıyor. Bu yüzden yalnızca kodu kopyalıyoruz — son tık sende kalır, hesabın da güvende.",
   'codes.giftCenter': 'Hediye Merkezini Aç',
   'codes.giftCenter.ariaLabel': 'Hediye merkezini aç (yeni sekmede açılır)',
   'codes.expiresIn': 'Sona erme',

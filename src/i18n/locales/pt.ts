@@ -771,9 +771,10 @@ export default {
   // Codes Page
   'codes.subtitle': 'Códigos de recompensa ativos para Last Z - atualizados regularmente',
   'codes.howto.title': 'Como Resgatar Códigos',
-  'codes.howto.step1': 'Abra Last Z: Survival Shooter',
-  'codes.howto.step2': 'Toque em Perfil > Configurações > Código de Presente',
-  'codes.howto.step3': 'Digite o código e colete as recompensas',
+  'codes.howto.step1': "Toque em “Resgatar” num código — ele é copiado e o Gift Center abre",
+  'codes.howto.step2': "Entre uma vez no Gift Center com o seu ID de jogador",
+  'codes.howto.step3': "Cole o código e confirme — a recompensa chega pelo correio do jogo",
+  'codes.howto.noAuto': "Por que não resgatamos os códigos automaticamente para você? Os termos de uso do Last Z proíbem o acesso automatizado ao jogo. Serviços que oferecem isso mesmo assim expõem sua conta ao risco de banimento. Por isso apenas copiamos o código — o último clique é seu, e sua conta permanece segura.",
   'codes.giftCenter': 'Abrir Centro de Presentes',
   'codes.giftCenter.ariaLabel': 'Abrir o centro de presentes (abre em nova aba)',
   'codes.expiresIn': 'Expira em',

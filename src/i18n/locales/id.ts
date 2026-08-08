@@ -771,9 +771,10 @@ export default {
   // Codes Page
   'codes.subtitle': 'Kode hadiah aktif untuk Last Z - diperbarui secara teratur',
   'codes.howto.title': 'Cara Menukar Kode',
-  'codes.howto.step1': 'Buka Last Z: Survival Shooter',
-  'codes.howto.step2': 'Ketuk Profil > Pengaturan > Kode Hadiah',
-  'codes.howto.step3': 'Masukkan kode dan kumpulkan hadiah',
+  'codes.howto.step1': "Ketuk “Tukarkan” pada sebuah kode — kode disalin dan Gift Center terbuka",
+  'codes.howto.step2': "Masuk sekali ke Gift Center dengan ID Pemain kamu",
+  'codes.howto.step3': "Tempel kode dan konfirmasi — hadiah tiba lewat surat dalam game",
+  'codes.howto.noAuto': "Kenapa kami tidak menukarkan kode secara otomatis untukmu? Ketentuan layanan Last Z melarang akses otomatis ke game. Layanan yang tetap menawarkannya membuat akunmu berisiko diblokir. Karena itu kami hanya menyalin kodenya — klik terakhir tetap di tanganmu, dan akunmu tetap aman.",
   'codes.giftCenter': 'Buka Pusat Hadiah',
   'codes.giftCenter.ariaLabel': 'Buka pusat hadiah (dibuka di tab baru)',
   'codes.expiresIn': 'Kedaluwarsa dalam',

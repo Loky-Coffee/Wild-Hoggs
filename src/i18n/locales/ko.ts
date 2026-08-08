@@ -771,9 +771,10 @@ export default {
   // Codes Page
   'codes.subtitle': 'Last Z 활성 보상 코드 - 정기적으로 업데이트',
   'codes.howto.title': '코드 사용 방법',
-  'codes.howto.step1': 'Last Z: Survival Shooter 열기',
-  'codes.howto.step2': '프로필 > 설정 > 선물 코드 터치',
-  'codes.howto.step3': '코드를 입력하고 보상 수령',
+  'codes.howto.step1': "코드의 “사용하기”를 누르세요 — 코드가 복사되고 기프트 센터가 열립니다",
+  'codes.howto.step2': "기프트 센터에 플레이어 ID로 한 번 로그인하세요",
+  'codes.howto.step3': "코드를 붙여넣고 확인하세요 — 보상은 게임 내 우편으로 도착합니다",
+  'codes.howto.noAuto': "왜 자동으로 사용해 주지 않을까요? Last Z의 이용약관은 게임에 대한 자동 접근을 금지합니다. 그럼에도 자동 사용을 제공하는 서비스는 여러분의 계정을 정지 위험에 빠뜨립니다. 그래서 저희는 코드를 복사만 해 드립니다. 마지막 클릭은 직접 — 계정을 안전하게 지키기 위해서입니다.",
   'codes.giftCenter': '선물 센터 열기',
   'codes.giftCenter.ariaLabel': '선물 센터 열기 (새 탭에서 열림)',
   'codes.expiresIn': '만료까지',

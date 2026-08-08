@@ -771,9 +771,10 @@ export default {
   // Codes Page
   'codes.subtitle': 'Last Z 活躍獎勵代碼 - 定期更新',
   'codes.howto.title': '如何兌換代碼',
-  'codes.howto.step1': '開啟 Last Z: Survival Shooter',
-  'codes.howto.step2': '點擊個人資料 > 設定 > 禮品代碼',
-  'codes.howto.step3': '輸入代碼並領取獎勵',
+  'codes.howto.step1': "點擊兌換碼上的「立即兌換」——兌換碼會被複製，禮包中心隨即開啟",
+  'codes.howto.step2': "使用你的玩家 ID 登入一次禮包中心",
+  'codes.howto.step3': "貼上兌換碼並確認——獎勵將透過遊戲內信件送達",
+  'codes.howto.noAuto': "為什麼我們不替你自動兌換？Last Z 的使用條款禁止以自動方式存取遊戲。仍然提供自動兌換的服務，會讓你的帳號面臨封禁風險。因此我們只為你複製兌換碼——最後一步由你完成，你的帳號才安全。",
   'codes.giftCenter': '開啟禮品中心',
   'codes.giftCenter.ariaLabel': '開啟禮品中心（在新分頁中開啟）',
   'codes.expiresIn': '過期時間',

@@ -771,9 +771,10 @@ export default {
   // Codes Page
   'codes.subtitle': 'Last Z 活跃奖励代码 - 定期更新',
   'codes.howto.title': '如何兑换代码',
-  'codes.howto.step1': '打开 Last Z: Survival Shooter',
-  'codes.howto.step2': '点击个人资料 > 设置 > 礼品代码',
-  'codes.howto.step3': '输入代码并领取奖励',
+  'codes.howto.step1': "点击兑换码上的“立即兑换”——兑换码会被复制，礼包中心随即打开",
+  'codes.howto.step2': "使用你的玩家 ID 登录一次礼包中心",
+  'codes.howto.step3': "粘贴兑换码并确认——奖励将通过游戏内邮件送达",
+  'codes.howto.noAuto': "为什么我们不替你自动兑换？Last Z 的使用条款禁止以自动方式访问游戏。仍然提供自动兑换的服务，会让你的账号面临封禁风险。因此我们只为你复制兑换码——最后一步由你完成，你的账号才安全。",
   'codes.giftCenter': '打开礼品中心',
   'codes.giftCenter.ariaLabel': '打开礼品中心（在新标签页中打开）',
   'codes.expiresIn': '过期时间',

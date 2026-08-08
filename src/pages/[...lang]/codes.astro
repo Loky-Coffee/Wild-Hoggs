@@ -3,7 +3,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
 import { getLangFromUrl, useTranslations, getCurrentMonth, getCurrentYear, getLocalizedPath } from '../../i18n/utils';
 import { getLanguagePaths } from '../../i18n/static-paths';
 import { loadTranslations } from '../../i18n/index';
-import RewardCodesLocal from '../../components/RewardCodesLocal';
+import RewardCodesLocal, { giftCenterUrl } from '../../components/RewardCodesLocal';
 import '../../styles/shared-layouts.css';
 
 export function getStaticPaths() {
@@ -79,7 +79,7 @@ const howToSchema = {
           </ol>
         </div>
         <a
-          href="https://last-z.com/giftCenter/#/login"
+          href={giftCenterUrl(lang)}
           target="_blank"
           rel="noopener noreferrer"
           class="redemption-link"
@@ -87,6 +87,11 @@ const howToSchema = {
         >
           {t('codes.giftCenter')} →
         </a>
+
+        {/* Warum es keinen Knopf gibt, der alles von allein erledigt. Steht
+            bewusst hier und nicht im Kleingedruckten: Wer den Vergleich mit
+            anderen Seiten zieht, soll den Grund kennen. */}
+        <p class="howto-note">{t('codes.howto.noAuto')}</p>
       </div>
 
       <RewardCodesLocal lang={lang} translationData={translationData} client:visible />
@@ -148,6 +153,15 @@ const howToSchema = {
     background: rgba(39, 174, 96, 0.2);
     border-color: rgba(39, 174, 96, 0.5);
     transform: translateX(4px);
+  }
+
+  .howto-note {
+    margin: 1.25rem 0 0;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.6);
   }
 
   @media (max-width: 768px) {

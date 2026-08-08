@@ -771,9 +771,10 @@ export default {
   // Codes Page
   'codes.subtitle': 'Codes de récompense actifs pour Last Z - mis à jour régulièrement',
   'codes.howto.title': 'Comment Échanger les Codes',
-  'codes.howto.step1': 'Ouvrir Last Z: Survival Shooter',
-  'codes.howto.step2': 'Toucher Profil > Paramètres > Code Cadeau',
-  'codes.howto.step3': 'Entrer le code et collecter les récompenses',
+  'codes.howto.step1': "Cliquez sur « Utiliser » sur un code — il est copié et le Gift Center s’ouvre",
+  'codes.howto.step2': "Connectez-vous une fois au Gift Center avec votre ID de joueur",
+  'codes.howto.step3': "Collez le code et validez — la récompense arrive par courrier en jeu",
+  'codes.howto.noAuto': "Pourquoi ne pas utiliser les codes automatiquement à votre place ? Les conditions d’utilisation de Last Z interdisent l’accès automatisé au jeu. Les services qui le proposent quand même exposent votre compte à un risque de bannissement. Nous copions donc uniquement le code — le dernier clic vous revient, et votre compte reste protégé.",
   'codes.giftCenter': 'Ouvrir le Centre de Cadeaux',
   'codes.giftCenter.ariaLabel': 'Ouvrir le centre de cadeaux (s\'ouvre dans un nouvel onglet)',
   'codes.expiresIn': 'Expire dans',

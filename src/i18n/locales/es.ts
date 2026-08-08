@@ -771,9 +771,10 @@ export default {
   // Codes Page
   'codes.subtitle': 'Códigos de recompensa activos para Last Z - actualizados regularmente',
   'codes.howto.title': 'Cómo Canjear Códigos',
-  'codes.howto.step1': 'Abre Last Z: Survival Shooter',
-  'codes.howto.step2': 'Toca Perfil > Ajustes > Código de Regalo',
-  'codes.howto.step3': 'Ingresa el código y recoge las recompensas',
+  'codes.howto.step1': "Pulsa «Canjear» en un código — se copia y se abre el Gift Center",
+  'codes.howto.step2': "Inicia sesión una vez en el Gift Center con tu ID de jugador",
+  'codes.howto.step3': "Pega el código y confirma — la recompensa llega por correo del juego",
+  'codes.howto.noAuto': "¿Por qué no canjeamos los códigos automáticamente por ti? Las condiciones de uso de Last Z prohíben el acceso automatizado al juego. Los servicios que lo ofrecen igualmente exponen tu cuenta a un riesgo de bloqueo. Por eso solo copiamos el código — el último clic es tuyo, y tu cuenta sigue segura.",
   'codes.giftCenter': 'Abrir Centro de Regalos',
   'codes.giftCenter.ariaLabel': 'Abrir el centro de regalos (se abre en una nueva pestaña)',
   'codes.expiresIn': 'Expira en',

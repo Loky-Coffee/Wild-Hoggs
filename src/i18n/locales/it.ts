@@ -771,9 +771,10 @@ export default {
   // Codes Page
   'codes.subtitle': 'Codici ricompensa attivi per Last Z - aggiornati regolarmente',
   'codes.howto.title': 'Come Riscattare i Codici',
-  'codes.howto.step1': 'Apri Last Z: Survival Shooter',
-  'codes.howto.step2': 'Tocca Profilo > Impostazioni > Codice Regalo',
-  'codes.howto.step3': 'Inserisci il codice e raccogli le ricompense',
+  'codes.howto.step1': "Tocca «Riscatta» su un codice — viene copiato e si apre il Gift Center",
+  'codes.howto.step2': "Accedi una volta al Gift Center con il tuo ID giocatore",
+  'codes.howto.step3': "Incolla il codice e conferma — la ricompensa arriva nella posta di gioco",
+  'codes.howto.noAuto': "Perché non riscattiamo i codici automaticamente per te? Le condizioni d’uso di Last Z vietano l’accesso automatizzato al gioco. I servizi che lo offrono comunque espongono il tuo account al rischio di blocco. Per questo copiamo soltanto il codice — l’ultimo clic resta a te, e il tuo account resta al sicuro.",
   'codes.giftCenter': 'Apri Centro Regali',
   'codes.giftCenter.ariaLabel': 'Apri il centro regali (si apre in una nuova scheda)',
   'codes.expiresIn': 'Scade tra',

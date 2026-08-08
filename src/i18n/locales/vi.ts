@@ -771,9 +771,10 @@ export default {
   // Codes Page
   'codes.subtitle': 'Mã thưởng đang hoạt động cho Last Z - được cập nhật thường xuyên',
   'codes.howto.title': 'Cách Đổi Mã',
-  'codes.howto.step1': 'Mở Last Z: Survival Shooter',
-  'codes.howto.step2': 'Nhấn Hồ sơ > Cài đặt > Mã Quà Tặng',
-  'codes.howto.step3': 'Nhập mã và nhận phần thưởng',
+  'codes.howto.step1': "Nhấn “Đổi quà” trên một mã — mã được sao chép và Gift Center mở ra",
+  'codes.howto.step2': "Đăng nhập Gift Center một lần bằng ID người chơi của bạn",
+  'codes.howto.step3': "Dán mã và xác nhận — phần thưởng đến qua thư trong game",
+  'codes.howto.noAuto': "Vì sao chúng tôi không tự động đổi mã giúp bạn? Điều khoản sử dụng của Last Z cấm truy cập tự động vào game. Những dịch vụ vẫn cung cấp điều đó khiến tài khoản của bạn có nguy cơ bị khóa. Vì vậy chúng tôi chỉ sao chép mã — cú nhấp cuối cùng thuộc về bạn, và tài khoản của bạn vẫn an toàn.",
   'codes.giftCenter': 'Mở Trung Tâm Quà Tặng',
   'codes.giftCenter.ariaLabel': 'Mở trung tâm quà tặng (mở trong tab mới)',
   'codes.expiresIn': 'Hết hạn sau',

@@ -771,9 +771,10 @@ export default {
   // Codes Page
   'codes.subtitle': 'Aktive Belohnungscodes für Last Z - regelmäßig aktualisiert',
   'codes.howto.title': 'Codes einlösen',
-  'codes.howto.step1': 'Last Z: Survival Shooter öffnen',
-  'codes.howto.step2': 'Profil > Einstellungen > Geschenkcode antippen',
-  'codes.howto.step3': 'Code eingeben und Belohnungen abholen',
+  'codes.howto.step1': "Bei einem Code auf „Einlösen“ tippen — der Code wird kopiert und das Geschenkcenter öffnet sich",
+  'codes.howto.step2': "Im Geschenkcenter einmalig mit deiner Spieler-ID anmelden",
+  'codes.howto.step3': "Code einfügen und bestätigen — die Belohnung kommt per Spielpost",
+  'codes.howto.noAuto': "Warum lösen wir die Codes nicht automatisch für dich ein? Die Nutzungsbedingungen von Last Z untersagen automatisierte Zugriffe auf das Spiel. Dienste, die das trotzdem anbieten, setzen dein Konto einem Sperrrisiko aus. Wir kopieren dir deshalb nur den Code — der letzte Klick bleibt bei dir, und dein Konto bleibt sicher.",
   'codes.giftCenter': 'Geschenkcenter öffnen',
   'codes.giftCenter.ariaLabel': 'Gift Center öffnen (öffnet in neuem Tab)',
   'codes.expiresIn': 'Läuft ab in',

@@ -264,9 +264,10 @@ export default {
   // Codes Page
   'codes.subtitle': 'Active reward codes for Last Z - updated regularly',
   'codes.howto.title': 'How to Redeem Codes',
-  'codes.howto.step1': 'Open Last Z: Survival Shooter',
-  'codes.howto.step2': 'Tap Profile > Settings > Gift Code',
-  'codes.howto.step3': 'Enter code and collect rewards',
+  'codes.howto.step1': "Tap “Redeem” on a code — it gets copied and the Gift Center opens",
+  'codes.howto.step2': "Sign in to the Gift Center once with your Player ID",
+  'codes.howto.step3': "Paste the code and confirm — the reward arrives in your in-game mail",
+  'codes.howto.noAuto': "Why don’t we redeem codes automatically for you? Last Z’s terms of service prohibit automated access to the game. Services that offer it anyway put your account at risk of a ban. So we only copy the code for you — the last click stays with you, and your account stays safe.",
   'codes.giftCenter': 'Open Gift Center',
   'codes.giftCenter.ariaLabel': 'Open Gift Center (opens in new tab)',
   'codes.expiresIn': 'Expires in',

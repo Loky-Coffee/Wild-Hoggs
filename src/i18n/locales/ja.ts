@@ -771,9 +771,10 @@ export default {
   // Codes Page
   'codes.subtitle': 'Last Z用のアクティブな報酬コード - 定期的に更新',
   'codes.howto.title': 'コードの引き換え方法',
-  'codes.howto.step1': 'Last Z: Survival Shooterを開く',
-  'codes.howto.step2': 'プロフィール > 設定 > ギフトコードをタップ',
-  'codes.howto.step3': 'コードを入力して報酬を受け取る',
+  'codes.howto.step1': "コードの「受け取る」をタップ — コードがコピーされ、ギフトセンターが開きます",
+  'codes.howto.step2': "ギフトセンターにプレイヤーIDで一度ログインします",
+  'codes.howto.step3': "コードを貼り付けて確定 — 報酬はゲーム内メールに届きます",
+  'codes.howto.noAuto': "なぜ自動で受け取らないのか？ Last Z の利用規約は、ゲームへの自動アクセスを禁止しています。それでも自動受け取りを提供するサービスは、あなたのアカウントをBANの危険にさらします。ですから当サイトはコードをコピーするだけにとどめています。最後の操作はご自身で — アカウントの安全のためです。",
   'codes.giftCenter': 'ギフトセンターを開く',
   'codes.giftCenter.ariaLabel': 'ギフトセンターを開く（新しいタブで開く）',
   'codes.expiresIn': '有効期限',

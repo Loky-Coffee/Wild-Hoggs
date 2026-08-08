@@ -32,7 +32,7 @@ const LASTZ_BEKANNT = new Set([
   'ja', 'ko', 'pl', 'pt', 'ru', 'th', 'tr', 'vi',
 ]);
 
-function giftCenterUrl(lang: string): string {
+export function giftCenterUrl(lang: string): string {
   const l = LASTZ_SPRACHE[lang] ?? lang;
   const sprache = LASTZ_BEKANNT.has(l) ? l : 'en';
   return `https://last-z.com/#/${sprache}/order?jumpfrom=giftCenter`;
