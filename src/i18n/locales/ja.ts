@@ -112,6 +112,7 @@ export default {
   "seo.research.shooter_training.description": "Calculate costs for Last Z Shooter Training research. Free tool by Wild Hoggs — Server 395.",
   "seo.research.hq_management.title": "Wild Hoggs | 本部管理 - Badge Calculator",
   "seo.research.hq_management.description": "Calculate costs for Last Z HQ Management research. Free tool by Wild Hoggs — Server 395.",
+  'research.noBadgesNeeded': 'バッジ不要',
   // Neue Research-Bäume (ja)
   "research.rider_training.combat-policy": "戦闘戦略",
   "research.rider_training.interceptions": "迎撃技術",
@@ -905,6 +906,10 @@ export default {
   'admin.settings.no_codes': 'Reward Code がまだありません。',
   'admin.settings.delete': '削除',
   'admin.settings.upload_img': '画像（任意）',
+  'admin.settings.pending_title': 'New finds from Discord',
+  'admin.settings.pending_hint': 'Found in the official announcement channel. Nothing is published until you approve it.',
+  'admin.settings.approve': 'Approve',
+  'admin.settings.reject': 'Discard',
   // ── Chat extended strings ──────────────────────────────────────────────────
   'chat.online': 'オンライン',
   'chat.dms': 'DM',

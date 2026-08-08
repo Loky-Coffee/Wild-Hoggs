@@ -112,6 +112,7 @@ export default {
   "seo.research.shooter_training.description": "Calculate costs for Last Z Shooter Training research. Free tool by Wild Hoggs — Server 395.",
   "seo.research.hq_management.title": "Wild Hoggs | Karargah Yönetimi - Badge Calculator",
   "seo.research.hq_management.description": "Calculate costs for Last Z HQ Management research. Free tool by Wild Hoggs — Server 395.",
+  'research.noBadgesNeeded': 'Badge gerekmiyor',
   // Neue Research-Bäume (tr)
   "research.rider_training.combat-policy": "Savaş Politikası",
   "research.rider_training.interceptions": "Durdurma Teknolojisi",
@@ -905,6 +906,10 @@ export default {
   'admin.settings.no_codes': 'Henuz Reward Code yok.',
   'admin.settings.delete': 'Sil',
   'admin.settings.upload_img': 'Gorsel (opsiyonel)',
+  'admin.settings.pending_title': 'New finds from Discord',
+  'admin.settings.pending_hint': 'Found in the official announcement channel. Nothing is published until you approve it.',
+  'admin.settings.approve': 'Approve',
+  'admin.settings.reject': 'Discard',
   // ── Chat extended strings ──────────────────────────────────────────────────
   'chat.online': 'Çevrimiçi',
   'chat.dms': "DM'ler",

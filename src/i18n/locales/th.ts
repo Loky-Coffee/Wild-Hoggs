@@ -112,6 +112,7 @@ export default {
   "seo.research.shooter_training.description": "Calculate costs for Last Z Shooter Training research. Free tool by Wild Hoggs — Server 395.",
   "seo.research.hq_management.title": "Wild Hoggs | จัดการศูนย์กลาง - Badge Calculator",
   "seo.research.hq_management.description": "Calculate costs for Last Z HQ Management research. Free tool by Wild Hoggs — Server 395.",
+  'research.noBadgesNeeded': 'ไม่ต้องใช้ Badge',
   // Neue Research-Bäume (th)
   "research.rider_training.combat-policy": "กลยุทธ์ต่อสู้",
   "research.rider_training.interceptions": "เทคนิคสกัดกั้น",
@@ -905,6 +906,10 @@ export default {
   'admin.settings.no_codes': 'ยังไม่มี Reward Code',
   'admin.settings.delete': 'ลบ',
   'admin.settings.upload_img': 'รูปภาพ (ไม่บังคับ)',
+  'admin.settings.pending_title': 'New finds from Discord',
+  'admin.settings.pending_hint': 'Found in the official announcement channel. Nothing is published until you approve it.',
+  'admin.settings.approve': 'Approve',
+  'admin.settings.reject': 'Discard',
   // ── Chat extended strings ──────────────────────────────────────────────────
   'chat.online': 'ออนไลน์',
   'chat.dms': 'DM',

@@ -907,6 +907,10 @@ export default {
   'admin.settings.no_codes': 'Noch keine Belohnungscodes.',
   'admin.settings.delete': 'Löschen',
   'admin.settings.upload_img': 'Bild (optional)',
+  'admin.settings.pending_title': 'Neue Funde aus Discord',
+  'admin.settings.pending_hint': 'Im offiziellen Ankündigungskanal gefunden. Nichts wird veröffentlicht, bevor du es freigibst.',
+  'admin.settings.approve': 'Freigeben',
+  'admin.settings.reject': 'Verwerfen',
   // ── Chat extended strings ──────────────────────────────────────────────────
   'chat.online': 'Online',
   'chat.dms': 'DMs',

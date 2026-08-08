@@ -127,6 +127,10 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
   const [addingCode, setAddingCode]   = useState(false);
   const [deletingCode, setDeletingCode] = useState<Set<string>>(new Set());
 
+  // Funde aus dem Discord-Kanal, die noch auf eine Entscheidung warten.
+  const [pending, setPending]         = useState<RewardCode[]>([]);
+  const [pendingBusy, setPendingBusy] = useState<Set<string>>(new Set());
+
   // Load reports
   useEffect(() => {
     if (activeTab !== 'reports' || !isLoggedIn || (!isAdmin && !isMod) || !token) return;
@@ -178,6 +182,12 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
       .then((data: any) => { if (Array.isArray(data.codes)) setCodes(data.codes); })
       .catch(() => {})
       .finally(() => setCodesLoading(false));
+
+    // Wartende Funde aus dem Discord-Kanal
+    fetch('/api/reward-codes?status=pending', { headers: { Authorization: `Bearer ${token}` } })
+      .then(r => r.ok ? r.json() : null)
+      .then((data: any) => { if (Array.isArray(data?.codes)) setPending(data.codes); })
+      .catch(() => {});
   }, [activeTab, isAdmin]);
 
   // Derived: reports
@@ -374,6 +384,28 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
       if (res.ok) setCodes(prev => prev.filter(c => c.id !== code.id));
     } finally {
       setDeletingCode(prev => { const n = new Set(prev); n.delete(code.id); return n; });
+    }
+  };
+
+  // Einen Discord-Fund freigeben oder verwerfen. Freigegebene wandern sofort in
+  // die öffentliche Liste, verworfene verschwinden aus der Ansicht — sie bleiben
+  // in der Datenbank stehen, damit der nächste Lauf denselben Fehltreffer nicht
+  // erneut vorlegt.
+  const handleReviewCode = async (code: RewardCode, status: 'approved' | 'rejected') => {
+    setPendingBusy(prev => new Set(prev).add(code.id));
+    try {
+      const res = await fetch(`/api/reward-codes/${code.id}`, {
+        method:  'PATCH',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body:    JSON.stringify({ status, expires_at: newExpires ? new Date(newExpires).toISOString() : null }),
+      });
+      if (!res.ok) return;
+      const data = await res.json() as any;
+      setPending(prev => prev.filter(c => c.id !== code.id));
+      if (status === 'approved' && data.code) setCodes(prev => [data.code, ...prev]);
+    } catch { /* Netzwerkfehler: der Eintrag bleibt stehen, erneut versuchbar */ }
+    finally {
+      setPendingBusy(prev => { const n = new Set(prev); n.delete(code.id); return n; });
     }
   };
 
@@ -735,6 +767,41 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
             {/* Reward Codes Section */}
             <section class="admin-settings-section">
               <h2 class="admin-settings-title">🎁 {t('admin.settings.codes')}</h2>
+
+              {/* Wartende Funde aus Discord — zuerst, damit sie nicht untergehen */}
+              {pending.length > 0 && (
+                <div class="admin-pending">
+                  <h3 class="admin-pending-title">
+                    📥 {t('admin.settings.pending_title')}
+                    <span class="admin-pending-count">{pending.length}</span>
+                  </h3>
+                  <p class="admin-pending-hint">{t('admin.settings.pending_hint')}</p>
+
+                  <ul class="admin-pending-list">
+                    {pending.map(c => (
+                      <li class="admin-pending-item" key={c.id}>
+                        <code class="admin-pending-code">{c.code}</code>
+                        <div class="admin-pending-actions">
+                          <button
+                            class="admin-btn-promote"
+                            disabled={pendingBusy.has(c.id)}
+                            onClick={() => handleReviewCode(c, 'approved')}
+                          >
+                            ✓ {t('admin.settings.approve')}
+                          </button>
+                          <button
+                            class="admin-btn-delete"
+                            disabled={pendingBusy.has(c.id)}
+                            onClick={() => handleReviewCode(c, 'rejected')}
+                          >
+                            ✕ {t('admin.settings.reject')}
+                          </button>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
               {/* Add code form */}
               <div class="admin-code-form">

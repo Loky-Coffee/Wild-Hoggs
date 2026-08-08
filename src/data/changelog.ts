@@ -26,6 +26,11 @@ export function renderChangelogText(text: string): string {
 export const changelog: ChangelogEntry[] = [
   // ── August 2026 ─────────────────────────────────────────────────────────
   {
+    date: '2026-08-08',
+    time: '17:55',
+    text: 'Gift codes now find their way here on their own. The official Last Z announcement channel is checked **every ten minutes**, and anything that looks like a code is picked up automatically — so new codes should appear here **within minutes** of being announced, instead of whenever somebody happened to notice them. Nothing goes live unchecked: every find waits for approval first, so a false alarm never reaches you',
+  },
+  {
     date: '2026-08-06',
     time: '17:15',
     text: 'Your profile page is now organised in **four tabs** instead of one long column. **Overview** shows how long you have been here and how active you are, **Game profiles** lets you manage several accounts side by side (this used to hide in the menu at the top right), **Settings** holds your name, password and notification sound, and **Account** is new: you can now **download all your data** and **delete your account** yourself. The faction picker takes a quarter of the space it used to, and changing your faction now also updates your name colour in chat — which it never did before',

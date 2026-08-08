@@ -18,9 +18,16 @@
 // Verbindung pro Person alles abdecken. Das Soft-Limit liegt bei 1.000
 // Anfragen pro Sekunde — bei dieser Nutzerzahl um Größenordnungen entfernt.
 
+import { sammleCodes } from './discord';
+
 export interface Env {
   CHAT_ROOM:  DurableObjectNamespace;
   HUB_SECRET: string;
+  // Für den Gift-Code-Cron. Optional: fehlt eines davon, überspringt der
+  // Zeitplan seinen Lauf, der Chat läuft unberührt weiter.
+  DB?:                 D1Database;
+  DISCORD_TOKEN?:      string;
+  DISCORD_CHANNEL_ID?: string;
 }
 
 export type ChatType = 'global' | 'global-lang' | 'server' | 'server-lang';
@@ -121,6 +128,25 @@ export default {
     }
 
     return new Response('not found', { status: 404 });
+  },
+
+  // ── Gift-Codes aus Discord einsammeln ───────────────────────────────────
+  // Läuft nach Zeitplan (siehe wrangler.toml). Der Chat hängt nicht daran:
+  // fehlt die Konfiguration oder ist Discord gerade nicht erreichbar, wird
+  // das protokolliert und beim nächsten Lauf erneut versucht.
+  async scheduled(_c: ScheduledController, env: Env, ctx: ExecutionContext): Promise<void> {
+    if (!env.DB) return;
+
+    ctx.waitUntil((async () => {
+      const r = await sammleCodes({
+        DB: env.DB!,
+        DISCORD_TOKEN: env.DISCORD_TOKEN,
+        DISCORD_CHANNEL_ID: env.DISCORD_CHANNEL_ID,
+      });
+
+      if (r.fehler) console.error('[gift-codes]', r.fehler);
+      else if (r.neu.length) console.log(`[gift-codes] neu: ${r.neu.join(', ')}`);
+    })());
   },
 };
 

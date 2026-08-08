@@ -112,6 +112,7 @@ export default {
   "seo.research.shooter_training.description": "Calculate costs for Last Z Shooter Training research. Free tool by Wild Hoggs — Server 395.",
   "seo.research.hq_management.title": "Wild Hoggs | 总部管理 - Badge Calculator",
   "seo.research.hq_management.description": "Calculate costs for Last Z HQ Management research. Free tool by Wild Hoggs — Server 395.",
+  'research.noBadgesNeeded': '无需徽章',
   // Neue Research-Bäume (zh-CN)
   "research.rider_training.combat-policy": "战斗策略",
   "research.rider_training.interceptions": "拦截技术",
@@ -905,6 +906,10 @@ export default {
   'admin.settings.no_codes': '暂无 Reward Code。',
   'admin.settings.delete': '删除',
   'admin.settings.upload_img': '图片（可选）',
+  'admin.settings.pending_title': 'New finds from Discord',
+  'admin.settings.pending_hint': 'Found in the official announcement channel. Nothing is published until you approve it.',
+  'admin.settings.approve': 'Approve',
+  'admin.settings.reject': 'Discard',
   // ── Chat extended strings ──────────────────────────────────────────────────
   'chat.online': '在线',
   'chat.dms': '私信',

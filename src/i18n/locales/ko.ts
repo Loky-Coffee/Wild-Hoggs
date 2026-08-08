@@ -112,6 +112,7 @@ export default {
   "seo.research.shooter_training.description": "Calculate costs for Last Z Shooter Training research. Free tool by Wild Hoggs — Server 395.",
   "seo.research.hq_management.title": "Wild Hoggs | 본부 관리 - Badge Calculator",
   "seo.research.hq_management.description": "Calculate costs for Last Z HQ Management research. Free tool by Wild Hoggs — Server 395.",
+  'research.noBadgesNeeded': '배지 불필요',
   // Neue Research-Bäume (ko)
   "research.rider_training.combat-policy": "전투 책략",
   "research.rider_training.interceptions": "요격 기술",
@@ -905,6 +906,10 @@ export default {
   'admin.settings.no_codes': 'Reward Code 가 없습니다.',
   'admin.settings.delete': '삭제',
   'admin.settings.upload_img': '이미지 (선택)',
+  'admin.settings.pending_title': 'New finds from Discord',
+  'admin.settings.pending_hint': 'Found in the official announcement channel. Nothing is published until you approve it.',
+  'admin.settings.approve': 'Approve',
+  'admin.settings.reject': 'Discard',
   // ── Chat extended strings ──────────────────────────────────────────────────
   'chat.online': '온라인',
   'chat.dms': 'DM',

@@ -16,5 +16,26 @@ class_name = "ChatRoom"
 tag = "v1"
 new_sqlite_classes = ["ChatRoom"]
 
+# Der Worker liest zusätzlich den Discord-Kanal mit den offiziellen
+# Gift-Code-Ankündigungen und legt Funde zur Prüfung ab. Cron-Zeitpläne gibt es
+# nur bei Workers, nicht bei Pages — deshalb hängt der Ablauf hier und nicht in
+# functions/.
+[[d1_databases]]
+binding       = "DB"
+database_name = "wild-hoggs-db"
+database_id   = "1c0e2139-6bec-43b7-9a18-b6ba0b6c97d7"
+
+# Alle zehn Minuten. Codes sind selten zeitkritisch auf die Minute, und der
+# Zeitplan kostet so gut wie nichts.
+[triggers]
+crons = ["*/10 * * * *"]
+
+# Der Kanal in "Wild Hoggs Intern", in den der offizielle Ankündigungskanal
+# #🎁|all-gift-codes weitergeleitet wird. Keine geheime Angabe — sie steht in
+# jeder Discord-URL. Der Bot-Token dagegen liegt als Secret
+# (npx wrangler secret put DISCORD_TOKEN).
+[vars]
+DISCORD_CHANNEL_ID = "1535665678437195929"
+
 [observability]
 enabled = true

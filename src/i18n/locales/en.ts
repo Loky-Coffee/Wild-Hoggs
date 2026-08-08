@@ -907,6 +907,10 @@ export default {
   'admin.settings.no_codes': 'No reward codes yet.',
   'admin.settings.delete': 'Delete',
   'admin.settings.upload_img': 'Image (optional)',
+  'admin.settings.pending_title': 'New finds from Discord',
+  'admin.settings.pending_hint': 'Found in the official announcement channel. Nothing is published until you approve it.',
+  'admin.settings.approve': 'Approve',
+  'admin.settings.reject': 'Discard',
   // ── Chat extended strings ──────────────────────────────────────────────────
   'chat.online': 'Online',
   'chat.dms': 'DMs',
