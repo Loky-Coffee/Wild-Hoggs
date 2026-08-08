@@ -784,6 +784,8 @@ export default {
   'codes.copy': 'コピー',
   'codes.copied': 'コピーしました！',
   'codes.copyError': 'コピー失敗',
+  'codes.redeem': '受け取る',
+  'codes.redeemHint': "ヒント：「受け取る」でコードをコピーし、公式ギフトセンターを開きます。あとは貼り付けるだけです。",
   'codes.noCodes': '有効なコードがありません',
   'codes.active': 'アクティブ',
   'codes.expired': '期限切れ',

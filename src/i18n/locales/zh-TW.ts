@@ -784,6 +784,8 @@ export default {
   'codes.copy': '複製',
   'codes.copied': '已複製！',
   'codes.copyError': '複製失敗',
+  'codes.redeem': '立即兌換',
+  'codes.redeemHint': "提示：點擊「立即兌換」會複製兌換碼並開啟官方禮包中心，貼上即可。",
   'codes.noCodes': '目前沒有有效代碼',
   'codes.active': '有效',
   'codes.expired': '已過期',

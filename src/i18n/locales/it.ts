@@ -784,6 +784,8 @@ export default {
   'codes.copy': 'Copia',
   'codes.copied': 'Copiato!',
   'codes.copyError': 'Copia fallita',
+  'codes.redeem': 'Riscatta',
+  'codes.redeemHint': "Consiglio: «Riscatta» copia il codice e apre il Gift Center ufficiale — devi solo incollarlo.",
   'codes.noCodes': 'Nessun codice attivo disponibile',
   'codes.active': 'Attivo',
   'codes.expired': 'Scaduto',

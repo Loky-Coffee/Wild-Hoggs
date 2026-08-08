@@ -784,6 +784,8 @@ export default {
   'codes.copy': '복사',
   'codes.copied': '복사됨!',
   'codes.copyError': '복사 실패',
+  'codes.redeem': '사용하기',
+  'codes.redeemHint': "팁: “사용하기”를 누르면 코드가 복사되고 공식 기프트 센터가 열립니다. 붙여넣기만 하면 됩니다.",
   'codes.noCodes': '활성 코드가 없습니다',
   'codes.active': '활성',
   'codes.expired': '만료됨',

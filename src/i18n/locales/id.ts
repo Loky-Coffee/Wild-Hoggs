@@ -784,6 +784,8 @@ export default {
   'codes.copy': 'Salin',
   'codes.copied': 'Tersalin!',
   'codes.copyError': 'Gagal menyalin',
+  'codes.redeem': 'Tukarkan',
+  'codes.redeemHint': "Tips: “Tukarkan” menyalin kode dan membuka Gift Center resmi — tinggal tempel di sana.",
   'codes.noCodes': 'Tidak ada kode aktif yang tersedia',
   'codes.active': 'Aktif',
   'codes.expired': 'Kedaluwarsa',

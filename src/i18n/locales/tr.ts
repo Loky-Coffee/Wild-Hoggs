@@ -784,6 +784,8 @@ export default {
   'codes.copy': 'Kopyala',
   'codes.copied': 'Kopyalandı!',
   'codes.copyError': 'Kopyalama başarısız',
+  'codes.redeem': 'Kullan',
+  'codes.redeemHint': "İpucu: “Kullan” kodu kopyalar ve resmi Gift Center’ı açar — orada sadece yapıştırman yeterli.",
   'codes.noCodes': 'Aktif kod yok',
   'codes.active': 'Aktif',
   'codes.expired': 'Süresi Doldu',

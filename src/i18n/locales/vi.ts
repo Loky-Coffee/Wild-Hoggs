@@ -784,6 +784,8 @@ export default {
   'codes.copy': 'Sao chép',
   'codes.copied': 'Đã sao chép!',
   'codes.copyError': 'Sao chép thất bại',
+  'codes.redeem': 'Đổi quà',
+  'codes.redeemHint': "Mẹo: “Đổi quà” sẽ sao chép mã và mở Gift Center chính thức — bạn chỉ cần dán vào đó.",
   'codes.noCodes': 'Không có mã đang hoạt động',
   'codes.active': 'Đang hoạt động',
   'codes.expired': 'Hết hạn',

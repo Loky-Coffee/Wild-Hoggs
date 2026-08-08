@@ -277,6 +277,8 @@ export default {
   'codes.copy': 'Copy',
   'codes.copied': 'Copied!',
   'codes.copyError': 'Copy failed',
+  'codes.redeem': 'Redeem',
+  'codes.redeemHint': "Tip: “Redeem” copies the code and opens the official Gift Center — just paste it there.",
   'codes.noCodes': 'No active codes available',
   'codes.active': 'Active',
   'codes.expired': 'Expired',

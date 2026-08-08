@@ -784,6 +784,8 @@ export default {
   'codes.copy': 'نسخ',
   'codes.copied': 'تم النسخ!',
   'codes.copyError': 'فشل النسخ',
+  'codes.redeem': 'استبدال',
+  'codes.redeemHint': "نصيحة: زر «استبدال» ينسخ الرمز ويفتح مركز الهدايا الرسمي — ما عليك سوى لصقه هناك.",
   'codes.noCodes': 'لا توجد أكواد فعالة',
   'codes.active': 'نشط',
   'codes.expired': 'منتهي',

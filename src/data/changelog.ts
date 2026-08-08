@@ -27,6 +27,11 @@ export const changelog: ChangelogEntry[] = [
   // ── August 2026 ─────────────────────────────────────────────────────────
   {
     date: '2026-08-08',
+    time: '18:05',
+    text: 'Every active code now has a **Redeem** button. It copies the code and opens the official Gift Center **right at the input field**, in your own language — so all that is left to do is paste it. Filling the code in for you is not possible, the official page does not accept it through the link. But it saves finding the page, switching its language, scrolling down and typing the code by hand, where a **single typo** means no reward',
+  },
+  {
+    date: '2026-08-08',
     time: '17:55',
     text: 'Gift codes now find their way here on their own. The official Last Z announcement channel is checked **every ten minutes**, and anything that looks like a code is picked up automatically — so new codes should appear here **within minutes** of being announced, instead of whenever somebody happened to notice them. Nothing goes live unchecked: every find waits for approval first, so a false alarm never reaches you',
   },

@@ -784,6 +784,8 @@ export default {
   'codes.copy': 'คัดลอก',
   'codes.copied': 'คัดลอกแล้ว!',
   'codes.copyError': 'คัดลอกไม่สำเร็จ',
+  'codes.redeem': 'แลกรับ',
+  'codes.redeemHint': "เคล็ดลับ: “แลกรับ” จะคัดลอกโค้ดและเปิด Gift Center อย่างเป็นทางการ — เพียงวางโค้ดที่นั่น",
   'codes.noCodes': 'ไม่มีโค้ดที่ใช้งานอยู่',
   'codes.active': 'ใช้งานอยู่',
   'codes.expired': 'หมดอายุ',

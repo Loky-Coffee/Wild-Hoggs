@@ -17,6 +17,27 @@ interface RewardCodesLocalProps {
   translationData: TranslationData;
 }
 
+// Das offizielle Gift Center trägt die Sprache im Pfad und kennt einen
+// Sprung-Parameter, der direkt zum Eingabefeld scrollt (`jumpfrom=giftCenter`
+// — die Seite benutzt ihn selbst). Den Code vorausfüllen kann man dort nicht:
+// das Feld startet fest mit einem leeren Wert und liest keinen Parameter aus.
+// Deshalb wandert der Code beim Klick in die Zwischenablage, einfügen muss
+// man ihn selbst.
+//
+// Die Seite unterstützt 17 Sprachen; bis auf die beiden chinesischen decken
+// sich die Kürzel mit unseren.
+const LASTZ_SPRACHE: Record<string, string> = { 'zh-CN': 'zh', 'zh-TW': 'hk' };
+const LASTZ_BEKANNT = new Set([
+  'en', 'zh', 'hk', 'ar', 'de', 'es', 'fr', 'id', 'it',
+  'ja', 'ko', 'pl', 'pt', 'ru', 'th', 'tr', 'vi',
+]);
+
+function giftCenterUrl(lang: string): string {
+  const l = LASTZ_SPRACHE[lang] ?? lang;
+  const sprache = LASTZ_BEKANNT.has(l) ? l : 'en';
+  return `https://last-z.com/#/${sprache}/order?jumpfrom=giftCenter`;
+}
+
 function getTimeRemaining(expiresAt: string | null) {
   if (!expiresAt) return { expired: false, days: 0, hours: 0, minutes: 0, noExpiry: true };
 
@@ -124,6 +145,7 @@ export default function RewardCodesLocal({ lang, translationData }: RewardCodesL
           <h3 className="section-title">
             🎁 {t('codes.active')} ({activeCodes.length})
           </h3>
+          <p className="redeem-hint">{t('codes.redeemHint')}</p>
           <div className="codes-grid">
             {activeCodes.map((item) => {
               const timeRemaining = getTimeRemaining(item.expires_at);
@@ -148,6 +170,20 @@ export default function RewardCodesLocal({ lang, translationData }: RewardCodesL
                       {copiedCode === item.code ? '✓ ' + t('codes.copied') : errorCode === item.code ? '✗ ' + t('codes.copyError') : t('codes.copy')}
                     </button>
                   </div>
+
+                  {/* Bewusst ein echter Link statt window.open: Das Kopieren
+                      läuft asynchron, und ein danach geöffnetes Fenster fiele
+                      je nach Browser dem Popup-Blocker zum Opfer. So navigiert
+                      der Browser selbst, das Kopieren passiert nebenher. */}
+                  <a
+                    className="redeem-btn"
+                    href={giftCenterUrl(lang)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => { void copyToClipboard(item.code); }}
+                  >
+                    🎮 {t('codes.redeem')}
+                  </a>
                   {!timeRemaining.expired && !timeRemaining.noExpiry && (
                     <div
                       className="code-timer"

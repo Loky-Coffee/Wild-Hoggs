@@ -784,6 +784,8 @@ export default {
   'codes.copy': 'Copier',
   'codes.copied': 'Copié !',
   'codes.copyError': 'Échec de la copie',
+  'codes.redeem': 'Utiliser',
+  'codes.redeemHint': "Astuce : « Utiliser » copie le code et ouvre le Gift Center officiel — il ne reste qu’à le coller.",
   'codes.noCodes': 'Aucun code actif disponible',
   'codes.active': 'Actif',
   'codes.expired': 'Expiré',

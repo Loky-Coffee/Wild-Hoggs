@@ -784,6 +784,8 @@ export default {
   'codes.copy': 'Copiar',
   'codes.copied': '¡Copiado!',
   'codes.copyError': 'Error al copiar',
+  'codes.redeem': 'Canjear',
+  'codes.redeemHint': "Consejo: «Canjear» copia el código y abre el Gift Center oficial — solo tienes que pegarlo.",
   'codes.noCodes': 'No hay códigos activos disponibles',
   'codes.active': 'Activo',
   'codes.expired': 'Expirado',

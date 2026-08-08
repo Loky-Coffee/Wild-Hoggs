@@ -784,6 +784,8 @@ export default {
   'codes.copy': 'Kopieren',
   'codes.copied': 'Kopiert!',
   'codes.copyError': 'Kopieren fehlgeschlagen',
+  'codes.redeem': 'Einlösen',
+  'codes.redeemHint': "Tipp: „Einlösen“ kopiert den Code und öffnet das offizielle Gift Center — dort nur noch einfügen.",
   'codes.noCodes': 'Keine aktiven Codes verfügbar',
   'codes.active': 'Aktiv',
   'codes.expired': 'Abgelaufen',
