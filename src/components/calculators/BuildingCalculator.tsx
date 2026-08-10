@@ -8,6 +8,7 @@ import buildingNames from '../../data/buildings-names.json';
 import buildingBonuses from '../../data/buildings-bonuses.json';
 import buildingUnlocks from '../../data/buildings-unlocks.json';
 import { LAB_SPEED_DEFAULT, effectiveLabSpeed, type LabSpeed } from '../../utils/labSpeed';
+import { RESOURCE_SAVING_DEFAULT, applySaving, savingPercent, type ResourceSaving } from '../../utils/resourceSaving';
 import { useCalculatorState } from '../../hooks/useCalculatorState';
 import { useProfile } from '../../hooks/useProfile';
 import { useSheetDrag } from '../../hooks/useSheetDrag';
@@ -22,9 +23,15 @@ interface Unlock { level: number; name: Record<string, string>; }
 const UNLOCKS = buildingUnlocks as unknown as Record<string, Unlock[]>;
 
 // Gebäude, die es in der Stadt mehrfach gibt (jedes Exemplar zählt zur Gesamt-Kampfkraft)
+//
+// Achtung bei den Namen: 'farmhouse' heißt im Spiel "Windmühle" (Nahrung),
+// 'wind-turbine' dagegen "Windkraftwerk" — zwei verschiedene Gebäude, die man
+// leicht verwechselt. Die Nahrungs-Windmühlen sind vier, genau wie die
+// Holzfällereien.
 const COUNTS: Record<string, number> = {
   residence: 6, 'steel-plant': 5, 'smelting-plant': 4, lumberyard: 4,
-  'wind-turbine': 4, 'training-ground': 4, warehouse: 3, formation: 4,
+  farmhouse: 4, 'wind-turbine': 4, 'training-ground': 4, warehouse: 3,
+  formation: 4, hospital: 2,
 };
 
 interface Inst { iid: string; b: Building; num: number; }
@@ -91,6 +98,8 @@ export default function BuildingCalculator({ lang, translationData }: BuildingCa
   const [overrideSpeed, setOverrideSpeed] = useState<LabSpeed | null>(null);
   const [hdStored] = useCalculatorState<{ hide: boolean }>('building-hidedupes', 'main', { hide: true }, activeProfile.id);
   const [hideDupesOverride, setHideDupesOverride] = useState<boolean | null>(null);
+  const [savingStored] = useCalculatorState<ResourceSaving>('building-saving', 'main', RESOURCE_SAVING_DEFAULT, activeProfile.id);
+  const [savingOverride, setSavingOverride] = useState<ResourceSaving | null>(null);
   const [openIid, setOpenIid] = useState<string | null>(null);
 
   // Bau-Speed + Doppelte-ausblenden werden von den Buttons ÜBER der Analyse gesetzt;
@@ -98,14 +107,21 @@ export default function BuildingCalculator({ lang, translationData }: BuildingCa
   useEffect(() => {
     const hSpeed = (e: Event) => setOverrideSpeed((e as CustomEvent).detail as LabSpeed);
     const hDupes = (e: Event) => setHideDupesOverride(Boolean((e as CustomEvent).detail));
+    const hSaving = (e: Event) => setSavingOverride((e as CustomEvent).detail as ResourceSaving);
     window.addEventListener('wh-buildspeed-change', hSpeed);
     window.addEventListener('wh-hidedupes-change', hDupes);
+    window.addEventListener('wh-saving-change', hSaving);
     return () => {
       window.removeEventListener('wh-buildspeed-change', hSpeed);
       window.removeEventListener('wh-hidedupes-change', hDupes);
+      window.removeEventListener('wh-saving-change', hSaving);
     };
   }, []);
   const hideDupes = hideDupesOverride ?? !!hdStored.hide;
+  const saving = savingOverride ?? savingStored;
+  const savePct = savingPercent(saving);
+  // Saison-4-Spezialisierung: senkt alle vier Baurohstoffe, die Bauzeit nicht.
+  const applySave = (n: number) => applySaving(n, saving);
 
   const t = useTranslations(translationData);
   const tk = (s: string) => t(s as TranslationKey);
@@ -142,8 +158,14 @@ export default function BuildingCalculator({ lang, translationData }: BuildingCa
         if (c) { food += c.food; wood += c.wood; zent += c.zent; steel += c.steel; time += c.time; }
       }
     }
-    return { power, pct: maxSum > 0 ? Math.round((curSum / maxSum) * 100) : 0, food, wood, zent, steel, time };
-  }, [stored.levels]);
+    // Der Rabatt kommt auf die Summe, nicht auf jede einzelne Stufe: Über
+    // Dutzende Ausbaustufen würde sich der Rundungsfehler sonst aufaddieren.
+    return {
+      power, pct: maxSum > 0 ? Math.round((curSum / maxSum) * 100) : 0,
+      food: applySave(food), wood: applySave(wood),
+      zent: applySave(zent), steel: applySave(steel), time,
+    };
+  }, [stored.levels, savePct]);
 
   return (
     <div class="bld-wrap">
@@ -193,6 +215,7 @@ export default function BuildingCalculator({ lang, translationData }: BuildingCa
           kampfkraft={kampfkraft}
           tk={tk}
           applySpeed={applySpeed}
+          applySave={applySave}
           onSetLevel={(lvl) => setLevel(open.iid, lvl)}
           onClose={() => setOpenIid(null)}
         />
@@ -212,11 +235,12 @@ interface SheetProps {
   readonly kampfkraft: string;
   readonly tk: (s: string) => string;
   readonly applySpeed: (sec: number) => number;
+  readonly applySave: (n: number) => number;
   readonly onSetLevel: (lvl: number) => void;
   readonly onClose: () => void;
 }
 
-function BuildingSheet({ building, cap, current, name, numLang, lang, kampfkraft, tk, applySpeed, onSetLevel, onClose }: SheetProps) {
+function BuildingSheet({ building, cap, current, name, numLang, lang, kampfkraft, tk, applySpeed, applySave, onSetLevel, onClose }: SheetProps) {
   const { handleRef, sheetRef } = useSheetDrag(onClose);
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
@@ -244,8 +268,11 @@ function BuildingSheet({ building, cap, current, name, numLang, lang, kampfkraft
       const c = building.costs[lvl - 1];
       if (c) { food += c.food; wood += c.wood; zent += c.zent; steel += c.steel; time += c.time; }
     }
-    return { food, wood, zent, steel, time };
-  }, [building, current, cap]);
+    return {
+      food: applySave(food), wood: applySave(wood),
+      zent: applySave(zent), steel: applySave(steel), time,
+    };
+  }, [building, current, cap, applySave]);
 
   const maxed = current >= cap;
 
@@ -310,10 +337,10 @@ function BuildingSheet({ building, cap, current, name, numLang, lang, kampfkraft
                     {item?.power ? <span class="bld-stat bld-stat-power">{kampfkraft} {fc(item.power)}</span> : null}
                   </div>
                   <div class="bld-brow-costs">
-                    {item && item.food > 0 && <span>{ric('food')} {fc(item.food)}</span>}
-                    {item && item.wood > 0 && <span>{ric('wood')} {fc(item.wood)}</span>}
-                    {item && item.zent > 0 && <span>{ric('zent')} {fc(item.zent)}</span>}
-                    {item && item.steel > 0 && <span>{ric('steel')} {fc(item.steel)}</span>}
+                    {item && item.food > 0 && <span>{ric('food')} {fc(applySave(item.food))}</span>}
+                    {item && item.wood > 0 && <span>{ric('wood')} {fc(applySave(item.wood))}</span>}
+                    {item && item.zent > 0 && <span>{ric('zent')} {fc(applySave(item.zent))}</span>}
+                    {item && item.steel > 0 && <span>{ric('steel')} {fc(applySave(item.steel))}</span>}
                     {item && item.time > 0 && <span class="bld-brow-time">⏱ {fmtDur(applySpeed(item.time))}</span>}
                   </div>
                   {item?.requires && item.requires.length > 0 && (

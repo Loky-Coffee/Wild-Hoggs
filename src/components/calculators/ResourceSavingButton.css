@@ -1,0 +1,54 @@
+/* Stufenwahl für die Saison-Spezialisierung "Baukosten senken".
+   Sechs Felder (aus, Stufe 1–5) statt Häkchen: Die Stufen schließen einander
+   aus, und man sieht auf einen Blick, was jede bringt. */
+.rsav-levels {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin: 0.85rem 0 0.25rem;
+}
+
+@media (min-width: 480px) {
+  .rsav-levels {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+.rsav-lv {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.5rem 0.3rem;
+  border: 1px solid rgba(124, 197, 255, 0.25);
+  border-radius: 6px;
+  background: rgba(124, 197, 255, 0.07);
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.rsav-lv:hover {
+  background: rgba(124, 197, 255, 0.16);
+  border-color: rgba(124, 197, 255, 0.45);
+}
+
+.rsav-lv.active {
+  background: rgba(110, 231, 160, 0.18);
+  border-color: rgba(110, 231, 160, 0.6);
+  color: #fff;
+}
+
+.rsav-lv-num {
+  white-space: nowrap;
+}
+
+.rsav-lv-pct {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.rsav-lv.active .rsav-lv-pct {
+  color: #6ee7a0;
+}

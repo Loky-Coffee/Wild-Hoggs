@@ -6,6 +6,7 @@ import { loadTranslations } from '../../../i18n/index';
 import BuildingCalculator from '../../../components/calculators/BuildingCalculator';
 import BuildSpeedButton from '../../../components/calculators/BuildSpeedButton';
 import HideDuplicatesButton from '../../../components/calculators/HideDuplicatesButton';
+import ResourceSavingButton from '../../../components/calculators/ResourceSavingButton';
 import { ErrorBoundary } from '../../../components/ErrorBoundary';
 import '../../../styles/shared-layouts.css';
 
@@ -31,6 +32,14 @@ const breadcrumbItems = [
     <div class="bld-header-controls">
       <BuildSpeedButton lang={lang} client:load />
       <HideDuplicatesButton labelHide={t('calc.building.hideDuplicates')} labelShow={t('calc.building.showAll')} client:load />
+      <ResourceSavingButton
+        label={t('calc.building.saving')}
+        title={t('calc.building.savingTitle')}
+        note={t('calc.building.savingNote')}
+        levelWord={t('calc.building.savingLevel')}
+        offWord={t('calc.building.savingOff')}
+        client:load
+      />
     </div>
   </div>
 

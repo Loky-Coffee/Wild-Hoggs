@@ -26,6 +26,11 @@ export function renderChangelogText(text: string): string {
 export const changelog: ChangelogEntry[] = [
   // ── August 2026 ─────────────────────────────────────────────────────────
   {
+    date: '2026-08-10',
+    time: '19:20',
+    text: 'The building calculator has a new **Saving** button for the **Season 4** specialisation that lowers build costs — 2% per level, **10% at level 5**, applied to food, wood, steel and Z coins. Two things were also missing from the city itself: there are **four windmills**, not one (just like the lumberyards), and **two hospitals**. Special thanks to **SkippySlippy** from **server 450** for pointing all of this out',
+  },
+  {
     date: '2026-08-08',
     time: '18:05',
     text: 'Every active code now has a **Redeem** button. It copies the code and opens the official Gift Center **right at the input field**, in your own language — so all that is left to do is paste it. Filling the code in for you is not possible, the official page does not accept it through the link. But it saves finding the page, switching its language, scrolling down and typing the code by hand, where a **single typo** means no reward',
