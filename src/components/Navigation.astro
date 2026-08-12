@@ -68,11 +68,29 @@ const currentPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : r
       ))}
     </ul>
 
+    {/*
+      transition:persist — diese Inseln überleben den Seitenwechsel.
+
+      Ohne das wurden bei JEDEM Menüklick alle fünf abgebaut und neu erzeugt:
+      Uhr-Timer neu setzen, Chat-Verbindung neu aufbauen, Präsenz-Ping neu
+      anmelden, Ankündigung erneut abfragen. Gemessen schlug das als
+      Darstellungsverzögerung durch — 645 ms von 744 ms bei der schlechtesten
+      Interaktion, während die Verarbeitung selbst nur 96 ms brauchte.
+
+      Die Namen der beiden Inseln mit Texten tragen die Sprache: Beim Wechsel
+      von Deutsch auf Englisch ändert sich der Name, die Insel wird verworfen
+      und mit den richtigen Texten neu aufgebaut. Ohne diesen Zusatz bliebe im
+      Menü die alte Sprache stehen.
+    */}
     <div class="nav-controls">
-      <ApocalypseTimeClock client:idle />
-      <UserMenu translationData={nurDiese(translationData, USER_MENU_KEYS)} client:only="preact" />
-      <PresenceHeartbeat client:only="preact" />
-      <GlobalChatPoller client:only="preact" />
+      <ApocalypseTimeClock client:idle transition:persist="apo-uhr" />
+      <UserMenu
+        translationData={nurDiese(translationData, USER_MENU_KEYS)}
+        client:only="preact"
+        transition:persist={`user-menu-${lang}`}
+      />
+      <PresenceHeartbeat client:only="preact" transition:persist="presence" />
+      <GlobalChatPoller client:only="preact" transition:persist="chat-poller" />
       <UpdateNotice
         label={t('update.available')}
         hint={t('update.hint')}
@@ -80,6 +98,7 @@ const currentPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : r
         later={t('update.later')}
         close={t('update.close')}
         client:idle
+        transition:persist={`update-notice-${lang}`}
       />
     </div>
 
