@@ -53,81 +53,85 @@
 # höchstens fünf Minuten lang die vorige Fassung, und die Versionsmeldung
 # greift ohnehin (version.json ist weiter unten ausgenommen).
 #
-# s-maxage steht weiterhin da, wirkt bei Pages aber nicht: HTML wird am
-# Netzrand grundsätzlich nicht zwischengespeichert (gemessen:
-# cf-cache-status DYNAMIC). Dafür braucht es eine Cache Rule im Dashboard.
+# s-maxage=300 statt 3600, und das ist kein Schönheitsfehler: Seit im
+# Dashboard eine Cache Rule aktiv ist, räumt ein Pages-Deploy den
+# Netzrand-Zwischenspeicher NICHT mehr aus. Gemessen wurden 16 Minuten nach
+# einem Deploy noch Seiten mit age=978s ausgeliefert — also der Stand von
+# davor. Mit 3600 hätten Besucher bis zu einer Stunde die alte Fassung
+# gesehen; mit 300 sind es höchstens fünf Minuten, dieselbe Spanne wie beim
+# Browser.
 #
 # Bewusst NICHT als /* geschrieben: Unter /api/ liegen Antworten mit
 # Kontodaten, Meldungen und Gift-Codes. Die tragen zwar inzwischen alle
 # "no-store" (siehe functions/api/), doch eine Regel, die sie überhaupt erst
 # erfassen könnte, hat hier nichts zu suchen.
 /
-  Cache-Control: public, max-age=300, s-maxage=3600, must-revalidate
+  Cache-Control: public, max-age=300, s-maxage=300, must-revalidate
 
 /de/*
-  Cache-Control: public, max-age=300, s-maxage=3600, must-revalidate
+  Cache-Control: public, max-age=300, s-maxage=300, must-revalidate
 
 /fr/*
-  Cache-Control: public, max-age=300, s-maxage=3600, must-revalidate
+  Cache-Control: public, max-age=300, s-maxage=300, must-revalidate
 
 /es/*
-  Cache-Control: public, max-age=300, s-maxage=3600, must-revalidate
+  Cache-Control: public, max-age=300, s-maxage=300, must-revalidate
 
 /it/*
-  Cache-Control: public, max-age=300, s-maxage=3600, must-revalidate
+  Cache-Control: public, max-age=300, s-maxage=300, must-revalidate
 
 /pt/*
-  Cache-Control: public, max-age=300, s-maxage=3600, must-revalidate
+  Cache-Control: public, max-age=300, s-maxage=300, must-revalidate
 
 /tr/*
-  Cache-Control: public, max-age=300, s-maxage=3600, must-revalidate
+  Cache-Control: public, max-age=300, s-maxage=300, must-revalidate
 
 /ja/*
-  Cache-Control: public, max-age=300, s-maxage=3600, must-revalidate
+  Cache-Control: public, max-age=300, s-maxage=300, must-revalidate
 
 /ko/*
-  Cache-Control: public, max-age=300, s-maxage=3600, must-revalidate
+  Cache-Control: public, max-age=300, s-maxage=300, must-revalidate
 
 /id/*
-  Cache-Control: public, max-age=300, s-maxage=3600, must-revalidate
+  Cache-Control: public, max-age=300, s-maxage=300, must-revalidate
 
 /th/*
-  Cache-Control: public, max-age=300, s-maxage=3600, must-revalidate
+  Cache-Control: public, max-age=300, s-maxage=300, must-revalidate
 
 /vi/*
-  Cache-Control: public, max-age=300, s-maxage=3600, must-revalidate
+  Cache-Control: public, max-age=300, s-maxage=300, must-revalidate
 
 /ar/*
-  Cache-Control: public, max-age=300, s-maxage=3600, must-revalidate
+  Cache-Control: public, max-age=300, s-maxage=300, must-revalidate
 
 /zh-CN/*
-  Cache-Control: public, max-age=300, s-maxage=3600, must-revalidate
+  Cache-Control: public, max-age=300, s-maxage=300, must-revalidate
 
 /zh-TW/*
-  Cache-Control: public, max-age=300, s-maxage=3600, must-revalidate
+  Cache-Control: public, max-age=300, s-maxage=300, must-revalidate
 
 # Englische Unterseiten liegen ohne Sprachpräfix auf der Wurzelebene
 # (prefixDefaultLocale: false).
 /tools/*
-  Cache-Control: public, max-age=300, s-maxage=3600, must-revalidate
+  Cache-Control: public, max-age=300, s-maxage=300, must-revalidate
 
 /codes/*
-  Cache-Control: public, max-age=300, s-maxage=3600, must-revalidate
+  Cache-Control: public, max-age=300, s-maxage=300, must-revalidate
 
 /heroes/*
-  Cache-Control: public, max-age=300, s-maxage=3600, must-revalidate
+  Cache-Control: public, max-age=300, s-maxage=300, must-revalidate
 
 /roses/*
-  Cache-Control: public, max-age=300, s-maxage=3600, must-revalidate
+  Cache-Control: public, max-age=300, s-maxage=300, must-revalidate
 
 /about/*
-  Cache-Control: public, max-age=300, s-maxage=3600, must-revalidate
+  Cache-Control: public, max-age=300, s-maxage=300, must-revalidate
 
 /guides/*
-  Cache-Control: public, max-age=300, s-maxage=3600, must-revalidate
+  Cache-Control: public, max-age=300, s-maxage=300, must-revalidate
 
 /events/*
-  Cache-Control: public, max-age=300, s-maxage=3600, must-revalidate
+  Cache-Control: public, max-age=300, s-maxage=300, must-revalidate
 
 # Profil, Community und Verwaltung brauchen bewusst KEINE Sonderregel.
 # Geprüft am erzeugten HTML: Es enthält keinerlei Kontodaten — die Inseln
