@@ -1,10 +1,10 @@
 import { getToken, validateSession } from '../../_lib/auth';
-import { verlangt, darf, saubereRechte, VORLAGEN, type Recht } from '../../_lib/permissions';
+import { verlangt, saubereRechte, VORLAGEN, type Recht } from '../../_lib/permissions';
 
 // GET /api/admin/users — Nutzerliste
 //
-// E-Mail-Adressen sieht nur, wer Konten auch verwalten darf. Wer die Liste
-// bloss zum Nachschlagen öffnet, braucht sie nicht.
+// E-Mail-Adressen sehen ausschliesslich Administratoren. Wer die Liste zum
+// Moderieren öffnet, braucht sie nicht.
 export async function onRequestGet(ctx: any) {
   const { DB } = ctx.env;
 
@@ -30,9 +30,15 @@ export async function onRequestGet(ctx: any) {
      ORDER BY u.is_admin DESC, COALESCE(u.is_moderator, 0) DESC, u.username ASC`
   ).all();
 
-  const darfVerwalten = darf(user, 'users.roles');
+  // E-Mail-Adressen sehen nur Administratoren.
+  //
+  // Vorher hing das an 'users.roles'. Da beide Änderungspfade unten zusätzlich
+  // is_admin verlangen, konnte ein Moderator mit diesem Recht nichts tun —
+  // ausser die vollständige Adressliste aller Konten zu sehen. Wer es in gutem
+  // Glauben vergab, gab damit personenbezogene Daten heraus und bekam keinerlei
+  // Funktion dafür.
   const users = (results ?? []).map((u: any) =>
-    darfVerwalten ? u : { ...u, email: null }
+    user.is_admin === 1 ? u : { ...u, email: null }
   );
 
   return Response.json({ users });

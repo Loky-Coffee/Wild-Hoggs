@@ -24,7 +24,9 @@ export const RECHTE_GRUPPEN: RechtGruppe[] = [
   { titel: 'Nutzer', rechte: [
     { id: 'users.view',  label: 'ansehen' },
     { id: 'users.ban',   label: 'sperren' },
-    { id: 'users.roles', label: 'Rollen und Rechte vergeben' },
+    // Wirkt nur bei Administratoren: Die Schnittstelle verlangt für das
+    // Ändern von Rollen und Rechten zusätzlich is_admin.
+    { id: 'users.roles', label: 'Rollen und Rechte vergeben (nur als Admin)' },
   ]},
   { titel: 'Gift-Codes', rechte: [
     { id: 'codes.approve', label: 'freigeben' },
