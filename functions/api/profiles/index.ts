@@ -2,6 +2,7 @@
 // POST /api/profiles       — create a new profile
 
 import { getToken, validateSession } from '../../_lib/auth';
+import { MAX_PROFILE_PRO_KONTO } from '../../_lib/state-limits';
 
 export async function onRequestGet(ctx: any) {
   const { DB } = ctx.env;
@@ -36,6 +37,19 @@ export async function onRequestPost(ctx: any) {
   const name = (body?.name ?? '').trim();
   if (!name) return Response.json({ error: 'Name erforderlich' }, { status: 400 });
   if (name.length > 40) return Response.json({ error: 'Name zu lang (max 40)' }, { status: 400 });
+
+  // Profile waren bisher unbegrenzt, und an jedem hängen eigene Rechner-
+  // Zustände — zusammen ein offenes Fass. Zehn reicht weit: das Konto mit
+  // den meisten Spielprofilen hat vier.
+  const anzahl = await DB.prepare(
+    'SELECT COUNT(*) AS n FROM game_profiles WHERE user_id = ?'
+  ).bind(user.user_id).first() as { n: number };
+  if ((anzahl?.n ?? 0) >= MAX_PROFILE_PRO_KONTO) {
+    return Response.json(
+      { error: `Maximal ${MAX_PROFILE_PRO_KONTO} Profile pro Konto` },
+      { status: 409 },
+    );
+  }
 
   const id = 'p_' + Array.from(crypto.getRandomValues(new Uint8Array(8)))
     .map(b => b.toString(16).padStart(2, '0')).join('');

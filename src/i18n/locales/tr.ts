@@ -73,6 +73,7 @@ export default {
   'profile.delete': 'Sil',
   'profile.rename': 'Yeniden Adlandır',
   'profile.addProfile': 'Yeni Profil',
+  'profile.maxProfiles': "En fazla {n} profiliniz olabilir.",
   'profile.myProfiles': 'Profillerim',
   'profile.cancel': 'İptal',
   'research.available': 'Mevcut →',

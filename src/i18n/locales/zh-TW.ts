@@ -73,6 +73,7 @@ export default {
   'profile.delete': '刪除',
   'profile.rename': '重新命名',
   'profile.addProfile': '新建檔案',
+  'profile.maxProfiles': "最多只能有 {n} 個檔案。",
   'profile.myProfiles': '我的檔案',
   'profile.cancel': '取消',
   'research.available': '可用 →',

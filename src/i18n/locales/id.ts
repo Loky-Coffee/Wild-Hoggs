@@ -73,6 +73,7 @@ export default {
   'profile.delete': 'Hapus',
   'profile.rename': 'Ganti Nama',
   'profile.addProfile': 'Profil Baru',
+  'profile.maxProfiles': "Maksimal {n} profil.",
   'profile.myProfiles': 'Profil Saya',
   'profile.cancel': 'Batal',
   'research.available': 'Tersedia →',

@@ -244,6 +244,16 @@
 }
 .profile-add-btn:hover { color: #ffa500; }
 
+/* Steht anstelle des Knopfes, sobald die Profilgrenze erreicht ist —
+   ein Knopf, der nur eine Fehlermeldung erzeugt, hilft niemandem. */
+.profile-max-hint {
+  margin: 0;
+  padding: 0.4rem 1rem;
+  font-size: 0.75rem;
+  line-height: 1.3;
+  color: rgba(255,255,255,0.45);
+}
+
 .user-dropdown-admin {
   color: #ffa500 !important;
   position: relative;

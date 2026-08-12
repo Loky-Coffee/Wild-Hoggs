@@ -73,6 +73,7 @@ export default {
   'profile.delete': 'Xóa',
   'profile.rename': 'Đổi tên',
   'profile.addProfile': 'Hồ sơ mới',
+  'profile.maxProfiles': "Bạn chỉ có thể có tối đa {n} hồ sơ.",
   'profile.myProfiles': 'Hồ sơ của tôi',
   'profile.cancel': 'Hủy',
   'research.available': 'Có sẵn →',

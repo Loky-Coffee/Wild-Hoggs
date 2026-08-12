@@ -24,7 +24,9 @@ for (const { datei, liste } of PRUEFUNGEN) {
   const quelle = readFileSync(datei, 'utf8');
 
   // Was die Komponente anzeigt
-  const benutzt = new Set([...quelle.matchAll(/\bt\('([a-zA-Z0-9._]+)'\)/g)].map((m) => m[1]));
+  // Auch t('key', { n: '3' }) zählt — dieser Aufruf mit Platzhaltern wurde
+  // vorher übersehen, und ein dort vergessener Schlüssel wäre durchgerutscht.
+  const benutzt = new Set([...quelle.matchAll(/\bt\('([a-zA-Z0-9._]+)'\s*[,)]/g)].map((m) => m[1]));
 
   // Was sie mitgeliefert bekommt
   const block = quelle.match(new RegExp(`${liste}\\s*=\\s*\\[([^\\]]*)\\]`, 's'));

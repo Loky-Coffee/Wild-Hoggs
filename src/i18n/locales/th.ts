@@ -73,6 +73,7 @@ export default {
   'profile.delete': 'ลบ',
   'profile.rename': 'เปลี่ยนชื่อ',
   'profile.addProfile': 'โปรไฟล์ใหม่',
+  'profile.maxProfiles': "มีโปรไฟล์ได้สูงสุด {n} รายการ",
   'profile.myProfiles': 'โปรไฟล์ของฉัน',
   'profile.cancel': 'ยกเลิก',
   'research.available': 'พร้อมใช้งาน →',

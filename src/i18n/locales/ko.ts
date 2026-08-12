@@ -73,6 +73,7 @@ export default {
   'profile.delete': '삭제',
   'profile.rename': '이름 변경',
   'profile.addProfile': '새 프로필',
+  'profile.maxProfiles': "프로필은 최대 {n}개까지 만들 수 있습니다.",
   'profile.myProfiles': '내 프로필',
   'profile.cancel': '취소',
   'research.available': '사용 가능 →',

@@ -73,6 +73,7 @@ export default {
   'profile.delete': 'حذف',
   'profile.rename': 'إعادة تسمية',
   'profile.addProfile': 'ملف جديد',
+  'profile.maxProfiles': "يمكنك الاحتفاظ بـ {n} ملفات شخصية كحد أقصى.",
   'profile.myProfiles': 'ملفاتي',
   'profile.cancel': 'إلغاء',
   'research.available': 'متاح →',

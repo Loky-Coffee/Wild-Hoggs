@@ -1,4 +1,7 @@
 import { useState, useEffect, useRef } from 'preact/hooks';
+// Dieselbe Zahl, die der Server durchsetzt — eine zweite hier würde
+// irgendwann von der ersten abweichen.
+import { MAX_PROFILE_PRO_KONTO } from '../../../functions/_lib/state-limits';
 import { createPortal } from 'preact/compat';
 import { useAuth, clearAuthState } from '../../hooks/useAuth';
 import { useProfile } from '../../hooks/useProfile';
@@ -19,6 +22,7 @@ export const USER_MENU_KEYS = [
   'auth.logout',
   'auth.myAccount',
   'profile.addProfile',
+  'profile.maxProfiles',
   'profile.cancel',
   'profile.delete',
   'profile.deleteConfirm',
@@ -248,6 +252,10 @@ export default function UserMenu({ translationData }: UserMenuProps) {
                 <button class="profile-btn-cancel" onClick={() => { setShowNewForm(false); setNewName(''); setNewServer(''); }}>✕</button>
               </div>
             </div>
+          ) : profiles.length >= MAX_PROFILE_PRO_KONTO ? (
+            <p class="profile-max-hint">
+              {t('profile.maxProfiles', { n: String(MAX_PROFILE_PRO_KONTO) })}
+            </p>
           ) : (
             <button class="profile-add-btn" onClick={() => { setShowNewForm(true); setEditingId(null); }}>
               + {t('profile.addProfile')}

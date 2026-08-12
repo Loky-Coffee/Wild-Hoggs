@@ -73,6 +73,7 @@ export default {
   'profile.delete': 'Supprimer',
   'profile.rename': 'Renommer',
   'profile.addProfile': 'Nouveau profil',
+  'profile.maxProfiles': "Vous pouvez avoir au maximum {n} profils.",
   'profile.myProfiles': 'Mes profils',
   'profile.cancel': 'Annuler',
   'research.available': 'Disponible →',

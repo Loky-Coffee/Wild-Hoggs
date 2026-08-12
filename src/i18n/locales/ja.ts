@@ -73,6 +73,7 @@ export default {
   'profile.delete': '削除',
   'profile.rename': '名前変更',
   'profile.addProfile': '新しいプロフィール',
+  'profile.maxProfiles': "プロフィールは最大{n}件までです。",
   'profile.myProfiles': 'マイプロフィール',
   'profile.cancel': 'キャンセル',
   'research.available': '利用可能 →',
