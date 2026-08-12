@@ -67,7 +67,7 @@ const heroesSchema = {
     <HeroGrid heroes={heroes} clearLabel={t('heroes.clearFilters')} client:visible />
   </div>
   <div class="hh-panel" data-panel="exp" role="tabpanel" hidden>
-    <HeroExpCalculator lang={lang} translationData={translationData} client:load />
+    <HeroExpCalculator lang={lang} translationData={translationData} client:idle />
   </div>
 </PageLayout>
 

@@ -34,11 +34,18 @@ const breadcrumbItems = [
     <p class="subtitle">{t('tools.caravan.description')}</p>
   </div>
 
-  <!-- client:load ist hier ABSICHTLICH (nicht client:visible):
+  <!-- client:idle ist hier ABSICHTLICH (nicht client:visible):
        IntersectionObserver (genutzt von client:visible) erkennt die Komponente
        im aktuellen Layout-Kontext nie als sichtbar → Hydration startet nie →
-       Calculate-Button funktioniert nicht. Gleiches Problem wie tank.astro (9aaeb6f). -->
-  <ErrorBoundary lang={lang} client:load>
-    <CaravanCalculator lang={lang} translationData={translationData} client:load />
+       Calculate-Button funktioniert nicht. Gleiches Problem wie tank.astro (9aaeb6f). 
+
+       client:load war die frühere Wahl, kostet aber beim Seitenwechsel: Das
+       Bündel wird sofort ausgeführt und blockiert die Darstellung. Gemessen
+       lagen Rechnerseiten dadurch bei 300–700 ms, Seiten mit client:visible
+       (Codes, Rosen) bei 8–16 ms. client:idle hydriert ebenso garantiert,
+       wartet aber auf einen Leerlaufmoment — und braucht keinen
+       IntersectionObserver, also besteht das Problem oben nicht. -->
+  <ErrorBoundary lang={lang} client:idle>
+    <CaravanCalculator lang={lang} translationData={translationData} client:idle />
   </ErrorBoundary>
 </PageLayout>

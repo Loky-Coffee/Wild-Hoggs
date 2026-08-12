@@ -30,25 +30,32 @@ const breadcrumbItems = [
     <h1>{t('tools.building.title')}</h1>
     <p class="subtitle">{t('tools.building.description')}</p>
     <div class="bld-header-controls">
-      <BuildSpeedButton lang={lang} client:load />
-      <HideDuplicatesButton labelHide={t('calc.building.hideDuplicates')} labelShow={t('calc.building.showAll')} client:load />
+      <BuildSpeedButton lang={lang} client:idle />
+      <HideDuplicatesButton labelHide={t('calc.building.hideDuplicates')} labelShow={t('calc.building.showAll')} client:idle />
       <ResourceSavingButton
         label={t('calc.building.saving')}
         title={t('calc.building.savingTitle')}
         note={t('calc.building.savingNote')}
         levelWord={t('calc.building.savingLevel')}
         offWord={t('calc.building.savingOff')}
-        client:load
+        client:idle
       />
     </div>
   </div>
 
-  <!-- client:load ist hier ABSICHTLICH (nicht client:visible):
+  <!-- client:idle ist hier ABSICHTLICH (nicht client:visible):
        IntersectionObserver (genutzt von client:visible) erkennt die Komponente
        im aktuellen Layout-Kontext nie als sichtbar → Hydration startet nie →
-       Calculate-Button funktioniert nicht. Gleiches Problem wie tank.astro (9aaeb6f). -->
-  <ErrorBoundary lang={lang} client:load>
-    <BuildingCalculator lang={lang} translationData={translationData} client:load />
+       Calculate-Button funktioniert nicht. Gleiches Problem wie tank.astro (9aaeb6f). 
+
+       client:load war die frühere Wahl, kostet aber beim Seitenwechsel: Das
+       Bündel wird sofort ausgeführt und blockiert die Darstellung. Gemessen
+       lagen Rechnerseiten dadurch bei 300–700 ms, Seiten mit client:visible
+       (Codes, Rosen) bei 8–16 ms. client:idle hydriert ebenso garantiert,
+       wartet aber auf einen Leerlaufmoment — und braucht keinen
+       IntersectionObserver, also besteht das Problem oben nicht. -->
+  <ErrorBoundary lang={lang} client:idle>
+    <BuildingCalculator lang={lang} translationData={translationData} client:idle />
   </ErrorBoundary>
 </PageLayout>
 
