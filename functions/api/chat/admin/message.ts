@@ -1,5 +1,6 @@
 import { getToken, validateSession } from '../../../_lib/auth';
 import { broadcastDelete } from '../../../_lib/chat-hub';
+import { verlangt } from '../../../_lib/permissions';
 
 const VALID_CHAT_TYPES = ['global', 'global-lang', 'server', 'server-lang'] as const;
 
@@ -12,9 +13,8 @@ export async function onRequestDelete(ctx: any) {
   const user = await validateSession(DB, token);
   if (!user) return Response.json({ error: 'Sitzung abgelaufen' }, { status: 401 });
 
-  if (user.is_admin !== 1 && user.is_moderator !== 1) {
-    return Response.json({ error: 'Keine Berechtigung' }, { status: 403 });
-  }
+  const nein = verlangt(user, 'messages.delete');
+  if (nein) return nein;
 
   let body: any;
   try {

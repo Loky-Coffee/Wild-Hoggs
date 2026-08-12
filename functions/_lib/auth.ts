@@ -58,6 +58,7 @@ export async function validateSession(db: any, token: string) {
     SELECT s.user_id, u.email, u.username, u.faction, u.server, u.language,
            u.formation_power_br, u.formation_power_wd, u.formation_power_go,
            u.is_admin, COALESCE(u.is_moderator, 0) AS is_moderator,
+           u.permissions,
            COALESCE(u.notification_sound, 1) AS notification_sound,
            COALESCE(u.notification_volume, 1.5) AS notification_volume
     FROM sessions s
@@ -75,6 +76,8 @@ export async function validateSession(db: any, token: string) {
     formation_power_go: number | null;
     is_admin: number;
     is_moderator: number;
+    // JSON-Liste einzelner Rechte; ausgewertet über functions/_lib/permissions.ts
+    permissions: string | null;
     notification_sound: number;
     notification_volume: number;
   } | null>;

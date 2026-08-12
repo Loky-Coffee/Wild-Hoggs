@@ -1,4 +1,5 @@
 import { getToken, validateSession } from '../../_lib/auth';
+import { verlangt } from '../../_lib/permissions';
 
 // GET /api/admin/reports — Open reports with message content
 export async function onRequestGet(ctx: any) {
@@ -10,9 +11,8 @@ export async function onRequestGet(ctx: any) {
   const user = await validateSession(DB, token);
   if (!user) return Response.json({ error: 'Sitzung abgelaufen' }, { status: 401 });
 
-  if (user.is_admin !== 1 && user.is_moderator !== 1) {
-    return Response.json({ error: 'Keine Berechtigung' }, { status: 403 });
-  }
+  const nein = verlangt(user, 'reports.view');
+  if (nein) return nein;
 
   const result = await DB.prepare(`
     SELECT
@@ -49,9 +49,8 @@ export async function onRequestPatch(ctx: any) {
   const user = await validateSession(DB, token);
   if (!user) return Response.json({ error: 'Sitzung abgelaufen' }, { status: 401 });
 
-  if (user.is_admin !== 1 && user.is_moderator !== 1) {
-    return Response.json({ error: 'Keine Berechtigung' }, { status: 403 });
-  }
+  const nein = verlangt(user, 'reports.resolve');
+  if (nein) return nein;
 
   let body: any;
   try {

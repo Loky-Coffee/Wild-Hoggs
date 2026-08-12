@@ -55,7 +55,7 @@ export async function onRequestPost(ctx: any) {
   ).bind(email.toLowerCase(), username, passwordHash, serverVal).run();
 
   const user = await DB.prepare(
-    'SELECT id, email, username, faction, server, language, formation_power_br, formation_power_wd, formation_power_go, is_admin, COALESCE(is_moderator, 0) AS is_moderator, notification_sound, notification_volume FROM users WHERE email = ?'
+    'SELECT id, email, username, faction, server, language, formation_power_br, formation_power_wd, formation_power_go, is_admin, COALESCE(is_moderator, 0) AS is_moderator, permissions, notification_sound, notification_volume FROM users WHERE email = ?'
   ).bind(email.toLowerCase()).first() as any;
 
   // Create session
@@ -73,6 +73,7 @@ export async function onRequestPost(ctx: any) {
       formation_power_go: user.formation_power_go ?? null,
       is_admin: user.is_admin ?? 0,
       is_moderator: user.is_moderator ?? 0,
+      permissions: user.permissions ?? null,
       notification_sound: user.notification_sound ?? 1,
       notification_volume: user.notification_volume ?? 1.5,
     },

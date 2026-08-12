@@ -11,6 +11,7 @@
 
 import { getToken, validateSession } from '../_lib/auth';
 import { broadcastAnnounce } from '../_lib/chat-hub';
+import { verlangt } from '../_lib/permissions';
 
 const KEY = 'announcement';
 const MAX_LEN = 300;
@@ -50,7 +51,8 @@ export async function onRequestPut(ctx: any) {
 
   const user = await validateSession(DB, token);
   if (!user) return Response.json({ error: 'Sitzung abgelaufen' }, { status: 401 });
-  if (user.is_admin !== 1) return Response.json({ error: 'Keine Berechtigung' }, { status: 403 });
+  const nein = verlangt(user, 'content.announcement');
+  if (nein) return nein;
 
   let body: any;
   try { body = await ctx.request.json(); }
@@ -89,7 +91,8 @@ export async function onRequestDelete(ctx: any) {
 
   const user = await validateSession(DB, token);
   if (!user) return Response.json({ error: 'Sitzung abgelaufen' }, { status: 401 });
-  if (user.is_admin !== 1) return Response.json({ error: 'Keine Berechtigung' }, { status: 403 });
+  const nein = verlangt(user, 'content.announcement');
+  if (nein) return nein;
 
   await DB.prepare(`DELETE FROM app_settings WHERE key = ?`).bind(KEY).run();
   return Response.json({ success: true });

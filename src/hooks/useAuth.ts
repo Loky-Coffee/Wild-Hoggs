@@ -12,6 +12,8 @@ export interface AuthUser {
   formation_power_go: number | null;
   is_admin: number;
   is_moderator: number;
+  /** JSON-Liste einzelner Rechte; ausgewertet ueber src/utils/permissions.ts */
+  permissions: string | null;
   notification_sound: number; // 1 = on (default), 0 = off
   notification_volume: number; // 0.1–2.0, default 1.5
 }

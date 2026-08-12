@@ -2,6 +2,9 @@ import { useState, useEffect } from 'preact/hooks';
 import { useAuth } from '../../hooks/useAuth';
 import { useTranslations } from '../../i18n/utils';
 import type { TranslationData } from '../../i18n/index';
+import { darf, darfEines, parseRechte, type Recht } from '../../utils/permissions';
+import AdminStats from './AdminStats';
+import AdminPermissions from './AdminPermissions';
 import './AdminPanel.css';
 
 interface AdminPanelProps {
@@ -36,8 +39,12 @@ interface AdminUser {
   faction: string | null;
   is_admin: number;
   is_moderator: number;
+  permissions: string | null;
   created_at: string;
   last_login: string | null;
+  last_seen?: string | null;
+  msg_global?: number;
+  msg_server?: number;
 }
 
 interface RewardCode {
@@ -61,10 +68,22 @@ const ROSE_DESCRIPTIONS: Record<number, string> = {
   10: '+10% Troop ATK (2h) — Gold',
 };
 
+// Sechs Bereiche statt drei. Der frühere Sammelposten "Einstellungen" enthielt
+// Glücksrose, Gift-Codes und Ankündigungen — das sind Inhalte, keine
+// Einstellungen. Unter "System" bleibt nur, was das Verhalten der Seite steuert.
+//
+// Jeder Bereich nennt das Recht, das ihn sichtbar macht: Wer es nicht hat,
+// bekommt den Reiter gar nicht erst zu sehen. Entschieden wird trotzdem am
+// Server — hier geht es nur darum, niemandem Knöpfe zu zeigen, die in einem
+// 403 enden.
 const TABS = [
-  { id: 'reports',  labelKey: 'admin.tab.reports'  as const, icon: '⚑' },
-  { id: 'users',    labelKey: 'admin.tab.users'    as const, icon: '👥' },
-  { id: 'settings', labelKey: 'admin.tab.settings' as const, icon: '⚙' },
+  { id: 'overview', labelKey: 'admin.tab.overview' as const, icon: '📊', rechte: [] },
+  { id: 'stats',    labelKey: 'admin.tab.stats'    as const, icon: '📈', rechte: ['stats.view'] },
+  { id: 'reports',  labelKey: 'admin.tab.reports'  as const, icon: '⚑',  rechte: ['reports.view'] },
+  { id: 'users',    labelKey: 'admin.tab.users'    as const, icon: '👥', rechte: ['users.view'] },
+  { id: 'content',  labelKey: 'admin.tab.content'  as const, icon: '🎁',
+    rechte: ['codes.approve', 'codes.manage', 'content.announcement', 'content.rose'] },
+  { id: 'system',   labelKey: 'admin.tab.system'   as const, icon: '⚙',  rechte: ['system.settings'] },
 ] as const;
 
 type TabId = typeof TABS[number]['id'];
@@ -80,7 +99,22 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
   const isAdmin = user?.is_admin === 1;
   const isMod   = user?.is_moderator === 1 && !isAdmin;
 
-  const [activeTab, setActiveTab] = useState<TabId>('reports');
+  // Nur Bereiche zeigen, die dieses Konto auch nutzen darf. Die Übersicht hat
+  // kein eigenes Recht — sie fasst nur zusammen, was ohnehin sichtbar ist.
+  const sichtbareTabs = TABS.filter(tab =>
+    tab.rechte.length === 0 || darfEines(user, ...([...tab.rechte] as Recht[])));
+  const [activeTab, setActiveTab] = useState<TabId>('overview');
+
+  // Wer den aktiven Bereich verliert (Rechte geändert), landet auf dem ersten
+  // verbliebenen statt auf einer leeren Fläche.
+  useEffect(() => {
+    if (!sichtbareTabs.some(tab => tab.id === activeTab) && sichtbareTabs.length > 0) {
+      setActiveTab(sichtbareTabs[0].id);
+    }
+  }, [sichtbareTabs.length, activeTab]);
+
+  // Rechte-Dialog
+  const [rechteFuer, setRechteFuer] = useState<AdminUser | null>(null);
 
   // Reports state
   const [reports, setReports]     = useState<Report[]>([]);
@@ -133,7 +167,8 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
 
   // Load reports
   useEffect(() => {
-    if (activeTab !== 'reports' || !isLoggedIn || (!isAdmin && !isMod) || !token) return;
+    if (activeTab !== 'reports' && activeTab !== 'overview') return;
+    if (!isLoggedIn || !token || !darf(user, 'reports.view')) return;
     setRLoading(true);
     setRError(null);
     fetch('/api/admin/reports', { headers: { 'Authorization': `Bearer ${token}` } })
@@ -148,7 +183,7 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
 
   // Load users
   useEffect(() => {
-    if (activeTab !== 'users' || !isLoggedIn || (!isAdmin && !isMod) || !token) return;
+    if (activeTab !== 'users' || !isLoggedIn || !token || !darf(user, 'users.view')) return;
     setULoading(true);
     setUError(null);
     fetch('/api/admin/users', { headers: { 'Authorization': `Bearer ${token}` } })
@@ -161,9 +196,10 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
       .finally(() => setULoading(false));
   }, [activeTab, isLoggedIn]);
 
-  // Load settings
+  // Inhalte laden — auch für die Übersicht, die die wartenden Codes anzeigt.
   useEffect(() => {
-    if (activeTab !== 'settings' || !isAdmin) return;
+    if (activeTab !== 'content' && activeTab !== 'overview') return;
+    if (!darf(user, 'codes.approve')) return;
     // Laufende Ankuendigung
     fetch('/api/announcement')
       .then(r => r.ok ? r.json() : null)
@@ -188,7 +224,7 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
       .then(r => r.ok ? r.json() : null)
       .then((data: any) => { if (Array.isArray(data?.codes)) setPending(data.codes); })
       .catch(() => {});
-  }, [activeTab, isAdmin]);
+  }, [activeTab, user]);
 
   // Derived: reports
   const reportTypes     = Array.from(new Set(reports.map(r => r.chat_type))).sort();
@@ -412,13 +448,19 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
   return (
     <div class="admin-panel">
       <nav class="admin-sidebar">
-        {TABS.filter(tab => tab.id !== 'settings' || isAdmin).map(tab => (
+        {sichtbareTabs.map(tab => (
           <button
             key={tab.id}
             class={['admin-sidebar-btn', activeTab === tab.id ? 'admin-sidebar-active' : ''].filter(Boolean).join(' ')}
             onClick={() => setActiveTab(tab.id)}
           >
             {tab.icon} {t(tab.labelKey)}
+            {tab.id === 'reports' && reports.length > 0 && (
+              <span class="admin-sidebar-zahl">{reports.length}</span>
+            )}
+            {tab.id === 'content' && pending.length > 0 && (
+              <span class="admin-sidebar-zahl admin-sidebar-zahl-warte">{pending.length}</span>
+            )}
           </button>
         ))}
       </nav>
@@ -664,6 +706,12 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
                                             <button class="admin-btn-delete admin-btn-sm"  disabled={isBusy} onClick={() => handleSetRole(u, 'user')}>✕ {t('admin.users.removeAdmin')}</button>
                                           </>
                                         )}
+                                        {/* Einzelne Rechte statt Alles-oder-nichts */}
+                                        <button class="admin-btn-sm" disabled={isBusy}
+                                                onClick={() => setRechteFuer(u)}
+                                                title={t('admin.users.perm_hint')}>
+                                          🔑 {t('admin.users.permissions')}
+                                        </button>
                                       </>
                                     )}
                                   </td>
@@ -681,8 +729,90 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
           </>
         )}
 
-        {/* ── Settings Tab (admin only) ── */}
-        {activeTab === 'settings' && isAdmin && (
+        {/* ── Übersicht: der Einstieg ── */}
+        {activeTab === 'overview' && (
+          <div class="admin-settings">
+            <h2 class="admin-settings-title">📊 {t('admin.overview.title')}</h2>
+
+            {pending.length === 0 && reports.length === 0 && (
+              <p class="admin-empty">{t('admin.overview.nothing')}</p>
+            )}
+
+            {/* Wartende Discord-Funde — der häufigste Grund, hier zu sein */}
+            {pending.length > 0 && darf(user, 'codes.approve') && (
+              <div class="admin-pending">
+                <h3 class="admin-pending-title">
+                  📥 {t('admin.overview.pending')}
+                  <span class="admin-pending-count">{pending.length}</span>
+                </h3>
+                <ul class="admin-pending-list">
+                  {pending.map(c => (
+                    <li class="admin-pending-item" key={c.id}>
+                      <code class="admin-pending-code">{c.code}</code>
+                      <div class="admin-pending-actions">
+                        <button class="admin-btn-promote" disabled={pendingBusy.has(c.id)}
+                                onClick={() => handleReviewCode(c, 'approved')}>
+                          ✓ {t('admin.settings.approve')}
+                        </button>
+                        <button class="admin-btn-delete" disabled={pendingBusy.has(c.id)}
+                                onClick={() => handleReviewCode(c, 'rejected')}>
+                          ✕ {t('admin.settings.reject')}
+                        </button>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {reports.length > 0 && darf(user, 'reports.view') && (
+              <section class="admin-settings-section">
+                <h3 class="admin-settings-title">
+                  ⚑ {t('admin.overview.reports')} <span class="admin-pending-count">{reports.length}</span>
+                </h3>
+                <button class="admin-btn-promote" onClick={() => setActiveTab('reports')}>
+                  {t('admin.tab.reports')} →
+                </button>
+              </section>
+            )}
+          </div>
+        )}
+
+        {/* ── Statistik ── */}
+        {activeTab === 'stats' && token && (
+          <div class="admin-settings">
+            <h2 class="admin-settings-title">📈 {t('admin.stats.title')}</h2>
+            <AdminStats token={token} />
+          </div>
+        )}
+
+        {/* ── System: Zustand der Dienste ── */}
+        {activeTab === 'system' && (
+          <div class="admin-settings">
+            <h2 class="admin-settings-title">⚙ {t('admin.system.title')}</h2>
+            <section class="admin-settings-section">
+              <div class="admin-karten">
+                <div class="admin-karte">
+                  <h4>Chat</h4>
+                  <div class="admin-schalter"><span>Live-Verbindung</span><span class="admin-ampel admin-ampel-an" /></div>
+                  <div class="admin-schalter"><span>Max. Zeichen</span><strong>500</strong></div>
+                </div>
+                <div class="admin-karte">
+                  <h4>Gift-Codes</h4>
+                  <div class="admin-schalter"><span>Discord-Bot</span><span class="admin-ampel admin-ampel-an" /></div>
+                  <div class="admin-schalter"><span>Wartend</span><strong>{pending.length}</strong></div>
+                </div>
+              </div>
+              <p class="admin-hint">
+                Weitere Schalter — Wartungsmodus, Registrierung sperren, Wortfilter —
+                folgen im nächsten Schritt.
+              </p>
+            </section>
+          </div>
+        )}
+
+        {/* ── Inhalte: Ankündigung, Glücksrose, Gift-Codes ── */}
+        {activeTab === 'content' && (
           <div class="admin-settings">
 
             {/* Ankuendigung an alle */}
@@ -908,6 +1038,20 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
         )}
 
       </div>
+
+      {/* Rechte eines Kontos — nur für Administratoren, siehe API */}
+      {rechteFuer && token && (
+        <AdminPermissions
+          token={token}
+          userId={rechteFuer.id}
+          username={rechteFuer.username}
+          istAdmin={rechteFuer.is_admin === 1}
+          rechte={parseRechte(rechteFuer.permissions)}
+          onClose={() => setRechteFuer(null)}
+          onSaved={(neu) => setUsers(prev => prev.map(u =>
+            u.id === rechteFuer.id ? { ...u, permissions: JSON.stringify(neu) } : u))}
+        />
+      )}
     </div>
   );
 }

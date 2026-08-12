@@ -450,6 +450,16 @@ body:has(.chat-login-wall) > main > astro-island {
   white-space: nowrap;
 }
 
+/* Genaue Zeit neben der ungefähren ("vor 3 Tagen"). Etwas blasser, damit die
+   Fußzeile beim Überfliegen nicht schwerer wiegt als die Nachricht selbst. */
+.chat-msg-date {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.chat-msg-date::before {
+  content: ' · ';
+}
+
 /* ── Radial Action Menu ───────────────────────────────────────────────────── */
 
 /* Container: fills bubble height so toggle can stretch */

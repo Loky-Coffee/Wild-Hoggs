@@ -1,4 +1,5 @@
 import { getToken, validateSession } from '../../_lib/auth';
+import { verlangt } from '../../_lib/permissions';
 
 // PATCH /api/reward-codes/:id — admin only
 //
@@ -17,7 +18,8 @@ export async function onRequestPatch(ctx: any) {
 
   const user = await validateSession(DB, token);
   if (!user) return Response.json({ error: 'Sitzung abgelaufen' }, { status: 401 });
-  if (user.is_admin !== 1) return Response.json({ error: 'Keine Berechtigung' }, { status: 403 });
+  const nein = verlangt(user, 'codes.approve');
+  if (nein) return nein;
 
   let body: any;
   try {
@@ -55,7 +57,8 @@ export async function onRequestDelete(ctx: any) {
 
   const user = await validateSession(DB, token);
   if (!user) return Response.json({ error: 'Sitzung abgelaufen' }, { status: 401 });
-  if (user.is_admin !== 1) return Response.json({ error: 'Keine Berechtigung' }, { status: 403 });
+  const nein = verlangt(user, 'codes.manage');
+  if (nein) return nein;
 
   const existing = await DB.prepare(
     `SELECT id, image_key FROM reward_codes WHERE id = ?`

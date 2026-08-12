@@ -1,4 +1,5 @@
 import { getToken, validateSession } from '../../_lib/auth';
+import { verlangt } from '../../_lib/permissions';
 
 // GET /api/settings/lucky-rose — public
 export async function onRequestGet(ctx: any) {
@@ -20,7 +21,8 @@ export async function onRequestPut(ctx: any) {
 
   const user = await validateSession(DB, token);
   if (!user) return Response.json({ error: 'Sitzung abgelaufen' }, { status: 401 });
-  if (user.is_admin !== 1) return Response.json({ error: 'Keine Berechtigung' }, { status: 403 });
+  const nein = verlangt(user, 'content.rose');
+  if (nein) return nein;
 
   let body: any;
   try {

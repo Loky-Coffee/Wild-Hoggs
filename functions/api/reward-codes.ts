@@ -1,4 +1,5 @@
 import { getToken, validateSession } from '../_lib/auth';
+import { verlangt } from '../_lib/permissions';
 
 // GET /api/reward-codes — öffentlich
 //
@@ -16,7 +17,8 @@ export async function onRequestGet(ctx: any) {
 
     const user = await validateSession(DB, token);
     if (!user) return Response.json({ error: 'Sitzung abgelaufen' }, { status: 401 });
-    if (user.is_admin !== 1) return Response.json({ error: 'Keine Berechtigung' }, { status: 403 });
+    const nein = verlangt(user, 'codes.approve');
+    if (nein) return nein;
 
     const { results } = await DB.prepare(
       `SELECT id, code, image_key, expires_at, added_at, source, source_ref
@@ -42,7 +44,8 @@ export async function onRequestPost(ctx: any) {
 
   const user = await validateSession(DB, token);
   if (!user) return Response.json({ error: 'Sitzung abgelaufen' }, { status: 401 });
-  if (user.is_admin !== 1) return Response.json({ error: 'Keine Berechtigung' }, { status: 403 });
+  const nein = verlangt(user, 'codes.manage');
+  if (nein) return nein;
 
   let body: any;
   try {

@@ -76,6 +76,13 @@ export default defineConfig({
               if (id.includes('preact')) {
                 return 'vendor-preact';
               }
+              // Chart.js braucht ein eigenes Bündel. Landet es im gemeinsamen
+              // 'vendor', zieht der erste statische Import daraus die ganzen
+              // 200 KB auf jede Seite — obwohl die Diagramme nur im
+              // Admin-Panel vorkommen und dort erst nachgeladen werden.
+              if (id.includes('node_modules/chart.js')) {
+                return 'vendor-chartjs';
+              }
               return 'vendor';
             }
           }

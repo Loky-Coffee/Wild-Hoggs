@@ -75,6 +75,36 @@ function relativeTime(dateStr: string, ago: AgoStrings): string {
   return ago.days.replace('{n}', String(diffDay));
 }
 
+/**
+ * Datum und Uhrzeit der Nachricht.
+ *
+ * "vor 3 Tagen" sagt einem nicht, ob etwas am Freitag oder am Samstag geschrieben
+ * wurde — bei Absprachen über Events zählt aber genau das. Deshalb steht die
+ * genaue Zeit daneben.
+ *
+ * Weggelassen wird, was sich von selbst versteht: bei heutigen Nachrichten das
+ * Datum, bei Nachrichten aus diesem Jahr die Jahreszahl.
+ *
+ * Die Sprache kommt aus <html lang>, das Astro pro Seite korrekt setzt — so
+ * muss sie nicht durch drei Komponenten-Ebenen gereicht werden.
+ */
+function absoluteTime(dateStr: string): string {
+  const iso = dateStr.includes('T') ? dateStr : dateStr.replace(' ', 'T') + 'Z';
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return '';
+
+  const locale = (typeof document !== 'undefined' && document.documentElement.lang) || undefined;
+  const jetzt = new Date();
+  const zeit = d.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' });
+
+  if (d.toDateString() === jetzt.toDateString()) return zeit;
+
+  const datum = d.toLocaleDateString(locale, d.getFullYear() === jetzt.getFullYear()
+    ? { day: '2-digit', month: '2-digit' }
+    : { day: '2-digit', month: '2-digit', year: 'numeric' });
+  return `${datum} ${zeit}`;
+}
+
 // Radial positions: angles (degrees) per button count, right-side origin
 // R=68, 40° spacing → arc gap ≈ button diameter → buttons nearly touch
 const RADIAL_R = 68;
@@ -231,7 +261,10 @@ function MessageItem({
         )}
         <p class="chat-msg-text">{msg.message}</p>
         <div class={`chat-bubble-footer${isOwn ? ' chat-bubble-footer-own' : ''}`}>
-          <span class="chat-msg-time">{relativeTime(msg.created_at, ago)}</span>
+          <span class="chat-msg-time">
+            {relativeTime(msg.created_at, ago)}
+            <span class="chat-msg-date">{absoluteTime(msg.created_at)}</span>
+          </span>
         </div>
       </div>
 

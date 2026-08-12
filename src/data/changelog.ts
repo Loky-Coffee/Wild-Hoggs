@@ -26,6 +26,16 @@ export function renderChangelogText(text: string): string {
 export const changelog: ChangelogEntry[] = [
   // ── August 2026 ─────────────────────────────────────────────────────────
   {
+    date: '2026-08-12',
+    time: '14:50',
+    text: 'Every page now loads **196 KB less** — a charting library had ended up in a bundle that was being fetched everywhere, although it is only needed on one internal page. Nothing looks different, the site just starts faster, especially on mobile data',
+  },
+  {
+    date: '2026-08-12',
+    time: '13:20',
+    text: 'Community messages now show the **exact date and time** next to the “3 days ago”, in your own language and time zone. Handy when you are arranging something around an event and need to know whether a message was written on Friday or on Saturday. Today’s messages show only the time, and the year appears only when it is not the current one',
+  },
+  {
     date: '2026-08-10',
     time: '19:20',
     text: 'The building calculator has a new **Saving** button for the **Season 4** specialisation that lowers build costs — 2% per level, **10% at level 5**, applied to food, wood, steel and Z coins. Two things were also missing from the city itself: there are **four windmills**, not one (just like the lumberyards), and **two hospitals**. Special thanks to **SkippySlippy** from **server 450** for pointing all of this out',

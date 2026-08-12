@@ -1,4 +1,5 @@
 import { getToken, validateSession } from '../../_lib/auth';
+import { verlangt } from '../../_lib/permissions';
 
 const MAX_SIZE = 5 * 1024 * 1024; // 5 MB
 const ALLOWED_TYPES: Record<string, string> = {
@@ -21,7 +22,8 @@ export async function onRequestPost(ctx: any) {
 
     const user = await validateSession(DB, token);
     if (!user) return Response.json({ error: 'Sitzung abgelaufen' }, { status: 401 });
-    if (user.is_admin !== 1) return Response.json({ error: 'Keine Berechtigung' }, { status: 403 });
+    const nein = verlangt(user, 'codes.manage');
+    if (nein) return nein;
 
     let formData: FormData;
     try {
