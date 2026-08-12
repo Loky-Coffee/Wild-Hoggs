@@ -79,6 +79,9 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
   const [dbUsers,     setDbUsers]     = useState<OnlineUser[]>([]);
   const [socketUsers, setSocketUsers] = useState<OnlineUser[]>([]);
   const [openPM,       setOpenPM]       = useState<string | null>(null);
+  // Startwert aus dem Gerätespeicher, damit die Liste sofort dasteht. Der
+  // verbindliche Stand kommt gleich darauf vom Server (siehe Effekt unten) —
+  // ohne den wäre eine am Telefon begonnene Unterhaltung hier unsichtbar.
   const [pmContacts,   setPmContacts]   = useState<string[]>(() => {
     try { return JSON.parse(localStorage.getItem('wh-pm-contacts') ?? '[]'); }
     catch { return []; }
@@ -93,6 +96,35 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
   const [sidebarOpen,  setSidebarOpen]  = useState(false);
 
   const pmInboxSince = useRef<string | null>(null);
+
+  // ── Gesprächsliste vom Server holen ───────────────────────────────────────
+  //
+  // Die Liste lag bisher nur im Speicher des jeweiligen Geräts. Wer am Telefon
+  // jemandem geschrieben hatte, sah die Unterhaltung am Rechner nicht — obwohl
+  // die Nachrichten längst in der Datenbank standen.
+  //
+  // Der Serverstand gibt die Reihenfolge vor (jüngste Unterhaltung zuerst).
+  // Namen, die nur lokal bekannt sind, bleiben erhalten und werden angehängt:
+  // Wer gerade ein Gespräch geöffnet, aber noch nichts geschrieben hat, soll
+  // es nicht verlieren.
+  useEffect(() => {
+    if (!isLoggedIn || !token) return;
+    let abgebrochen = false;
+
+    fetch('/api/chat/pm-contacts', { headers: { Authorization: `Bearer ${token}` } })
+      .then(r => r.ok ? r.json() : null)
+      .then((d: { contacts?: string[] } | null) => {
+        if (abgebrochen || !Array.isArray(d?.contacts)) return;
+        setPmContacts(prev => {
+          const zusammen = [...d.contacts!, ...prev.filter(n => !d.contacts!.includes(n))].slice(0, 20);
+          try { localStorage.setItem('wh-pm-contacts', JSON.stringify(zusammen)); } catch { /* ignore */ }
+          return zusammen;
+        });
+      })
+      .catch(() => { /* offline — die lokale Liste bleibt */ });
+
+    return () => { abgebrochen = true; };
+  }, [isLoggedIn, token]);
   const openPMRef    = useRef<string | null>(null);
 
   const lastCreatedAt = useRef<string | null>(null);
