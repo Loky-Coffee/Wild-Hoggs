@@ -597,8 +597,8 @@ export default {
   'research.army_building.tactical-cover': 'กำบังเชิงยุทธวิธี',
   'research.army_building.weapon-upgrading': 'อัปเกรดอาวุธ',
   // SEO-optimized Meta-Tags & Titles
-  'seo.home.title': 'Wild Hoggs | Last-Z Tools, Guides & Events — Server 395',
-  'seo.home.description': 'Your Last-Z resource hub: hero guides, calculators, event info, and reward codes — built by Ediva, a player on Server 395.',
+  'seo.home.title': "Wild Hoggs | Last-Z เครื่องมือและคู่มือ — เซิร์ฟเวอร์ 395",
+  'seo.home.description': "ศูนย์รวมข้อมูล Last-Z: คู่มือฮีโร่ เครื่องคำนวณ ข้อมูลอีเวนต์ และโค้ดของรางวัล — โดย Ediva ผู้เล่นเซิร์ฟเวอร์ 395",
   'seo.home.h1.brand': 'Wild Hoggs',
   'seo.home.h1.subtitle': 'Last-Z Tools, Guides & Events',
   'seo.heroes.title': 'Wild Hoggs | Tier List ฮีโร่ Last Z 2026',

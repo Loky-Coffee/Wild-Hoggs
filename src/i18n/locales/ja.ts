@@ -597,8 +597,8 @@ export default {
   'research.army_building.tactical-cover': '戦術的掩護',
   'research.army_building.weapon-upgrading': '武器強化',
   // SEO-optimized Meta-Tags & Titles
-  'seo.home.title': 'Wild Hoggs | Last-Z Tools, Guides & Events — Server 395',
-  'seo.home.description': 'Your Last-Z resource hub: hero guides, calculators, event info, and reward codes — built by Ediva, a player on Server 395.',
+  'seo.home.title': "Wild Hoggs | Last-Z ツール・攻略・イベント — サーバー395",
+  'seo.home.description': "Last-Z の情報拠点：ヒーロー攻略、計算ツール、イベント情報、ギフトコード。サーバー395のプレイヤー Ediva が運営。",
   'seo.home.h1.brand': 'Wild Hoggs',
   'seo.home.h1.subtitle': 'Last-Z Tools, Guides & Events',
   'seo.heroes.title': 'Wild Hoggs | Last Z ヒーローティアリスト 2026 - 最強キャラクター',

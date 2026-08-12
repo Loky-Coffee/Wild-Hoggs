@@ -597,8 +597,8 @@ export default {
   'research.army_building.tactical-cover': 'Taktische Deckung',
   'research.army_building.weapon-upgrading': 'Waffenverbesserung',
   // SEO-optimierte Meta-Tags & Titles
-  'seo.home.title': 'Wild Hoggs | Last-Z Tools, Guides & Events — Server 395',
-  'seo.home.description': 'Dein Last-Z Ressourcen-Hub: Helden-Guides, Rechner, Event-Infos und Reward-Codes — erstellt von Ediva, Spieler auf Server 395.',
+  'seo.home.title': "Wild Hoggs | Last-Z Rechner, Guides & Events — Server 395",
+  'seo.home.description': "Dein Last-Z Ressourcen-Hub: Helden-Guides, Rechner, Event-Infos und Reward-Codes — erstellt von Ediva, Spieler auf Server 395.",
   'seo.home.h1.brand': 'Wild Hoggs',
   'seo.home.h1.subtitle': 'Last-Z Tools, Guides & Events',
   'seo.heroes.title': 'Wild Hoggs | Last Z Helden Tier List 2026 - Beste Charaktere',

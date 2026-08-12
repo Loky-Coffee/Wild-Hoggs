@@ -597,8 +597,8 @@ export default {
   'research.army_building.tactical-cover': '전술 엄폐',
   'research.army_building.weapon-upgrading': '무기 개량',
   // SEO-optimized Meta-Tags & Titles
-  'seo.home.title': 'Wild Hoggs | Last-Z Tools, Guides & Events — Server 395',
-  'seo.home.description': 'Your Last-Z resource hub: hero guides, calculators, event info, and reward codes — built by Ediva, a player on Server 395.',
+  'seo.home.title': "Wild Hoggs | Last-Z 도구·공략·이벤트 — 서버 395",
+  'seo.home.description': "Last-Z 자료 허브: 영웅 공략, 계산기, 이벤트 정보, 기프트 코드 — 서버 395 플레이어 Ediva가 운영합니다.",
   'seo.home.h1.brand': 'Wild Hoggs',
   'seo.home.h1.subtitle': 'Last-Z Tools, Guides & Events',
   'seo.heroes.title': 'Wild Hoggs | Last Z 영웅 티어 리스트 2026 - 최고의 캐릭터',
