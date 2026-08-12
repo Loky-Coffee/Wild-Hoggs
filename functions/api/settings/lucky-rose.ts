@@ -9,7 +9,8 @@ export async function onRequestGet(ctx: any) {
   ).first() as { value: string } | null;
 
   const active = row ? parseInt(row.value, 10) : 10;
-  return Response.json({ active });
+  // Der Rosen-Buff wechselt; ein zwischengespeicherter Wert wäre schlicht falsch.
+  return Response.json({ active }, { headers: { 'Cache-Control': 'no-store' } });
 }
 
 // PUT /api/settings/lucky-rose — admin only

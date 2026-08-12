@@ -41,7 +41,8 @@ export async function onRequestGet(ctx: any) {
     user.is_admin === 1 ? u : { ...u, email: null }
   );
 
-  return Response.json({ users });
+  // Enthält personenbezogene Daten — gehört in keinen Zwischenspeicher.
+  return Response.json({ users }, { headers: { 'Cache-Control': 'no-store' } });
 }
 
 // PATCH /api/admin/users — Rolle und Rechte eines Kontos setzen

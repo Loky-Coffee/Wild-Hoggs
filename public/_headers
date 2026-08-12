@@ -35,10 +35,98 @@
 /images/*
   Cache-Control: public, max-age=2592000
 
-# HTML Pages - Cache 1 Stunde mit Revalidation
-/*.html
-  Cache-Control: public, max-age=3600, must-revalidate
-
-# Root HTML - Cache 1 Stunde
+# ── HTML-Seiten ─────────────────────────────────────────────────────────────
+#
+# Die frühere Regel lautete /*.html und griff dadurch nur bei der Startseite:
+# Mit trailingSlash: 'always' heissen die Adressen /de/ oder /de/tools/tank/,
+# also ohne Dateiendung. Gemessen lieferte Cloudflare für 540 der 541 Seiten
+# "max-age=0" und "cf-cache-status: DYNAMIC" — jeder Aufruf holte das komplette
+# HTML neu vom Ursprung, ohne Zwischenspeicher und ohne ETag.
+#
+# max-age=0 für den Browser, s-maxage für Cloudflare: Der Zwischenspeicher am
+# Netzrand liefert schnell aus, der Besucher bekommt aber nie eine veraltete
+# Seite untergeschoben. Bei einem Deploy leert Pages den Netz-Zwischenspeicher
+# selbst.
+#
+# Bewusst NICHT als /* geschrieben: Unter /api/ liegen Antworten mit
+# Kontodaten, Meldungen und Gift-Codes. Die tragen zwar inzwischen alle
+# "no-store" (siehe functions/api/), doch eine Regel, die sie überhaupt erst
+# erfassen könnte, hat hier nichts zu suchen.
 /
-  Cache-Control: public, max-age=3600, must-revalidate
+  Cache-Control: public, max-age=0, s-maxage=3600, must-revalidate
+
+/de/*
+  Cache-Control: public, max-age=0, s-maxage=3600, must-revalidate
+
+/fr/*
+  Cache-Control: public, max-age=0, s-maxage=3600, must-revalidate
+
+/es/*
+  Cache-Control: public, max-age=0, s-maxage=3600, must-revalidate
+
+/it/*
+  Cache-Control: public, max-age=0, s-maxage=3600, must-revalidate
+
+/pt/*
+  Cache-Control: public, max-age=0, s-maxage=3600, must-revalidate
+
+/tr/*
+  Cache-Control: public, max-age=0, s-maxage=3600, must-revalidate
+
+/ja/*
+  Cache-Control: public, max-age=0, s-maxage=3600, must-revalidate
+
+/ko/*
+  Cache-Control: public, max-age=0, s-maxage=3600, must-revalidate
+
+/id/*
+  Cache-Control: public, max-age=0, s-maxage=3600, must-revalidate
+
+/th/*
+  Cache-Control: public, max-age=0, s-maxage=3600, must-revalidate
+
+/vi/*
+  Cache-Control: public, max-age=0, s-maxage=3600, must-revalidate
+
+/ar/*
+  Cache-Control: public, max-age=0, s-maxage=3600, must-revalidate
+
+/zh-CN/*
+  Cache-Control: public, max-age=0, s-maxage=3600, must-revalidate
+
+/zh-TW/*
+  Cache-Control: public, max-age=0, s-maxage=3600, must-revalidate
+
+# Englische Unterseiten liegen ohne Sprachpräfix auf der Wurzelebene
+# (prefixDefaultLocale: false).
+/tools/*
+  Cache-Control: public, max-age=0, s-maxage=3600, must-revalidate
+
+/codes/*
+  Cache-Control: public, max-age=0, s-maxage=3600, must-revalidate
+
+/heroes/*
+  Cache-Control: public, max-age=0, s-maxage=3600, must-revalidate
+
+/roses/*
+  Cache-Control: public, max-age=0, s-maxage=3600, must-revalidate
+
+/about/*
+  Cache-Control: public, max-age=0, s-maxage=3600, must-revalidate
+
+/guides/*
+  Cache-Control: public, max-age=0, s-maxage=3600, must-revalidate
+
+/events/*
+  Cache-Control: public, max-age=0, s-maxage=3600, must-revalidate
+
+# Profil, Community und Verwaltung brauchen bewusst KEINE Sonderregel.
+# Geprüft am erzeugten HTML: Es enthält keinerlei Kontodaten — die Inseln
+# laufen mit client:only, alle Angaben kommen erst im Browser über die
+# Schnittstellen dazu, und die tragen sämtlich "no-store". Eine Regel nur für
+# /profile/* wäre ausserdem trügerisch, weil sie /de/profile/ nicht erfasst.
+
+# version.json steuert den Hinweis auf eine neue Fassung. Läge sie im
+# Zwischenspeicher, bekäme niemand die Meldung.
+/version.json
+  Cache-Control: public, max-age=0, must-revalidate

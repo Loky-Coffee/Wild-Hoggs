@@ -26,5 +26,8 @@ export async function onRequestGet(ctx: any) {
     permissions: user.permissions ?? null,
     notification_sound: user.notification_sound ?? 1,
     notification_volume: user.notification_volume ?? 1.5,
+  }, {
+    // Kontodaten gehören in keinen gemeinsamen Zwischenspeicher.
+    headers: { 'Cache-Control': 'no-store' },
   });
 }

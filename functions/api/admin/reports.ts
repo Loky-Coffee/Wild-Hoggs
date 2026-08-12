@@ -36,7 +36,8 @@ export async function onRequestGet(ctx: any) {
     ORDER BY r.created_at DESC LIMIT 100
   `).all();
 
-  return Response.json({ reports: result.results ?? [] });
+  // Meldungen ändern sich laufend.
+  return Response.json({ reports: result.results ?? [] }, { headers: { 'Cache-Control': 'no-store' } });
 }
 
 // PATCH /api/admin/reports — Dismiss a report (without deleting the message)

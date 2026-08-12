@@ -24,7 +24,7 @@ export async function onRequestGet(ctx: any) {
       `SELECT id, code, image_key, expires_at, added_at, source, source_ref
          FROM reward_codes WHERE status = 'pending' ORDER BY added_at DESC`
     ).all();
-    return Response.json({ codes: results ?? [] });
+    return Response.json({ codes: results ?? [] }, { headers: { 'Cache-Control': 'no-store' } });
   }
 
   const { results } = await DB.prepare(
@@ -32,7 +32,9 @@ export async function onRequestGet(ctx: any) {
        FROM reward_codes WHERE status = 'approved' ORDER BY added_at DESC`
   ).all();
 
-  return Response.json({ codes: results ?? [] });
+  // Freigegebene Codes müssen sofort erscheinen — nicht erst, wenn ein
+  // Zwischenspeicher abläuft.
+  return Response.json({ codes: results ?? [] }, { headers: { 'Cache-Control': 'no-store' } });
 }
 
 // POST /api/reward-codes — admin only
