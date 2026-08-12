@@ -40,7 +40,7 @@ export default defineConfig({
       // Google, Bing, Yandex nutzen lastmod für intelligenteres Crawling
       serialize(item) {
         // SEO: Exclude non-indexable pages from sitemap
-        const excludedPaths = ['/events', '/guides', '/admin', '/profile', '/community'];
+        const excludedPaths = ['/admin', '/profile', '/community'];
         const isExcluded = excludedPaths.some(path =>
           item.url.includes(path + '/') || item.url.endsWith(path)
         );

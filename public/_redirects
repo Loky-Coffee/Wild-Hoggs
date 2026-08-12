@@ -7,3 +7,45 @@
 # Voraussetzung: www.wild-hoggs.com muss als Custom Domain
 # im Cloudflare Pages Dashboard eingetragen sein.
 https://www.wild-hoggs.com/* https://wild-hoggs.com/:splat 301
+
+# ── Entfernte Seiten ────────────────────────────────────────────────────────
+#
+# /guides/ und /events/ waren seit jeher Platzhalter ("wird in Phase 4
+# implementiert") und sind jetzt entfernt. Beide trugen noindex und standen
+# nicht in der Sitemap, waren also nie indexiert — Links darauf kann es
+# trotzdem geben, aus Discord oder Lesezeichen. Statt ins Leere zu laufen,
+# führen sie zur Startseite der jeweiligen Sprache.
+#
+# 301 und nicht 302: Sie kommen nicht wieder. Sollte doch einmal ein
+# Event-Kalender entstehen, wird die Regel wieder entfernt.
+
+/guides/* / 301
+/events/* / 301
+/de/guides/* /de/ 301
+/de/events/* /de/ 301
+/fr/guides/* /fr/ 301
+/fr/events/* /fr/ 301
+/es/guides/* /es/ 301
+/es/events/* /es/ 301
+/it/guides/* /it/ 301
+/it/events/* /it/ 301
+/pt/guides/* /pt/ 301
+/pt/events/* /pt/ 301
+/tr/guides/* /tr/ 301
+/tr/events/* /tr/ 301
+/ja/guides/* /ja/ 301
+/ja/events/* /ja/ 301
+/ko/guides/* /ko/ 301
+/ko/events/* /ko/ 301
+/id/guides/* /id/ 301
+/id/events/* /id/ 301
+/th/guides/* /th/ 301
+/th/events/* /th/ 301
+/vi/guides/* /vi/ 301
+/vi/events/* /vi/ 301
+/ar/guides/* /ar/ 301
+/ar/events/* /ar/ 301
+/zh-CN/guides/* /zh-CN/ 301
+/zh-CN/events/* /zh-CN/ 301
+/zh-TW/guides/* /zh-TW/ 301
+/zh-TW/events/* /zh-TW/ 301

@@ -127,12 +127,6 @@
 /about/*
   Cache-Control: public, max-age=300, s-maxage=300, must-revalidate
 
-/guides/*
-  Cache-Control: public, max-age=300, s-maxage=300, must-revalidate
-
-/events/*
-  Cache-Control: public, max-age=300, s-maxage=300, must-revalidate
-
 # Profil, Community und Verwaltung brauchen bewusst KEINE Sonderregel.
 # Geprüft am erzeugten HTML: Es enthält keinerlei Kontodaten — die Inseln
 # laufen mit client:only, alle Angaben kommen erst im Browser über die
