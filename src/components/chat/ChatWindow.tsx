@@ -534,8 +534,8 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
   }, [pmUnread, unreadCounts, isLoggedIn]);
 
   // ── Handlers ──────────────────────────────────────────────────────────────
-  const handleSend = useCallback(async (text: string) => {
-    if (!token) return;
+  const handleSend = useCallback(async (text: string): Promise<boolean> => {
+    if (!token) return false;
     setSending(true);
     setSendError(null);
     const currentReplyId = replyTo?.id ?? null;
@@ -546,7 +546,7 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
         body:    JSON.stringify({ message: text, reply_to_id: currentReplyId }),
       });
       const data = await res.json() as any;
-      if (!res.ok) { setSendError(data.error ?? t('chat.error.send_failed')); return; }
+      if (!res.ok) { setSendError(data.error ?? t('chat.error.send_failed')); return false; }
       const newMsg = data as Message;
       setMessages(prev => {
         const known = new Set(prev.map(m => m.id));
@@ -554,8 +554,10 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
       });
       lastCreatedAt.current = newMsg.created_at;
       setReplyTo(null);
+      return true;
     } catch {
       setSendError(t('chat.error.connection_retry'));
+      return false;
     } finally {
       setSending(false);
     }

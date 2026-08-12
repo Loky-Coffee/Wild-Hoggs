@@ -26,6 +26,16 @@ export function renderChangelogText(text: string): string {
 export const changelog: ChangelogEntry[] = [
   // ── August 2026 ─────────────────────────────────────────────────────────
   {
+    date: '2026-08-13',
+    time: '00:58',
+    text: 'A message you typed in the chat is **no longer lost** when sending fails. Until now the box was emptied either way — if the connection dropped mid-send, what you had written was gone and only an error message was left. The text now stays put so you can simply send it again',
+  },
+  {
+    date: '2026-08-13',
+    time: '00:50',
+    text: 'Changing your password now **signs out your other devices**. Before, anyone who had got hold of your session — a shared computer, a phone left lying around — kept access for another 30 days, which made the one thing you do in that situation pointless. The browser you are changing it in stays logged in, and you are told how many devices were signed out',
+  },
+  {
     date: '2026-08-12',
     time: '14:50',
     text: 'Every page now loads **196 KB less** — a charting library had ended up in a bundle that was being fetched everywhere, although it is only needed on one internal page. Nothing looks different, the site just starts faster, especially on mobile data',

@@ -9,7 +9,8 @@ export interface ReplyTarget {
 }
 
 interface MessageInputProps {
-  onSend:         (text: string) => Promise<void>;
+  /** Liefert true, wenn die Nachricht wirklich abgeschickt wurde. */
+  onSend:         (text: string) => Promise<boolean>;
   sending:        boolean;
   sendError:      string | null;
   onClearError:   () => void;
@@ -35,8 +36,12 @@ export default function MessageInput({
   const handleSubmit = async () => {
     const trimmed = text.trim();
     if (!trimmed || sending) return;
-    await onSend(trimmed);
-    setText('');
+    // Das Feld nur leeren, wenn die Nachricht auch angekommen ist. Vorher wurde
+    // es immer geleert — bei Verbindungsabbruch, Sendesperre oder Serverfehler
+    // war das Geschriebene damit weg, und die Fehlermeldung daneben half wenig,
+    // weil nichts mehr dastand, was man erneut hätte abschicken können.
+    const gesendet = await onSend(trimmed);
+    if (gesendet) setText('');
     textareaRef.current?.focus();
   };
 
