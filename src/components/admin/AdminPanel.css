@@ -491,8 +491,29 @@ select.admin-filter-input option {
 
 .admin-pending-actions {
   display: flex;
+  align-items: flex-end;
   gap: 0.5rem;
   flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+/* Ablaufdatum je Fund — jeder Code bekommt sein eigenes, sonst zieht das
+   Formular darunter sein Datum mit herüber. */
+.admin-pending-datum {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.admin-pending-datum-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.admin-pending-datum .admin-filter-input {
+  min-width: 13rem;
 }
 
 .admin-code-form {

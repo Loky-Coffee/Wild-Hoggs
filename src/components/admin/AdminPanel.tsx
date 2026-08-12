@@ -157,6 +157,11 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
   const [codesLoading, setCodesLoading] = useState(false);
   const [newCode, setNewCode]         = useState('');
   const [newExpires, setNewExpires]   = useState('');
+  // Ablaufdatum je Discord-Fund. Der Bot liefert keins mit — er liest nur den
+  // Code aus der Nachricht —, also wird es beim Freigeben gesetzt. Früher
+  // griff das Freigeben auf newExpires zu, das Feld des Formulars darunter:
+  // Stand dort etwas, erbte der Fund ein Datum, das niemand für ihn gemeint hatte.
+  const [fundAblauf, setFundAblauf] = useState<Record<string, string>>({});
   const [uploadKey, setUploadKey]     = useState<string | null>(null);
   const [uploading, setUploading]     = useState(false);
   const [addingCode, setAddingCode]   = useState(false);
@@ -437,11 +442,18 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
       const res = await fetch(`/api/reward-codes/${code.id}`, {
         method:  'PATCH',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-        body:    JSON.stringify({ status, expires_at: newExpires ? new Date(newExpires).toISOString() : null }),
+        body:    JSON.stringify({
+          status,
+          // Nur beim Freigeben relevant; beim Verwerfen wäre ein Datum sinnlos.
+          expires_at: status === 'approved' && fundAblauf[code.id]
+            ? new Date(fundAblauf[code.id]).toISOString()
+            : null,
+        }),
       });
       if (!res.ok) return;
       const data = await res.json() as any;
       setPending(prev => prev.filter(c => c.id !== code.id));
+      setFundAblauf(prev => { const n = { ...prev }; delete n[code.id]; return n; });
       if (status === 'approved' && data.code) setCodes(prev => [data.code, ...prev]);
     } catch { /* Netzwerkfehler: der Eintrag bleibt stehen, erneut versuchbar */ }
     finally {
@@ -905,6 +917,18 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
                       <li class="admin-pending-item" key={c.id}>
                         <code class="admin-pending-code">{c.code}</code>
                         <div class="admin-pending-actions">
+                          <label class="admin-pending-datum">
+                            <span class="admin-pending-datum-label">{t('admin.settings.expires')}</span>
+                            <input
+                              class="admin-filter-input"
+                              type="datetime-local"
+                              value={fundAblauf[c.id] ?? ''}
+                              onChange={e => {
+                                const v = (e.target as HTMLInputElement).value;
+                                setFundAblauf(prev => ({ ...prev, [c.id]: v }));
+                              }}
+                            />
+                          </label>
                           <button
                             class="admin-btn-promote"
                             disabled={pendingBusy.has(c.id)}
