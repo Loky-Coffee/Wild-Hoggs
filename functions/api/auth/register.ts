@@ -1,5 +1,6 @@
 import { hashPassword, generateToken, expiresAt } from '../../_lib/auth';
 import { ladeEinstellung } from '../../_lib/settings';
+import { ipVon, pruefeRegisterLimit, zaehleRegistrierung } from '../../_lib/login-ratelimit';
 
 export async function onRequestPost(ctx: any) {
   const { DB } = ctx.env;
@@ -11,6 +12,19 @@ export async function onRequestPost(ctx: any) {
     return Response.json(
       { error: 'Die Registrierung ist derzeit geschlossen.' },
       { status: 403 },
+    );
+  }
+
+  // Mengenbremse gegen automatisiertes Anlegen von Konten. Zugleich macht sie
+  // es unattraktiv, über die Meldung "E-Mail bereits registriert" auszuprobieren,
+  // wer hier ein Konto hat.
+  const ip = ipVon(ctx.request);
+  const limit = await pruefeRegisterLimit(DB, ip);
+  if (!limit.erlaubt) {
+    const min = Math.ceil((limit.wartenSek ?? 3600) / 60);
+    return Response.json(
+      { error: `Zu viele Registrierungen von diesem Anschluss. Bitte in etwa ${min} Minute(n) erneut versuchen.` },
+      { status: 429, headers: { 'Retry-After': String(limit.wartenSek ?? 3600) } },
     );
   }
 
@@ -39,6 +53,12 @@ export async function onRequestPost(ctx: any) {
   if (password.length < 8) {
     return Response.json({ error: 'Passwort muss mindestens 8 Zeichen haben' }, { status: 400 });
   }
+
+  // Ab hier ist es ein ernsthafter Versuch — mitzählen, bevor die Datenbank
+  // preisgibt, ob es diese Adresse schon gibt. Stünde der Zähler erst am Ende,
+  // liessen sich beliebig viele Adressen durchprobieren, solange man nur
+  // aufhört, sobald die Antwort "bereits registriert" lautet.
+  await zaehleRegistrierung(DB, ip);
 
   // Check duplicates
   const existingEmail = await DB.prepare('SELECT id FROM users WHERE email = ?')

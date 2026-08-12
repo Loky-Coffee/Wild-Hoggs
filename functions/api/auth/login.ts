@@ -1,4 +1,5 @@
 import { verifyPassword, generateToken, expiresAt } from '../../_lib/auth';
+import { ipVon, pruefeLoginLimit, zaehleFehlversuch, loginGelungen } from '../../_lib/login-ratelimit';
 
 export async function onRequestPost(ctx: any) {
   const { DB } = ctx.env;
@@ -15,13 +16,33 @@ export async function onRequestPost(ctx: any) {
     return Response.json({ error: 'E-Mail und Passwort erforderlich' }, { status: 400 });
   }
 
+  // Zu viele Fehlversuche? Dann gar nicht erst nachschlagen. Die Prüfung steht
+  // vor der Datenbankabfrage, damit ein Angriff auch keine Rechenzeit kostet.
+  const ip     = ipVon(ctx.request);
+  const kennung = String(email).toLowerCase();
+  const limit  = await pruefeLoginLimit(DB, ip, kennung);
+  if (!limit.erlaubt) {
+    const min = Math.ceil((limit.wartenSek ?? 60) / 60);
+    return Response.json(
+      { error: `Zu viele Fehlversuche. Bitte in etwa ${min} Minute(n) erneut versuchen.` },
+      { status: 429, headers: { 'Retry-After': String(limit.wartenSek ?? 60) } },
+    );
+  }
+
   const user = await DB.prepare(
     'SELECT id, email, username, password_hash, faction, server, language, formation_power_br, formation_power_wd, formation_power_go, is_admin, COALESCE(is_moderator, 0) AS is_moderator, permissions FROM users WHERE email = ?'
   ).bind(email.toLowerCase()).first() as any;
 
   if (!user || !(await verifyPassword(password, user.password_hash))) {
+    await zaehleFehlversuch(DB, ip, kennung);
+    // Weiterhin dieselbe Meldung für "Konto gibt es nicht" und "Passwort
+    // falsch" — sonst liesse sich herausfinden, wer hier ein Konto hat.
     return Response.json({ error: 'Ungültige E-Mail oder Passwort' }, { status: 401 });
   }
+
+  // Wer sich richtig erinnert, ist sofort wieder frei — auch nach sieben
+  // Fehlversuchen davor.
+  await loginGelungen(DB, ip, kennung);
 
   const token = generateToken();
   await DB.prepare(

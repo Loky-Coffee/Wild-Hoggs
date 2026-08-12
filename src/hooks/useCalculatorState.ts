@@ -19,6 +19,31 @@ function cacheKey(profileId: string, calcType: string, calcKey: string) {
   return `wh-calc-${profileId}-${calcType}${calcKey !== 'main' ? `-${calcKey}` : ''}`;
 }
 
+/**
+ * Zeitstempel als Zahl, egal in welchem Format er vorliegt.
+ *
+ * Hier treffen zwei Schreibweisen aufeinander: Der Browser schreibt ISO
+ * ("2026-08-12T10:00:00.000Z"), der Server liefert SQLite-Zeit
+ * ("2026-08-12 10:00:30", UTC ohne Kennzeichnung).
+ *
+ * Vorher wurden beide als Zeichenkette verglichen. Da "T" (84) über dem
+ * Leerzeichen (32) steht, galt der lokale Stand bei gleichem Datum IMMER als
+ * der neuere — unabhängig von der echten Uhrzeit. Folge: Ein zweites Gerät
+ * holte fremde Änderungen nie ab und schob kurz darauf seinen alten Stand
+ * darüber. Die Arbeit auf dem anderen Gerät war verloren.
+ *
+ * In bereits gespeicherten Einträgen stehen beide Formate nebeneinander
+ * (siehe parseEntry und writeCache) — deshalb wird hier gelesen statt
+ * umgeschrieben. Ein unlesbarer Wert gilt als "ganz alt" (0), sodass im
+ * Zweifel vom Server geholt und nichts überschrieben wird.
+ */
+function zeitWert(ts: string | null | undefined): number {
+  if (!ts) return 0;
+  const iso = ts.includes('T') ? ts : ts.replace(' ', 'T') + 'Z';
+  const ms = new Date(iso).getTime();
+  return Number.isFinite(ms) ? ms : 0;
+}
+
 function parseEntry<T>(raw: string): CacheEntry<T> | null {
   try {
     const parsed = JSON.parse(raw);
@@ -131,7 +156,7 @@ function flushAllPending() {
 
     const [pid, ct, ck] = key.split(':');
     const cached = readCache(pid, ct, ck);
-    if (cached && cached.lastModifiedAt > cached.lastSyncedAt) {
+    if (cached && zeitWert(cached.lastModifiedAt) > zeitWert(cached.lastSyncedAt)) {
       pushToServer(pid, ct, ck, cached.state, token, true);
     } else {
       pendingKeys.delete(key);
@@ -178,7 +203,8 @@ async function runBackgroundValidation(token: string, profileId: string) {
         continue;
       }
 
-      if (serverTs > cached.lastSyncedAt && cached.lastModifiedAt <= cached.lastSyncedAt) {
+      if (zeitWert(serverTs) > zeitWert(cached.lastSyncedAt)
+          && zeitWert(cached.lastModifiedAt) <= zeitWert(cached.lastSyncedAt)) {
         await fetchAndUpdate(profileId, ct, ck, token, key);
       }
     }
@@ -235,7 +261,7 @@ export function useCalculatorState<T>(
     if (!t) return;
 
     const cached = readCache<T>(profileId, calcType, calcKey);
-    if (cached && cached.lastModifiedAt > cached.lastSyncedAt) {
+    if (cached && zeitWert(cached.lastModifiedAt) > zeitWert(cached.lastSyncedAt)) {
       const key = `${profileId}:${calcType}:${calcKey}`;
       const last = lastPushAt.get(key) ?? 0;
       if (Date.now() - last > MIN_REMOUNT_GAP) {
