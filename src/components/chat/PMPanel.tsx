@@ -13,13 +13,15 @@ interface PMPanelProps {
   ago:             AgoStrings;
   isAdmin:         boolean;
   translationData: TranslationData;
+  /** Steht die Live-Verbindung? Dann wird nicht nachgefragt. */
+  wsVerbunden?:    boolean;
 }
 
 const POLL_MS = 5_000;
 // Siehe ChatWindow: ohne Obergrenze wächst die Liste unbegrenzt weiter.
 const MAX_MESSAGES = 200;
 
-export default function PMPanel({ username, currentUsername, token, onClose, ago, isAdmin, translationData }: PMPanelProps) {
+export default function PMPanel({ username, currentUsername, token, onClose, ago, isAdmin, translationData, wsVerbunden = false }: PMPanelProps) {
   const t = useTranslations(translationData);
 
   const [messages,    setMessages]    = useState<Message[]>([]);
@@ -98,12 +100,36 @@ export default function PMPanel({ username, currentUsername, token, onClose, ago
     setReportedIds(new Set());
     lastCreatedAt.current = null;
     loadInitial();
+  }, [username, token]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ── Neue Nachricht über die Verbindung ────────────────────────────────────
+  //
+  // ChatWindow hält die Verbindung und reicht Nachrichten für das gerade
+  // geöffnete Gespräch hierher weiter. Vorher wurde stattdessen alle fünf
+  // Sekunden nachgefragt, obwohl die Nachricht dort bereits vorlag.
+  useEffect(() => {
+    const beiPm = (e: Event) => {
+      const { from, message } = (e as CustomEvent<{ from: string; message: Message }>).detail ?? {};
+      if (from !== username || !message?.id) return;
+      setMessages(prev => {
+        if (prev.some(m => m.id === message.id)) return prev;   // schon da
+        lastCreatedAt.current = message.created_at ?? lastCreatedAt.current;
+        return [...prev, message].slice(-MAX_MESSAGES);
+      });
+    };
+    window.addEventListener('wh:pm-message', beiPm);
+    return () => window.removeEventListener('wh:pm-message', beiPm);
+  }, [username]);
+
+  // ── Nachfragen nur, wenn die Verbindung nicht steht ───────────────────────
+  useEffect(() => {
+    if (wsVerbunden) return;
     if (pollRef.current) clearInterval(pollRef.current);
     pollRef.current = setInterval(() => {
       if (document.visibilityState !== 'hidden') poll();
     }, POLL_MS);
-    return () => { if (pollRef.current) clearInterval(pollRef.current); };
-  }, [username, token]); // eslint-disable-line react-hooks/exhaustive-deps
+    return () => { if (pollRef.current) { clearInterval(pollRef.current); pollRef.current = null; } };
+  }, [username, token, wsVerbunden]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSend = useCallback(async () => {
     const msg = text.trim();

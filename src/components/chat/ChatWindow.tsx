@@ -229,7 +229,17 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
           localStorage.setItem('wh-pm-contacts', JSON.stringify(next));
           return next;
         });
-        if (openPMRef.current === from) break;   // offen — PMPanel holt es selbst
+        // Ist das Gespräch offen, bekommt es die Nachricht direkt über die
+        // Verbindung. Vorher fragte das Fenster stattdessen alle fünf Sekunden
+        // nach — obwohl sie hier bereits vorlag.
+        if (openPMRef.current === from) {
+          try {
+            window.dispatchEvent(new CustomEvent('wh:pm-message', {
+              detail: { from, message: ev.message },
+            }));
+          } catch { /* ignore */ }
+          break;
+        }
         if (openPMRef.current === null) {
           setOpenPM(from);
           openPMRef.current = from;
@@ -776,6 +786,7 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
           username={openPM}
           currentUsername={user.username}
           token={token}
+          wsVerbunden={wsConnected}
           onClose={() => setOpenPM(null)}
           ago={ago}
           isAdmin={isAdmin}
