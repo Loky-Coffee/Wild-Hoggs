@@ -136,6 +136,12 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
 
   // Per-tab "last seen" timestamps for inactive-tab background polling
   const tabSince = useRef<Partial<Record<ChatType, string>>>({});
+  // Zählt die Ladevorgänge der Historie. Wer schnell zwischen den Kanälen
+  // wechselt, hat mehrere gleichzeitig unterwegs — und die Antworten kommen
+  // nicht in der Reihenfolge zurück, in der sie losgeschickt wurden. Ohne
+  // diesen Zähler schrieb eine verspätete Antwort ihre Nachrichten in den
+  // Kanal, den man inzwischen offen hatte.
+  const ladeLauf = useRef(0);
 
   const [unreadCounts, setUnreadCounts] = useState<Map<ChatType, number>>(new Map());
 
@@ -419,6 +425,9 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
 
   const loadInitial = useCallback(async (type: ChatType) => {
     if (!token) return;
+    const lauf = ++ladeLauf.current;
+    // Überholt: inzwischen wurde ein anderer Kanal geöffnet.
+    const veraltet = () => lauf !== ladeLauf.current;
     setLoading(true);
     setLoadError(null);
     setMessages([]);
@@ -427,20 +436,26 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
       const res = await fetch(buildUrl(type, 'limit=50'), {
         headers: { Authorization: `Bearer ${token}` },
       });
+      if (veraltet()) return;
       if (!res.ok) {
         const data = await res.json() as { error: string };
+        if (veraltet()) return;
         setLoadError(data.error ?? t('chat.loading'));
         return;
       }
       const data = await res.json() as { messages: Message[] };
+      if (veraltet()) return;
       setMessages(data.messages);
       if (data.messages.length > 0) {
         lastCreatedAt.current = data.messages[data.messages.length - 1].created_at;
       }
     } catch {
+      if (veraltet()) return;
       setLoadError(t('chat.error.connection_reload'));
     } finally {
-      setLoading(false);
+      // Der Ladehinweis gehört dem neuesten Lauf; ein überholter darf ihn nicht
+      // vorzeitig abschalten und einen halb geladenen Kanal zeigen.
+      if (!veraltet()) setLoading(false);
     }
   }, [token, buildUrl]); // eslint-disable-line react-hooks/exhaustive-deps
 
