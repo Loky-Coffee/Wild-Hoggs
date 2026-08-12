@@ -97,3 +97,28 @@ export function getCurrentMonth(lang: Language): string {
 export function getCurrentYear(): string {
   return new Date().getFullYear().toString();
 }
+
+/**
+ * Baut ein Teilwörterbuch mit nur den angegebenen Schlüsseln.
+ *
+ * Hintergrund: Astro serialisiert die Eigenschaften einer Insel als JSON ins
+ * HTML. Wird das vollständige Wörterbuch übergeben, landen alle 959 Einträge
+ * in jeder ausgelieferten Seite — auch dann, wenn die Komponente ein Dutzend
+ * davon anzeigt. Beim UserMenu in der Navigation waren das rund 78.000 Zeichen
+ * auf 525 von 540 Seiten.
+ *
+ * Für Komponenten, die nur auf ihrer eigenen Seite geladen werden und ohnehin
+ * viele Texte brauchen (Rechner, Chat, Profil), lohnt sich das nicht — dort
+ * bleibt das vollständige Wörterbuch die einfachere Lösung.
+ */
+export function nurDiese(
+  data: TranslationData,
+  keys: readonly TranslationKey[],
+): TranslationData {
+  const teil: Record<string, string> = {};
+  for (const k of keys) {
+    const wert = data[k];
+    if (wert !== undefined) teil[k] = wert;
+  }
+  return teil as TranslationData;
+}
