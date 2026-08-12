@@ -396,7 +396,10 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
         body: JSON.stringify({
           code: newCode.trim(),
           image_key: uploadKey ?? undefined,
-          expires_at: newExpires || undefined,
+          // Ortszeit des Eingabefelds in einen eindeutigen Zeitpunkt wandeln.
+          // Roh gespeichert waere "2026-08-20T23:59" fuer jeden Betrachter
+          // eine andere Uhrzeit.
+          expires_at: newExpires ? new Date(newExpires).toISOString() : undefined,
         }),
       });
       if (res.ok) {

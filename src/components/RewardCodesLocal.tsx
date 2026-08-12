@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'preact/hooks';
 import { useTranslations } from '../i18n/utils';
 import type { Language, TranslationData } from '../i18n/index';
-import { getApocalypseTime } from '../utils/time';
 import './RewardCodes.css';
 
 interface RewardCode {
@@ -38,14 +37,37 @@ export function giftCenterUrl(lang: string): string {
   return `https://last-z.com/#/${sprache}/order?jumpfrom=giftCenter`;
 }
 
+/**
+ * Ablaufzeitpunkt als echter Zeitwert.
+ *
+ * In der Spalte können zwei Schreibweisen stehen: ISO mit Z (vom Admin-Panel)
+ * und SQLite-Zeit ohne Kennzeichnung ("2026-08-20 21:59:00"). Fehlt die
+ * Kennzeichnung, deutet der Browser den Wert als Ortszeit des Betrachters —
+ * derselbe Code liefe dann in Tokio sieben Stunden früher ab als in Berlin.
+ * Deshalb wird hier ausdrücklich als UTC gelesen.
+ */
+function ablaufWert(expiresAt: string): number {
+  const hatZone = /[Zz]$|[+-]\d{2}:?\d{2}$/.test(expiresAt);
+  const iso = expiresAt.includes('T') ? expiresAt : expiresAt.replace(' ', 'T');
+  const ms = new Date(hatZone ? iso : iso + 'Z').getTime();
+  return Number.isFinite(ms) ? ms : NaN;
+}
+
 function getTimeRemaining(expiresAt: string | null) {
   if (!expiresAt) return { expired: false, days: 0, hours: 0, minutes: 0, noExpiry: true };
 
-  // Get current time in UTC-2 (Apocalypse Time / Last-Z Time)
-  const apocalypseTime = getApocalypseTime();
+  const expiry = ablaufWert(expiresAt);
+  // Unlesbares Datum: lieber als "läuft nicht ab" behandeln, als einen
+  // gültigen Code fälschlich in den Abgelaufen-Bereich zu schieben.
+  if (Number.isNaN(expiry)) return { expired: false, days: 0, hours: 0, minutes: 0, noExpiry: true };
 
-  const expiry = new Date(expiresAt).getTime();
-  const diff = expiry - apocalypseTime.getTime();
+  // Bewusst Date.now() und NICHT getApocalypseTime(): Die Spielzeit ist eine
+  // Anzeigeform (UTC-2), ihr Zeitwert ist gegenüber der echten Zeit verschoben.
+  // Von einem echten Zeitpunkt abgezogen kam je nach Zeitzone des Besuchers
+  // eine um Stunden falsche Restzeit heraus — in New York galten Codes zwei
+  // Stunden zu früh als abgelaufen, in Tokio blieben abgelaufene elf Stunden
+  // stehen.
+  const diff = expiry - Date.now();
 
   if (diff <= 0) {
     return { expired: true, days: 0, hours: 0, minutes: 0, noExpiry: false };
@@ -127,8 +149,8 @@ export default function RewardCodesLocal({ lang, translationData }: RewardCodesL
       return timeRemaining.expired;
     })
     .sort((a, b) => {
-      const aExp = a.expires_at ? new Date(a.expires_at).getTime() : 0;
-      const bExp = b.expires_at ? new Date(b.expires_at).getTime() : 0;
+      const aExp = a.expires_at ? ablaufWert(a.expires_at) || 0 : 0;
+      const bExp = b.expires_at ? ablaufWert(b.expires_at) || 0 : 0;
       return bExp - aExp;
     });
 
@@ -225,7 +247,7 @@ export default function RewardCodesLocal({ lang, translationData }: RewardCodesL
                 </div>
                 {item.expires_at && (
                   <div className="code-expired-date">
-                    {t('codes.expiredOn')}: {new Date(item.expires_at).toLocaleDateString(lang)}
+                    {t('codes.expiredOn')}: {new Date(ablaufWert(item.expires_at)).toLocaleDateString(lang)}
                   </div>
                 )}
               </div>
