@@ -19,7 +19,6 @@ export interface Einstellung {
 export const EINSTELLUNGEN: Einstellung[] = [
   // Zugang
   { key: 'registration_open', typ: 'schalter', standard: 1 },
-  { key: 'maintenance_mode',  typ: 'schalter', standard: 0 },
   // Chat
   { key: 'chat_enabled',      typ: 'schalter', standard: 1 },
   { key: 'chat_max_length',   typ: 'zahl',     standard: 500, min: 50,  max: 2000 },

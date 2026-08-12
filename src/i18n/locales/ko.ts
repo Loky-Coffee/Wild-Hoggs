@@ -914,6 +914,7 @@ export default {
   'admin.users.col.server': '서버',
   'admin.users.col.registered': '가입일',
   'admin.users.col.last_login': '마지막 Login',
+  'admin.users.col.activity': 'Activity',
   'admin.settings.lucky_rose': 'Lucky Rose',
   'admin.settings.lucky_rose_active': '활성 Rose (1–10)',
   'admin.settings.save': '저장',

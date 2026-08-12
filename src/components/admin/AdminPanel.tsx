@@ -661,6 +661,7 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
                             <th>{t('admin.users.col.server')}</th>
                             <th>{t('admin.users.col.registered')}</th>
                             <th>{t('admin.users.col.last_login')}</th>
+                            <th>{t('admin.users.col.activity')}</th>
                             {isAdmin && <th></th>}
                           </tr>
                         </thead>
@@ -685,6 +686,11 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
                                 <td class="admin-table-muted">{u.server ?? '—'}</td>
                                 <td class="admin-table-muted admin-nowrap">{formatDate(u.created_at)}</td>
                                 <td class="admin-table-muted admin-nowrap">{u.last_login ? formatDate(u.last_login) : '—'}</td>
+                                <td class="admin-nowrap admin-aktivitaet">
+                                  {(u.msg_global ?? 0) + (u.msg_server ?? 0) > 0
+                                    ? <>💬 {(u.msg_global ?? 0) + (u.msg_server ?? 0)}</>
+                                    : <span class="admin-still">—</span>}
+                                </td>
                                 {isAdmin && (
                                   <td class="admin-table-actions">
                                     {!isYou && (

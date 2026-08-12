@@ -15,8 +15,8 @@ interface Feld {
   hinweis: string;
   typ: 'schalter' | 'zahl';
   einheit?: string;
-  // Bei Schaltern: Welche Stellung ist die unauffällige? Ein eingeschalteter
-  // Wartungsmodus soll ins Auge fallen, ein offener Zugang nicht.
+  // Bei Schaltern: Welche Stellung soll auffallen? Ein geschlossener Zugang
+  // oder abgeschalteter Chat wird sonst tagelang übersehen.
   warnBei?: 0 | 1;
 }
 
@@ -26,8 +26,6 @@ const GRUPPEN: { titel: string; felder: Feld[] }[] = [
     felder: [
       { key: 'registration_open', titel: 'Registrierung offen', typ: 'schalter', warnBei: 0,
         hinweis: 'Geschlossen kann sich niemand mehr neu anmelden. Bestehende Konten bleiben unberührt.' },
-      { key: 'maintenance_mode', titel: 'Wartungsmodus', typ: 'schalter', warnBei: 1,
-        hinweis: 'Vorbereitet, aber noch ohne Wirkung — die Seite ist statisch und läuft weiter.' },
     ],
   },
   {

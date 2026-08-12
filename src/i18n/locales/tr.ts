@@ -914,6 +914,7 @@ export default {
   'admin.users.col.server': 'Sunucu',
   'admin.users.col.registered': 'Kayit tarihi',
   'admin.users.col.last_login': 'Son Login',
+  'admin.users.col.activity': 'Activity',
   'admin.settings.lucky_rose': 'Lucky Rose',
   'admin.settings.lucky_rose_active': 'Aktif Rose (1–10)',
   'admin.settings.save': 'Kaydet',

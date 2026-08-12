@@ -915,6 +915,7 @@ export default {
   'admin.users.col.server': 'Server',
   'admin.users.col.registered': 'Registered',
   'admin.users.col.last_login': 'Last Login',
+  'admin.users.col.activity': 'Activity',
   'admin.settings.lucky_rose': 'Lucky Rose',
   'admin.settings.lucky_rose_active': 'Active Rose (1–10)',
   'admin.settings.save': 'Save',

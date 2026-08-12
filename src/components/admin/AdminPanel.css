@@ -954,3 +954,6 @@ select.admin-filter-input option {
 @media (prefers-reduced-motion: reduce) {
   .admin-kipp, .admin-kipp::after { transition: none; }
 }
+
+.admin-aktivitaet { color: rgba(255, 255, 255, 0.7); font-variant-numeric: tabular-nums; }
+.admin-still { opacity: 0.3; }

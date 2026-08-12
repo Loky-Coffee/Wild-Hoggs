@@ -914,6 +914,7 @@ export default {
   'admin.users.col.server': 'サーバー',
   'admin.users.col.registered': '登録日',
   'admin.users.col.last_login': '最終 Login',
+  'admin.users.col.activity': 'Activity',
   'admin.settings.lucky_rose': 'Lucky Rose',
   'admin.settings.lucky_rose_active': 'アクティブ Rose (1–10)',
   'admin.settings.save': '保存',

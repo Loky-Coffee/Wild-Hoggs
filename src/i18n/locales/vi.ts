@@ -914,6 +914,7 @@ export default {
   'admin.users.col.server': 'Máy chủ',
   'admin.users.col.registered': 'Ngày đăng ký',
   'admin.users.col.last_login': 'Login gần nhất',
+  'admin.users.col.activity': 'Activity',
   'admin.settings.lucky_rose': 'Lucky Rose',
   'admin.settings.lucky_rose_active': 'Rose hoạt động (1–10)',
   'admin.settings.save': 'Lưu',

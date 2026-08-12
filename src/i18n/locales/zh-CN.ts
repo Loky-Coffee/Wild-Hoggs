@@ -914,6 +914,7 @@ export default {
   'admin.users.col.server': '服务器',
   'admin.users.col.registered': '注册日期',
   'admin.users.col.last_login': '上次 Login',
+  'admin.users.col.activity': 'Activity',
   'admin.settings.lucky_rose': 'Lucky Rose',
   'admin.settings.lucky_rose_active': '当前 Rose (1–10)',
   'admin.settings.save': '保存',

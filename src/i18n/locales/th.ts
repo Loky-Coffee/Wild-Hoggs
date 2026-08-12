@@ -914,6 +914,7 @@ export default {
   'admin.users.col.server': 'เซิร์ฟเวอร์',
   'admin.users.col.registered': 'วันลงทะเบียน',
   'admin.users.col.last_login': 'Login ล่าสุด',
+  'admin.users.col.activity': 'Activity',
   'admin.settings.lucky_rose': 'Lucky Rose',
   'admin.settings.lucky_rose_active': 'Rose ที่ใช้งาน (1–10)',
   'admin.settings.save': 'บันทึก',

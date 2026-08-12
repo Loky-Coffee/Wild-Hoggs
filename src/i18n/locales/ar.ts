@@ -914,6 +914,7 @@ export default {
   'admin.users.col.server': 'الخادم',
   'admin.users.col.registered': 'تاريخ التسجيل',
   'admin.users.col.last_login': 'آخر Login',
+  'admin.users.col.activity': 'Activity',
   'admin.settings.lucky_rose': 'Lucky Rose',
   'admin.settings.lucky_rose_active': 'Rose النشطة (1–10)',
   'admin.settings.save': 'حفظ',
