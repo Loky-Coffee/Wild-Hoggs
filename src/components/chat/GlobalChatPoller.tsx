@@ -1,12 +1,29 @@
-// Invisible component — runs on every page via Navigation.astro.
-// When NOT on the community page: polls PM inbox + ALL accessible chat channels
-// every 20 s and updates the nav badge (#community-badge) + document.title.
-// When ON the community page: ChatWindow handles polling and dispatches
-// 'wh:unread-count' events — this component just applies those counts.
+// Unsichtbare Komponente — läuft über Navigation.astro auf jeder Seite und
+// pflegt den Zähler an "Community" sowie den Titel des Browser-Tabs.
+//
+// Zuerst die Live-Verbindung, Abfragen nur als Rückfall:
+//
+//   verbunden      → keine Abfragen; Hinweise kommen in dem Moment, in dem
+//                    jemand schreibt
+//   nicht verbunden→ alle 20 Sekunden abfragen, wie zuvor
+//
+// Vorher lief ausschliesslich die Abfrage — bis zu fünf Anfragen alle zwanzig
+// Sekunden je angemeldeter Person (Postfach plus bis zu vier Kanäle), also
+// rund 900 in der Stunde. Die Verbindung gab es zwar schon, aber nur im
+// Community-Bereich; auf den übrigen Seiten wusste diese Komponente nichts
+// von ihr.
+//
+// Ohne Anmeldung wird nicht verbunden — useChatSocket steigt ohne Token
+// sofort aus, und ohne Anmeldung gibt es auch nichts zu melden.
+//
+// Im Community-Bereich hält das Chat-Fenster die Verbindung. Diese Komponente
+// baut dort bewusst keine zweite auf und übernimmt nur dessen Zählung über
+// das Ereignis 'wh:unread-count'.
 
-import { useEffect, useRef, useCallback } from 'preact/hooks';
+import { useEffect, useRef, useCallback, useState } from 'preact/hooks';
 import { useAuth } from '../../hooks/useAuth';
 import { useProfile } from '../../hooks/useProfile';
+import { useChatSocket, type ChatSocketEvent } from '../../hooks/useChatSocket';
 
 // Ein einziger, wiederverwendeter AudioContext. Vorher wurde pro Ton ein neuer
 // erzeugt und über osc.onended geschlossen — das greift aber nur, wenn der Ton
@@ -125,9 +142,48 @@ export default function GlobalChatPoller() {
     return () => document.removeEventListener('astro:page-load', onNav);
   }, [applyCount]);
 
-  // ── Background polling when NOT on community page ─────────────────────────
+  // ── Live-Verbindung ───────────────────────────────────────────────────────
+  //
+  // Der Hub meldet neue Nachrichten in dem Moment, in dem sie geschrieben
+  // werden. Ob sie als 'message' oder 'unread' ankommen, hängt davon ab,
+  // welchen Tab er für diese Person vermerkt hat — hier zählt beides gleich,
+  // denn wer nicht im Community-Bereich ist, hat ohnehin nichts offen.
+  //
+  // Im Community-Bereich wird kein Token durchgereicht: Dort hält das
+  // Chat-Fenster die Verbindung, eine zweite wäre überflüssig.
+  // Muss auf den Seitenwechsel reagieren: Die Komponente überlebt ihn dank
+  // transition:persist, rendert dabei aber nicht von selbst neu. Ohne diesen
+  // Zustand behielte sie ihre Verbindung auch im Community-Bereich — dort
+  // baut das Chat-Fenster eine eigene auf, und es liefen zwei pro Person.
+  const [aufCommunity, setAufCommunity] = useState(() => isOnCommunity());
+  useEffect(() => {
+    const pruefen = () => setAufCommunity(isOnCommunity());
+    document.addEventListener('astro:page-load', pruefen);
+    return () => document.removeEventListener('astro:page-load', pruefen);
+  }, []);
+
+  const socketToken = aufCommunity ? null : token;
+
+  const beiEreignis = useCallback((ev: ChatSocketEvent) => {
+    if (isOnCommunity()) return;              // das Chat-Fenster übernimmt
+    if (ev.type === 'message' || ev.type === 'unread' || ev.type === 'pm') {
+      applyCount(countRef.current + 1);
+    }
+  }, [applyCount]);
+
+  const wsVerbunden = useChatSocket(
+    'global',                          // gemeldeter Tab — siehe Kommentar oben
+    activeProfile.server ?? null,
+    socketToken,
+    beiEreignis,
+  );
+
+  // ── Abfragen als Rückfall, wenn die Verbindung nicht steht ────────────────
   useEffect(() => {
     if (!isLoggedIn || !token) return;
+    // Steht die Verbindung, wird nicht abgefragt. Genau dafür liefert
+    // useChatSocket seinen Rückgabewert.
+    if (wsVerbunden) return;
 
     const poll = async () => {
       if (isOnCommunity()) return; // ChatWindow is handling it
@@ -210,7 +266,7 @@ export default function GlobalChatPoller() {
     return () => {
       if (pollRef.current) { clearInterval(pollRef.current); pollRef.current = null; }
     };
-  }, [isLoggedIn, token, user, activeProfile.server, applyCount]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [isLoggedIn, token, user, activeProfile.server, applyCount, wsVerbunden]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return null;
 }
