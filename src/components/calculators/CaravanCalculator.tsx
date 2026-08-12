@@ -41,7 +41,10 @@ function parsePower(input: string): number {
   const commaCount = (s.match(/,/g) || []).length;
   const dotCount   = (s.match(/\./g) || []).length;
   if (commaCount > 1) { s = s.replace(/,/g, ''); }
-  else if (dotCount > 1) { s = s.replace(/\./g, ''); }
+  // Mehrere Punkte heisst deutsche Schreibweise — ein danebenstehendes
+  // Komma ist dann der Dezimaltrenner. Ohne die zweite Ersetzung stoppte
+  // parseFloat bei "1.234.567,89" am Komma und schluckte die Nachkommastellen.
+  else if (dotCount > 1) { s = s.replace(/\./g, '').replace(',', '.'); }
   else if (commaCount === 1 && dotCount === 1) {
     const lastComma = s.lastIndexOf(',');
     const lastDot   = s.lastIndexOf('.');
@@ -49,6 +52,16 @@ function parsePower(input: string): number {
   } else if (commaCount === 1) {
     const afterComma = s.split(',')[1] || '';
     s = afterComma.length === 3 ? s.replace(',', '') : s.replace(',', '.');
+  } else if (dotCount === 1) {
+    // Dieselbe Regel wie beim Komma eine Zeile höher — sie fehlte für den
+    // Punkt. Dadurch las "985.000" sich als 985: In deutscher Schreibweise
+    // gibt man die Formationsstärke aber genau so ein, und der Rechner
+    // meldete daraufhin, nicht einmal Stufe 1 sei erreichbar.
+    //
+    // Drei Stellen dahinter heisst Tausendertrenner, alles andere bleibt ein
+    // Dezimaltrenner — so bleibt "1.5M" weiterhin anderthalb Millionen.
+    const afterDot = s.split('.')[1] || '';
+    if (afterDot.length === 3) s = s.replace('.', '');
   }
   const num = parseFloat(s);
   return isNaN(num) ? NaN : num * multiplier;
