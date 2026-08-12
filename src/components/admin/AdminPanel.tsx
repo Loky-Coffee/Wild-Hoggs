@@ -5,6 +5,7 @@ import type { TranslationData } from '../../i18n/index';
 import { darf, darfEines, parseRechte, type Recht } from '../../utils/permissions';
 import AdminStats from './AdminStats';
 import AdminPermissions from './AdminPermissions';
+import AdminSystem from './AdminSystem';
 import './AdminPanel.css';
 
 interface AdminPanelProps {
@@ -786,28 +787,11 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
           </div>
         )}
 
-        {/* ── System: Zustand der Dienste ── */}
-        {activeTab === 'system' && (
+        {/* ── System: was die Seite tut ── */}
+        {activeTab === 'system' && token && (
           <div class="admin-settings">
             <h2 class="admin-settings-title">⚙ {t('admin.system.title')}</h2>
-            <section class="admin-settings-section">
-              <div class="admin-karten">
-                <div class="admin-karte">
-                  <h4>Chat</h4>
-                  <div class="admin-schalter"><span>Live-Verbindung</span><span class="admin-ampel admin-ampel-an" /></div>
-                  <div class="admin-schalter"><span>Max. Zeichen</span><strong>500</strong></div>
-                </div>
-                <div class="admin-karte">
-                  <h4>Gift-Codes</h4>
-                  <div class="admin-schalter"><span>Discord-Bot</span><span class="admin-ampel admin-ampel-an" /></div>
-                  <div class="admin-schalter"><span>Wartend</span><strong>{pending.length}</strong></div>
-                </div>
-              </div>
-              <p class="admin-hint">
-                Weitere Schalter — Wartungsmodus, Registrierung sperren, Wortfilter —
-                folgen im nächsten Schritt.
-              </p>
-            </section>
+            <AdminSystem token={token} />
           </div>
         )}
 

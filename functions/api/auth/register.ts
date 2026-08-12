@@ -1,7 +1,18 @@
 import { hashPassword, generateToken, expiresAt } from '../../_lib/auth';
+import { ladeEinstellung } from '../../_lib/settings';
 
 export async function onRequestPost(ctx: any) {
   const { DB } = ctx.env;
+
+  // Registrierung lässt sich in der Verwaltung schliessen — etwa wenn eine
+  // Welle von Wegwerfkonten hereinkommt. Die Prüfung steht ganz vorn, damit
+  // erst gar keine Daten verarbeitet werden.
+  if (await ladeEinstellung(DB, 'registration_open') !== 1) {
+    return Response.json(
+      { error: 'Die Registrierung ist derzeit geschlossen.' },
+      { status: 403 },
+    );
+  }
 
   let body: any;
   try {

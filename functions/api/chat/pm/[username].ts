@@ -3,8 +3,10 @@
 
 import { getToken, validateSession } from '../../../_lib/auth';
 import { checkRateLimit } from '../../../_lib/chat-ratelimit';
+import { ladeEinstellungen } from '../../../_lib/settings';
 import { broadcastPM } from '../../../_lib/chat-hub';
 
+// Rückfallwert; der tatsächliche Wert kommt aus den Einstellungen.
 const MAX_LEN       = 500;
 const DEFAULT_LIMIT = 50;
 
@@ -90,11 +92,15 @@ export async function onRequestPost(ctx: any) {
   if (!message) {
     return Response.json({ error: 'Nachricht darf nicht leer sein.' }, { status: 400 });
   }
-  if (message.length > MAX_LEN) {
-    return Response.json({ error: `Nachricht zu lang (max. ${MAX_LEN} Zeichen).` }, { status: 400 });
+  // Private Nachrichten bleiben auch dann möglich, wenn der offene Chat
+  // geschlossen ist — sie sind keine öffentliche Bühne.
+  const einst = await ladeEinstellungen(DB);
+  const maxLen = einst.chat_max_length || MAX_LEN;
+  if (message.length > maxLen) {
+    return Response.json({ error: `Nachricht zu lang (max. ${maxLen} Zeichen).` }, { status: 400 });
   }
 
-  const rl = await checkRateLimit(DB, user.user_id);
+  const rl = await checkRateLimit(DB, user.user_id, einst.chat_rate_limit);
   if (!rl.allowed) return Response.json({ error: rl.reason }, { status: 429 });
 
   const id = genId();

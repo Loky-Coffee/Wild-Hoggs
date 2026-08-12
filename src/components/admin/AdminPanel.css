@@ -890,3 +890,67 @@ select.admin-filter-input option {
 }
 
 .admin-dlg-aktionen { display: flex; gap: 0.5rem; }
+
+/* ── Einzelne Einstellung mit Erklärung ─────────────────────────────────── */
+.admin-einstellung { padding: 0.5rem 0; }
+.admin-einstellung + .admin-einstellung { border-top: 1px solid rgba(255, 255, 255, 0.08); }
+
+.admin-einstellung-kopf {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.7rem;
+  font-size: 0.88rem;
+}
+
+/* Ein geschlossener Zugang oder abgeschalteter Chat soll auffallen —
+   sonst übersieht man tagelang, dass niemand mehr hereinkommt. */
+.admin-einstellung-warn { color: #e0a030; font-weight: 600; }
+
+.admin-einstellung-hinweis {
+  margin: 0.2rem 0 0;
+  font-size: 0.76rem;
+  opacity: 0.5;
+  line-height: 1.45;
+}
+
+.admin-gemerkt { color: #52be80; opacity: 1; }
+
+.admin-kipp {
+  width: 36px;
+  height: 20px;
+  border: none;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  position: relative;
+  flex-shrink: 0;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.15s;
+}
+
+.admin-kipp.an { background: #52be80; }
+.admin-kipp:disabled { opacity: 0.5; cursor: wait; }
+.admin-kipp:focus-visible { outline: 2px solid #ffa500; outline-offset: 2px; }
+
+.admin-kipp::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.15s;
+}
+
+.admin-kipp.an::after { transform: translateX(16px); }
+
+.admin-zahl-feld { display: flex; align-items: center; gap: 0.4rem; }
+.admin-zahl-feld input { width: 76px; text-align: right; }
+.admin-einheit { font-size: 0.75rem; opacity: 0.5; }
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-kipp, .admin-kipp::after { transition: none; }
+}

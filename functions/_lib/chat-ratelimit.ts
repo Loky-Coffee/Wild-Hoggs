@@ -1,17 +1,25 @@
 // Rate limit rules:
 //   - Max 1 message per 10 seconds (cooldown)
-//   - Max 10 messages per 5 minutes (sliding window)
+//   - Max N messages per 5 minutes (sliding window), N aus den Einstellungen
+//
+// Der Abstand von zehn Sekunden bleibt fest: Er richtet sich gegen
+// Kopiervorlagen und Skripte, nicht gegen Vielschreiber, und muss deshalb
+// nicht einstellbar sein.
 
 const COOLDOWN_MS    = 10_000;      // 10 seconds between messages
 const WINDOW_MS      = 5 * 60_000; // 5-minute rolling window
-const MAX_PER_WINDOW = 10;
+const MAX_PER_WINDOW = 10;         // Rückfallwert, siehe _lib/settings.ts
 
 export interface RateLimitResult {
   allowed: boolean;
   reason?: string;
 }
 
-export async function checkRateLimit(db: any, userId: string): Promise<RateLimitResult> {
+export async function checkRateLimit(
+  db: any,
+  userId: string,
+  maxProFenster: number = MAX_PER_WINDOW,
+): Promise<RateLimitResult> {
   const now = Date.now();
 
   const row = await db.prepare(
@@ -44,7 +52,7 @@ export async function checkRateLimit(db: any, userId: string): Promise<RateLimit
     ? new Date().toISOString().replace('T', ' ').slice(0, 19)
     : row.window_start;
 
-  if (!windowExpired && row.msg_count >= MAX_PER_WINDOW) {
+  if (!windowExpired && row.msg_count >= maxProFenster) {
     const waitMin = Math.ceil((WINDOW_MS - (now - windowStartMs)) / 60_000);
     return { allowed: false, reason: `Limit erreicht. Bitte warte noch ~${waitMin} Minute(n).` };
   }

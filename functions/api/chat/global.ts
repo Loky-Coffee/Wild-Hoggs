@@ -5,8 +5,10 @@
 
 import { getToken, validateSession } from '../../_lib/auth';
 import { checkRateLimit } from '../../_lib/chat-ratelimit';
+import { ladeEinstellungen } from '../../_lib/settings';
 import { broadcastMessage } from '../../_lib/chat-hub';
 
+// Rückfallwert; der tatsächliche Wert kommt aus den Einstellungen.
 const MAX_LEN       = 500;
 const DEFAULT_LIMIT = 50;
 const MAX_LIMIT     = 100;
@@ -92,11 +94,17 @@ export async function onRequestPost(ctx: any) {
   if (!message) {
     return Response.json({ error: 'Nachricht darf nicht leer sein.' }, { status: 400 });
   }
-  if (message.length > MAX_LEN) {
-    return Response.json({ error: `Nachricht zu lang (max. ${MAX_LEN} Zeichen).` }, { status: 400 });
+  // Zeichengrenze und Chat-Schalter kommen aus der Verwaltung.
+  const einst = await ladeEinstellungen(DB);
+  if (einst.chat_enabled !== 1) {
+    return Response.json({ error: 'Der Chat ist derzeit geschlossen.' }, { status: 403 });
+  }
+  const maxLen = einst.chat_max_length || MAX_LEN;
+  if (message.length > maxLen) {
+    return Response.json({ error: `Nachricht zu lang (max. ${maxLen} Zeichen).` }, { status: 400 });
   }
 
-  const rl = await checkRateLimit(DB, user.user_id);
+  const rl = await checkRateLimit(DB, user.user_id, einst.chat_rate_limit);
   if (!rl.allowed) return Response.json({ error: rl.reason }, { status: 429 });
 
   const id = genId();
