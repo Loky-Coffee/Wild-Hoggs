@@ -21,6 +21,17 @@ import './UpdateNotice.css';
 const CHECK_MS = 5 * 60 * 1000;          // zusätzlich alle 5 Minuten
 const SEEN_KEY = 'wh-seen-announcement'; // zuletzt weggeklickte Ankündigung
 
+// Nach einem Neuladen wegen einer neuen Fassung zehn Minuten Ruhe.
+//
+// Ohne das entsteht eine Schleife, sobald etwas zwischen Seite und
+// version.json steht: Die Kennung wird ohne Zwischenspeicher geholt und ist
+// neu, das mitgelieferte Skript stammt aber aus einer zwischengespeicherten
+// Seite und ist alt. Die Meldung erscheint, der Klick lädt dieselbe alte
+// Seite erneut — und sie erscheint wieder. Wer reagiert hat, soll nicht
+// sofort wieder gefragt werden.
+const RELOAD_KEY  = 'wh-update-reloaded-at';
+const RUHE_MS     = 10 * 60 * 1000;
+
 interface Announcement {
   id: string;
   text: string;
@@ -77,6 +88,17 @@ export default function UpdateNotice({ label, hint, action, later, close }: Prop
     location.reload();
   };
 
+  /**
+   * Neu laden wegen einer neuen Fassung.
+   *
+   * Der Zeitpunkt wird vermerkt, damit die Meldung nicht sofort wieder
+   * erscheint, falls die Seite weiterhin aus einem Zwischenspeicher kommt.
+   */
+  const neuLaden = () => {
+    try { sessionStorage.setItem(RELOAD_KEY, String(Date.now())); } catch { /* ignore */ }
+    location.reload();
+  };
+
   useEffect(() => {
     if (!isLoggedIn) return;
     let stopped = false;
@@ -104,7 +126,21 @@ export default function UpdateNotice({ label, hint, action, later, close }: Prop
         const data = await res.json() as { build?: string };
         if (!data.build || data.build === __BUILD_ID__) return;
 
-        if (document.visibilityState === 'hidden') { location.reload(); return; }
+        // Gerade erst deswegen neu geladen? Dann ist die Seite offenbar noch
+        // zwischengespeichert — erneut zu fragen brächte nichts.
+        try {
+          const zuletzt = Number(sessionStorage.getItem(RELOAD_KEY) ?? 0);
+          if (zuletzt && Date.now() - zuletzt < RUHE_MS) return;
+        } catch { /* ignore */ }
+
+        // Im Hintergrund wird still neu geladen. Der Zeitpunkt muss auch hier
+        // vermerkt werden — sonst lädt ein Tab, der wegen eines
+        // Zwischenspeichers immer dieselbe Fassung bekommt, endlos neu.
+        if (document.visibilityState === 'hidden') {
+          try { sessionStorage.setItem(RELOAD_KEY, String(Date.now())); } catch { /* ignore */ }
+          location.reload();
+          return;
+        }
         outdatedRef.current = true;
         setOutdated(true);
       } catch { /* offline o.ä. — beim nächsten Mal wieder */ }
@@ -174,7 +210,7 @@ export default function UpdateNotice({ label, hint, action, later, close }: Prop
         <p class="update-title">{label}</p>
         <p class="update-text">{hint}</p>
         <div class="update-actions">
-          <button type="button" class="update-btn" onClick={() => location.reload()}>
+          <button type="button" class="update-btn" onClick={neuLaden}>
             {action}
           </button>
           <button type="button" class="update-btn-ghost" onClick={() => setOutdated(false)}>
