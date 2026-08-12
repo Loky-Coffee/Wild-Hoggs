@@ -665,6 +665,7 @@ export default {
   'profile.confirmPassword': 'Confirmar nova senha',
   'profile.passwordMismatch': 'As senhas não coincidem',
   'profile.passwordChanged': '✓ Senha alterada',
+  'profile.devicesSignedOut': "Sessão encerrada em {n} outro(s) dispositivo(s).",
   'profile.errorGeneric': 'Erro',
   'profile.errorConnection': 'Erro de conexão',
   'profile.stat.tank': 'Tanque',

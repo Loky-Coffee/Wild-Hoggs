@@ -665,6 +665,7 @@ export default {
   'profile.confirmPassword': '新しいパスワードを確認',
   'profile.passwordMismatch': 'パスワードが一致しません',
   'profile.passwordChanged': '✓ パスワードを変更しました',
+  'profile.devicesSignedOut': "他の{n}台の端末からログアウトしました。",
   'profile.errorGeneric': 'エラー',
   'profile.errorConnection': '接続エラー',
   'profile.stat.tank': '戦車',

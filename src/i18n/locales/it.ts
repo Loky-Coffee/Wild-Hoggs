@@ -665,6 +665,7 @@ export default {
   'profile.confirmPassword': 'Conferma nuova password',
   'profile.passwordMismatch': 'Le password non corrispondono',
   'profile.passwordChanged': '✓ Password modificata',
+  'profile.devicesSignedOut': "Disconnesso da {n} altro/i dispositivo/i.",
   'profile.errorGeneric': 'Errore',
   'profile.errorConnection': 'Errore di connessione',
   'profile.stat.tank': 'Carro armato',

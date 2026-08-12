@@ -665,6 +665,7 @@ export default {
   'profile.confirmPassword': 'ยืนยันรหัสผ่านใหม่',
   'profile.passwordMismatch': 'รหัสผ่านไม่ตรงกัน',
   'profile.passwordChanged': '✓ เปลี่ยนรหัสผ่านแล้ว',
+  'profile.devicesSignedOut': "ออกจากระบบอุปกรณ์อื่นแล้ว {n} เครื่อง",
   'profile.errorGeneric': 'ข้อผิดพลาด',
   'profile.errorConnection': 'ข้อผิดพลาดการเชื่อมต่อ',
   'profile.stat.tank': 'รถถัง',

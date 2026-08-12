@@ -665,6 +665,7 @@ export default {
   'profile.confirmPassword': '確認新密碼',
   'profile.passwordMismatch': '密碼不符',
   'profile.passwordChanged': '✓ 密碼已更改',
+  'profile.devicesSignedOut': "已從其他 {n} 台裝置登出。",
   'profile.errorGeneric': '錯誤',
   'profile.errorConnection': '連線錯誤',
   'profile.stat.tank': '坦克',

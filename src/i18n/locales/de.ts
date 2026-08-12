@@ -665,6 +665,7 @@ export default {
   'profile.confirmPassword': 'Neues Passwort bestätigen',
   'profile.passwordMismatch': 'Passwörter stimmen nicht überein',
   'profile.passwordChanged': '✓ Passwort geändert',
+  'profile.devicesSignedOut': "Andere Geräte abgemeldet: {n}.",
   'profile.errorGeneric': 'Fehler',
   'profile.errorConnection': 'Verbindungsfehler',
   'profile.stat.tank': 'Tank',

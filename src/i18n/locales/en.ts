@@ -792,6 +792,7 @@ export default {
   'profile.confirmPassword': 'Confirm New Password',
   'profile.passwordMismatch': 'Passwords do not match',
   'profile.passwordChanged': '✓ Password changed',
+  'profile.devicesSignedOut': "Signed out of {n} other device(s).",
   'profile.errorGeneric': 'Error',
   'profile.errorConnection': 'Connection error',
   'profile.stat.tank': 'Tank',

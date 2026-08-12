@@ -665,6 +665,7 @@ export default {
   'profile.confirmPassword': '새 비밀번호 확인',
   'profile.passwordMismatch': '비밀번호가 일치하지 않습니다',
   'profile.passwordChanged': '✓ 비밀번호 변경됨',
+  'profile.devicesSignedOut': "다른 기기 {n}대에서 로그아웃되었습니다.",
   'profile.errorGeneric': '오류',
   'profile.errorConnection': '연결 오류',
   'profile.stat.tank': '탱크',

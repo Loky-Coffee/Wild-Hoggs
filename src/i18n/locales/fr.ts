@@ -665,6 +665,7 @@ export default {
   'profile.confirmPassword': 'Confirmer le nouveau mot de passe',
   'profile.passwordMismatch': 'Les mots de passe ne correspondent pas',
   'profile.passwordChanged': '✓ Mot de passe modifié',
+  'profile.devicesSignedOut': "Déconnecté de {n} autre(s) appareil(s).",
   'profile.errorGeneric': 'Erreur',
   'profile.errorConnection': 'Erreur de connexion',
   'profile.stat.tank': 'Char',

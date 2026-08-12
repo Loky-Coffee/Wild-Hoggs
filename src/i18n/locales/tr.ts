@@ -665,6 +665,7 @@ export default {
   'profile.confirmPassword': 'Yeni şifreyi onayla',
   'profile.passwordMismatch': 'Şifreler eşleşmiyor',
   'profile.passwordChanged': '✓ Şifre değiştirildi',
+  'profile.devicesSignedOut': "{n} diğer cihazdan çıkış yapıldı.",
   'profile.errorGeneric': 'Hata',
   'profile.errorConnection': 'Bağlantı hatası',
   'profile.stat.tank': 'Tank',

@@ -665,6 +665,7 @@ export default {
   'profile.confirmPassword': 'Konfirmasi kata sandi baru',
   'profile.passwordMismatch': 'Kata sandi tidak cocok',
   'profile.passwordChanged': '✓ Kata sandi diubah',
+  'profile.devicesSignedOut': "Keluar dari {n} perangkat lain.",
   'profile.errorGeneric': 'Kesalahan',
   'profile.errorConnection': 'Kesalahan koneksi',
   'profile.stat.tank': 'Tank',

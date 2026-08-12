@@ -665,6 +665,7 @@ export default {
   'profile.confirmPassword': 'تأكيد كلمة المرور الجديدة',
   'profile.passwordMismatch': 'كلمات المرور غير متطابقة',
   'profile.passwordChanged': '✓ تم تغيير كلمة المرور',
+  'profile.devicesSignedOut': "تم تسجيل الخروج من {n} جهاز آخر.",
   'profile.errorGeneric': 'خطأ',
   'profile.errorConnection': 'خطأ في الاتصال',
   'profile.stat.tank': 'دبابة',

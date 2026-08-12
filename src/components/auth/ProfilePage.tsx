@@ -248,9 +248,18 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
       });
       const data = await res.json();
       if (!res.ok) { setPwMsg({ type: 'error', text: data.error ?? t('profile.errorGeneric') }); return; }
-      setPwMsg({ type: 'ok', text: t('profile.passwordChanged') });
+      // Beim Ändern werden alle anderen Anmeldungen beendet. Wie viele es
+      // waren, gehört in die Rückmeldung: Wer eine unerwartete Zahl sieht,
+      // weiss, dass jemand anderes eingeloggt war.
+      const abgemeldet = Number(data?.signedOutDevices ?? 0);
+      setPwMsg({
+        type: 'ok',
+        text: abgemeldet > 0
+          ? `${t('profile.passwordChanged')} ${t('profile.devicesSignedOut', { n: String(abgemeldet) })}`
+          : t('profile.passwordChanged'),
+      });
       setCurrentPw(''); setNewPw(''); setConfirmPw('');
-      setTimeout(() => setPwMsg(null), 4000);
+      setTimeout(() => setPwMsg(null), 6000);
     } catch { setPwMsg({ type: 'error', text: t('profile.errorConnection') }); }
     finally { setPwSaving(false); }
   };

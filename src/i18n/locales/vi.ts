@@ -665,6 +665,7 @@ export default {
   'profile.confirmPassword': 'Xác nhận mật khẩu mới',
   'profile.passwordMismatch': 'Mật khẩu không khớp',
   'profile.passwordChanged': '✓ Đã đổi mật khẩu',
+  'profile.devicesSignedOut': "Đã đăng xuất khỏi {n} thiết bị khác.",
   'profile.errorGeneric': 'Lỗi',
   'profile.errorConnection': 'Lỗi kết nối',
   'profile.stat.tank': 'Xe tăng',
