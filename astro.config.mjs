@@ -40,7 +40,15 @@ export default defineConfig({
       // Google, Bing, Yandex nutzen lastmod für intelligenteres Crawling
       serialize(item) {
         // SEO: Exclude non-indexable pages from sitemap
-        const excludedPaths = ['/admin', '/profile', '/community'];
+        //
+        // Was hier fehlt, landet in der Sitemap und traegt trotzdem noindex —
+        // die Sitemap bittet Google dann um die Aufnahme einer Seite, die sich
+        // selbst die Aufnahme verbietet. Das kostet Crawl-Budget und stiftet
+        // widerspruechliche Signale.
+        //
+        // /tools/hero-exp ist eine Weiterleitung auf /heroes#exp (alte Adresse,
+        // siehe hero-exp.astro) und stand mit 15 Sprachfassungen in der Sitemap.
+        const excludedPaths = ['/admin', '/profile', '/community', '/tools/hero-exp'];
         const isExcluded = excludedPaths.some(path =>
           item.url.includes(path + '/') || item.url.endsWith(path)
         );
