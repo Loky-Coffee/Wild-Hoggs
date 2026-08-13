@@ -20,6 +20,22 @@
   # wss://wild-hoggs-chat-hub...: der Live-Chat-Hub (eigener Worker, Verzeichnis chat-hub/).
   # Nur dieser eine Host, nur ueber wss — ohne den Eintrag blockiert die CSP die
   # WebSocket-Verbindung und der Chat faellt auf Polling zurueck.
+  # ACHTUNG, falls jemals Besucher ausgesperrt werden:
+  # Cloudflare spritzt in jede HTML-Antwort ein Inline-Skript seiner
+  # Bot-Erkennung (/cdn-cgi/challenge-platform/scripts/jsd/). Dessen Inhalt
+  # enthaelt eine Anfrage-Kennung und einen Zeitstempel, ist also bei jedem
+  # Aufruf anders — eine Pruefsumme dafuer gibt es nicht, und Cloudflares
+  # empfohlener Weg (nonce) scheitert an statisch gebauten Seiten. Das Skript
+  # wird deshalb blockiert: ein Eintrag in der Browser-Konsole je Seitenaufruf,
+  # kein cf_clearance-Cookie. Fuer Besucher folgenlos, solange keine WAF-Regel
+  # auf cf.bot_management.js_detection.passed prueft (Stand 13.08.2026: keine).
+  # Abschalten laesst es sich hier nicht — im Free-Tarif haengt es fest an
+  # Bot Fight Mode, auch wenn der aus ist.
+  # Sollte Cloudflare das aendern (etwa "Precursor" im Modus Maximize Security,
+  # der ein gueltiges cf_clearance verlangt) und echte Besucher stehen vor
+  # verschlossener Tuer: In der zweiten Zeile unten die Pruefsummen durch
+  # 'unsafe-inline' ersetzen. Das nimmt den Schutz zurueck, aber oeffnet sofort.
+  #
   # Zwei Richtlinien, und das mit Absicht: Ein Skript muss BEIDE erfuellen, also
   # gilt die jeweils strengere. Cloudflare Pages erlaubt pro Header-Zeile nur
   # 2000 Zeichen (developers.cloudflare.com/pages/platform/limits/#headers), und
