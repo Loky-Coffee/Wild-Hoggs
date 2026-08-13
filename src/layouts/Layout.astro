@@ -25,6 +25,12 @@ const siteUrl = Astro.site || new URL('https://wild-hoggs.com/');
 const canonicalURL = new URL(Astro.url.pathname, siteUrl);
 const ogImageURL = new URL(image, siteUrl);
 
+// Adressen fuer die Sprachverweise. Wichtig ist der abschliessende Schraegstrich:
+// Die Seite laeuft mit trailingSlash 'always', deshalb beantwortet Cloudflare
+// '/de' mit einer 308-Weiterleitung auf '/de/'. Stand das in hreflang, schickte
+// jeder Verweis Google erst auf eine Weiterleitung — und Google mag in hreflang
+// die endgueltige Adresse. Betroffen waren nur die 15 Startseiten: Nur dort
+// bleibt nach dem Abschneiden des Sprachkuerzels ein blosser '/' uebrig.
 function getAlternateURL(targetLang: string): URL {
   const currentPath = Astro.url.pathname;
 
@@ -34,10 +40,10 @@ function getAlternateURL(targetLang: string): URL {
   }
 
   if (lang === 'en') {
-    return new URL(`/${targetLang}${currentPath === '/' ? '' : currentPath}`, siteUrl);
+    return new URL(`/${targetLang}${currentPath === '/' ? '/' : currentPath}`, siteUrl);
   } else {
     const pathWithoutLang = currentPath.replace(/^\/(de|fr|ko|th|ja|pt|es|tr|id|zh-TW|zh-CN|it|ar|vi)(\/|$)/, '/');
-    return new URL(`/${targetLang}${pathWithoutLang === '/' ? '' : pathWithoutLang}`, siteUrl);
+    return new URL(`/${targetLang}${pathWithoutLang === '/' ? '/' : pathWithoutLang}`, siteUrl);
   }
 }
 
@@ -151,16 +157,23 @@ const websiteSchema = {
         }
         if (lang && /^[a-z]{2}(-[A-Z]{2})?$/.test(lang)) {
           localStorage.setItem('wh-lang-redirected', '1');
-          window.location.replace('/' + lang);
+          window.location.replace('/' + lang + '/');
         }
       })();
     </script>
     <ViewTransitions />
     <link rel="canonical" href={canonicalURL} />
-    {hreflangTags.map(({ langCode, url }) => (
-      <link rel="alternate" hreflang={langCode} href={url} />
-    ))}
-    <link rel="alternate" hreflang="x-default" href={xDefaultURL} />
+    {/* Sprachverweise nur auf Seiten, die auch in den Index sollen. Die
+        Fehlerseite trug sonst Verweise auf /de/404/ und vierzehn weitere
+        Adressen, die es gar nicht gibt. */}
+    {!robots.includes('noindex') && (
+      <>
+        {hreflangTags.map(({ langCode, url }) => (
+          <link rel="alternate" hreflang={langCode} href={url} />
+        ))}
+        <link rel="alternate" hreflang="x-default" href={xDefaultURL} />
+      </>
+    )}
 
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
