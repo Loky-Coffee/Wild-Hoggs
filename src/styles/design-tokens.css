@@ -1,3 +1,13 @@
+/* Design-Tokens.
+ *
+ * Stand 13.08.2026: 73 der 91 Werte werden von keiner Regel per var() gelesen —
+ * die Komponenten schreiben ihre Farben und Abstaende direkt hin. Sie bleiben
+ * trotzdem stehen: Die Datei liegt in einem gebuendelten Stylesheet, das einmal
+ * geladen und ein Jahr lang zwischengespeichert wird, kostet also weniger als
+ * ein Kilobyte pro Besucher. Wer hier aufraeumen will, nimmt einer begonnenen
+ * Grundlage die Basis, ohne dass jemand es merkt.
+ */
+
 /* ============================================
    WILD HOGGS - DESIGN TOKENS
    CSS Custom Properties für konsistentes Theming

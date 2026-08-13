@@ -1,5 +1,21 @@
 // Auth utilities — runs in Cloudflare Workers runtime (WebCrypto API)
 
+// PBKDF2-Runden. OWASP empfiehlt seit 2023 600.000, hier stehen bewusst
+// 100.000 (die Empfehlung von 2021).
+//
+// Abgewogen am 13.08.2026: Die Rundenzahl greift ausschliesslich dann, wenn
+// jemand die Datenbank erbeutet — gegen den Login-Endpunkt selbst schuetzen die
+// Sperren in login-ratelimit.ts. Der Faktor 6 verschiebt die Kosten eines
+// Angreifers, entscheidet aber nur bei mittelmaessigen Passwoertern; ein Zeichen
+// mehr Passwortlaenge wiegt schwerer.
+//
+// Wer das aendert, muss wissen: Die Rundenzahl steht NICHT im gespeicherten
+// Hash (Format 'salt:hash', alle 291 Konten einheitlich). Diesen Wert einfach
+// hochzusetzen sperrt jedes Konto gleichzeitig aus — verifyPassword rechnet
+// dann mit einer anderen Rundenzahl als beim Anlegen und weist jedes richtige
+// Passwort ab. Der sichere Weg waere: Rundenzahl als drittes Feld anhaengen,
+// fehlendes Feld als 100.000 lesen, und erst nach erfolgreichem Login still
+// neu hashen.
 const ITERATIONS = 100_000;
 const KEY_BYTES  = 32; // 256 bit
 
