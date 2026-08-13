@@ -249,6 +249,19 @@ export function useCalculatorState<T>(
   const setState = useCallback((updater: T | ((prev: T) => T)) => {
     setStateRaw(prev => {
       const next = typeof updater === 'function' ? (updater as (p: T) => T)(prev) : updater;
+
+      // Gibt der Updater denselben Stand zurueck, hat sich nichts geaendert —
+      // dann darf auch nichts als geaendert markiert werden.
+      //
+      // Der Karawanen-Rechner tut genau das bei jedem Oeffnen der Seite: Sein
+      // Auto-Ausfuell-Effekt ruft setStored auf und gibt den Stand unveraendert
+      // zurueck, sobald schon etwas eingetragen ist. Der Marker 'lastModifiedAt'
+      // sprang dadurch bei jedem Seitenaufruf nach vorn, und weil der
+      // Hintergrundabgleich nur holt, was NICHT lokal geaendert wurde, kam der
+      // Stand des anderen Geraets nie an — dreissig Sekunden spaeter schob der
+      // Debounce-Push den alten Stand darueber.
+      if (next === prev) return prev;
+
       writeCache(profileId, calcType, calcKey, next, { touch: true });
       const t = token ?? localStorage.getItem(AUTH_TOKEN_KEY);
       if (t) debouncedPush(profileId, calcType, calcKey, next, t);
