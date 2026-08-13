@@ -37,6 +37,22 @@ export async function hashPassword(password: string): Promise<string> {
   return `${toHex(salt)}:${toHex(new Uint8Array(bits))}`;
 }
 
+/**
+ * Zeichenweiser Vergleich, der immer gleich lange braucht.
+ *
+ * `a === b` bricht beim ersten Unterschied ab, die Laufzeit verraet also, wie
+ * weit zwei Werte uebereinstimmen. Beim Passwort-Hash ist das kaum auszunutzen
+ * — der Angreifer steuert nur das Passwort, nicht dessen Hash —, aber der
+ * Chat-Hub macht es an seiner Stelle laengst richtig (safeEqual in
+ * chat-hub/src/index.ts), und hier kostet es nichts.
+ */
+function zeitgleich(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return diff === 0;
+}
+
 export async function verifyPassword(password: string, stored: string): Promise<boolean> {
   const [saltHex, hashHex] = stored.split(':');
   if (!saltHex || !hashHex) return false;
@@ -55,7 +71,7 @@ export async function verifyPassword(password: string, stored: string): Promise<
   const computed = Array.from(new Uint8Array(bits))
     .map(b => b.toString(16).padStart(2, '0')).join('');
 
-  return computed === hashHex;
+  return zeitgleich(computed, hashHex);
 }
 
 export function generateToken(): string {

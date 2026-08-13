@@ -46,7 +46,10 @@
   Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://static.cloudflareinsights.com wss://wild-hoggs-chat-hub.alatzas5564.workers.dev; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
   Content-Security-Policy: script-src 'self' {{SCRIPT_HASHES}} https://static.cloudflareinsights.com
   # levelgeeks.org wurde entfernt - alle Bilder sind self-hosted
-  Strict-Transport-Security: max-age=15552000; includeSubDomains; preload
+  # 365 Tage statt 180: Mit 'preload' verlangt hstspreload.org mindestens ein
+  # Jahr, sonst wird die Domain gar nicht erst in die Liste aufgenommen —
+  # die Angabe stand also da, ohne zu wirken.
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
 
 # OG Images - Cache 30 Tage (immutable)
 /og-*.webp

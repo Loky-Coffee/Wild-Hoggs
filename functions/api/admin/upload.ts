@@ -53,6 +53,9 @@ export async function onRequestPost(ctx: any) {
 
     return Response.json({ key });
   } catch (err: any) {
-    return Response.json({ error: err?.message ?? 'Unbekannter Fehler beim Upload' }, { status: 500 });
+    // Die Meldung des Fehlers gehoert ins Log, nicht in die Antwort: Sie nennt
+    // Bucket-Namen, Schluessel und interne Pfade.
+    console.error('Upload fehlgeschlagen:', err);
+    return Response.json({ error: 'Upload fehlgeschlagen' }, { status: 500 });
   }
 }

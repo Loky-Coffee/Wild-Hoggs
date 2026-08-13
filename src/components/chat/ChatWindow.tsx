@@ -68,6 +68,9 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
   const [loadError,    setLoadError]    = useState<string | null>(null);
   const [sending,      setSending]      = useState(false);
   const [sendError,    setSendError]    = useState<string | null>(null);
+  // Zeichengrenze, wie der Server sie meldet. Sie ist im Panel einstellbar;
+  // das Eingabefeld ging vorher immer von 500 aus.
+  const [maxLen,       setMaxLen]       = useState<number>(500);
   const [reportedIds,  setReportedIds]  = useState<Set<string>>(new Set());
   const [replyTo,      setReplyTo]      = useState<ReplyTarget | null>(null);
   // Die Online-Liste hat zwei Quellen, und beide werden gebraucht:
@@ -443,8 +446,9 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
         setLoadError(data.error ?? t('chat.loading'));
         return;
       }
-      const data = await res.json() as { messages: Message[] };
+      const data = await res.json() as { messages: Message[]; max_length?: number };
       if (veraltet()) return;
+      if (data.max_length) setMaxLen(data.max_length);
       setMessages(data.messages);
       if (data.messages.length > 0) {
         lastCreatedAt.current = data.messages[data.messages.length - 1].created_at;
@@ -879,6 +883,7 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
 
         {/* Input */}
         <MessageInput
+          maxLen={maxLen}
           onSend={handleSend}
           sending={sending}
           sendError={sendError}

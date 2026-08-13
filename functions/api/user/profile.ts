@@ -35,7 +35,13 @@ export async function onRequestPatch(ctx: any) {
     if (trimmed.length < 3 || trimmed.length > 20 || !/^[a-zA-Z0-9_-]+$/.test(trimmed)) {
       return Response.json({ error: 'Username: 3–20 Zeichen, nur Buchstaben/Zahlen/_ -' }, { status: 400 });
     }
-    const taken = await DB.prepare('SELECT id FROM users WHERE username = ? AND id != ?').bind(trimmed, user.user_id).first();
+    // Schreibweise egal, wie bei der Registrierung (register.ts prueft
+    // ebenfalls mit lower()). Sonst kann sich jemand nachtraeglich in die
+    // Schreibweise eines anderen umbenennen: 'Bob' und 'bob' nebeneinander
+    // sind im Chat nicht zu unterscheiden.
+    const taken = await DB.prepare(
+      'SELECT id FROM users WHERE lower(username) = lower(?) AND id != ?'
+    ).bind(trimmed, user.user_id).first();
     if (taken) return Response.json({ error: 'Username bereits vergeben' }, { status: 400 });
     updates.push('username = ?');
     values.push(trimmed);

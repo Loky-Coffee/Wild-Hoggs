@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from 'preact/hooks';
 
-const MAX_LEN = 500;
+// Standard, bis der Server seine eigene Grenze mitteilt (im Panel
+// einstellbar zwischen 50 und 2000).
+const STANDARD_MAX_LEN = 500;
 
 export interface ReplyTarget {
   id:       string;
@@ -19,11 +21,14 @@ interface MessageInputProps {
   charsLeft:      string;
   replyTo?:       ReplyTarget | null;
   onCancelReply?: () => void;
+  /** Vom Server gemeldete Zeichengrenze. */
+  maxLen?:        number;
 }
 
 export default function MessageInput({
   onSend, sending, sendError, onClearError,
   placeholder, sendLabel, charsLeft, replyTo, onCancelReply,
+  maxLen = STANDARD_MAX_LEN,
 }: MessageInputProps) {
   const [text, setText]     = useState('');
   const textareaRef         = useRef<HTMLTextAreaElement>(null);
@@ -54,13 +59,13 @@ export default function MessageInput({
 
   const handleInput = (e: Event) => {
     const val = (e.target as HTMLTextAreaElement).value;
-    if (val.length <= MAX_LEN) {
+    if (val.length <= maxLen) {
       setText(val);
       if (sendError) onClearError();
     }
   };
 
-  const remaining = MAX_LEN - text.length;
+  const remaining = maxLen - text.length;
   const canSend   = text.trim().length > 0 && remaining >= 0 && !sending;
 
   return (
@@ -86,7 +91,7 @@ export default function MessageInput({
           onInput={handleInput}
           onKeyDown={handleKeyDown}
           rows={2}
-          maxLength={MAX_LEN}
+          maxLength={maxLen}
           disabled={sending}
         />
         <button

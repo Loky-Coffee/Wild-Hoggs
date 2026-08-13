@@ -66,9 +66,15 @@ export async function onRequestGet(ctx: any) {
     messages = (results as any[]).reverse();
   }
 
+  const einstGet = await ladeEinstellungen(DB);
+  const maxLenGet = einstGet.chat_max_length || MAX_LEN;
   const serverTime = new Date().toISOString().replace('T', ' ').slice(0, 19);
   return Response.json(
-    { messages, hasMore: messages.length === limit, server_time: serverTime },
+    // Die Zeichengrenze gehoert mit in die Antwort: Sie ist im Panel
+    // einstellbar (50–2000), das Eingabefeld kannte aber nur die fest
+    // verdrahteten 500. Wer sie herabsetzte, liess Leute bis 500 tippen
+    // und erst beim Senden abblitzen.
+    { messages, hasMore: messages.length === limit, server_time: serverTime, max_length: maxLenGet },
     { headers: { 'Cache-Control': 'no-store' } }
   );
 }
