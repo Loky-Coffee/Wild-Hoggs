@@ -56,7 +56,16 @@ if (!header.includes(PLATZHALTER)) {
   console.error(`✗ ${HEADER_DATEI}: Platzhalter ${PLATZHALTER} fehlt — CSP nicht gesetzt`);
   process.exit(1);
 }
-const fertig = header.replaceAll(PLATZHALTER, liste);
+// Bewusst `replace` statt `replaceAll`: Der Platzhalter soll genau einmal
+// vorkommen. Stand er versehentlich auch in einem Kommentar, landete die
+// Pruefsummenliste dort ebenfalls — und die Laengenpruefung unten schlug dann
+// an der Kommentarzeile an und schickte einen zur falschen Stelle.
+const vorkommen = header.split(PLATZHALTER).length - 1;
+if (vorkommen !== 1) {
+  console.error(`✗ ${HEADER_DATEI}: Platzhalter ${PLATZHALTER} kommt ${vorkommen}× vor, erwartet genau 1×`);
+  process.exit(1);
+}
+const fertig = header.replace(PLATZHALTER, liste);
 
 // Cloudflare Pages erlaubt 2000 Zeichen je Header-Zeile:
 // https://developers.cloudflare.com/pages/platform/limits/#headers

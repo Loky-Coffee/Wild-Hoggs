@@ -11,7 +11,7 @@
   Permissions-Policy: accelerometer=(), camera=(), geolocation=(), microphone=(), payment=(), usb=()
   # script-src ohne 'unsafe-inline': Die Inline-Skripte, die Astro fuer Hydration
   # und ClientRouter erzeugt, stehen als Pruefsumme drin. scripts/write-csp-hashes.mjs
-  # traegt sie nach jedem Build anstelle von {{SCRIPT_HASHES}} ein — beim Aendern
+  # traegt sie nach jedem Build anstelle des Platzhalters unten ein — beim Aendern
   # eines Inline-Skripts aendert sich die Pruefsumme automatisch mit.
   # style-src behaelt 'unsafe-inline': Preact setzt style="..."-Attribute (Fortschritts-
   # balken, Diagramme), und dafuer helfen Pruefsummen nicht.
