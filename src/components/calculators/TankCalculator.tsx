@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect, useRef } from 'preact/hooks';
+import { ErrorBoundary } from '../ErrorBoundary';
 import TankModificationTree from './TankModificationTree';
 import TankModificationList from './TankModificationList';
 import tankData from '../../data/tank-modifications.json';
@@ -70,7 +71,7 @@ function fromMap(m: Map<number, number>): Record<string, number> {
   return Object.fromEntries([...m].map(([k, v]) => [String(k), v]));
 }
 
-export default function TankCalculator({ lang, translationData }: TankCalculatorProps) {
+function TankCalculatorInner({ lang, translationData }: TankCalculatorProps) {
   const t = useTranslations(translationData);
 
   const { activeProfile } = useProfile();
@@ -370,5 +371,18 @@ export default function TankCalculator({ lang, translationData }: TankCalculator
         )}
       </div>
     </div>
+  );
+}
+
+// Die Fehlergrenze gehoert INNERHALB der Insel, nicht darum herum: Astro
+// erzeugt fuer <ErrorBoundary><TankCalculator /></ErrorBoundary> zwei
+// getrennte Hydrationswurzeln. Der Preact-Baum der Grenze enthielt dann nur
+// den statischen Slot-Inhalt, und ein Fehler im Rechner erreichte
+// getDerivedStateFromError nie — die Grenze fing nichts.
+export default function TankCalculator(props: TankCalculatorProps) {
+  return (
+    <ErrorBoundary translationData={props.translationData as unknown as Record<string, string>}>
+      <TankCalculatorInner {...props} />
+    </ErrorBoundary>
   );
 }

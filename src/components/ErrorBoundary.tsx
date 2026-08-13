@@ -4,7 +4,8 @@ import type { ErrorInfo } from 'preact/compat';
 interface Props {
   children: ComponentChildren;
   fallback?: ComponentChildren;
-  lang?: 'de' | 'en';
+  /** Wörterbuch der Seite; liefert die error.*-Texte in allen 15 Sprachen. */
+  translationData?: Record<string, string>;
 }
 
 interface State {
@@ -12,23 +13,18 @@ interface State {
   error?: unknown;
 }
 
-// Inline translations for error boundary (loaded very rarely, only on errors)
-const errorTranslations = {
-  de: {
-    title: 'Etwas ist schiefgelaufen',
-    message: 'Die Komponente konnte nicht geladen werden. Bitte versuche es erneut.',
-    details: 'Fehlerdetails anzeigen',
-    retry: 'Erneut versuchen',
-    reload: 'Seite neu laden'
-  },
-  en: {
-    title: 'Something went wrong',
-    message: 'The component could not be loaded. Please try again.',
-    details: 'Show error details',
-    retry: 'Try again',
-    reload: 'Reload page'
-  }
-};
+// Notnagel, falls kein Wörterbuch durchgereicht wurde. Vorher standen hier
+// Deutsch und Englisch fest verdrahtet, und die Ersatzanzeige wurde mit allen
+// 15 Sprachen aufgerufen — bei den übrigen dreizehn war die Tabelle undefined
+// und der Zugriff auf t.title warf. Die Anzeige, die einen Absturz auffangen
+// sollte, stürzte also selbst ab.
+const NOTFALL = {
+  'error.title':   'Something went wrong',
+  'error.message': 'The component could not be loaded. Please try again.',
+  'error.details': 'Show error details',
+  'error.retry':   'Try again',
+  'error.reload':  'Reload page',
+} as const;
 
 export class ErrorBoundary extends Component<Props, State> {
   state: State = { hasError: false };
@@ -52,8 +48,8 @@ export class ErrorBoundary extends Component<Props, State> {
         return this.props.fallback;
       }
 
-      const lang = this.props.lang || 'en';
-      const t = errorTranslations[lang];
+      const w = this.props.translationData ?? {};
+      const t = (k: keyof typeof NOTFALL) => w[k] || NOTFALL[k];
 
       return (
         <div
@@ -70,15 +66,15 @@ export class ErrorBoundary extends Component<Props, State> {
           aria-atomic="true"
         >
           <h2 style={{ color: '#ff6b6b', marginBottom: '1rem' }}>
-            ⚠️ {t.title}
+            ⚠️ {t('error.title')}
           </h2>
           <p style={{ marginBottom: '1rem', opacity: 0.9 }}>
-            {t.message}
+            {t('error.message')}
           </p>
           {this.state.error && import.meta.env.DEV && (
             <details style={{ marginBottom: '1rem' }}>
               <summary style={{ cursor: 'pointer', marginBottom: '0.5rem' }}>
-                {t.details}
+                {t('error.details')}
               </summary>
               <pre style={{
                 background: 'rgba(0,0,0,0.3)',
@@ -106,7 +102,7 @@ export class ErrorBoundary extends Component<Props, State> {
                 cursor: 'pointer'
               }}
             >
-              {t.retry}
+              {t('error.retry')}
             </button>
             <button
               onClick={() => window.location.reload()}
@@ -120,7 +116,7 @@ export class ErrorBoundary extends Component<Props, State> {
                 cursor: 'pointer'
               }}
             >
-              {t.reload}
+              {t('error.reload')}
             </button>
           </div>
         </div>

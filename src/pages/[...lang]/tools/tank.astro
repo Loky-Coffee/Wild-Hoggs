@@ -4,7 +4,6 @@ import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../../i18n
 import { getLanguagePaths } from '../../../i18n/static-paths';
 import { loadTranslations } from '../../../i18n/index';
 import TankCalculator from '../../../components/calculators/TankCalculator';
-import { ErrorBoundary } from '../../../components/ErrorBoundary';
 import '../../../styles/shared-layouts.css';
 
 // Mark this page as special for CSS scoping
@@ -47,9 +46,7 @@ const breadcrumbItems = [
        (Codes, Rosen) bei 8–16 ms. client:idle hydriert ebenso garantiert,
        wartet aber auf einen Leerlaufmoment — und braucht keinen
        IntersectionObserver, also besteht das Problem oben nicht. -->
-    <ErrorBoundary lang={lang} client:idle>
       <TankCalculator lang={lang} translationData={translationData} client:idle />
-    </ErrorBoundary>
   </div>
 </PageLayout>
 

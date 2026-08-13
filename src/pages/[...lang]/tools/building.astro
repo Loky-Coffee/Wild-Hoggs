@@ -7,7 +7,6 @@ import BuildingCalculator from '../../../components/calculators/BuildingCalculat
 import BuildSpeedButton from '../../../components/calculators/BuildSpeedButton';
 import HideDuplicatesButton from '../../../components/calculators/HideDuplicatesButton';
 import ResourceSavingButton from '../../../components/calculators/ResourceSavingButton';
-import { ErrorBoundary } from '../../../components/ErrorBoundary';
 import '../../../styles/shared-layouts.css';
 
 export function getStaticPaths() {
@@ -54,9 +53,7 @@ const breadcrumbItems = [
        (Codes, Rosen) bei 8–16 ms. client:idle hydriert ebenso garantiert,
        wartet aber auf einen Leerlaufmoment — und braucht keinen
        IntersectionObserver, also besteht das Problem oben nicht. -->
-  <ErrorBoundary lang={lang} client:idle>
     <BuildingCalculator lang={lang} translationData={translationData} client:idle />
-  </ErrorBoundary>
 </PageLayout>
 
 <style>

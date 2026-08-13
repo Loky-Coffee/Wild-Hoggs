@@ -1,4 +1,5 @@
 import { useMemo, useEffect, useState } from 'preact/hooks';
+import { ErrorBoundary } from '../ErrorBoundary';
 import caravanLevels from '../../data/caravan-levels.json';
 import { FACTIONS, type HeroFaction } from '../../data/heroes';
 import { useTranslations } from '../../i18n/utils';
@@ -115,7 +116,7 @@ const CARAVAN_DEFAULT: CaravanState = {
   weeklyActive: false,
 };
 
-export default function CaravanCalculator({ lang, translationData }: CaravanCalculatorProps) {
+function CaravanCalculatorInner({ lang, translationData }: CaravanCalculatorProps) {
   const { activeProfile } = useProfile();
 
   const [stored, setStored] = useCalculatorState<CaravanState>('caravan', 'main', CARAVAN_DEFAULT, activeProfile.id);
@@ -355,5 +356,18 @@ export default function CaravanCalculator({ lang, translationData }: CaravanCalc
 
     </div>{/* end calc-results */}
     </div>
+  );
+}
+
+// Die Fehlergrenze gehoert INNERHALB der Insel, nicht darum herum: Astro
+// erzeugt fuer <ErrorBoundary><CaravanCalculator /></ErrorBoundary> zwei
+// getrennte Hydrationswurzeln. Der Preact-Baum der Grenze enthielt dann nur
+// den statischen Slot-Inhalt, und ein Fehler im Rechner erreichte
+// getDerivedStateFromError nie — die Grenze fing nichts.
+export default function CaravanCalculator(props: CaravanCalculatorProps) {
+  return (
+    <ErrorBoundary translationData={props.translationData as unknown as Record<string, string>}>
+      <CaravanCalculatorInner {...props} />
+    </ErrorBoundary>
   );
 }

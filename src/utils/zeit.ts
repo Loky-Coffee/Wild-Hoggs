@@ -45,3 +45,18 @@ export function stundenInOrtszeit<T extends { stunde: number; n: number }>(
   }
   return raus;
 }
+
+/**
+ * Millisekunden bis zum Ende des laufenden Wochenlaufs (Sonntag 23:59:59.999).
+ *
+ * Der Wochenlauf endet an DIESEM Sonntag, nicht am naechsten. Die frühere
+ * Rechnung `((7 - getDay()) % 7) || 7` machte aus der Null am Sonntag eine
+ * Sieben — der Zaehler sprang am letzten Tag auf "7d" statt auf die
+ * verbleibenden Stunden, also genau dann falsch, wenn es darauf ankommt.
+ */
+export function msBisWochenende(jetzt: Date): number {
+  const ziel = new Date(jetzt);
+  ziel.setDate(jetzt.getDate() + ((7 - jetzt.getDay()) % 7));
+  ziel.setHours(23, 59, 59, 999);
+  return Math.max(0, ziel.getTime() - jetzt.getTime());
+}

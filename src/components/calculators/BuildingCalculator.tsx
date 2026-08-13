@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'preact/hooks';
+import { ErrorBoundary } from '../ErrorBoundary';
 import { createPortal } from 'preact/compat';
 import { validatedBuildings as buildingsData } from '../../data/validated/buildings';
 import { useTranslations } from '../../i18n/utils';
@@ -91,7 +92,7 @@ interface BuildingCalculatorProps {
   readonly translationData: TranslationData;
 }
 
-export default function BuildingCalculator({ lang, translationData }: BuildingCalculatorProps) {
+function BuildingCalculatorInner({ lang, translationData }: BuildingCalculatorProps) {
   const { activeProfile } = useProfile();
   const [stored, setStored] = useCalculatorState<BuildingState>('building', 'main', BUILDING_DEFAULT, activeProfile.id);
   const [storedSpeed] = useCalculatorState<LabSpeed>('buildspeed', 'main', LAB_SPEED_DEFAULT, activeProfile.id);
@@ -366,5 +367,18 @@ function BuildingSheet({ building, cap, current, name, numLang, lang, kampfkraft
       </div>
     </div>,
     document.body,
+  );
+}
+
+// Die Fehlergrenze gehoert INNERHALB der Insel, nicht darum herum: Astro
+// erzeugt fuer <ErrorBoundary><BuildingCalculator /></ErrorBoundary> zwei
+// getrennte Hydrationswurzeln. Der Preact-Baum der Grenze enthielt dann nur
+// den statischen Slot-Inhalt, und ein Fehler im Rechner erreichte
+// getDerivedStateFromError nie — die Grenze fing nichts.
+export default function BuildingCalculator(props: BuildingCalculatorProps) {
+  return (
+    <ErrorBoundary translationData={props.translationData as unknown as Record<string, string>}>
+      <BuildingCalculatorInner {...props} />
+    </ErrorBoundary>
   );
 }

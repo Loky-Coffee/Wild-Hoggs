@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'preact/hooks';
+import { msBisWochenende } from '../utils/zeit';
 import { useTranslations } from '../i18n/utils';
 import { useGlobalTimer } from '../hooks/useGlobalTimer';
 import { getApocalypseTime } from '../utils/time';
@@ -46,13 +47,7 @@ export default function WeeklyRoses({ lang, roses, translationData }: WeeklyRose
     // Get current time in UTC-2 (Apocalypse Time)
     const apocalypseTime = getApocalypseTime();
 
-    // Calculate this Sunday 23:59:59 in Apocalypse Time
-    const nextSunday = new Date(apocalypseTime);
-    const daysUntilSunday = ((7 - apocalypseTime.getDay()) % 7) || 7;
-    nextSunday.setDate(apocalypseTime.getDate() + daysUntilSunday);
-    nextSunday.setHours(23, 59, 59, 999);
-
-    const diff = nextSunday.getTime() - apocalypseTime.getTime();
+    const diff = msBisWochenende(apocalypseTime);
 
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));

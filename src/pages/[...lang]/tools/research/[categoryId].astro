@@ -4,7 +4,6 @@ import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../../../i
 import { languages, loadTranslations } from '../../../../i18n/index';
 import type { TranslationKey } from '../../../../i18n/index';
 import ResearchCategoryCalculator from '../../../../components/calculators/ResearchCategoryCalculator';
-import { ErrorBoundary } from '../../../../components/ErrorBoundary';
 import type { ResearchTree } from '../../../../schemas/research';
 import { getResearchImage } from '../../../../utils/researchImages';
 import type { ImageMetadata } from 'astro';
@@ -187,7 +186,6 @@ const breadcrumbItems = [
        (Codes, Rosen) bei 8–16 ms. client:idle hydriert ebenso garantiert,
        wartet aber auf einen Leerlaufmoment — und braucht keinen
        IntersectionObserver, also besteht das Problem oben nicht. -->
-    <ErrorBoundary lang={lang} client:idle>
       <ResearchCategoryCalculator
         categoryData={category}
         categoryImageSrc={categoryImage.src}
@@ -196,7 +194,6 @@ const breadcrumbItems = [
         translationData={translationData}
         client:idle
       />
-    </ErrorBoundary>
   </div>
 </PageLayout>
 

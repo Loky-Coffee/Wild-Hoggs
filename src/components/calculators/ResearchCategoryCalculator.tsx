@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect, useRef } from 'preact/hooks';
+import { ErrorBoundary } from '../ErrorBoundary';
 import type { ResearchTree, Technology } from '../../schemas/research';
 import ResearchTreeView from './ResearchTreeView';
 import { LAB_SPEED_DEFAULT, effectiveLabSpeed, type LabSpeed } from '../../utils/labSpeed';
@@ -202,7 +203,7 @@ function cascadeReset(
   return result;
 }
 
-export default function ResearchCategoryCalculator({ categoryData, categoryImageSrc, iconMap, lang, translationData }: ResearchCategoryCalculatorProps) {
+function ResearchCategoryCalculatorInner({ categoryData, categoryImageSrc, iconMap, lang, translationData }: ResearchCategoryCalculatorProps) {
   const category = categoryData;
 
   const { activeProfile } = useProfile();
@@ -552,5 +553,18 @@ export default function ResearchCategoryCalculator({ categoryData, categoryImage
         <LabSpeedModal labSpeed={labSpeed} onChange={setLabSpeed} onClose={() => setShowLabSpeed(false)} lang={lang} />
       )}
     </div>
+  );
+}
+
+// Die Fehlergrenze gehoert INNERHALB der Insel, nicht darum herum: Astro
+// erzeugt fuer <ErrorBoundary><ResearchCategoryCalculator /></ErrorBoundary> zwei
+// getrennte Hydrationswurzeln. Der Preact-Baum der Grenze enthielt dann nur
+// den statischen Slot-Inhalt, und ein Fehler im Rechner erreichte
+// getDerivedStateFromError nie — die Grenze fing nichts.
+export default function ResearchCategoryCalculator(props: ResearchCategoryCalculatorProps) {
+  return (
+    <ErrorBoundary translationData={props.translationData as unknown as Record<string, string>}>
+      <ResearchCategoryCalculatorInner {...props} />
+    </ErrorBoundary>
   );
 }
