@@ -30,7 +30,9 @@ const t = useTranslations(translationData);
   title={t('seo.home.title')}
   description={t('seo.home.description')}
 >
-  <main class="home-page">
+  <!-- Kein zweites <main>: PageLayout bringt bereits eines mit, und laut
+       HTML darf im Dokument nur ein sichtbares <main> stehen. -->
+  <div class="home-page">
     <div class="container">
       <div class="hero">
         <h1>
@@ -96,7 +98,7 @@ const t = useTranslations(translationData);
         </div>
       </section>
     </div>
-  </main>
+  </div>
 </PageLayout>
 
 <script is:inline>

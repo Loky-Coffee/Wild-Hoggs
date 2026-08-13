@@ -115,7 +115,11 @@ const rosesArticleSchema = {
     name: 'Wild Hoggs',
     logo: {
       '@type': 'ImageObject',
-      url: new URL('/favicon.svg', siteUrl).toString(),
+      // Rasterbild wie im Organization-Schema des Layouts: Google nimmt fuer
+      // Rich Results kein SVG.
+      url: new URL('/apple-touch-icon.png', siteUrl).toString(),
+      width: 180,
+      height: 180,
     }
   }
 };

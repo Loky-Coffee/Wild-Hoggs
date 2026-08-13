@@ -64,8 +64,12 @@ const organizationSchema = {
   '@type': 'Organization',
   name: 'Wild Hoggs',
   description: description,
-  url: canonicalURL.toString(),
-  logo: new URL('/favicon.svg', siteUrl).toString()
+  // Die Adresse der Organisation, nicht die der gerade betrachteten Seite:
+  // Hier stand canonicalURL, wodurch dieselbe Organisation auf 511 Seiten mit
+  // 511 verschiedenen Adressen auftrat.
+  url: siteUrl.toString(),
+  // Rasterbild, kein SVG — Google nimmt fuer Rich Results nur .jpg/.png/.gif.
+  logo: new URL('/apple-touch-icon.png', siteUrl).toString()
   // sameAs weggelassen — kein Social-Profil vorhanden. Leeres Array []
   // ist schlechter als gar kein sameAs (SEO-Tools melden "incomplete structured data").
   // Wenn offizielle Social-URLs verfügbar: sameAs: ['https://discord.gg/...', ...]
@@ -96,21 +100,18 @@ const alternateLocales = Object.keys(languages)
 
 const ogLocaleAlternateTags = alternateLocales.map(locale => ({ locale }));
 
-const searchPath = lang === 'en' ? '/tools' : `/${lang}/tools`;
 const websiteSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
   name: 'Wild Hoggs',
   url: siteUrl.toString(),
-  inLanguage: Object.values(localeMap),
-  potentialAction: {
-    '@type': 'SearchAction',
-    target: {
-      '@type': 'EntryPoint',
-      urlTemplate: `${siteUrl}${searchPath}?q={search_term_string}`
-    },
-    'query-input': 'required name=search_term_string'
-  }
+  // Sprachkuerzel nach BCP-47 ('de', 'zh-TW'), nicht im Locale-Format des
+  // Open Graph ('de_DE'). Letzteres gehoert in og:locale und stand hier falsch.
+  inLanguage: Object.keys(languages),
+  // Frueher stand hier eine SearchAction auf /tools?q=… — eine Suche, die es
+  // auf der Seite nicht gibt. Google haette sie als Suchfeld in den Ergebnissen
+  // anbieten koennen, und wer sie benutzt haette, waere auf einer Seite gelandet,
+  // die den Suchbegriff ignoriert. Kommt zurueck, sobald es eine Suche gibt.
 };
 ---
 
