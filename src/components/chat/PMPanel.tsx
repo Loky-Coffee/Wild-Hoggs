@@ -58,14 +58,25 @@ export default function PMPanel({ username, currentUsername, token, onClose, ago
     ],
   }), [translationData]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Haelt den gerade offenen Kontakt fest, auch fuer Anfragen, die schon
+  // unterwegs sind.
+  const usernameRef = useRef(username);
+  usernameRef.current = username;
+
   const loadInitial = useCallback(async () => {
+    // Mit wem dieses Gespraech geladen wird. Klickt jemand waehrenddessen einen
+    // anderen Kontakt an, gehoert die Antwort nicht mehr hierher — sonst
+    // ersetzen A's Nachrichten die Liste von B, und lastCreatedAt zeigt
+    // anschliessend auf A's Zeitstempel.
+    const gefragt = username;
     setLoading(true);
     try {
       const res = await fetch(`/api/chat/pm/${encodeURIComponent(username)}?limit=50`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      if (!res.ok) return;
+      if (!res.ok || gefragt !== usernameRef.current) return;
       const data = await res.json() as { messages: Message[] };
+      if (gefragt !== usernameRef.current) return;
       setMessages(data.messages);
       if (data.messages.length > 0) {
         lastCreatedAt.current = data.messages[data.messages.length - 1].created_at;
@@ -77,12 +88,13 @@ export default function PMPanel({ username, currentUsername, token, onClose, ago
 
   const poll = useCallback(async () => {
     if (!lastCreatedAt.current) return;
+    const gefragt = username;
     try {
       const since = encodeURIComponent(lastCreatedAt.current);
       const res = await fetch(`/api/chat/pm/${encodeURIComponent(username)}?since=${since}&limit=50`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      if (!res.ok) return;
+      if (!res.ok || gefragt !== usernameRef.current) return;
       const data = await res.json() as { messages: Message[] };
       if (data.messages.length > 0) {
         setMessages(prev => {

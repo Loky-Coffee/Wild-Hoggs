@@ -320,13 +320,19 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
         if (since) tabs[t] = since;
       });
 
+      // Womit diese Anfrage losgeschickt wurde. Bis die Antwort kommt, kann der
+      // Kanal gewechselt haben — dann gehoeren ihre Nachrichten nicht mehr
+      // hierher.
+      const gefragterTyp    = chatTypeRef.current;
+      const gefragterServer = serverRef.current;
+
       try {
         const res = await fetch('/api/chat/sync', {
           method:  'POST',
           headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
           body:    JSON.stringify({
-            active: { type: chatTypeRef.current, since: lastCreatedAt.current },
-            server:   serverRef.current,
+            active: { type: gefragterTyp, since: lastCreatedAt.current },
+            server:   gefragterServer,
             tabs,
             pm_since: pmInboxSince.current,
             presence: wantPresence,
@@ -343,7 +349,17 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
         };
 
         // 1) Neue Nachrichten im aktiven Kanal
-        if (data.messages?.length > 0) {
+        //
+        // Nur dieser Block haengt am Kanal. Wurde inzwischen umgeschaltet,
+        // wuerden hier fremde Nachrichten angehaengt — und schlimmer noch, der
+        // Cursor unten auf den fremden Zeitstempel gesetzt, sodass der neue
+        // Kanal ab einer falschen Stelle weiterliest. Zaehler, private
+        // Nachrichten und die Online-Liste gelten dagegen kanalunabhaengig und
+        // werden weiter verarbeitet.
+        const nochDerselbeKanal =
+          chatTypeRef.current === gefragterTyp && serverRef.current === gefragterServer;
+
+        if (nochDerselbeKanal && data.messages?.length > 0) {
           setMessages(prev => {
             const known = new Set(prev.map(m => m.id));
             const fresh = data.messages.filter(m => !known.has(m.id));
@@ -468,7 +484,10 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
   useEffect(() => {
     if (!isLoggedIn || !token) return;
     loadInitial(chatType);
-  }, [isLoggedIn, token, chatType]); // eslint-disable-line react-hooks/exhaustive-deps
+    // serverName gehoert dazu: buildUrl baut die Adresse daraus. Fehlte es,
+    // blieb nach einem Wechsel des Spielprofils die Historie des alten Servers
+    // stehen, und neue Nachrichten des neuen wurden daran angehaengt.
+  }, [isLoggedIn, token, chatType, serverName]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Init baselines for inactive tabs ──────────────────────────────────────
   useEffect(() => {
@@ -804,6 +823,9 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
       )}
       {openPM && token && (
         <PMPanel
+          // Eigene Instanz je Kontakt: Ohne key wird dieselbe wiederverwendet,
+          // samt ihrer Refs und der bereits laufenden Anfragen.
+          key={openPM}
           username={openPM}
           currentUsername={user.username}
           token={token}
