@@ -102,6 +102,17 @@ export default function BuildingCalculator({ lang, translationData }: BuildingCa
   const [savingOverride, setSavingOverride] = useState<ResourceSaving | null>(null);
   const [openIid, setOpenIid] = useState<string | null>(null);
 
+  // Beim Profilwechsel gelten wieder die gespeicherten Werte des neuen Profils.
+  // Ohne das behielten die drei Werte oben ihren zuletzt eingestellten Stand:
+  // Wer in einem Profil "Sparen: Stufe 5" wählte und dann umschaltete, sah am
+  // Knopf 0 %, während der Rechner weiter 10 % abzog — die Kosten stimmten für
+  // kein einziges Profil.
+  useEffect(() => {
+    setOverrideSpeed(null);
+    setHideDupesOverride(null);
+    setSavingOverride(null);
+  }, [activeProfile.id]);
+
   // Bau-Speed + Doppelte-ausblenden werden von den Buttons ÜBER der Analyse gesetzt;
   // live via Event, sonst aus Cache/Server.
   useEffect(() => {

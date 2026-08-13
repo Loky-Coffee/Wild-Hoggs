@@ -27,6 +27,11 @@ export const changelog: ChangelogEntry[] = [
   // ── August 2026 ─────────────────────────────────────────────────────────
   {
     date: '2026-08-13',
+    time: '11:48',
+    text: 'The building calculator now **follows the profile you switch to**. If you had changed build speed, saving or the hide-duplicates switch during a visit, those settings stayed put when you switched profiles — the button showed the new profile\u2019s value while the calculator was still using the old one, so the costs matched neither profile. Only visible with more than one game profile',
+  },
+  {
+    date: '2026-08-13',
     time: '00:58',
     text: 'A message you typed in the chat is **no longer lost** when sending fails. Until now the box was emptied either way — if the connection dropped mid-send, what you had written was gone and only an error message was left. The text now stays put so you can simply send it again',
   },
