@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'preact/hooks';
+import { msAusZeitstempel } from '../../utils/zeit';
 import { useAuth } from '../../hooks/useAuth';
 import { useTranslations } from '../../i18n/utils';
 import type { TranslationData } from '../../i18n/index';
@@ -1032,7 +1033,7 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
                             )}
                           </td>
                           <td class="admin-table-muted admin-nowrap">
-                            {c.expires_at ? new Date(c.expires_at).toLocaleString() : '—'}
+                            {c.expires_at ? new Date(msAusZeitstempel(c.expires_at)).toLocaleString() : '—'}
                           </td>
                           <td class="admin-table-actions">
                             <button

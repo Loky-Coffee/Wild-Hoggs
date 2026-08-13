@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'preact/hooks';
+import { msAusZeitstempel } from '../utils/zeit';
 import { useAuth } from './useAuth';
 import { AUTH_TOKEN_KEY } from './useAuth';
 
@@ -37,11 +38,10 @@ function cacheKey(profileId: string, calcType: string, calcKey: string) {
  * umgeschrieben. Ein unlesbarer Wert gilt als "ganz alt" (0), sodass im
  * Zweifel vom Server geholt und nichts überschrieben wird.
  */
+// Vergleiche brauchen hier eine Zahl, kein NaN: Ein unlesbarer Zeitstempel
+// soll wie "uralt" wirken, damit die andere Seite gewinnt.
 function zeitWert(ts: string | null | undefined): number {
-  if (!ts) return 0;
-  const iso = ts.includes('T') ? ts : ts.replace(' ', 'T') + 'Z';
-  const ms = new Date(iso).getTime();
-  return Number.isFinite(ms) ? ms : 0;
+  return msAusZeitstempel(ts) || 0;
 }
 
 function parseEntry<T>(raw: string): CacheEntry<T> | null {

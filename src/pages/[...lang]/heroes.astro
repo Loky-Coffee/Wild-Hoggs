@@ -64,7 +64,13 @@ const heroesSchema = {
   </div>
 
   <div class="hh-panel" data-panel="database" role="tabpanel">
-    <HeroGrid heroes={heroes} clearLabel={t('heroes.clearFilters')} client:visible />
+    <!-- client:idle, nicht client:visible: Astro haengt an die Insel ein
+         <astro-island>-Element mit display:contents. Das hat keine eigene Flaeche,
+         und der IntersectionObserver hinter client:visible bekommt deshalb nie
+         zu sehen, dass etwas sichtbar wurde — die Komponente blieb bis zum
+         Verlassen der Seite tot. Auf den Rechnerseiten war das schon aufgefallen
+         (siehe building.astro), hier stand es noch. -->
+    <HeroGrid heroes={heroes} clearLabel={t('heroes.clearFilters')} client:idle />
   </div>
   <div class="hh-panel" data-panel="exp" role="tabpanel" hidden>
     <HeroExpCalculator lang={lang} translationData={translationData} client:idle />

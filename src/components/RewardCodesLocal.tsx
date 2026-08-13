@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'preact/hooks';
+import { msAusZeitstempel } from '../utils/zeit';
 import { useTranslations } from '../i18n/utils';
 import type { Language, TranslationData } from '../i18n/index';
 import './RewardCodes.css';
@@ -46,12 +47,7 @@ export function giftCenterUrl(lang: string): string {
  * derselbe Code liefe dann in Tokio sieben Stunden früher ab als in Berlin.
  * Deshalb wird hier ausdrücklich als UTC gelesen.
  */
-function ablaufWert(expiresAt: string): number {
-  const hatZone = /[Zz]$|[+-]\d{2}:?\d{2}$/.test(expiresAt);
-  const iso = expiresAt.includes('T') ? expiresAt : expiresAt.replace(' ', 'T');
-  const ms = new Date(hatZone ? iso : iso + 'Z').getTime();
-  return Number.isFinite(ms) ? ms : NaN;
-}
+const ablaufWert = msAusZeitstempel;
 
 function getTimeRemaining(expiresAt: string | null) {
   if (!expiresAt) return { expired: false, days: 0, hours: 0, minutes: 0, noExpiry: true };
@@ -141,7 +137,7 @@ export default function RewardCodesLocal({ lang, translationData }: RewardCodesL
       const timeRemaining = getTimeRemaining(c.expires_at);
       return !timeRemaining.expired;
     })
-    .sort((a, b) => new Date(b.added_at).getTime() - new Date(a.added_at).getTime());
+    .sort((a, b) => (msAusZeitstempel(b.added_at) || 0) - (msAusZeitstempel(a.added_at) || 0));
 
   const expiredCodes = codes
     .filter((c) => {
