@@ -98,7 +98,12 @@ export async function onRequestGet(ctx: any) {
        GROUP BY u.id ORDER BY n DESC LIMIT 5
     `),
 
-    DB.prepare(`SELECT COUNT(*) AS offen FROM chat_reports`),
+    // Nur die unerledigten: Der Zähler hiess schon immer "offen", zählte aber
+    // jede jemals eingegangene Meldung. Im Panel stand dauerhaft eine Zahl,
+    // hinter der nichts mehr zu tun war — und so eine Zahl schaut man
+    // irgendwann nicht mehr an.
+    DB.prepare(`SELECT COUNT(*) AS offen FROM chat_reports
+                 WHERE status = 'open' OR status IS NULL`),
     // COALESCE ist hier nicht kosmetisch: SUM über eine leere Tabelle liefert
     // NULL, und im Panel stünde dann "null" statt einer Null.
     DB.prepare(`

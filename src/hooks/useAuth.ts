@@ -92,7 +92,12 @@ export function setAuthState(user: AuthUser, token: string) {
 export function clearAuthState() {
   localStorage.removeItem(AUTH_TOKEN_KEY);
   localStorage.removeItem(AUTH_USER_KEY);
-  localStorage.removeItem('wh-meta-checked-at');
+  // Die Marker heissen 'wh-meta-checked-at-<profil>', nicht 'wh-meta-checked-at'.
+  // Der Aufruf mit dem blossen Namen loeschte deshalb nie etwas, und der
+  // Abgleich mit dem Server blieb nach dem Abmelden fuer eine Weile aus.
+  for (const k of Object.keys(localStorage)) {
+    if (k.startsWith('wh-meta-checked-at')) localStorage.removeItem(k);
+  }
   sessionStorage.removeItem(AUTH_SESSION_KEY);
   window.dispatchEvent(new CustomEvent('wh-auth-change', { detail: { user: null, token: null } }));
 }

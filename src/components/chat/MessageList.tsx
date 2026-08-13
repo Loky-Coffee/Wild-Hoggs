@@ -9,8 +9,8 @@ interface MessageListProps {
   noMessages:      string;
   ago:             AgoStrings;
   isAdmin:         boolean;
-  onDelete:        (id: string) => Promise<void>;
-  onReply:         (msg: Message) => void;
+  onDelete?:       (id: string) => Promise<void>;
+  onReply?:        (msg: Message) => void;
   onPM:            (username: string) => void;
   strings:         MessageStrings;
 }

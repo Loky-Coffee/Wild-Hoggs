@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'preact/hooks';
+import { stundenInOrtszeit } from '../../utils/zeit';
 
 // Statistik-Bereich des Admin-Panels.
 //
@@ -104,14 +105,15 @@ export default function AdminStats({ token }: { readonly token: string }) {
       };
 
       // Anmeldungen je Stunde — die Spitze farblich hervorheben
-      const hoechste = Math.max(...daten.anmeldungen.map(s => s.n), 0);
+      const anmeldungenOrt = stundenInOrtszeit(daten.anmeldungen);
+      const hoechste = Math.max(...anmeldungenOrt.map(s => s.n), 0);
       mach(refStunden.current, {
         type: 'bar',
         data: {
-          labels: daten.anmeldungen.map(s => String(s.stunde).padStart(2, '0')),
+          labels: anmeldungenOrt.map(s => String(s.stunde).padStart(2, '0')),
           datasets: [{
-            data: daten.anmeldungen.map(s => s.n),
-            backgroundColor: daten.anmeldungen.map(s => s.n === hoechste && hoechste > 0 ? akzent : akzent + '66'),
+            data: anmeldungenOrt.map(s => s.n),
+            backgroundColor: anmeldungenOrt.map(s => s.n === hoechste && hoechste > 0 ? akzent : akzent + '66'),
             borderRadius: 3,
           }],
         },

@@ -24,3 +24,24 @@ export function msAusZeitstempel(ts: string | null | undefined): number {
   const ms = new Date(hatZone ? iso : iso + 'Z').getTime();
   return Number.isFinite(ms) ? ms : NaN;
 }
+
+/**
+ * Stundenwerte aus der Datenbank auf die Zeit des Betrachters drehen.
+ *
+ * SQLite gruppiert nach UTC-Stunden. Unbehandelt behauptet das Diagramm "die
+ * meisten melden sich um 20 Uhr an" und meint 20 Uhr UTC — im Sommer also 22
+ * Uhr hier. Die Summen bleiben unverändert, nur ihre Zuordnung verschiebt sich.
+ *
+ * Halbe Zeitzonen (Indien, +5:30) landen auf der abgerundeten Stunde.
+ */
+export function stundenInOrtszeit<T extends { stunde: number; n: number }>(
+  stunden: T[],
+): { stunde: number; n: number }[] {
+  const versatz = -new Date().getTimezoneOffset() / 60;
+  const raus = Array.from({ length: 24 }, (_, h) => ({ stunde: h, n: 0 }));
+  for (const s of stunden) {
+    const ziel = Math.floor((((s.stunde + versatz) % 24) + 24) % 24);
+    raus[ziel].n += s.n;
+  }
+  return raus;
+}

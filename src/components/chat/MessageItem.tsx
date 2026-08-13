@@ -49,8 +49,11 @@ interface MessageItemProps {
   reportedIds:     Set<string>;
   ago:             AgoStrings;
   isAdmin:         boolean;
-  onDelete:        (id: string) => Promise<void>;
-  onReply:         (msg: Message) => void;
+  /** Fehlt der Handler, erscheint der Knopf nicht — so wie in privaten
+   *  Nachrichten, wo es nichts zu loeschen gibt. */
+  onDelete?:       (id: string) => Promise<void>;
+  /** Dito: ohne Handler kein Antworten-Knopf. */
+  onReply?:        (msg: Message) => void;
   onPM?:           (username: string) => void;
   strings:         MessageStrings;
 }
@@ -159,7 +162,7 @@ function MessageItem({
   const handleDeleteConfirmed = async () => {
     setShowDeleteConfirm(false);
     setDeleting(true);
-    await onDelete(msg.id);
+    await onDelete?.(msg.id);
     setDeleting(false);
   };
 
@@ -173,7 +176,8 @@ function MessageItem({
   // Build the list of radial action buttons
   type RBtn = { key: string; icon: string; title: string; cls?: string; disabled?: boolean; action: () => void };
   const btns: RBtn[] = [];
-  btns.push({ key: 'reply', icon: '↩', title: strings.reply, action: () => onReply(msg) });
+  if (onReply)
+    btns.push({ key: 'reply', icon: '↩', title: strings.reply, action: () => onReply(msg) });
   if (!isOwn && onPM)
     btns.push({ key: 'pm', icon: '✉', title: strings.pm, action: () => onPM(msg.username) });
   if (!isOwn)
@@ -185,7 +189,7 @@ function MessageItem({
       disabled: isReported,
       action:   () => { if (!isReported) setShowReportDialog(true); },
     });
-  if (isAdmin)
+  if (isAdmin && onDelete)
     btns.push({ key: 'delete', icon: '🗑', title: strings.delete, cls: 'chat-radial-delete', disabled: deleting, action: () => setShowDeleteConfirm(true) });
 
   const actionMenu = (

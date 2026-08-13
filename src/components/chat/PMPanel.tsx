@@ -191,6 +191,9 @@ export default function PMPanel({ username, currentUsername, token, onClose, ago
         </div>
       ) : (
         <MessageList
+          // Ohne onDelete/onReply: In privaten Nachrichten gibt es weder eine
+          // Loeschfunktion noch Antwortbezuege. Vorher standen dort leere
+          // Platzhalter, und die Knoepfe erschienen, taten aber nichts.
           messages={messages}
           currentUsername={currentUsername}
           onReport={handleReport}
@@ -198,8 +201,6 @@ export default function PMPanel({ username, currentUsername, token, onClose, ago
           noMessages={t('chat.pm.no_messages')}
           ago={ago}
           isAdmin={isAdmin}
-          onDelete={() => Promise.resolve()}
-          onReply={() => {}}
           onPM={() => {}}
           strings={strings}
         />

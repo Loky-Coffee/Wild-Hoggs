@@ -13,6 +13,12 @@ interface CaravanCalculatorProps {
   readonly translationData: TranslationData;
 }
 
+// Der Wochen-Held gibt 10 %. Stand hier lange 40 %, bis die Rechnung
+// korrigiert wurde (Commit "hero buff 40% → 10%") — die Beschriftung blieb
+// stehen und versprach das Vierfache. Deshalb jetzt aus einer Quelle.
+const HERO_BUFF = 0.10;
+const HERO_BUFF_TEXT = `+${Math.round(HERO_BUFF * 100)}%`;
+
 const FACTION_HERO: Record<HeroFaction, { name: string; buffKey: string }> = {
   'wings-of-dawn':  { name: 'Laura',   buffKey: 'ATK' },
   'blood-rose':     { name: 'Katrina', buffKey: 'DEF' },
@@ -167,7 +173,7 @@ export default function CaravanCalculator({ lang, translationData }: CaravanCalc
 
   const buffs = useMemo(() => {
     const matchingBonus = yourFaction ? getMatchingBonus(matchingCount) : 0;
-    const heroBonus     = weeklyActive && yourFaction ? 0.10 : 0;
+    const heroBonus     = weeklyActive && yourFaction ? HERO_BUFF : 0;
     const total = 1 + matchingBonus + heroBonus;
     return { matchingBonus, heroBonus, total };
   }, [yourFaction, matchingCount, weeklyActive]);
@@ -258,7 +264,7 @@ export default function CaravanCalculator({ lang, translationData }: CaravanCalc
               className={`cc-weekly-btn${weeklyActive ? ' active' : ''}`}
               onClick={() => setWeeklyActive(v => !v)}
             >
-              {FACTION_HERO[yourFaction].name} +40% {FACTION_HERO[yourFaction].buffKey}
+              {FACTION_HERO[yourFaction].name} {HERO_BUFF_TEXT} {FACTION_HERO[yourFaction].buffKey}
             </button>
           </div>
         )}
@@ -274,7 +280,7 @@ export default function CaravanCalculator({ lang, translationData }: CaravanCalc
               <span className="cc-chip cc-chip-match">+{Math.round(buffs.matchingBonus * 100)}%</span>
             )}
             {buffs.heroBonus > 0 && (
-              <span className="cc-chip cc-chip-hero">+40%</span>
+              <span className="cc-chip cc-chip-hero">{HERO_BUFF_TEXT}</span>
             )}
           </div>
         </div>
