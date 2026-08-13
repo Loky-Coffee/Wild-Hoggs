@@ -10,9 +10,22 @@ export async function onRequestGet(ctx: any) {
   const user = await validateSession(DB, token);
   if (!user) return Response.json({ error: 'Sitzung abgelaufen' }, { status: 401 });
 
-  // Heartbeat — update this user's last_seen timestamp
+  // Nur schreiben, wenn der Wert wirklich veraltet ist.
+  //
+  // Vorher loeste jeder Aufruf einen Schreibvorgang aus, ohne jede Bremse. Ein
+  // angemeldetes Konto konnte damit in einer Schleife das Tageskontingent von D1
+  // leerlaufen lassen — und ist das erschoepft, scheitert bis Mitternacht UTC
+  // JEDER Schreibpfad, auch das Anmelden, weil dabei eine Sitzung entsteht.
+  //
+  // Eine Sperre je Konto waere hier das falsche Mittel: Sie traefe irgendwann
+  // auch jemanden, der einfach zwei Geraete offen hat. Die Bedingung im UPDATE
+  // dagegen kostet legitime Nutzer nichts — der Herzschlag kommt alle 60 s, die
+  // Schwelle liegt bei 30 s. Wer tausendmal je Sekunde aufruft, erzeugt
+  // trotzdem nur alle 30 s eine geschriebene Zeile.
   await DB.prepare(
-    `UPDATE users SET last_seen = datetime('now') WHERE id = ?`
+    `UPDATE users SET last_seen = datetime('now')
+      WHERE id = ?
+        AND (last_seen IS NULL OR last_seen < datetime('now', '-30 seconds'))`
   ).bind(user.user_id).run();
 
   // Return all users seen in the last 5 minutes

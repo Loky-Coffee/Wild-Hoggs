@@ -144,8 +144,14 @@ export async function onRequestPost(ctx: any) {
   }
 
   if (wantPresence) {
+    // Bedingung wie in presence.ts: Ohne sie loest jeder Aufruf mit
+    // {"presence": true} einen Schreibvorgang aus, und ein Konto kann in einer
+    // Schleife das Tageskontingent von D1 aufbrauchen. 30 s Genauigkeit
+    // genuegen fuer die Anzeige "online in den letzten 5 Minuten".
     stmts.push(DB.prepare(
-      `UPDATE users SET last_seen = datetime('now') WHERE id = ?`
+      `UPDATE users SET last_seen = datetime('now')
+        WHERE id = ?
+          AND (last_seen IS NULL OR last_seen < datetime('now', '-30 seconds'))`
     ).bind(user.user_id));
     slots.push({ kind: 'skip' }); // UPDATE liefert keine Zeilen
 

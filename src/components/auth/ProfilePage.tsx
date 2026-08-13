@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'preact/hooks';
+import { useState, useRef, useEffect } from 'preact/hooks';
 import { useAuth, setAuthState, clearAuthState } from '../../hooks/useAuth';
 import type { AuthUser } from '../../hooks/useAuth';
 import { useProfile } from '../../hooks/useProfile';
@@ -185,11 +185,16 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
     } catch { /* ignore */ } finally { setNotifSoundSaving(false); }
   };
 
-  let _volumeTimer: ReturnType<typeof setTimeout> | null = null;
+  // Der Zeitgeber muss einen Render ueberleben. Als einfache Variable im
+  // Komponentenrumpf entstand er bei jedem Render neu mit null, sodass das
+  // clearTimeout unten nie etwas fand — ein Zug ueber den Regler schickte fuer
+  // jeden Zwischenwert ein eigenes PATCH, und deren Antworten konnten sich
+  // ueberholen.
+  const volumeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const handleVolumeChange = (val: number) => {
     setNotifVolume(val);
-    if (_volumeTimer) clearTimeout(_volumeTimer);
-    _volumeTimer = setTimeout(async () => {
+    if (volumeTimer.current) clearTimeout(volumeTimer.current);
+    volumeTimer.current = setTimeout(async () => {
       if (!token) return;
       setNotifVolumeSaving(true);
       try { await patchAccount({ notification_volume: val }); }
