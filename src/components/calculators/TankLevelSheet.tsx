@@ -1,4 +1,5 @@
 import { useEffect } from 'preact/hooks';
+import { useSheetDrag } from '../../hooks/useSheetDrag';
 import { createPortal } from 'preact/compat';
 import { useTranslations } from '../../i18n/utils';
 import type { TranslationData, TranslationKey } from '../../i18n/index';
@@ -41,6 +42,10 @@ export default function TankLevelSheet({
   onClose,
   translationData,
 }: TankLevelSheetProps) {
+  // Nach unten wischen schliesst — wie bei jedem anderen Sheet auch.
+  // Dieses hier war das einzige ohne, was auf dem Telefon auffaellt:
+  // die Geste sitzt in den Fingern, und dann passiert nichts.
+  const { handleRef, sheetRef } = useSheetDrag(onClose);
   const t = useTranslations(translationData);
   const name = t(mod.nameKey as TranslationKey) || mod.nameKey;
 
@@ -75,8 +80,8 @@ export default function TankLevelSheet({
 
   return createPortal(
     <div class="rls-backdrop" onClick={onClose}>
-      <div class="rls-sheet" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-label={name}>
-        <div class="rls-handle" />
+      <div class="rls-sheet" ref={sheetRef} onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-label={name}>
+        <div class="rls-handle" ref={handleRef} />
         <div class="rls-header">
           <strong>{mod.isVehicle ? '🚗 ' : ''}{name}</strong>
           <span class="rls-level">Level {mod.level} · {currentSubLevel} / {mod.subLevels}</span>
