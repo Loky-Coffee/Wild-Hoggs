@@ -38,3 +38,17 @@ export function darf(user: KontoMitRechten | null | undefined, recht: Recht): bo
 export function darfEines(user: KontoMitRechten | null | undefined, ...rechte: Recht[]): boolean {
   return rechte.some((r) => darf(user, r));
 }
+
+/**
+ * Hat das Konto ueberhaupt irgendein Recht?
+ *
+ * Fuer die Frage, ob der Zugang zum Verwaltungsbereich angeboten wird. Der
+ * Server entscheidet allein ueber is_admin und die Rechteliste; die Rolle
+ * "Moderator" ist nur eine Beschriftung. Wer danach fragte, verbarg vergebene
+ * Rechte hinter einem Flag, das der Server gar nicht auswertet.
+ */
+export function hatIrgendeinRecht(user: KontoMitRechten | null | undefined): boolean {
+  if (!user) return false;
+  if (user.is_admin === 1) return true;
+  return parseRechte(user.permissions).length > 0;
+}

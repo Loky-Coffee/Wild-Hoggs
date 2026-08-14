@@ -92,7 +92,13 @@ type TabId = typeof TABS[number]['id'];
 
 function formatDate(iso: string | null): string {
   if (!iso) return '—';
-  try { return new Date(iso).toLocaleString(); } catch { return iso; }
+  // Ueber msAusZeitstempel, nicht ueber new Date(): Die Werte kommen aus
+  // SQLite ("2026-08-13 14:33:00", UTC ohne Kennzeichnung), und der Browser
+  // deutet sie roh als Ortszeit. Registrierungen und letzte Anmeldungen standen
+  // dadurch um den Zonenversatz verschoben — in Berlin zwei Stunden zu frueh,
+  // in Tokio neun.
+  const ms = msAusZeitstempel(iso);
+  return Number.isNaN(ms) ? iso : new Date(ms).toLocaleString();
 }
 
 export default function AdminPanel({ translationData }: AdminPanelProps) {
@@ -105,6 +111,11 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
   // kein eigenes Recht — sie fasst nur zusammen, was ohnehin sichtbar ist.
   const sichtbareTabs = TABS.filter(tab =>
     tab.rechte.length === 0 || darfEines(user, ...([...tab.rechte] as Recht[])));
+
+  // Reicht es fuer diese Seite ueberhaupt? Massgeblich ist, ob mindestens ein
+  // Bereich mit eigenem Recht offensteht — die Uebersicht hat keines und waere
+  // sonst fuer jeden ein Freifahrtschein.
+  const hatEchtenBereich = sichtbareTabs.some(tab => tab.rechte.length > 0);
   const [activeTab, setActiveTab] = useState<TabId>('overview');
 
   // Wer den aktiven Bereich verliert (Rechte geändert), landet auf dem ersten
@@ -206,31 +217,45 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
   // Inhalte laden — auch für die Übersicht, die die wartenden Codes anzeigt.
   useEffect(() => {
     if (activeTab !== 'content' && activeTab !== 'overview') return;
-    if (!darf(user, 'codes.approve')) return;
-    // Laufende Ankuendigung
-    fetch('/api/announcement')
-      .then(r => r.ok ? r.json() : null)
-      .then((data: any) => { if (data?.announcement) setAnnounceActive(data.announcement); })
-      .catch(() => {});
 
-    // Lucky Rose
-    fetch('/api/settings/lucky-rose')
-      .then(r => r.json())
-      .then((data: any) => { if (typeof data.active === 'number') setLuckyRose(data.active); })
-      .catch(() => {});
-    // Codes
-    setCodesLoading(true);
-    fetch('/api/reward-codes')
-      .then(r => r.json())
-      .then((data: any) => { if (Array.isArray(data.codes)) setCodes(data.codes); })
-      .catch(() => {})
-      .finally(() => setCodesLoading(false));
+    // Jeder Abruf haengt an seinem eigenen Recht. Vorher lag eine einzige
+    // Sperre auf 'codes.approve' vor allen vieren — der Reiter wird aber schon
+    // von vier verschiedenen Rechten sichtbar (siehe TABS oben). Wer nur
+    // 'content.rose' hatte, sah deshalb die Auswahl auf ihrem Anfangswert 10
+    // stehen, egal was oeffentlich aktiv war, und setzte die Seite beim
+    // Speichern auf 10. Drei der vier Abrufe brauchen ohnehin keine
+    // Berechtigung, nur die wartenden Funde.
+    if (darf(user, 'content.announcement')) {
+      fetch('/api/announcement')
+        .then(r => r.ok ? r.json() : null)
+        .then((data: any) => { if (data?.announcement) setAnnounceActive(data.announcement); })
+        .catch(() => {});
+    }
 
-    // Wartende Funde aus dem Discord-Kanal
-    fetch('/api/reward-codes?status=pending', { headers: { Authorization: `Bearer ${token}` } })
-      .then(r => r.ok ? r.json() : null)
-      .then((data: any) => { if (Array.isArray(data?.codes)) setPending(data.codes); })
-      .catch(() => {});
+    if (darf(user, 'content.rose')) {
+      fetch('/api/settings/lucky-rose')
+        .then(r => r.json())
+        .then((data: any) => { if (typeof data.active === 'number') setLuckyRose(data.active); })
+        .catch(() => {});
+    }
+
+    if (darf(user, 'codes.manage') || darf(user, 'codes.approve')) {
+      setCodesLoading(true);
+      fetch('/api/reward-codes')
+        .then(r => r.json())
+        .then((data: any) => { if (Array.isArray(data.codes)) setCodes(data.codes); })
+        .catch(() => {})
+        .finally(() => setCodesLoading(false));
+    }
+
+    // Wartende Funde aus dem Discord-Kanal — der einzige Abruf, der wirklich
+    // eine Berechtigung verlangt.
+    if (darf(user, 'codes.approve')) {
+      fetch('/api/reward-codes?status=pending', { headers: { Authorization: `Bearer ${token}` } })
+        .then(r => r.ok ? r.json() : null)
+        .then((data: any) => { if (Array.isArray(data?.codes)) setPending(data.codes); })
+        .catch(() => {});
+    }
   }, [activeTab, user]);
 
   // Derived: reports
@@ -264,7 +289,12 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
   const hasFilter = fText || fServer || fRegFrom || fRegTo;
 
   // Access check — AFTER all hooks
-  if (!isLoggedIn || (!isAdmin && !isMod)) {
+  //
+  // Nach den Rechten, nicht nach der Rolle: Der Server autorisiert allein ueber
+  // is_admin und die Rechteliste (functions/_lib/permissions.ts). Ein Konto mit
+  // 'stats.view' und Rolle "user" wurde von der API akzeptiert, kam hier aber
+  // nicht herein — die Vergabe sah gespeichert aus und war unbenutzbar.
+  if (!isLoggedIn || (!isAdmin && !hatEchtenBereich)) {
     return (
       <div class="admin-access-denied">
         🔒 {t('admin.access_denied')}

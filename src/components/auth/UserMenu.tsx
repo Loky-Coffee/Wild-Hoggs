@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'preact/hooks';
+import { hatIrgendeinRecht } from '../../utils/permissions';
 // Dieselbe Zahl, die der Server durchsetzt — eine zweite hier würde
 // irgendwann von der ersten abweichen.
 import { MAX_PROFILE_PRO_KONTO } from '../../../functions/_lib/state-limits';
@@ -266,7 +267,9 @@ export default function UserMenu({ translationData }: UserMenuProps) {
           <a href={profileHref} class="user-dropdown-item" onClick={() => setShowDropdown(false)}>
             {t('auth.myAccount')}
           </a>
-          {(user?.is_admin === 1 || user?.is_moderator === 1) && (
+          {/* Wie im Panel: massgeblich sind die Rechte, nicht die Rolle. Sonst
+              ist ein vergebenes Recht ohne Moderator-Flag unerreichbar. */}
+          {(user?.is_admin === 1 || user?.is_moderator === 1 || hatIrgendeinRecht(user)) && (
             <>
               <hr class="user-dropdown-divider" />
               <a href={adminHref} class="user-dropdown-item user-dropdown-admin" onClick={() => setShowDropdown(false)}>
