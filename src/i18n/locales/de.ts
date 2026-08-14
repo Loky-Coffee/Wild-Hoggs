@@ -689,6 +689,7 @@ export default {
   'profile.stat.tankLevels': 'Level {level}',
   'profile.stat.researchStats': '{categories} Kategorien · {technologies} Technologien',
   'profile.stat.buildingLevel': 'Level {current} → {target}',
+  'profile.stat.buildingCount': '{n} Gebäude erfasst',
   'profile.stat.heroLevel': 'Lvl {current} → {target}',
   'profile.formations': 'Formations-Power',
   'profile.formations.hint': 'Deine beste 5-Item-Set Power pro Fraktion',

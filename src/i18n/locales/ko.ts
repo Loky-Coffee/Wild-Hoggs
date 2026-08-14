@@ -689,6 +689,7 @@ export default {
   'profile.stat.tankLevels': '레벨 {level}',
   'profile.stat.researchStats': '{categories} 카테고리 · {technologies} 기술',
   'profile.stat.buildingLevel': '레벨 {current} → {target}',
+  'profile.stat.buildingCount': '건물 {n}개 기록됨',
   'profile.stat.heroLevel': 'Lv. {current} → {target}',
   'profile.formations': '편대 전투력',
   'profile.formations.hint': '세력별 최고 5아이템 세트 전투력',

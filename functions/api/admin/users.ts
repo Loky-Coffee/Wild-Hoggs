@@ -21,7 +21,9 @@ export async function onRequestGet(ctx: any) {
     `SELECT u.id, u.username, u.email, u.server, u.faction,
             u.is_admin, COALESCE(u.is_moderator, 0) AS is_moderator,
             u.permissions, u.created_at, u.last_seen,
-            datetime(MAX(s.expires_at), '-30 days') AS last_login,
+            -- Echte Spalte, mit Rueckfall auf die alte Ableitung fuer Konten,
+            -- die sich seit ihrer Einfuehrung nicht angemeldet haben.
+            COALESCE(u.last_login, datetime(MAX(s.expires_at), '-30 days')) AS last_login,
             (SELECT COUNT(*) FROM chat_global g WHERE g.user_id = u.id) AS msg_global,
             (SELECT COUNT(*) FROM chat_server v WHERE v.user_id = u.id) AS msg_server
      FROM users u

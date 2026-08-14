@@ -34,7 +34,7 @@ function messagesStmt(DB: any, type: ChatType, server: string | null, lang: stri
               cs.reply_to_id, rs.username AS reply_to_username, SUBSTR(rs.message, 1, 120) AS reply_to_text
        FROM chat_server cs
        LEFT JOIN users u ON cs.user_id = u.id
-       LEFT JOIN chat_server rs ON cs.reply_to_id = rs.id
+       LEFT JOIN chat_server rs ON cs.reply_to_id = rs.id AND rs.server = cs.server
        WHERE cs.server = ? AND ${langFilter} AND cs.created_at >= ?
        ORDER BY cs.created_at ASC
        LIMIT ?`

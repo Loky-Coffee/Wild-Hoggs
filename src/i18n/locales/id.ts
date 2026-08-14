@@ -689,6 +689,7 @@ export default {
   'profile.stat.tankLevels': 'Level {level}',
   'profile.stat.researchStats': '{categories} Kategori · {technologies} Teknologi',
   'profile.stat.buildingLevel': 'Level {current} → {target}',
+  'profile.stat.buildingCount': '{n} bangunan tercatat',
   'profile.stat.heroLevel': 'Lvl. {current} → {target}',
   'profile.formations': 'Kekuatan formasi',
   'profile.formations.hint': 'Kekuatan set 5 item terbaik Anda per faksi',

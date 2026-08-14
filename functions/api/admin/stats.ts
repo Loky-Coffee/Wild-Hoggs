@@ -29,7 +29,10 @@ export async function onRequestGet(ctx: any) {
     // Die großen Zahlen für die Kopfzeile
     DB.prepare(`
       SELECT (SELECT COUNT(*) FROM users) AS konten,
-             (SELECT COUNT(*) FROM users WHERE created_at >= date('now','-30 days')) AS konten_30t,
+             -- datetime statt date: datetime('now','-30 days') liefert Mitternacht,
+             -- das Fenster war je nach Tageszeit bis zu 31 Tage lang. Die
+             -- beiden Zeilen darunter machen es bereits richtig.
+             (SELECT COUNT(*) FROM users WHERE created_at >= datetime('now','-30 days')) AS konten_30t,
              (SELECT COUNT(*) FROM users WHERE last_seen  >= datetime('now','-24 hours')) AS aktiv_24h,
              (SELECT COUNT(*) FROM users WHERE last_seen  >= datetime('now','-7 days'))  AS aktiv_7t,
              (SELECT COUNT(*) FROM chat_global) AS chat_global,
@@ -84,7 +87,7 @@ export async function onRequestGet(ctx: any) {
     DB.prepare(`
       SELECT date(created_at) AS tag, COUNT(*) AS n
         FROM chat_global
-       WHERE created_at >= date('now','-30 days')
+       WHERE created_at >= datetime('now','-30 days')
        GROUP BY tag ORDER BY tag
     `),
 

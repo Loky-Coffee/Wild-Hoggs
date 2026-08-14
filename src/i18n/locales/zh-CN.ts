@@ -689,6 +689,7 @@ export default {
   'profile.stat.tankLevels': '等级 {level}',
   'profile.stat.researchStats': '{categories} 类别 · {technologies} 技术',
   'profile.stat.buildingLevel': '等级 {current} → {target}',
+  'profile.stat.buildingCount': '已记录 {n} 座建筑',
   'profile.stat.heroLevel': 'Lv. {current} → {target}',
   'profile.formations': '编队战力',
   'profile.formations.hint': '每个阵营最佳5件套战力',

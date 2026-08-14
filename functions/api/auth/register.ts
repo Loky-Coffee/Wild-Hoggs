@@ -44,6 +44,14 @@ export async function onRequestPost(ctx: any) {
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return Response.json({ error: 'Ungültige E-Mail Adresse' }, { status: 400 });
   }
+  // Erst der Typ, dann die Laenge: Bei einem JSON-Wert, der kein String ist,
+  // liefert .length undefined, und `undefined < 3` ist false — die Pruefung lief
+  // dann ins Leere. Mit {"username": 1, "password": 1234} entstand ein Konto mit
+  // einstelligem Namen und vierstelligem Passwort. change-password.ts macht es
+  // richtig, hier fehlte es.
+  if (typeof username !== 'string' || typeof password !== 'string') {
+    return Response.json({ error: 'Ungültige Felder' }, { status: 400 });
+  }
   if (username.length < 3 || username.length > 20) {
     return Response.json({ error: 'Username muss 3–20 Zeichen haben' }, { status: 400 });
   }

@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'preact/hooks';
+import { formatCompact } from '../../utils/formatters';
 import { ErrorBoundary } from '../ErrorBoundary';
 import { createPortal } from 'preact/compat';
 import { validatedBuildings as buildingsData } from '../../data/validated/buildings';
@@ -58,12 +59,8 @@ function bonusIcon(name: string): string {
 }
 
 // Spiel-Schreibweise K / M / G (sprachunabhängig — kein hartkodiertes Locale)
-function fcCompact(n: number, _lang?: 'de' | 'en'): string {
-  if (n >= 1e9) return `${(n / 1e9).toFixed(2)}G`;
-  if (n >= 1e6) return `${(n / 1e6).toFixed(1)}M`;
-  if (n >= 1e3) return `${(n / 1e3).toFixed(1)}K`;
-  return String(n);
-}
+// Gemeinsame Fassung, siehe utils/formatters.ts
+const fcCompact = formatCompact;
 function fmtDur(sec: number): string {
   sec = Math.max(0, Math.round(sec));
   const d = Math.floor(sec / 86400);

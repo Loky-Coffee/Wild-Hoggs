@@ -19,6 +19,18 @@ async function resolveProfileId(DB: any, userId: string, requestedId: string | n
   return row?.id ?? null;
 }
 
+/**
+ * Eine defekte Zeile darf nicht die ganze Antwort verhindern.
+ *
+ * /api/state/all liefert einem neuen Geraet alle gespeicherten Rechnerstaende
+ * auf einmal. Warf JSON.parse bei einer einzigen kaputten Zeile, kam gar nichts
+ * an und das Geraet stellte nichts wieder her. user/export.ts faengt genau das
+ * bereits ab.
+ */
+function sicherParsen(roh: string): unknown | undefined {
+  try { return sicherParsen(roh); } catch { return undefined; }
+}
+
 export async function onRequestGet(ctx: any) {
   const { DB } = ctx.env;
   const token = getToken(ctx.request);
@@ -40,7 +52,7 @@ export async function onRequestGet(ctx: any) {
   if (!row) return Response.json({ error: 'Kein State gefunden' }, { status: 404 });
 
   return Response.json({
-    state: JSON.parse(row.state_json),
+    state: sicherParsen(row.state_json),
     updated_at: row.updated_at
   }, { headers: { 'Cache-Control': 'no-store' } });
 }

@@ -689,6 +689,7 @@ export default {
   'profile.stat.tankLevels': 'ระดับ {level}',
   'profile.stat.researchStats': '{categories} หมวดหมู่ · {technologies} เทคโนโลยี',
   'profile.stat.buildingLevel': 'ระดับ {current} → {target}',
+  'profile.stat.buildingCount': 'บันทึกอาคาร {n} แห่ง',
   'profile.stat.heroLevel': 'ระดับ {current} → {target}',
   'profile.formations': 'พลังการจัดทัพ',
   'profile.formations.hint': 'พลังเซตไอเทม 5 ชิ้นที่ดีที่สุดของคุณต่อฝ่าย',

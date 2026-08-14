@@ -689,6 +689,7 @@ export default {
   'profile.stat.tankLevels': 'Cấp {level}',
   'profile.stat.researchStats': '{categories} Danh mục · {technologies} Công nghệ',
   'profile.stat.buildingLevel': 'Cấp {current} → {target}',
+  'profile.stat.buildingCount': 'Đã ghi {n} công trình',
   'profile.stat.heroLevel': 'Cấp {current} → {target}',
   'profile.formations': 'Sức mạnh đội hình',
   'profile.formations.hint': 'Sức mạnh bộ 5 vật phẩm tốt nhất của bạn theo phe',

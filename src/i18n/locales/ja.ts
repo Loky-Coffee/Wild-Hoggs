@@ -689,6 +689,7 @@ export default {
   'profile.stat.tankLevels': 'レベル {level}',
   'profile.stat.researchStats': '{categories} カテゴリ · {technologies} テクノロジー',
   'profile.stat.buildingLevel': 'レベル {current} → {target}',
+  'profile.stat.buildingCount': '{n}件の建物を記録',
   'profile.stat.heroLevel': 'Lv. {current} → {target}',
   'profile.formations': '編成パワー',
   'profile.formations.hint': '派閥ごとの最高5アイテムセットパワー',

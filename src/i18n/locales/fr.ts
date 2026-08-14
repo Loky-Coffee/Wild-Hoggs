@@ -689,6 +689,7 @@ export default {
   'profile.stat.tankLevels': 'Niveau {level}',
   'profile.stat.researchStats': '{categories} Catégories · {technologies} Technologies',
   'profile.stat.buildingLevel': 'Niveau {current} → {target}',
+  'profile.stat.buildingCount': '{n} bâtiments suivis',
   'profile.stat.heroLevel': 'Niv. {current} → {target}',
   'profile.formations': 'Puissance de formation',
   'profile.formations.hint': 'Votre meilleure puissance de set 5 pièces par faction',

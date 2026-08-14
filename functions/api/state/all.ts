@@ -4,6 +4,18 @@
 
 import { getToken, validateSession } from '../../_lib/auth';
 
+/**
+ * Eine defekte Zeile darf nicht die ganze Antwort verhindern.
+ *
+ * /api/state/all liefert einem neuen Geraet alle gespeicherten Rechnerstaende
+ * auf einmal. Warf JSON.parse bei einer einzigen kaputten Zeile, kam gar nichts
+ * an und das Geraet stellte nichts wieder her. user/export.ts faengt genau das
+ * bereits ab.
+ */
+function sicherParsen(roh: string): unknown | undefined {
+  try { return sicherParsen(roh); } catch { return undefined; }
+}
+
 export async function onRequestGet(ctx: any) {
   const { DB } = ctx.env;
   const token = getToken(ctx.request);
@@ -39,7 +51,7 @@ export async function onRequestGet(ctx: any) {
   const states: Record<string, { state: unknown; updated_at: string }> = {};
   for (const row of results) {
     states[`${row.calc_type}:${row.calc_key}`] = {
-      state: JSON.parse(row.state_json),
+      state: sicherParsen(row.state_json),
       updated_at: row.updated_at
     };
   }

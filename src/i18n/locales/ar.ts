@@ -689,6 +689,7 @@ export default {
   'profile.stat.tankLevels': 'المستوى {level}',
   'profile.stat.researchStats': '{categories} فئات · {technologies} تقنيات',
   'profile.stat.buildingLevel': 'المستوى {current} → {target}',
+  'profile.stat.buildingCount': 'تم تسجيل {n} مبنى',
   'profile.stat.heroLevel': 'مستوى {current} → {target}',
   'profile.formations': 'قوة التشكيل',
   'profile.formations.hint': 'أفضل قوة طقم 5 قطع لكل فصيل',

@@ -35,7 +35,16 @@ export async function onRequestPost(ctx: any) {
   const table = chat_type === 'pm' ? 'chat_pm'
     : (chat_type === 'global' || chat_type === 'global-lang') ? 'chat_global'
     : 'chat_server';
-  const msg = await DB.prepare(`SELECT id FROM ${table} WHERE id = ?`).bind(message_id).first();
+  // Bei privaten Nachrichten zaehlt nicht nur, ob es sie gibt, sondern auch, ob
+  // der Meldende daran beteiligt war. Sonst kann jemand mit einer fremden
+  // Nachrichten-ID deren Inhalt in die Moderationsliste schieben, wo er im
+  // Klartext an alle mit reports.view geht.
+  const msg = chat_type === 'pm'
+    ? await DB.prepare(
+        `SELECT id FROM chat_pm
+          WHERE id = ? AND (sender_id = ? OR receiver_id = ?)`
+      ).bind(message_id, user.user_id, user.user_id).first()
+    : await DB.prepare(`SELECT id FROM ${table} WHERE id = ?`).bind(message_id).first();
   if (!msg) {
     return Response.json({ error: 'Nachricht nicht gefunden.' }, { status: 404 });
   }

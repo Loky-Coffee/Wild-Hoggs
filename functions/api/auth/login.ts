@@ -31,7 +31,10 @@ export async function onRequestPost(ctx: any) {
 
   const user = await DB.prepare(
     'SELECT id, email, username, password_hash, faction, server, language, formation_power_br, formation_power_wd, formation_power_go, is_admin, COALESCE(is_moderator, 0) AS is_moderator, permissions FROM users WHERE email = ?'
-  ).bind(email.toLowerCase()).first() as any;
+    // kennung statt email.toLowerCase(): Bei einem Wert, der kein String ist,
+    // gibt es .toLowerCase nicht — der Aufruf endete in einem 500 statt in einer
+    // sauberen 400. Zwei Zeilen darueber wird bereits String(email) benutzt.
+  ).bind(kennung).first() as any;
 
   if (!user || !(await verifyPassword(password, user.password_hash))) {
     await zaehleFehlversuch(DB, ip, kennung);
@@ -48,6 +51,12 @@ export async function onRequestPost(ctx: any) {
   await DB.prepare(
     'INSERT INTO sessions (user_id, token, expires_at) VALUES (?, ?, ?)'
   ).bind(user.id, token, expiresAt(30)).run();
+
+  // Zeitpunkt der Anmeldung festhalten. Vorher wurde er im Verwaltungsbereich
+  // aus dem Sitzungsablauf zurueckgerechnet — und verschwand, sobald sich
+  // jemand abmeldete und die Sitzungszeile geloescht wurde.
+  await DB.prepare("UPDATE users SET last_login = datetime('now') WHERE id = ?")
+    .bind(user.id).run();
 
   return Response.json({
     user: {

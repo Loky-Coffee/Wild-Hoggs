@@ -29,10 +29,15 @@ function readCalcState<T>(profileId: string, calcType: string, calcKey = 'main')
   } catch { return null; }
 }
 
+// Alle neunzehn Baeume, wie in tools/research.astro. Hier standen neun, die
+// Statistik untertrieb entsprechend.
 const RESEARCH_IDS = [
   'alliance_recognition', 'unit_special_training', 'fully_armed_alliance',
   'field', 'hero_training', 'military_strategies',
   'peace_shield', 'siege_to_seize', 'army_building',
+  'tactical_master', 'rider_training', 'assaulter_training',
+  'shooter_training', 'age_of_steel', 'new_home',
+  'rapid_growth', 'shelter_building', 'elite_troops', 'hq_management',
 ];
 
 const FACTION_LABELS: Record<string, { label: string; icon: string }> = {
@@ -127,7 +132,10 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
 
   // ── Calculator stats — read from active profile's localStorage ─────────────
   interface TankState   { unlockedLevels: number[]; subLevels: Record<string,number> }
-  interface BuildState  { selectedBuilding: string | null; currentLevel: number; targetLevel: number }
+  // So speichert der Bau-Rechner wirklich (BuildingCalculator.tsx:84). Hier
+  // stand ein Format mit selectedBuilding/currentLevel/targetLevel, das dort
+  // nie geschrieben wurde — die Kachel zeigte deshalb dauerhaft "—".
+  interface BuildState  { levels: Record<string, number> }
   interface CaravanSt   { powerInput: string; yourFaction: string | null }
   interface HeroExpSt   { currentLevel: number; targetLevel: number }
   interface ResearchSt  { selectedTechnologies: Record<string, number> }
@@ -373,12 +381,10 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
             <div>
               <div class="pp-stat-label">{t('profile.stat.building')}</div>
               <div class="pp-stat-val">
-                {buildingState?.selectedBuilding
-                  ? t('profile.stat.buildingLevel', {
-                      current: String(buildingState.currentLevel),
-                      target: String(buildingState.targetLevel),
-                    })
-                  : '—'}
+                {(() => {
+                  const anzahl = Object.values(buildingState?.levels ?? {}).filter(v => v > 0).length;
+                  return anzahl > 0 ? t('profile.stat.buildingCount', { n: String(anzahl) }) : '—';
+                })()}
               </div>
             </div>
           </div>

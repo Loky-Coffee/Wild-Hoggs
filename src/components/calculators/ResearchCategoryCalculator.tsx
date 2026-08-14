@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect, useRef } from 'preact/hooks';
+import { formatCompact } from '../../utils/formatters';
 import { ErrorBoundary } from '../ErrorBoundary';
 import type { ResearchTree, Technology } from '../../schemas/research';
 import ResearchTreeView from './ResearchTreeView';
@@ -57,14 +58,8 @@ function fmtDurationShort(sec: number): string {
   return (d > 0 ? `${d}d ` : '') + `${p(h)}:${p(m)}`;
 }
 
-// Kompakte grobe Zahl -> "2,86 Mrd" / "2.86B"
-function fcCompact(n: number, lang: string): string {
-  try {
-    return new Intl.NumberFormat(lang === 'de' ? 'de-DE' : 'en-US', { notation: 'compact', maximumFractionDigits: 2 }).format(n);
-  } catch {
-    return String(n);
-  }
-}
+// Gemeinsame Fassung, siehe utils/formatters.ts
+const fcCompact = formatCompact;
 
 function calculateTotalBadges(
   selectedTechnologies: Map<string, number>,

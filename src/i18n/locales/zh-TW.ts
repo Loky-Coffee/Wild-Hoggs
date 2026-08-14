@@ -689,6 +689,7 @@ export default {
   'profile.stat.tankLevels': '等級 {level}',
   'profile.stat.researchStats': '{categories} 類別 · {technologies} 技術',
   'profile.stat.buildingLevel': '等級 {current} → {target}',
+  'profile.stat.buildingCount': '已記錄 {n} 座建築',
   'profile.stat.heroLevel': 'Lv. {current} → {target}',
   'profile.formations': '編隊戰力',
   'profile.formations.hint': '每個陣營最佳5件套戰力',

@@ -29,8 +29,8 @@ export async function onRequestGet(ctx: any) {
   const url    = new URL(ctx.request.url);
   const lang   = url.searchParams.get('lang') ?? null;   // null = global (no lang filter)
   const since  = url.searchParams.get('since');
-  const limit  = Math.min(parseInt(url.searchParams.get('limit') ?? String(DEFAULT_LIMIT)), MAX_LIMIT);
-  const offset = parseInt(url.searchParams.get('offset') ?? '0');
+  const limit  = Math.min(Number.parseInt(url.searchParams.get('limit') ?? '', 10) || DEFAULT_LIMIT, MAX_LIMIT);
+  const offset = Number.parseInt(url.searchParams.get('offset') ?? '', 10) || 0;
 
   // lang IS NULL → global channel;  lang = ? → language channel
   const langFilter    = lang ? 'lang = ?' : 'lang IS NULL';

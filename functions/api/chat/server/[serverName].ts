@@ -40,8 +40,8 @@ export async function onRequestGet(ctx: any) {
   const url    = new URL(ctx.request.url);
   const lang   = url.searchParams.get('lang') ?? null;
   const since  = url.searchParams.get('since');
-  const limit  = Math.min(parseInt(url.searchParams.get('limit') ?? String(DEFAULT_LIMIT)), MAX_LIMIT);
-  const offset = parseInt(url.searchParams.get('offset') ?? '0');
+  const limit  = Math.min(Number.parseInt(url.searchParams.get('limit') ?? '', 10) || DEFAULT_LIMIT, MAX_LIMIT);
+  const offset = Number.parseInt(url.searchParams.get('offset') ?? '', 10) || 0;
 
   const langFilter   = lang ? 'lang = ?' : 'lang IS NULL';
   const langFilterCs = lang ? 'cs.lang = ?' : 'cs.lang IS NULL';
@@ -55,7 +55,10 @@ export async function onRequestGet(ctx: any) {
               cs.reply_to_id, rs.username AS reply_to_username, SUBSTR(rs.message, 1, 120) AS reply_to_text
        FROM chat_server cs
        LEFT JOIN users u ON cs.user_id = u.id
-       LEFT JOIN chat_server rs ON cs.reply_to_id = rs.id
+       -- rs.server = cs.server: Ohne diese Bedingung liefert die Vorschau der
+       -- beantworteten Nachricht 120 Zeichen aus einem fremden Server-Kanal,
+       -- sobald jemand eine fremde Nachrichten-ID als reply_to_id einsetzt.
+       LEFT JOIN chat_server rs ON cs.reply_to_id = rs.id AND rs.server = cs.server
        WHERE cs.server = ? AND ${langFilterCs} AND cs.created_at >= ?
        ORDER BY cs.created_at ASC
        LIMIT ?`
@@ -68,7 +71,7 @@ export async function onRequestGet(ctx: any) {
               cs.reply_to_id, rs.username AS reply_to_username, SUBSTR(rs.message, 1, 120) AS reply_to_text
        FROM chat_server cs
        LEFT JOIN users u ON cs.user_id = u.id
-       LEFT JOIN chat_server rs ON cs.reply_to_id = rs.id
+       LEFT JOIN chat_server rs ON cs.reply_to_id = rs.id AND rs.server = cs.server
        WHERE cs.server = ? AND ${langFilterCs}
        ORDER BY cs.created_at DESC
        LIMIT ? OFFSET ?`
@@ -143,7 +146,7 @@ export async function onRequestPost(ctx: any) {
     `SELECT cs.id, cs.username, cs.faction, cs.server, cs.message, cs.created_at,
             cs.reply_to_id, rs.username AS reply_to_username, SUBSTR(rs.message, 1, 120) AS reply_to_text
      FROM chat_server cs
-     LEFT JOIN chat_server rs ON cs.reply_to_id = rs.id
+     LEFT JOIN chat_server rs ON cs.reply_to_id = rs.id AND rs.server = cs.server
      WHERE cs.id = ?`
   ).bind(id).first() as any;
 

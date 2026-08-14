@@ -689,6 +689,7 @@ export default {
   'profile.stat.tankLevels': 'Seviye {level}',
   'profile.stat.researchStats': '{categories} Kategori · {technologies} Teknoloji',
   'profile.stat.buildingLevel': 'Seviye {current} → {target}',
+  'profile.stat.buildingCount': '{n} bina kayıtlı',
   'profile.stat.heroLevel': 'Sev. {current} → {target}',
   'profile.formations': 'Formasyon gücü',
   'profile.formations.hint': 'Fraksiyon başına en iyi 5 parça set gücünüz',

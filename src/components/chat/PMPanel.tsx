@@ -28,6 +28,8 @@ export default function PMPanel({ username, currentUsername, token, onClose, ago
   const [text,        setText]        = useState('');
   const [sending,     setSending]     = useState(false);
   const [sendError,   setSendError]   = useState<string | null>(null);
+  // Vom Server gemeldete Zeichengrenze; bis dahin der uebliche Standard.
+  const [maxLen, setMaxLen] = useState(500);
   const [loading,     setLoading]     = useState(true);
   const [reportedIds, setReportedIds] = useState<Set<string>>(new Set());
 
@@ -75,8 +77,9 @@ export default function PMPanel({ username, currentUsername, token, onClose, ago
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok || gefragt !== usernameRef.current) return;
-      const data = await res.json() as { messages: Message[]; server_time?: string };
+      const data = await res.json() as { messages: Message[]; server_time?: string; max_length?: number };
       if (gefragt !== usernameRef.current) return;
+      if (data.max_length) setMaxLen(data.max_length);
       setMessages(data.messages);
       // Auch ein leeres Gespraech braucht einen Cursor — sonst kehrt poll()
       // sofort wieder um (`if (!lastCreatedAt.current) return;`) und eine erste
@@ -232,7 +235,7 @@ export default function PMPanel({ username, currentUsername, token, onClose, ago
             onInput={(e) => setText((e.target as HTMLTextAreaElement).value)}
             onKeyDown={handleKeyDown}
             placeholder={t('chat.pm.placeholder', { username })}
-            maxLength={500}
+            maxLength={maxLen}
             disabled={sending}
             rows={1}
           />
@@ -247,7 +250,7 @@ export default function PMPanel({ username, currentUsername, token, onClose, ago
         </div>
         <div class="chat-input-footer">
           <span class={`chat-char-count${text.length > 450 ? ' chat-char-warn' : ''}`}>
-            {500 - text.length}
+            {maxLen - text.length}
           </span>
         </div>
       </div>
