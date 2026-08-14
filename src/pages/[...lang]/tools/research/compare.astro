@@ -67,10 +67,17 @@ const treesData = allTrees.map((tree) => ({
   })),
 }));
 
-const L = ({
-  de: { left: 'Baum A', right: 'Baum B', empty: 'Keine Knoten', title: 'Bäume vergleichen', sub: 'Boni bei Max-Level nebeneinander' },
-  en: { left: 'Tree A', right: 'Tree B', empty: 'No nodes', title: 'Compare Trees', sub: 'Max-level bonuses side by side' },
-} as Record<string, { left: string; right: string; empty: string; title: string; sub: string }>)[lang === 'de' ? 'de' : 'en'];
+// Aus dem Woerterbuch statt aus einer Tabelle in dieser Datei: Die alte Fassung
+// kannte nur 'de' und 'en' und fiel fuer alle uebrigen dreizehn Sprachen auf
+// Englisch zurueck — Titel, Beschreibung, H1, Untertitel und der letzte
+// Brotkrumen-Eintrag standen dort auf Englisch, auch mitten in arabischem Text.
+const L = {
+  left:  t('compare.left'),
+  right: t('compare.right'),
+  empty: t('compare.empty'),
+  title: t('compare.title'),
+  sub:   t('compare.sub'),
+};
 
 const breadcrumbItems = [
   { label: t('nav.home'), href: getLocalizedPath('', lang) },
