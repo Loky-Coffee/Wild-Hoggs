@@ -55,8 +55,14 @@ export async function onRequestPost(ctx: any) {
   // Zeitpunkt der Anmeldung festhalten. Vorher wurde er im Verwaltungsbereich
   // aus dem Sitzungsablauf zurueckgerechnet — und verschwand, sobald sich
   // jemand abmeldete und die Sitzungszeile geloescht wurde.
-  await DB.prepare("UPDATE users SET last_login = datetime('now') WHERE id = ?")
-    .bind(user.id).run();
+  // Bewusst gekapselt: Das Anmelden selbst darf nicht daran scheitern, dass ein
+  // Nebeneffekt fehlschlaegt — etwa wenn ein Deploy die Migration 020 noch nicht
+  // gesehen hat. Fehlt der Zeitstempel, faellt der Verwaltungsbereich auf die
+  // alte Ableitung aus dem Sitzungsablauf zurueck.
+  try {
+    await DB.prepare("UPDATE users SET last_login = datetime('now') WHERE id = ?")
+      .bind(user.id).run();
+  } catch { /* Spalte fehlt oder Schreibfehler — Anmeldung gilt trotzdem */ }
 
   return Response.json({
     user: {

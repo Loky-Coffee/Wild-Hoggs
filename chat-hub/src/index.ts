@@ -121,9 +121,15 @@ export default {
       }
       // Die geprüfte Identität wandert im Header zum DO — der Client hat darauf
       // keinen Einfluss mehr.
-      const req = new Request(request, {
-        headers: new Headers([...request.headers, ['X-Session', JSON.stringify(session)]]),
-      });
+      // set statt anhaengen: `new Headers([...request.headers, [...]])` haengt
+      // an, statt zu ueberschreiben. Schickt ein Client beim Handshake selbst
+      // ein X-Session mit, entsteht ein zusammengesetzter Wert. Uebernommen
+      // wurde dadurch bisher keine fremde Identitaet — JSON.parse scheitert
+      // daran und die Verbindung bricht ab —, aber das haengt an einer
+      // Zufaelligkeit der Header-Serialisierung, nicht an einer Absicht.
+      const kopf = new Headers(request.headers);
+      kopf.set('X-Session', JSON.stringify(session));
+      const req = new Request(request, { headers: kopf });
       return hub(env).fetch(req);
     }
 
