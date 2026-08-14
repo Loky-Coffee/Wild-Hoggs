@@ -1,6 +1,6 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
-import { getLangFromUrl, useTranslations, getCurrentMonth, getCurrentYear, getLocalizedPath } from '../../i18n/utils';
+import { getLangFromUrl, useTranslations, getCurrentMonth, getCurrentYear, getLocalizedPath, nurBereiche } from '../../i18n/utils';
 import { getLanguagePaths } from '../../i18n/static-paths';
 import { loadTranslations } from '../../i18n/index';
 import WeeklyRoses from '../../components/WeeklyRoses';
@@ -152,7 +152,7 @@ const rosesArticleSchema = {
            zu sehen, dass etwas sichtbar wurde — die Komponente blieb bis zum
            Verlassen der Seite tot. Auf den Rechnerseiten war das schon aufgefallen
            (siehe building.astro), hier stand es noch. -->
-      <WeeklyRoses lang={lang} roses={roses} translationData={translationData} client:idle />
+      <WeeklyRoses lang={lang} roses={roses} translationData={nurBereiche(translationData, ['roses.', 'error.', 'a11y.'])} client:idle />
     </section>
   </div>
 </PageLayout>

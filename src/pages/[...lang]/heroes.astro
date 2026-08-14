@@ -1,6 +1,6 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
-import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../i18n/utils';
+import { getLangFromUrl, useTranslations, getLocalizedPath, nurBereiche } from '../../i18n/utils';
 import { getLanguagePaths } from '../../i18n/static-paths';
 import { loadTranslations } from '../../i18n/index';
 import PageHeader from '../../components/PageHeader.astro';
@@ -73,7 +73,7 @@ const heroesSchema = {
     <HeroGrid heroes={heroes} clearLabel={t('heroes.clearFilters')} client:idle />
   </div>
   <div class="hh-panel" data-panel="exp" role="tabpanel" hidden>
-    <HeroExpCalculator lang={lang} translationData={translationData} client:idle />
+    <HeroExpCalculator lang={lang} translationData={nurBereiche(translationData, ['calc.', 'heroes.', 'error.', 'a11y.'])} client:idle />
   </div>
 </PageLayout>
 

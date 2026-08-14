@@ -122,3 +122,28 @@ export function nurDiese(
   }
   return teil as TranslationData;
 }
+
+/**
+ * Wörterbuch auf die Bereiche eindampfen, die eine Seite wirklich braucht.
+ *
+ * Astro schreibt die Eigenschaften einer Insel als JSON ins HTML. Wer das
+ * vollständige Wörterbuch durchreicht, verschickt alle 949 Schlüssel — rund
+ * 57 KB je Insel, auf 420 der 511 Seiten und damit gut ein Drittel der
+ * erzeugten HTML-Masse. Eine Rechnerseite braucht davon unter zweihundert.
+ *
+ * Anders als `nurDiese` werden hier keine Einzelschlüssel aufgezählt, sondern
+ * Bereiche: `nurBereiche(data, ['calc.', 'research.'])`. Das überlebt neue
+ * Schlüssel — wer `calc.building.neuerText` ergänzt, bekommt ihn automatisch
+ * mitgeliefert. Nur ein ganz neuer Bereich muss hier nachgetragen werden, und
+ * genau darauf achtet scripts/check-i18n-keys.mjs vor jedem Build.
+ */
+export function nurBereiche(
+  data: TranslationData,
+  praefixe: readonly string[],
+): TranslationData {
+  const teil: Record<string, string> = {};
+  for (const k of Object.keys(data)) {
+    if (praefixe.some((p) => k.startsWith(p))) teil[k] = (data as Record<string, string>)[k];
+  }
+  return teil as TranslationData;
+}

@@ -1,6 +1,6 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
-import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../i18n/utils';
+import { getLangFromUrl, useTranslations, getLocalizedPath, nurBereiche } from '../../i18n/utils';
 import { getLanguagePaths } from '../../i18n/static-paths';
 import { loadTranslations } from '../../i18n/index';
 import ChatWindow from '../../components/chat/ChatWindow';
@@ -26,5 +26,5 @@ const breadcrumbItems = [
   breadcrumbs={breadcrumbItems}
   fullWidth={true}
 >
-  <ChatWindow translationData={translationData} client:only="preact" />
+  <ChatWindow translationData={nurBereiche(translationData, ['chat.', 'dialog.', 'error.', 'a11y.'])} client:only="preact" />
 </PageLayout>

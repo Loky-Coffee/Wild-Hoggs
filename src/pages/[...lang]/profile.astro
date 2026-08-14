@@ -1,6 +1,6 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
-import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../i18n/utils';
+import { getLangFromUrl, useTranslations, getLocalizedPath, nurBereiche } from '../../i18n/utils';
 import { getLanguagePaths } from '../../i18n/static-paths';
 import { loadTranslations } from '../../i18n/index';
 import ProfilePage from '../../components/auth/ProfilePage';
@@ -25,5 +25,5 @@ const breadcrumbItems = [
   robots="noindex, nofollow"
   breadcrumbs={breadcrumbItems}
 >
-  <ProfilePage translationData={translationData} client:only="preact" />
+  <ProfilePage translationData={nurBereiche(translationData, ['auth.', 'profile.', 'error.', 'a11y.'])} client:only="preact" />
 </PageLayout>

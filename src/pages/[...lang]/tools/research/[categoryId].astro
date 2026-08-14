@@ -1,6 +1,6 @@
 ---
 import PageLayout from '../../../../layouts/PageLayout.astro';
-import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../../../i18n/utils';
+import { getLangFromUrl, useTranslations, getLocalizedPath, nurBereiche } from '../../../../i18n/utils';
 import { languages, loadTranslations } from '../../../../i18n/index';
 import type { TranslationKey } from '../../../../i18n/index';
 import ResearchCategoryCalculator from '../../../../components/calculators/ResearchCategoryCalculator';
@@ -191,7 +191,7 @@ const breadcrumbItems = [
         categoryImageSrc={categoryImage.src}
         iconMap={iconMap}
         lang={lang}
-        translationData={translationData}
+        translationData={nurBereiche(translationData, ['calc.', 'research.', 'tank.', 'error.', 'a11y.'])}
         client:idle
       />
   </div>

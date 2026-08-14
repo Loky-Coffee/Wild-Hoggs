@@ -1,6 +1,6 @@
 ---
 import PageLayout from '../../../layouts/PageLayout.astro';
-import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../../i18n/utils';
+import { getLangFromUrl, useTranslations, getLocalizedPath, nurBereiche } from '../../../i18n/utils';
 import { getLanguagePaths } from '../../../i18n/static-paths';
 import { loadTranslations } from '../../../i18n/index';
 import CaravanCalculator from '../../../components/calculators/CaravanCalculator';
@@ -44,5 +44,5 @@ const breadcrumbItems = [
        (Codes, Rosen) bei 8–16 ms. client:idle hydriert ebenso garantiert,
        wartet aber auf einen Leerlaufmoment — und braucht keinen
        IntersectionObserver, also besteht das Problem oben nicht. -->
-    <CaravanCalculator lang={lang} translationData={translationData} client:idle />
+    <CaravanCalculator lang={lang} translationData={nurBereiche(translationData, ['calc.', 'error.', 'a11y.'])} client:idle />
 </PageLayout>
