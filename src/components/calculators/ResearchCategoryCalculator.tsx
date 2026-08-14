@@ -61,6 +61,79 @@ function fmtDurationShort(sec: number): string {
 // Gemeinsame Fassung, siehe utils/formatters.ts
 const fcCompact = formatCompact;
 
+/**
+ * Hoechstes Level, das eine Technologie mit der aktuellen Auswahl erreichen darf.
+ *
+ * Eine Voraussetzung heisst "progressiv", wenn sie unterhalb ihres eigenen
+ * Maximums verlangt wird (requiredLevel < maxLevel der Voraussetzung): Dann
+ * zieht sie das Folgelevel mit sich hoch, statt es nur einmal freizuschalten.
+ */
+export function erlaubtesMaximum(
+  tech: Technology,
+  auswahl: Map<string, number>,
+  alle: Technology[],
+): number {
+  if (!tech.prerequisites || tech.prerequisites.length === 0) return tech.maxLevel;
+
+  // Ueberhaupt freigeschaltet?
+  const frei = tech.prerequisites.every((pre) => {
+    const pid = typeof pre === 'string' ? pre : pre.id;
+    const noetig = typeof pre === 'string' ? 1 : (pre.requiredLevel || 1);
+    return (auswahl.get(pid) || 0) >= noetig;
+  });
+  if (!frei) return 0;
+
+  const progressive = tech.prerequisites.filter((pre) => {
+    const pid = typeof pre === 'string' ? pre : pre.id;
+    const noetig = typeof pre === 'string' ? 1 : (pre.requiredLevel || 1);
+    const vorg = alle.find((t) => t.id === pid);
+    return noetig < (vorg?.maxLevel || 1);
+  });
+  if (progressive.length === 0) return tech.maxLevel;
+
+  const grenzen = progressive.map((pre) => {
+    const pid = typeof pre === 'string' ? pre : pre.id;
+    const vorg = alle.find((t) => t.id === pid);
+    const stand = auswahl.get(pid) || 0;
+    return stand >= (vorg?.maxLevel || 1) ? Infinity : stand;
+  });
+  const hoechste = Math.max(...grenzen);
+  return hoechste === Infinity ? tech.maxLevel : Math.min(tech.maxLevel, hoechste);
+}
+
+/**
+ * Auswahl auf einen gueltigen Stand bringen.
+ *
+ * Ohne das driften gespeicherter Wert und wirksamer Wert auseinander: Wer alles
+ * auf Maximum setzt und danach eine progressive Voraussetzung senkt, hatte
+ * anschliessend drei verschiedene Zahlen fuer dieselbe Technologie — der Knoten
+ * zeigte das alte Level samt vollen Kosten, die Infobox rechnete mit dem
+ * begrenzten, und die Uebersichtsseite wieder mit dem alten.
+ *
+ * Wird wiederholt angewandt, weil jede Absenkung weitere ausloesen kann.
+ */
+export function normalisiereAuswahl(
+  auswahl: Map<string, number>,
+  alle: Technology[],
+): Map<string, number> {
+  let stand = new Map(auswahl);
+  for (let runde = 0; runde < alle.length + 1; runde++) {
+    let geaendert = false;
+    for (const tech of alle) {
+      const gewaehlt = stand.get(tech.id) || 0;
+      if (gewaehlt <= 0) continue;
+      const grenze = erlaubtesMaximum(tech, stand, alle);
+      if (gewaehlt > grenze) {
+        if (grenze <= 0) stand.delete(tech.id);
+        else stand.set(tech.id, grenze);
+        geaendert = true;
+      }
+    }
+    if (!geaendert) break;
+  }
+  return stand;
+}
+
 function calculateTotalBadges(
   selectedTechnologies: Map<string, number>,
   category: ResearchTree | null
@@ -209,8 +282,16 @@ function ResearchCategoryCalculatorInner({ categoryData, categoryImageSrc, iconM
   const [labSpeed, setLabSpeed] = useCalculatorState<LabSpeed>('labspeed', 'main', LAB_SPEED_DEFAULT, activeProfile.id);
   const [showLabSpeed, setShowLabSpeed] = useState(false);
 
-  // Runtime Map aus gespeichertem Record rekonstruieren
-  const selectedTechnologies = new Map(Object.entries(stored.selectedTechnologies));
+  // Runtime Map aus gespeichertem Record rekonstruieren — und dabei auf einen
+  // gueltigen Stand bringen. Frueher gespeicherte Kombinationen koennen
+  // ungueltig sein: Wer alles auf Maximum setzte und danach eine progressive
+  // Voraussetzung senkte, behielt bei den abhaengigen Technologien das alte
+  // Level. Der Knoten zeigte es samt vollen Kosten an, die Infobox rechnete mit
+  // dem begrenzten Wert, und die Uebersichtsseite wieder mit dem alten.
+  const selectedTechnologies = normalisiereAuswahl(
+    new Map(Object.entries(stored.selectedTechnologies)),
+    category.technologies,
+  );
   const targetTechId         = stored.targetTechId;
   const targetLevel          = stored.targetLevel;
 
@@ -224,8 +305,12 @@ function ResearchCategoryCalculatorInner({ categoryData, categoryImageSrc, iconM
       } else {
         next[techId] = level;
       }
-      // gezielte Kaskade nur von diesem Knoten aus — löscht keine unbeteiligten Level
-      return { ...prev, selectedTechnologies: cascadeReset(next, techId, category) };
+      // Erst die gezielte Kaskade (loest Technologien, deren Voraussetzung ganz
+      // wegfaellt), dann die Begrenzung: Wer eine progressive Voraussetzung nur
+      // senkt, statt sie zu loeschen, zieht die abhaengigen Level mit herunter.
+      const nachKaskade = cascadeReset(next, techId, category);
+      const gueltig = normalisiereAuswahl(new Map(Object.entries(nachKaskade)), category.technologies);
+      return { ...prev, selectedTechnologies: Object.fromEntries(gueltig) };
     });
   };
 
