@@ -44,7 +44,7 @@ export async function onRequestGet(ctx: any) {
        FROM chat_pm p
        JOIN users u ON p.sender_id = u.id
        WHERE ((p.sender_id = ? AND p.receiver_id = ?) OR (p.sender_id = ? AND p.receiver_id = ?))
-         AND p.created_at > ?
+         AND p.created_at >= ?
        ORDER BY p.created_at ASC
        LIMIT ?`
     ).bind(user.user_id, other.id, other.id, user.user_id, since, limit).all();
@@ -63,7 +63,7 @@ export async function onRequestGet(ctx: any) {
   }
 
   return Response.json(
-    { messages },
+    { messages, server_time: new Date().toISOString().replace('T', ' ').slice(0, 19) },
     { headers: { 'Cache-Control': 'no-store' } }
   );
 }

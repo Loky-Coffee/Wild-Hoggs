@@ -75,11 +75,16 @@ export default function PMPanel({ username, currentUsername, token, onClose, ago
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok || gefragt !== usernameRef.current) return;
-      const data = await res.json() as { messages: Message[] };
+      const data = await res.json() as { messages: Message[]; server_time?: string };
       if (gefragt !== usernameRef.current) return;
       setMessages(data.messages);
+      // Auch ein leeres Gespraech braucht einen Cursor — sonst kehrt poll()
+      // sofort wieder um (`if (!lastCreatedAt.current) return;`) und eine erste
+      // Antwort erscheint erst nach Neuladen.
       if (data.messages.length > 0) {
         lastCreatedAt.current = data.messages[data.messages.length - 1].created_at;
+      } else if (data.server_time) {
+        lastCreatedAt.current = data.server_time;
       }
     } catch { /* ignore */ } finally {
       setLoading(false);

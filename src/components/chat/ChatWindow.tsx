@@ -462,12 +462,21 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
         setLoadError(data.error ?? t('chat.loading'));
         return;
       }
-      const data = await res.json() as { messages: Message[]; max_length?: number };
+      const data = await res.json() as { messages: Message[]; max_length?: number; server_time?: string };
       if (veraltet()) return;
       if (data.max_length) setMaxLen(data.max_length);
       setMessages(data.messages);
+      // Auch ein leerer Kanal braucht einen Cursor. Ohne ihn stellt der
+      // Sync-Endpunkt gar keine Nachrichtenabfrage (sync.ts: `if (activeSince
+      // && …)`), und der Cursor entsteht nur aus einer bereits geholten
+      // Nachricht — ein frischer Kanal oder ein neu geoeffnetes Gespraech blieb
+      // deshalb bei ausgefallener Live-Verbindung dauerhaft leer. Die Serverzeit
+      // aus der Antwort ist der richtige Startpunkt: alles Aeltere ist bereits
+      // in der Liste, alles Neuere kommt beim naechsten Durchlauf.
       if (data.messages.length > 0) {
         lastCreatedAt.current = data.messages[data.messages.length - 1].created_at;
+      } else if (data.server_time) {
+        lastCreatedAt.current = data.server_time;
       }
     } catch {
       if (veraltet()) return;

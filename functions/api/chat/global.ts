@@ -46,7 +46,7 @@ export async function onRequestGet(ctx: any) {
        FROM chat_global cg
        LEFT JOIN users u ON cg.user_id = u.id
        LEFT JOIN chat_global rg ON cg.reply_to_id = rg.id
-       WHERE ${langFilterCg} AND cg.created_at > ?
+       WHERE ${langFilterCg} AND cg.created_at >= ?
        ORDER BY cg.created_at ASC
        LIMIT ?`
     ).bind(...(lang ? [lang, since, limit] : [since, limit])).all();

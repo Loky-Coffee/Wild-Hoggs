@@ -20,6 +20,11 @@ const isServerType = (t: ChatType) => t === 'server' || t === 'server-lang';
 const isLangType   = (t: ChatType) => t === 'global-lang' || t === 'server-lang';
 
 // Volle Nachrichten — nur für den aktiven Kanal.
+// created_at ist sekundengenau. Deshalb vergleichen die Nachrichten-Abfragen
+// mit >= statt >: Zwei Nachrichten in derselben Sekunde, von denen die erste
+// schon geholt wurde, liessen die zweite sonst dauerhaft verschwinden. Die
+// Zaehler weiter unten behalten >, sonst zaehlten sie jede letzte Nachricht
+// bei jedem Durchlauf erneut mit.
 function messagesStmt(DB: any, type: ChatType, server: string | null, lang: string | null, since: string, limit: number) {
   if (isServerType(type)) {
     const langFilter = lang ? 'cs.lang = ?' : 'cs.lang IS NULL';
@@ -30,7 +35,7 @@ function messagesStmt(DB: any, type: ChatType, server: string | null, lang: stri
        FROM chat_server cs
        LEFT JOIN users u ON cs.user_id = u.id
        LEFT JOIN chat_server rs ON cs.reply_to_id = rs.id
-       WHERE cs.server = ? AND ${langFilter} AND cs.created_at > ?
+       WHERE cs.server = ? AND ${langFilter} AND cs.created_at >= ?
        ORDER BY cs.created_at ASC
        LIMIT ?`
     ).bind(...(lang ? [server, lang, since, limit] : [server, since, limit]));
@@ -44,7 +49,7 @@ function messagesStmt(DB: any, type: ChatType, server: string | null, lang: stri
      FROM chat_global cg
      LEFT JOIN users u ON cg.user_id = u.id
      LEFT JOIN chat_global rg ON cg.reply_to_id = rg.id
-     WHERE ${langFilter} AND cg.created_at > ?
+     WHERE ${langFilter} AND cg.created_at >= ?
      ORDER BY cg.created_at ASC
      LIMIT ?`
   ).bind(...(lang ? [lang, since, limit] : [since, limit]));
