@@ -74,6 +74,21 @@
   outline: none;
   cursor: pointer;
 }
+/* outline: none oben nimmt die Fokusanzeige des Browsers weg, ohne Ersatz —
+   wer mit der Tastatur navigiert, sah auf 15 Seiten nicht, wo er steht.
+   Der Ring liegt auf dem Griff, nicht auf der duennen Leiste, damit er
+   ueberhaupt auffaellt. */
+.hx-slider:focus-visible {
+  outline: 2px solid #ffa500;
+  outline-offset: 4px;
+}
+.hx-slider:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.45);
+}
+.hx-slider:focus-visible::-moz-range-thumb {
+  box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.45);
+}
+
 .hx-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 20px; height: 20px;

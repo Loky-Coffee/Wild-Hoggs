@@ -130,7 +130,7 @@ function TankModificationNode({
           }}
           tabIndex={0}
           role="button"
-          aria-label={`Set Level ${mod.level} as target`}
+          aria-label={t('a11y.setAsTarget' as TranslationKey, { n: `Level ${mod.level}` })}
           style={{ cursor: 'pointer', outline: 'none' }}
           data-node-element="true"
           data-clickable="true"

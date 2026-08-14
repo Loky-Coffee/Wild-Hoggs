@@ -187,7 +187,7 @@ function ResearchTreeNode({
           }}
           tabIndex={0}
           role="button"
-          aria-label={`Set ${techName} as target`}
+          aria-label={t('a11y.setAsTarget' as TranslationKey, { n: techName })}
           style={{ cursor: 'pointer', outline: 'none' }}
           data-node-element="true"
           data-clickable="true"

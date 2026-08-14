@@ -1,8 +1,10 @@
 ---
 import { languages } from '../i18n/index';
-import { getLangFromUrl } from '../i18n/utils';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+import { loadTranslations } from '../i18n/index';
 
 const currentLang = getLangFromUrl(Astro.url);
+const t = useTranslations(await loadTranslations(currentLang));
 
 // Language codes to flag emojis mapping
 const flags: Record<string, string> = {
@@ -40,8 +42,8 @@ const getLanguageUrl = (targetLang: string) => {
 };
 ---
 
-<nav class="language-dropdown" aria-label="Language selection">
-  <button class="dropdown-toggle" aria-label="Select language" aria-haspopup="true" aria-expanded="false">
+<nav class="language-dropdown" aria-label={t('a11y.languageSelection')}>
+  <button class="dropdown-toggle" aria-label={t('a11y.selectLanguage')} aria-haspopup="true" aria-expanded="false">
     <span class="flag">{flags[currentLang]}</span>
     <span class="lang-name">{languages[currentLang]}</span>
     <span class="arrow">▼</span>
@@ -53,10 +55,15 @@ const getLanguageUrl = (targetLang: string) => {
         href={getLanguageUrl(code)}
         class:list={['dropdown-item', { active: currentLang === code }]}
         aria-current={currentLang === code ? 'true' : undefined}
+        hreflang={code}
         data-lang={code}
       >
         <span class="flag">{flags[code]}</span>
-        <span class="lang-name">{name}</span>
+        {/* lang am Namen: "日本語" oder "العربية" stehen hier mitten in einer
+            Seite, die als englisch oder deutsch ausgezeichnet ist. Ohne diese
+            Angabe spricht ein Screenreader sie mit der Stimme der
+            Ausgangssprache aus. */}
+        <span class="lang-name" lang={code}>{name}</span>
         {currentLang === code && <span class="check">✓</span>}
       </a>
     ))}

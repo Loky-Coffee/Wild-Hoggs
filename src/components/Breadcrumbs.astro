@@ -1,4 +1,7 @@
 ---
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+import { loadTranslations } from '../i18n/index';
+const tt = useTranslations(await loadTranslations(getLangFromUrl(Astro.url)));
 import { getLangFromUrl, getLocalizedPath } from '../i18n/utils';
 
 interface BreadcrumbItem {
@@ -30,7 +33,7 @@ const breadcrumbSchema = {
 };
 ---
 
-<nav aria-label="Breadcrumb" class="breadcrumbs">
+<nav aria-label={tt('a11y.breadcrumb')} class="breadcrumbs">
   <ol class="breadcrumb-list">
     {items.map((item, index) => (
       <li class="breadcrumb-item">

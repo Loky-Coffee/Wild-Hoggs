@@ -216,6 +216,10 @@ function CaravanCalculatorInner({ lang, translationData }: CaravanCalculatorProp
           type="text"
           className="cc-power-input"
           value={powerInput}
+          // Der sichtbare Text darueber steht in einem div, ist also nicht mit
+          // dem Feld verknuepft. Ohne aria-label blieb als einziger Hinweis der
+          // Platzhalter — und der verschwindet, sobald jemand zu tippen beginnt.
+          aria-label={t('calc.caravan.formationPower')}
           placeholder={t('calc.caravan.placeholder')}
           onInput={e => setPowerInput((e.target as HTMLInputElement).value)}
         />

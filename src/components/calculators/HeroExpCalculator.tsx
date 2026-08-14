@@ -64,7 +64,11 @@ export default function HeroExpCalculator({ lang, translationData }: Props) {
         <div class="hx-levels">
           <div class="hx-lvl">
             <span class="hx-lvl-label">{k('calc.hero.currentLevel')}</span>
+            {/* Beschriftung wie beim Schieberegler daneben: Der Text im span
+                darueber ist visuell zugeordnet, aber nicht verknuepft — fuer
+                einen Screenreader war das Feld namenlos. */}
             <input class="hx-lvl-num" type="number" min={1} max={MAX_LEVEL - 1} value={current}
+              aria-label={k('calc.hero.currentLevel')}
               onChange={(e) => setCurrent(Number((e.target as HTMLInputElement).value))} />
             <input class="hx-slider" type="range" min={1} max={MAX_LEVEL - 1} value={current}
               onInput={(e) => setCurrent(Number((e.target as HTMLInputElement).value))} aria-label={k('calc.hero.currentLevel')} />
@@ -75,6 +79,7 @@ export default function HeroExpCalculator({ lang, translationData }: Props) {
           <div class="hx-lvl">
             <span class="hx-lvl-label">{k('calc.hero.targetLevel')}</span>
             <input class="hx-lvl-num" type="number" min={2} max={MAX_LEVEL} value={target}
+              aria-label={k('calc.hero.targetLevel')}
               onChange={(e) => setTarget(Number((e.target as HTMLInputElement).value))} />
             <input class="hx-slider" type="range" min={2} max={MAX_LEVEL} value={target}
               onInput={(e) => setTarget(Number((e.target as HTMLInputElement).value))} aria-label={k('calc.hero.targetLevel')} />
