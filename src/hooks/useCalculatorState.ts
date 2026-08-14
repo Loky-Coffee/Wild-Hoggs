@@ -174,7 +174,12 @@ if (typeof window !== 'undefined') {
 
 // --- Background validation (shared, runs once per 5-minute window) ---
 let bgRunning = false;
-const bgListeners: Array<(key: string, state: unknown) => void> = [];
+// Empfaenger fuer Staende, die im Hintergrund vom Server kamen.
+//
+// Die Profilkennung gehoert dazu: Ohne sie prueft der Empfaenger nur den
+// Rechnertyp, und eine verspaetete Antwort fuer Profil A landet in Profil B,
+// wenn zwischenzeitlich umgeschaltet wurde.
+const bgListeners: Array<(profileId: string, key: string, state: unknown) => void> = [];
 
 async function runBackgroundValidation(token: string, profileId: string) {
   if (bgRunning) return;
@@ -220,7 +225,7 @@ async function fetchAndUpdate(profileId: string, calcType: string, calcKey: stri
     if (!r.ok) return;
     const { state, updated_at } = await r.json();
     writeCache(profileId, calcType, calcKey, state, { sync: updated_at });
-    bgListeners.forEach(fn => fn(key, state));
+    bgListeners.forEach(fn => fn(profileId, key, state));
   } catch { /* ignore */ }
 }
 
@@ -282,8 +287,8 @@ export function useCalculatorState<T>(
       }
     }
 
-    const listener = (key: string, serverState: unknown) => {
-      if (key === `${calcType}:${calcKey}`) {
+    const listener = (pid: string, key: string, serverState: unknown) => {
+      if (pid === profileId && key === `${calcType}:${calcKey}`) {
         setStateRaw(serverState as T);
       }
     };
@@ -327,6 +332,13 @@ export async function syncAllOnLogin(token: string, profileId?: string) {
       for (const [key, { state, updated_at }] of Object.entries(all)) {
         const [ct, ck] = key.split(':');
         writeCache(pid, ct, ck, state, { sync: updated_at });
+        // Offene Rechner mitziehen. Ohne das blieb, wer sich auf einer
+        // Rechnerseite anmeldete, auf den Standardwerten sitzen: Der Effekt,
+        // der den Zwischenspeicher liest, haengt an der Profilkennung und
+        // laeuft, bevor hier geschrieben wurde. Wer dann etwas aenderte,
+        // schob dreissig Sekunden spaeter den leeren Stand ueber den
+        // gespeicherten.
+        bgListeners.forEach(fn => fn(pid as string, key, state));
       }
     } catch { /* offline */ }
   } else {

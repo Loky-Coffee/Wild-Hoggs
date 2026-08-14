@@ -13,7 +13,7 @@ import { getToken, validateSession } from '../../_lib/auth';
  * bereits ab.
  */
 function sicherParsen(roh: string): unknown | undefined {
-  try { return sicherParsen(roh); } catch { return undefined; }
+  try { return JSON.parse(roh); } catch { return undefined; }
 }
 
 export async function onRequestGet(ctx: any) {

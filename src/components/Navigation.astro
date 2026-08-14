@@ -1,9 +1,9 @@
 ---
-import { getLangFromUrl, useTranslations, nurDiese } from '../i18n/utils';
+import { getLangFromUrl, useTranslations, nurBereiche } from '../i18n/utils';
 import { loadTranslations } from '../i18n/index';
 import LanguageDropdown from './LanguageDropdown.astro';
 import ApocalypseTimeClock from './ApocalypseTimeClock';
-import UserMenu, { USER_MENU_KEYS } from './auth/UserMenu';
+import UserMenu from './auth/UserMenu';
 import PresenceHeartbeat from './chat/PresenceHeartbeat';
 import GlobalChatPoller from './chat/GlobalChatPoller';
 import UpdateNotice from './UpdateNotice';
@@ -85,7 +85,14 @@ const currentPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : r
     <div class="nav-controls">
       <ApocalypseTimeClock client:idle transition:persist="apo-uhr" />
       <UserMenu
-        translationData={nurDiese(translationData, USER_MENU_KEYS)}
+        {/* Bereiche statt Einzelliste: USER_MENU_KEYS zaehlte dreizehn Schluessel
+            auf — genug fuer das Menue selbst, aber das Menue oeffnet den
+            Anmeldedialog, und der braucht neunzehn eigene. Live standen dort
+            deshalb rohe Schluesselnamen ("auth.password" statt "Passwort") vor
+            jedem, der sich anmelden oder registrieren wollte.
+            scripts/check-i18n-bereiche.mjs folgt den Importen und faengt so
+            etwas jetzt vor dem Build ab. */}
+        translationData={nurBereiche(translationData, ['auth.', 'profile.'])}
         client:only="preact"
         transition:persist={`user-menu-${lang}`}
       />

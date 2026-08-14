@@ -18,23 +18,6 @@ import './UserMenu.css';
 // der Komponente im Blick ist: Wer unten ein t('…') ergänzt, muss es hier
 // eintragen — sonst erscheint im Menü der Schlüsselname statt des Textes.
 // Ein Prüfschritt im Build fängt das ab (siehe scripts/check-i18n-keys.mjs).
-export const USER_MENU_KEYS = [
-  'auth.login',
-  'auth.logout',
-  'auth.myAccount',
-  'profile.addProfile',
-  'profile.maxProfiles',
-  'profile.cancel',
-  'profile.delete',
-  'profile.deleteConfirm',
-  'profile.myProfiles',
-  'profile.namePlaceholder',
-  'profile.rename',
-  'profile.save',
-  'profile.server',
-] as const;
-
-
 interface UserMenuProps {
   translationData: TranslationData;
 }

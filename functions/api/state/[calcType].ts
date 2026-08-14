@@ -28,7 +28,7 @@ async function resolveProfileId(DB: any, userId: string, requestedId: string | n
  * bereits ab.
  */
 function sicherParsen(roh: string): unknown | undefined {
-  try { return sicherParsen(roh); } catch { return undefined; }
+  try { return JSON.parse(roh); } catch { return undefined; }
 }
 
 export async function onRequestGet(ctx: any) {
