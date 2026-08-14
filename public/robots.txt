@@ -5,7 +5,12 @@ User-agent: *
 Allow: /
 Disallow: /admin/
 Disallow: /profile/
-Disallow: /community/
+# /community/ steht bewusst NICHT hier:
+# Die Seite traegt noindex und wird von jeder Seite aus verlinkt. Wer sie in
+# robots.txt sperrt, verhindert genau das Lesen dieses noindex — Google kennt
+# die Adresse dann durch die Verweise, darf aber nicht nachsehen, und traegt sie
+# als blossen Eintrag ohne Ausriss in den Index ein. Beide Signale zusammen
+# arbeiten gegeneinander; noindex allein wirkt.
 
 # Sitemaps
 Sitemap: https://wild-hoggs.com/sitemap-index.xml

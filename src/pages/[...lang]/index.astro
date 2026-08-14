@@ -56,7 +56,11 @@ const t = useTranslations(translationData);
         <div class="card changelog-card">
           <h2>{t('changelog.title')}</h2>
           <p class="changelog-subtitle">{t('changelog.subtitle')}</p>
-          <ul class="changelog-list" id="changelog-list">
+          <!-- dir="ltr": Die Eintraege sind immer englisch, auch auf den
+               arabischen Seiten. In einem RTL-Container wandern sonst die
+               Satzzeichen ans falsche Zeilenende ("I'm Ediva." wird zu
+               ".I'm Ediva"). -->
+          <ul class="changelog-list" id="changelog-list" dir="ltr">
             {changelog.map((entry, i) => (
               <li class="changelog-entry" data-index={i}>
                 <time class="changelog-date" datetime={entry.date}>

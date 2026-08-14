@@ -36,8 +36,6 @@ export default defineConfig({
           vi: 'vi'
         }
       },
-      // SEO-Optimierung: <lastmod> Tag hinzufügen (wichtigster optionaler Tag)
-      // Google, Bing, Yandex nutzen lastmod für intelligenteres Crawling
       serialize(item) {
         // SEO: Exclude non-indexable pages from sitemap
         //
@@ -57,7 +55,12 @@ export default defineConfig({
           return undefined;
         }
 
-        item.lastmod = new Date().toISOString();
+        // Kein lastmod. Hier stand der Zeitpunkt des Builds, also fuer alle 450
+        // Adressen derselbe Wert, drei Millisekunden auseinander — die Sitemap
+        // behauptete nach jedem Deploy, jede Seite habe sich geaendert. Google
+        // wertet lastmod nur aus, solange es nachweislich stimmt, und verwirft
+        // einen Wert, der bei jedem Build springt. Gar keine Angabe ist ehrlicher
+        // als eine falsche.
         return item;
       }
     })

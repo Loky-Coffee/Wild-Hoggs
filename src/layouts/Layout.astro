@@ -116,7 +116,12 @@ const websiteSchema = {
 ---
 
 <!doctype html>
-<html lang={lang}>
+<!-- dir gehoert an die Wurzel, nicht ins CSS: Arabisch wird von rechts nach
+     links gelesen, und ohne diese Angabe stellt der Browser den Text in
+     Leserichtung links-nach-rechts dar. Betroffen sind Satzzeichen am
+     Zeilenende, gemischte Folgen aus Zahlen und lateinischer Schrift, und die
+     Spiegelung von Aufzaehlungen und Brotkrumen. -->
+<html lang={lang} dir={lang === 'ar' ? 'rtl' : 'ltr'}>
   <head>
     <meta charset="UTF-8" />
     <link rel="dns-prefetch" href="https://last-z.com" />

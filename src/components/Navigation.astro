@@ -39,7 +39,7 @@ const currentPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : r
 <nav class="navigation">
   <div class="nav-container">
     <div class="nav-brand">
-      <a href={lang === 'en' ? '/' : `/${lang}`}>
+      <a href={getPath('home')}>
         <span class="brand-text">Wild Hoggs</span>
       </a>
     </div>
