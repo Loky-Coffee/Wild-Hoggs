@@ -237,8 +237,13 @@ export class ChatRoom {
           this.send(ws, { type: 'message', message: body.message });
           delivered++;
         } else {
-          // Anderer Tab -> nur ein Ungelesen-Hinweis, nicht die Nachricht selbst
-          this.send(ws, { type: 'unread', channel: tab });
+          // Anderer Tab -> nur ein Ungelesen-Hinweis, nicht die Nachricht selbst.
+          //
+          // Der Zeitstempel gehoert dazu: Der Client fuehrt je Tab einen Stand
+          // mit, ab dem er nachfragt. Ohne ihn blieb dieser Stand beim
+          // Ungelesen-Hinweis stehen, und nach einem Abbruch der Verbindung
+          // zaehlte die Nachfrage dieselben Nachrichten ein zweites Mal.
+          this.send(ws, { type: 'unread', channel: tab, ts: (body.message as { created_at?: string })?.created_at });
           notified++;
         }
       }

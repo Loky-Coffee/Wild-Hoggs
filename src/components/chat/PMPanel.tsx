@@ -180,11 +180,13 @@ export default function PMPanel({ username, currentUsername, token, onClose, ago
 
   const handleReport = useCallback(async (msgId: string, reason: string) => {
     try {
-      await fetch('/api/chat/report', {
+      // Erst die Antwort ansehen, sonst steht "gemeldet" auch bei Ablehnung da.
+      const res = await fetch('/api/chat/report', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body:    JSON.stringify({ chat_type: 'pm', message_id: msgId, reason }),
       });
+      if (!res.ok) return;
       setReportedIds(prev => new Set([...prev, msgId]));
     } catch { /* ignore */ }
   }, [token]);

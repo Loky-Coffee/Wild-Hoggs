@@ -22,6 +22,11 @@ const PRESENCE_EVERY = 4;
 // Liste (und damit DOM + Render-Aufwand) linear mit der Laufzeit des Tabs —
 // nach ein paar Stunden friert der Tab sonst ein.
 const MAX_MESSAGES = 200;
+// Wie viele Gespraechspartner die Liste behaelt. Stand an einer Stelle auf 20
+// und an vier weiteren auf 10 — die erste eingehende Nachricht kuerzte die
+// gerade geladene Liste dann auf die Haelfte und schrieb das so in den
+// Speicher. Der Server liefert bis zu 30.
+const MAX_PM_KONTAKTE = 20;
 
 interface ChatWindowProps {
   translationData: TranslationData;
@@ -119,7 +124,7 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
       .then((d: { contacts?: string[] } | null) => {
         if (abgebrochen || !Array.isArray(d?.contacts)) return;
         setPmContacts(prev => {
-          const zusammen = [...d.contacts!, ...prev.filter(n => !d.contacts!.includes(n))].slice(0, 20);
+          const zusammen = [...d.contacts!, ...prev.filter(n => !d.contacts!.includes(n))].slice(0, MAX_PM_KONTAKTE);
           try { localStorage.setItem('wh-pm-contacts', JSON.stringify(zusammen)); } catch { /* ignore */ }
           return zusammen;
         });
@@ -222,6 +227,9 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
       case 'unread': {
         const t = ev.channel as ChatType;
         if (t === chatTypeRef.current) break;
+        // Stand des Tabs mitziehen, sonst zaehlt die Nachfrage nach einem
+        // Verbindungsabbruch dieselben Nachrichten noch einmal.
+        if (ev.ts) tabSince.current[t] = ev.ts as string;
         setUnreadCounts(prev => {
           const next = new Map(prev);
           next.set(t, (next.get(t) ?? 0) + 1);
@@ -234,7 +242,7 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
       case 'pm': {
         const from = ev.from;
         setPmContacts(prev => {
-          const next = [from, ...prev.filter(n => n !== from)].slice(0, 10);
+          const next = [from, ...prev.filter(n => n !== from)].slice(0, MAX_PM_KONTAKTE);
           localStorage.setItem('wh-pm-contacts', JSON.stringify(next));
           return next;
         });
@@ -384,7 +392,7 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
         // 3) Eingehende PMs
         data.pm?.senders?.forEach(({ sender_username, count }) => {
           setPmContacts(prev => {
-            const next = [sender_username, ...prev.filter(n => n !== sender_username)].slice(0, 10);
+            const next = [sender_username, ...prev.filter(n => n !== sender_username)].slice(0, MAX_PM_KONTAKTE);
             localStorage.setItem('wh-pm-contacts', JSON.stringify(next));
             return next;
           });
@@ -556,7 +564,7 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
       usernames.forEach(username => {
         setPmContacts(prev => {
           if (prev.includes(username)) return prev;
-          const next = [username, ...prev].slice(0, 10);
+          const next = [username, ...prev].slice(0, MAX_PM_KONTAKTE);
           localStorage.setItem('wh-pm-contacts', JSON.stringify(next));
           return next;
         });
@@ -576,7 +584,13 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
   // ── Dispatch global unread count to GlobalChatPoller ──────────────────────
   useEffect(() => {
     if (!isLoggedIn) return;
-    const total = pmUnread.size + unreadCounts.size;
+    // Nachrichten zaehlen, nicht Kanaele: `.size` gab die Zahl der Tabs mit
+    // Ungelesenem zurueck, waehrend der GlobalChatPoller die Nachrichten selbst
+    // zaehlt. Fuenf ungelesene Weltchat-Nachrichten standen auf der
+    // Community-Seite als "1" und ausserhalb als "5" — die Zahl sprang beim
+    // Seitenwechsel und liess dabei den Hinweiston anspringen.
+    const summe = (m: Map<string, number>) => [...m.values()].reduce((a, b) => a + b, 0);
+    const total = summe(pmUnread) + summe(unreadCounts as unknown as Map<string, number>);
     window.dispatchEvent(new CustomEvent('wh:unread-count', { detail: { total } }));
   }, [pmUnread, unreadCounts, isLoggedIn]);
 
@@ -613,11 +627,14 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
   const handleReport = useCallback(async (msgId: string, reason: string) => {
     if (!token) return;
     try {
-      await fetch('/api/chat/report', {
+      // Erst die Antwort ansehen: Ohne das stand "gemeldet" auch dann da, wenn
+      // der Server die Meldung abgelehnt hat.
+      const res = await fetch('/api/chat/report', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body:    JSON.stringify({ chat_type: chatType, message_id: msgId, reason }),
       });
+      if (!res.ok) return;
       setReportedIds(prev => new Set([...prev, msgId]));
     } catch { /* ignore */ }
   }, [token, chatType]);
@@ -637,7 +654,7 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
       const next = new Map(prev); next.delete(username); return next;
     });
     setPmContacts(prev => {
-      const next = [username, ...prev.filter(n => n !== username)].slice(0, 10);
+      const next = [username, ...prev.filter(n => n !== username)].slice(0, MAX_PM_KONTAKTE);
       localStorage.setItem('wh-pm-contacts', JSON.stringify(next));
       return next;
     });
@@ -662,11 +679,14 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
   const handleDelete = useCallback(async (msgId: string) => {
     if (!token) return;
     try {
-      await fetch('/api/chat/admin/message', {
+      // Erst die Antwort ansehen: Sonst verschwand die Nachricht aus der Ansicht
+      // und war beim naechsten Laden wieder da.
+      const res = await fetch('/api/chat/admin/message', {
         method:  'DELETE',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body:    JSON.stringify({ chat_type: chatType, message_id: msgId }),
       });
+      if (!res.ok) return;
       setMessages(prev => prev.filter(m => m.id !== msgId));
     } catch { /* ignore */ }
   }, [token, chatType]);

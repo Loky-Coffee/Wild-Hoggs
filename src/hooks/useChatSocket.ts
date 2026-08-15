@@ -22,7 +22,7 @@ const HELLO_TIMEOUT_MS = 8_000;
 
 export type ChatSocketEvent =
   | { type: 'message';  message: any }
-  | { type: 'unread';   channel: string }
+  | { type: 'unread';   channel: string; ts?: string }
   | { type: 'pm';       from: string; message: any }
   | { type: 'delete';   id: string }
   | { type: 'presence'; users: any[] }
