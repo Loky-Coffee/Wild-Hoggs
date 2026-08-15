@@ -16,7 +16,16 @@ interface CacheEntry<T> {
   version: number;
 }
 
-function cacheKey(profileId: string, calcType: string, calcKey: string) {
+/**
+ * Der Schlüssel, unter dem ein Rechnerstand im localStorage liegt.
+ *
+ * Exportiert, weil die Forschungsübersicht (src/pages/[...lang]/tools/
+ * research.astro) die Stände aller neunzehn Bäume aufsummiert, ohne die
+ * Rechner selbst zu laden. Sie baute den Schlüssel bisher von Hand nach —
+ * dieselbe Zeichenkette an zwei Stellen, und die Übersicht hätte still
+ * aufgehört zu stimmen, sobald sich das Format hier ändert.
+ */
+export function cacheKey(profileId: string, calcType: string, calcKey: string) {
   return `wh-calc-${profileId}-${calcType}${calcKey !== 'main' ? `-${calcKey}` : ''}`;
 }
 

@@ -62,6 +62,16 @@ export async function onRequestPost(ctx: any) {
     return Response.json({ error: 'code ist erforderlich' }, { status: 400 });
   }
 
+  const schluessel = code.trim().toUpperCase();
+
+  // Steht schon ein Bild an diesem Code? Ersetzt der Eintrag es, muss das alte
+  // aus R2 verschwinden — sonst bleibt es dort für immer liegen, ohne dass noch
+  // etwas darauf zeigt.
+  const vorher = image_key
+    ? (await DB.prepare(`SELECT image_key FROM reward_codes WHERE code = ?`)
+        .bind(schluessel).first() as { image_key: string | null } | null)?.image_key ?? null
+    : null;
+
   // Denselben Code kann der Discord-Cron schon als 'pending' abgelegt haben.
   // Trägt ein Admin ihn dann von Hand ein, ist das eine Bestätigung — sonst
   // liefe der eindeutige Index in einen Fehler.
@@ -75,11 +85,20 @@ export async function onRequestPost(ctx: any) {
        created_by = excluded.created_by
      RETURNING id, code, image_key, expires_at, added_at`
   ).bind(
-    code.trim().toUpperCase(),
+    schluessel,
     image_key ?? null,
     expires_at ?? null,
     user.user_id
   ).first() as any;
+
+  // Erst jetzt, und nur wenn der Eintrag wirklich durchging und das Bild
+  // tatsächlich ein anderes ist. Schlägt das Löschen fehl, bleibt eine Datei
+  // ohne Verweis zurück — das ist verschmerzbar, ein abgebrochener Eintrag
+  // wäre es nicht.
+  const { FILES } = ctx.env;
+  if (result && FILES && vorher && vorher !== result.image_key) {
+    try { await FILES.delete(vorher); } catch { /* Rest bleibt liegen */ }
+  }
 
   return Response.json({ code: result }, { status: 201 });
 }

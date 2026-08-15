@@ -1,14 +1,15 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import { languages, loadTranslations } from '../i18n/index';
+import PageLayout from '../layouts/PageLayout.astro';
+import { loadTranslations } from '../i18n/index';
 import { useTranslations } from '../i18n/utils';
 import type { Language } from '../i18n/index';
 
-// 404 pages don't have dynamic routes
-// Default to English
+// Die Seite wird einmal gebaut und von Cloudflare fuer jede unbekannte Adresse
+// ausgeliefert — welche Sprache jemand wollte, steht zur Bauzeit nicht fest.
+// Deshalb Englisch, und das Skript unten schickt weiter, sobald der Browser
+// seine Sprache verraet.
 const lang: Language = 'en';
 
-// Load only English translations (dynamic import)
 const translationData = await loadTranslations(lang);
 const t = useTranslations(translationData);
 
@@ -16,10 +17,9 @@ const pageTitle = `${t('404.code')} - ${t('404.title')} | Wild Hoggs`;
 const pageDescription = t('404.message');
 ---
 
-<Layout
+<PageLayout
   title={pageTitle}
   description={pageDescription}
-  lang={lang}
   robots="noindex, nofollow"
 >
   <div class="error-page">
@@ -73,7 +73,7 @@ const pageDescription = t('404.message');
       </div>
     </div>
   </div>
-</Layout>
+</PageLayout>
 
 <!-- Client-side language detection -->
 <script>

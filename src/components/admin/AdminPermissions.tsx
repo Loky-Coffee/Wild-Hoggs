@@ -19,11 +19,15 @@ export const RECHTE_GRUPPEN: RechtGruppe[] = [
   ]},
   { titel: 'Nachrichten', rechte: [
     { id: 'messages.delete',  label: 'löschen' },
-    { id: 'messages.history', label: 'Verlauf einsehen' },
+    // Noch ohne Wirkung: Es gibt keine Schnittstelle, die gelöschte
+    // Nachrichten herausgibt. Das Häkchen ändert damit nichts.
+    { id: 'messages.history', label: 'Verlauf einsehen (noch ohne Funktion)' },
   ]},
   { titel: 'Nutzer', rechte: [
     { id: 'users.view',  label: 'ansehen' },
-    { id: 'users.ban',   label: 'sperren' },
+    // Noch ohne Wirkung: Es gibt weder eine Spalte für den Sperrvermerk noch
+    // eine Schnittstelle, die sperrt.
+    { id: 'users.ban',   label: 'sperren (noch ohne Funktion)' },
     // Wirkt nur bei Administratoren: Die Schnittstelle verlangt für das
     // Ändern von Rollen und Rechten zusätzlich is_admin.
     { id: 'users.roles', label: 'Rollen und Rechte vergeben (nur als Admin)' },
@@ -35,7 +39,9 @@ export const RECHTE_GRUPPEN: RechtGruppe[] = [
   { titel: 'Inhalte', rechte: [
     { id: 'content.announcement', label: 'Ankündigung' },
     { id: 'content.rose',         label: 'Glücksrose' },
-    { id: 'content.changelog',    label: 'Changelog' },
+    // Noch ohne Wirkung: Der Changelog liegt als Datei im Projekt, es gibt
+    // keine Schnittstelle, die ihn ändert.
+    { id: 'content.changelog',    label: 'Changelog (noch ohne Funktion)' },
   ]},
   { titel: 'Auswertung & System', rechte: [
     { id: 'stats.view',      label: 'Statistik ansehen' },

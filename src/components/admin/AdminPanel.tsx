@@ -101,6 +101,16 @@ function formatDate(iso: string | null): string {
   return Number.isNaN(ms) ? iso : new Date(ms).toLocaleString();
 }
 
+// Einen Code vorn in die Liste stellen — und ihn dabei nicht doppeln.
+//
+// Traegt jemand einen bereits freigegebenen Code erneut ein (etwa um ein Bild
+// nachzureichen oder das Ablaufdatum zu berichtigen), aktualisiert der Server
+// die vorhandene Zeile und gibt sie zurueck — dieselbe id. Vorn angehaengt
+// stand derselbe Code dann zweimal in der Tabelle, beide Male mit derselben id.
+function vornAnstellen<T extends { id: string }>(liste: T[], neu: T): T[] {
+  return [neu, ...liste.filter(c => c.id !== neu.id)];
+}
+
 export default function AdminPanel({ translationData }: AdminPanelProps) {
   const t = useTranslations(translationData);
   const { user, token, isLoggedIn } = useAuth();
@@ -440,7 +450,7 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
       });
       if (res.ok) {
         const data = await res.json() as any;
-        setCodes(prev => [data.code, ...prev]);
+        setCodes(prev => vornAnstellen(prev, data.code));
         setNewCode('');
         setNewExpires('');
         setUploadKey(null);
@@ -485,7 +495,7 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
       const data = await res.json() as any;
       setPending(prev => prev.filter(c => c.id !== code.id));
       setFundAblauf(prev => { const n = { ...prev }; delete n[code.id]; return n; });
-      if (status === 'approved' && data.code) setCodes(prev => [data.code, ...prev]);
+      if (status === 'approved' && data.code) setCodes(prev => vornAnstellen(prev, data.code));
     } catch { /* Netzwerkfehler: der Eintrag bleibt stehen, erneut versuchbar */ }
     finally {
       setPendingBusy(prev => { const n = new Set(prev); n.delete(code.id); return n; });

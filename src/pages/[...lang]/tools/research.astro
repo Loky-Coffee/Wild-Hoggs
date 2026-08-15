@@ -5,6 +5,7 @@ import { getLanguagePaths } from '../../../i18n/static-paths';
 import { loadTranslations } from '../../../i18n/index';
 import { Image } from 'astro:assets';
 import LabSpeedButton from '../../../components/calculators/LabSpeedButton';
+import { cacheKey } from '../../../hooks/useCalculatorState';
 
 // Import all research category data
 import allianceRecognition from '../../../data/research/alliance-recognition.json';
@@ -198,6 +199,9 @@ const breadcrumbItems = [
           href={isEnabled ? getLocalizedPath(`tools/research/${id}`, lang) : undefined}
           class={`category-card ${!isEnabled ? 'disabled' : ''}`}
           data-category-id={id}
+          {/* Schluessel aus derselben Quelle wie der Rechner selbst — %p steht
+              fuer die aktive Profil-Id, die erst im Browser feststeht. */}
+          data-cache-key={cacheKey('%p', 'research', id)}
           data-total-badges={String(category.totalBadges)}
           data-total-levels={String(category.totalLevels)}
           data-badge-map={JSON.stringify(Object.fromEntries((category.technologies as {id:string;badgeCosts:number[]}[]).map(t => [t.id, t.badgeCosts])))}
@@ -554,7 +558,8 @@ const breadcrumbItems = [
       var usedTimeSec = 0;
       var usedLevels = 0;
       try {
-        var raw = localStorage.getItem('wh-calc-' + profileId + '-research-' + id);
+        var muster = card.getAttribute('data-cache-key') || '';
+        var raw = localStorage.getItem(muster.replace('%p', profileId));
         if (raw) {
           var parsed = JSON.parse(raw);
           var state = (parsed && parsed.state) ? parsed.state : parsed;
