@@ -26,6 +26,31 @@ export function renderChangelogText(text: string): string {
 export const changelog: ChangelogEntry[] = [
   // ── August 2026 ─────────────────────────────────────────────────────────
   {
+    date: '2026-08-15',
+    time: '15:10',
+    text: 'Small print across the site is **easier to read**. Faint labels, counters and side notes were too dim against the dark background \u2014 the weakest sat at 2.1 to 1 where 4.5 to 1 is the mark. Every one of them has been lifted; nothing changed except how legible it is',
+  },
+  {
+    date: '2026-08-15',
+    time: '14:30',
+    text: 'The tank sheet and the hero filters **speak your language** now. A German sentence sat in the tank level sheet for everyone, and the hero filters were labelled in English \u2014 both are translated into all fifteen languages',
+  },
+  {
+    date: '2026-08-15',
+    time: '13:40',
+    text: 'The **404 page now has the navigation** on it. It was the only page on the site without \u2014 landing there left you with five links and no way back into the menu',
+  },
+  {
+    date: '2026-08-15',
+    time: '12:20',
+    text: 'The unread counter in the chat **no longer counts twice**. After the connection dropped and came back, messages you had already been told about were counted again, so the number on the community menu kept climbing on its own. The list of people you have written to also **keeps twenty names** instead of quietly cutting itself in half at ten',
+  },
+  {
+    date: '2026-08-15',
+    time: '11:50',
+    text: 'Reporting or deleting a chat message now **checks that it worked**. Before, it said \u201creported\u201d even when the server had turned the report down, and a deleted message came back on the next visit',
+  },
+  {
     date: '2026-08-13',
     time: '11:48',
     text: 'The building calculator now **follows the profile you switch to**. If you had changed build speed, saving or the hide-duplicates switch during a visit, those settings stayed put when you switched profiles — the button showed the new profile\u2019s value while the calculator was still using the old one, so the costs matched neither profile. Only visible with more than one game profile',
