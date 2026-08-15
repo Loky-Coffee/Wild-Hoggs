@@ -11,6 +11,14 @@
 // (samt ihrer Importe) die verwendeten Schlüssel, und beides gegeneinander
 // halten. Läuft vor dem Build und bricht ihn ab, wenn etwas fehlt.
 
+// Nicht versucht werden sollte das Umgekehrte: unbenutzte Schlüssel suchen und
+// löschen. Es gäbe rund 137 Kandidaten (etwa 2,4 % der ausgelieferten
+// HTML-Masse), aber 18 davon werden zur Laufzeit zusammengesetzt —
+// t(`seo.research.${categoryId}.title`) in [categoryId].astro. Wörtlich steht
+// keiner dieser Schlüssel irgendwo; automatisch gelöscht hätte es Titel und
+// Beschreibung von 300 indexierten Seiten getroffen. Wer hier aufräumen will,
+// muss jeden Kandidaten von Hand ansehen.
+
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 
