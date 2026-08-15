@@ -70,7 +70,9 @@ const howToSchema = {
   <div class="codes-container">
     <section class="codes-section">
       <div class="howto-card">
-        <h3>{t('codes.howto.title')}</h3>
+        {/* h2, nicht h3: einzige Ueberschrift nach der h1 — die Groesse steht
+            ohnehin im CSS darunter, das Aussehen bleibt gleich. */}
+        <h2>{t('codes.howto.title')}</h2>
         <div class="howto-steps">
           <ol>
             <li>{t('codes.howto.step1')}</li>
@@ -121,7 +123,7 @@ const howToSchema = {
     margin-bottom: 1.25rem;
   }
 
-  .howto-card h3 {
+  .howto-card h2 {
     color: #ffa500;
     font-size: 1.05rem;
     margin-bottom: 0.5rem;

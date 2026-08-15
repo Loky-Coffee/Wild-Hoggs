@@ -67,7 +67,7 @@
 }
 .bld-card:hover {
   transform: translateY(-2px);
-  border-color: rgba(255, 165, 0, 0.6);
+  border-color: rgba(255, 165, 0, 0.7);
   background: rgba(255, 165, 0, 0.08);
 }
 .bld-card.maxed { border-color: rgba(82, 190, 128, 0.5); background: rgba(82, 190, 128, 0.08); }
@@ -236,7 +236,7 @@
 .bld-bonus:first-of-type { border-top: none; }
 .bld-bonus-name { color: rgba(255, 255, 255, 0.75); line-height: 1.25; }
 .bld-bonus-val { font-weight: 700; color: #6ee7a0; white-space: nowrap; font-variant-numeric: tabular-nums; }
-.bld-bonus-gain { color: rgba(255, 255, 255, 0.45); font-weight: 500; font-size: 0.8rem; }
+.bld-bonus-gain { color: rgba(255, 255, 255, 0.5); font-weight: 500; font-size: 0.8rem; }
 
 /* Pro-Level-Breakdown */
 .bld-breakdown {
@@ -369,7 +369,7 @@
 .bld-levels .bld-lrow.done { opacity: 0.5; }
 .bld-levels .bld-lrow.current {
   background: rgba(255, 165, 0, 0.16);
-  border-color: rgba(255, 165, 0, 0.6);
+  border-color: rgba(255, 165, 0, 0.7);
   opacity: 1;
 }
 .bld-lrow.current .bld-brow-lvl { color: #ffcb6b; }

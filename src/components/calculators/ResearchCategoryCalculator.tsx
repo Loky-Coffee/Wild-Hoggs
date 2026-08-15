@@ -533,7 +533,11 @@ function ResearchCategoryCalculatorInner({ categoryData, categoryImageSrc, iconM
               />
             )}
             <div>
-              <h3 style={{ margin: '0 0 0.5rem 0', color: '#ffa500' }}>{t(category.nameKey as TranslationKey)}</h3>
+              {/* h2, nicht h3: Auf den zwanzig Baumseiten war dies die einzige
+                  Ueberschrift nach der h1 — die Gliederung sprang eine Ebene.
+                  fontSize haelt die bisherige Groesse fest (1.17em ist die
+                  Vorgabe fuer h3), damit sich am Aussehen nichts aendert. */}
+              <h2 style={{ margin: '0 0 0.5rem 0', color: '#ffa500', fontSize: '1.17em' }}>{t(category.nameKey as TranslationKey)}</h2>
               <p style={{ margin: 0, fontSize: '0.9rem', opacity: 0.8 }}>
                 {category.nodeCount} {t('calc.research.nodes')} · {formatNumber(category.totalBadges, lang)} 🎖️ {t('calc.research.total')}
               </p>
@@ -553,8 +557,8 @@ function ResearchCategoryCalculatorInner({ categoryData, categoryImageSrc, iconM
             )}
             <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr 1fr', columnGap: '0.7rem', alignItems: 'baseline', fontVariantNumeric: 'tabular-nums' }}>
               <span style={{ paddingBottom: '0.2rem' }} />
-              <span style={{ fontSize: '0.64rem', textTransform: 'uppercase', letterSpacing: '0.04em', color: 'rgba(255,255,255,0.4)', textAlign: 'right', paddingBottom: '0.2rem' }}>{t('calc.research.used')}</span>
-              <span style={{ fontSize: '0.64rem', textTransform: 'uppercase', letterSpacing: '0.04em', color: 'rgba(255,255,255,0.4)', textAlign: 'right', paddingBottom: '0.2rem' }}>{t('calc.research.remaining')}</span>
+              <span style={{ fontSize: '0.64rem', textTransform: 'uppercase', letterSpacing: '0.04em', color: 'rgba(255,255,255,0.5)', textAlign: 'right', paddingBottom: '0.2rem' }}>{t('calc.research.used')}</span>
+              <span style={{ fontSize: '0.64rem', textTransform: 'uppercase', letterSpacing: '0.04em', color: 'rgba(255,255,255,0.5)', textAlign: 'right', paddingBottom: '0.2rem' }}>{t('calc.research.remaining')}</span>
               {[
                 { k: 'badges', ic: '🎖️', label: 'Badges', used: fcCompact(calculatedResults.totalBadges, lang), rem: fcCompact(remainingBadges, lang), show: true },
                 { k: 'strom', img: '/images/research-icons/strom.webp', label: lang === 'de' ? 'Strom' : 'Electricity', used: fcCompact(calculatedResults.totalStrom, lang), rem: fcCompact(remainingStrom, lang), show: hasStrom },

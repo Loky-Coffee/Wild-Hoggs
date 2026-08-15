@@ -100,10 +100,10 @@
   transition: border-color 0.2s;
 }
 .auth-field input:focus {
-  border-color: rgba(255,165,0,0.6);
+  border-color: rgba(255, 165, 0, 0.7);
   background: rgba(255,255,255,0.08);
 }
-.auth-field input::placeholder { color: rgba(255,255,255,0.25); }
+.auth-field input::placeholder { color: rgba(255, 255, 255, 0.5); }
 
 .auth-error {
   background: rgba(231, 76, 60, 0.15);

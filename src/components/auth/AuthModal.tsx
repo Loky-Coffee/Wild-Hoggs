@@ -1,4 +1,4 @@
-import { useState } from 'preact/hooks';
+import { useState, useEffect } from 'preact/hooks';
 import { setAuthState } from '../../hooks/useAuth';
 import type { AuthUser } from '../../hooks/useAuth';
 import { syncAllOnLogin as syncCalcs } from '../../hooks/useCalculatorState';
@@ -17,6 +17,16 @@ export default function AuthModal({ onClose, initialTab = 'login', translationDa
   const [tab, setTab] = useState<'login' | 'register'>(initialTab);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Escape schliesst den Dialog. Ohne das kam man mit der Tastatur nur ueber
+  // den Schliessen-Knopf wieder heraus — der Klick auf den Hintergrund
+  // funktionierte, aber genau darauf kann sich niemand verlassen, der nicht
+  // sieht, wo der Hintergrund aufhoert.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [onClose]);
 
   // Login fields
   const [loginEmail, setLoginEmail] = useState('');
@@ -74,9 +84,9 @@ export default function AuthModal({ onClose, initialTab = 'login', translationDa
 
   return (
     <div class="auth-overlay" onClick={e => { if (e.target === e.currentTarget) onClose(); }}>
-      <div class="auth-modal" role="dialog" aria-modal="true">
+      <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
         <div class="auth-modal-header">
-          <span class="auth-modal-title">Wild Hoggs</span>
+          <span class="auth-modal-title" id="auth-modal-title">Wild Hoggs</span>
           <button class="auth-close" onClick={onClose} aria-label={t('auth.close')}>✕</button>
         </div>
 

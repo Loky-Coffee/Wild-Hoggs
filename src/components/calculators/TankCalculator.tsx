@@ -177,14 +177,14 @@ function TankCalculatorInner({ lang, translationData }: TankCalculatorProps) {
       <div className="tank-widget-box">
 
         {/* ── Header ── */}
-        <div style={{ fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'rgba(255,165,0,0.55)', marginBottom: '0.35rem', borderBottom: '1px solid rgba(255,165,0,0.12)', paddingBottom: '0.25rem' }}>
+        <div style={{ fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'rgba(255,165,0,0.7)', marginBottom: '0.35rem', borderBottom: '1px solid rgba(255,165,0,0.12)', paddingBottom: '0.25rem' }}>
           🔧 Super Upgrades
         </div>
 
         {/* ── Gesamt-Schlüssel ── */}
         <div style={{ fontSize: '0.95rem', marginBottom: '0.4rem' }}>
           <span style={{ color: '#ffa500', fontWeight: 700 }}>{formatNumber(totalWrenchesUsed, lang)}</span>
-          <span style={{ color: 'rgba(255,255,255,0.35)' }}> / {formatNumber(maxWrenches, lang)} 🔧</span>
+          <span style={{ color: 'rgba(255,255,255,0.5)' }}> / {formatNumber(maxWrenches, lang)} 🔧</span>
         </div>
 
         {/* ── Tier-Zeilen ── */}
@@ -208,8 +208,12 @@ function TankCalculatorInner({ lang, translationData }: TankCalculatorProps) {
                 ) : (
                   <>
                     <span style={{ color: '#ffa500', fontWeight: 700 }}>{formatNumber(used, lang)}</span>
-                    <span style={{ color: 'rgba(255,255,255,0.3)' }}> / {formatNumber(tier.maxKeys, lang)}</span>
-                    <span style={{ color: 'rgba(231, 76, 60, 0.85)', marginLeft: '0.3rem' }}>-{formatNumber(remaining, lang)}</span>
+                    <span style={{ color: 'rgba(255,255,255,0.5)' }}> / {formatNumber(tier.maxKeys, lang)}</span>
+                    {/* #ff6b6b statt #e74c3c bei 85%: Auf dem Kartengrund kam das alte Rot
+                        auf 3,7:1 — unter den 4,5:1, die kleiner Text braucht. Voll deckend
+                        erreichte es 4,56 und damit zu wenig Reserve; #ff6b6b wird im
+                        Projekt bereits verwendet und kommt auf 6,2. */}
+                    <span style={{ color: '#ff6b6b', marginLeft: '0.3rem' }}>-{formatNumber(remaining, lang)}</span>
                   </>
                 )}
               </span>
@@ -221,7 +225,7 @@ function TankCalculatorInner({ lang, translationData }: TankCalculatorProps) {
         <div className="tank-widget-desktop-stats">
 
           {/* Gruppe: Gesamtfortschritt */}
-          <div style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: 'rgba(255,165,0,0.45)', margin: '0.6rem 0 0.2rem' }}>
+          <div style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: 'rgba(255,165,0,0.7)', margin: '0.6rem 0 0.2rem' }}>
             {t('tank.widget.overall')}
           </div>
           {[
@@ -230,13 +234,13 @@ function TankCalculatorInner({ lang, translationData }: TankCalculatorProps) {
             { label: t('tank.widget.tiers_done'),   value: `${completedTiers} / ${SUPER_UPGRADES.length}` },
           ].map(({ label, value }) => (
             <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '0.5rem', padding: '0.18rem 0', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-              <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.45)' }}>{label}</span>
+              <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)' }}>{label}</span>
               <span style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.9)', fontWeight: 600, textAlign: 'right' }}>{value}</span>
             </div>
           ))}
 
           {/* Gruppe: Modifikationen */}
-          <div style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: 'rgba(255,165,0,0.45)', margin: '0.6rem 0 0.2rem' }}>
+          <div style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: 'rgba(255,165,0,0.7)', margin: '0.6rem 0 0.2rem' }}>
             {t('tank.widget.mods')}
           </div>
           {[
@@ -245,7 +249,7 @@ function TankCalculatorInner({ lang, translationData }: TankCalculatorProps) {
             ...(nextModToMax ? [{ label: t('tank.widget.next'), value: `${t(nextModToMax.mod.nameKey as TranslationKey)} (${formatNumber(nextModToMax.needed, lang)} 🔧)` }] : []),
           ].map(({ label, value }) => (
             <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '0.5rem', padding: '0.18rem 0', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-              <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.45)' }}>{label}</span>
+              <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)' }}>{label}</span>
               <span style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.9)', fontWeight: 600, textAlign: 'right' }}>{value}</span>
             </div>
           ))}

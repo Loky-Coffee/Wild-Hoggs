@@ -93,7 +93,7 @@
 
 .cd-confirm-primary {
   background: rgba(255, 165, 0, 0.12);
-  border-color: rgba(255, 165, 0, 0.35);
+  border-color: rgba(255, 165, 0, 0.7);
   color: #ffa500;
 }
 
@@ -124,12 +124,12 @@
 
 .cd-report-reason:hover {
   background: rgba(255, 165, 0, 0.06);
-  border-color: rgba(255, 165, 0, 0.15);
+  border-color: rgba(255, 165, 0, 0.7);
 }
 
 .cd-report-reason-active {
   background: rgba(255, 165, 0, 0.1) !important;
-  border-color: rgba(255, 165, 0, 0.35) !important;
+  border-color: rgba(255, 165, 0, 0.7) !important;
 }
 
 .cd-report-reason input[type="radio"] {

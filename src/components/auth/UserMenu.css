@@ -44,7 +44,7 @@
 }
 .user-btn-avatar:hover { background: rgba(255, 165, 0, 0.25); }
 .user-btn-profile-name {
-  color: rgba(255, 165, 0, 0.65);
+  color: rgba(255, 165, 0, 0.7);
   font-size: 0.85em;
   font-weight: 400;
 }
@@ -109,7 +109,7 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(255, 165, 0, 0.55);
+  color: rgba(255, 165, 0, 0.7);
 }
 
 .profile-item {
@@ -153,7 +153,7 @@
 
 .profile-server {
   font-size: 0.7rem;
-  color: rgba(255,255,255,0.35);
+  color: rgba(255, 255, 255, 0.5);
   flex-shrink: 0;
 }
 
@@ -169,7 +169,7 @@
   cursor: pointer;
   padding: 0.25rem 0.35rem;
   border-radius: 4px;
-  color: rgba(255,255,255,0.3);
+  color: rgba(255, 255, 255, 0.5);
   font-size: 0.8rem;
   line-height: 1;
   transition: color 0.15s, background 0.15s;
@@ -197,7 +197,7 @@
   width: 100%;
   box-sizing: border-box;
 }
-.profile-input:focus { border-color: rgba(255,165,0,0.6); }
+.profile-input:focus { border-color: rgba(255, 165, 0, 0.7); }
 
 .profile-edit-actions {
   display: flex;
@@ -237,7 +237,7 @@
   border: none;
   padding: 0.4rem 1rem;
   text-align: left;
-  color: rgba(255,165,0,0.6);
+  color: rgba(255, 165, 0, 0.7);
   font-size: 0.8rem;
   cursor: pointer;
   transition: color 0.15s;
@@ -251,7 +251,7 @@
   padding: 0.4rem 1rem;
   font-size: 0.75rem;
   line-height: 1.3;
-  color: rgba(255,255,255,0.45);
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .user-dropdown-admin {
@@ -269,7 +269,7 @@
 
 @keyframes admin-link-glow {
   0%, 100% {
-    border-left-color: rgba(255, 165, 0, 0.45);
+    border-left-color: rgba(255, 165, 0, 0.7);
     box-shadow: inset 3px 0 8px rgba(255, 165, 0, 0);
   }
   50% {

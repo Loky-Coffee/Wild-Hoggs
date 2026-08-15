@@ -73,7 +73,7 @@
 .cmp-lvl {
   font-size: 0.72rem;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .cmp-node-bonus {
@@ -94,7 +94,7 @@
 .cmp-node-none {
   margin-top: 0.2rem;
   font-size: 0.82rem;
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.5);
 }
 
 @media (max-width: 560px) {

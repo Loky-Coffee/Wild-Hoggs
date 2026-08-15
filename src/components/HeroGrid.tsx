@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef, useMemo } from 'preact/hooks';
 import { createPortal } from 'preact/compat';
 import type { Hero, HeroSkill, HeroRole, HeroFaction, HeroRarity } from '../data/heroes';
+import { useTranslations } from '../i18n/utils';
+import type { TranslationData } from '../i18n/index';
 import { RARITY_COLOR, RARITY_SESSION, FACTIONS } from '../data/heroes';
 import './HeroGrid.css';
 
@@ -237,7 +239,8 @@ const RARITIES      = ['B', 'A', 'S', 'S1', 'S2', 'S3', 'S4'] as HeroRarity[];
 const ROLE_LABEL: Record<HeroRole, string> = { attack: 'Attack', support: 'Support', defense: 'Defense' };
 
 /* ── Main grid ── */
-export default function HeroGrid({ heroes, clearLabel = 'Reset all filters' }: { heroes: Hero[]; clearLabel?: string }) {
+export default function HeroGrid({ heroes, translationData }: { heroes: Hero[]; translationData: TranslationData }) {
+  const t = useTranslations(translationData);
   const [selected,      setSelected]      = useState<Hero | null>(null);
   const [search,        setSearch]        = useState('');
   const [filterRarity,  setFilterRarity]  = useState<HeroRarity[]>([]);
@@ -295,7 +298,7 @@ export default function HeroGrid({ heroes, clearLabel = 'Reset all filters' }: {
         {/* Session / Role / Search / Faction / Grade */}
         <div className="hg-filter-cols">
           <div className="hg-filter-group">
-            <span className="hg-filter-label">Session</span>
+            <span className="hg-filter-label">{t('heroes.session')}</span>
             <div className="hg-chips">
               {SESSIONS.map(s => (
                 <button
@@ -312,7 +315,7 @@ export default function HeroGrid({ heroes, clearLabel = 'Reset all filters' }: {
           </div>
 
           <div className="hg-filter-group">
-            <span className="hg-filter-label">Role</span>
+            <span className="hg-filter-label">{t('heroes.role')}</span>
             <div className="hg-chips">
               {ROLES.map(r => (
                 <button
@@ -330,7 +333,7 @@ export default function HeroGrid({ heroes, clearLabel = 'Reset all filters' }: {
 
           {/* Search — middle column */}
           <div className="hg-filter-group hg-filter-group-search">
-            <span className="hg-filter-label" id="hg-search-label">Search</span>
+            <span className="hg-filter-label" id="hg-search-label">{t('heroes.search')}</span>
             <div className="hg-search-row">
               <span className="hg-search-icon">⌕</span>
               <input
@@ -338,7 +341,7 @@ export default function HeroGrid({ heroes, clearLabel = 'Reset all filters' }: {
                 id="hg-search"
                 className="hg-search"
                 aria-labelledby="hg-search-label"
-                placeholder="Name oder Skill…"
+                placeholder={t('heroes.searchPlaceholder')}
                 value={search}
                 onInput={(e) => setSearch((e.target as HTMLInputElement).value)}
               />
@@ -349,7 +352,7 @@ export default function HeroGrid({ heroes, clearLabel = 'Reset all filters' }: {
           </div>
 
           <div className="hg-filter-group">
-            <span className="hg-filter-label">Faction</span>
+            <span className="hg-filter-label">{t('heroes.faction')}</span>
             <div className="hg-chips">
               {FACTIONS_LIST.map(f => (
                 <button
@@ -366,7 +369,7 @@ export default function HeroGrid({ heroes, clearLabel = 'Reset all filters' }: {
           </div>
 
           <div className="hg-filter-group">
-            <span className="hg-filter-label">Grade</span>
+            <span className="hg-filter-label">{t('heroes.grade')}</span>
             <div className="hg-chips">
               {RARITIES.map(r => (
                 <button
@@ -385,7 +388,7 @@ export default function HeroGrid({ heroes, clearLabel = 'Reset all filters' }: {
 
         {anyFilter ? (
           <button type="button" className="hg-clear-btn" onClick={clearAll}>
-            ✕ {clearLabel}
+            ✕ {t('heroes.clearFilters')}
           </button>
         ) : null}
       </div>
@@ -413,7 +416,7 @@ export default function HeroGrid({ heroes, clearLabel = 'Reset all filters' }: {
             </div>
 
             {(!hero.skills || hero.skills.length === 0) && (
-              <span className="hg-card-missing" title="Skills missing">!</span>
+              <span className="hg-card-missing" title={t('heroes.skillsMissing')}>!</span>
             )}
           </button>
         ))}

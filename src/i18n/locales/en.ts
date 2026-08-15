@@ -46,6 +46,13 @@ export default {
   'heroes.rarity': 'Rarity',
   'heroes.vehicle': 'Vehicle Type',
   'heroes.filter': 'Filter',
+  'heroes.search': 'Search',
+  'heroes.skillsMissing': 'Skills missing',
+  'heroes.searchPlaceholder': 'Name or skill…',
+  'heroes.grade': 'Grade',
+  'heroes.faction': 'Faction',
+  'heroes.role': 'Role',
+  'heroes.session': 'Session',
   'about.title': 'About',
   'about.hero.tagline': 'Last-Z Player · Server 395',
   'about.intro.title': 'Hi, I\'m Ediva',
@@ -322,6 +329,8 @@ export default {
   'tank.widget.next': 'Next',
   // Tank UI
   'tank.subLevel': 'Sub-Level',
+  'tank.sub': 'Sub',
+  'tank.level': 'Level',
   'tank.total': 'Total',
   'tank.listView': 'List View',
   'tank.treeView': 'Tree View',
@@ -338,6 +347,7 @@ export default {
   'tank.maxAll': 'Max All',
   'tank.resetAll': 'Reset All',
   'tank.unlock': 'Unlock',
+  'tank.unlockHint': 'earlier levels unlock automatically',
   // Buildings
   'buildings.headquarters': 'Headquarters',
   // Error Boundary
@@ -732,6 +742,7 @@ export default {
   'compare.sub': 'Max-level bonuses side by side',
   'a11y.skipToContent': 'Skip to main content',
   'a11y.toggleNav': 'Toggle navigation',
+  'a11y.close': 'Close',
   'a11y.selectLanguage': 'Select language',
   'a11y.languageSelection': 'Language selection',
   'a11y.setAsTarget': 'Set {n} as target',

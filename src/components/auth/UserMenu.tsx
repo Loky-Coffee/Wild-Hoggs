@@ -151,7 +151,7 @@ export default function UserMenu({ translationData }: UserMenuProps) {
 
       {showDropdown && (
         <div class="user-dropdown">
-          <div style={{ padding: '0.5rem 1rem 0.25rem', fontSize: '0.75rem', color: 'rgba(255,255,255,0.4)' }}>
+          <div style={{ padding: '0.5rem 1rem 0.25rem', fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)' }}>
             {user?.email}
           </div>
 

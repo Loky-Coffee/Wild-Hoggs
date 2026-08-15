@@ -84,16 +84,16 @@ export default function TankLevelSheet({
         <div class="rls-handle" ref={handleRef} />
         <div class="rls-header">
           <strong>{mod.isVehicle ? '🚗 ' : ''}{name}</strong>
-          <span class="rls-level">Level {mod.level} · {currentSubLevel} / {mod.subLevels}</span>
-          <button class="rls-close" onClick={onClose} aria-label="Close">✕</button>
+          <span class="rls-level">{t('tank.level')} {mod.level} · {currentSubLevel} / {mod.subLevels}</span>
+          <button class="rls-close" onClick={onClose} aria-label={t('a11y.close')}>✕</button>
         </div>
 
         {!unlocked && (
-          <div class="rls-note">🔒 {t('tank.unlock' as TranslationKey)} — vorige Level werden automatisch entsperrt</div>
+          <div class="rls-note">🔒 {t('tank.unlock' as TranslationKey)} — {t('tank.unlockHint')}</div>
         )}
 
         <div class="rls-table-head tls-3">
-          <span>Sub</span>
+          <span>{t('tank.sub')}</span>
           <span>🔧 / Sub</span>
           <span>🔧 Σ</span>
         </div>
