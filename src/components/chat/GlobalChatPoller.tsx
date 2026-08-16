@@ -85,6 +85,15 @@ export default function GlobalChatPoller() {
   const pmSince    = useRef<string | null>(null);
   // Per-channel since timestamps keyed by base URL (without since/limit params)
   const chanSince  = useRef<Record<string, string>>({});
+  // Die id der zuletzt gesehenen Nachricht je Kanal.
+  //
+  // Der Zeitstempel allein genuegt nicht: Die Kanal-Endpunkte fragen mit
+  // `created_at >= since` ab, und das mit Absicht — SQLite speichert nur
+  // Sekunden, ohne das `>=` gingen Nachrichten aus derselben Sekunde verloren.
+  // Die Antwort enthaelt dadurch aber immer auch die Nachricht, auf der `since`
+  // steht. Wer nur zaehlt, zaehlt sie in jedem Durchlauf erneut: 3, 6, 9, …
+  // Ueber die id ist eindeutig, wo das Bekannte aufhoert.
+  const chanLetzteId = useRef<Record<string, string>>({});
   const countRef   = useRef(0);
   const pollRef    = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -135,6 +144,11 @@ export default function GlobalChatPoller() {
         applyCount(0);
         pmSince.current  = null;
         chanSince.current = {};
+        chanLetzteId.current = {};
+        // wh-unread-channels wird hier bewusst NICHT geleert: Das Chat-Fenster
+        // liest es beim Aufbau, uebernimmt die Zahlen in seine Tab-Punkte und
+        // raeumt es dann selbst weg. Wer hier zuerst loescht, nimmt ihm die
+        // Anzeige — beide haengen am selben astro:page-load.
       }
     };
     onNav(); // check on mount
@@ -230,10 +244,12 @@ export default function GlobalChatPoller() {
               headers: { Authorization: `Bearer ${token}` },
             });
             if (res.ok) {
-              const data = await res.json() as { messages: { created_at: string }[]; server_time?: string };
-              chanSince.current[baseUrl] = data.messages.length > 0
-                ? data.messages[data.messages.length - 1].created_at
+              const data = await res.json() as { messages: { id: string; created_at: string }[]; server_time?: string };
+              const letzte = data.messages[data.messages.length - 1];
+              chanSince.current[baseUrl] = letzte
+                ? letzte.created_at
                 : (data.server_time ?? new Date().toISOString().replace('T', ' ').slice(0, 19));
+              if (letzte) chanLetzteId.current[baseUrl] = letzte.id;
             }
           } else {
             const sep = baseUrl.includes('?') ? '&' : '?';
@@ -242,14 +258,23 @@ export default function GlobalChatPoller() {
               { headers: { Authorization: `Bearer ${token}` } },
             );
             if (res.ok) {
-              const data = await res.json() as { messages: { created_at: string }[] };
-              if (data.messages.length > 0) {
-                chanSince.current[baseUrl] = data.messages[data.messages.length - 1].created_at;
-                added += data.messages.length;
+              const data = await res.json() as { messages: { id: string; created_at: string }[] };
+              // Alles bis einschliesslich der bekannten Nachricht abschneiden.
+              // Findet sie sich nicht mehr (aelter als die letzten 50), ist die
+              // ganze Antwort neu.
+              const bekannt = chanLetzteId.current[baseUrl];
+              const stelle  = bekannt ? data.messages.findIndex(m => m.id === bekannt) : -1;
+              const neue    = stelle >= 0 ? data.messages.slice(stelle + 1) : data.messages;
+
+              if (neue.length > 0) {
+                const letzte = neue[neue.length - 1];
+                chanSince.current[baseUrl]   = letzte.created_at;
+                chanLetzteId.current[baseUrl] = letzte.id;
+                added += neue.length;
                 // Record which channel has unread so ChatWindow can show the right tab dot
                 try {
                   const unreads: Record<string, number> = JSON.parse(localStorage.getItem('wh-unread-channels') ?? '{}');
-                  unreads[baseUrl] = (unreads[baseUrl] ?? 0) + data.messages.length;
+                  unreads[baseUrl] = (unreads[baseUrl] ?? 0) + neue.length;
                   localStorage.setItem('wh-unread-channels', JSON.stringify(unreads));
                 } catch { /* ignore */ }
               }
