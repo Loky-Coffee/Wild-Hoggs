@@ -34,6 +34,13 @@
   # balken, Diagramme), und dafuer helfen Pruefsummen nicht.
   # cloudflareinsights.com: Cloudflare injiziert automatisch beacon.min.js auf allen CF Pages-Sites.
   # Das ist First-Party (eigener Hosting-Provider), kein Drittanbieter → sicher whitelisted.
+  # ZWEI Hosts, und beide werden gebraucht: Das Skript kommt von
+  # static.cloudflareinsights.com, seine Messwerte schickt es aber an
+  # cloudflareinsights.com/cdn-cgi/rum — ohne Unterdomain. Stand nur der erste
+  # in connect-src, lud das Skript zwar, wurde aber bei jedem Seitenwechsel am
+  # Senden gehindert: Konsolenfehler, und in der Web-Analytics-Ansicht kamen
+  # keine Zahlen an. Wem ein Werbeblocker beacon.min.js ohnehin wegnimmt, der
+  # sieht davon nichts — deshalb faellt es leicht durchs Raster.
   # wss://wild-hoggs-chat-hub...: der Live-Chat-Hub (eigener Worker, Verzeichnis chat-hub/).
   # Nur dieser eine Host, nur ueber wss — ohne den Eintrag blockiert die CSP die
   # WebSocket-Verbindung und der Chat faellt auf Polling zurueck.
@@ -53,7 +60,7 @@
   # verschlossener Tuer: In der zweiten Zeile unten die Pruefsummen durch
   # 'unsafe-inline' ersetzen. Das nimmt den Schutz zurueck, aber oeffnet sofort.
   #
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' data: https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://static.cloudflareinsights.com wss://wild-hoggs-chat-hub.alatzas5564.workers.dev; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' data: https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://static.cloudflareinsights.com https://cloudflareinsights.com wss://wild-hoggs-chat-hub.alatzas5564.workers.dev; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
   # levelgeeks.org wurde entfernt - alle Bilder sind self-hosted
   # 365 Tage statt 180: Mit 'preload' verlangt hstspreload.org mindestens ein
   # Jahr, sonst wird die Domain gar nicht erst in die Liste aufgenommen —
