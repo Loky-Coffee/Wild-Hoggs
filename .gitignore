@@ -15,6 +15,13 @@ pnpm-debug.log*
 .env
 .env.production
 
+# Geheimnisse fuer die lokale Entwicklung (API-Schluessel, Tokens).
+# wrangler pages dev liest diese Datei automatisch. Sie gehoert NIE ins
+# Repository — in Produktion stehen dieselben Werte als Secret im
+# Cloudflare-Dashboard.
+.dev.vars
+.dev.vars.*
+
 # macOS-specific files
 .DS_Store
 
@@ -45,3 +52,6 @@ app_analyse/
 *.bak
 AUDIT_*.md
 /assault_training
+
+# Exporte aus der Google Search Console (nur zum Ansehen)
+*Coverage-*.zip

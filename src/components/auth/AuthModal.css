@@ -128,3 +128,46 @@
 }
 .auth-submit:hover:not(:disabled) { background: #ff8c00; }
 .auth-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Abzweig "Passwort vergessen" ------------------------------------------- */
+
+/* Erklaerender Satz ueber dem Feld bzw. Bestaetigung nach dem Absenden.
+   Bewusst kein <label>: Der Satz gehoert zum Formular, nicht zum Feld. */
+.auth-hinweis {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #c9bda9;
+}
+
+/* Nach dem Absenden. Gruen, weil es eine Bestaetigung ist — aber gedaempft,
+   damit es nicht wie eine Erfolgsmeldung ueber etwas Abgeschlossenes wirkt.
+   Die Mail ist unterwegs, angekommen ist sie damit noch nicht. */
+.auth-hinweis-ok {
+  background: rgba(120, 190, 130, 0.12);
+  border: 1px solid rgba(120, 190, 130, 0.32);
+  border-radius: 6px;
+  padding: 0.7rem 0.8rem;
+  color: #9fd4a8;
+}
+
+/* "Passwort vergessen?" und "zurueck". Sieht aus wie ein Link, ist aber ein
+   Knopf — er wechselt die Ansicht, er fuehrt nirgendwohin. Ein <a> ohne href
+   waere fuer die Tastaturbedienung nicht erreichbar. */
+.auth-textlink {
+  background: none;
+  border: none;
+  padding: 0.35rem 0;
+  color: #ffb84d;
+  font-size: 0.85rem;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+  align-self: center;
+}
+.auth-textlink:hover { color: #ffcc80; }
+.auth-textlink:focus-visible {
+  outline: 2px solid #ffa500;
+  outline-offset: 2px;
+  border-radius: 3px;
+}

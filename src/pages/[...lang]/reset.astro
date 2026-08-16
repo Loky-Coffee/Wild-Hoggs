@@ -1,0 +1,58 @@
+---
+/**
+ * Ziel des Links aus der Reset-Mail.
+ *
+ * Erreichbar ist die Seite nur über diesen Link — sie steht in keiner
+ * Navigation. Trotzdem existiert sie in allen 15 Sprachen, weil die Mail in
+ * der Sprache verschickt wird, in der jemand die Anfrage gestellt hat.
+ *
+ * noindex und nofollow: Es gibt hier nichts zu finden. Ohne die Angabe würde
+ * die Seite in der Suche auftauchen — jemand käme über Google darauf, hätte
+ * keinen Token und stünde vor einer Fehlermeldung. Der Ausschluss aus der
+ * Sitemap steht zusätzlich in astro.config.mjs.
+ */
+import PageLayout from '../../layouts/PageLayout.astro';
+import { getLangFromUrl, useTranslations, getLocalizedPath, nurBereiche } from '../../i18n/utils';
+import { getLanguagePaths } from '../../i18n/static-paths';
+import { loadTranslations } from '../../i18n/index';
+import ResetPasswordForm from '../../components/auth/ResetPasswordForm';
+
+export function getStaticPaths() {
+  return getLanguagePaths();
+}
+
+const lang = getLangFromUrl(Astro.url);
+const translationData = await loadTranslations(lang);
+const t = useTranslations(translationData);
+const homeHref = getLocalizedPath('', lang);
+---
+
+<PageLayout
+  title={t('reset.title')}
+  description={t('reset.intro')}
+  robots="noindex, nofollow"
+>
+  <section class="reset-seite">
+    <h1>{t('reset.title')}</h1>
+    <ResetPasswordForm
+      translationData={nurBereiche(translationData, ['reset.', 'auth.', 'error.'])}
+      homeHref={homeHref}
+      client:only="preact"
+    />
+  </section>
+</PageLayout>
+
+<style>
+  .reset-seite {
+    max-width: 42rem;
+    margin: 0 auto;
+    padding: 2.5rem 1rem 4rem;
+  }
+
+  h1 {
+    margin: 0 0 1.5rem;
+    font-size: 1.6rem;
+    color: #ffa500;
+    text-align: center;
+  }
+</style>

@@ -46,7 +46,10 @@ export default defineConfig({
         //
         // /tools/hero-exp ist eine Weiterleitung auf /heroes#exp (alte Adresse,
         // siehe hero-exp.astro) und stand mit 15 Sprachfassungen in der Sitemap.
-        const excludedPaths = ['/admin', '/profile', '/community', '/tools/hero-exp'];
+        // /reset ist nur ueber den Link aus der Passwort-Mail sinnvoll. Ohne
+        // Token in der Adresszeile zeigt sie nur einen Hinweis — nichts, was
+        // in die Suche gehoert.
+        const excludedPaths = ['/admin', '/profile', '/community', '/tools/hero-exp', '/reset'];
         const isExcluded = excludedPaths.some(path =>
           item.url.includes(path + '/') || item.url.endsWith(path)
         );

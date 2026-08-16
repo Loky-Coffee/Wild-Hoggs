@@ -26,6 +26,11 @@ export function renderChangelogText(text: string): string {
 export const changelog: ChangelogEntry[] = [
   // ── August 2026 ─────────────────────────────────────────────────────────
   {
+    date: '2026-08-17',
+    time: '01:10',
+    text: 'Forgotten your password? There is now a way back. **"Forgot your password?"** under the sign-in form sends you a link by email, and that link lets you choose a new one. The link works for **60 minutes** and only once, all your sessions are signed out when the password changes, and the email arrives in your own language',
+  },
+  {
     date: '2026-08-16',
     time: '23:50',
     text: 'There is now a **privacy policy**, reachable from the footer of every page. It describes what this site actually does \u2014 which five things it keeps in your browser storage, that it sets no cookies at all, exactly which fields an account stores, how long each thing is kept, and that deleting your account replaces your name in the public chat rather than tearing conversations apart',

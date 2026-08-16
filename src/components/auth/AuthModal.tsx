@@ -12,9 +12,23 @@ interface AuthModalProps {
   translationData: TranslationData;
 }
 
+/**
+ * Sprachkürzel aus dem Pfad. Wird an den Endpunkt gegeben, damit die Mail in
+ * der Sprache ankommt, in der jemand gerade auf der Seite ist. Englisch hat
+ * kein Präfix, deshalb der Umweg über die Liste.
+ */
+function spracheAusUrl(): string {
+  const [, erstes] = window.location.pathname.split('/');
+  const sprachen = ['de','fr','ko','th','ja','pt','es','tr','id','zh-TW','zh-CN','it','ar','vi'];
+  return sprachen.includes(erstes) ? erstes : 'en';
+}
+
 export default function AuthModal({ onClose, initialTab = 'login', translationData }: AuthModalProps) {
   const t = useTranslations(translationData);
-  const [tab, setTab] = useState<'login' | 'register'>(initialTab);
+  // 'forgot' ist kein Reiter, sondern ein Abzweig aus der Anmeldung — deshalb
+  // steht er nicht in der Reiterleiste, sondern wird über den Link darunter
+  // erreicht und über "zurück" wieder verlassen.
+  const [tab, setTab] = useState<'login' | 'register' | 'forgot'>(initialTab);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -37,6 +51,31 @@ export default function AuthModal({ onClose, initialTab = 'login', translationDa
   const [regUsername, setRegUsername] = useState('');
   const [regPassword, setRegPassword] = useState('');
   const [regServer, setRegServer] = useState('');
+
+  // Passwort vergessen
+  const [forgotEmail, setForgotEmail] = useState('');
+  const [forgotSent, setForgotSent] = useState(false);
+
+  const handleForgot = async (e: Event) => {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+    try {
+      await fetch('/api/auth/forgot', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: forgotEmail, lang: spracheAusUrl() }),
+      });
+      // Die Bestätigung kommt unabhängig davon, was der Server sagt. Er
+      // antwortet ohnehin immer gleich — würde die Oberfläche unterscheiden,
+      // wäre die Mühe im Endpunkt umsonst gewesen.
+      setForgotSent(true);
+    } catch {
+      setError(t('auth.errorConnection'));
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleLogin = async (e: Event) => {
     e.preventDefault();
@@ -90,20 +129,57 @@ export default function AuthModal({ onClose, initialTab = 'login', translationDa
           <button class="auth-close" onClick={onClose} aria-label={t('auth.close')}>✕</button>
         </div>
 
-        <div class="auth-tabs">
-          <button
-            class={`auth-tab${tab === 'login' ? ' active' : ''}`}
-            onClick={() => { setTab('login'); setError(null); }}
-          >{t('auth.login')}</button>
-          <button
-            class={`auth-tab${tab === 'register' ? ' active' : ''}`}
-            onClick={() => { setTab('register'); setError(null); }}
-          >{t('auth.register')}</button>
-        </div>
+        {tab !== 'forgot' && (
+          <div class="auth-tabs">
+            <button
+              class={`auth-tab${tab === 'login' ? ' active' : ''}`}
+              onClick={() => { setTab('login'); setError(null); }}
+            >{t('auth.login')}</button>
+            <button
+              class={`auth-tab${tab === 'register' ? ' active' : ''}`}
+              onClick={() => { setTab('register'); setError(null); }}
+            >{t('auth.register')}</button>
+          </div>
+        )}
 
         {error && <div class="auth-error">{error}</div>}
 
-        {tab === 'login' ? (
+        {tab === 'forgot' ? (
+          forgotSent ? (
+            <div class="auth-form">
+              <p class="auth-hinweis auth-hinweis-ok">{t('auth.forgotSent')}</p>
+              <button
+                type="button"
+                class="auth-submit"
+                onClick={() => { setTab('login'); setForgotSent(false); setError(null); }}
+              >{t('auth.forgotBack')}</button>
+            </div>
+          ) : (
+            <form class="auth-form" onSubmit={handleForgot}>
+              <p class="auth-hinweis">{t('auth.forgotIntro')}</p>
+              <div class="auth-field">
+                <label htmlFor="forgot-email">{t('auth.email')}</label>
+                <input
+                  id="forgot-email"
+                  type="email"
+                  autocomplete="email"
+                  placeholder={t('auth.emailPlaceholder')}
+                  value={forgotEmail}
+                  onInput={e => setForgotEmail((e.target as HTMLInputElement).value)}
+                  required
+                />
+              </div>
+              <button type="submit" class="auth-submit" disabled={loading}>
+                {loading ? t('auth.forgotSending') : t('auth.forgotSubmit')}
+              </button>
+              <button
+                type="button"
+                class="auth-textlink"
+                onClick={() => { setTab('login'); setError(null); }}
+              >{t('auth.forgotBack')}</button>
+            </form>
+          )
+        ) : tab === 'login' ? (
           <form class="auth-form" onSubmit={handleLogin}>
             <div class="auth-field">
               <label htmlFor="login-email">{t('auth.email')}</label>
@@ -132,6 +208,11 @@ export default function AuthModal({ onClose, initialTab = 'login', translationDa
             <button type="submit" class="auth-submit" disabled={loading}>
               {loading ? t('auth.loginLoading') : t('auth.login')}
             </button>
+            <button
+              type="button"
+              class="auth-textlink"
+              onClick={() => { setTab('forgot'); setError(null); setForgotEmail(loginEmail); }}
+            >{t('auth.forgotLink')}</button>
           </form>
         ) : (
           <form class="auth-form" onSubmit={handleRegister}>
