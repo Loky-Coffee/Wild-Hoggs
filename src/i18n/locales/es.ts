@@ -1,6 +1,10 @@
 export default {
   'nav.home': 'Inicio',
   'nav.tools': 'Herramientas',
+  'nav.research': 'Investigación',
+  'nav.building': 'Edificios',
+  'nav.tank': 'Tanque',
+  'nav.caravan': 'Caravana',
   'nav.heroes': 'Héroes',
   'nav.roses': 'Rosas',
   'nav.codes': 'Códigos',

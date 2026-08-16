@@ -1,6 +1,10 @@
 export default {
   'nav.home': 'ホーム',
   'nav.tools': 'ツール',
+  'nav.research': '研究',
+  'nav.building': '建物',
+  'nav.tank': 'タンク',
+  'nav.caravan': 'キャラバン',
   'nav.heroes': 'ヒーロー',
   'nav.roses': 'ローズ',
   'nav.codes': 'コード',

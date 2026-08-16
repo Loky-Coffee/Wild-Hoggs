@@ -1,6 +1,10 @@
 export default {
   'nav.home': 'Ana Sayfa',
   'nav.tools': 'Araçlar',
+  'nav.research': 'Araştırma',
+  'nav.building': 'Binalar',
+  'nav.tank': 'Tank',
+  'nav.caravan': 'Kervan',
   'nav.heroes': 'Kahramanlar',
   'nav.roses': 'Güller',
   'nav.codes': 'Kodlar',

@@ -1,6 +1,10 @@
 export default {
   'nav.home': '首頁',
   'nav.tools': '工具',
+  'nav.research': '研究',
+  'nav.building': '建築',
+  'nav.tank': '坦克',
+  'nav.caravan': '商隊',
   'nav.heroes': '英雄',
   'nav.roses': '玫瑰',
   'nav.codes': '代碼',

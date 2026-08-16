@@ -1,6 +1,10 @@
 export default {
   'nav.home': 'หน้าแรก',
   'nav.tools': 'เครื่องมือ',
+  'nav.research': 'วิจัย',
+  'nav.building': 'อาคาร',
+  'nav.tank': 'รถถัง',
+  'nav.caravan': 'คาราวาน',
   'nav.heroes': 'ฮีโร่',
   'nav.roses': 'กุหลาบ',
   'nav.codes': 'รหัส',

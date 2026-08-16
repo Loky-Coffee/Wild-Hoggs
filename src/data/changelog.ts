@@ -27,6 +27,11 @@ export const changelog: ChangelogEntry[] = [
   // ── August 2026 ─────────────────────────────────────────────────────────
   {
     date: '2026-08-16',
+    time: '20:40',
+    text: 'The four calculators are now **in the menu bar itself** \u2014 Research, Buildings, Tank and Caravan, one click instead of two. The bar got a proper look while at it: equal-width buttons in the site\u2019s orange instead of plain text, and the page you are on is filled in. On phones the menu keeps a Home entry, because the Wild Hoggs wordmark is hidden there',
+  },
+  {
+    date: '2026-08-16',
     time: '19:20',
     text: 'Every calculator now has a **plain table** next to it. Research trees, tank modifications and all 32 buildings: what each step costs, how long it takes, what has to be built first \u2014 readable without clicking anything, and printable. You reach them from the calculator itself. They also exist for search engines: the calculators keep their numbers inside the JavaScript, so until now a search engine looking for \u201chow many badges does Fully Armed Alliance cost\u201d found nothing here',
   },

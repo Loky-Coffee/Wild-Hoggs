@@ -1,6 +1,10 @@
 export default {
   'nav.home': 'Beranda',
   'nav.tools': 'Alat',
+  'nav.research': 'Riset',
+  'nav.building': 'Bangunan',
+  'nav.tank': 'Tank',
+  'nav.caravan': 'Karavan',
   'nav.heroes': 'Pahlawan',
   'nav.roses': 'Mawar',
   'nav.codes': 'Kode',

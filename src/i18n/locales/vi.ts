@@ -1,6 +1,10 @@
 export default {
   'nav.home': 'Trang chủ',
   'nav.tools': 'Công cụ',
+  'nav.research': 'Nghiên cứu',
+  'nav.building': 'Công trình',
+  'nav.tank': 'Xe tăng',
+  'nav.caravan': 'Đoàn xe',
   'nav.heroes': 'Anh hùng',
   'nav.roses': 'Hoa hồng',
   'nav.codes': 'Mã',

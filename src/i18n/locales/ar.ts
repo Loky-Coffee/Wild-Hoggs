@@ -1,6 +1,10 @@
 export default {
   'nav.home': 'الرئيسية',
   'nav.tools': 'الأدوات',
+  'nav.research': 'البحث',
+  'nav.building': 'المباني',
+  'nav.tank': 'الدبابة',
+  'nav.caravan': 'القافلة',
   'nav.heroes': 'الأبطال',
   'nav.roses': 'الورود',
   'nav.codes': 'الأكواد',

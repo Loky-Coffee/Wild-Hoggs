@@ -1,6 +1,10 @@
 export default {
   'nav.home': '홈',
   'nav.tools': '도구',
+  'nav.research': '연구',
+  'nav.building': '건물',
+  'nav.tank': '탱크',
+  'nav.caravan': '캐러밴',
   'nav.heroes': '영웅',
   'nav.roses': '로즈',
   'nav.codes': '코드',

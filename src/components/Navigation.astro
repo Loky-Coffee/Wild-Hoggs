@@ -1,6 +1,7 @@
 ---
 import { getLangFromUrl, useTranslations, nurBereiche } from '../i18n/utils';
 import { loadTranslations } from '../i18n/index';
+import type { TranslationKey } from '../i18n/index';
 import LanguageDropdown from './LanguageDropdown.astro';
 import ApocalypseTimeClock from './ApocalypseTimeClock';
 import UserMenu from './auth/UserMenu';
@@ -21,15 +22,34 @@ const getPath = (page: string) => {
   return page === 'home' ? `/${lang}/` : `/${lang}/${page}/`;
 };
 
+// Die vier Rechner stehen direkt hier, nicht mehr hinter einem Sammelpunkt
+// "Rechner". Sie sind der Grund, warum die meisten Leute die Seite aufrufen —
+// ein Klick weniger.
+//
+// "Startseite" steht nur noch auf schmalen Bildschirmen im Menue (nurMobil).
+//
+// Am Rechner fuehrt der Schriftzug "Wild Hoggs" links dorthin, so wie auf
+// nahezu jeder Website — ein eigener Menuepunkt waere doppelt und kostet
+// Platz, den die vier Rechner jetzt brauchen. Auf dem Handy ist der Schriftzug
+// aber ausgeblendet (siehe .nav-brand im @media-Block unten, dort ist die
+// Zeile knapp: [Anmelden] [≡] [Flagge]). Ohne diesen Eintrag gaebe es dort
+// ueberhaupt keinen Weg zurueck zur Startseite.
+//
+// Die Adressen bleiben, wie sie sind. Es aendert sich nur, worauf das Menue
+// zeigt — /tools/ selbst bleibt bestehen, ist ueber die Brotkrumen jeder
+// Rechnerseite verlinkt und behaelt damit ihre Position bei Google.
 const routes = [
-  { key: 'nav.home', path: getPath('home') },
-{ key: 'nav.tools', path: getPath('tools') },
-  { key: 'nav.codes', path: getPath('codes') },
+  { key: 'nav.home', path: getPath('home'), nurMobil: true },
+  { key: 'nav.research', path: getPath('tools/research') },
+  { key: 'nav.building', path: getPath('tools/building') },
+  { key: 'nav.tank',     path: getPath('tools/tank') },
+  { key: 'nav.caravan',  path: getPath('tools/caravan') },
+  { key: 'nav.codes', path: getPath('codes'), gruppenAnfang: true },
   { key: 'nav.roses', path: getPath('roses') },
   { key: 'nav.heroes', path: getPath('heroes') },
   { key: 'nav.community', path: getPath('community') },
   { key: 'nav.about', path: getPath('about') },
-] as const;
+] as { key: TranslationKey; path: string; nurMobil?: boolean; gruppenAnfang?: boolean }[];
 
 // Normalize to trailing slash for comparison (keeps '/' as-is)
 const rawPath = Astro.url.pathname;
@@ -53,8 +73,8 @@ const currentPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : r
     </button>
 
     <ul class="nav-links">
-      {routes.map(({ key, path }) => (
-        <li>
+      {routes.map(({ key, path, nurMobil, gruppenAnfang }) => (
+        <li class:list={{ 'nur-mobil': nurMobil, 'gruppen-anfang': gruppenAnfang }}>
           <a
             href={path}
             class:list={['nav-link', { active: currentPath === path }]}
@@ -128,11 +148,11 @@ const currentPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : r
 
   .nav-container {
     margin: 0 auto;
-    padding: 1rem 2rem;
+    padding: 1rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 2rem;
+    gap: 1rem;
   }
 
   .nav-brand a {
@@ -167,55 +187,91 @@ const currentPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : r
     transition: all 0.3s ease;
   }
 
+  /* Am Rechner fuehrt der Schriftzug zur Startseite, hier waere der Punkt
+     doppelt. Auf dem Handy ist der Schriftzug ausgeblendet — dort ist dieser
+     Eintrag der einzige Heimweg (siehe @media unten). */
+  .nav-links li.nur-mobil {
+    display: none;
+  }
+
+  /* Enger als frueher: Mit neun Punkten statt sieben brauchte die Leiste
+     1616 px und schob auf allem unter 1920 px einen waagerechten Scrollbalken
+     ins Bild. Mit diesen Abstaenden passt sie ab 1280 px. */
+  /* Alle Punkte gleich breit: Sie teilen sich den vorhandenen Platz zu
+     gleichen Teilen (flex: 1 1 0). Damit ist die Leiste gleichmaessig, egal
+     wie lang die einzelnen Woerter sind. */
   .nav-links {
     display: flex;
+    align-items: stretch;
     list-style: none;
-    gap: 2rem;
+    gap: 6px;
     margin: 0;
     padding: 0;
     flex: 1;
-    justify-content: center;
+  }
+
+  .nav-links li {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+  }
+
+  /* Die vier Rechner und die uebrigen Seiten: nur etwas mehr Luft dazwischen. */
+  .nav-links li.gruppen-anfang {
+    margin-left: 0.6rem;
   }
 
   .nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    text-align: center;
     text-decoration: none;
-    color: rgba(255, 255, 255, 0.75);
-    font-size: 1rem;
-    padding: 0.4rem 0.9rem;
-    border-radius: 6px;
-    transition: color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+    color: #ffcc80;
+    /* 0.8rem statt 0.85: Bei gleich breiten Kaesten richtet sich alles nach
+       dem laengsten Wort — "Investigación" (es), "私たちについて" (ja) und die
+       arabischen Punkte mit Artikel passten sonst nicht und wurden
+       abgeschnitten. */
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 0.45rem 0.25rem;
+    white-space: nowrap;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 165, 0, 0.28);
+    background: linear-gradient(180deg, rgba(255, 165, 0, 0.1) 0%, rgba(255, 165, 0, 0.03) 100%);
+    box-shadow: inset 0 1px 0 rgba(255, 200, 120, 0.12);
+    transition: color 0.18s ease, background 0.18s ease, border-color 0.18s ease,
+                box-shadow 0.18s ease, transform 0.18s ease;
     position: relative;
   }
 
   .nav-link:hover {
-    color: #ffa500;
-    background: rgba(255, 165, 0, 0.1);
-  }
-
-  .nav-link.active {
     color: #fff;
-    background: rgba(255, 165, 0, 0.18);
-    box-shadow: 0 0 0 1px rgba(255, 165, 0, 0.35), 0 2px 12px rgba(255, 165, 0, 0.15);
+    border-color: rgba(255, 165, 0, 0.7);
+    background: linear-gradient(180deg, rgba(255, 165, 0, 0.28) 0%, rgba(255, 165, 0, 0.12) 100%);
+    box-shadow: 0 3px 14px rgba(255, 165, 0, 0.28), inset 0 1px 0 rgba(255, 220, 160, 0.2);
+    transform: translateY(-1px);
   }
 
-  /* Notification dot on mobile hamburger toggle via ::after — avoids CSS conflict with .nav-toggle span */
-  .nav-toggle {
-    position: relative;
+  .nav-link:active {
+    transform: translateY(0);
   }
 
-  .nav-toggle[data-badge]::after {
-    content: '';
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    width: 9px;
-    height: 9px;
-    border-radius: 50%;
-    background: #e74c3c;
-    pointer-events: none;
+  /* Die Seite, auf der man gerade steht: voll gefuellt, dunkle Schrift. */
+  .nav-link.active {
+    color: #1c1206;
+    font-weight: 700;
+    border-color: #ffa500;
+    background: linear-gradient(180deg, #ffc046 0%, #ff9500 100%);
+    box-shadow: 0 3px 14px rgba(255, 165, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.35);
   }
 
-  /* Notification badge on Community nav link */
+  .nav-link.active:hover {
+    color: #1c1206;
+    background: linear-gradient(180deg, #ffcb5e 0%, #ffa016 100%);
+  }
+
   .nav-badge {
     position: absolute;
     top: 0px;
@@ -248,7 +304,13 @@ const currentPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : r
     margin-left: 0.5rem;
   }
 
-  @media (max-width: 768px) {
+  /* 1440 statt 768: Weil alle neun Schaltflaechen gleich breit sind, richtet
+     sich die noetige Breite nach dem laengsten Wort — und das steht nicht im
+     Deutschen. Nachgemessen ueber alle fuenfzehn Sprachen: "Investigación"
+     (es), "私たちについて" (ja) und "Communauté" (fr) passen ab 1440 px, bei
+     1366 wurden sie abgeschnitten. Darunter uebernimmt das Klappmenue.
+     Wer hier Punkte hinzufuegt oder umbenennt, muss diesen Wert nachmessen. */
+  @media (max-width: 1440px) {
     .navigation {
       position: sticky;
       top: 0;
@@ -267,6 +329,22 @@ const currentPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : r
 
     .nav-brand {
       display: none;
+    }
+
+    /* Der Schriftzug ist hier weg, also braucht das Menue den Heimweg. */
+    .nav-links li.nur-mobil {
+      display: block;
+    }
+
+    /* Untereinander gelten andere Regeln: Der Traeger der Leiste wuerde hier
+       nur einen Kasten um die ganze Liste ziehen. */
+    .nav-links li {
+      display: block;
+    }
+
+    .nav-links li.gruppen-anfang {
+      margin-left: 0;
+      border-top: 1px solid rgba(255, 165, 0, 0.18);
     }
 
     /* Mobile: [UserMenu (flex:1)] [≡] [flag] */
@@ -307,7 +385,12 @@ const currentPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : r
       background: rgba(26, 26, 26, 0.98);
       margin: 0;
       padding: 0;
+      /* Der Traeger der Desktop-Leiste hat hier nichts verloren: Er wuerde
+         einen abgerundeten Kasten um das ganze Klappmenue ziehen. */
+      border: none;
       border-top: 2px solid rgba(255, 165, 0, 0.3);
+      border-radius: 0;
+      box-shadow: none;
     }
 
     .nav-links.open {
