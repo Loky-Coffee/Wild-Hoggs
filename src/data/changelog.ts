@@ -27,6 +27,11 @@ export const changelog: ChangelogEntry[] = [
   // ── August 2026 ─────────────────────────────────────────────────────────
   {
     date: '2026-08-16',
+    time: '23:50',
+    text: 'There is now a **privacy policy**, reachable from the footer of every page. It describes what this site actually does \u2014 which five things it keeps in your browser storage, that it sets no cookies at all, exactly which fields an account stores, how long each thing is kept, and that deleting your account replaces your name in the public chat rather than tearing conversations apart',
+  },
+  {
+    date: '2026-08-16',
     time: '23:10',
     text: 'The Vietnamese research pages **now name the technologies in Vietnamese**. All 144 of them, across eleven trees, had been left in English \u2014 along with three tree names and the ten page titles that use them',
   },

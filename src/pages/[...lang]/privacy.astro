@@ -1,0 +1,476 @@
+---
+/**
+ * Datenschutzerklärung nach Art. 13 DSGVO.
+ *
+ * Der Text beschreibt, was die Seite TATSAECHLICH tut — nicht was ein
+ * Mustertext vermutet. Wer hier etwas aendert (neue Felder in der Datenbank,
+ * ein weiterer Dienst, andere Speicherfristen), muss diesen Text mitziehen.
+ *
+ * Zweisprachig: Deutsch fuer /de/, Englisch fuer alle uebrigen. Die DSGVO
+ * verlangt "praezise, transparente, verstaendliche und leicht zugaengliche
+ * Form in einer klaren und einfachen Sprache" — eine Fassung in einer Sprache,
+ * die der Leser nicht versteht, erfuellt das nicht.
+ *
+ * NICHT ausgefuellt: Name und Kontaktadresse des Verantwortlichen. Beides
+ * steht in src/config/betreiber.ts und muss dort eingetragen werden.
+ */
+import PageLayout from '../../layouts/PageLayout.astro';
+import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../i18n/utils';
+import { languages, loadTranslations } from '../../i18n/index';
+import { BETREIBER } from '../../config/betreiber';
+
+export function getStaticPaths() {
+  return Object.keys(languages).map(langKey => ({
+    params: { lang: langKey === 'en' ? undefined : langKey },
+  }));
+}
+
+const lang = getLangFromUrl(Astro.url);
+const translationData = await loadTranslations(lang);
+const t = useTranslations(translationData);
+const de = lang === 'de';
+
+const stand = '16. August 2026';
+const standEn = '16 August 2026';
+
+const breadcrumbItems = [
+  { label: t('nav.home'), href: getLocalizedPath('', lang) },
+  { label: de ? 'Datenschutz' : 'Privacy' },
+];
+---
+
+<PageLayout
+  title={de ? 'Datenschutzerklärung | Wild Hoggs' : 'Privacy Policy | Wild Hoggs'}
+  description={de
+    ? 'Welche Daten Wild Hoggs verarbeitet, wozu, wie lange — und welche Rechte du hast.'
+    : 'What data Wild Hoggs processes, why, for how long — and what rights you have.'}
+  robots="index, follow"
+  breadcrumbs={breadcrumbItems}
+>
+  <article class="rechtstext">
+    {de ? (
+      <>
+        <h1>Datenschutzerklärung</h1>
+        <p class="stand">Stand: {stand}</p>
+
+        <h2>1. Verantwortlicher</h2>
+        <p>
+          Verantwortlich für die Datenverarbeitung auf dieser Website ist:<br />
+          {BETREIBER.name}<br />
+          {BETREIBER.anschrift.map(zeile => (<>{zeile}<br /></>))}
+          E-Mail: <a href={`mailto:${BETREIBER.email}`}>{BETREIBER.email}</a>
+        </p>
+
+        <h2>2. Was diese Seite ist</h2>
+        <p>
+          Wild Hoggs ist eine private, nicht-kommerzielle Fanseite zum Mobilspiel
+          <strong> Last Z: Survival Shooter</strong>. Sie bietet Rechner, Kostentabellen und
+          Übersichten. Sie steht in keiner Verbindung zu den Entwicklern oder Herausgebern des
+          Spiels.
+        </p>
+
+        <h2>3. Nutzung ohne Konto</h2>
+        <p>
+          Der größte Teil der Seite lässt sich ohne Anmeldung nutzen. Dabei werden
+          <strong> keine personenbezogenen Daten in einer Datenbank gespeichert</strong>.
+        </p>
+
+        <h3>3.1 Speicherung auf deinem Gerät</h3>
+        <p>
+          Damit die Rechner sich merken, was du eingegeben hast, legt die Seite Daten im
+          lokalen Speicher deines Browsers ab (<code>localStorage</code>) — nicht in Cookies.
+          Diese Daten verlassen dein Gerät nicht, solange du kein Konto hast:
+        </p>
+        <ul>
+          <li><code>wh-calc-…</code> — deine Eingaben in den Rechnern (Forschung, Gebäude, Panzer, Karawane)</li>
+          <li><code>wh-active-profile</code> — welches Spielprofil gerade ausgewählt ist</li>
+          <li><code>wh-lang-redirected</code> — ob du schon einmal zur Sprachfassung weitergeleitet wurdest</li>
+          <li><code>wh-auth-user</code> — nur wenn du angemeldet bist: dein Anmeldezustand</li>
+          <li><code>wh-pm-contacts</code>, <code>wh-unread-channels</code>, <code>wh-pending-dm-unreads</code> — nur bei Nutzung des Chats: Gesprächspartner und ungelesene Nachrichten</li>
+        </ul>
+        <p>
+          Rechtsgrundlage ist § 25 Abs. 2 Nr. 2 TDDDG: Die Speicherung ist unbedingt
+          erforderlich, damit die von dir aufgerufene Funktion überhaupt arbeiten kann. Eine
+          Einwilligung ist dafür nicht vorgesehen — du kannst diese Daten jederzeit über die
+          Einstellungen deines Browsers löschen.
+        </p>
+        <p>
+          <strong>Diese Seite setzt keine Cookies.</strong>
+        </p>
+
+        <h3>3.2 Server-Protokolle</h3>
+        <p>
+          Beim Aufruf der Seite überträgt dein Browser technisch notwendige Angaben an den
+          Server: IP-Adresse, Zeitpunkt, aufgerufene Adresse, Browser- und Betriebssystemkennung
+          sowie die zuvor besuchte Seite. Diese Angaben fallen bei unserem Hoster
+          (siehe Abschnitt 6) an und dienen dem Betrieb und der Abwehr von Angriffen.
+          Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO — unser berechtigtes Interesse an einem
+          sicheren, funktionierenden Angebot.
+        </p>
+
+        <h3>3.3 Reichweitenmessung</h3>
+        <p>
+          Wir nutzen <strong>Cloudflare Web Analytics</strong>. Dieser Dienst arbeitet nach
+          Angaben des Anbieters <strong>ohne Cookies, ohne Speicherung auf deinem Gerät und
+          ohne Fingerprinting</strong>. Erfasst werden ausschließlich zusammengefasste Zahlen:
+          welche Seiten wie oft aufgerufen wurden, aus welchem Land, mit welchem Browser. Ein
+          Rückschluss auf einzelne Personen ist damit nicht möglich, und es findet keine
+          Verfolgung über mehrere Seitenaufrufe hinweg statt. Rechtsgrundlage ist Art. 6 Abs. 1
+          lit. f DSGVO.
+        </p>
+
+        <h2>4. Nutzung mit Konto</h2>
+        <p>
+          Ein Konto ist freiwillig. Es dient dazu, deine Rechnerstände zwischen Geräten
+          abzugleichen und am Chat teilzunehmen.
+        </p>
+
+        <h3>4.1 Bei der Registrierung</h3>
+        <ul>
+          <li><strong>E-Mail-Adresse</strong> — zur Anmeldung und für den Fall, dass wir dich erreichen müssen</li>
+          <li><strong>Benutzername</strong> — öffentlich sichtbar im Chat</li>
+          <li><strong>Passwort</strong> — wird niemals im Klartext gespeichert, sondern nur als Prüfsumme (PBKDF2-SHA256 mit 100 000 Durchläufen und individuellem Zufallswert)</li>
+          <li><strong>Server und Fraktion</strong> — freiwillige Angaben zum Spiel</li>
+          <li><strong>Sprache</strong> — für die Darstellung der Seite</li>
+        </ul>
+        <p>Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (Erfüllung des Nutzungsverhältnisses).</p>
+
+        <h3>4.2 Während der Nutzung</h3>
+        <ul>
+          <li><strong>Spielprofile</strong> — Name, Server, Fraktion und Formationsstärke je Profil, von dir selbst eingetragen</li>
+          <li><strong>Rechnerstände</strong> — dieselben Daten wie unter 3.1, zusätzlich auf dem Server, damit sie auf allen deinen Geräten gleich sind</li>
+          <li><strong>Chatnachrichten</strong> — was du in den öffentlichen Kanälen und in privaten Gesprächen schreibst, mit Zeitpunkt</li>
+          <li><strong>Zuletzt gesehen</strong> — ein Zeitstempel, damit andere sehen, wer gerade online ist</li>
+          <li><strong>Anmeldezeitpunkt</strong> — zur Erkennung ungewöhnlicher Zugriffe</li>
+          <li><strong>Sitzungen</strong> — ein zufälliges Kennzeichen je angemeldetem Gerät, gültig 30 Tage</li>
+        </ul>
+
+        <h3>4.3 Öffentlich sichtbar</h3>
+        <p>
+          Für andere Angemeldete sichtbar sind: dein Benutzername, deine Fraktion, dein Server
+          und ob du gerade online bist — sowie natürlich, was du im öffentlichen Chat schreibst.
+          <strong> Deine E-Mail-Adresse ist für niemanden sichtbar</strong> außer für die
+          Administration.
+        </p>
+
+        <h2>5. Speicherdauer</h2>
+        <table class="frist-tabelle">
+          <tbody>
+            <tr><th>Konto und Profile</th><td>bis du es löschst</td></tr>
+            <tr><th>Rechnerstände</th><td>bis du sie zurücksetzt oder das Konto löschst</td></tr>
+            <tr><th>Sitzungen</th><td>30 Tage, danach automatisch ungültig</td></tr>
+            <tr><th>Private Nachrichten</th><td>bis eine der beiden Seiten ihr Konto löscht</td></tr>
+            <tr><th>Öffentliche Chatnachrichten</th><td>bleiben bestehen; bei Kontolöschung wird dein Name durch „Gelöscht“ ersetzt, damit Gespräche nicht auseinanderfallen</td></tr>
+            <tr><th>Server-Protokolle</th><td>nach den Fristen des Hosters (siehe Abschnitt 6)</td></tr>
+          </tbody>
+        </table>
+
+        <h2>6. Auftragsverarbeiter und Datenübermittlung</h2>
+        <p>
+          Die Seite wird bei <strong>Cloudflare, Inc.</strong> betrieben (Cloudflare Pages,
+          D1-Datenbank, R2-Speicher, Workers). Cloudflare verarbeitet die Daten in unserem
+          Auftrag nach Art. 28 DSGVO. Die Datenbank dieser Seite liegt in
+          <strong> Westeuropa</strong>. Cloudflare ist ein Unternehmen mit Sitz in den USA;
+          eine Übermittlung dorthin kann nicht ausgeschlossen werden. Cloudflare ist nach dem
+          <a href="https://www.dataprivacyframework.gov/" rel="noopener noreferrer" target="_blank"> EU-US Data Privacy Framework</a>
+          zertifiziert und setzt zusätzlich die Standardvertragsklauseln der EU-Kommission ein.
+        </p>
+        <p>
+          Wenn du auf den Verweis „Buy me a coffee“ klickst, verlässt du diese Seite. Für die
+          Datenverarbeitung dort gilt die Datenschutzerklärung des Anbieters; wir übermitteln
+          keine Daten an ihn.
+        </p>
+        <p>Weitere Empfänger gibt es nicht. Es findet kein Verkauf von Daten statt.</p>
+
+        <h2>7. Deine Rechte</h2>
+        <p>Nach der DSGVO stehen dir zu:</p>
+        <ul>
+          <li><strong>Auskunft</strong> (Art. 15) — im Profil unter „Meine Daten herunterladen“ erhältst du sofort eine vollständige Kopie</li>
+          <li><strong>Berichtigung</strong> (Art. 16) — die meisten Angaben kannst du im Profil selbst ändern</li>
+          <li><strong>Löschung</strong> (Art. 17) — im Profil unter „Konto löschen“, mit sofortiger Wirkung</li>
+          <li><strong>Einschränkung der Verarbeitung</strong> (Art. 18)</li>
+          <li><strong>Datenübertragbarkeit</strong> (Art. 20) — die Kopie aus dem Profil ist maschinenlesbar</li>
+          <li><strong>Widerspruch</strong> (Art. 21) gegen Verarbeitungen auf Grundlage berechtigter Interessen</li>
+        </ul>
+        <p>
+          Für alles, was sich nicht im Profil erledigen lässt, genügt eine Nachricht an
+          <a href={`mailto:${BETREIBER.email}`}>{BETREIBER.email}</a>.
+        </p>
+
+        <h2>8. Beschwerderecht</h2>
+        <p>
+          Du kannst dich bei einer Datenschutz-Aufsichtsbehörde beschweren, insbesondere in dem
+          EU-Land deines Aufenthalts, deines Arbeitsplatzes oder des vermuteten Verstoßes. Eine
+          Liste der deutschen Aufsichtsbehörden findest du beim
+          <a href="https://www.bfdi.bund.de/DE/Service/Anschriften/anschriften_node.html" rel="noopener noreferrer" target="_blank"> Bundesbeauftragten für den Datenschutz und die Informationsfreiheit</a>.
+        </p>
+
+        <h2>9. Keine automatisierte Entscheidungsfindung</h2>
+        <p>
+          Es findet keine automatisierte Entscheidungsfindung und kein Profiling im Sinne von
+          Art. 22 DSGVO statt.
+        </p>
+
+        <h2>10. Erforderlichkeit der Angaben</h2>
+        <p>
+          Du musst keine Daten angeben. Ohne Konto kannst du alle Rechner und Tabellen nutzen.
+          Ohne E-Mail-Adresse und Benutzername lässt sich allerdings kein Konto anlegen — und
+          damit weder der Abgleich zwischen Geräten noch der Chat nutzen.
+        </p>
+
+        <h2>11. Änderungen</h2>
+        <p>
+          Ändert sich, was die Seite mit Daten tut, ändert sich auch dieser Text. Das Datum
+          oben zeigt den letzten Stand.
+        </p>
+      </>
+    ) : (
+      <>
+        <h1>Privacy Policy</h1>
+        <p class="stand">Last updated: {standEn}</p>
+
+        <h2>1. Who is responsible</h2>
+        <p>
+          The controller for the processing of personal data on this website is:<br />
+          {BETREIBER.name}<br />
+          {BETREIBER.anschrift.map(zeile => (<>{zeile}<br /></>))}
+          Email: <a href={`mailto:${BETREIBER.email}`}>{BETREIBER.email}</a>
+        </p>
+
+        <h2>2. What this site is</h2>
+        <p>
+          Wild Hoggs is a private, non-commercial fan site for the mobile game
+          <strong> Last Z: Survival Shooter</strong>. It provides calculators, cost tables and
+          reference data. It is not affiliated with the game's developers or publishers.
+        </p>
+
+        <h2>3. Using the site without an account</h2>
+        <p>
+          Most of the site works without signing in. In that case
+          <strong> no personal data is stored in any database</strong>.
+        </p>
+
+        <h3>3.1 Stored on your device</h3>
+        <p>
+          So the calculators remember what you entered, the site stores data in your browser's
+          local storage (<code>localStorage</code>) — not in cookies. As long as you have no
+          account, this data never leaves your device:
+        </p>
+        <ul>
+          <li><code>wh-calc-…</code> — your entries in the calculators (research, buildings, tank, caravan)</li>
+          <li><code>wh-active-profile</code> — which game profile is currently selected</li>
+          <li><code>wh-lang-redirected</code> — whether you have already been sent to a language version</li>
+          <li><code>wh-auth-user</code> — only when signed in: your sign-in state</li>
+          <li><code>wh-pm-contacts</code>, <code>wh-unread-channels</code>, <code>wh-pending-dm-unreads</code> — only when using the chat: your conversation partners and unread counts</li>
+        </ul>
+        <p>
+          The legal basis is § 25 (2) no. 2 TDDDG: storing this is strictly necessary for the
+          feature you asked for. You can delete it at any time through your browser settings.
+        </p>
+        <p><strong>This site sets no cookies.</strong></p>
+
+        <h3>3.2 Server logs</h3>
+        <p>
+          When you open a page, your browser sends technically necessary information to the
+          server: IP address, time, the address requested, browser and operating system
+          identifiers, and the page you came from. This is collected by our host (see section 6)
+          and used to run the site and defend against attacks. Legal basis: Art. 6 (1) (f) GDPR —
+          our legitimate interest in a secure, working service.
+        </p>
+
+        <h3>3.3 Audience measurement</h3>
+        <p>
+          We use <strong>Cloudflare Web Analytics</strong>. According to the provider it works
+          <strong> without cookies, without storing anything on your device and without
+          fingerprinting</strong>. Only aggregated figures are recorded: which pages were opened
+          how often, from which country, with which browser. Individual visitors cannot be
+          identified and are not followed across visits. Legal basis: Art. 6 (1) (f) GDPR.
+        </p>
+
+        <h2>4. Using the site with an account</h2>
+        <p>
+          An account is optional. It syncs your calculator progress between devices and lets you
+          use the chat.
+        </p>
+
+        <h3>4.1 At registration</h3>
+        <ul>
+          <li><strong>Email address</strong> — for signing in and in case we need to reach you</li>
+          <li><strong>Username</strong> — publicly visible in the chat</li>
+          <li><strong>Password</strong> — never stored in plain text, only as a hash (PBKDF2-SHA256, 100,000 iterations, individual salt)</li>
+          <li><strong>Server and faction</strong> — optional details about your game</li>
+          <li><strong>Language</strong> — for displaying the site</li>
+        </ul>
+        <p>Legal basis: Art. 6 (1) (b) GDPR (performance of the user relationship).</p>
+
+        <h3>4.2 While using the site</h3>
+        <ul>
+          <li><strong>Game profiles</strong> — name, server, faction and formation power per profile, entered by you</li>
+          <li><strong>Calculator progress</strong> — the same data as in 3.1, additionally on the server so it matches across your devices</li>
+          <li><strong>Chat messages</strong> — what you write in the public channels and in private conversations, with a timestamp</li>
+          <li><strong>Last seen</strong> — a timestamp so others can see who is online</li>
+          <li><strong>Last sign-in</strong> — to spot unusual access</li>
+          <li><strong>Sessions</strong> — a random identifier per signed-in device, valid for 30 days</li>
+        </ul>
+
+        <h3>4.3 What others can see</h3>
+        <p>
+          Other signed-in users can see your username, faction, server and whether you are
+          online — and of course whatever you write in the public chat.
+          <strong> Your email address is visible to nobody</strong> except the administration.
+        </p>
+
+        <h2>5. How long data is kept</h2>
+        <table class="frist-tabelle">
+          <tbody>
+            <tr><th>Account and profiles</th><td>until you delete it</td></tr>
+            <tr><th>Calculator progress</th><td>until you reset it or delete the account</td></tr>
+            <tr><th>Sessions</th><td>30 days, then automatically invalid</td></tr>
+            <tr><th>Private messages</th><td>until either side deletes their account</td></tr>
+            <tr><th>Public chat messages</th><td>kept; on account deletion your name is replaced with “Deleted” so conversations stay readable</td></tr>
+            <tr><th>Server logs</th><td>according to the host's retention (see section 6)</td></tr>
+          </tbody>
+        </table>
+
+        <h2>6. Processors and transfers</h2>
+        <p>
+          The site runs on <strong>Cloudflare, Inc.</strong> (Cloudflare Pages, D1 database, R2
+          storage, Workers). Cloudflare processes data on our behalf under Art. 28 GDPR. This
+          site's database is located in <strong>Western Europe</strong>. Cloudflare is a company
+          based in the USA; a transfer there cannot be ruled out. Cloudflare is certified under
+          the <a href="https://www.dataprivacyframework.gov/" rel="noopener noreferrer" target="_blank">EU-US Data Privacy Framework</a>
+          and additionally relies on the EU Commission's Standard Contractual Clauses.
+        </p>
+        <p>
+          If you follow the “Buy me a coffee” link you leave this site. Data processing there is
+          governed by that provider's privacy policy; we transmit no data to them.
+        </p>
+        <p>There are no other recipients. No data is sold.</p>
+
+        <h2>7. Your rights</h2>
+        <p>Under the GDPR you have the right to:</p>
+        <ul>
+          <li><strong>Access</strong> (Art. 15) — “Download my data” in your profile gives you a complete copy immediately</li>
+          <li><strong>Rectification</strong> (Art. 16) — most details you can change in your profile yourself</li>
+          <li><strong>Erasure</strong> (Art. 17) — “Delete account” in your profile, effective immediately</li>
+          <li><strong>Restriction of processing</strong> (Art. 18)</li>
+          <li><strong>Data portability</strong> (Art. 20) — the copy from your profile is machine-readable</li>
+          <li><strong>Object</strong> (Art. 21) to processing based on legitimate interests</li>
+        </ul>
+        <p>
+          For anything the profile does not cover, an email to
+          <a href={`mailto:${BETREIBER.email}`}> {BETREIBER.email}</a> is enough.
+        </p>
+
+        <h2>8. Right to complain</h2>
+        <p>
+          You may lodge a complaint with a data protection authority, in particular in the EU
+          country of your residence, your workplace or the alleged infringement.
+        </p>
+
+        <h2>9. No automated decision-making</h2>
+        <p>
+          There is no automated decision-making or profiling within the meaning of Art. 22 GDPR.
+        </p>
+
+        <h2>10. Is providing data required?</h2>
+        <p>
+          You do not have to provide any data. Without an account you can use every calculator
+          and table. Without an email address and username, however, no account can be created —
+          and with it neither cross-device sync nor the chat.
+        </p>
+
+        <h2>11. Changes</h2>
+        <p>
+          If what the site does with data changes, this text changes with it. The date at the top
+          shows the current version.
+        </p>
+      </>
+    )}
+  </article>
+</PageLayout>
+
+<style>
+  .rechtstext {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 1rem 0 4rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.82);
+  }
+
+  .rechtstext h1 {
+    font-size: 1.7rem;
+    color: #ffa500;
+    margin: 0 0 0.3rem;
+  }
+
+  .rechtstext h2 {
+    font-size: 1.15rem;
+    color: #ffa500;
+    margin: 2.2rem 0 0.6rem;
+  }
+
+  .rechtstext h3 {
+    font-size: 1rem;
+    color: rgba(255, 200, 120, 0.95);
+    margin: 1.4rem 0 0.4rem;
+  }
+
+  .stand {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.85rem;
+    margin: 0 0 1.5rem;
+  }
+
+  .rechtstext p { margin: 0 0 0.9rem; }
+
+  .rechtstext ul {
+    margin: 0 0 1rem;
+    padding-left: 1.3rem;
+  }
+
+  .rechtstext li { margin-bottom: 0.4rem; }
+
+  .rechtstext code {
+    background: rgba(255, 255, 255, 0.07);
+    border-radius: 4px;
+    padding: 0.1rem 0.35rem;
+    font-size: 0.85em;
+    color: #ffcc80;
+  }
+
+  .rechtstext a {
+    color: #ffa500;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 165, 0, 0.4);
+  }
+
+  .rechtstext a:hover { border-bottom-color: #ffa500; }
+
+  .frist-tabelle {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 0 1rem;
+    font-size: 0.9rem;
+  }
+
+  .frist-tabelle th,
+  .frist-tabelle td {
+    text-align: left;
+    vertical-align: top;
+    padding: 0.5rem 0.7rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .frist-tabelle th {
+    color: rgba(255, 255, 255, 0.95);
+    font-weight: 600;
+    white-space: nowrap;
+    width: 30%;
+  }
+
+  @media (max-width: 640px) {
+    .frist-tabelle th { white-space: normal; width: 40%; }
+  }
+</style>

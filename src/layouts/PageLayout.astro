@@ -1,6 +1,6 @@
 ---
 import Layout from './Layout.astro';
-import { getLangFromUrl, useTranslations } from '../i18n/utils';
+import { getLangFromUrl, useTranslations, getLocalizedPath } from '../i18n/utils';
 import { loadTranslations } from '../i18n/index';
 import Navigation from '../components/Navigation.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
@@ -40,9 +40,61 @@ const t = useTranslations(translationData);
   <main id="main-content" class:list={['page-content', { 'page-content--full': fullWidth }]}>
     <slot />
   </main>
+
+  {/* Fussbereich mit den rechtlichen Verweisen. Die Datenschutzerklaerung muss
+      "leicht zugaenglich" sein (Art. 12 DSGVO) — von jeder Seite aus, nicht
+      versteckt. Deshalb hier und nicht nur im Menue.
+
+      Auf der Startseite und den Rechnerseiten mit festem Vollbild-Layout wird
+      er ausgeblendet: Dort schneidet overflow:hidden ohnehin alles ab, was
+      unter dem Bildschirm liegt. Erreichbar bleibt die Seite von dort ueber
+      jede andere. */}
+  <footer class="seiten-fuss">
+    <nav aria-label={lang === 'de' ? 'Rechtliches' : 'Legal'}>
+      <a href={getLocalizedPath('privacy', lang)}>
+        {lang === 'de' ? 'Datenschutz' : 'Privacy'}
+      </a>
+      <span aria-hidden="true">·</span>
+      <a href={getLocalizedPath('about', lang)}>{t('nav.about')}</a>
+    </nav>
+    <p class="fuss-hinweis">
+      {lang === 'de'
+        ? 'Private Fanseite. Nicht mit den Entwicklern von Last Z: Survival Shooter verbunden.'
+        : 'Private fan site. Not affiliated with the developers of Last Z: Survival Shooter.'}
+    </p>
+  </footer>
 </Layout>
 
 <style>
+  .seiten-fuss {
+    max-width: 1100px;
+    margin: 3rem auto 0;
+    padding: 1.2rem 1rem 2rem;
+    border-top: 1px solid rgba(255, 165, 0, 0.15);
+    text-align: center;
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  .seiten-fuss nav {
+    display: flex;
+    justify-content: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+
+  .seiten-fuss a {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+  }
+
+  .seiten-fuss a:hover { color: #ffa500; }
+
+  .fuss-hinweis {
+    margin: 0.6rem 0 0;
+    color: rgba(255, 255, 255, 0.42);
+  }
+
   /* Skip Navigation Link - Accessibility */
   .skip-link {
     position: absolute;
