@@ -67,7 +67,7 @@
 }
 .bld-card:hover {
   transform: translateY(-2px);
-  border-color: rgba(255, 165, 0, 0.7);
+  border-color: rgba(255, 165, 0, 0.6);
   background: rgba(255, 165, 0, 0.08);
 }
 .bld-card.maxed { border-color: rgba(82, 190, 128, 0.5); background: rgba(82, 190, 128, 0.08); }
@@ -369,7 +369,7 @@
 .bld-levels .bld-lrow.done { opacity: 0.5; }
 .bld-levels .bld-lrow.current {
   background: rgba(255, 165, 0, 0.16);
-  border-color: rgba(255, 165, 0, 0.7);
+  border-color: rgba(255, 165, 0, 0.6);
   opacity: 1;
 }
 .bld-lrow.current .bld-brow-lvl { color: #ffcb6b; }

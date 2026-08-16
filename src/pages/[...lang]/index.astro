@@ -202,7 +202,7 @@ const t = useTranslations(translationData);
 
   .administrator-corner:hover {
     opacity: 1;
-    border-color: rgba(255, 165, 0, 0.7);
+    border-color: rgba(255, 165, 0, 0.3);
     background: rgba(255, 255, 255, 0.05);
   }
 
@@ -317,7 +317,7 @@ const t = useTranslations(translationData);
     min-height: 0;
     /* custom scrollbar */
     scrollbar-width: thin;
-    scrollbar-color: rgba(255, 165, 0, 0.7) transparent;
+    scrollbar-color: rgba(255, 165, 0, 0.3) transparent;
   }
 
   .changelog-list::-webkit-scrollbar {
@@ -370,7 +370,7 @@ const t = useTranslations(translationData);
   .support-card {
     flex-shrink: 0;
     background: rgba(255, 165, 0, 0.04);
-    border-color: rgba(255, 165, 0, 0.7);
+    border-color: rgba(255, 165, 0, 0.2);
     text-align: center;
   }
 
@@ -471,6 +471,24 @@ const t = useTranslations(translationData);
       overflow: hidden;
     }
 
+    /* Die Kette der Hoehenbegrenzung lief hier ins Leere: main ist eine
+       Flex-Spalte (siehe is:global unten), .container darunter rechnet mit
+       flex:1 — aber .home-page dazwischen war ein schlichter Block ohne
+       Begrenzung und wuchs auf Inhaltshoehe. Damit bekam .container die volle
+       Laenge des Changelogs als Bezugshoehe, die Liste scrollte nicht mehr
+       intern, und der body (overflow:hidden) schnitt alles unterhalb des
+       ersten Bildschirms ab — man sah den unteren Teil der Startseite gar
+       nicht mehr und konnte auch nicht dorthin scrollen.
+       Ohne den Umweg ueber `main`, denn das Element gehoert PageLayout und
+       traegt dessen Astro-Kennung; die Regel oben greift darauf nicht. */
+    .home-page {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+    }
+
     .container {
       flex: 1;
       min-height: 0;
@@ -544,7 +562,7 @@ const t = useTranslations(translationData);
     }
     .changelog-show-btn:hover {
       background: rgba(255, 165, 0, 0.08);
-      border-color: rgba(255, 165, 0, 0.7);
+      border-color: rgba(255, 165, 0, 0.55);
     }
   }
 </style>

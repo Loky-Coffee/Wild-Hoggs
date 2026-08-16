@@ -82,16 +82,20 @@ const pageDescription = t('404.message');
     const fullLang = navigator.language;        // e.g. "zh-TW", "zh-CN", "de"
     const shortLang = fullLang.split('-')[0];   // e.g. "zh", "de"
 
+    // Die Liste stand im else-Zweig und war damit ausserhalb davon nicht
+    // sichtbar — weiter unten warf `[...supportedLangs]` deshalb einen
+    // ReferenceError, und zwar genau dann, wenn eine Weiterleitung anstand.
+    // Wer mit anderssprachigem Browser auf einer unbekannten Adresse landete,
+    // blieb auf der englischen Fehlerseite stehen.
+    const supportedLangs = ['de', 'fr', 'ko', 'th', 'ja', 'pt', 'es', 'tr', 'id', 'it', 'ar', 'vi'];
+
     // Resolve Chinese variants to the correct supported lang code (zh-TW or zh-CN)
     let detectedLang: string | null = null;
     if (shortLang === 'zh') {
       // zh-TW / zh-Hant = Traditional; everything else defaults to Simplified
       detectedLang = (fullLang === 'zh-TW' || fullLang === 'zh-Hant') ? 'zh-TW' : 'zh-CN';
-    } else {
-      const supportedLangs = ['de', 'fr', 'ko', 'th', 'ja', 'pt', 'es', 'tr', 'id', 'it', 'ar', 'vi'];
-      if (shortLang !== 'en' && supportedLangs.includes(shortLang)) {
-        detectedLang = shortLang;
-      }
+    } else if (shortLang !== 'en' && supportedLangs.includes(shortLang)) {
+      detectedLang = shortLang;
     }
 
     if (detectedLang) {

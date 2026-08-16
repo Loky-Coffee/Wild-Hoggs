@@ -197,7 +197,7 @@
   width: 100%;
   box-sizing: border-box;
 }
-.profile-input:focus { border-color: rgba(255, 165, 0, 0.7); }
+.profile-input:focus { border-color: rgba(255,165,0,0.6); }
 
 .profile-edit-actions {
   display: flex;
@@ -269,7 +269,7 @@
 
 @keyframes admin-link-glow {
   0%, 100% {
-    border-left-color: rgba(255, 165, 0, 0.7);
+    border-left-color: rgba(255, 165, 0, 0.45);
     box-shadow: inset 3px 0 8px rgba(255, 165, 0, 0);
   }
   50% {

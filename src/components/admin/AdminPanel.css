@@ -217,7 +217,7 @@ body:has(.admin-panel) > main > astro-island {
 }
 
 .admin-filter-input:focus {
-  border-color: rgba(255, 165, 0, 0.7);
+  border-color: rgba(255, 165, 0, 0.5);
 }
 
 select.admin-filter-input {
@@ -894,7 +894,7 @@ select.admin-filter-input option {
 }
 
 .admin-recht input { accent-color: #ffa500; margin: 0; }
-.admin-recht:has(input:checked) { border-color: rgba(255, 165, 0, 0.7); background: rgba(255, 165, 0, 0.1); opacity: 1; }
+.admin-recht:has(input:checked) { border-color: rgba(255, 165, 0, 0.6); background: rgba(255, 165, 0, 0.1); opacity: 1; }
 .admin-recht:focus-within { outline: 2px solid #ffa500; outline-offset: 1px; }
 
 .admin-dlg-fuss {

@@ -16,7 +16,7 @@
 
 .apocalypse-clock:hover {
   background: rgba(255, 165, 0, 0.15);
-  border-color: rgba(255, 165, 0, 0.7);
+  border-color: rgba(255, 165, 0, 0.5);
 }
 
 .clock-label {

@@ -486,6 +486,16 @@ export default function ChatWindow({ translationData }: ChatWindowProps) {
       } else if (data.server_time) {
         lastCreatedAt.current = data.server_time;
       }
+      // Wer einen Kanal offen hat, hat ihn gelesen — also auch den Stand
+      // nachziehen, ab dem nachgefragt wird.
+      //
+      // Bisher geschah das erst beim Verlassen des Kanals, und auch nur, wenn
+      // lastCreatedAt dann gesetzt war. Es wird beim Wechsel aber genullt: War
+      // der Kanal leer oder das Laden fehlgeschlagen, blieb der Stand auf dem
+      // Wert vom ersten Seitenaufruf stehen. Die naechste Nachfrage zaehlte
+      // dann alles seit damals erneut — in jedem so beruehrten Kanal, und bei
+      // jeder weiteren Nachfrage oben drauf, weil die Zaehler addiert werden.
+      if (lastCreatedAt.current) tabSince.current[type] = lastCreatedAt.current;
     } catch {
       if (veraltet()) return;
       setLoadError(t('chat.error.connection_reload'));
