@@ -1,0 +1,367 @@
+---
+/**
+ * Die Werte eines Forschungsbaums als lesbare Seite.
+ *
+ * Warum es diese Seite gibt: Die Rechnerseite daneben ist auf Bildschirmhoehe
+ * festgelegt und traegt ihren Inhalt im JavaScript — im HTML stehen dort rund
+ * 2400 Zeichen, und kein einziger Technologiename. Fuer Google ist das duenn,
+ * fuer KI-Crawler, die kein JavaScript ausfuehren, ist die Seite praktisch
+ * leer. Hier stehen dieselben Daten als Text: Kosten, Zeiten, Kampfkraft,
+ * Voraussetzungen, Boni.
+ *
+ * Der Rechner bleibt unangetastet.
+ */
+import PageLayout from '../../../../../layouts/PageLayout.astro';
+import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../../../../i18n/utils';
+import { languages, loadTranslations } from '../../../../../i18n/index';
+import type { TranslationKey } from '../../../../../i18n/index';
+import type { ResearchTree } from '../../../../../schemas/research';
+import {
+  allianceRecognition, unitSpecialTraining, fullyArmedAlliance, field, heroTraining,
+  militaryStrategies, peaceShield, siegeToSeize, armyBuilding, tacticalMaster,
+  riderTraining, assaulterTraining, shooterTraining, ageOfSteel, newHome,
+  rapidGrowth, shelterBuilding, eliteTroops, hqManagement,
+} from '../../../../../data/validated/research';
+
+const researchDataMap: Record<string, ResearchTree> = {
+  alliance_recognition: allianceRecognition,
+  unit_special_training: unitSpecialTraining,
+  fully_armed_alliance: fullyArmedAlliance,
+  field, hero_training: heroTraining,
+  military_strategies: militaryStrategies,
+  peace_shield: peaceShield,
+  siege_to_seize: siegeToSeize,
+  army_building: armyBuilding,
+  tactical_master: tacticalMaster,
+  rider_training: riderTraining,
+  assaulter_training: assaulterTraining,
+  shooter_training: shooterTraining,
+  age_of_steel: ageOfSteel,
+  new_home: newHome,
+  rapid_growth: rapidGrowth,
+  shelter_building: shelterBuilding,
+  elite_troops: eliteTroops,
+  hq_management: hqManagement,
+};
+
+export function getStaticPaths() {
+  const categoryIds = Object.keys({
+    alliance_recognition: 1, unit_special_training: 1, fully_armed_alliance: 1,
+    field: 1, hero_training: 1, military_strategies: 1, peace_shield: 1,
+    siege_to_seize: 1, army_building: 1, tactical_master: 1, rider_training: 1,
+    assaulter_training: 1, shooter_training: 1, age_of_steel: 1, new_home: 1,
+    rapid_growth: 1, shelter_building: 1, elite_troops: 1, hq_management: 1,
+  });
+  const paths: { params: { lang: string | undefined; categoryId: string } }[] = [];
+  Object.keys(languages).forEach(langKey => {
+    const lang = langKey === 'en' ? undefined : langKey;
+    categoryIds.forEach(categoryId => paths.push({ params: { lang, categoryId } }));
+  });
+  return paths;
+}
+
+const { categoryId } = Astro.params;
+const lang = getLangFromUrl(Astro.url);
+const translationData = await loadTranslations(lang);
+const t = useTranslations(translationData);
+
+const category = researchDataMap[categoryId as string];
+if (!category) return Astro.redirect(getLocalizedPath('tools/research', lang));
+
+const zahl = (n: number) => new Intl.NumberFormat(lang === 'en' ? 'en-US' : lang).format(n);
+
+/** Sekunden als Tage/Stunden/Minuten — ohne die Nullen dazwischen. */
+function dauer(sek: number): string {
+  const t_ = Math.floor(sek / 86400);
+  const h = Math.floor((sek % 86400) / 3600);
+  const m = Math.floor((sek % 3600) / 60);
+  const teile: string[] = [];
+  if (t_) teile.push(`${zahl(t_)}d`);
+  if (h) teile.push(`${h}h`);
+  if (m && !t_) teile.push(`${m}m`);
+  return teile.join(' ') || `${sek}s`;
+}
+
+const summe = (a?: number[]) => (a ?? []).reduce((x, y) => x + y, 0);
+
+const techs = category.technologies.map(tech => {
+  const badges = summe(tech.badgeCosts);
+  const strom  = summe((tech as { stromCosts?: number[] }).stromCosts);
+  const zent   = summe((tech as { zentCosts?: number[] }).zentCosts);
+  const zeit   = summe((tech as { times?: number[] }).times);
+  const kraft  = (tech as { combatPower?: number[] }).combatPower;
+  const voraus = (tech.prerequisites ?? []) as { id: string; requiredLevel: number }[];
+  return {
+    id: tech.id,
+    name: t(tech.nameKey as TranslationKey) || tech.name,
+    maxLevel: tech.maxLevel,
+    labLevel: (tech as { labLevel?: number }).labLevel ?? 0,
+    badges, strom, zent, zeit,
+    kraft: kraft && kraft.length ? kraft[kraft.length - 1] : 0,
+    voraus: voraus.map(v => {
+      const ziel = category.technologies.find(x => x.id === v.id);
+      return { name: ziel ? (t(ziel.nameKey as TranslationKey) || ziel.name) : v.id, stufe: v.requiredLevel };
+    }),
+  };
+});
+
+const gesamt = {
+  badges: techs.reduce((s, x) => s + x.badges, 0),
+  strom:  techs.reduce((s, x) => s + x.strom, 0),
+  zent:   techs.reduce((s, x) => s + x.zent, 0),
+  zeit:   techs.reduce((s, x) => s + x.zeit, 0),
+  kraft:  techs.reduce((s, x) => s + x.kraft, 0),
+  stufen: techs.reduce((s, x) => s + x.maxLevel, 0),
+};
+
+const baumName = t(category.nameKey as TranslationKey);
+const SPIEL = 'Last Z: Survival Shooter';
+
+const seitenTitel = `${baumName} — ${t('rdata.heading')} | ${SPIEL}`;
+const beschreibung = `${baumName} in ${SPIEL}: ${techs.length} ${t('calc.research.nodes')}, `
+  + `${zahl(gesamt.badges)} ${t('rdata.badges')}, ${dauer(gesamt.zeit)} ${t('rdata.time')}. `
+  + t('rdata.introLead');
+
+const rechnerPfad = getLocalizedPath(`tools/research/${categoryId}`, lang);
+
+const breadcrumbItems = [
+  { label: t('nav.home'), href: getLocalizedPath('', lang) },
+  { label: t('nav.tools'), href: getLocalizedPath('tools', lang) },
+  { label: t('tools.research.title'), href: getLocalizedPath('tools/research', lang) },
+  { label: baumName, href: rechnerPfad },
+  { label: t('rdata.heading') },
+];
+
+// Strukturierte Daten: sagt Suchmaschinen ausdruecklich, worum es geht — das
+// Spiel als Gegenstand, die Tabelle als Datensatz. Auf den Rechnerseiten
+// stand bisher nur Organization/WebSite, also nichts ueber den Inhalt.
+const datensatzSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Dataset',
+  name: `${baumName} — ${t('rdata.heading')}`,
+  description: beschreibung,
+  inLanguage: lang,
+  isAccessibleForFree: true,
+  creator: { '@type': 'Organization', name: 'Wild Hoggs', url: 'https://wild-hoggs.com/' },
+  about: { '@type': 'VideoGame', name: SPIEL, applicationCategory: 'Game' },
+  variableMeasured: [
+    t('rdata.badges'), t('rdata.time'), t('rdata.power'), t('rdata.levels'),
+  ],
+};
+---
+
+<PageLayout title={seitenTitel} description={beschreibung} breadcrumbs={breadcrumbItems}>
+  <script type="application/ld+json" set:html={JSON.stringify(datensatzSchema)} />
+
+  <article class="rdata">
+    <h1>{baumName} — {t('rdata.heading')}</h1>
+    <p class="rdata-lead">
+      {t('rdata.introLead')} <strong>{SPIEL}</strong>.
+    </p>
+
+    <ul class="rdata-summe">
+      <li><span>{techs.length}</span> {t('calc.research.nodes')}</li>
+      <li><span>{zahl(gesamt.stufen)}</span> {t('rdata.levels')}</li>
+      <li><span>{zahl(gesamt.badges)}</span> {t('rdata.badges')}</li>
+      {gesamt.strom > 0 && <li><span>{zahl(gesamt.strom)}</span> Strom</li>}
+      {gesamt.zent  > 0 && <li><span>{zahl(gesamt.zent)}</span> Zent</li>}
+      {gesamt.zeit  > 0 && <li><span>{dauer(gesamt.zeit)}</span> {t('rdata.time')}</li>}
+      {gesamt.kraft > 0 && <li><span>{zahl(gesamt.kraft)}</span> {t('rdata.power')}</li>}
+    </ul>
+
+    <p class="rdata-zum-rechner">
+      <a href={rechnerPfad}>&larr; {t('rdata.backToCalc')}</a>
+    </p>
+
+    <div class="rdata-tabelle-rahmen">
+      <table class="rdata-tabelle">
+        <thead>
+          <tr>
+            <th>{t('rdata.tech')}</th>
+            <th class="num">{t('rdata.levels')}</th>
+            <th class="num">{t('rdata.badges')}</th>
+            {gesamt.strom > 0 && <th class="num">Strom</th>}
+            {gesamt.zent  > 0 && <th class="num">Zent</th>}
+            {gesamt.zeit  > 0 && <th class="num">{t('rdata.time')}</th>}
+            {gesamt.kraft > 0 && <th class="num">{t('rdata.power')}</th>}
+            <th>{t('rdata.prereq')}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {techs.map(tech => (
+            <tr>
+              <th scope="row">{tech.name}</th>
+              <td class="num">{tech.maxLevel}</td>
+              <td class="num">{zahl(tech.badges)}</td>
+              {gesamt.strom > 0 && <td class="num">{tech.strom ? zahl(tech.strom) : t('rdata.none')}</td>}
+              {gesamt.zent  > 0 && <td class="num">{tech.zent ? zahl(tech.zent) : t('rdata.none')}</td>}
+              {gesamt.zeit  > 0 && <td class="num">{tech.zeit ? dauer(tech.zeit) : t('rdata.none')}</td>}
+              {gesamt.kraft > 0 && <td class="num">{tech.kraft ? zahl(tech.kraft) : t('rdata.none')}</td>}
+              <td>
+                {tech.voraus.length === 0
+                  ? t('rdata.none')
+                  : tech.voraus.map(v => `${v.name} ${t('calc.research.level')} ${v.stufe}`).join(', ')}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+        <tfoot>
+          <tr>
+            <th scope="row">{t('rdata.total')}</th>
+            <td class="num">{zahl(gesamt.stufen)}</td>
+            <td class="num">{zahl(gesamt.badges)}</td>
+            {gesamt.strom > 0 && <td class="num">{zahl(gesamt.strom)}</td>}
+            {gesamt.zent  > 0 && <td class="num">{zahl(gesamt.zent)}</td>}
+            {gesamt.zeit  > 0 && <td class="num">{dauer(gesamt.zeit)}</td>}
+            {gesamt.kraft > 0 && <td class="num">{zahl(gesamt.kraft)}</td>}
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <h2>{t('rdata.perLevelCosts')}</h2>
+    <p class="rdata-lead">
+      {t('rdata.badges')} — {t('rdata.tech')} &middot; {t('calc.research.level')} 1 &hellip; {t('calc.research.max')}
+    </p>
+    <div class="rdata-tabelle-rahmen">
+      <table class="rdata-tabelle rdata-stufen">
+        <tbody>
+          {techs.map((tech, i) => (
+            <tr>
+              <th scope="row">{tech.name}</th>
+              <td>{(category.technologies[i].badgeCosts ?? []).map(c => zahl(c)).join(' · ')}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <p class="rdata-zum-rechner">
+      <a href={rechnerPfad}>{t('rdata.backToCalc')} &rarr;</a>
+    </p>
+  </article>
+</PageLayout>
+
+<style>
+  .rdata {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1rem 0 3rem;
+  }
+
+  .rdata h1 {
+    font-size: 1.6rem;
+    color: #ffa500;
+    margin: 0 0 0.5rem;
+  }
+
+  .rdata h2 {
+    font-size: 1.2rem;
+    color: #ffa500;
+    margin: 2.5rem 0 0.3rem;
+  }
+
+  .rdata-lead {
+    color: rgba(255, 255, 255, 0.75);
+    line-height: 1.6;
+    margin: 0 0 1rem;
+  }
+
+  .rdata-summe {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0;
+    margin: 0 0 1rem;
+  }
+
+  .rdata-summe li {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 165, 0, 0.18);
+    border-radius: 8px;
+    padding: 0.35rem 0.7rem;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .rdata-summe span {
+    color: #ffa500;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .rdata-zum-rechner {
+    margin: 1rem 0;
+  }
+
+  .rdata-zum-rechner a {
+    color: #ffa500;
+    text-decoration: none;
+    border-bottom: 1px dashed rgba(255, 165, 0, 0.6);
+  }
+
+  /* Breite Tabellen bekommen einen eigenen Scrollbereich, damit die Seite
+     selbst nicht seitlich wandert. */
+  .rdata-tabelle-rahmen {
+    overflow-x: auto;
+    border: 1px solid rgba(255, 165, 0, 0.15);
+    border-radius: 10px;
+  }
+
+  .rdata-tabelle {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+
+  .rdata-tabelle th,
+  .rdata-tabelle td {
+    padding: 0.45rem 0.7rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .rdata-tabelle thead th {
+    color: #ffa500;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    background: rgba(255, 165, 0, 0.06);
+  }
+
+  .rdata-tabelle tbody th[scope='row'] {
+    color: rgba(255, 255, 255, 0.95);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .rdata-tabelle .num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .rdata-tabelle tfoot th,
+  .rdata-tabelle tfoot td {
+    border-top: 2px solid rgba(255, 165, 0, 0.3);
+    border-bottom: none;
+    color: #ffa500;
+    font-weight: 700;
+  }
+
+  .rdata-stufen td {
+    font-variant-numeric: tabular-nums;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.7;
+  }
+
+  @media (max-width: 768px) {
+    .rdata { padding: 0.5rem 0 2rem; }
+    .rdata h1 { font-size: 1.25rem; }
+    .rdata-tabelle { font-size: 0.78rem; }
+  }
+</style>

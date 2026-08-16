@@ -172,6 +172,10 @@ const breadcrumbItems = [
   <h1 class="page-title-subtle">
     Last Z · {t(category.nameKey as TranslationKey)} · Badge Calculator
     · <a class="titlebar-compare" href={getLocalizedPath('tools/research/compare', lang)}>⚖️ {lang === 'de' ? 'Vergleichen' : 'Compare'}</a>
+    {/* Verweis auf die Datenseite: Dort stehen dieselben Werte als Tabelle —
+        lesbar ohne Klicken, und vor allem lesbar fuer Suchmaschinen und
+        KI-Crawler, die das JavaScript dieses Rechners nicht ausfuehren. */}
+    · <a class="titlebar-compare" href={getLocalizedPath(`tools/research/${categoryId}/costs`, lang)}>📊 {t('rdata.heading')}</a>
   </h1>
   <div class="calculator-wrapper">
     <!-- client:idle ist hier ABSICHTLICH (nicht client:visible):
