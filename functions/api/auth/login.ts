@@ -30,7 +30,7 @@ export async function onRequestPost(ctx: any) {
   }
 
   const user = await DB.prepare(
-    'SELECT id, email, username, password_hash, faction, server, language, formation_power_br, formation_power_wd, formation_power_go, is_admin, COALESCE(is_moderator, 0) AS is_moderator, permissions FROM users WHERE email = ?'
+    'SELECT id, email, username, password_hash, faction, server, language, formation_power_br, formation_power_wd, formation_power_go, is_admin, COALESCE(is_moderator, 0) AS is_moderator, permissions, COALESCE(email_verified, 0) AS email_verified FROM users WHERE email = ?'
     // kennung statt email.toLowerCase(): Bei einem Wert, der kein String ist,
     // gibt es .toLowerCase nicht — der Aufruf endete in einem 500 statt in einer
     // sauberen 400. Zwei Zeilen darueber wird bereits String(email) benutzt.
@@ -74,6 +74,7 @@ export async function onRequestPost(ctx: any) {
       is_admin: user.is_admin ?? 0,
       is_moderator: user.is_moderator ?? 0,
       permissions: user.permissions ?? null,
+      email_verified: user.email_verified ?? 0,
     },
     token
   });

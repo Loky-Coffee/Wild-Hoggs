@@ -24,8 +24,21 @@ export async function onRequestGet(ctx: any) {
             -- Echte Spalte, mit Rueckfall auf die alte Ableitung fuer Konten,
             -- die sich seit ihrer Einfuehrung nicht angemeldet haben.
             COALESCE(u.last_login, datetime(MAX(s.expires_at), '-30 days')) AS last_login,
+            COALESCE(u.email_verified, 0) AS email_verified,
+            u.email_verified_at,
+            -- Ab wann die Bestaetigungsfrist fuer dieses Konto laeuft: bei
+            -- neuen Konten ab der Registrierung, bei den 303 bestehenden ab
+            -- dem Tag, an dem die Bestaetigung eingefuehrt wurde. Ohne den
+            -- zweiten Fall stuenden Konten von 2026-02 sofort als
+            -- "seit Monaten ueberfaellig" da, ohne je gefragt worden zu sein.
+            MAX(u.created_at, COALESCE(
+              (SELECT value FROM app_settings WHERE key = 'email_verification_since'),
+              u.created_at
+            )) AS frist_beginn,
             (SELECT COUNT(*) FROM chat_global g WHERE g.user_id = u.id) AS msg_global,
-            (SELECT COUNT(*) FROM chat_server v WHERE v.user_id = u.id) AS msg_server
+            (SELECT COUNT(*) FROM chat_server v WHERE v.user_id = u.id) AS msg_server,
+            (SELECT COUNT(*) FROM game_profiles p WHERE p.user_id = u.id) AS profile,
+            (SELECT COUNT(*) FROM calculator_states c WHERE c.user_id = u.id) AS rechnerstaende
      FROM users u
      LEFT JOIN sessions s ON s.user_id = u.id
      GROUP BY u.id

@@ -14,6 +14,7 @@
  */
 import { sendeMail } from '../../_lib/mail';
 import { resetMailText } from '../../_lib/mail-texte';
+import { neuerToken, tokenHash } from '../../_lib/token';
 
 /** Wie lange ein Link gilt. Kurz genug, um zu wirken; lang genug für jemanden,
  *  der die Mail erst später liest. */
@@ -21,18 +22,6 @@ const GUELTIG_MINUTEN = 60;
 
 /** Höchstens so viele Anfragen je Adresse und Stunde. */
 const MAX_PRO_STUNDE = 3;
-
-async function sha256(text: string): Promise<string> {
-  const daten = new TextEncoder().encode(text);
-  const hash = await crypto.subtle.digest('SHA-256', daten);
-  return [...new Uint8Array(hash)].map(b => b.toString(16).padStart(2, '0')).join('');
-}
-
-function zufallsToken(): string {
-  const bytes = new Uint8Array(32);
-  crypto.getRandomValues(bytes);
-  return [...bytes].map(b => b.toString(16).padStart(2, '0')).join('');
-}
 
 export async function onRequestPost(ctx: any) {
   const { DB, RESEND_API_KEY } = ctx.env;
@@ -65,8 +54,8 @@ export async function onRequestPost(ctx: any) {
     ).bind(user.id).first() as { n: number };
     if ((offen?.n ?? 0) >= MAX_PRO_STUNDE) return antwort;
 
-    const token = zufallsToken();
-    const hash = await sha256(token);
+    const token = neuerToken();
+    const hash = await tokenHash(token);
 
     await DB.prepare(
       `INSERT INTO password_resets (user_id, token_hash, expires_at)

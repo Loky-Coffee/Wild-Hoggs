@@ -156,14 +156,33 @@ const breadcrumbItems = [
         <h2>5. Speicherdauer</h2>
         <table class="frist-tabelle">
           <tbody>
-            <tr><th>Konto und Profile</th><td>bis du es löschst</td></tr>
+            <tr><th>Konto und Profile</th><td>bis du es löschst — bei unbestätigter Adresse zusätzlich: siehe unten</td></tr>
             <tr><th>Rechnerstände</th><td>bis du sie zurücksetzt oder das Konto löschst</td></tr>
             <tr><th>Sitzungen</th><td>30 Tage, danach automatisch ungültig</td></tr>
+            <tr><th>Bestätigungs- und Reset-Links</th><td>7 bzw. 1 Stunde; danach ungültig, der Eintrag wird beim Aufräumen entfernt</td></tr>
             <tr><th>Private Nachrichten</th><td>bis eine der beiden Seiten ihr Konto löscht</td></tr>
             <tr><th>Öffentliche Chatnachrichten</th><td>bleiben bestehen; bei Kontolöschung wird dein Name durch „Gelöscht“ ersetzt, damit Gespräche nicht auseinanderfallen</td></tr>
             <tr><th>Server-Protokolle</th><td>nach den Fristen des Hosters (siehe Abschnitt 6)</td></tr>
           </tbody>
         </table>
+
+        <p>
+          <strong>Konten ohne bestätigte E-Mail-Adresse.</strong> Nach der Registrierung
+          verschicken wir eine Mail mit einem Bestätigungslink. Solange nicht bestätigt ist,
+          steht auf jeder Seite ein Hinweis mit der Möglichkeit, die Mail erneut anzufordern.
+          Ein Konto kann gelöscht werden, wenn <em>beides</em> zutrifft: Die Adresse ist seit
+          mehr als 30 Tagen nicht bestätigt <em>und</em> das Konto wurde seit 90 Tagen nicht
+          mehr benutzt. Wer die Seite besucht, ist damit nicht betroffen — unabhängig davon,
+          ob die Mail gelesen wurde. Die Löschung erfolgt nicht automatisch, sondern von Hand.
+          Rechtsgrundlage ist Art. 5 Abs. 1 lit. e DSGVO (Speicherbegrenzung): Ein Konto,
+          das niemand benutzt und dessen Adresse nicht erreichbar ist, hat keinen Zweck mehr.
+        </p>
+
+        <p>
+          Die Bestätigung dient allein der Kontosicherheit: Nur über eine erreichbare Adresse
+          lässt sich ein vergessenes Passwort zurücksetzen. Die Adresse wird nicht für
+          Werbung verwendet und nicht weitergegeben.
+        </p>
 
         <h2>6. Auftragsverarbeiter und Datenübermittlung</h2>
         <p>
@@ -323,14 +342,33 @@ const breadcrumbItems = [
         <h2>5. How long data is kept</h2>
         <table class="frist-tabelle">
           <tbody>
-            <tr><th>Account and profiles</th><td>until you delete it</td></tr>
+            <tr><th>Account and profiles</th><td>until you delete it — for unconfirmed addresses, see below</td></tr>
             <tr><th>Calculator progress</th><td>until you reset it or delete the account</td></tr>
             <tr><th>Sessions</th><td>30 days, then automatically invalid</td></tr>
+            <tr><th>Confirmation and reset links</th><td>7 days and 1 hour respectively; invalid afterwards, the record is removed during cleanup</td></tr>
             <tr><th>Private messages</th><td>until either side deletes their account</td></tr>
             <tr><th>Public chat messages</th><td>kept; on account deletion your name is replaced with “Deleted” so conversations stay readable</td></tr>
             <tr><th>Server logs</th><td>according to the host's retention (see section 6)</td></tr>
           </tbody>
         </table>
+
+        <p>
+          <strong>Accounts without a confirmed email address.</strong> After registration we
+          send an email with a confirmation link. While it is unconfirmed, a notice appears on
+          every page with the option to send the email again. An account may be deleted when
+          <em>both</em> apply: the address has been unconfirmed for more than 30 days
+          <em>and</em> the account has not been used for 90 days. Visiting the site is enough
+          to be unaffected — whether or not the email was ever read. Deletion is not
+          automatic; it is done by hand. The legal basis is Art. 5(1)(e) GDPR (storage
+          limitation): an account nobody uses, with an address nobody can reach, no longer
+          serves a purpose.
+        </p>
+
+        <p>
+          Confirmation exists solely for account security: a reachable address is the only way
+          to restore access if a password is forgotten. The address is not used for
+          advertising and is not passed on.
+        </p>
 
         <h2>6. Processors and transfers</h2>
         <p>

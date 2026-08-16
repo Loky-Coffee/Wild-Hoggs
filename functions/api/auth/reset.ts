@@ -10,12 +10,7 @@
  * der Zugang, den man schliessen will. Danach muss man sich neu anmelden.
  */
 import { hashPassword } from '../../_lib/auth';
-
-async function sha256(text: string): Promise<string> {
-  const daten = new TextEncoder().encode(text);
-  const hash = await crypto.subtle.digest('SHA-256', daten);
-  return [...new Uint8Array(hash)].map(b => b.toString(16).padStart(2, '0')).join('');
-}
+import { tokenHash, istTokenForm } from '../../_lib/token';
 
 export async function onRequestPost(ctx: any) {
   const { DB } = ctx.env;
@@ -30,7 +25,7 @@ export async function onRequestPost(ctx: any) {
   const token = String(body?.token ?? '').trim();
   const passwort = String(body?.password ?? '');
 
-  if (!token || !/^[0-9a-f]{64}$/.test(token)) {
+  if (!istTokenForm(token)) {
     return Response.json({ error: 'invalid_token' }, { status: 400 });
   }
   // Dieselbe Untergrenze wie bei der Registrierung — sonst liesse sich über
@@ -40,7 +35,7 @@ export async function onRequestPost(ctx: any) {
   }
 
   try {
-    const hash = await sha256(token);
+    const hash = await tokenHash(token);
 
     const eintrag = await DB.prepare(
       `SELECT id, user_id, used_at, expires_at
@@ -68,7 +63,18 @@ export async function onRequestPost(ctx: any) {
     // beenden. Bliebe der Token gültig, weil nur der erste Schritt lief,
     // liesse er sich ein zweites Mal einlösen.
     await DB.batch([
-      DB.prepare('UPDATE users SET password_hash = ? WHERE id = ?')
+      // Der eingeloeste Link beweist Zugriff auf das Postfach — genau das,
+      // was die Bestaetigung feststellen soll. Deshalb gilt die Adresse
+      // danach als bestaetigt, ohne dass jemand zusaetzlich klicken muss.
+      //
+      // Erst dadurch funktioniert "Passwort vergessen" ueberhaupt fuer die
+      // 303 bestehenden Konten: Wuerde der Reset eine bestaetigte Adresse
+      // voraussetzen, waere heute niemand berechtigt.
+      DB.prepare(`UPDATE users
+                     SET password_hash = ?,
+                         email_verified = 1,
+                         email_verified_at = COALESCE(email_verified_at, datetime('now'))
+                   WHERE id = ?`)
         .bind(neuerHash, eintrag.user_id),
       DB.prepare(`UPDATE password_resets SET used_at = datetime('now') WHERE id = ?`)
         .bind(eintrag.id),

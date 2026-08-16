@@ -24,6 +24,7 @@ export async function onRequestGet(ctx: any) {
     // Wird beim ersten Aufruf je Browsersitzung aufgefrischt — so wirken
     // geänderte Rechte spätestens beim nächsten Besuch, ohne Abmelden.
     permissions: user.permissions ?? null,
+    email_verified: user.email_verified ?? 0,
     notification_sound: user.notification_sound ?? 1,
     notification_volume: user.notification_volume ?? 1.5,
   }, {

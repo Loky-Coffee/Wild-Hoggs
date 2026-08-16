@@ -1,9 +1,15 @@
 import { hashPassword, generateToken, expiresAt } from '../../_lib/auth';
 import { ladeEinstellung } from '../../_lib/settings';
 import { ipVon, pruefeRegisterLimit, zaehleRegistrierung } from '../../_lib/login-ratelimit';
+import { sendeMail } from '../../_lib/mail';
+import { verifyMailText } from '../../_lib/mail-texte';
+import { neuerToken, tokenHash } from '../../_lib/token';
+
+/** Deckt sich mit GUELTIG_TAGE in verify-send.ts. */
+const VERIFY_TAGE = 7;
 
 export async function onRequestPost(ctx: any) {
-  const { DB } = ctx.env;
+  const { DB, RESEND_API_KEY } = ctx.env;
 
   // Registrierung lässt sich in der Verwaltung schliessen — etwa wenn eine
   // Welle von Wegwerfkonten hereinkommt. Die Prüfung steht ganz vorn, damit
@@ -94,7 +100,7 @@ export async function onRequestPost(ctx: any) {
   ).bind(email.toLowerCase(), username, passwordHash, serverVal).run();
 
   const user = await DB.prepare(
-    'SELECT id, email, username, faction, server, language, formation_power_br, formation_power_wd, formation_power_go, is_admin, COALESCE(is_moderator, 0) AS is_moderator, permissions, notification_sound, notification_volume FROM users WHERE email = ?'
+    'SELECT id, email, username, faction, server, language, formation_power_br, formation_power_wd, formation_power_go, is_admin, COALESCE(is_moderator, 0) AS is_moderator, permissions, notification_sound, notification_volume, COALESCE(email_verified, 0) AS email_verified FROM users WHERE email = ?'
   ).bind(email.toLowerCase()).first() as any;
 
   // Create session
@@ -102,6 +108,42 @@ export async function onRequestPost(ctx: any) {
   await DB.prepare(
     'INSERT INTO sessions (user_id, token, expires_at) VALUES (?, ?, ?)'
   ).bind(user.id, token, expiresAt(30)).run();
+
+  // Wer sich registriert, ist damit angemeldet — der Zeitpunkt gehoert also
+  // auch hier festgehalten. Bisher setzte ihn nur login.ts, weshalb ein frisch
+  // angelegtes Konto in der Verwaltung als "nie angemeldet" erschien.
+  try {
+    await DB.prepare("UPDATE users SET last_login = datetime('now') WHERE id = ?")
+      .bind(user.id).run();
+  } catch { /* Nebeneffekt — die Registrierung gilt trotzdem */ }
+
+  // Bestaetigungsmail. Laeuft nebenher: Wenn Resend gerade klemmt oder die
+  // Adresse einen Tippfehler hat, darf die Registrierung nicht daran
+  // scheitern. Der Balken auf der Seite bleibt ohnehin stehen und bietet
+  // "erneut senden" an — das ist der verlaessliche Weg, die Mail nur der
+  // bequeme.
+  try {
+    const vToken = neuerToken();
+    const vHash = await tokenHash(vToken);
+    await DB.prepare(
+      `INSERT INTO email_verifications (user_id, token_hash, email, expires_at)
+       VALUES (?, ?, ?, datetime('now', ?))`
+    ).bind(user.id, vHash, user.email, `+${VERIFY_TAGE} days`).run();
+
+    const basis = new URL(ctx.request.url).origin;
+    const sprache = String(user.language ?? 'en');
+    const pfad = sprache && sprache !== 'en' ? `/${sprache}/verify/` : '/verify/';
+    const link = `${basis}${pfad}?token=${vToken}`;
+    const { betreff, html, text } = verifyMailText(sprache, user.username, link, VERIFY_TAGE);
+
+    ctx.waitUntil(
+      sendeMail(RESEND_API_KEY, user.email, betreff, html, text).then(e => {
+        if (!e.ok) console.error('Bestätigungsmail bei Registrierung:', e.fehler);
+      }),
+    );
+  } catch (e) {
+    console.error('Bestätigungsmail konnte nicht vorbereitet werden:', e);
+  }
 
   return Response.json({
     user: {
@@ -113,6 +155,7 @@ export async function onRequestPost(ctx: any) {
       is_admin: user.is_admin ?? 0,
       is_moderator: user.is_moderator ?? 0,
       permissions: user.permissions ?? null,
+      email_verified: user.email_verified ?? 0,
       notification_sound: user.notification_sound ?? 1,
       notification_volume: user.notification_volume ?? 1.5,
     },

@@ -1,8 +1,9 @@
 ---
 import Layout from './Layout.astro';
-import { getLangFromUrl, useTranslations, getLocalizedPath } from '../i18n/utils';
+import { getLangFromUrl, useTranslations, getLocalizedPath, nurBereiche } from '../i18n/utils';
 import { loadTranslations } from '../i18n/index';
 import Navigation from '../components/Navigation.astro';
+import VerifyBanner from '../components/auth/VerifyBanner';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 
 interface BreadcrumbItem {
@@ -32,6 +33,15 @@ const t = useTranslations(translationData);
 <Layout title={title} description={description} robots={robots} image={image} imageAlt={imageAlt}>
   <a href="#main-content" class="skip-link">{t('a11y.skipToContent')}</a>
   <Navigation />
+
+  {/* Erscheint nur bei angemeldeten Konten mit unbestaetigter Adresse und
+      entscheidet das selbst — hier steht keine Bedingung, weil der Server die
+      Seiten statisch baut und nicht weiss, wer sie aufruft.
+      client:idle statt client:visible: Der Balken steht ganz oben und waere
+      sofort sichtbar, dann kaeme "visible" einem sofortigen Laden gleich —
+      nur mit dem Umweg ueber den Beobachter. */}
+  <VerifyBanner translationData={nurBereiche(translationData, ['verify.'])} client:idle />
+
   {breadcrumbs && breadcrumbs.length > 0 && (
     <div class="breadcrumbs-container">
       <Breadcrumbs items={breadcrumbs} />

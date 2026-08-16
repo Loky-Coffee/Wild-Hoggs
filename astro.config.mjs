@@ -49,7 +49,7 @@ export default defineConfig({
         // /reset ist nur ueber den Link aus der Passwort-Mail sinnvoll. Ohne
         // Token in der Adresszeile zeigt sie nur einen Hinweis — nichts, was
         // in die Suche gehoert.
-        const excludedPaths = ['/admin', '/profile', '/community', '/tools/hero-exp', '/reset'];
+        const excludedPaths = ['/admin', '/profile', '/community', '/tools/hero-exp', '/reset', '/verify'];
         const isExcluded = excludedPaths.some(path =>
           item.url.includes(path + '/') || item.url.endsWith(path)
         );

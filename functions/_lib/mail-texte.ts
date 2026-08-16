@@ -178,6 +178,128 @@ const TEXTE: Record<string, Texte> = {
   },
 };
 
+/**
+ * Texte der Bestätigungsmail. Anrede, Fallback-Zeile und Abbinder kommen aus
+ * TEXTE — die hängen nicht am Anlass.
+ */
+interface VerifyTexte {
+  betreff: string;
+  einleitung: string;
+  knopf: string;
+  /** "Der Link gilt {n} Tage." */
+  gueltig: string;
+  /** Warum überhaupt bestätigen. */
+  warum: string;
+}
+
+const VERIFY: Record<string, VerifyTexte> = {
+  en: {
+    betreff: 'Confirm your email address',
+    einleitung: 'Please confirm that this address belongs to you. One click is enough.',
+    knopf: 'Confirm address',
+    gueltig: 'This link works for {n} days.',
+    warum: 'Why: a confirmed address is the only way we can get you back into your account if you ever forget your password.',
+  },
+  de: {
+    betreff: 'Bestätige deine E-Mail-Adresse',
+    einleitung: 'Bitte bestätige, dass diese Adresse dir gehört. Ein Klick genügt.',
+    knopf: 'Adresse bestätigen',
+    gueltig: 'Der Link gilt {n} Tage.',
+    warum: 'Warum: Nur über eine bestätigte Adresse können wir dir zurück in dein Konto helfen, falls du dein Passwort einmal vergisst.',
+  },
+  fr: {
+    betreff: 'Confirmez votre adresse e-mail',
+    einleitung: 'Merci de confirmer que cette adresse est bien la vôtre. Un clic suffit.',
+    knopf: 'Confirmer l’adresse',
+    gueltig: 'Ce lien est valable {n} jours.',
+    warum: 'Pourquoi : une adresse confirmée est le seul moyen de vous rendre l’accès à votre compte si vous oubliez votre mot de passe.',
+  },
+  es: {
+    betreff: 'Confirma tu correo electrónico',
+    einleitung: 'Confirma que esta dirección es tuya. Basta con un clic.',
+    knopf: 'Confirmar dirección',
+    gueltig: 'Este enlace funciona durante {n} días.',
+    warum: 'Por qué: una dirección confirmada es la única forma de devolverte el acceso a tu cuenta si alguna vez olvidas la contraseña.',
+  },
+  it: {
+    betreff: 'Conferma il tuo indirizzo e-mail',
+    einleitung: 'Conferma che questo indirizzo è tuo. Basta un clic.',
+    knopf: 'Conferma indirizzo',
+    gueltig: 'Il link è valido {n} giorni.',
+    warum: 'Perché: un indirizzo confermato è l’unico modo per farti rientrare nel tuo account se dimentichi la password.',
+  },
+  pt: {
+    betreff: 'Confirme o seu e-mail',
+    einleitung: 'Confirme que este endereço lhe pertence. Basta um clique.',
+    knopf: 'Confirmar endereço',
+    gueltig: 'Esta ligação é válida durante {n} dias.',
+    warum: 'Porquê: um endereço confirmado é a única forma de lhe devolvermos o acesso à conta se um dia se esquecer da palavra-passe.',
+  },
+  tr: {
+    betreff: 'E-posta adresinizi doğrulayın',
+    einleitung: 'Bu adresin size ait olduğunu doğrulayın. Tek tık yeterli.',
+    knopf: 'Adresi doğrula',
+    gueltig: 'Bu bağlantı {n} gün geçerlidir.',
+    warum: 'Neden: Parolanızı unutmanız hâlinde hesabınıza dönmenizi yalnızca doğrulanmış bir adres üzerinden sağlayabiliriz.',
+  },
+  ja: {
+    betreff: 'メールアドレスの確認',
+    einleitung: 'このアドレスがご本人のものであることをご確認ください。クリックするだけで完了します。',
+    knopf: 'アドレスを確認',
+    gueltig: 'このリンクは {n} 日間有効です。',
+    warum: '確認が必要な理由: パスワードをお忘れになった際にアカウントへ戻れるのは、確認済みのアドレスがある場合のみです。',
+  },
+  ko: {
+    betreff: '이메일 주소 확인',
+    einleitung: '이 주소가 회원님의 것인지 확인해 주세요. 한 번만 누르면 됩니다.',
+    knopf: '주소 확인',
+    gueltig: '이 링크는 {n}일 동안 유효합니다.',
+    warum: '확인이 필요한 이유: 비밀번호를 잊으셨을 때 계정을 되찾아 드릴 수 있는 방법은 확인된 주소뿐입니다.',
+  },
+  id: {
+    betreff: 'Konfirmasi alamat e-mail Anda',
+    einleitung: 'Mohon konfirmasi bahwa alamat ini milik Anda. Cukup satu klik.',
+    knopf: 'Konfirmasi alamat',
+    gueltig: 'Tautan ini berlaku {n} hari.',
+    warum: 'Alasannya: alamat yang terkonfirmasi adalah satu-satunya cara kami mengembalikan akses akun Anda jika suatu saat lupa kata sandi.',
+  },
+  th: {
+    betreff: 'ยืนยันอีเมลของคุณ',
+    einleitung: 'กรุณายืนยันว่าอีเมลนี้เป็นของคุณ เพียงคลิกเดียวก็เสร็จ',
+    knopf: 'ยืนยันอีเมล',
+    gueltig: 'ลิงก์นี้ใช้ได้ {n} วัน',
+    warum: 'เหตุผล: อีเมลที่ยืนยันแล้วเป็นทางเดียวที่เราจะช่วยให้คุณกลับเข้าบัญชีได้ หากคุณลืมรหัสผ่าน',
+  },
+  vi: {
+    betreff: 'Xác nhận địa chỉ e-mail của bạn',
+    einleitung: 'Vui lòng xác nhận địa chỉ này là của bạn. Chỉ cần một cú nhấp.',
+    knopf: 'Xác nhận địa chỉ',
+    gueltig: 'Liên kết này có hiệu lực trong {n} ngày.',
+    warum: 'Lý do: địa chỉ đã xác nhận là cách duy nhất để chúng tôi giúp bạn lấy lại tài khoản nếu bạn quên mật khẩu.',
+  },
+  'zh-CN': {
+    betreff: '确认你的邮箱地址',
+    einleitung: '请确认这个邮箱是你本人的，点击一下即可。',
+    knopf: '确认邮箱',
+    gueltig: '此链接 {n} 天内有效。',
+    warum: '为什么要确认：万一你忘记密码，只有通过已确认的邮箱才能帮你找回账号。',
+  },
+  'zh-TW': {
+    betreff: '確認你的電子郵件地址',
+    einleitung: '請確認這個信箱是你本人的，點一下即可。',
+    knopf: '確認信箱',
+    gueltig: '此連結 {n} 天內有效。',
+    warum: '為什麼要確認：萬一你忘記密碼，只有透過已確認的信箱才能幫你找回帳號。',
+  },
+  ar: {
+    betreff: 'أكّد بريدك الإلكتروني',
+    einleitung: 'الرجاء تأكيد أن هذا العنوان يخصّك. نقرة واحدة تكفي.',
+    knopf: 'تأكيد العنوان',
+    gueltig: 'هذا الرابط صالح لمدة {n} أيام.',
+    warum: 'السبب: العنوان المؤكَّد هو الوسيلة الوحيدة لإعادتك إلى حسابك إن نسيت كلمة المرور يومًا ما.',
+  },
+};
+
 /** Sprachen, die von rechts nach links gesetzt werden. */
 const RTL = new Set(['ar']);
 
@@ -203,42 +325,46 @@ export interface MailInhalt {
   text: string;
 }
 
+/** Bausteine einer Mail — gleich für Reset und Bestätigung. */
+interface MailBausteine {
+  sprache: string;
+  anrede: string;
+  einleitung: string;
+  knopf: string;
+  link: string;
+  /** Kleingedrucktes unter dem Knopf, Zeile für Zeile. */
+  hinweise: string[];
+  fallback: string;
+  abbinder: string;
+}
+
 /**
- * Baut Betreff, HTML- und Nur-Text-Fassung der Reset-Mail.
+ * Baut die HTML- und Nur-Text-Fassung.
  *
- * Beide Fassungen gehören dazu: Manche Programme zeigen nur Text an, und eine
- * Mail ohne Text-Teil gilt bei Spamfiltern als verdächtig.
+ * Beide gehören dazu: Manche Programme zeigen nur Text an, und eine Mail ohne
+ * Text-Teil gilt bei Spamfiltern als verdächtig — was bei einer Domain, die
+ * gerade erst anfängt zu senden, besonders ins Gewicht fällt.
  */
-export function resetMailText(
-  sprache: string,
-  benutzername: string,
-  link: string,
-  gueltigMinuten: number,
-): MailInhalt {
-  const t = TEXTE[sprache] ?? TEXTE.en;
-  const rtl = RTL.has(sprache);
+function baueMail(b: MailBausteine): { html: string; text: string } {
+  const rtl = RTL.has(b.sprache);
   const richtung = rtl ? 'rtl' : 'ltr';
   const seite = rtl ? 'right' : 'left';
 
-  const anrede = t.anrede.replace('{name}', benutzername);
-  const gueltig = t.gueltig.replace('{n}', String(gueltigMinuten));
-
   const text = [
-    anrede,
+    b.anrede,
     '',
-    t.einleitung,
+    b.einleitung,
     '',
-    link,
+    b.link,
     '',
-    gueltig,
-    t.ignorieren,
+    ...b.hinweise,
     '',
     '—',
-    t.abbinder,
+    b.abbinder,
   ].join('\n');
 
   const html = `<!DOCTYPE html>
-<html lang="${h(sprache)}" dir="${richtung}">
+<html lang="${h(b.sprache)}" dir="${richtung}">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width"></head>
 <body style="margin:0;padding:0;background:#14100c;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#14100c;padding:32px 12px;">
@@ -248,20 +374,19 @@ export function resetMailText(
 <div style="font:700 19px/1.3 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#ffa500;">Wild Hoggs</div>
 </td></tr>
 <tr><td style="padding:8px 32px 0;text-align:${seite};">
-<p style="margin:0 0 14px;font:400 15px/1.6 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#f0e6d8;">${h(anrede)}</p>
-<p style="margin:0 0 22px;font:400 15px/1.6 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#f0e6d8;">${h(t.einleitung)}</p>
+<p style="margin:0 0 14px;font:400 15px/1.6 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#f0e6d8;">${h(b.anrede)}</p>
+<p style="margin:0 0 22px;font:400 15px/1.6 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#f0e6d8;">${h(b.einleitung)}</p>
 </td></tr>
 <tr><td style="padding:0 32px 22px;text-align:center;">
-<a href="${h(link)}" style="display:inline-block;padding:13px 28px;background:#ff9500;color:#1c1206;font:700 15px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;text-decoration:none;border-radius:6px;">${h(t.knopf)}</a>
+<a href="${h(b.link)}" style="display:inline-block;padding:13px 28px;background:#ff9500;color:#1c1206;font:700 15px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;text-decoration:none;border-radius:6px;">${h(b.knopf)}</a>
 </td></tr>
 <tr><td style="padding:0 32px 24px;text-align:${seite};">
-<p style="margin:0 0 10px;font:400 13px/1.6 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#b8a892;">${h(gueltig)}</p>
-<p style="margin:0 0 18px;font:400 13px/1.6 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#b8a892;">${h(t.ignorieren)}</p>
-<p style="margin:0 0 6px;font:400 12px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#8d8069;">${h(t.fallback)}</p>
-<p style="margin:0;font:400 12px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#8d8069;word-break:break-all;" dir="ltr">${h(link)}</p>
+${b.hinweise.map(z => `<p style="margin:0 0 10px;font:400 13px/1.6 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#b8a892;">${h(z)}</p>`).join('\n')}
+<p style="margin:14px 0 6px;font:400 12px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#8d8069;">${h(b.fallback)}</p>
+<p style="margin:0;font:400 12px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#8d8069;word-break:break-all;" dir="ltr">${h(b.link)}</p>
 </td></tr>
 <tr><td style="padding:16px 32px 26px;border-top:1px solid #3a2e1f;text-align:${seite};">
-<p style="margin:0;font:400 11px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#7a6e5a;">${h(t.abbinder)}</p>
+<p style="margin:0;font:400 11px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#7a6e5a;">${h(b.abbinder)}</p>
 </td></tr>
 </table>
 </td></tr>
@@ -269,5 +394,57 @@ export function resetMailText(
 </body>
 </html>`;
 
+  return { html, text };
+}
+
+/**
+ * Betreff, HTML und Text der Mail zum Zurücksetzen des Passworts.
+ */
+export function resetMailText(
+  sprache: string,
+  benutzername: string,
+  link: string,
+  gueltigMinuten: number,
+): MailInhalt {
+  const t = TEXTE[sprache] ?? TEXTE.en;
+  const { html, text } = baueMail({
+    sprache,
+    anrede: t.anrede.replace('{name}', benutzername),
+    einleitung: t.einleitung,
+    knopf: t.knopf,
+    link,
+    hinweise: [t.gueltig.replace('{n}', String(gueltigMinuten)), t.ignorieren],
+    fallback: t.fallback,
+    abbinder: t.abbinder,
+  });
   return { betreff: t.betreff, html, text };
+}
+
+/**
+ * Betreff, HTML und Text der Mail zum Bestätigen der Adresse.
+ *
+ * Anrede, Fallback-Zeile und Abbinder kommen aus demselben Satz wie beim
+ * Reset — die sind vom Anlass unabhängig und müssen nicht doppelt übersetzt
+ * werden.
+ */
+export function verifyMailText(
+  sprache: string,
+  benutzername: string,
+  link: string,
+  gueltigTage: number,
+): MailInhalt {
+  const gemeinsam = TEXTE[sprache] ?? TEXTE.en;
+  const v = VERIFY[sprache] ?? VERIFY.en;
+
+  const { html, text } = baueMail({
+    sprache,
+    anrede: gemeinsam.anrede.replace('{name}', benutzername),
+    einleitung: v.einleitung,
+    knopf: v.knopf,
+    link,
+    hinweise: [v.gueltig.replace('{n}', String(gueltigTage)), v.warum],
+    fallback: gemeinsam.fallback,
+    abbinder: gemeinsam.abbinder,
+  });
+  return { betreff: v.betreff, html, text };
 }

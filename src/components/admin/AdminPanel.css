@@ -978,3 +978,116 @@ select.admin-filter-input option {
 
 .admin-aktivitaet { color: rgba(255, 255, 255, 0.7); font-variant-numeric: tabular-nums; }
 .admin-still { opacity: 0.3; }
+
+/* Aufraeumen verwaister Konten ------------------------------------------- */
+
+.admin-aufraeum {
+  margin-bottom: 1.25rem;
+  border: 1px solid rgba(255, 165, 0, 0.22);
+  border-radius: 8px;
+  background: rgba(255, 165, 0, 0.04);
+  overflow: hidden;
+}
+
+.admin-aufraeum-kopf {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.7rem 0.9rem;
+  background: none;
+  border: none;
+  color: #ffcc80;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: start;
+}
+.admin-aufraeum-kopf:hover { background: rgba(255, 165, 0, 0.07); }
+.admin-aufraeum-pfeil { opacity: 0.7; }
+
+.admin-aufraeum-inhalt {
+  padding: 0.25rem 0.9rem 1rem;
+  border-top: 1px solid rgba(255, 165, 0, 0.16);
+}
+
+/* Einordnung vor der Liste: wie viele Konten es insgesamt gibt und wie viele
+   davon unbestaetigt, aber trotzdem aktiv sind. Ohne diese Zeile wirkt jede
+   Kandidatenliste groesser, als sie ist. */
+.admin-aufraeum-zahlen {
+  margin: 0.75rem 0 0.4rem;
+  font-size: 0.85rem;
+  color: #d8c9ae;
+  line-height: 1.5;
+}
+
+.admin-aufraeum-regel {
+  margin: 0 0 0.9rem;
+  font-size: 0.78rem;
+  color: #9c8f79;
+  line-height: 1.5;
+}
+
+.admin-aufraeum-leer {
+  margin: 0.5rem 0;
+  font-size: 0.87rem;
+  color: #8fbf95;
+}
+
+.admin-aufraeum-aktionen {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.6rem;
+}
+
+.admin-aufraeum-gewaehlt { font-size: 0.82rem; color: #c9bda9; }
+
+.admin-aufraeum-tabelle td { vertical-align: middle; }
+.admin-aufraeum-markiert { background: rgba(231, 76, 60, 0.09); }
+
+/* Was ein Konto hinterlaesst. Nebeneinander, damit auf einen Blick sichtbar
+   ist, ob da noch etwas dranhaengt. */
+.admin-aufraeum-spur {
+  display: inline-block;
+  margin-inline-end: 0.5rem;
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+
+.admin-btn-danger {
+  margin-top: 0.9rem;
+  padding: 0.5rem 1rem;
+  background: rgba(231, 76, 60, 0.85);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.admin-btn-danger:hover:not(:disabled) { background: #e74c3c; }
+.admin-btn-danger:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* Zweite Nachfrage vor dem Loeschen. Bewusst als eigener Kasten und nicht als
+   window.confirm: ein Browser-Dialog blockiert alles und liest sich in keiner
+   der 15 Sprachen. */
+.admin-aufraeum-frage {
+  margin-top: 0.9rem;
+  padding: 0.8rem;
+  border: 1px solid rgba(231, 76, 60, 0.45);
+  border-radius: 6px;
+  background: rgba(231, 76, 60, 0.1);
+}
+.admin-aufraeum-frage p {
+  margin: 0 0 0.7rem;
+  font-size: 0.87rem;
+  color: #f0d5d0;
+  line-height: 1.5;
+}
+.admin-aufraeum-frage-knoepfe { display: flex; gap: 0.6rem; align-items: center; }
+.admin-aufraeum-frage-knoepfe .admin-btn-danger { margin-top: 0; }
+
+/* Bestaetigungsspalte in der Nutzertabelle */
+.admin-verif-ja   { color: #7fc98a; font-size: 1rem; }
+.admin-verif-nein { color: #9c8f79; font-size: 1rem; }

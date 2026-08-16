@@ -16,6 +16,15 @@ export interface AuthUser {
   permissions: string | null;
   notification_sound: number; // 1 = on (default), 0 = off
   notification_volume: number; // 0.1–2.0, default 1.5
+  /**
+   * 1, sobald die Adresse ueber den Link aus der Mail bestaetigt wurde.
+   *
+   * Optional, weil ein Konto, das noch mit einem aelteren gespeicherten
+   * Nutzerobjekt im Browser liegt, das Feld nicht hat. `undefined` wie 0 zu
+   * behandeln waere falsch — dann saehe jemand den Balken, obwohl er laengst
+   * bestaetigt hat. Der Balken erscheint deshalb nur bei ausdruecklichem 0.
+   */
+  email_verified?: number;
 }
 
 export const AUTH_TOKEN_KEY   = 'wh-auth-token';

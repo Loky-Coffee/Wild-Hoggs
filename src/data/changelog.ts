@@ -27,6 +27,11 @@ export const changelog: ChangelogEntry[] = [
   // ── August 2026 ─────────────────────────────────────────────────────────
   {
     date: '2026-08-17',
+    time: '02:00',
+    text: 'New accounts now get a **confirmation email**, and a banner asks anyone with an unconfirmed address to confirm it — with a "send again" button, because a new sending domain sometimes lands in spam at first. Nothing is locked: you register and you are in. Confirming matters for one reason — a reachable address is the only way back into your account if you forget your password',
+  },
+  {
+    date: '2026-08-17',
     time: '01:10',
     text: 'Forgotten your password? There is now a way back. **"Forgot your password?"** under the sign-in form sends you a link by email, and that link lets you choose a new one. The link works for **60 minutes** and only once, all your sessions are signed out when the password changes, and the email arrives in your own language',
   },

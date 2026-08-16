@@ -47,6 +47,28 @@ interface AdminUser {
   last_seen?: string | null;
   msg_global?: number;
   msg_server?: number;
+  /** 1, sobald die Adresse ueber den Link aus der Mail bestaetigt wurde. */
+  email_verified?: number;
+  email_verified_at?: string | null;
+  /** Ab wann die Bestaetigungsfrist laeuft — Registrierung oder Stichtag. */
+  frist_beginn?: string | null;
+  profile?: number;
+  rechnerstaende?: number;
+}
+
+/** Ein Konto, das die Bedingungen fuers Aufraeumen erfuellt. */
+interface Kandidat {
+  id: string;
+  username: string;
+  email: string | null;
+  created_at: string;
+  last_seen: string | null;
+  email_verified: number;
+  frist_beginn: string;
+  msg_global: number;
+  msg_server: number;
+  profile: number;
+  rechnerstaende: number;
 }
 
 interface RewardCode {
@@ -161,6 +183,20 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
   const [fServer, setFServer]     = useState('');
   const [fRegFrom, setFRegFrom]   = useState('');
   const [fRegTo, setFRegTo]       = useState('');
+  /** '' = alle, 'ja' = nur bestaetigte, 'nein' = nur unbestaetigte */
+  const [fVerified, setFVerified] = useState('');
+
+  // Aufraeumen verwaister Konten
+  const [kandidaten, setKandidaten]   = useState<Kandidat[]>([]);
+  const [aufraeumZahlen, setAufraeumZahlen] = useState<{ gesamt: number; bestaetigt: number; unbestaetigt_aber_aktiv: number } | null>(null);
+  const [aufraeumRegeln, setAufraeumRegeln] = useState<{ frist_tage: number; still_tage: number } | null>(null);
+  const [aufraeumOffen, setAufraeumOffen]   = useState(false);
+  const [aufraeumLaedt, setAufraeumLaedt]   = useState(false);
+  const [aufraeumFehler, setAufraeumFehler] = useState<string | null>(null);
+  const [gewaehlt, setGewaehlt]             = useState<Set<string>>(new Set());
+  const [loeschtGerade, setLoeschtGerade]   = useState(false);
+  /** Sicherheitsabfrage: erst nach einer zweiten Bestaetigung wird geloescht. */
+  const [loeschFrage, setLoeschFrage]       = useState(false);
 
   // Settings state — Ankuendigung an alle
   const [announceText,   setAnnounceText]   = useState('');
@@ -209,19 +245,28 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
       .finally(() => setRLoading(false));
   }, [activeTab, isLoggedIn]);
 
+  // Nutzerliste holen. Herausgezogen, weil sie nach dem Aufraeumen erneut
+  // gebraucht wird — geloeschte Konten muessen aus der Tabelle verschwinden.
+  const ladeNutzer = async () => {
+    if (!token) return;
+    setULoading(true);
+    setUError(null);
+    try {
+      const res = await fetch('/api/admin/users', { headers: { 'Authorization': `Bearer ${token}` } });
+      const data: any = await res.json();
+      if (data.users) setUsers(data.users);
+      else setUError(t('admin.users.error'));
+    } catch {
+      setUError(t('admin.users.error'));
+    } finally {
+      setULoading(false);
+    }
+  };
+
   // Load users
   useEffect(() => {
     if (activeTab !== 'users' || !isLoggedIn || !token || !darf(user, 'users.view')) return;
-    setULoading(true);
-    setUError(null);
-    fetch('/api/admin/users', { headers: { 'Authorization': `Bearer ${token}` } })
-      .then(r => r.json())
-      .then((data: any) => {
-        if (data.users) setUsers(data.users);
-        else setUError(t('admin.users.error'));
-      })
-      .catch(() => setUError(t('admin.users.error')))
-      .finally(() => setULoading(false));
+    ladeNutzer();
   }, [activeTab, isLoggedIn]);
 
   // Inhalte laden — auch für die Übersicht, die die wartenden Codes anzeigt.
@@ -287,6 +332,8 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
 
   // Derived: users
   const filteredUsers = users.filter(u => {
+    if (fVerified === 'ja'   && (u.email_verified ?? 0) !== 1) return false;
+    if (fVerified === 'nein' && (u.email_verified ?? 0) === 1) return false;
     if (fServer && u.server !== fServer) return false;
     if (fText) {
       const q = fText.toLowerCase();
@@ -296,7 +343,7 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
     if (fRegTo   && u.created_at > fRegTo + 'T23:59:59') return false;
     return true;
   });
-  const hasFilter = fText || fServer || fRegFrom || fRegTo;
+  const hasFilter = fText || fServer || fRegFrom || fRegTo || fVerified;
 
   // Access check — AFTER all hooks
   //
@@ -339,6 +386,60 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
     } finally {
       setRBusy(prev => { const n = new Set(prev); n.delete(report.report_id); return n; });
     }
+  };
+
+  // ── Aufraeumen verwaister Konten (nur Administratoren) ────────────────────
+
+  const ladeKandidaten = async () => {
+    setAufraeumLaedt(true);
+    setAufraeumFehler(null);
+    try {
+      const res = await fetch('/api/admin/cleanup', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const daten = await res.json();
+      if (!res.ok) { setAufraeumFehler(daten?.error ?? t('admin.cleanup.loadError')); return; }
+      setKandidaten(daten.kandidaten ?? []);
+      setAufraeumZahlen(daten.zahlen ?? null);
+      setAufraeumRegeln(daten.regeln ?? null);
+      // Nichts ist vorausgewaehlt. Wer loeschen will, waehlt bewusst aus.
+      setGewaehlt(new Set());
+    } catch {
+      setAufraeumFehler(t('admin.cleanup.loadError'));
+    } finally {
+      setAufraeumLaedt(false);
+    }
+  };
+
+  const loescheGewaehlte = async () => {
+    if (gewaehlt.size === 0) return;
+    setLoeschtGerade(true);
+    setAufraeumFehler(null);
+    try {
+      const res = await fetch('/api/admin/cleanup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ ids: [...gewaehlt] }),
+      });
+      const daten = await res.json();
+      if (!res.ok) { setAufraeumFehler(daten?.error ?? t('admin.cleanup.deleteError')); return; }
+      setLoeschFrage(false);
+      // Liste und Nutzertabelle neu holen — beide haben sich geaendert.
+      await ladeKandidaten();
+      await ladeNutzer();
+    } catch {
+      setAufraeumFehler(t('admin.cleanup.deleteError'));
+    } finally {
+      setLoeschtGerade(false);
+    }
+  };
+
+  const umschalten = (id: string) => {
+    setGewaehlt(vorher => {
+      const neu = new Set(vorher);
+      if (neu.has(id)) neu.delete(id); else neu.add(id);
+      return neu;
+    });
   };
 
   // Role management (admin only)
@@ -654,8 +755,183 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
             {uError && <p class="admin-error">{uError}</p>}
             {!uLoading && !uError && (
               <>
+                {/* Aufraeumen verwaister Konten. Nur fuer Administratoren:
+                    Der Endpunkt verlangt dasselbe, ein Moderator saehe hier
+                    sonst einen Kasten, der bei jedem Klick 403 liefert. */}
+                {isAdmin && (
+                  <div class="admin-aufraeum">
+                    <button
+                      type="button"
+                      class="admin-aufraeum-kopf"
+                      onClick={() => {
+                        const auf = !aufraeumOffen;
+                        setAufraeumOffen(auf);
+                        if (auf && kandidaten.length === 0 && !aufraeumLaedt) ladeKandidaten();
+                      }}
+                      aria-expanded={aufraeumOffen}
+                    >
+                      <span>🧹 {t('admin.cleanup.title')}</span>
+                      <span class="admin-aufraeum-pfeil">{aufraeumOffen ? '▾' : '▸'}</span>
+                    </button>
+
+                    {aufraeumOffen && (
+                      <div class="admin-aufraeum-inhalt">
+                        {aufraeumLaedt && <p class="admin-loading">{t('admin.cleanup.loading')}</p>}
+                        {aufraeumFehler && <p class="admin-error">{aufraeumFehler}</p>}
+
+                        {!aufraeumLaedt && !aufraeumFehler && (
+                          <>
+                            {/* Einordnung zuerst. Eine Kandidatenliste ohne
+                                Bezugsgroesse sieht nach mehr aus, als sie ist. */}
+                            {aufraeumZahlen && (
+                              <p class="admin-aufraeum-zahlen">
+                                {t('admin.cleanup.summary')
+                                  .replace('{gesamt}', String(aufraeumZahlen.gesamt))
+                                  .replace('{bestaetigt}', String(aufraeumZahlen.bestaetigt))
+                                  .replace('{aktiv}', String(aufraeumZahlen.unbestaetigt_aber_aktiv))}
+                              </p>
+                            )}
+
+                            {aufraeumRegeln && (
+                              <p class="admin-aufraeum-regel">
+                                {t('admin.cleanup.rule')
+                                  .replace('{frist}', String(aufraeumRegeln.frist_tage))
+                                  .replace('{still}', String(aufraeumRegeln.still_tage))}
+                              </p>
+                            )}
+
+                            {kandidaten.length === 0 ? (
+                              <p class="admin-aufraeum-leer">{t('admin.cleanup.none')}</p>
+                            ) : (
+                              <>
+                                <div class="admin-aufraeum-aktionen">
+                                  <button
+                                    type="button"
+                                    class="admin-btn-sm"
+                                    onClick={() => setGewaehlt(
+                                      gewaehlt.size === kandidaten.length
+                                        ? new Set()
+                                        : new Set(kandidaten.map(k => k.id))
+                                    )}
+                                  >
+                                    {gewaehlt.size === kandidaten.length
+                                      ? t('admin.cleanup.selectNone')
+                                      : t('admin.cleanup.selectAll')}
+                                  </button>
+                                  <span class="admin-aufraeum-gewaehlt">
+                                    {t('admin.cleanup.selected').replace('{n}', String(gewaehlt.size))}
+                                  </span>
+                                </div>
+
+                                <div class="admin-table-wrap">
+                                  <table class="admin-table admin-aufraeum-tabelle">
+                                    <thead>
+                                      <tr>
+                                        <th></th>
+                                        <th>{t('admin.users.col.name')}</th>
+                                        <th>{t('admin.users.col.email')}</th>
+                                        <th>{t('admin.cleanup.col.lastSeen')}</th>
+                                        <th>{t('admin.cleanup.col.since')}</th>
+                                        <th>{t('admin.cleanup.col.leaves')}</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      {kandidaten.map(k => {
+                                        const spuren = (k.msg_global ?? 0) + (k.msg_server ?? 0);
+                                        return (
+                                          <tr key={k.id} class={gewaehlt.has(k.id) ? 'admin-aufraeum-markiert' : ''}>
+                                            <td>
+                                              <input
+                                                type="checkbox"
+                                                checked={gewaehlt.has(k.id)}
+                                                onChange={() => umschalten(k.id)}
+                                                aria-label={k.username}
+                                              />
+                                            </td>
+                                            <td>{k.username}</td>
+                                            <td class="admin-table-muted">{k.email ?? '—'}</td>
+                                            <td class="admin-table-muted admin-nowrap">
+                                              {k.last_seen ? formatDate(k.last_seen) : t('admin.cleanup.never')}
+                                            </td>
+                                            <td class="admin-table-muted admin-nowrap">{formatDate(k.frist_beginn)}</td>
+                                            <td class="admin-table-muted">
+                                              {/* Was verloren geht. Ein Konto mit
+                                                  Nachrichten und Profilen loescht
+                                                  sich anders als eine leere Huelle. */}
+                                              {spuren === 0 && (k.profile ?? 0) === 0 && (k.rechnerstaende ?? 0) === 0
+                                                ? <span class="admin-still">{t('admin.cleanup.nothing')}</span>
+                                                : <>
+                                                    {spuren > 0 && <span class="admin-aufraeum-spur">💬 {spuren}</span>}
+                                                    {(k.profile ?? 0) > 0 && <span class="admin-aufraeum-spur">🎖 {k.profile}</span>}
+                                                    {(k.rechnerstaende ?? 0) > 0 && <span class="admin-aufraeum-spur">🧮 {k.rechnerstaende}</span>}
+                                                  </>}
+                                            </td>
+                                          </tr>
+                                        );
+                                      })}
+                                    </tbody>
+                                  </table>
+                                </div>
+
+                                {/* Zwei Schritte bis zur Loeschung. Der erste
+                                    Klick fragt nur nach. */}
+                                {!loeschFrage ? (
+                                  <button
+                                    type="button"
+                                    class="admin-btn-danger"
+                                    disabled={gewaehlt.size === 0}
+                                    onClick={() => setLoeschFrage(true)}
+                                  >
+                                    {t('admin.cleanup.delete').replace('{n}', String(gewaehlt.size))}
+                                  </button>
+                                ) : (
+                                  <div class="admin-aufraeum-frage">
+                                    <p>{t('admin.cleanup.confirm').replace('{n}', String(gewaehlt.size))}</p>
+                                    <div class="admin-aufraeum-frage-knoepfe">
+                                      <button
+                                        type="button"
+                                        class="admin-btn-danger"
+                                        disabled={loeschtGerade}
+                                        onClick={loescheGewaehlte}
+                                      >
+                                        {loeschtGerade ? t('admin.cleanup.deleting') : t('admin.cleanup.confirmYes')}
+                                      </button>
+                                      <button
+                                        type="button"
+                                        class="admin-btn-sm"
+                                        disabled={loeschtGerade}
+                                        onClick={() => setLoeschFrage(false)}
+                                      >
+                                        {t('admin.cleanup.confirmNo')}
+                                      </button>
+                                    </div>
+                                  </div>
+                                )}
+                              </>
+                            )}
+                          </>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 {/* Filter bar */}
                 <div class="admin-filter-bar">
+                  {isAdmin && (
+                    <label class="admin-filter-field">
+                      <span class="admin-filter-label">{t('admin.users.col.verified')}</span>
+                      <select
+                        class="admin-filter-input"
+                        value={fVerified}
+                        onChange={e => setFVerified((e.target as HTMLSelectElement).value)}
+                      >
+                        <option value="">{t('admin.cleanup.filterAll')}</option>
+                        <option value="ja">{t('admin.cleanup.filterVerified')}</option>
+                        <option value="nein">{t('admin.cleanup.filterUnverified')}</option>
+                      </select>
+                    </label>
+                  )}
                   <label class="admin-filter-field">
                     <span class="admin-filter-label">{t('admin.users.filter.name')}</span>
                     <input
@@ -696,7 +972,7 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
                   </label>
                   <div class="admin-filter-actions">
                     {hasFilter && (
-                      <button class="admin-filter-reset" onClick={() => { setFText(''); setFServer(''); setFRegFrom(''); setFRegTo(''); }}>
+                      <button class="admin-filter-reset" onClick={() => { setFText(''); setFServer(''); setFRegFrom(''); setFRegTo(''); setFVerified(''); }}>
                         ✕ {t('admin.users.filter.reset')}
                       </button>
                     )}
@@ -717,6 +993,7 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
                             <th>{t('admin.users.col.server')}</th>
                             <th>{t('admin.users.col.registered')}</th>
                             <th>{t('admin.users.col.last_login')}</th>
+                            {isAdmin && <th>{t('admin.users.col.verified')}</th>}
                             <th>{t('admin.users.col.activity')}</th>
                             {isAdmin && <th></th>}
                           </tr>
@@ -742,6 +1019,13 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
                                 <td class="admin-table-muted">{u.server ?? '—'}</td>
                                 <td class="admin-table-muted admin-nowrap">{formatDate(u.created_at)}</td>
                                 <td class="admin-table-muted admin-nowrap">{u.last_login ? formatDate(u.last_login) : '—'}</td>
+                                {isAdmin && (
+                                  <td class="admin-nowrap">
+                                    {(u.email_verified ?? 0) === 1
+                                      ? <span class="admin-verif-ja" title={u.email_verified_at ? formatDate(u.email_verified_at) : ''}>✓</span>
+                                      : <span class="admin-verif-nein" title={t('admin.users.notVerified')}>○</span>}
+                                  </td>
+                                )}
                                 <td class="admin-nowrap admin-aktivitaet">
                                   {(u.msg_global ?? 0) + (u.msg_server ?? 0) > 0
                                     ? <>💬 {(u.msg_global ?? 0) + (u.msg_server ?? 0)}</>

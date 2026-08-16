@@ -92,7 +92,8 @@ export async function validateSession(db: any, token: string) {
            u.is_admin, COALESCE(u.is_moderator, 0) AS is_moderator,
            u.permissions,
            COALESCE(u.notification_sound, 1) AS notification_sound,
-           COALESCE(u.notification_volume, 1.5) AS notification_volume
+           COALESCE(u.notification_volume, 1.5) AS notification_volume,
+           COALESCE(u.email_verified, 0) AS email_verified
     FROM sessions s
     JOIN users u ON s.user_id = u.id
     WHERE s.token = ? AND s.expires_at > datetime('now')
@@ -112,6 +113,8 @@ export async function validateSession(db: any, token: string) {
     permissions: string | null;
     notification_sound: number;
     notification_volume: number;
+    /** 1, sobald die Adresse per Link bestaetigt wurde. */
+    email_verified: number;
   } | null>;
 }
 
