@@ -33,6 +33,12 @@ export const BETREIBER = {
    */
   anschrift: [] as string[],
 
-  /** E-Mail-Adresse für Datenschutzanfragen. Pflichtangabe. */
-  email: 'aristotelis@alatzas.eu',
+  /**
+   * E-Mail-Adresse für Datenschutzanfragen. Pflichtangabe.
+   *
+   * Bewusst eine Adresse der Domain, nicht die private: Sie steht auf einer
+   * öffentlich zugänglichen Seite und wird von Adresssammlern gefunden.
+   * Postfach liegt bei Mailfence, Weiterleitung ist eingerichtet.
+   */
+  email: 'privacy@wild-hoggs.com',
 } as const;
