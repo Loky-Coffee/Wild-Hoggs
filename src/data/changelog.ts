@@ -27,6 +27,11 @@ export const changelog: ChangelogEntry[] = [
   // ── August 2026 ─────────────────────────────────────────────────────────
   {
     date: '2026-08-16',
+    time: '22:30',
+    text: 'The **home page and the About page now speak your language**. The welcome text, the support card and the whole About page had only ever been translated into German \u2014 the other twelve languages were still showing English. Same for the profile page: tabs, statistics, the data download and the delete-account dialog. Around 730 texts in all',
+  },
+  {
+    date: '2026-08-16',
     time: '21:10',
     text: 'On Arabic, the **language menu no longer hangs off the screen**. It was pinned to the right edge of its button, which on right-to-left pages puts it 43 pixels past the left edge of the window \u2014 enough to give every Arabic page a horizontal scrollbar',
   },
