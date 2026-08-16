@@ -1,5 +1,5 @@
-# Wild Hoggs - Last-Z Guild Website
-# Allow all search engines
+# Wild Hoggs — Last Z: Survival Shooter
+# Tools, Rechner und Datentabellen. Alles offen, nichts hinter einer Anmeldung.
 
 User-agent: *
 Allow: /
@@ -11,6 +11,129 @@ Disallow: /profile/
 # die Adresse dann durch die Verweise, darf aber nicht nachsehen, und traegt sie
 # als blossen Eintrag ohne Ausriss in den Index ein. Beide Signale zusammen
 # arbeiten gegeneinander; noindex allein wirkt.
+
+# ── Crawler von Sprachmodellen ─────────────────────────────────────────────
+#
+# Technisch aendert dieser Abschnitt nichts: Das `User-agent: *` oben erlaubt
+# sie bereits, und geprueft ist es auch — alle unten genannten bekommen auf
+# /tools/research/ eine 200.
+#
+# Er steht hier trotzdem, aus zwei Gruenden. Erstens liest ein Crawler die
+# Regeln zu seinem eigenen Namen und ignoriert dann den Stern; wer spaeter am
+# Stern schraubt, sperrt sie sonst versehentlich mit aus. Zweitens ist damit
+# schriftlich, dass das Auslesen erwuenscht ist — diese Seite lebt davon,
+# gefunden und zitiert zu werden.
+#
+# Jede Gruppe wiederholt die beiden Sperren. Das ist kein Versehen: Wer seinen
+# eigenen Namen in der Datei findet, liest die Stern-Gruppe nicht mehr — ohne
+# die Wiederholung stuenden /admin/ und /profile/ genau diesen Crawlern offen.
+#
+# Wichtig fuer diese Seite: Keiner dieser Crawler fuehrt JavaScript aus. Die
+# Rechner sind fuer sie leer; lesbar sind die Seiten unter /costs/ und der
+# Wegweiser /llms.txt.
+
+# OpenAI — Training
+User-agent: GPTBot
+Allow: /
+Disallow: /admin/
+Disallow: /profile/
+
+# OpenAI — Suche in ChatGPT
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /admin/
+Disallow: /profile/
+
+# OpenAI — Abruf auf Nutzeranfrage
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /admin/
+Disallow: /profile/
+
+# Anthropic
+User-agent: ClaudeBot
+Allow: /
+Disallow: /admin/
+Disallow: /profile/
+
+User-agent: Claude-Web
+Allow: /
+Disallow: /admin/
+Disallow: /profile/
+
+User-agent: anthropic-ai
+Allow: /
+Disallow: /admin/
+Disallow: /profile/
+
+# Google — KI-Antworten und Gemini, getrennt vom Googlebot
+User-agent: Google-Extended
+Allow: /
+Disallow: /admin/
+Disallow: /profile/
+
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin/
+Disallow: /profile/
+
+User-agent: Perplexity-User
+Allow: /
+Disallow: /admin/
+Disallow: /profile/
+
+# Microsoft Copilot / Bing
+User-agent: bingbot
+Allow: /
+Disallow: /admin/
+Disallow: /profile/
+
+# Meta
+User-agent: meta-externalagent
+Allow: /
+Disallow: /admin/
+Disallow: /profile/
+
+User-agent: FacebookBot
+Allow: /
+Disallow: /admin/
+Disallow: /profile/
+
+# Apple Intelligence
+User-agent: Applebot
+Allow: /
+Disallow: /admin/
+Disallow: /profile/
+
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /admin/
+Disallow: /profile/
+
+# Common Crawl — Grundlage vieler Trainingsdatensaetze
+User-agent: CCBot
+Allow: /
+Disallow: /admin/
+Disallow: /profile/
+
+# Amazon
+User-agent: Amazonbot
+Allow: /
+Disallow: /admin/
+Disallow: /profile/
+
+# ByteDance
+User-agent: Bytespider
+Allow: /
+Disallow: /admin/
+Disallow: /profile/
+
+# Mistral
+User-agent: MistralAI-User
+Allow: /
+Disallow: /admin/
+Disallow: /profile/
 
 # Sitemaps
 Sitemap: https://wild-hoggs.com/sitemap-index.xml
