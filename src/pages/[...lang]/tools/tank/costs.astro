@@ -1,0 +1,215 @@
+---
+/**
+ * Die Werte des Panzer-Rechners als lesbare Seite.
+ *
+ * Gleicher Grund wie bei den Forschungsbaeumen: Der Rechner nebenan traegt
+ * seinen Inhalt im JavaScript, im HTML steht davon nichts. Hier stehen die 49
+ * Modifikationen als Text — mit Schraubenschluesseln, Unterstufen und den
+ * Fahrzeugen, die dabei freigeschaltet werden.
+ */
+import PageLayout from '../../../../layouts/PageLayout.astro';
+import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../../../i18n/utils';
+import { languages, loadTranslations } from '../../../../i18n/index';
+import type { TranslationKey } from '../../../../i18n/index';
+import tankData from '../../../../data/tank-modifications.json';
+
+export function getStaticPaths() {
+  return Object.keys(languages).map(langKey => ({
+    params: { lang: langKey === 'en' ? undefined : langKey },
+  }));
+}
+
+const lang = getLangFromUrl(Astro.url);
+const translationData = await loadTranslations(lang);
+const t = useTranslations(translationData);
+
+const zahl = (n: number) => new Intl.NumberFormat(lang === 'en' ? 'en-US' : lang).format(n);
+
+type Mod = { level: number; nameKey: string; wrenchesPerSub: number; subLevels: number; totalWrenches: number; cumulativeTotal: number };
+type Meilenstein = { nameKey: string; level: number; cumulativeWrenches: number };
+
+const mods = tankData.modifications as Mod[];
+const meilensteine = (tankData.milestones ?? []) as Meilenstein[];
+
+// Welches Fahrzeug wird auf welcher Stufe freigeschaltet?
+const fahrzeugBei = new Map<number, string>();
+for (const m of meilensteine) fahrzeugBei.set(m.level, t(m.nameKey as TranslationKey) || m.nameKey);
+
+const SPIEL = 'Last Z: Survival Shooter';
+// Nicht tools.tank.title: das heisst "… Rechner", und gerechnet wird hier nichts.
+const titelText = t('rdata.tankTitle');
+const seitenTitel = `${titelText} — ${t('rdata.heading')} | ${SPIEL}`;
+const beschreibung = `${titelText} in ${SPIEL}: ${mods.length} ${t('rdata.mod')}, `
+  + `${zahl(tankData.maxLevel as number)} ${t('rdata.levels')}, `
+  + `${zahl(tankData.totalWrenches as number)} ${t('rdata.wrenches')}. ${t('rdata.tankLead')}`;
+
+const rechnerPfad = getLocalizedPath('tools/tank', lang);
+const fuellen = (s: string, w: Record<string, string>) =>
+  s.replace(/\{(\w+)\}/g, (_, k) => w[k] ?? `{${k}}`);
+
+const werte = {
+  w: zahl(tankData.totalWrenches as number),
+  m: String(tankData.maxLevel),
+};
+const faq = [{ f: fuellen(t('rdata.faqTankQ'), werte), a: fuellen(t('rdata.faqTankA'), werte) }];
+const faqSchema = {
+  '@context': 'https://schema.org', '@type': 'FAQPage',
+  mainEntity: faq.map(x => ({ '@type': 'Question', name: x.f,
+    acceptedAnswer: { '@type': 'Answer', text: x.a } })),
+};
+
+const breadcrumbItems = [
+  { label: t('nav.home'), href: getLocalizedPath('', lang) },
+  { label: t('nav.tools'), href: getLocalizedPath('tools', lang) },
+  { label: titelText, href: rechnerPfad },
+  { label: t('rdata.heading') },
+];
+
+const datensatzSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Dataset',
+  name: `${titelText} — ${t('rdata.heading')}`,
+  description: beschreibung,
+  inLanguage: lang,
+  isAccessibleForFree: true,
+  creator: { '@type': 'Organization', name: 'Wild Hoggs', url: 'https://wild-hoggs.com/' },
+  about: { '@type': 'VideoGame', name: SPIEL, applicationCategory: 'Game' },
+  variableMeasured: [t('rdata.wrenches'), t('rdata.subLevels'), t('rdata.levels')],
+};
+---
+
+<PageLayout title={seitenTitel} description={beschreibung} breadcrumbs={breadcrumbItems}>
+  <script type="application/ld+json" set:html={JSON.stringify(datensatzSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <article class="rdata">
+    <h1>{titelText} — {t('rdata.heading')}</h1>
+    <p class="rdata-lead">{t('rdata.tankLead')} <strong>{SPIEL}</strong>.</p>
+
+    <ul class="rdata-summe">
+      <li><span>{mods.length}</span> {t('rdata.mods')}</li>
+      <li><span>{zahl(tankData.maxLevel as number)}</span> {t('rdata.levels')}</li>
+      <li><span>{zahl(tankData.totalWrenches as number)}</span> {t('rdata.wrenches')}</li>
+      <li><span>{meilensteine.length}</span> {t('rdata.vehicle')}</li>
+    </ul>
+
+    <p class="rdata-zum-rechner"><a href={rechnerPfad}>&larr; {t('rdata.backToCalc')}</a></p>
+
+    {meilensteine.length > 0 && (
+      <>
+        <h2>{t('rdata.vehicle')}</h2>
+        <div class="rdata-tabelle-rahmen">
+          <table class="rdata-tabelle">
+            <thead>
+              <tr>
+                <th>{t('rdata.vehicle')}</th>
+                <th class="num">{t('rdata.unlocksAt')}</th>
+                <th class="num">{t('rdata.wrenches')} ({t('rdata.cumulative')})</th>
+              </tr>
+            </thead>
+            <tbody>
+              {meilensteine.map(m => (
+                <tr>
+                  <th scope="row">{t(m.nameKey as TranslationKey) || m.nameKey}</th>
+                  <td class="num">{m.level}</td>
+                  <td class="num">{zahl(m.cumulativeWrenches)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </>
+    )}
+
+    <h2>{t('rdata.mods')}</h2>
+    <div class="rdata-tabelle-rahmen">
+      <table class="rdata-tabelle">
+        <thead>
+          <tr>
+            <th class="num">{t('calc.research.level')}</th>
+            <th>{t('rdata.mod')}</th>
+            <th class="num">{t('rdata.subLevels')}</th>
+            <th class="num">{t('rdata.wrenches')} / {t('tank.sub')}</th>
+            <th class="num">{t('rdata.total')}</th>
+            <th class="num">{t('rdata.cumulative')}</th>
+            <th>{t('rdata.vehicle')}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {mods.map(mod => (
+            <tr>
+              <td class="num">{mod.level}</td>
+              <th scope="row">{t(mod.nameKey as TranslationKey) || mod.nameKey}</th>
+              <td class="num">{mod.subLevels}</td>
+              <td class="num">{zahl(mod.wrenchesPerSub)}</td>
+              <td class="num">{zahl(mod.totalWrenches)}</td>
+              <td class="num">{zahl(mod.cumulativeTotal)}</td>
+              <td>{fahrzeugBei.get(mod.level) ?? t('rdata.none')}</td>
+            </tr>
+          ))}
+        </tbody>
+        <tfoot>
+          <tr>
+            <td class="num"></td>
+            <th scope="row">{t('rdata.total')}</th>
+            <td class="num"></td>
+            <td class="num"></td>
+            <td class="num">{zahl(tankData.totalWrenches as number)}</td>
+            <td class="num"></td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <h2>{t('rdata.faqTitle')}</h2>
+    <dl class="rdata-faq">
+      {faq.map(x => (<><dt>{x.f}</dt><dd>{x.a}</dd></>))}
+    </dl>
+
+    <p class="rdata-zum-rechner"><a href={rechnerPfad}>{t('rdata.backToCalc')} &rarr;</a></p>
+  </article>
+</PageLayout>
+
+<style>
+  .rdata { max-width: 1100px; margin: 0 auto; padding: 1rem 0 3rem; }
+  .rdata h1 { font-size: 1.6rem; color: #ffa500; margin: 0 0 0.5rem; }
+  .rdata h2 { font-size: 1.2rem; color: #ffa500; margin: 2.5rem 0 0.3rem; }
+  .rdata-lead { color: rgba(255,255,255,0.75); line-height: 1.6; margin: 0 0 1rem; }
+  .rdata-summe { list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0; margin: 0 0 1rem; }
+  .rdata-summe li {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,165,0,0.18);
+    border-radius: 8px; padding: 0.35rem 0.7rem; font-size: 0.85rem; color: rgba(255,255,255,0.7);
+  }
+  .rdata-summe span { color: #ffa500; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .rdata-zum-rechner { margin: 1rem 0; }
+  .rdata-zum-rechner a { color: #ffa500; text-decoration: none; border-bottom: 1px dashed rgba(255,165,0,0.6); }
+  .rdata-tabelle-rahmen { overflow-x: auto; border: 1px solid rgba(255,165,0,0.15); border-radius: 10px; }
+  .rdata-tabelle { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  .rdata-tabelle th, .rdata-tabelle td {
+    padding: 0.45rem 0.7rem; text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.06); color: rgba(255,255,255,0.8);
+  }
+  .rdata-tabelle thead th {
+    color: #ffa500; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em;
+    white-space: nowrap; background: rgba(255,165,0,0.06);
+  }
+  .rdata-tabelle tbody th[scope='row'] { color: rgba(255,255,255,0.95); font-weight: 600; white-space: nowrap; }
+  .rdata-tabelle .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .rdata-tabelle tfoot th, .rdata-tabelle tfoot td {
+    border-top: 2px solid rgba(255,165,0,0.3); border-bottom: none; color: #ffa500; font-weight: 700;
+  }
+  .rdata-faq {
+    margin: 0;
+    border-left: 2px solid rgba(255, 165, 0, 0.25);
+    padding-left: 1rem;
+  }
+  .rdata-faq dt { color: #ffa500; font-weight: 600; margin-top: 1rem; }
+  .rdata-faq dd { margin: 0.25rem 0 0; color: rgba(255,255,255,0.75); line-height: 1.6; }
+
+  @media (max-width: 768px) {
+    .rdata { padding: 0.5rem 0 2rem; }
+    .rdata h1 { font-size: 1.25rem; }
+    .rdata-tabelle { font-size: 0.78rem; }
+  }
+</style>

@@ -31,7 +31,13 @@ const breadcrumbItems = [
   image="/og-garage.webp"
   imageAlt={t('tools.tank.title')}
 >
-  <h1 class="page-title-subtle">{t('tools.tank.title')}</h1>
+  <h1 class="page-title-subtle">
+    {t('tools.tank.title')}
+    {/* Verweis auf die Datenseite: dieselben Werte als Tabelle, lesbar auch
+        fuer Suchmaschinen und KI-Crawler, die dieses JavaScript nicht laufen
+        lassen. */}
+    · <a class="titlebar-daten" href={getLocalizedPath('tools/tank/costs', lang)}>📊 {t('rdata.heading')}</a>
+  </h1>
   <!-- H1 = "Last Z Tank Modification Calculator" — keyword-optimiert für SEO -->
   <div class="calculator-wrapper">
     <!-- client:idle ist hier ABSICHTLICH (nicht client:visible):
@@ -88,6 +94,13 @@ const breadcrumbItems = [
 </style>
 
 <style>
+  .titlebar-daten {
+    color: #ffa500;
+    text-decoration: none;
+    border-bottom: 1px dashed rgba(255, 165, 0, 0.6);
+    white-space: nowrap;
+  }
+
   .page-title-subtle {
     font-size: 0.8rem;
     font-weight: 700;

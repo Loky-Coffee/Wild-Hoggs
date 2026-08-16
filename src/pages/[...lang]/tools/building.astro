@@ -1,6 +1,8 @@
 ---
 import PageLayout from '../../../layouts/PageLayout.astro';
 import { getLangFromUrl, useTranslations, getLocalizedPath, nurBereiche } from '../../../i18n/utils';
+import buildings from '../../../data/buildings.json';
+import buildingNames from '../../../data/buildings-names.json';
 import { getLanguagePaths } from '../../../i18n/static-paths';
 import { loadTranslations } from '../../../i18n/index';
 import BuildingCalculator from '../../../components/calculators/BuildingCalculator';
@@ -22,6 +24,14 @@ const breadcrumbItems = [
   { label: t('nav.tools'), href: getLocalizedPath('tools', lang) },
   { label: t('tools.building.title') }
 ];
+
+// Verweise auf die Kostenseiten. Sie tragen den Inhalt, den dieser Rechner im
+// JavaScript versteckt — und ohne Verweise fände sie niemand, auch Google nicht.
+const namenTabelle = buildingNames as Record<string, Record<string, string>>;
+const gebaeudeListe = (buildings as { id: string }[]).map(b => ({
+  id: b.id,
+  name: namenTabelle[b.id]?.[lang] ?? namenTabelle[b.id]?.en ?? b.id,
+})).sort((a, b) => a.name.localeCompare(b.name, lang));
 ---
 
 <PageLayout title={t('seo.building.title')} description={t('seo.building.description')} breadcrumbs={breadcrumbItems} image="/og-building.webp" imageAlt={t('tools.building.title')}>
@@ -54,12 +64,51 @@ const breadcrumbItems = [
        wartet aber auf einen Leerlaufmoment — und braucht keinen
        IntersectionObserver, also besteht das Problem oben nicht. -->
     <BuildingCalculator lang={lang} translationData={nurBereiche(translationData, ['calc.', 'buildings.', 'error.', 'a11y.'])} client:idle />
+
+    <section class="bld-datenlinks">
+      <h2>{t('rdata.buildingsHeading')}</h2>
+      <ul>
+        {gebaeudeListe.map(b => (
+          <li><a href={getLocalizedPath(`tools/building/${b.id}/costs`, lang)}>{b.name}</a></li>
+        ))}
+      </ul>
+    </section>
 </PageLayout>
 
 <style>
   /* Bau-Speed-Button sitzt im Header -> weniger Abstand zum Rechner (Research hat die
      Übersicht im Header, hier ist der Rechner separat). */
   .page-header { margin-bottom: 1.2rem; }
+
+  .bld-datenlinks {
+    margin: 2.5rem auto 0;
+    max-width: 1100px;
+    padding: 1rem 0 0;
+    border-top: 1px solid rgba(255, 165, 0, 0.15);
+  }
+
+  .bld-datenlinks h2 {
+    font-size: 1rem;
+    color: #ffa500;
+    margin: 0 0 0.6rem;
+  }
+
+  .bld-datenlinks ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 0.3rem 1rem;
+  }
+
+  .bld-datenlinks a {
+    color: rgba(255, 255, 255, 0.75);
+    text-decoration: none;
+    font-size: 0.85rem;
+  }
+
+  .bld-datenlinks a:hover { color: #ffa500; }
   .bld-header-controls {
     display: flex;
     gap: 0.6rem;

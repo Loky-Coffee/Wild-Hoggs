@@ -124,6 +124,31 @@ const beschreibung = `${baumName} in ${SPIEL}: ${techs.length} ${t('calc.researc
 
 const rechnerPfad = getLocalizedPath(`tools/research/${categoryId}`, lang);
 
+// Fragen, die tatsaechlich gestellt werden — mit der Antwort daneben.
+// Als FAQPage ausgezeichnet: Google zeigt solche Paare direkt in den
+// Ergebnissen, und KI-Antworten greifen sie ueberdurchschnittlich oft auf.
+const fuellen = (s: string, w: Record<string, string>) =>
+  s.replace(/\{(\w+)\}/g, (_, k) => w[k] ?? `{${k}}`);
+
+const werte = { n: baumName, b: zahl(gesamt.badges), t: dauer(gesamt.zeit) };
+const faq = [
+  { f: fuellen(t('rdata.faqCostQ'), werte),  a: fuellen(t('rdata.faqCostA'), werte) },
+  ...(gesamt.zeit > 0
+    ? [{ f: fuellen(t('rdata.faqTimeQ'), werte), a: fuellen(t('rdata.faqTimeA'), werte) }]
+    : []),
+  { f: fuellen(t('rdata.faqOrderQ'), werte), a: fuellen(t('rdata.faqOrderA'), werte) },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map(x => ({
+    '@type': 'Question',
+    name: x.f,
+    acceptedAnswer: { '@type': 'Answer', text: x.a },
+  })),
+};
+
 const breadcrumbItems = [
   { label: t('nav.home'), href: getLocalizedPath('', lang) },
   { label: t('nav.tools'), href: getLocalizedPath('tools', lang) },
@@ -152,6 +177,7 @@ const datensatzSchema = {
 
 <PageLayout title={seitenTitel} description={beschreibung} breadcrumbs={breadcrumbItems}>
   <script type="application/ld+json" set:html={JSON.stringify(datensatzSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 
   <article class="rdata">
     <h1>{baumName} — {t('rdata.heading')}</h1>
@@ -236,6 +262,16 @@ const datensatzSchema = {
         </tbody>
       </table>
     </div>
+
+    <h2>{t('rdata.faqTitle')}</h2>
+    <dl class="rdata-faq">
+      {faq.map(x => (
+        <>
+          <dt>{x.f}</dt>
+          <dd>{x.a}</dd>
+        </>
+      ))}
+    </dl>
 
     <p class="rdata-zum-rechner">
       <a href={rechnerPfad}>{t('rdata.backToCalc')} &rarr;</a>
@@ -357,6 +393,24 @@ const datensatzSchema = {
     font-variant-numeric: tabular-nums;
     color: rgba(255, 255, 255, 0.7);
     line-height: 1.7;
+  }
+
+  .rdata-faq {
+    margin: 0;
+    border-left: 2px solid rgba(255, 165, 0, 0.25);
+    padding-left: 1rem;
+  }
+
+  .rdata-faq dt {
+    color: #ffa500;
+    font-weight: 600;
+    margin-top: 1rem;
+  }
+
+  .rdata-faq dd {
+    margin: 0.25rem 0 0;
+    color: rgba(255, 255, 255, 0.75);
+    line-height: 1.6;
   }
 
   @media (max-width: 768px) {

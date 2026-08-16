@@ -26,6 +26,11 @@ export function renderChangelogText(text: string): string {
 export const changelog: ChangelogEntry[] = [
   // ── August 2026 ─────────────────────────────────────────────────────────
   {
+    date: '2026-08-16',
+    time: '19:20',
+    text: 'Every calculator now has a **plain table** next to it. Research trees, tank modifications and all 32 buildings: what each step costs, how long it takes, what has to be built first \u2014 readable without clicking anything, and printable. You reach them from the calculator itself. They also exist for search engines: the calculators keep their numbers inside the JavaScript, so until now a search engine looking for \u201chow many badges does Fully Armed Alliance cost\u201d found nothing here',
+  },
+  {
     date: '2026-08-15',
     time: '15:10',
     text: 'Small print across the site is **easier to read**. Faint labels, counters and side notes were too dim against the dark background \u2014 the weakest sat at 2.1 to 1 where 4.5 to 1 is the mark. Every one of them has been lifted; nothing changed except how legible it is',

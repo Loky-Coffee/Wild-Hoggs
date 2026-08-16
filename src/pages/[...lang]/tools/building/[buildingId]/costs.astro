@@ -1,0 +1,284 @@
+---
+/**
+ * Die Ausbaukosten eines Gebaeudes als lesbare Seite.
+ *
+ * Gleicher Grund wie bei Forschung und Panzer: Der Rechner traegt seine Zahlen
+ * im JavaScript, im HTML steht davon nichts. Hier steht jede Stufe als Zeile —
+ * Holz, Nahrung, Stahl, Zent, Bauzeit, Kampfkraft, Heldenlevel-Grenze und was
+ * vorher stehen muss.
+ *
+ * Die Namen kommen aus buildings-names.json: Das Woerterbuch kennt nur einen
+ * der 32 Schluessel, diese Datei dagegen alle, und zwar in allen fuenfzehn
+ * Sprachen.
+ */
+import PageLayout from '../../../../../layouts/PageLayout.astro';
+import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../../../../i18n/utils';
+import { languages, loadTranslations } from '../../../../../i18n/index';
+import buildings from '../../../../../data/buildings.json';
+import buildingNames from '../../../../../data/buildings-names.json';
+
+type Kosten = {
+  level: number; wood: number; food: number; steel: number; zent: number;
+  time: number; requiredBuildings?: string; heroLevelCap?: number; power?: number;
+  requires?: { id: string; level: number }[];
+};
+type Gebaeude = { id: string; nameKey: string; maxLevel: number; costs: Kosten[] };
+
+const alle = buildings as Gebaeude[];
+
+export function getStaticPaths() {
+  const paths: { params: { lang: string | undefined; buildingId: string } }[] = [];
+  Object.keys(languages).forEach(langKey => {
+    const lang = langKey === 'en' ? undefined : langKey;
+    (buildings as Gebaeude[]).forEach(b => paths.push({ params: { lang, buildingId: b.id } }));
+  });
+  return paths;
+}
+
+const { buildingId } = Astro.params;
+const lang = getLangFromUrl(Astro.url);
+const translationData = await loadTranslations(lang);
+const t = useTranslations(translationData);
+
+const gebaeude = alle.find(b => b.id === buildingId);
+if (!gebaeude) return Astro.redirect(getLocalizedPath('tools/building', lang));
+
+const namen = buildingNames as Record<string, Record<string, string>>;
+const nameVon = (id: string) => namen[id]?.[lang] ?? namen[id]?.en ?? id;
+
+const zahl = (n: number) => new Intl.NumberFormat(lang === 'en' ? 'en-US' : lang).format(n);
+
+/**
+ * Bauzeit lesbar machen. Die Werte stehen in SEKUNDEN — so rechnet auch
+ * fmtDur() im Gebaeuderechner (BuildingCalculator.tsx). Als Minuten gedeutet
+ * ergaebe allein das Hauptquartier 92.663 Tage, also rund 253 Jahre.
+ */
+function dauer(sek: number): string {
+  if (!sek) return '—';
+  const tage = Math.floor(sek / 86400);
+  const std  = Math.floor((sek % 86400) / 3600);
+  const min  = Math.floor((sek % 3600) / 60);
+  const teile: string[] = [];
+  if (tage) teile.push(`${zahl(tage)}d`);
+  if (std) teile.push(`${std}h`);
+  if (min && !tage) teile.push(`${min}m`);
+  if (!teile.length) return `${sek}s`;
+  return teile.join(' ');
+}
+
+const stufen = gebaeude.costs;
+const gesamt = {
+  wood:  stufen.reduce((s, c) => s + (c.wood ?? 0), 0),
+  food:  stufen.reduce((s, c) => s + (c.food ?? 0), 0),
+  steel: stufen.reduce((s, c) => s + (c.steel ?? 0), 0),
+  zent:  stufen.reduce((s, c) => s + (c.zent ?? 0), 0),
+  time:  stufen.reduce((s, c) => s + (c.time ?? 0), 0),
+};
+const endKraft = stufen.length ? (stufen[stufen.length - 1].power ?? 0) : 0;
+
+// Spalten nur zeigen, wenn dieses Gebaeude sie ueberhaupt braucht.
+const zeigt = {
+  wood:  gesamt.wood  > 0,
+  food:  gesamt.food  > 0,
+  steel: gesamt.steel > 0,
+  zent:  gesamt.zent  > 0,
+  time:  gesamt.time  > 0,
+  power: stufen.some(c => (c.power ?? 0) > 0),
+  hero:  stufen.some(c => (c.heroLevelCap ?? 0) > 0),
+  req:   stufen.some(c => (c.requires?.length ?? 0) > 0),
+};
+
+const name = nameVon(gebaeude.id);
+const SPIEL = 'Last Z: Survival Shooter';
+const seitenTitel = `${name} — ${t('rdata.buildingsHeading')} | ${SPIEL}`;
+const beschreibung = `${name} in ${SPIEL}: ${t('rdata.buildingLead')} `
+  + `${t('calc.research.max')} ${gebaeude.maxLevel}`
+  + (zeigt.wood ? `, ${zahl(gesamt.wood)} ${t('calc.building.wood')}` : '')
+  + (zeigt.time ? `, ${dauer(gesamt.time)} ${t('rdata.buildTime')}` : '') + '.';
+
+const rechnerPfad = getLocalizedPath('tools/building', lang);
+const fuellen = (s: string, w: Record<string, string>) =>
+  s.replace(/\{(\w+)\}/g, (_, k) => w[k] ?? `{${k}}`);
+
+const ressourcenText = [
+  zeigt.wood  ? `${zahl(gesamt.wood)} ${t('calc.building.wood')}`   : '',
+  zeigt.food  ? `${zahl(gesamt.food)} ${t('calc.building.food')}`   : '',
+  zeigt.steel ? `${zahl(gesamt.steel)} ${t('calc.building.steel')}` : '',
+  zeigt.zent  ? `${zahl(gesamt.zent)} ${t('calc.building.zinc')}`   : '',
+].filter(Boolean).join(', ');
+
+const werte = {
+  n: name, m: String(gebaeude.maxLevel), r: ressourcenText, t: dauer(gesamt.time),
+};
+const faq = [{ f: fuellen(t('rdata.faqBuildQ'), werte), a: fuellen(t('rdata.faqBuildA'), werte) }];
+const faqSchema = {
+  '@context': 'https://schema.org', '@type': 'FAQPage',
+  mainEntity: faq.map(x => ({ '@type': 'Question', name: x.f,
+    acceptedAnswer: { '@type': 'Answer', text: x.a } })),
+};
+
+const breadcrumbItems = [
+  { label: t('nav.home'), href: getLocalizedPath('', lang) },
+  { label: t('nav.tools'), href: getLocalizedPath('tools', lang) },
+  { label: t('tools.building.title'), href: rechnerPfad },
+  { label: name },
+];
+
+const datensatzSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Dataset',
+  name: `${name} — ${t('rdata.buildingsHeading')}`,
+  description: beschreibung,
+  inLanguage: lang,
+  isAccessibleForFree: true,
+  creator: { '@type': 'Organization', name: 'Wild Hoggs', url: 'https://wild-hoggs.com/' },
+  about: { '@type': 'VideoGame', name: SPIEL, applicationCategory: 'Game' },
+  variableMeasured: [
+    t('calc.building.wood'), t('calc.building.food'), t('calc.building.steel'),
+    t('rdata.buildTime'), t('rdata.power'),
+  ],
+};
+
+// Die uebrigen Gebaeude zum Weiterklicken — sonst haengt jede dieser Seiten
+// allein am Rechner.
+const weitere = alle.filter(b => b.id !== gebaeude.id);
+---
+
+<PageLayout title={seitenTitel} description={beschreibung} breadcrumbs={breadcrumbItems}>
+  <script type="application/ld+json" set:html={JSON.stringify(datensatzSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <article class="rdata">
+    <h1>{name} — {t('rdata.buildingsHeading')}</h1>
+    <p class="rdata-lead">{t('rdata.buildingLead')} <strong>{SPIEL}</strong>.</p>
+
+    <ul class="rdata-summe">
+      <li><span>{gebaeude.maxLevel}</span> {t('rdata.levels')}</li>
+      {zeigt.wood  && <li><span>{zahl(gesamt.wood)}</span> {t('calc.building.wood')}</li>}
+      {zeigt.food  && <li><span>{zahl(gesamt.food)}</span> {t('calc.building.food')}</li>}
+      {zeigt.steel && <li><span>{zahl(gesamt.steel)}</span> {t('calc.building.steel')}</li>}
+      {zeigt.zent  && <li><span>{zahl(gesamt.zent)}</span> {t('calc.building.zinc')}</li>}
+      {zeigt.time  && <li><span>{dauer(gesamt.time)}</span> {t('rdata.buildTime')}</li>}
+      {endKraft > 0 && <li><span>{zahl(endKraft)}</span> {t('rdata.power')}</li>}
+    </ul>
+
+    <p class="rdata-zum-rechner"><a href={rechnerPfad}>&larr; {t('rdata.backToCalc')}</a></p>
+
+    <div class="rdata-tabelle-rahmen">
+      <table class="rdata-tabelle">
+        <thead>
+          <tr>
+            <th class="num">{t('calc.research.level')}</th>
+            {zeigt.wood  && <th class="num">{t('calc.building.wood')}</th>}
+            {zeigt.food  && <th class="num">{t('calc.building.food')}</th>}
+            {zeigt.steel && <th class="num">{t('calc.building.steel')}</th>}
+            {zeigt.zent  && <th class="num">{t('calc.building.zinc')}</th>}
+            {zeigt.time  && <th class="num">{t('rdata.buildTime')}</th>}
+            {zeigt.power && <th class="num">{t('rdata.power')}</th>}
+            {zeigt.hero  && <th class="num">{t('rdata.heroCap')}</th>}
+            {zeigt.req   && <th>{t('rdata.requires')}</th>}
+          </tr>
+        </thead>
+        <tbody>
+          {stufen.map(c => (
+            <tr>
+              <th scope="row" class="num">{c.level}</th>
+              {zeigt.wood  && <td class="num">{c.wood  ? zahl(c.wood)  : '—'}</td>}
+              {zeigt.food  && <td class="num">{c.food  ? zahl(c.food)  : '—'}</td>}
+              {zeigt.steel && <td class="num">{c.steel ? zahl(c.steel) : '—'}</td>}
+              {zeigt.zent  && <td class="num">{c.zent  ? zahl(c.zent)  : '—'}</td>}
+              {zeigt.time  && <td class="num">{dauer(c.time)}</td>}
+              {zeigt.power && <td class="num">{c.power ? zahl(c.power) : '—'}</td>}
+              {zeigt.hero  && <td class="num">{c.heroLevelCap ? c.heroLevelCap : '—'}</td>}
+              {zeigt.req && (
+                <td>
+                  {(c.requires?.length ?? 0) === 0
+                    ? '—'
+                    : c.requires!.map(r => `${nameVon(r.id)} ${t('calc.research.level')} ${r.level}`).join(', ')}
+                </td>
+              )}
+            </tr>
+          ))}
+        </tbody>
+        <tfoot>
+          <tr>
+            <th scope="row" class="num">{t('rdata.total')}</th>
+            {zeigt.wood  && <td class="num">{zahl(gesamt.wood)}</td>}
+            {zeigt.food  && <td class="num">{zahl(gesamt.food)}</td>}
+            {zeigt.steel && <td class="num">{zahl(gesamt.steel)}</td>}
+            {zeigt.zent  && <td class="num">{zahl(gesamt.zent)}</td>}
+            {zeigt.time  && <td class="num">{dauer(gesamt.time)}</td>}
+            {zeigt.power && <td class="num">{endKraft ? zahl(endKraft) : '—'}</td>}
+            {zeigt.hero  && <td class="num"></td>}
+            {zeigt.req   && <td></td>}
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <h2>{t('rdata.faqTitle')}</h2>
+    <dl class="rdata-faq">
+      {faq.map(x => (<><dt>{x.f}</dt><dd>{x.a}</dd></>))}
+    </dl>
+
+    <h2>{t('tools.building.title')}</h2>
+    <ul class="rdata-weitere">
+      {weitere.map(b => (
+        <li><a href={getLocalizedPath(`tools/building/${b.id}/costs`, lang)}>{nameVon(b.id)}</a></li>
+      ))}
+    </ul>
+
+    <p class="rdata-zum-rechner"><a href={rechnerPfad}>{t('rdata.backToCalc')} &rarr;</a></p>
+  </article>
+</PageLayout>
+
+<style>
+  .rdata { max-width: 1100px; margin: 0 auto; padding: 1rem 0 3rem; }
+  .rdata h1 { font-size: 1.6rem; color: #ffa500; margin: 0 0 0.5rem; }
+  .rdata h2 { font-size: 1.2rem; color: #ffa500; margin: 2.5rem 0 0.5rem; }
+  .rdata-lead { color: rgba(255,255,255,0.75); line-height: 1.6; margin: 0 0 1rem; }
+  .rdata-summe { list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0; margin: 0 0 1rem; }
+  .rdata-summe li {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,165,0,0.18);
+    border-radius: 8px; padding: 0.35rem 0.7rem; font-size: 0.85rem; color: rgba(255,255,255,0.7);
+  }
+  .rdata-summe span { color: #ffa500; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .rdata-zum-rechner { margin: 1rem 0; }
+  .rdata-zum-rechner a { color: #ffa500; text-decoration: none; border-bottom: 1px dashed rgba(255,165,0,0.6); }
+  .rdata-tabelle-rahmen { overflow-x: auto; border: 1px solid rgba(255,165,0,0.15); border-radius: 10px; }
+  .rdata-tabelle { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  .rdata-tabelle th, .rdata-tabelle td {
+    padding: 0.4rem 0.7rem; text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.06); color: rgba(255,255,255,0.8);
+  }
+  .rdata-tabelle thead th {
+    color: #ffa500; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em;
+    white-space: nowrap; background: rgba(255,165,0,0.06);
+  }
+  .rdata-tabelle tbody th[scope='row'] { color: rgba(255,255,255,0.95); font-weight: 600; }
+  .rdata-tabelle .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .rdata-tabelle tfoot th, .rdata-tabelle tfoot td {
+    border-top: 2px solid rgba(255,165,0,0.3); border-bottom: none; color: #ffa500; font-weight: 700;
+  }
+
+  .rdata-weitere {
+    list-style: none; padding: 0; margin: 0;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 0.3rem 1rem;
+  }
+  .rdata-weitere a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.85rem; }
+  .rdata-weitere a:hover { color: #ffa500; }
+
+  .rdata-faq {
+    margin: 0;
+    border-left: 2px solid rgba(255, 165, 0, 0.25);
+    padding-left: 1rem;
+  }
+  .rdata-faq dt { color: #ffa500; font-weight: 600; margin-top: 1rem; }
+  .rdata-faq dd { margin: 0.25rem 0 0; color: rgba(255,255,255,0.75); line-height: 1.6; }
+
+  @media (max-width: 768px) {
+    .rdata { padding: 0.5rem 0 2rem; }
+    .rdata h1 { font-size: 1.25rem; }
+    .rdata-tabelle { font-size: 0.78rem; }
+  }
+</style>

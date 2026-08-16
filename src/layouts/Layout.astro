@@ -108,6 +108,21 @@ const websiteSchema = {
   // Sprachkuerzel nach BCP-47 ('de', 'zh-TW'), nicht im Locale-Format des
   // Open Graph ('de_DE'). Letzteres gehoert in og:locale und stand hier falsch.
   inLanguage: Object.keys(languages),
+  // Worum es auf dieser Seite ueberhaupt geht.
+  //
+  // Der vollstaendige Name des Spiels kam auf keiner der 511 Seiten vor — im
+  // Text steht durchgaengig "Last Z" oder "Last-Z" mit Bindestrich, eine
+  // Schreibweise, die sonst niemand benutzt. Wer Quellen zu "Last Z: Survival
+  // Shooter" sammelt, fand die exakte Wortfolge hier also nirgends. Hier steht
+  // sie jetzt, maschinenlesbar und auf jeder Seite, ohne dass sich am
+  // Sichtbaren etwas aendert.
+  about: {
+    '@type': 'VideoGame',
+    name: 'Last Z: Survival Shooter',
+    alternateName: ['Last Z', 'LastZ'],
+    applicationCategory: 'Game',
+    gamePlatform: ['Android', 'iOS'],
+  },
   // Frueher stand hier eine SearchAction auf /tools?q=… — eine Suche, die es
   // auf der Seite nicht gibt. Google haette sie als Suchfeld in den Ergebnissen
   // anbieten koennen, und wer sie benutzt haette, waere auf einer Seite gelandet,
