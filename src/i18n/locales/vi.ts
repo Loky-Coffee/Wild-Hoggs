@@ -628,8 +628,8 @@ export default {
   'research.army_building.tactical-cover': 'Ẩn nấp chiến thuật',
   'research.army_building.weapon-upgrading': 'Nâng cấp vũ khí',
   // SEO-optimized Meta-Tags & Titles
-  'seo.home.title': "Wild Hoggs | Last-Z công cụ & hướng dẫn — Máy chủ 395",
-  'seo.home.description': "Trung tâm tài nguyên Last-Z: hướng dẫn tướng, công cụ tính, thông tin sự kiện và mã quà — bởi Ediva, người chơi máy chủ 395.",
+  'seo.home.title': 'Last Z: Survival Shooter — Máy tính, Mã quà & Tướng | Wild Hoggs',
+  'seo.home.description': 'Máy tính miễn phí cho nghiên cứu, công trình, xe tăng và đoàn xe, bảng chi phí đầy đủ, mã quà mới nhất và danh sách tướng cho Last Z: Survival Shooter.',
   'seo.home.h1.brand': 'Wild Hoggs',
   'seo.home.h1.subtitle': 'Last-Z Tools, Guides & Events',
   'seo.heroes.title': 'Wild Hoggs | Tier List Anh Hùng Last Z 2026',

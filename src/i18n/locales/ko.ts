@@ -628,8 +628,8 @@ export default {
   'research.army_building.tactical-cover': '전술 엄폐',
   'research.army_building.weapon-upgrading': '무기 개량',
   // SEO-optimized Meta-Tags & Titles
-  'seo.home.title': "Wild Hoggs | Last-Z 도구·공략·이벤트 — 서버 395",
-  'seo.home.description': "Last-Z 자료 허브: 영웅 공략, 계산기, 이벤트 정보, 기프트 코드 — 서버 395 플레이어 Ediva가 운영합니다.",
+  'seo.home.title': 'Last Z: Survival Shooter 계산기·기프트 코드·영웅 | Wild Hoggs',
+  'seo.home.description': 'Last Z: Survival Shooter 연구·건물·탱크·캐러밴 계산기, 전체 비용표, 최신 기프트 코드, 영웅 목록을 무료로 제공합니다.',
   'seo.home.h1.brand': 'Wild Hoggs',
   'seo.home.h1.subtitle': 'Last-Z Tools, Guides & Events',
   'seo.heroes.title': 'Wild Hoggs | Last Z 영웅 티어 리스트 2026 - 최고의 캐릭터',

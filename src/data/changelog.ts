@@ -27,6 +27,11 @@ export const changelog: ChangelogEntry[] = [
   // ── August 2026 ─────────────────────────────────────────────────────────
   {
     date: '2026-08-16',
+    time: '21:10',
+    text: 'On Arabic, the **language menu no longer hangs off the screen**. It was pinned to the right edge of its button, which on right-to-left pages puts it 43 pixels past the left edge of the window \u2014 enough to give every Arabic page a horizontal scrollbar',
+  },
+  {
+    date: '2026-08-16',
     time: '20:40',
     text: 'The four calculators are now **in the menu bar itself** \u2014 Research, Buildings, Tank and Caravan, one click instead of two. The bar got a proper look while at it: equal-width buttons in the site\u2019s orange instead of plain text, and the page you are on is filled in. On phones the menu keeps a Home entry, because the Wild Hoggs wordmark is hidden there',
   },

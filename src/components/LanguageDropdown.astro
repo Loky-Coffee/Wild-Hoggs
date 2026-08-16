@@ -116,7 +116,13 @@ const getLanguageUrl = (targetLang: string) => {
   .dropdown-menu {
     position: absolute;
     top: calc(100% + 0.5rem);
-    right: 0;
+    /* inset-inline-end statt right: Bei rechtslaeufiger Schrift (Arabisch)
+       kehrt der Browser `right` nicht um — das 200 px breite Menue haengte
+       dort am rechten Rand seines Knopfes und ragte damit 43 px ueber den
+       linken Bildschirmrand hinaus. Die ganze Seite bekam dadurch einen
+       waagerechten Scrollbalken. `inset-inline-end` folgt der Leserichtung
+       und sitzt in beiden Faellen an der richtigen Kante. */
+    inset-inline-end: 0;
     min-width: 200px;
     max-height: 400px;
     overflow-y: auto;
@@ -211,8 +217,8 @@ const getLanguageUrl = (targetLang: string) => {
     }
 
     .dropdown-menu {
-      right: 0;
-      left: auto;
+      inset-inline-end: 0;
+      inset-inline-start: auto;
       min-width: 180px;
     }
 

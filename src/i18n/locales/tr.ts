@@ -628,8 +628,8 @@ export default {
   'research.army_building.tactical-cover': 'Taktik Siper',
   'research.army_building.weapon-upgrading': 'Silah Yükseltmesi',
   // SEO-optimized Meta-Tags & Titles
-  'seo.home.title': "Wild Hoggs | Last-Z araçlar & rehberler — Sunucu 395",
-  'seo.home.description': "Last-Z kaynak merkezin: kahraman rehberleri, hesaplayıcılar, etkinlik bilgileri ve hediye kodları — 395 sunucusundan Ediva.",
+  'seo.home.title': 'Last Z: Survival Shooter Hesaplayıcılar, Kodlar ve Kahramanlar | Wild Hoggs',
+  'seo.home.description': 'Last Z: Survival Shooter için ücretsiz araştırma, bina, tank ve kervan hesaplayıcıları, eksiksiz maliyet tabloları, güncel hediye kodları ve kahraman listesi.',
   'seo.home.h1.brand': 'Wild Hoggs',
   'seo.home.h1.subtitle': 'Last-Z Tools, Guides & Events',
   'seo.heroes.title': 'Wild Hoggs | Last Z Kahraman Tier Listesi 2026',

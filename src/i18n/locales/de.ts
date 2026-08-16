@@ -628,8 +628,8 @@ export default {
   'research.army_building.tactical-cover': 'Taktische Deckung',
   'research.army_building.weapon-upgrading': 'Waffenverbesserung',
   // SEO-optimierte Meta-Tags & Titles
-  'seo.home.title': "Wild Hoggs | Last-Z Rechner, Guides & Events — Server 395",
-  'seo.home.description': "Dein Last-Z Ressourcen-Hub: Helden-Guides, Rechner, Event-Infos und Reward-Codes — erstellt von Ediva, Spieler auf Server 395.",
+  'seo.home.title': 'Last Z: Survival Shooter Rechner, Codes & Helden | Wild Hoggs',
+  'seo.home.description': 'Kostenlose Rechner für Forschung, Gebäude, Panzer und Karawane, vollständige Kostentabellen, aktuelle Gift-Codes und Helden-Übersicht für Last Z: Survival Shooter.',
   'seo.home.h1.brand': 'Wild Hoggs',
   'seo.home.h1.subtitle': 'Last-Z Tools, Guides & Events',
   'seo.heroes.title': 'Wild Hoggs | Last Z Helden Tier List 2026 - Beste Charaktere',

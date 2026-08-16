@@ -758,8 +758,8 @@ export default {
   'research.army_building.tactical-cover': 'Tactical Cover',
   'research.army_building.weapon-upgrading': 'Weapon Upgrading',
   // SEO-optimierte Meta-Tags & Titles
-  'seo.home.title': 'Wild Hoggs | Last-Z Tools, Guides & Events — Server 395',
-  'seo.home.description': 'Your Last-Z resource hub: hero guides, calculators, event info, and reward codes — built by Ediva, a player on Server 395.',
+  'seo.home.title': 'Last Z: Survival Shooter Calculators, Codes & Heroes | Wild Hoggs',
+  'seo.home.description': 'Free calculators for research, buildings, tank and caravan, complete cost tables, current gift codes and a hero overview for Last Z: Survival Shooter.',
   'seo.home.h1.brand': 'Wild Hoggs',
   'seo.home.h1.subtitle': 'Last-Z Tools, Guides & Events',
   'seo.heroes.title': 'Wild Hoggs | Last Z Heroes Tier List 2026',

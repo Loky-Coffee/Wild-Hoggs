@@ -628,8 +628,8 @@ export default {
   'research.army_building.tactical-cover': 'กำบังเชิงยุทธวิธี',
   'research.army_building.weapon-upgrading': 'อัปเกรดอาวุธ',
   // SEO-optimized Meta-Tags & Titles
-  'seo.home.title': "Wild Hoggs | Last-Z เครื่องมือและคู่มือ — เซิร์ฟเวอร์ 395",
-  'seo.home.description': "ศูนย์รวมข้อมูล Last-Z: คู่มือฮีโร่ เครื่องคำนวณ ข้อมูลอีเวนต์ และโค้ดของรางวัล — โดย Ediva ผู้เล่นเซิร์ฟเวอร์ 395",
+  'seo.home.title': 'Last Z: Survival Shooter เครื่องคำนวณ โค้ด และฮีโร่ | Wild Hoggs',
+  'seo.home.description': 'เครื่องคำนวณฟรีสำหรับการวิจัย อาคาร รถถัง และคาราวาน พร้อมตารางค่าใช้จ่ายครบถ้วน โค้ดของขวัญล่าสุด และรายชื่อฮีโร่ของ Last Z: Survival Shooter',
   'seo.home.h1.brand': 'Wild Hoggs',
   'seo.home.h1.subtitle': 'Last-Z Tools, Guides & Events',
   'seo.heroes.title': 'Wild Hoggs | Tier List ฮีโร่ Last Z 2026',

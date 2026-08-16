@@ -628,8 +628,8 @@ export default {
   'research.army_building.tactical-cover': '战术掩护',
   'research.army_building.weapon-upgrading': '武器升级',
   // SEO-优化 Meta-Tags & Titles
-  'seo.home.title': "Wild Hoggs | Last-Z 工具、攻略与活动 — 服务器 395",
-  'seo.home.description': "Last-Z 资源中心：英雄攻略、计算器、活动信息与礼包码 — 由服务器 395 玩家 Ediva 制作。",
+  'seo.home.title': 'Last Z: Survival Shooter 计算器、礼包码与英雄 | Wild Hoggs',
+  'seo.home.description': 'Last Z: Survival Shooter 的免费计算器：研究、建筑、坦克与商队，完整消耗表、最新礼包码和英雄一览。',
   'seo.home.h1.brand': 'Wild Hoggs',
   'seo.home.h1.subtitle': 'Last-Z Tools, Guides & Events',
   'seo.heroes.title': 'Wild Hoggs | Last Z 英雄梯度榜 2026 - 最强角色',

@@ -628,8 +628,8 @@ export default {
   'research.army_building.tactical-cover': 'Perlindungan taktis',
   'research.army_building.weapon-upgrading': 'Peningkatan senjata',
   // SEO-optimized Meta-Tags & Titles
-  'seo.home.title': "Wild Hoggs | Last-Z alat, panduan & event — Server 395",
-  'seo.home.description': "Pusat sumber Last-Z: panduan hero, kalkulator, info event, dan kode hadiah — dibuat oleh Ediva, pemain di server 395.",
+  'seo.home.title': 'Last Z: Survival Shooter Kalkulator, Kode & Hero | Wild Hoggs',
+  'seo.home.description': 'Kalkulator gratis untuk riset, bangunan, tank dan karavan, tabel biaya lengkap, kode hadiah terbaru dan daftar hero untuk Last Z: Survival Shooter.',
   'seo.home.h1.brand': 'Wild Hoggs',
   'seo.home.h1.subtitle': 'Last-Z Tools, Guides & Events',
   'seo.heroes.title': 'Wild Hoggs | Tier List Hero Last Z 2026 - Karakter Terbaik',

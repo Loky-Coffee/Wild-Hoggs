@@ -628,8 +628,8 @@ export default {
   'research.army_building.tactical-cover': '戦術的掩護',
   'research.army_building.weapon-upgrading': '武器強化',
   // SEO-optimized Meta-Tags & Titles
-  'seo.home.title': "Wild Hoggs | Last-Z ツール・攻略・イベント — サーバー395",
-  'seo.home.description': "Last-Z の情報拠点：ヒーロー攻略、計算ツール、イベント情報、ギフトコード。サーバー395のプレイヤー Ediva が運営。",
+  'seo.home.title': 'Last Z: Survival Shooter 計算機・ギフトコード・ヒーロー | Wild Hoggs',
+  'seo.home.description': 'Last Z: Survival Shooter の研究・建物・タンク・キャラバン計算機、全コスト表、最新ギフトコード、ヒーロー一覧。すべて無料。',
   'seo.home.h1.brand': 'Wild Hoggs',
   'seo.home.h1.subtitle': 'Last-Z Tools, Guides & Events',
   'seo.heroes.title': 'Wild Hoggs | Last Z ヒーローティアリスト 2026 - 最強キャラクター',

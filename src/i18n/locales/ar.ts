@@ -628,8 +628,8 @@ export default {
   'research.army_building.tactical-cover': 'غطاء تكتيكي',
   'research.army_building.weapon-upgrading': 'ترقية السلاح',
   // SEO-optimized Meta-Tags & Titles
-  'seo.home.title': "Wild Hoggs | أدوات وأدلة وفعاليات Last-Z — الخادم 395",
-  'seo.home.description': "مركز موارد Last-Z: أدلة الأبطال، الحاسبات، أخبار الفعاليات وأكواد الهدايا — من إعداد Ediva، لاعب على الخادم 395.",
+  'seo.home.title': 'Last Z: Survival Shooter — حاسبات وأكواد وأبطال | Wild Hoggs',
+  'seo.home.description': 'حاسبات مجانية للبحث والمباني والدبابة والقافلة، وجداول تكاليف كاملة، وأكواد الهدايا الحالية، ونظرة عامة على الأبطال في Last Z: Survival Shooter.',
   'seo.home.h1.brand': 'Wild Hoggs',
   'seo.home.h1.subtitle': 'Last-Z Tools, Guides & Events',
   'seo.heroes.title': 'Wild Hoggs | قائمة تصنيف أبطال Last Z 2026 - أفضل الشخصيات',
