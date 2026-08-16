@@ -21,6 +21,15 @@
   #
   # Pruefsummen und ClientRouter schliessen einander damit aus. Wer sie
   # zurueckholen will, muss zuerst den ClientRouter abloesen.
+  #
+  # `data:` in script-src gehoert ebenfalls zum ClientRouter: Nach jedem
+  # Seitenwechsel haengt er ein LEERES <script type="module"
+  # src="data:application/javascript,"> an den Body. Das fuehrt keinen Code aus
+  # — hinter dem Komma steht nichts —, sondern stoesst nur die Verarbeitung der
+  # Modulwarteschlange an, damit die Skripte der neuen Seite laufen. Ohne
+  # `data:` blockiert die CSP genau das, und zwar bei jeder Navigation.
+  # Zusaetzliches Risiko bringt es hier nicht: Wer HTML einschleusen koennte,
+  # duerfte wegen 'unsafe-inline' ohnehin schon <script> schreiben.
   # style-src behaelt 'unsafe-inline': Preact setzt style="..."-Attribute (Fortschritts-
   # balken, Diagramme), und dafuer helfen Pruefsummen nicht.
   # cloudflareinsights.com: Cloudflare injiziert automatisch beacon.min.js auf allen CF Pages-Sites.
@@ -44,7 +53,7 @@
   # verschlossener Tuer: In der zweiten Zeile unten die Pruefsummen durch
   # 'unsafe-inline' ersetzen. Das nimmt den Schutz zurueck, aber oeffnet sofort.
   #
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://static.cloudflareinsights.com wss://wild-hoggs-chat-hub.alatzas5564.workers.dev; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' data: https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://static.cloudflareinsights.com wss://wild-hoggs-chat-hub.alatzas5564.workers.dev; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
   # levelgeeks.org wurde entfernt - alle Bilder sind self-hosted
   # 365 Tage statt 180: Mit 'preload' verlangt hstspreload.org mindestens ein
   # Jahr, sonst wird die Domain gar nicht erst in die Liste aufgenommen —
