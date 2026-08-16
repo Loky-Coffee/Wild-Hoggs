@@ -39,6 +39,7 @@ export default {
   'tools.tank.description': 'Calcule chaves para modificações de tanque e desbloqueios de veículos',
   'tools.research.title': 'Last Z Calculadora de pesquisa',
   'rdata.heading': 'Todos os valores num relance',
+  'rdata.allTrees': 'As {c} árvores juntas custam {b} emblemas, {s} de energia e {z} centrifugadoras para completar tudo.',
   'rdata.faqCostQ': 'Quantos emblemas custa a árvore {n} inteira?',
   'rdata.faqCostA': 'Levar cada tecnologia de {n} ao nível máximo custa {b} emblemas. A tabela acima mostra o que cada uma precisa.',
   'rdata.faqTimeQ': 'Quanto tempo demora a pesquisa de {n}?',

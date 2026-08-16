@@ -39,6 +39,7 @@ export default {
   'tools.tank.description': '計算坦克改裝和車輛解鎖所需扳手',
   'tools.research.title': 'Last Z 研究計算器',
   'rdata.heading': '全部數據一覽',
+  'rdata.allTrees': '全部 {c} 棵科技樹升滿共需徽章 {b}、電力 {s}、離心機 {z}。',
   'rdata.faqCostQ': '{n} 整棵科技樹需要多少徽章？',
   'rdata.faqCostA': '把 {n} 的每項科技升滿需要 {b} 枚徽章。各項的具體消耗見上方表格。',
   'rdata.faqTimeQ': '{n} 的研究需要多久？',

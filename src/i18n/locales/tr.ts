@@ -39,6 +39,7 @@ export default {
   'tools.tank.description': 'Tank modifikasyonları ve araç kilidi açma için anahtar hesaplayın',
   'tools.research.title': 'Last Z Araştırma Hesaplayıcı',
   'rdata.heading': 'Tüm değerler bir bakışta',
+  'rdata.allTrees': '{c} ağacın tamamı, hepsini sonuna kadar açmak için {b} rozet, {s} enerji ve {z} santrifüj gerektirir.',
   'rdata.faqCostQ': '{n} ağacının tamamı kaç rozet tutar?',
   'rdata.faqCostA': '{n} içindeki her teknolojiyi en üst seviyeye çıkarmak {b} rozet tutar. Tek tek ne gerektiği yukarıdaki tabloda.',
   'rdata.faqTimeQ': '{n} araştırması ne kadar sürer?',

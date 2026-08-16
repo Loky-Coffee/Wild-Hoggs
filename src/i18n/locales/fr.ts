@@ -39,6 +39,7 @@ export default {
   'tools.tank.description': 'Calculez les clés pour les modifications de tank et les déverrouillages de véhicules',
   'tools.research.title': 'Last Z Calculateur de recherche',
   'rdata.heading': 'Toutes les valeurs en un coup d\'œil',
+  'rdata.allTrees': 'Les {c} arbres réunis coûtent {b} badges, {s} d\'énergie et {z} centrifugeuses pour tout monter au maximum.',
   'rdata.faqCostQ': 'Combien de badges coûte l\'arbre {n} au complet ?',
   'rdata.faqCostA': 'Monter chaque technologie de {n} au niveau maximum coûte {b} badges. Le détail par technologie figure dans le tableau ci-dessus.',
   'rdata.faqTimeQ': 'Combien de temps prend la recherche de {n} ?',

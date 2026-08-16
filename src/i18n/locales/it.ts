@@ -39,6 +39,7 @@ export default {
   'tools.tank.description': 'Calcola le chiavi per le modifiche del tank e gli sblocchi dei veicoli',
   'tools.research.title': 'Last Z Calcolatore ricerche',
   'rdata.heading': 'Tutti i valori in sintesi',
+  'rdata.allTrees': 'Tutti i {c} alberi insieme costano {b} distintivi, {s} di energia e {z} centrifughe per completarli.',
   'rdata.faqCostQ': 'Quanti distintivi costa l\'intero albero {n}?',
   'rdata.faqCostA': 'Portare ogni tecnologia di {n} al livello massimo costa {b} distintivi. La tabella sopra mostra quanto serve per ciascuna.',
   'rdata.faqTimeQ': 'Quanto dura la ricerca di {n}?',

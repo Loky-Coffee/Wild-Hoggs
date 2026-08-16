@@ -39,6 +39,7 @@ export default {
   'tools.tank.description': 'タンク改造と車両アンロックに必要なレンチを計算',
   'tools.research.title': 'Last Z 研究計算機',
   'rdata.heading': '全データ一覧',
+  'rdata.allTrees': '{c} 本のツリーをすべて最大にするには、バッジ {b} 個、電力 {s}、遠心分離機 {z} が必要です。',
   'rdata.faqCostQ': '{n} ツリー全体には何個のバッジが必要ですか？',
   'rdata.faqCostA': '{n} の全テクノロジーを最大レベルにするには {b} 個のバッジが必要です。個別の必要数は上の表にあります。',
   'rdata.faqTimeQ': '{n} の研究にはどれくらいかかりますか？',

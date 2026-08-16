@@ -39,6 +39,7 @@ export default {
   'tools.tank.description': 'Hitung kunci untuk modifikasi tank dan pembukaan kendaraan',
   'tools.research.title': 'Last Z Kalkulator Riset',
   'rdata.heading': 'Semua nilai sekilas',
+  'rdata.allTrees': 'Seluruh {c} pohon memerlukan {b} lencana, {s} daya, dan {z} sentrifus untuk dimaksimalkan.',
   'rdata.faqCostQ': 'Berapa lencana yang dibutuhkan seluruh pohon {n}?',
   'rdata.faqCostA': 'Menaikkan setiap teknologi di {n} ke level tertinggi memakan {b} lencana. Rincian per teknologi ada di tabel atas.',
   'rdata.faqTimeQ': 'Berapa lama riset {n} berlangsung?',

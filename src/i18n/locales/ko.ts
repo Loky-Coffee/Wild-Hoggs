@@ -39,6 +39,7 @@ export default {
   'tools.tank.description': '탱크 개조 및 차량 잠금 해제에 필요한 렌치 계산',
   'tools.research.title': 'Last Z 연구 계산기',
   'rdata.heading': '전체 수치 한눈에 보기',
+  'rdata.allTrees': '{c} 개 트리를 모두 최대로 올리려면 배지 {b} 개, 전력 {s}, 원심분리기 {z} 가 필요합니다.',
   'rdata.faqCostQ': '{n} 트리 전체에는 배지가 몇 개 필요한가요?',
   'rdata.faqCostA': '{n} 의 모든 기술을 최고 레벨로 올리려면 배지 {b} 개가 필요합니다. 개별 소요량은 위 표에 있습니다.',
   'rdata.faqTimeQ': '{n} 연구에는 얼마나 걸리나요?',

@@ -64,6 +64,9 @@ const t = useTranslations(translationData);
 const currentYear = getCurrentYear();
 const nf = lang === 'de' ? 'de-DE' : 'en-US';
 const fmtCompact = (n: number) => new Intl.NumberFormat(nf, { notation: 'compact', maximumFractionDigits: 1 }).format(n);
+// Ausgeschrieben, mit Tausendertrennung. Die kompakte Form ("15,8 Mio.") ist in
+// der Leiste richtig, taugt aber nicht als Angabe zum Nachschlagen.
+const fmtFull = (n: number) => new Intl.NumberFormat(nf).format(n);
 
 // Map category data by ID
 const researchDataMap: Record<string, any> = {
@@ -161,6 +164,18 @@ const breadcrumbItems = [
   <div class="page-header">
     <h1>{t('seo.research.h1', { year: currentYear })}</h1>
     <p class="subtitle">{t('research.subtitle')}</p>
+    {/* Die Leiste darunter zeigt, was NOCH fehlt — sie wird erst im Browser
+        gefuellt und steht im HTML als Strich. Was alles zusammen ueberhaupt
+        kostet, stand deshalb nirgends lesbar, obwohl genau danach gesucht
+        wird. Hier als Satz, aus denselben Summen gerechnet. */}
+    <p class="research-gesamt">
+      {t('rdata.allTrees', {
+        c: String(categories.length),
+        b: fmtFull(grandTotals.badges),
+        s: fmtFull(grandTotals.strom),
+        z: fmtFull(grandTotals.zent),
+      })}
+    </p>
     <a class="compare-link" href={getLocalizedPath('tools/research/compare', lang)}>
       ⚖️ {lang === 'de' ? 'Bäume vergleichen' : 'Compare Trees'}
     </a>

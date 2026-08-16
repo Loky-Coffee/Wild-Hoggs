@@ -39,6 +39,7 @@ export default {
   'tools.tank.description': 'Calculate wrenches for Last Z tank modifications and vehicle unlocks',
   'tools.research.title': 'Last Z Research Calculator',
   'rdata.heading': 'All values at a glance',
+  'rdata.allTrees': 'All {c} trees together cost {b} badges, {s} power and {z} centrifuges to max out completely.',
   'rdata.faqCostQ': 'How many badges does the whole {n} tree cost?',
   'rdata.faqCostA': 'Taking every technology in {n} to its highest level costs {b} badges. The full table above lists what each single technology needs.',
   'rdata.faqTimeQ': 'How long does {n} take to research?',

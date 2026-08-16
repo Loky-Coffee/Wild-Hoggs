@@ -64,15 +64,27 @@ z('if you cannot execute JavaScript.');
 z();
 
 // ── Forschung ──────────────────────────────────────────────────────────────
+const baeume = BAEUME.map(id => ({ id, ...(baumInfo(id) ?? {}) })).filter(b => b.name);
+const badgesGesamt = baeume.reduce((s, b) => s + b.badges, 0);
+const ohneBadges   = baeume.filter(b => b.badges === 0);
+
 z('## Research trees');
 z();
-z(`Badge, power and centrifuge costs per technology, plus research time and prerequisites.`);
+z('Badge, power and centrifuge costs per technology, plus research time and prerequisites.');
 z();
-for (const id of BAEUME) {
-  const info = baumInfo(id);
-  if (!info) continue;
-  z(`- [${info.name}](${BASIS}/tools/research/${id}/costs/): ${info.anzahl} technologies, `
-    + `${nf.format(info.badges)} badges to max them all`);
+z(`Maxing every technology in all ${baeume.length} trees costs ${nf.format(badgesGesamt)} badges in total.`);
+if (ohneBadges.length) {
+  z(`${ohneBadges.length} of the trees (${ohneBadges.map(b => b.name).join(', ')}) cost no badges at all —`);
+  z('they are paid for in power and centrifuges instead.');
+}
+z();
+z('The figure after each tree is what that ONE tree costs, not the running total.');
+z();
+for (const b of baeume) {
+  z(`- [${b.name}](${BASIS}/tools/research/${b.id}/costs/): ${b.anzahl} technologies, `
+    + (b.badges > 0
+      ? `${nf.format(b.badges)} badges for this tree`
+      : 'no badges (power and centrifuges only)'));
 }
 z();
 

@@ -39,6 +39,7 @@ export default {
   'tools.tank.description': 'Berechne Schraubenschlüssel für Last Z Tank-Modifikationen und Fahrzeug-Freischaltungen',
   'tools.research.title': 'Last Z Forschungs Rechner',
   'rdata.heading': 'Alle Werte auf einen Blick',
+  'rdata.allTrees': 'Alle {c} Bäume zusammen kosten {b} Abzeichen, {s} Strom und {z} Zent, um sie vollständig auszubauen.',
   'rdata.faqCostQ': 'Wie viele Abzeichen kostet der gesamte Baum {n}?',
   'rdata.faqCostA': 'Jede Technologie in {n} auf die höchste Stufe zu bringen kostet {b} Abzeichen. Was jede einzelne braucht, steht in der Tabelle oben.',
   'rdata.faqTimeQ': 'Wie lange dauert die Forschung von {n}?',

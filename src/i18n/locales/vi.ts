@@ -39,6 +39,7 @@ export default {
   'tools.tank.description': 'Tính cờ lê cho sửa đổi xe tăng và mở khóa phương tiện',
   'tools.research.title': 'Last Z Bộ tính nghiên cứu',
   'rdata.heading': 'Toàn bộ số liệu',
+  'rdata.allTrees': 'Toàn bộ {c} nhánh cần {b} huy hiệu, {s} năng lượng và {z} máy ly tâm để nâng tối đa.',
   'rdata.faqCostQ': 'Toàn bộ nhánh {n} tốn bao nhiêu huy hiệu?',
   'rdata.faqCostA': 'Nâng mọi công nghệ trong {n} lên cấp cao nhất tốn {b} huy hiệu. Chi tiết từng công nghệ có trong bảng phía trên.',
   'rdata.faqTimeQ': 'Nghiên cứu {n} mất bao lâu?',
