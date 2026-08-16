@@ -27,6 +27,11 @@ export const changelog: ChangelogEntry[] = [
   // ── August 2026 ─────────────────────────────────────────────────────────
   {
     date: '2026-08-16',
+    time: '23:10',
+    text: 'The Vietnamese research pages **now name the technologies in Vietnamese**. All 144 of them, across eleven trees, had been left in English \u2014 along with three tree names and the ten page titles that use them',
+  },
+  {
+    date: '2026-08-16',
     time: '22:30',
     text: 'The **home page and the About page now speak your language**. The welcome text, the support card and the whole About page had only ever been translated into German \u2014 the other twelve languages were still showing English. Same for the profile page: tabs, statistics, the data download and the delete-account dialog. Around 730 texts in all',
   },
