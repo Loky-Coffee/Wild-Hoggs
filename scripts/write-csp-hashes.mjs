@@ -53,8 +53,15 @@ const liste = [...hashes].sort().map((h) => `'sha256-${h}'`).join(' ');
 
 const header = readFileSync(HEADER_DATEI, 'utf8');
 if (!header.includes(PLATZHALTER)) {
-  console.error(`✗ ${HEADER_DATEI}: Platzhalter ${PLATZHALTER} fehlt — CSP nicht gesetzt`);
-  process.exit(1);
+  // Seit 16.08.2026 arbeitet die CSP wieder mit 'unsafe-inline' statt mit
+  // Pruefsummen — Astros ClientRouter fuehrt die Inline-Skripte der Zielseite
+  // beim Seitenwechsel selbst aus, und dabei stimmten die Pruefsummen nicht
+  // mehr. Die Begruendung steht ausfuehrlich in public/_headers.
+  //
+  // Kein Fehler, sondern der erwartete Zustand: Das Skript rechnet weiter mit,
+  // damit die Zahl sichtbar bleibt, schreibt aber nichts.
+  console.log(`✓ CSP: Pruefsummen nicht aktiv (kein ${PLATZHALTER} in ${HEADER_DATEI}) — nichts zu tun`);
+  process.exit(0);
 }
 // Bewusst `replace` statt `replaceAll`: Der Platzhalter soll genau einmal
 // vorkommen. Stand er versehentlich auch in einem Kommentar, landete die

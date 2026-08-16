@@ -9,10 +9,18 @@
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: accelerometer=(), camera=(), geolocation=(), microphone=(), payment=(), usb=()
-  # script-src ohne 'unsafe-inline': Die Inline-Skripte, die Astro fuer Hydration
-  # und ClientRouter erzeugt, stehen als Pruefsumme drin. scripts/write-csp-hashes.mjs
-  # traegt sie nach jedem Build anstelle des Platzhalters unten ein — beim Aendern
-  # eines Inline-Skripts aendert sich die Pruefsumme automatisch mit.
+  # script-src MIT 'unsafe-inline' — und das ist eine bewusste Entscheidung.
+  #
+  # Bis 16.08.2026 standen hier stattdessen die Pruefsummen aller Inline-Skripte
+  # (scripts/write-csp-hashes.mjs). Das hielt nicht: Astros ClientRouter fuehrt
+  # beim Seitenwechsel die Inline-Skripte der Zielseite selbst wieder aus, und
+  # was er dabei erzeugt, deckt sich nicht mit der Pruefsumme aus dem Dokument.
+  # Die Skripte wurden blockiert — im laufenden Betrieb, bei jeder Navigation.
+  # Dazu kam Cloudflares Bot-Skript (siehe unten), dessen Inhalt sich ohnehin
+  # bei jedem Aufruf aendert.
+  #
+  # Pruefsummen und ClientRouter schliessen einander damit aus. Wer sie
+  # zurueckholen will, muss zuerst den ClientRouter abloesen.
   # style-src behaelt 'unsafe-inline': Preact setzt style="..."-Attribute (Fortschritts-
   # balken, Diagramme), und dafuer helfen Pruefsummen nicht.
   # cloudflareinsights.com: Cloudflare injiziert automatisch beacon.min.js auf allen CF Pages-Sites.
@@ -36,15 +44,7 @@
   # verschlossener Tuer: In der zweiten Zeile unten die Pruefsummen durch
   # 'unsafe-inline' ersetzen. Das nimmt den Schutz zurueck, aber oeffnet sofort.
   #
-  # Zwei Richtlinien, und das mit Absicht: Ein Skript muss BEIDE erfuellen, also
-  # gilt die jeweils strengere. Cloudflare Pages erlaubt pro Header-Zeile nur
-  # 2000 Zeichen (developers.cloudflare.com/pages/platform/limits/#headers), und
-  # die Pruefsummen allein brauchen schon rund 1500. Zusammen mit dem Rest waere
-  # die Grenze in Sicht — getrennt hat jede Zeile Luft.
-  # Die erste Zeile regelt alles ausser Skripten und laesst 'unsafe-inline'
-  # stehen; wirksam ist dort die zweite Zeile, die nur die Pruefsummen erlaubt.
   Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://static.cloudflareinsights.com wss://wild-hoggs-chat-hub.alatzas5564.workers.dev; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
-  Content-Security-Policy: script-src 'self' {{SCRIPT_HASHES}} https://static.cloudflareinsights.com
   # levelgeeks.org wurde entfernt - alle Bilder sind self-hosted
   # 365 Tage statt 180: Mit 'preload' verlangt hstspreload.org mindestens ein
   # Jahr, sonst wird die Domain gar nicht erst in die Liste aufgenommen —
