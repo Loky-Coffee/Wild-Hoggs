@@ -28,7 +28,7 @@ export const changelog: ChangelogEntry[] = [
   {
     date: '2026-08-17',
     time: '17:30',
-    text: 'Mistyped your email address when you signed up? **You can fix it now.** The banner shows which address it means, so a typo is obvious at a glance, and the profile page has a field to change it — the new address only takes effect once you click the link sent there, so a second typo cannot lock you out either. Two accounts here were sitting on **gmai.com** and **naver.con** with no way to correct it',
+    text: 'Mistyped your email address when you signed up? **You can fix it now.** The banner shows which address it means, so a typo is obvious at a glance, and the profile page has a field to change it — the new address only takes effect once you click the link sent there, so a second typo cannot lock you out either. Until now the address was fixed after signing up, and a single wrong character meant no confirmation and no password reset would ever arrive',
   },
   {
     date: '2026-08-17',
