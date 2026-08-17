@@ -64,3 +64,42 @@
   .verify-banner { padding: 0.55rem 0.7rem; font-size: 0.8rem; }
   .verify-banner-inhalt { gap: 0.5rem; }
 }
+
+/* Die betroffene Adresse. Hervorgehoben, damit ein Tippfehler ins Auge
+   springt — genau dafuer steht sie hier. Nichtproportionale Schrift, weil
+   sich darin ".con" von ".com" besser unterscheidet. */
+.verify-banner-adresse {
+  flex-shrink: 0;
+  padding: 0.15rem 0.5rem;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(255, 165, 0, 0.28);
+  border-radius: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.82rem;
+  color: #ffd9a0;
+  white-space: nowrap;
+  max-width: 22rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* "Adresse falsch?" — fuehrt ins Profil, wo sie geaendert werden kann. */
+.verify-banner-link {
+  flex-shrink: 0;
+  color: #ffb84d;
+  font-size: 0.82rem;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  white-space: nowrap;
+}
+.verify-banner-link:hover { color: #ffcc80; }
+.verify-banner-link:focus-visible {
+  outline: 2px solid #ffa500;
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+@media (max-width: 640px) {
+  .verify-banner-adresse { max-width: 12rem; font-size: 0.76rem; }
+  .verify-banner-link { font-size: 0.76rem; }
+}

@@ -1091,3 +1091,66 @@ select.admin-filter-input option {
 /* Bestaetigungsspalte in der Nutzertabelle */
 .admin-verif-ja   { color: #7fc98a; font-size: 1rem; }
 .admin-verif-nein { color: #9c8f79; font-size: 1rem; }
+
+/* Dialog "Adresse berichtigen" ------------------------------------------- */
+
+.admin-dialog-hinter {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.72);
+}
+
+.admin-dialog {
+  width: 100%;
+  max-width: 30rem;
+  padding: 1.4rem;
+  background: #1e1811;
+  border: 1px solid rgba(255, 165, 0, 0.28);
+  border-radius: 10px;
+}
+
+.admin-dialog-titel {
+  margin: 0 0 0.8rem;
+  font-size: 1rem;
+  color: #ffcc80;
+}
+
+.admin-dialog-text {
+  margin: 0 0 0.9rem;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: #d8c9ae;
+}
+
+/* Die bisherige Adresse. Nichtproportional, damit ".con" von ".com"
+   unterscheidbar bleibt — genau darum geht es hier. */
+.admin-dialog-alt {
+  margin: 0 0 0.7rem;
+  font-size: 0.82rem;
+  color: #9c8f79;
+}
+.admin-dialog-alt bdi {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  color: #f0e6d8;
+}
+
+.admin-dialog-feld { width: 100%; margin-bottom: 0.7rem; }
+
+.admin-dialog-hinweis {
+  margin: 0.7rem 0 0;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: #9c8f79;
+}
+
+.admin-dialog-knoepfe {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  margin-top: 1rem;
+}

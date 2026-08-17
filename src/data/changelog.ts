@@ -27,6 +27,11 @@ export const changelog: ChangelogEntry[] = [
   // ── August 2026 ─────────────────────────────────────────────────────────
   {
     date: '2026-08-17',
+    time: '17:30',
+    text: 'Mistyped your email address when you signed up? **You can fix it now.** The banner shows which address it means, so a typo is obvious at a glance, and the profile page has a field to change it — the new address only takes effect once you click the link sent there, so a second typo cannot lock you out either. Two accounts here were sitting on **gmai.com** and **naver.con** with no way to correct it',
+  },
+  {
+    date: '2026-08-17',
     time: '02:00',
     text: 'New accounts now get a **confirmation email**, and a banner asks anyone with an unconfirmed address to confirm it — with a "send again" button, because a new sending domain sometimes lands in spam at first. Nothing is locked: you register and you are in. Confirming matters for one reason — a reachable address is the only way back into your account if you forget your password',
   },

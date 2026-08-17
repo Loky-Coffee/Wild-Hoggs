@@ -36,20 +36,46 @@ export async function onRequestPost(ctx: any) {
       return Response.json({ error: 'invalid_token' }, { status: 400 });
     }
 
-    // Adresse zwischenzeitlich geändert? Dann bestätigt dieser Link die
-    // falsche. Der Eintrag merkt sich, an welche Adresse er ging.
     const user = await DB.prepare('SELECT email FROM users WHERE id = ?')
       .bind(eintrag.user_id).first() as { email: string } | null;
 
-    if (!user || user.email.toLowerCase() !== eintrag.email.toLowerCase()) {
-      return Response.json({ error: 'adresse_geaendert' }, { status: 400 });
+    if (!user) {
+      return Response.json({ error: 'invalid_token' }, { status: 400 });
+    }
+
+    // eintrag.email ist die Adresse, die dieser Link bestätigt — nicht
+    // zwingend die, die gerade am Konto steht.
+    //
+    // Bei der Registrierung sind beide gleich. Bei einer Adressänderung ist
+    // eintrag.email die NEUE: Sie wird erst in diesem Moment übernommen, weil
+    // erst der Klick beweist, dass das Postfach erreichbar ist. Bis dahin
+    // bleibt die alte Adresse stehen — wer sich vertippt, sperrt sich damit
+    // nicht selbst aus.
+    //
+    // Zwischenzeitlich veraltete Links sind kein Problem: change-email
+    // entwertet beim Anfordern alle offenen Links des Kontos, es kann also
+    // immer nur der zuletzt angeforderte eingelöst werden.
+    const wechsel = user.email.toLowerCase() !== eintrag.email.toLowerCase();
+
+    // Zwischen Anfordern und Einlösen kann jemand anderes dieselbe Adresse
+    // registriert haben. Dann darf sie hier nicht ein zweites Mal vergeben
+    // werden — email hat einen eindeutigen Index, der Einfügeversuch würde
+    // ohnehin scheitern, aber mit einer nichtssagenden Fehlermeldung.
+    if (wechsel) {
+      const belegt = await DB.prepare(
+        'SELECT id FROM users WHERE lower(email) = lower(?) AND id != ?'
+      ).bind(eintrag.email, eintrag.user_id).first();
+      if (belegt) {
+        return Response.json({ error: 'adresse_belegt' }, { status: 409 });
+      }
     }
 
     await DB.batch([
       DB.prepare(`UPDATE users
-                     SET email_verified = 1,
+                     SET email = ?,
+                         email_verified = 1,
                          email_verified_at = datetime('now')
-                   WHERE id = ?`).bind(eintrag.user_id),
+                   WHERE id = ?`).bind(eintrag.email, eintrag.user_id),
       DB.prepare(`UPDATE email_verifications SET used_at = datetime('now') WHERE id = ?`)
         .bind(eintrag.id),
       // Übrige offene Links desselben Kontos verfallen mit.
@@ -57,7 +83,7 @@ export async function onRequestPost(ctx: any) {
                    WHERE user_id = ? AND used_at IS NULL`).bind(eintrag.user_id),
     ]);
 
-    return Response.json({ ok: true });
+    return Response.json({ ok: true, gewechselt: wechsel, email: eintrag.email });
   } catch (e) {
     console.error('verify:', e);
     return Response.json({ error: 'server_error' }, { status: 500 });

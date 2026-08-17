@@ -560,3 +560,39 @@
   .pp-danger-actions { flex-direction: column-reverse; }
   .pp-danger-actions button { width: 100%; }
 }
+
+/* E-Mail-Adresse aendern ------------------------------------------------- */
+
+.pp-email-aktuell {
+  margin: 0 0 0.6rem;
+  font-size: 0.85rem;
+  color: #b9ab95;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.pp-email-aktuell bdi {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  color: #f0e6d8;
+}
+
+/* Kennzeichnet eine noch nicht bestaetigte Adresse. Bernstein statt Rot: Es
+   ist kein Fehler, es fehlt nur ein Klick. */
+.pp-email-unbestaetigt {
+  display: inline-block;
+  margin-inline-start: 0.5rem;
+  padding: 0.1rem 0.45rem;
+  background: rgba(255, 165, 0, 0.14);
+  border: 1px solid rgba(255, 165, 0, 0.3);
+  border-radius: 4px;
+  font-size: 0.72rem;
+  color: #ffcc80;
+  white-space: nowrap;
+}
+
+.pp-email-hinweis {
+  margin: 0;
+  font-size: 0.78rem;
+  color: #9c8f79;
+  line-height: 1.5;
+}

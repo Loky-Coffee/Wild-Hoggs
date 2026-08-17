@@ -24,6 +24,12 @@ function spracheAusUrl(): string {
   return sprachen.includes(erstes) ? erstes : 'en';
 }
 
+/** Pfad zum Profil in der Sprache, in der jemand gerade unterwegs ist. */
+function profilHref(): string {
+  const s = spracheAusUrl();
+  return s === 'en' ? '/profile/' : `/${s}/profile/`;
+}
+
 /**
  * Hinweis für angemeldete Konten mit unbestätigter Adresse.
  *
@@ -149,6 +155,15 @@ export default function VerifyBanner({ translationData }: Props) {
             : t('verify.bannerText')}
         </span>
 
+        {/* Die Adresse mit anzeigen. Ohne sie merkt jemand mit einem Tippfehler
+            nur, dass nichts ankommt — mit ihr sieht er den Fehler sofort. Zwei
+            der 305 Konten stehen auf gmai.com und naver.con.
+            dir="ltr" und unidirectional isolation, damit die Adresse auf
+            arabischen Seiten nicht zerrissen wird. */}
+        {zustand !== 'gesendet' && (
+          <bdi class="verify-banner-adresse" dir="ltr">{user.email}</bdi>
+        )}
+
         {zustand !== 'gesendet' && (
           <button
             type="button"
@@ -158,6 +173,15 @@ export default function VerifyBanner({ translationData }: Props) {
           >
             {zustand === 'sendet' ? t('verify.bannerSending') : t('verify.bannerResend')}
           </button>
+        )}
+
+        {/* Weg fuer den Fall, dass die Adresse gar nicht stimmt. Ohne ihn
+            fuehrt der Balken in eine Sackgasse: Mails anfordern, die nie
+            ankommen koennen. */}
+        {zustand !== 'gesendet' && (
+          <a class="verify-banner-link" href={profilHref()}>
+            {t('verify.bannerWrongAddress')}
+          </a>
         )}
       </div>
 

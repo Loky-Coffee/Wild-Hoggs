@@ -7,6 +7,17 @@ import type { TranslationData } from '../../i18n/index';
 import { StatsOverview, AccountTab, ProfilesList, type UserStats } from './ProfileTabs';
 import './ProfilePage.css';
 
+/**
+ * Sprachkuerzel aus dem Pfad — wird an change-email gegeben, damit die
+ * Bestaetigungsmail in der Sprache ankommt, in der jemand gerade unterwegs
+ * ist. Englisch hat kein Praefix, daher der Umweg ueber die Liste.
+ */
+function spracheAusUrl(): string {
+  const [, erstes] = window.location.pathname.split('/');
+  const sprachen = ['de','fr','ko','th','ja','pt','es','tr','id','zh-TW','zh-CN','it','ar','vi'];
+  return sprachen.includes(erstes) ? erstes : 'en';
+}
+
 interface ProfilePageProps {
   translationData: TranslationData;
 }
@@ -106,6 +117,12 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
   const [server, setServer]           = useState('');
   const [serverSaving, setServerSaving] = useState(false);
   const [serverMsg, setServerMsg]     = useState<{ type: 'error' | 'ok'; text: string } | null>(null);
+
+  // E-Mail-Adresse ändern
+  const [newEmail, setNewEmail]       = useState('');
+  const [emailPw, setEmailPw]         = useState('');
+  const [emailSaving, setEmailSaving] = useState(false);
+  const [emailMsg, setEmailMsg]       = useState<{ type: 'error' | 'ok'; text: string } | null>(null);
 
   const [selectedFaction, setSelectedFaction] = useState<string | null>(null);
   const [formationBr, setFormationBr] = useState('');
@@ -275,6 +292,45 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
       setTimeout(() => setPwMsg(null), 6000);
     } catch { setPwMsg({ type: 'error', text: t('profile.errorConnection') }); }
     finally { setPwSaving(false); }
+  };
+
+  /**
+   * E-Mail-Adresse ändern.
+   *
+   * Die neue Adresse gilt erst, wenn der Link darin angeklickt wurde. Bis
+   * dahin bleibt die alte stehen — wer sich erneut vertippt, sperrt sich
+   * damit nicht aus.
+   */
+  const handleChangeEmail = async (e: Event) => {
+    e.preventDefault();
+    if (!token) return;
+    setEmailSaving(true); setEmailMsg(null);
+    try {
+      const res = await fetch('/api/user/change-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ email: newEmail.trim(), password: emailPw, lang: spracheAusUrl() }),
+      });
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        const fehler = String(data?.error ?? '');
+        setEmailMsg({
+          type: 'error',
+          text: fehler === 'passwort_falsch'    ? t('profile.emailWrongPassword')
+              : fehler === 'adresse_belegt'     ? t('profile.emailTaken')
+              : fehler === 'gleiche_adresse'    ? t('profile.emailSame')
+              : fehler === 'ungueltige_adresse' ? t('profile.emailInvalid')
+              : fehler === 'zu_oft'             ? t('profile.emailTooOften')
+              : t('profile.errorGeneric'),
+        });
+        return;
+      }
+
+      setEmailMsg({ type: 'ok', text: t('profile.emailSent', { email: newEmail.trim() }) });
+      setNewEmail(''); setEmailPw('');
+    } catch { setEmailMsg({ type: 'error', text: t('profile.errorConnection') }); }
+    finally { setEmailSaving(false); }
   };
 
   const handleLogout = async () => {
@@ -580,6 +636,47 @@ export default function ProfilePage({ translationData }: ProfilePageProps) {
             onInput={e => handleVolumeChange(parseFloat((e.target as HTMLInputElement).value))}
             disabled={notifVolumeSaving}
           />
+        </div>
+
+        {/* E-Mail-Adresse ändern.
+            Das Passwort wird verlangt, weil sonst eine offene Sitzung an einem
+            fremden Rechner genügte, um das Konto zu übernehmen: Adresse
+            ändern, "Passwort vergessen", fertig. */}
+        <div class="pp-setting-block">
+          <label class="pp-setting-label">{t('profile.changeEmail')}</label>
+          <p class="pp-email-aktuell">
+            {t('profile.emailCurrent')}{' '}
+            <bdi dir="ltr">{user.email}</bdi>
+            {user.email_verified === 0 && (
+              <span class="pp-email-unbestaetigt">{t('profile.emailUnverified')}</span>
+            )}
+          </p>
+          <form class="pp-pw-form" onSubmit={handleChangeEmail}>
+            <input type="text" name="username" autocomplete="username" value={user.username} style="display:none" aria-hidden="true" readOnly />
+            <input
+              class="pp-input"
+              type="email"
+              placeholder={t('profile.emailNew')}
+              value={newEmail}
+              onInput={e => setNewEmail((e.target as HTMLInputElement).value)}
+              required
+              autocomplete="email"
+            />
+            <input
+              class="pp-input"
+              type="password"
+              placeholder={t('profile.currentPassword')}
+              value={emailPw}
+              onInput={e => setEmailPw((e.target as HTMLInputElement).value)}
+              required
+              autocomplete="current-password"
+            />
+            {emailMsg && <p class={`pp-msg pp-msg-${emailMsg.type}`}>{emailMsg.text}</p>}
+            <p class="pp-email-hinweis">{t('profile.emailHint')}</p>
+            <button class="pp-btn-save" type="submit" disabled={emailSaving}>
+              {emailSaving ? t('profile.saving') : t('profile.emailSubmit')}
+            </button>
+          </form>
         </div>
 
         {/* Password */}

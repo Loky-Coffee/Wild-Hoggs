@@ -161,6 +161,12 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
   // Rechte-Dialog
   const [rechteFuer, setRechteFuer] = useState<AdminUser | null>(null);
 
+  // Adresse berichtigen
+  const [mailFuer, setMailFuer]     = useState<AdminUser | null>(null);
+  const [mailNeu, setMailNeu]       = useState('');
+  const [mailLaeuft, setMailLaeuft] = useState(false);
+  const [mailFehler, setMailFehler] = useState<string | null>(null);
+
   // Reports state
   const [reports, setReports]     = useState<Report[]>([]);
   const [rLoading, setRLoading]   = useState(true);
@@ -385,6 +391,44 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
       if (res.ok) setReports(prev => prev.filter(r => r.report_id !== report.report_id));
     } finally {
       setRBusy(prev => { const n = new Set(prev); n.delete(report.report_id); return n; });
+    }
+  };
+
+  /**
+   * Adresse eines fremden Kontos berichtigen.
+   *
+   * Die neue Adresse gilt sofort, aber als unbestaetigt — der Betroffene sieht
+   * den Hinweisbalken und bestaetigt selbst. So laesst sich niemandem eine
+   * fertig bestaetigte Adresse unterschieben.
+   */
+  const adresseBerichtigen = async () => {
+    if (!mailFuer || !mailNeu.trim()) return;
+    setMailLaeuft(true);
+    setMailFehler(null);
+    try {
+      const res = await fetch('/api/admin/user-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ user_id: mailFuer.id, email: mailNeu.trim() }),
+      });
+      const daten = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        const f = String(daten?.error ?? '');
+        setMailFehler(
+          f === 'adresse_belegt'     ? t('admin.users.emailTaken')
+          : f === 'ungueltige_adresse' ? t('admin.users.emailInvalid')
+          : f === 'gleiche_adresse'    ? t('admin.users.emailSame')
+          : daten?.error ?? t('admin.users.error'),
+        );
+        return;
+      }
+      setMailFuer(null);
+      setMailNeu('');
+      await ladeNutzer();
+    } catch {
+      setMailFehler(t('admin.users.error'));
+    } finally {
+      setMailLaeuft(false);
     }
   };
 
@@ -1059,6 +1103,14 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
                                                 title={t('admin.users.perm_hint')}>
                                           🔑 {t('admin.users.permissions')}
                                         </button>
+                                        {/* Adresse berichtigen. Fuer die Faelle, in denen
+                                            jemand sich vertippt hat und deshalb weder
+                                            Bestaetigung noch Passwort-Reset empfangen kann. */}
+                                        <button class="admin-btn-sm" disabled={isBusy}
+                                                onClick={() => { setMailFuer(u); setMailNeu(''); setMailFehler(null); }}
+                                                title={t('admin.users.emailFixHint')}>
+                                          ✉ {t('admin.users.emailFix')}
+                                        </button>
                                       </>
                                     )}
                                   </td>
@@ -1393,6 +1445,51 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
           onSaved={(neu) => setUsers(prev => prev.map(u =>
             u.id === rechteFuer.id ? { ...u, permissions: JSON.stringify(neu) } : u))}
         />
+      )}
+
+      {/* Adresse berichtigen */}
+      {mailFuer && (
+        <div class="admin-dialog-hinter" onClick={e => { if (e.target === e.currentTarget) setMailFuer(null); }}>
+          <div class="admin-dialog" role="dialog" aria-modal="true" aria-labelledby="mail-titel">
+            <h3 id="mail-titel" class="admin-dialog-titel">
+              ✉ {t('admin.users.emailFix')} — {mailFuer.username}
+            </h3>
+
+            <p class="admin-dialog-text">
+              {t('admin.users.emailFixIntro')}
+            </p>
+
+            <p class="admin-dialog-alt">
+              {t('admin.users.emailOld')} <bdi dir="ltr">{mailFuer.email ?? '—'}</bdi>
+            </p>
+
+            <input
+              class="admin-filter-input admin-dialog-feld"
+              type="email"
+              placeholder={t('admin.users.emailNew')}
+              value={mailNeu}
+              onInput={e => setMailNeu((e.target as HTMLInputElement).value)}
+              autocomplete="off"
+            />
+
+            {mailFehler && <p class="admin-error">{mailFehler}</p>}
+
+            <p class="admin-dialog-hinweis">{t('admin.users.emailFixNote')}</p>
+
+            <div class="admin-dialog-knoepfe">
+              <button
+                class="admin-btn-promote"
+                disabled={mailLaeuft || !mailNeu.trim()}
+                onClick={adresseBerichtigen}
+              >
+                {mailLaeuft ? t('admin.cleanup.deleting') : t('admin.users.emailSave')}
+              </button>
+              <button class="admin-btn-sm" disabled={mailLaeuft} onClick={() => setMailFuer(null)}>
+                {t('admin.cleanup.confirmNo')}
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
