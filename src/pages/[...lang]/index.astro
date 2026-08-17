@@ -582,5 +582,21 @@ const t = useTranslations(translationData);
       flex-direction: column;
       padding-bottom: 0;
     }
+
+    /* Steht der Hinweisbalken zur E-Mail-Bestaetigung, ist die Rechnung
+       darueber falsch: Sie zieht nur die Navigationsleiste ab, nicht den
+       Balken. Der Inhalt ragte um dessen Hoehe unter den Bildschirm — und weil
+       hier overflow:hidden steht und es keinen Rollbalken gibt, war der untere
+       Teil der Startseite einfach weg.
+       Den Balken in die Rechnung aufzunehmen scheitert daran, dass seine Hoehe
+       vom Text abhaengt und in manchen Sprachen umbricht. Deshalb umgekehrt:
+       Solange er da ist, gilt kein Vollbild und die Seite darf rollen. Klickt
+       jemand ihn weg oder bestaetigt, verschwindet er aus dem Dokument, :has()
+       greift nicht mehr und das Vollbild kehrt von selbst zurueck. */
+    body:has(.home-page):has(.verify-banner),
+    body:has(.home-page):has(.verify-banner) .page-content {
+      height: auto;
+      overflow: visible;
+    }
   }
 </style>

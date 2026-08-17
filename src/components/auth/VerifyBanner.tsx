@@ -1,6 +1,15 @@
 import { useState, useEffect } from 'preact/hooks';
-import { useAuth, setAuthState, AUTH_TOKEN_KEY } from '../../hooks/useAuth';
+import { useAuth, setAuthState, AUTH_TOKEN_KEY, AUTH_USER_KEY } from '../../hooks/useAuth';
 import type { AuthUser } from '../../hooks/useAuth';
+
+/**
+ * Merker, dass in dieser Tab-Sitzung schon beim Server nachgefragt wurde.
+ *
+ * Eigener Schluessel statt 'wh-ok': Jener steuert den Abgleich in useAuth, und
+ * ihn hier mitzubenutzen wuerde entweder dessen Abgleich unterdruecken oder
+ * einen zusaetzlichen ausloesen.
+ */
+const GEPRUEFT_KEY = 'wh-verify-geprueft';
 import { useTranslations } from '../../i18n/utils';
 import type { TranslationData } from '../../i18n/index';
 import './VerifyBanner.css';
@@ -37,18 +46,27 @@ export default function VerifyBanner({ translationData }: Props) {
   const [zustand, setZustand] = useState<'ruhe' | 'sendet' | 'gesendet' | 'fehler' | 'zuOft'>('ruhe');
 
   /**
-   * Fehlt das Feld, wird es einmal nachgeholt.
+   * Stand mit dem Server abgleichen, solange dieses Konto als unbestaetigt
+   * gilt — egal ob das Feld fehlt oder auf 0 steht.
    *
-   * Notwendig, weil useAuth nur einmal je Browsersitzung mit dem Server
-   * abgleicht (sessionStorage-Merker 'wh-ok'). Wer seinen Tab offen hat —
-   * beim Chat die Regel, nicht die Ausnahme — behielt sonst tagelang ein
-   * gespeichertes Nutzerobjekt ohne email_verified und sah den Balken nie.
+   * Der Grund, warum "fehlt" allein nicht reicht: Bestaetigt wird oft in einem
+   * ANDEREN Browser als dem, in dem die Seite offen ist — Mail auf dem Handy,
+   * Rechner am Schreibtisch. Der Rechner behaelt dann seine gespeicherte 0 und
+   * erfaehrt nie davon. useAuth hilft nicht, es gleicht nur einmal je
+   * Browsersitzung ab (sessionStorage-Merker 'wh-ok') und ueberspringt danach
+   * jeden weiteren Aufruf.
    *
-   * Der Aufruf passiert genau einmal je Konto: setAuthState schreibt das
-   * Ergebnis in den Browserspeicher, danach ist das Feld vorhanden.
+   * Einmal je Tab-Sitzung, gemerkt unter eigenem Schluessel — nicht 'wh-ok',
+   * damit der Abgleich von useAuth davon unberuehrt bleibt. Eine Abfrage je
+   * Tab ist vertretbar; sie faellt nur bei unbestaetigten Konten an und hoert
+   * mit der Bestaetigung auf.
    */
   useEffect(() => {
-    if (!user || user.email_verified !== undefined) return;
+    if (!user) return;
+    // Bestaetigt — nichts zu holen.
+    if (user.email_verified === 1) return;
+    // In dieser Tab-Sitzung schon nachgefragt.
+    if (sessionStorage.getItem(GEPRUEFT_KEY) === '1') return;
 
     const token = localStorage.getItem(AUTH_TOKEN_KEY);
     if (!token) return;
@@ -56,10 +74,34 @@ export default function VerifyBanner({ translationData }: Props) {
     fetch('/api/auth/me', { headers: { Authorization: `Bearer ${token}` } })
       .then(r => (r.ok ? r.json() as Promise<AuthUser> : null))
       .then(frisch => {
-        if (frisch) setAuthState(frisch, token);
+        if (!frisch) return;
+        sessionStorage.setItem(GEPRUEFT_KEY, '1');
+        setAuthState(frisch, token);
       })
       .catch(() => {}); // Netzfehler — beim naechsten Seitenaufruf erneut
-  }, [user?.email_verified === undefined]);
+  }, [user?.email_verified]);
+
+  /**
+   * Ein anderer Tab im selben Browser hat bestaetigt.
+   *
+   * setAuthState schreibt in localStorage und meldet es per Ereignis — aber
+   * nur innerhalb des eigenen Tabs. Fuer die uebrigen Tabs gibt es das
+   * storage-Ereignis, das genau dann feuert, wenn ein anderer Tab derselben
+   * Herkunft den Speicher aendert. Damit verschwindet der Balken dort sofort,
+   * ohne Neuladen.
+   */
+  useEffect(() => {
+    const beiSpeicherwechsel = (e: StorageEvent) => {
+      if (e.key !== AUTH_USER_KEY || !e.newValue) return;
+      try {
+        const frisch = JSON.parse(e.newValue) as AuthUser;
+        const token = localStorage.getItem(AUTH_TOKEN_KEY);
+        if (frisch.email_verified === 1 && token) setAuthState(frisch, token);
+      } catch { /* unlesbarer Eintrag — ignorieren */ }
+    };
+    window.addEventListener('storage', beiSpeicherwechsel);
+    return () => window.removeEventListener('storage', beiSpeicherwechsel);
+  }, []);
 
   // Nur bei ausdruecklichem 0. Bei fehlendem Feld bleibt der Balken aus, bis
   // der Abgleich oben den echten Wert geliefert hat — sonst saehe ihn auch
@@ -69,7 +111,7 @@ export default function VerifyBanner({ translationData }: Props) {
   const erneutSenden = async () => {
     setZustand('sendet');
     try {
-      const token = localStorage.getItem('wh-auth-token');
+      const token = localStorage.getItem(AUTH_TOKEN_KEY);
       const res = await fetch('/api/auth/verify-send', {
         method: 'POST',
         headers: {
@@ -79,6 +121,18 @@ export default function VerifyBanner({ translationData }: Props) {
         body: JSON.stringify({ lang: spracheAusUrl() }),
       });
       if (res.status === 429) { setZustand('zuOft'); return; }
+
+      const daten = await res.json().catch(() => ({}));
+
+      // Der Server sagt: laengst bestaetigt. Dann ist der eigene Stand
+      // veraltet — etwa weil in einem anderen Browser bestaetigt wurde. Keine
+      // Erfolgsmeldung ueber eine Mail, die nie verschickt wurde: Stand
+      // richtigstellen, Balken verschwindet.
+      if (res.ok && (daten as { bereits?: boolean }).bereits && user && token) {
+        setAuthState({ ...user, email_verified: 1 }, token);
+        return;
+      }
+
       setZustand(res.ok ? 'gesendet' : 'fehler');
     } catch {
       setZustand('fehler');
