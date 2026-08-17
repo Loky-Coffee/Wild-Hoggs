@@ -26,6 +26,7 @@ export async function onRequestGet(ctx: any) {
             COALESCE(u.last_login, datetime(MAX(s.expires_at), '-30 days')) AS last_login,
             COALESCE(u.email_verified, 0) AS email_verified,
             u.email_verified_at,
+            u.banned_at, u.banned_by, u.ban_grund,
             -- Ab wann die Bestaetigungsfrist fuer dieses Konto laeuft: bei
             -- neuen Konten ab der Registrierung, bei den 303 bestehenden ab
             -- dem Tag, an dem die Bestaetigung eingefuehrt wurde. Ohne den

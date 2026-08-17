@@ -1188,3 +1188,10 @@ select.admin-filter-input option {
 }
 .admin-sort-kopf:hover .admin-sort-pfeil { opacity: 0.8; }
 .admin-sort-kopf.aktiv .admin-sort-pfeil { opacity: 1; }
+
+/* Kennzeichnung gesperrter Konten in der Tabelle */
+.admin-badge-gesperrt {
+  background: rgba(231, 76, 60, 0.16);
+  border: 1px solid rgba(231, 76, 60, 0.4);
+  color: #ef8e83;
+}

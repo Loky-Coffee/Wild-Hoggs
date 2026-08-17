@@ -3,6 +3,8 @@ import { setAuthState } from '../../hooks/useAuth';
 import type { AuthUser } from '../../hooks/useAuth';
 import { syncAllOnLogin as syncCalcs } from '../../hooks/useCalculatorState';
 import { useTranslations } from '../../i18n/utils';
+import { sperrgrundKey } from '../../config/sperrgruende';
+import { BETREIBER } from '../../config/betreiber';
 import type { TranslationData } from '../../i18n/index';
 import './AuthModal.css';
 
@@ -31,6 +33,8 @@ export default function AuthModal({ onClose, initialTab = 'login', translationDa
   const [tab, setTab] = useState<'login' | 'register' | 'forgot'>(initialTab);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  /** Gesetzt, wenn die Anmeldung an einer Sperre gescheitert ist. */
+  const [sperre, setSperre] = useState<{ grund: string; text: string; seit: string } | null>(null);
 
   // Escape schliesst den Dialog. Ohne das kam man mit der Tastatur nur ueber
   // den Schliessen-Knopf wieder heraus — der Klick auf den Hintergrund
@@ -88,6 +92,19 @@ export default function AuthModal({ onClose, initialTab = 'login', translationDa
         body: JSON.stringify({ email: loginEmail, password: loginPassword })
       });
       const data = await res.json();
+
+      // Gesperrtes Konto: eigene Darstellung statt einer roten Zeile. Wer
+      // gesperrt ist, soll erfahren warum, seit wann, und an wen er sich
+      // wenden kann — sonst bleibt nur Rätselraten.
+      if (res.status === 403 && data?.gesperrt) {
+        setSperre({
+          grund: String(data.grund ?? ''),
+          text: String(data.grundText ?? ''),
+          seit: String(data.seit ?? ''),
+        });
+        return;
+      }
+
       if (!res.ok) { setError(data.error ?? t('auth.errorLogin')); return; }
       setAuthState(data.user as AuthUser, data.token);
       await syncCalcs(data.token);
@@ -151,7 +168,41 @@ export default function AuthModal({ onClose, initialTab = 'login', translationDa
 
         {error && <div class="auth-error">{error}</div>}
 
-        {tab === 'forgot' ? (
+        {/* Gesperrtes Konto. Bewusst ausfuehrlich statt einer roten Zeile: Wer
+            hier steht, kann sich nicht mehr anmelden und braucht drei
+            Auskuenfte — warum, seit wann, und an wen er sich wenden kann. */}
+        {sperre && (
+          <div class="auth-sperre">
+            <p class="auth-sperre-titel">{t('ban.blocked')}</p>
+
+            <p class="auth-sperre-grund">
+              {sperre.grund ? t(sperrgrundKey(sperre.grund) as any) : t('ban.reason.sonstiges')}
+            </p>
+
+            {/* Freitext nur bei "Sonstiges" — er steht in der Sprache dessen,
+                der gesperrt hat, und laesst sich nicht uebersetzen. */}
+            {sperre.text && <p class="auth-sperre-text">{sperre.text}</p>}
+
+            {sperre.seit && (
+              <p class="auth-sperre-seit">
+                {t('ban.since')} {new Date(sperre.seit.replace(' ', 'T') + 'Z').toLocaleDateString()}
+              </p>
+            )}
+
+            <p class="auth-sperre-kontakt">
+              {t('ban.contact')}{' '}
+              <a href={`mailto:${BETREIBER.email}`}>{BETREIBER.email}</a>
+            </p>
+
+            <button
+              type="button"
+              class="auth-textlink"
+              onClick={() => { setSperre(null); setLoginPassword(''); }}
+            >{t('ban.back')}</button>
+          </div>
+        )}
+
+        {!sperre && (tab === 'forgot' ? (
           forgotSent ? (
             <div class="auth-form">
               <p class="auth-hinweis auth-hinweis-ok">{t('auth.forgotSent')}</p>
@@ -278,7 +329,7 @@ export default function AuthModal({ onClose, initialTab = 'login', translationDa
               {loading ? t('auth.registerLoading') : t('auth.createAccount')}
             </button>
           </form>
-        )}
+        ))}
       </div>
     </div>
   );

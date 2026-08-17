@@ -97,6 +97,11 @@ export async function validateSession(db: any, token: string) {
     FROM sessions s
     JOIN users u ON s.user_id = u.id
     WHERE s.token = ? AND s.expires_at > datetime('now')
+      -- Gesperrte Konten gelten ueberall als nicht angemeldet. Beim Sperren
+      -- werden zwar alle Sitzungen geloescht; diese Bedingung sorgt dafuer,
+      -- dass eine Sperre auch dann sofort greift, wenn irgendwo eine Sitzung
+      -- uebersehen wurde oder parallel neu entstanden ist.
+      AND u.banned_at IS NULL
   `).bind(token).first() as Promise<{
     user_id: string;
     email: string;

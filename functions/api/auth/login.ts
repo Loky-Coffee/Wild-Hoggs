@@ -30,7 +30,7 @@ export async function onRequestPost(ctx: any) {
   }
 
   const user = await DB.prepare(
-    'SELECT id, email, username, password_hash, faction, server, language, formation_power_br, formation_power_wd, formation_power_go, is_admin, COALESCE(is_moderator, 0) AS is_moderator, permissions, COALESCE(email_verified, 0) AS email_verified FROM users WHERE email = ?'
+    'SELECT id, email, username, password_hash, faction, server, language, formation_power_br, formation_power_wd, formation_power_go, is_admin, COALESCE(is_moderator, 0) AS is_moderator, permissions, COALESCE(email_verified, 0) AS email_verified, banned_at, ban_grund FROM users WHERE email = ?'
     // kennung statt email.toLowerCase(): Bei einem Wert, der kein String ist,
     // gibt es .toLowerCase nicht — der Aufruf endete in einem 500 statt in einer
     // sauberen 400. Zwei Zeilen darueber wird bereits String(email) benutzt.
@@ -41,6 +41,28 @@ export async function onRequestPost(ctx: any) {
     // Weiterhin dieselbe Meldung für "Konto gibt es nicht" und "Passwort
     // falsch" — sonst liesse sich herausfinden, wer hier ein Konto hat.
     return Response.json({ error: 'Ungültige E-Mail oder Passwort' }, { status: 401 });
+  }
+
+  // Gesperrte Konten kommen nicht herein — geprueft NACH dem Passwort, damit
+  // sich ueber diese Meldung nicht herausfinden laesst, welche Konten gesperrt
+  // sind, ohne das Passwort zu kennen.
+  if (user.banned_at) {
+    // Der Grund geht als Code hinaus, nicht als fertiger Satz: Die Oberflaeche
+    // setzt ihn in der Sprache des Gesperrten zusammen. Ein deutscher Freitext
+    // waere fuer die meisten der 305 Konten unlesbar.
+    // Format in der Spalte: "code" oder "code|freitext".
+    const roh = String(user.ban_grund ?? '');
+    const trenner = roh.indexOf('|');
+    return Response.json(
+      {
+        error: 'Dieses Konto ist gesperrt.',
+        gesperrt: true,
+        grund: trenner === -1 ? roh : roh.slice(0, trenner),
+        grundText: trenner === -1 ? '' : roh.slice(trenner + 1),
+        seit: user.banned_at,
+      },
+      { status: 403 },
+    );
   }
 
   // Wer sich richtig erinnert, ist sofort wieder frei — auch nach sieben

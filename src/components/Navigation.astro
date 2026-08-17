@@ -112,7 +112,7 @@ const currentPath = rawPath === '/' ? '/' : (rawPath.endsWith('/') ? rawPath : r
             jedem, der sich anmelden oder registrieren wollte.
             scripts/check-i18n-bereiche.mjs folgt den Importen und faengt so
             etwas jetzt vor dem Build ab. */}
-        translationData={nurBereiche(translationData, ['auth.', 'profile.'])}
+        translationData={nurBereiche(translationData, ['auth.', 'profile.', 'ban.'])}
         client:only="preact"
         transition:persist={`user-menu-${lang}`}
       />

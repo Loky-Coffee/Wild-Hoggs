@@ -4,6 +4,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { useTranslations } from '../../i18n/utils';
 import type { TranslationData } from '../../i18n/index';
 import { darf, darfEines, parseRechte, type Recht } from '../../utils/permissions';
+import { SPERRGRUENDE } from '../../config/sperrgruende';
 import AdminStats from './AdminStats';
 import AdminPermissions from './AdminPermissions';
 import AdminSystem from './AdminSystem';
@@ -54,6 +55,10 @@ interface AdminUser {
   frist_beginn?: string | null;
   profile?: number;
   rechnerstaende?: number;
+  /** Zeitpunkt der Sperre; null = nicht gesperrt. */
+  banned_at?: string | null;
+  banned_by?: string | null;
+  ban_grund?: string | null;
 }
 
 /** Spalten der Nutzertabelle, nach denen sich sortieren laesst. */
@@ -166,6 +171,14 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
 
   // Rechte-Dialog
   const [rechteFuer, setRechteFuer] = useState<AdminUser | null>(null);
+
+  // Sperren und Loeschen
+  const [sperrFuer, setSperrFuer]   = useState<AdminUser | null>(null);
+  const [sperrGrund, setSperrGrund] = useState('');
+  const [sperrText, setSperrText]   = useState('');
+  const [loeschFuerEinzeln, setLoeschFuerEinzeln] = useState<AdminUser | null>(null);
+  const [aktionLaeuft, setAktionLaeuft] = useState(false);
+  const [aktionFehler, setAktionFehler] = useState<string | null>(null);
 
   // Adresse berichtigen
   const [mailFuer, setMailFuer]     = useState<AdminUser | null>(null);
@@ -478,6 +491,60 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
       if (res.ok) setReports(prev => prev.filter(r => r.report_id !== report.report_id));
     } finally {
       setRBusy(prev => { const n = new Set(prev); n.delete(report.report_id); return n; });
+    }
+  };
+
+
+  /**
+   * Konto sperren oder entsperren.
+   *
+   * Der Grund wird als Code gespeichert, nicht als Satz — nur so sieht der
+   * Gesperrte ihn beim Anmeldeversuch in seiner eigenen Sprache. Bei
+   * "sonstiges" haengt ein Freitext hinter einem senkrechten Strich.
+   */
+  const sperreSetzen = async (u: AdminUser, sperren: boolean, code?: string, freitext?: string) => {
+    setAktionLaeuft(true);
+    setAktionFehler(null);
+    try {
+      const grund = sperren
+        ? (code === 'sonstiges' && freitext?.trim() ? `sonstiges|${freitext.trim()}` : (code ?? ''))
+        : '';
+      const res = await fetch('/api/admin/user-ban', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ user_id: u.id, sperren, grund }),
+      });
+      const daten = await res.json().catch(() => ({}));
+      if (!res.ok) { setAktionFehler(daten?.error ?? t('admin.users.error')); return; }
+      setSperrFuer(null);
+      setSperrGrund('');
+      setSperrText('');
+      await ladeNutzer();
+    } catch {
+      setAktionFehler(t('admin.users.error'));
+    } finally {
+      setAktionLaeuft(false);
+    }
+  };
+
+  /** Konto endgueltig loeschen. */
+  const kontoLoeschen = async (u: AdminUser) => {
+    setAktionLaeuft(true);
+    setAktionFehler(null);
+    try {
+      const res = await fetch('/api/admin/user-delete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ user_id: u.id }),
+      });
+      const daten = await res.json().catch(() => ({}));
+      if (!res.ok) { setAktionFehler(daten?.error ?? t('admin.users.error')); return; }
+      setLoeschFuerEinzeln(null);
+      await ladeNutzer();
+    } catch {
+      setAktionFehler(t('admin.users.error'));
+    } finally {
+      setAktionLaeuft(false);
     }
   };
 
@@ -1148,6 +1215,12 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
                                     {u.is_admin === 1     && <span class="admin-user-badge admin-badge-admin">⚙ {t('chat.role.admin')}</span>}
                                     {u.is_moderator === 1 && <span class="admin-user-badge admin-badge-mod">🛡 {t('chat.role.moderator')}</span>}
                                     {isYou && <span class="admin-user-you">{t('admin.users.you')}</span>}
+                                    {u.banned_at && (
+                                      <span class="admin-user-badge admin-badge-gesperrt"
+                                            title={`${t('ban.since')} ${formatDate(u.banned_at)}${u.banned_by ? ' — ' + u.banned_by : ''}`}>
+                                        🚫 {t('admin.users.banned')}
+                                      </span>
+                                    )}
                                   </span>
                                 </td>
                                 {isAdmin && <td class="admin-table-muted">{u.email ?? '—'}</td>}
@@ -1202,6 +1275,28 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
                                                 title={t('admin.users.emailFixHint')}>
                                           ✉ {t('admin.users.emailFix')}
                                         </button>
+                                        {/* Sperren statt loeschen ist bei Aerger im Chat die
+                                            richtige Antwort: umkehrbar, und die Nachrichten
+                                            bleiben zuordenbar. */}
+                                        {darf(user, 'users.ban') && (
+                                          u.banned_at ? (
+                                            <button class="admin-btn-promote admin-btn-sm" disabled={isBusy || aktionLaeuft}
+                                                    onClick={() => sperreSetzen(u, false)}>
+                                              🔓 {t('admin.users.unban')}
+                                            </button>
+                                          ) : (
+                                            <button class="admin-btn-sm" disabled={isBusy}
+                                                    onClick={() => { setSperrFuer(u); setSperrGrund(''); setSperrText(''); setAktionFehler(null); }}>
+                                              🚫 {t('admin.users.ban')}
+                                            </button>
+                                          )
+                                        )}
+                                        {isAdmin && (
+                                          <button class="admin-btn-delete admin-btn-sm" disabled={isBusy}
+                                                  onClick={() => { setLoeschFuerEinzeln(u); setAktionFehler(null); }}>
+                                            🗑 {t('admin.users.delete')}
+                                          </button>
+                                        )}
                                       </>
                                     )}
                                   </td>
@@ -1536,6 +1631,83 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
           onSaved={(neu) => setUsers(prev => prev.map(u =>
             u.id === rechteFuer.id ? { ...u, permissions: JSON.stringify(neu) } : u))}
         />
+      )}
+
+
+      {/* Sperren — mit Grund, den der Gesperrte spaeter in seiner Sprache sieht */}
+      {sperrFuer && (
+        <div class="admin-dialog-hinter" onClick={e => { if (e.target === e.currentTarget) setSperrFuer(null); }}>
+          <div class="admin-dialog" role="dialog" aria-modal="true">
+            <h3 class="admin-dialog-titel">🚫 {t('admin.users.ban')} — {sperrFuer.username}</h3>
+            <p class="admin-dialog-text">{t('admin.users.banIntro')}</p>
+
+            <select
+              class="admin-filter-input admin-dialog-feld"
+              value={sperrGrund}
+              onChange={e => setSperrGrund((e.target as HTMLSelectElement).value)}
+            >
+              <option value="">{t('admin.users.banPickReason')}</option>
+              {SPERRGRUENDE.map(code => (
+                <option key={code} value={code}>{t(`ban.reason.${code}` as any)}</option>
+              ))}
+            </select>
+
+            {sperrGrund === 'sonstiges' && (
+              <input
+                class="admin-filter-input admin-dialog-feld"
+                type="text"
+                maxLength={200}
+                placeholder={t('admin.users.banFreeText')}
+                value={sperrText}
+                onInput={e => setSperrText((e.target as HTMLInputElement).value)}
+              />
+            )}
+
+            {aktionFehler && <p class="admin-error">{aktionFehler}</p>}
+            <p class="admin-dialog-hinweis">{t('admin.users.banNote')}</p>
+
+            <div class="admin-dialog-knoepfe">
+              <button class="admin-btn-danger" disabled={aktionLaeuft || !sperrGrund}
+                      onClick={() => sperreSetzen(sperrFuer, true, sperrGrund, sperrText)}>
+                {aktionLaeuft ? t('admin.cleanup.deleting') : t('admin.users.ban')}
+              </button>
+              <button class="admin-btn-sm" disabled={aktionLaeuft} onClick={() => setSperrFuer(null)}>
+                {t('admin.cleanup.confirmNo')}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Loeschen — endgueltig, deshalb mit ausdruecklicher Nachfrage */}
+      {loeschFuerEinzeln && (
+        <div class="admin-dialog-hinter" onClick={e => { if (e.target === e.currentTarget) setLoeschFuerEinzeln(null); }}>
+          <div class="admin-dialog" role="dialog" aria-modal="true">
+            <h3 class="admin-dialog-titel">🗑 {t('admin.users.delete')} — {loeschFuerEinzeln.username}</h3>
+            <p class="admin-dialog-text">{t('admin.users.deleteWarn')}</p>
+
+            <p class="admin-dialog-alt">
+              {(loeschFuerEinzeln.msg_global ?? 0) + (loeschFuerEinzeln.msg_server ?? 0) > 0 && (
+                <span class="admin-aufraeum-spur">💬 {(loeschFuerEinzeln.msg_global ?? 0) + (loeschFuerEinzeln.msg_server ?? 0)}</span>
+              )}
+              {(loeschFuerEinzeln.profile ?? 0) > 0 && <span class="admin-aufraeum-spur">🎖 {loeschFuerEinzeln.profile}</span>}
+              {(loeschFuerEinzeln.rechnerstaende ?? 0) > 0 && <span class="admin-aufraeum-spur">🧮 {loeschFuerEinzeln.rechnerstaende}</span>}
+            </p>
+
+            {aktionFehler && <p class="admin-error">{aktionFehler}</p>}
+            <p class="admin-dialog-hinweis">{t('admin.users.deleteNote')}</p>
+
+            <div class="admin-dialog-knoepfe">
+              <button class="admin-btn-danger" disabled={aktionLaeuft}
+                      onClick={() => kontoLoeschen(loeschFuerEinzeln)}>
+                {aktionLaeuft ? t('admin.cleanup.deleting') : t('admin.cleanup.confirmYes')}
+              </button>
+              <button class="admin-btn-sm" disabled={aktionLaeuft} onClick={() => setLoeschFuerEinzeln(null)}>
+                {t('admin.cleanup.confirmNo')}
+              </button>
+            </div>
+          </div>
+        </div>
       )}
 
       {/* Adresse berichtigen */}
