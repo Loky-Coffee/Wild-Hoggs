@@ -1046,6 +1046,7 @@ export default {
   'admin.users.banFreeText': 'Grund in eigenen Worten',
   'admin.users.banNote': 'Eine Sperre lässt sich jederzeit aufheben. Es wird nichts gelöscht.',
   'admin.users.delete': 'Löschen',
+  'admin.users.details': 'Details',
   'admin.users.deleteWarn': 'Dieses Konto endgültig löschen? Chat-Nachrichten bleiben lesbar, verlieren aber ihren Namen. Alles andere verschwindet.',
   'admin.users.deleteNote': 'Das lässt sich nicht rückgängig machen. Bei Ärger im Chat ist Sperren die bessere Antwort.',
   'admin.cleanup.title': 'Verwaiste Konten',

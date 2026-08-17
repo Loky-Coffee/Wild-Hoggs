@@ -172,6 +172,9 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
   // Rechte-Dialog
   const [rechteFuer, setRechteFuer] = useState<AdminUser | null>(null);
 
+  // Detailansicht eines Kontos
+  const [detailFuer, setDetailFuer] = useState<AdminUser | null>(null);
+
   // Sperren und Loeschen
   const [sperrFuer, setSperrFuer]   = useState<AdminUser | null>(null);
   const [sperrGrund, setSperrGrund] = useState('');
@@ -1208,7 +1211,7 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
                               ? 'admin-table-row-admin'
                               : u.is_moderator === 1 ? 'admin-table-row-mod' : '';
                             return (
-                              <tr key={u.id} class={rowClass}>
+                              <tr key={u.id} class={`${rowClass} admin-zeile-klickbar`} onClick={() => { setDetailFuer(u); setAktionFehler(null); }}>
                                 <td>
                                   <span class="admin-user-name">
                                     {u.username}
@@ -1239,68 +1242,14 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
                                     ? <>💬 {(u.msg_global ?? 0) + (u.msg_server ?? 0)}</>
                                     : <span class="admin-still">—</span>}
                                 </td>
-                                {isAdmin && (
-                                  <td class="admin-table-actions">
-                                    {!isYou && (
-                                      <>
-                                        {u.is_admin === 0 && u.is_moderator === 0 && (
-                                          <>
-                                            <button class="admin-btn-promote admin-btn-sm" disabled={isBusy} onClick={() => handleSetRole(u, 'moderator')}>🛡 {t('admin.users.makeMod')}</button>
-                                            <button class="admin-btn-promote admin-btn-sm" disabled={isBusy} onClick={() => handleSetRole(u, 'admin')}>⚙ {t('admin.users.makeAdmin')}</button>
-                                          </>
-                                        )}
-                                        {u.is_moderator === 1 && (
-                                          <>
-                                            <button class="admin-btn-promote admin-btn-sm" disabled={isBusy} onClick={() => handleSetRole(u, 'admin')}>⚙ {t('admin.users.makeAdmin')}</button>
-                                            <button class="admin-btn-delete admin-btn-sm"  disabled={isBusy} onClick={() => handleSetRole(u, 'user')}>✕ {t('admin.users.removeMod')}</button>
-                                          </>
-                                        )}
-                                        {u.is_admin === 1 && (
-                                          <>
-                                            <button class="admin-btn-promote admin-btn-sm" disabled={isBusy} onClick={() => handleSetRole(u, 'moderator')}>🛡 {t('admin.users.makeMod')}</button>
-                                            <button class="admin-btn-delete admin-btn-sm"  disabled={isBusy} onClick={() => handleSetRole(u, 'user')}>✕ {t('admin.users.removeAdmin')}</button>
-                                          </>
-                                        )}
-                                        {/* Einzelne Rechte statt Alles-oder-nichts */}
-                                        <button class="admin-btn-sm" disabled={isBusy}
-                                                onClick={() => setRechteFuer(u)}
-                                                title={t('admin.users.perm_hint')}>
-                                          🔑 {t('admin.users.permissions')}
-                                        </button>
-                                        {/* Adresse berichtigen. Fuer die Faelle, in denen
-                                            jemand sich vertippt hat und deshalb weder
-                                            Bestaetigung noch Passwort-Reset empfangen kann. */}
-                                        <button class="admin-btn-sm" disabled={isBusy}
-                                                onClick={() => { setMailFuer(u); setMailNeu(''); setMailFehler(null); }}
-                                                title={t('admin.users.emailFixHint')}>
-                                          ✉ {t('admin.users.emailFix')}
-                                        </button>
-                                        {/* Sperren statt loeschen ist bei Aerger im Chat die
-                                            richtige Antwort: umkehrbar, und die Nachrichten
-                                            bleiben zuordenbar. */}
-                                        {darf(user, 'users.ban') && (
-                                          u.banned_at ? (
-                                            <button class="admin-btn-promote admin-btn-sm" disabled={isBusy || aktionLaeuft}
-                                                    onClick={() => sperreSetzen(u, false)}>
-                                              🔓 {t('admin.users.unban')}
-                                            </button>
-                                          ) : (
-                                            <button class="admin-btn-sm" disabled={isBusy}
-                                                    onClick={() => { setSperrFuer(u); setSperrGrund(''); setSperrText(''); setAktionFehler(null); }}>
-                                              🚫 {t('admin.users.ban')}
-                                            </button>
-                                          )
-                                        )}
-                                        {isAdmin && (
-                                          <button class="admin-btn-delete admin-btn-sm" disabled={isBusy}
-                                                  onClick={() => { setLoeschFuerEinzeln(u); setAktionFehler(null); }}>
-                                            🗑 {t('admin.users.delete')}
-                                          </button>
-                                        )}
-                                      </>
-                                    )}
-                                  </td>
-                                )}
+                                {/* Keine Aktionsknoepfe mehr in der Zeile: Bei sechs
+                                    Stueck brach die Tabelle um und wurde unlesbar.
+                                    Alles steckt jetzt in der Detailansicht. */}
+                                <td class="admin-table-actions">
+                                  <button class="admin-btn-sm" onClick={e => { e.stopPropagation(); setDetailFuer(u); setAktionFehler(null); }}>
+                                    {t('admin.users.details')} ›
+                                  </button>
+                                </td>
                               </tr>
                             );
                           })}
@@ -1633,6 +1582,99 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
         />
       )}
 
+
+
+      {/* Detailansicht eines Kontos.
+          Alles, was frueher als sechs Knoepfe in der Tabellenzeile stand, plus
+          die Angaben, fuer die in der Tabelle kein Platz war. */}
+      {detailFuer && (() => {
+        const u = detailFuer;
+        const istIch = u.id === user?.id;
+        const nachrichten = (u.msg_global ?? 0) + (u.msg_server ?? 0);
+        return (
+          <div class="admin-dialog-hinter" onClick={e => { if (e.target === e.currentTarget) setDetailFuer(null); }}>
+            <div class="admin-detail" role="dialog" aria-modal="true">
+              <div class="admin-detail-kopf">
+                <div>
+                  <h3 class="admin-detail-name">
+                    {u.username}
+                    {u.is_admin === 1     && <span class="admin-user-badge admin-badge-admin">⚙ {t('chat.role.admin')}</span>}
+                    {u.is_moderator === 1 && <span class="admin-user-badge admin-badge-mod">🛡 {t('chat.role.moderator')}</span>}
+                    {u.banned_at && <span class="admin-user-badge admin-badge-gesperrt">🚫 {t('admin.users.banned')}</span>}
+                  </h3>
+                  {isAdmin && <p class="admin-detail-mail"><bdi dir="ltr">{u.email ?? '—'}</bdi></p>}
+                </div>
+                <button class="auth-close" onClick={() => setDetailFuer(null)} aria-label={t('auth.close')}>✕</button>
+              </div>
+
+              {/* Angaben */}
+              <dl class="admin-detail-daten">
+                <div><dt>{t('admin.users.col.server')}</dt><dd>{u.server ?? '—'}</dd></div>
+                <div><dt>{t('admin.users.col.registered')}</dt><dd>{formatDate(u.created_at)}</dd></div>
+                <div><dt>{t('admin.users.col.last_login')}</dt><dd>{u.last_login ? formatDate(u.last_login) : '—'}</dd></div>
+                <div><dt>{t('admin.cleanup.col.lastSeen')}</dt><dd>{u.last_seen ? formatDate(u.last_seen) : t('admin.cleanup.never')}</dd></div>
+                <div><dt>{t('admin.users.col.verified')}</dt><dd>
+                  {(u.email_verified ?? 0) === 1
+                    ? <span class="admin-verif-ja">✓ {u.email_verified_at ? formatDate(u.email_verified_at) : ''}</span>
+                    : <span class="admin-verif-nein">○ {t('admin.users.notVerified')}</span>}
+                </dd></div>
+                <div><dt>{t('admin.users.col.activity')}</dt><dd>
+                  {nachrichten > 0 && <span class="admin-aufraeum-spur">💬 {nachrichten}</span>}
+                  {(u.profile ?? 0) > 0 && <span class="admin-aufraeum-spur">🎖 {u.profile}</span>}
+                  {(u.rechnerstaende ?? 0) > 0 && <span class="admin-aufraeum-spur">🧮 {u.rechnerstaende}</span>}
+                  {nachrichten === 0 && !(u.profile ?? 0) && !(u.rechnerstaende ?? 0) && <span class="admin-still">—</span>}
+                </dd></div>
+              </dl>
+
+              {/* Sperre, falls vorhanden */}
+              {u.banned_at && (
+                <p class="admin-detail-sperre">
+                  🚫 {t('ban.since')} {formatDate(u.banned_at)}
+                  {u.banned_by && ` — ${u.banned_by}`}
+                  {u.ban_grund && <><br />{t(`ban.reason.${u.ban_grund.split('|')[0]}` as any)}
+                    {u.ban_grund.includes('|') && `: ${u.ban_grund.split('|').slice(1).join('|')}`}</>}
+                </p>
+              )}
+
+              {aktionFehler && <p class="admin-error">{aktionFehler}</p>}
+
+              {/* Aktionen */}
+              {isAdmin && !istIch && (
+                <div class="admin-detail-aktionen">
+                  {u.is_admin === 0 && u.is_moderator === 0 && (
+                    <>
+                      <button class="admin-btn-promote admin-btn-sm" onClick={() => handleSetRole(u, 'moderator')}>🛡 {t('admin.users.makeMod')}</button>
+                      <button class="admin-btn-promote admin-btn-sm" onClick={() => handleSetRole(u, 'admin')}>⚙ {t('admin.users.makeAdmin')}</button>
+                    </>
+                  )}
+                  {u.is_moderator === 1 && (
+                    <button class="admin-btn-sm" onClick={() => handleSetRole(u, 'user')}>✕ {t('admin.users.removeMod')}</button>
+                  )}
+                  {u.is_admin === 1 && (
+                    <button class="admin-btn-sm" onClick={() => handleSetRole(u, 'user')}>✕ {t('admin.users.removeAdmin')}</button>
+                  )}
+                  <button class="admin-btn-sm" onClick={() => setRechteFuer(u)}>🔑 {t('admin.users.permissions')}</button>
+                  <button class="admin-btn-sm" onClick={() => { setMailFuer(u); setMailNeu(''); setMailFehler(null); }}>✉ {t('admin.users.emailFix')}</button>
+                </div>
+              )}
+
+              {!istIch && (
+                <div class="admin-detail-gefahr">
+                  {darf(user, 'users.ban') && (
+                    u.banned_at
+                      ? <button class="admin-btn-promote admin-btn-sm" disabled={aktionLaeuft}
+                                onClick={() => { sperreSetzen(u, false); setDetailFuer(null); }}>🔓 {t('admin.users.unban')}</button>
+                      : <button class="admin-btn-sm" onClick={() => { setSperrFuer(u); setSperrGrund(''); setSperrText(''); }}>🚫 {t('admin.users.ban')}</button>
+                  )}
+                  {isAdmin && (
+                    <button class="admin-btn-delete admin-btn-sm" onClick={() => setLoeschFuerEinzeln(u)}>🗑 {t('admin.users.delete')}</button>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      })()}
 
       {/* Sperren — mit Grund, den der Gesperrte spaeter in seiner Sprache sieht */}
       {sperrFuer && (

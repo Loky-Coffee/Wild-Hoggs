@@ -1195,3 +1195,71 @@ select.admin-filter-input option {
   border: 1px solid rgba(231, 76, 60, 0.4);
   color: #ef8e83;
 }
+
+/* Detailansicht eines Kontos --------------------------------------------- */
+
+.admin-zeile-klickbar { cursor: pointer; }
+.admin-zeile-klickbar:hover { background: rgba(255, 165, 0, 0.06); }
+
+.admin-detail {
+  width: 100%;
+  max-width: 34rem;
+  max-height: 88vh;
+  overflow-y: auto;
+  padding: 1.4rem;
+  background: #1e1811;
+  border: 1px solid rgba(255, 165, 0, 0.28);
+  border-radius: 10px;
+}
+
+.admin-detail-kopf {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.1rem;
+}
+.admin-detail-name {
+  display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;
+  margin: 0; font-size: 1.1rem; color: #ffcc80;
+}
+.admin-detail-mail {
+  margin: 0.3rem 0 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.82rem; color: #b9ab95; word-break: break-all;
+}
+
+/* Angaben als Paare. Zwei Spalten am Rechner, eine auf dem Handy. */
+.admin-detail-daten {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 0.7rem 1.2rem;
+  margin: 0 0 1.1rem;
+  padding: 0.9rem;
+  background: rgba(0, 0, 0, 0.22);
+  border-radius: 8px;
+}
+.admin-detail-daten dt {
+  font-size: 0.7rem; letter-spacing: 0.07em; text-transform: uppercase;
+  color: #9c8f79; margin-bottom: 0.15rem;
+}
+.admin-detail-daten dd { margin: 0; font-size: 0.87rem; color: #f0e6d8; }
+
+.admin-detail-sperre {
+  margin: 0 0 1.1rem; padding: 0.7rem 0.85rem;
+  background: rgba(231, 76, 60, 0.1);
+  border: 1px solid rgba(231, 76, 60, 0.35);
+  border-radius: 6px;
+  font-size: 0.84rem; line-height: 1.55; color: #f0d5d0;
+}
+
+.admin-detail-aktionen,
+.admin-detail-gefahr {
+  display: flex; flex-wrap: wrap; gap: 0.5rem;
+}
+/* Sperren und Loeschen abgesetzt — das sind die Knoepfe, die man nicht
+   versehentlich treffen soll. */
+.admin-detail-gefahr {
+  margin-top: 1rem; padding-top: 1rem;
+  border-top: 1px solid rgba(255, 165, 0, 0.16);
+}
