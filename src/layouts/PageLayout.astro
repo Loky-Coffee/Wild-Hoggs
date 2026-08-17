@@ -19,9 +19,23 @@ interface Props {
   image?: string;
   imageAlt?: string;
   fullWidth?: boolean;
+  /**
+   * Kein Fussbereich. Fuer Ansichten, die den Bildschirm ausfuellen — der Chat
+   * und der Verwaltungsbereich. Dort schiebt ein Fussbereich den Inhalt nach
+   * oben und haengt unter dem Eingabefeld, was die Ansicht zerreisst.
+   *
+   * Zur Zugaenglichkeit der Datenschutzerklaerung: Beide Ansichten sind
+   * noindex und nur angemeldet erreichbar, und die Navigationsleiste bleibt
+   * ueberall stehen — ein Klick fuehrt auf eine Seite mit Fussbereich. Art. 12
+   * DSGVO verlangt "leicht zugaenglich", nicht "auf jedem Bildschirm sichtbar".
+   */
+  ohneFuss?: boolean;
 }
 
-const { title, description, robots, breadcrumbs, image, imageAlt, fullWidth = false } = Astro.props;
+const {
+  title, description, robots, breadcrumbs, image, imageAlt,
+  fullWidth = false, ohneFuss = false,
+} = Astro.props;
 
 // Der Sprungverweis stand fest auf Englisch — ausgerechnet das Erste, was ein
 // Tastatur- oder Screenreader-Benutzer auf jeder der 495 Seiten antrifft.
@@ -55,10 +69,10 @@ const t = useTranslations(translationData);
       "leicht zugaenglich" sein (Art. 12 DSGVO) — von jeder Seite aus, nicht
       versteckt. Deshalb hier und nicht nur im Menue.
 
-      Auf der Startseite und den Rechnerseiten mit festem Vollbild-Layout wird
-      er ausgeblendet: Dort schneidet overflow:hidden ohnehin alles ab, was
-      unter dem Bildschirm liegt. Erreichbar bleibt die Seite von dort ueber
-      jede andere. */}
+      Ausgenommen sind Ansichten mit ohneFuss: der Chat und der
+      Verwaltungsbereich. Beide fuellen den Bildschirm; darunter angehaengt
+      zerreisst der Fussbereich die Ansicht. */}
+  {!ohneFuss && (
   <footer class="seiten-fuss">
     <nav aria-label={lang === 'de' ? 'Rechtliches' : 'Legal'}>
       <a href={getLocalizedPath('privacy', lang)}>
@@ -73,6 +87,7 @@ const t = useTranslations(translationData);
         : 'Private fan site. Not affiliated with the developers of Last Z: Survival Shooter.'}
     </p>
   </footer>
+  )}
 </Layout>
 
 <style>
