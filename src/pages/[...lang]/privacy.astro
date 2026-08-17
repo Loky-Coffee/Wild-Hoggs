@@ -30,8 +30,8 @@ const translationData = await loadTranslations(lang);
 const t = useTranslations(translationData);
 const de = lang === 'de';
 
-const stand = '16. August 2026';
-const standEn = '16 August 2026';
+const stand = '17. August 2026';
+const standEn = '17 August 2026';
 
 const breadcrumbItems = [
   { label: t('nav.home'), href: getLocalizedPath('', lang) },
@@ -143,9 +143,34 @@ const breadcrumbItems = [
           <li><strong>Zuletzt gesehen</strong> — ein Zeitstempel, damit andere sehen, wer gerade online ist</li>
           <li><strong>Anmeldezeitpunkt</strong> — zur Erkennung ungewöhnlicher Zugriffe</li>
           <li><strong>Sitzungen</strong> — ein zufälliges Kennzeichen je angemeldetem Gerät, gültig 30 Tage</li>
+          <li><strong>Bestätigungsstand der Adresse</strong> — ob und wann du deine E-Mail-Adresse bestätigt hast</li>
         </ul>
 
-        <h3>4.3 Öffentlich sichtbar</h3>
+        <h3>4.3 Wenn ein Konto gesperrt wird</h3>
+        <p>
+          Wer wiederholt gegen die Regeln verstösst — Beleidigungen im Chat, Werbung,
+          mehrere Konten für eine Person — kann gesperrt werden. Gespeichert werden dann
+          der <strong>Zeitpunkt</strong>, der <strong>Grund</strong> als vorgegebene
+          Kennung (bei „Sonstiges“ zusätzlich ein kurzer Text) und der
+          <strong>Benutzername der Person, die gesperrt hat</strong>. Den Grund bekommst
+          du beim nächsten Anmeldeversuch angezeigt, zusammen mit der Adresse, an die du
+          dich wenden kannst. Eine Sperre lässt sich aufheben; dann werden diese Angaben
+          gelöscht.
+        </p>
+        <p>
+          Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO — das berechtigte Interesse,
+          einen nutzbaren Chat zu betreiben. Du kannst der Verarbeitung nach Art. 21
+          DSGVO widersprechen; schreib dazu an die oben genannte Adresse.
+        </p>
+        <p>
+          <strong>Eingriffe durch die Verwaltung.</strong> Wird eine E-Mail-Adresse von
+          Hand berichtigt, ein Konto gesperrt oder gelöscht, hält das Serverprotokoll
+          fest, wer das getan hat und welches Konto betroffen war — bei einer
+          Adressänderung auch die alte und die neue Adresse. Diese Einträge liegen bei
+          Cloudflare (siehe Abschnitt 6) und werden nach dessen Fristen gelöscht. Zweck
+          ist die Nachvollziehbarkeit solcher Eingriffe.
+
+        <h3>4.4 Öffentlich sichtbar</h3>
         <p>
           Für andere Angemeldete sichtbar sind: dein Benutzername, deine Fraktion, dein Server
           und ob du gerade online bist — sowie natürlich, was du im öffentlichen Chat schreibst.
@@ -330,9 +355,31 @@ const breadcrumbItems = [
           <li><strong>Last seen</strong> — a timestamp so others can see who is online</li>
           <li><strong>Last sign-in</strong> — to spot unusual access</li>
           <li><strong>Sessions</strong> — a random identifier per signed-in device, valid for 30 days</li>
+          <li><strong>Address confirmation status</strong> — whether and when you confirmed your email address</li>
         </ul>
 
-        <h3>4.3 What others can see</h3>
+        <h3>4.3 If an account is blocked</h3>
+        <p>
+          Repeated rule violations — insults in chat, advertising, several accounts for
+          one person — can lead to a block. What is then stored: the
+          <strong>time</strong>, the <strong>reason</strong> as a fixed code (plus a
+          short text for “other”), and the <strong>username of whoever issued it</strong>.
+          You are shown the reason on your next sign-in attempt, together with the address
+          you can write to. A block can be lifted; those entries are then deleted.
+        </p>
+        <p>
+          Legal basis is Art. 6(1)(f) GDPR — the legitimate interest in running a usable
+          chat. You may object under Art. 21 GDPR; write to the address given above.
+        </p>
+        <p>
+          <strong>Administrative changes.</strong> When an email address is corrected by
+          hand, or an account is blocked or deleted, the server log records who did it and
+          which account was affected — for an address change, also the old and the new
+          address. These entries sit with Cloudflare (see section 6) and are deleted
+          according to its retention. The purpose is to keep such interventions traceable.
+        </p>
+
+        <h3>4.4 What others can see</h3>
         <p>
           Other signed-in users can see your username, faction, server and whether you are
           online — and of course whatever you write in the public chat.
