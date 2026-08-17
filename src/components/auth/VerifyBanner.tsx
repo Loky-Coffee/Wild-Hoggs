@@ -1,5 +1,6 @@
-import { useState } from 'preact/hooks';
-import { useAuth } from '../../hooks/useAuth';
+import { useState, useEffect } from 'preact/hooks';
+import { useAuth, setAuthState, AUTH_TOKEN_KEY } from '../../hooks/useAuth';
+import type { AuthUser } from '../../hooks/useAuth';
 import { useTranslations } from '../../i18n/utils';
 import type { TranslationData } from '../../i18n/index';
 import './VerifyBanner.css';
@@ -35,10 +36,34 @@ export default function VerifyBanner({ translationData }: Props) {
   const [zu, setZu] = useState(false);
   const [zustand, setZustand] = useState<'ruhe' | 'sendet' | 'gesendet' | 'fehler' | 'zuOft'>('ruhe');
 
-  // Nur bei ausdruecklichem 0. Ein Nutzerobjekt aus dem Browserspeicher, das
-  // vor dieser Aenderung entstanden ist, hat das Feld gar nicht — dort waere
-  // der Balken falsch. Beim naechsten Aufruf von /api/auth/me kommt der echte
-  // Wert nach.
+  /**
+   * Fehlt das Feld, wird es einmal nachgeholt.
+   *
+   * Notwendig, weil useAuth nur einmal je Browsersitzung mit dem Server
+   * abgleicht (sessionStorage-Merker 'wh-ok'). Wer seinen Tab offen hat —
+   * beim Chat die Regel, nicht die Ausnahme — behielt sonst tagelang ein
+   * gespeichertes Nutzerobjekt ohne email_verified und sah den Balken nie.
+   *
+   * Der Aufruf passiert genau einmal je Konto: setAuthState schreibt das
+   * Ergebnis in den Browserspeicher, danach ist das Feld vorhanden.
+   */
+  useEffect(() => {
+    if (!user || user.email_verified !== undefined) return;
+
+    const token = localStorage.getItem(AUTH_TOKEN_KEY);
+    if (!token) return;
+
+    fetch('/api/auth/me', { headers: { Authorization: `Bearer ${token}` } })
+      .then(r => (r.ok ? r.json() as Promise<AuthUser> : null))
+      .then(frisch => {
+        if (frisch) setAuthState(frisch, token);
+      })
+      .catch(() => {}); // Netzfehler — beim naechsten Seitenaufruf erneut
+  }, [user?.email_verified === undefined]);
+
+  // Nur bei ausdruecklichem 0. Bei fehlendem Feld bleibt der Balken aus, bis
+  // der Abgleich oben den echten Wert geliefert hat — sonst saehe ihn auch
+  // jemand, der laengst bestaetigt hat.
   if (!user || user.email_verified !== 0 || zu) return null;
 
   const erneutSenden = async () => {
