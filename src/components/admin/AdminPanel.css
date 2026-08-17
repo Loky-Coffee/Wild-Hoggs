@@ -1154,3 +1154,37 @@ select.admin-filter-input option {
   align-items: center;
   margin-top: 1rem;
 }
+
+/* Sortierbare Spaltenkoepfe ---------------------------------------------- */
+
+.admin-sort-kopf {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  width: 100%;
+  padding: 0;
+  background: none;
+  border: none;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.admin-sort-kopf:hover { color: #ffcc80; }
+.admin-sort-kopf:focus-visible {
+  outline: 2px solid #ffa500;
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+.admin-sort-kopf.aktiv { color: #ffa500; }
+
+/* Der Pfeil steht auch ungenutzt da (als ⇅), damit sichtbar ist, dass sich
+   die Spalte ueberhaupt sortieren laesst — sonst muesste man es raten. */
+.admin-sort-pfeil {
+  font-size: 0.72em;
+  opacity: 0.45;
+  transition: opacity 0.15s;
+}
+.admin-sort-kopf:hover .admin-sort-pfeil { opacity: 0.8; }
+.admin-sort-kopf.aktiv .admin-sort-pfeil { opacity: 1; }

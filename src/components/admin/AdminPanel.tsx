@@ -56,6 +56,12 @@ interface AdminUser {
   rechnerstaende?: number;
 }
 
+/** Spalten der Nutzertabelle, nach denen sich sortieren laesst. */
+type SortSpalte =
+  | 'username' | 'email' | 'server' | 'created_at'
+  | 'last_login' | 'email_verified' | 'aktivitaet'
+  | null;
+
 /** Ein Konto, das die Bedingungen fuers Aufraeumen erfuellt. */
 interface Kandidat {
   id: string;
@@ -191,6 +197,11 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
   const [fRegTo, setFRegTo]       = useState('');
   /** '' = alle, 'ja' = nur bestaetigte, 'nein' = nur unbestaetigte */
   const [fVerified, setFVerified] = useState('');
+
+  // Sortierung der Nutzertabelle. null = Reihenfolge aus der Datenbank
+  // (Administratoren, Moderatoren, dann Name).
+  const [sortSpalte, setSortSpalte] = useState<SortSpalte>(null);
+  const [sortAuf, setSortAuf]       = useState(true);
 
   // Aufraeumen verwaister Konten
   const [kandidaten, setKandidaten]   = useState<Kandidat[]>([]);
@@ -350,6 +361,82 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
     return true;
   });
   const hasFilter = fText || fServer || fRegFrom || fRegTo || fVerified;
+
+  /**
+   * Sortierte Ansicht der gefilterten Liste.
+   *
+   * Im Browser sortiert, nicht in der Datenbank: Bei gut dreihundert Zeilen
+   * kostet das nichts und spart je Klick eine Abfrage. Die Reihenfolge aus dem
+   * SQL (Administratoren, dann Moderatoren, dann Name) bleibt erhalten,
+   * solange niemand eine Spalte gewaehlt hat.
+   */
+  const sortierteUsers = (() => {
+    if (!sortSpalte) return filteredUsers;
+
+    // Was verglichen wird, haengt von der Spalte ab: Text der Reihe nach,
+    // Zeitstempel als Zahl (die Werte kommen als "2026-08-13 14:33:00" und
+    // liessen sich als Text nur zufaellig richtig ordnen), Zaehler numerisch.
+    const wert = (u: AdminUser): string | number => {
+      switch (sortSpalte) {
+        case 'username':       return u.username.toLowerCase();
+        case 'email':          return (u.email ?? '').toLowerCase();
+        case 'server':         return u.server ?? '';
+        case 'created_at':     return msAusZeitstempel(u.created_at) || 0;
+        case 'last_login':     return u.last_login ? (msAusZeitstempel(u.last_login) || 0) : 0;
+        case 'email_verified': return u.email_verified ?? 0;
+        case 'aktivitaet':     return (u.msg_global ?? 0) + (u.msg_server ?? 0);
+        default:               return '';
+      }
+    };
+
+    const richtung = sortAuf ? 1 : -1;
+
+    return [...filteredUsers].sort((a, b) => {
+      const wa = wert(a), wb = wert(b);
+
+      // Leere Werte immer ans Ende, unabhaengig von der Richtung. Wer nach
+      // "letzter Login" sortiert, sucht die aeltesten oder neuesten Anmeldungen
+      // — nicht die dreissig Konten, die sich nie angemeldet haben.
+      const aLeer = wa === '' || wa === 0;
+      const bLeer = wb === '' || wb === 0;
+      if (aLeer !== bLeer) return aLeer ? 1 : -1;
+
+      if (typeof wa === 'number' && typeof wb === 'number') {
+        return (wa - wb) * richtung;
+      }
+      // localeCompare, damit Umlaute und Akzente dort einsortiert werden, wo
+      // man sie sucht — sonst landet "Ödland" hinter "Zulu".
+      return String(wa).localeCompare(String(wb), undefined, { numeric: true }) * richtung;
+    });
+  })();
+
+  /** Kopfzeile anklicken: gleiche Spalte kehrt die Richtung um, neue Spalte
+   *  beginnt mit der Richtung, die man dort meist erwartet. */
+  const sortiereNach = (spalte: Exclude<SortSpalte, null>) => {
+    if (sortSpalte === spalte) { setSortAuf(!sortAuf); return; }
+    setSortSpalte(spalte);
+    // Zeiten und Zaehler absteigend (neueste, hoechste zuerst), Text aufsteigend.
+    setSortAuf(!['created_at', 'last_login', 'aktivitaet', 'email_verified'].includes(spalte));
+  };
+
+  /** Ein anklickbarer Spaltenkopf. */
+  const SortKopf = ({ spalte, label }: { spalte: Exclude<SortSpalte, null>; label: string }) => {
+    const aktiv = sortSpalte === spalte;
+    return (
+      <th aria-sort={aktiv ? (sortAuf ? 'ascending' : 'descending') : 'none'}>
+        <button
+          type="button"
+          class={`admin-sort-kopf${aktiv ? ' aktiv' : ''}`}
+          onClick={() => sortiereNach(spalte)}
+        >
+          {label}
+          <span class="admin-sort-pfeil" aria-hidden="true">
+            {aktiv ? (sortAuf ? '▲' : '▼') : '⇅'}
+          </span>
+        </button>
+      </th>
+    );
+  };
 
   // Access check — AFTER all hooks
   //
@@ -1032,18 +1119,22 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
                       <table class="admin-table">
                         <thead>
                           <tr>
-                            <th>{t('admin.users.col.name')}</th>
-                            {isAdmin && <th>{t('admin.users.col.email')}</th>}
-                            <th>{t('admin.users.col.server')}</th>
-                            <th>{t('admin.users.col.registered')}</th>
-                            <th>{t('admin.users.col.last_login')}</th>
-                            {isAdmin && <th>{t('admin.users.col.verified')}</th>}
-                            <th>{t('admin.users.col.activity')}</th>
+                            {/* Klickbare Koepfe. Als <button> im <th>, nicht als
+                                th mit onClick: Sonst waere die Sortierung mit der
+                                Tastatur nicht erreichbar. aria-sort sagt
+                                Vorleseprogrammen, wonach gerade geordnet ist. */}
+                            <SortKopf spalte="username" label={t('admin.users.col.name')} />
+                            {isAdmin && <SortKopf spalte="email" label={t('admin.users.col.email')} />}
+                            <SortKopf spalte="server" label={t('admin.users.col.server')} />
+                            <SortKopf spalte="created_at" label={t('admin.users.col.registered')} />
+                            <SortKopf spalte="last_login" label={t('admin.users.col.last_login')} />
+                            {isAdmin && <SortKopf spalte="email_verified" label={t('admin.users.col.verified')} />}
+                            <SortKopf spalte="aktivitaet" label={t('admin.users.col.activity')} />
                             {isAdmin && <th></th>}
                           </tr>
                         </thead>
                         <tbody>
-                          {filteredUsers.map(u => {
+                          {sortierteUsers.map(u => {
                             const isYou  = u.id === user?.id;
                             const isBusy = uBusy.has(u.id);
                             const rowClass = u.is_admin === 1
