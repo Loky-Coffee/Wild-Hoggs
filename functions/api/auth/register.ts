@@ -8,6 +8,11 @@ import { neuerToken, tokenHash } from '../../_lib/token';
 /** Deckt sich mit GUELTIG_TAGE in verify-send.ts. */
 const VERIFY_TAGE = 7;
 
+/** Die 15 Sprachen der Seite. Das Kuerzel wandert in den Pfad des Links. */
+const SPRACHEN = [
+  'en','de','fr','es','it','pt','tr','ja','ko','id','th','vi','zh-CN','zh-TW','ar',
+];
+
 export async function onRequestPost(ctx: any) {
   const { DB, RESEND_API_KEY } = ctx.env;
 
@@ -131,7 +136,15 @@ export async function onRequestPost(ctx: any) {
     ).bind(user.id, vHash, user.email, `+${VERIFY_TAGE} days`).run();
 
     const basis = new URL(ctx.request.url).origin;
-    const sprache = String(user.language ?? 'en');
+    // Sprache der Seite, auf der sich jemand gerade registriert. users.language
+    // ist beim Anlegen leer — darauf allein gestuetzt kam die Mail immer auf
+    // Englisch, selbst bei einer Registrierung ueber /de/ oder /ar/.
+    // Gegen die Liste geprueft, damit nichts Beliebiges in den Pfad des Links
+    // wandert.
+    const gewuenscht = String(body?.lang ?? '');
+    const sprache = SPRACHEN.includes(gewuenscht)
+      ? gewuenscht
+      : String(user.language ?? 'en');
     const pfad = sprache && sprache !== 'en' ? `/${sprache}/verify/` : '/verify/';
     const link = `${basis}${pfad}?token=${vToken}`;
     const { betreff, html, text } = verifyMailText(sprache, user.username, link, VERIFY_TAGE);

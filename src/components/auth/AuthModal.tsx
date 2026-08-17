@@ -107,7 +107,14 @@ export default function AuthModal({ onClose, initialTab = 'login', translationDa
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: regEmail, username: regUsername, password: regPassword, server: regServer || undefined })
+        // lang ist nur fuer die Bestaetigungsmail da. Ohne diese Angabe kam
+        // sie immer auf Englisch, weil users.language beim Anlegen leer bleibt
+        // und der Endpunkt dann auf 'en' zurueckfiel — auch bei jemandem, der
+        // sich gerade auf /de/ oder /ar/ registriert hat.
+        body: JSON.stringify({
+          email: regEmail, username: regUsername, password: regPassword,
+          server: regServer || undefined, lang: spracheAusUrl(),
+        })
       });
       const data = await res.json();
       if (!res.ok) { setError(data.error ?? t('auth.errorRegister')); return; }

@@ -10,6 +10,15 @@
  * kein flex, kein grid. Was hier steht, ist absichtlich altmodisch — Tabellen,
  * Inline-Attribute, feste Breiten. Das ist keine Nachlässigkeit, sondern der
  * kleinste gemeinsame Nenner von Outlook bis Gmail.
+ *
+ * Zur Breite: 600 Pixel, zentriert. Das ist keine Sparsamkeit, sondern die
+ * Breite, in der Mails überall funktionieren — ein Vorschaufenster am Rechner
+ * ist manchmal 1400 Pixel breit, auf dem Handy sind es 360. Nutzte die Mail
+ * die volle Breite, wären die Zeilen am Rechner unlesbar lang.
+ *
+ * Zentriert wird doppelt: align="center" auf der Zelle UND margin:0 auto auf
+ * der Tabelle. Manche Programme werten nur das eine oder das andere aus; ohne
+ * beides klebt der Kasten in einigen Clients links am Rand.
  */
 
 interface Texte {
@@ -369,7 +378,7 @@ function baueMail(b: MailBausteine): { html: string; text: string } {
 <body style="margin:0;padding:0;background:#14100c;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#14100c;padding:32px 12px;">
 <tr><td align="center">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:520px;background:#1e1811;border:1px solid #3a2e1f;border-radius:10px;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;margin:0 auto;background:#1e1811;border:1px solid #3a2e1f;border-radius:10px;">
 <tr><td style="padding:28px 32px 8px;text-align:${seite};">
 <div style="font:700 19px/1.3 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#ffa500;">Wild Hoggs</div>
 </td></tr>
