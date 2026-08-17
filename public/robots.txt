@@ -2,6 +2,17 @@
 # Tools, Rechner und Datentabellen. Alles offen, nichts hinter einer Anmeldung.
 
 User-agent: *
+# Content Signals (contentsignals.org) — eine Willenserklaerung, keine Sperre.
+# Rechtlich nicht bindend, aber ein dokumentierter Vorbehalt; seit der
+# EU-KI-Verordnung zaehlt das durchaus etwas.
+#
+#   search=yes     In Suchergebnissen und KI-Antworten zeigen — erwuenscht.
+#   ai-input=yes   Als Quelle fuer KI-Antworten benutzen — ebenfalls erwuenscht.
+#                  Genau dafuer gibt es die llms.txt. Cloudflares Beispiel
+#                  schlaegt hier "no" vor; das waere fuer diese Seite verkehrt.
+#   ai-train=no    Zum Trainieren von Modellen verwenden — nicht erwuenscht.
+#                  Gefunden werden ja, kostenlos Trainingsmaterial liefern nein.
+Content-Signal: search=yes, ai-input=yes, ai-train=no
 Allow: /
 Disallow: /admin/
 Disallow: /profile/
