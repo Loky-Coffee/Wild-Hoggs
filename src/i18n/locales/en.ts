@@ -1048,6 +1048,8 @@ export default {
   'admin.users.banNote': 'Blocking can be undone at any time. Nothing is deleted.',
   'admin.users.delete': 'Delete',
   'admin.users.details': 'Details',
+  'admin.users.groupManage': 'Manage',
+  'admin.users.groupDanger': 'Irreversible',
   'admin.users.deleteWarn': 'Delete this account for good? Chat messages stay readable but lose their name. Everything else goes.',
   'admin.users.deleteNote': 'This cannot be undone. For trouble in chat, blocking is the better answer.',
   // ── Admin: cleaning up orphaned accounts ──

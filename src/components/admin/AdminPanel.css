@@ -1263,3 +1263,58 @@ select.admin-filter-input option {
   margin-top: 1rem; padding-top: 1rem;
   border-top: 1px solid rgba(255, 165, 0, 0.16);
 }
+
+/* Knoepfe in der Detailansicht ------------------------------------------- */
+
+/* .admin-btn-sm setzt nur Groesse und Schriftgrad — ohne eigene Farbe kam der
+   Standardknopf des Browsers durch, also weiss auf dunklem Grund. In der
+   Tabelle fiel das kaum auf, im Dialog stach es heraus. */
+.admin-detail-aktionen button,
+.admin-detail-gefahr button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.8rem;
+  background: linear-gradient(180deg, rgba(255,165,0,0.12) 0%, rgba(255,165,0,0.04) 100%);
+  border: 1px solid rgba(255, 165, 0, 0.3);
+  border-radius: 6px;
+  color: #ffcc80;
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+.admin-detail-aktionen button:hover:not(:disabled),
+.admin-detail-gefahr button:hover:not(:disabled) {
+  background: linear-gradient(180deg, rgba(255,165,0,0.2) 0%, rgba(255,165,0,0.08) 100%);
+  border-color: rgba(255, 165, 0, 0.55);
+  color: #ffe0b0;
+}
+.admin-detail-aktionen button:disabled,
+.admin-detail-gefahr button:disabled { opacity: 0.45; cursor: not-allowed; }
+.admin-detail-aktionen button:focus-visible,
+.admin-detail-gefahr button:focus-visible { outline: 2px solid #ffa500; outline-offset: 2px; }
+
+/* Die beiden folgenschweren Knoepfe heben sich ab — aber gedaempft, damit sie
+   nicht staendig nach Aufmerksamkeit rufen. Erst beim Zeigen werden sie rot. */
+.admin-detail-gefahr button {
+  background: rgba(231, 76, 60, 0.08);
+  border-color: rgba(231, 76, 60, 0.32);
+  color: #e8a49c;
+}
+.admin-detail-gefahr button:hover:not(:disabled) {
+  background: rgba(231, 76, 60, 0.2);
+  border-color: rgba(231, 76, 60, 0.6);
+  color: #ffd9d3;
+}
+
+/* Ueberschrift ueber jeder Gruppe, damit die Knoepfe nicht lose herumliegen */
+.admin-detail-titel {
+  margin: 1.1rem 0 0.5rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #9c8f79;
+}
+.admin-detail-gefahr { border-top: none; margin-top: 0; padding-top: 0; }

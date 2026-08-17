@@ -1640,7 +1640,9 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
 
               {/* Aktionen */}
               {isAdmin && !istIch && (
-                <div class="admin-detail-aktionen">
+                <>
+                  <p class="admin-detail-titel">{t('admin.users.groupManage')}</p>
+                  <div class="admin-detail-aktionen">
                   {u.is_admin === 0 && u.is_moderator === 0 && (
                     <>
                       <button class="admin-btn-promote admin-btn-sm" onClick={() => handleSetRole(u, 'moderator')}>🛡 {t('admin.users.makeMod')}</button>
@@ -1655,11 +1657,14 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
                   )}
                   <button class="admin-btn-sm" onClick={() => setRechteFuer(u)}>🔑 {t('admin.users.permissions')}</button>
                   <button class="admin-btn-sm" onClick={() => { setMailFuer(u); setMailNeu(''); setMailFehler(null); }}>✉ {t('admin.users.emailFix')}</button>
-                </div>
+                  </div>
+                </>
               )}
 
               {!istIch && (
-                <div class="admin-detail-gefahr">
+                <>
+                  <p class="admin-detail-titel">{t('admin.users.groupDanger')}</p>
+                  <div class="admin-detail-gefahr">
                   {darf(user, 'users.ban') && (
                     u.banned_at
                       ? <button class="admin-btn-promote admin-btn-sm" disabled={aktionLaeuft}
@@ -1669,7 +1674,8 @@ export default function AdminPanel({ translationData }: AdminPanelProps) {
                   {isAdmin && (
                     <button class="admin-btn-delete admin-btn-sm" onClick={() => setLoeschFuerEinzeln(u)}>🗑 {t('admin.users.delete')}</button>
                   )}
-                </div>
+                  </div>
+                </>
               )}
             </div>
           </div>
