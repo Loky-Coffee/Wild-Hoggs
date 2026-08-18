@@ -167,6 +167,12 @@ const datensatzSchema = {
   description: beschreibung,
   inLanguage: lang,
   isAccessibleForFree: true,
+  // Google vermisst dieses Feld ("Feld license fehlt", nicht kritisch).
+  // CC BY 4.0: Die Zahlen selbst sind Spielwerte, daran hat niemand ein
+  // Urheberrecht — die Leistung liegt im Sammeln und Aufbereiten. Wer die
+  // Tabellen uebernimmt, muss Wild Hoggs nennen. Passt zu den Content Signals
+  // in der robots.txt: in Antworten zeigen ja, Training nein.
+  license: 'https://creativecommons.org/licenses/by/4.0/',
   creator: { '@type': 'Organization', name: 'Wild Hoggs', url: 'https://wild-hoggs.com/' },
   about: { '@type': 'VideoGame', name: SPIEL, applicationCategory: 'Game' },
   variableMeasured: [
